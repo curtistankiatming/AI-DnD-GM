@@ -1,0 +1,68 @@
+name: Public playtest download
+
+on:
+  push:
+    branches: [master, public-testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-playtest-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/public-testing'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Release publishing only; never runs on pull_request or pull_request_target.
+    permissions:
+      contents: write
+    env:
+      AI_NARRATOR: 'off'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Validate the preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run check | tee /tmp/briarwatch-validation.txt
+          npm test | tee -a /tmp/briarwatch-validation.txt
+          PLAYTEST_RUNS=1 npm run playtest | tee -a /tmp/briarwatch-validation.txt
+          FUZZ_CASES=80 FUZZ_STEPS=60 npm run fuzz | tee -a /tmp/briarwatch-validation.txt
+      - name: Build browser-only game and source package
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:public
+          cp /tmp/briarwatch-validation.txt dist-public/VALIDATION.txt
+          (cd dist-public && zip -q ../briarwatch-browser-playtest.zip index.html briarwatch-playtest.html START-HERE.txt BUILD.json SHA256SUMS.txt VALIDATION.txt)
+          git archive --format=zip --prefix=AI-DnD-GM/ --output=briarwatch-source.zip HEAD
+          sha256sum briarwatch-browser-playtest.zip briarwatch-source.zip > PLAYTEST-SHA256.txt
+          printf '## Public development snapshot\n\nSource commit: `%s`\n\n' "$GITHUB_SHA" > /tmp/playtest-notes.md
+          cat docs/PUBLIC-TESTING.md >> /tmp/playtest-notes.md
+      - name: Publish immutable-by-commit prerelease assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          tag="playtest-${GITHUB_SHA}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "This commit already has a public playtest. Existing assets are not overwritten."
+            exit 0
+          fi
+          version=$(node -p 'require("./package.json").version')
+          gh release create "$tag" briarwatch-browser-playtest.zip briarwatch-source.zip PLAYTEST-SHA256.txt \
+            --target "$GITHUB_SHA" --prerelease --latest=false \
+            --title "Public playtest ${version} (${GITHUB_SHA:0:8})" \
+            --notes-file /tmp/playtest-notes.md

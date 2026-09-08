@@ -1,0 +1,45 @@
+name: Public playtest feedback
+description: Report a bug, confusing interaction, or gameplay problem.
+title: "[Playtest] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing this unfinished game. Use **Export bug report** for the build ID.
+        Issues are public: never paste credentials or personal information. Save files are optional and may contain names and dialogue.
+  - type: input
+    id: build
+    attributes:
+      label: Build version and source ID
+      placeholder: 4.0.2-preview.1 / ID displayed in the public playtest banner
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Test mode
+      options:
+        - Normal campaign
+        - Sandbox checkpoint (granted XP/items)
+        - Local Node server
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome on Windows, Safari on iPhone, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and what happened
+      description: Include class, level, location, action, expected outcome, and actual outcome. Do not claim a sandbox run is natural progression.
+    validations:
+      required: true
+  - type: textarea
+    id: feel
+    attributes:
+      label: How did it feel to play?
+      description: Confusing buttons, repetitive story beats, weak rewards, or moments where your decisions mattered.

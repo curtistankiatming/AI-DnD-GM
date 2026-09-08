@@ -1,8 +1,8 @@
 {
   "name": "ai-dungeon-master-briarwatch",
-  "version": "4.0.1",
+  "version": "4.0.2-preview.1",
   "private": true,
-  "description": "A local story-led level 1–10 RPG: towns, merchants, equipment, companion growth and meaningful class advancement.",
+  "description": "A local story-led level 1\u201310 RPG: towns, merchants, equipment, companion growth and meaningful class advancement.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,7 +10,8 @@
     "playtest": "node tests/campaign-playtest.js",
     "fuzz": "node tests/fuzz.js",
     "check": "node scripts/verify.js check",
-    "validate": "npm run check && npm test && npm run playtest && npm run fuzz"
+    "validate": "npm run check && npm test && npm run playtest && npm run fuzz",
+    "build:public": "node scripts/build-public.js"
   },
   "engines": {
     "node": ">=22"
