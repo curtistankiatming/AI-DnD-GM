@@ -6,6 +6,8 @@ const net = require("node:net");
 const { spawn } = require("node:child_process");
 const path = require("node:path");
 
+const fs = require("node:fs/promises");
+const os = require("node:os");
 const ROOT = path.resolve(__dirname, "..");
 
 async function freePort() {
@@ -44,11 +46,12 @@ async function jsonRequest(url, options = {}) {
 }
 
 test("HTTP application serves UI, sessions, actions, and save lifecycle", { timeout: 15000 }, async (t) => {
+  const saveDir = await fs.mkdtemp(path.join(os.tmpdir(), "briarwatch-http-"));
   const port = await freePort();
   const baseUrl = `http://127.0.0.1:${port}`;
   const child = spawn(process.execPath, ["server.js"], {
     cwd: ROOT,
-    env: { ...process.env, HOST: "127.0.0.1", PORT: String(port), AI_NARRATOR: "off" },
+    env: { ...process.env, HOST: "127.0.0.1", PORT: String(port), AI_NARRATOR: "off", SAVE_DIR: saveDir },
     stdio: ["ignore", "pipe", "pipe"]
   });
   let output = "";
@@ -61,11 +64,12 @@ test("HTTP application serves UI, sessions, actions, and save lifecycle", { time
       child.once("exit", resolve);
       setTimeout(() => { if (child.exitCode === null) child.kill("SIGKILL"); }, 1000).unref();
     });
+    await fs.rm(saveDir, { recursive: true, force: true });
   });
 
   const health = await waitForHealth(baseUrl, child);
   assert.equal(health.status, "ok");
-  assert.equal(health.version, "4.0.0");
+  assert.equal(health.version, require("../package.json").version);
   assert.equal(health.narrator, "deterministic");
 
   const page = await fetch(`${baseUrl}/`);

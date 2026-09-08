@@ -19,7 +19,12 @@ const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "127.0.0.1";
 const PUBLIC_DIR = path.join(__dirname, "public");
 const SAVE_DIR = path.resolve(process.env.SAVE_DIR || path.join(__dirname, "saves"));
-const SAVE_NAME_PATTERN = /^[a-z0-9][a-z0-9 _-]{0,47}$/i;
+const { sanitizeSaveName, validSaveName } = require("./src/save-slots");
+const VERSION = require("./package.json").version;
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  console.error("PORT must be a whole number from 1 to 65535.");
+  process.exit(1);
+}
 const BODY_LIMIT = 3 * 1024 * 1024;
 
 const MIME_TYPES = {
@@ -71,7 +76,11 @@ function readJsonBody(req) {
     req.on("end", () => {
       if (!chunks.length) return resolve({});
       try {
-        resolve(JSON.parse(Buffer.concat(chunks).toString("utf8")));
+        const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          throw new Error("Expected a JSON object.");
+        }
+        resolve(body);
       } catch (error) {
         reject(Object.assign(new Error("Invalid JSON request body."), { statusCode: 400 }));
       }
@@ -81,7 +90,9 @@ function readJsonBody(req) {
 }
 
 function safePublicPath(pathname) {
-  const decoded = decodeURIComponent(pathname || "/");
+  let decoded;
+  try { decoded = decodeURIComponent(pathname || "/"); }
+  catch { throw Object.assign(new Error("Invalid URL encoding."), { statusCode: 400 }); }
   const relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
   const fullPath = path.resolve(PUBLIC_DIR, relative);
   if (!fullPath.startsWith(`${path.resolve(PUBLIC_DIR)}${path.sep}`) && fullPath !== path.resolve(PUBLIC_DIR, "index.html")) return null;
@@ -117,10 +128,6 @@ async function serveStatic(req, res, pathname) {
     }
     sendJson(res, 404, { error: "File not found." });
   }
-}
-
-function sanitizeSaveName(raw) {
-  return String(raw || "").trim().replace(/\.json$/i, "");
 }
 
 function savePath(slot) {
@@ -160,9 +167,9 @@ function appendNarrationLog(state, narration) {
   if (state.logs.length > 180) state.logs = state.logs.slice(-180);
 }
 
-async function sessionPayload(state, action, events = []) {
+async function sessionPayload(state, action, events = [], result = null) {
   let view = buildView(state);
-  const narration = await narrate(state, view, action, events);
+  const narration = await narrate(state, view, action, events, result);
   appendNarrationLog(state, narration);
   view = buildView(state);
   return { state, view, narration, events };
@@ -192,7 +199,7 @@ async function handleApi(req, res, url) {
       ? { type: "freeform", text: body.action }
       : body.action || body;
     const resolved = resolveAction(body.state, action);
-    const payload = await sessionPayload(resolved.state, action, resolved.events);
+    const payload = await sessionPayload(resolved.state, action, resolved.events, resolved.result);
     payload.result = resolved.result;
     sendJson(res, resolved.result?.ok === false ? 422 : 200, payload);
     return;
@@ -206,8 +213,8 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && pathname === "/api/session/save") {
     const body = await readJsonBody(req);
     const slot = sanitizeSaveName(body.slot || body.name || `campaign-${Date.now()}`);
-    if (!SAVE_NAME_PATTERN.test(slot)) {
-      sendJson(res, 400, { error: "Save names may contain 1–48 letters, numbers, spaces, underscores, or hyphens." });
+    if (!validSaveName(slot)) {
+      sendJson(res, 400, { error: "Save names must use 1–48 letters, numbers, spaces, underscores, or hyphens, and cannot be reserved Windows device names." });
       return;
     }
     const state = normalizeIncomingState(body.state);
@@ -223,7 +230,7 @@ async function handleApi(req, res, url) {
 
   if (req.method === "GET" && pathname === "/api/session/load") {
     const slot = sanitizeSaveName(url.searchParams.get("slot"));
-    if (!SAVE_NAME_PATTERN.test(slot)) {
+    if (!validSaveName(slot)) {
       sendJson(res, 400, { error: "Invalid save slot." });
       return;
     }
@@ -249,7 +256,7 @@ async function handleApi(req, res, url) {
 
   if (req.method === "DELETE" && pathname === "/api/session/delete") {
     const slot = sanitizeSaveName(url.searchParams.get("slot"));
-    if (!SAVE_NAME_PATTERN.test(slot)) {
+    if (!validSaveName(slot)) {
       sendJson(res, 400, { error: "Invalid save slot." });
       return;
     }
@@ -266,7 +273,7 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && pathname === "/api/health") {
     sendJson(res, 200, {
       status: "ok",
-      version: "4.0.0",
+      version: VERSION,
       narrator: narratorEnabled() ? `AI (${AI_MODEL})` : "deterministic",
       timestamp: new Date().toISOString()
     });
@@ -277,14 +284,28 @@ async function handleApi(req, res, url) {
 }
 
 async function handleRequest(req, res) {
-  const url = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
   try {
+    const url = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+    if (url.pathname.startsWith("/api/") && ["POST", "DELETE"].includes(req.method)) {
+      // Local browser clients must use this application's own origin. This is
+      // defense in depth, not accounts, anti-cheat, or permission to publish.
+      if ((req.headers.origin && req.headers.origin !== url.origin) || req.headers["sec-fetch-site"] === "cross-site") {
+        sendJson(res, 403, { error: "Use the game from its own local address." });
+        return;
+      }
+      if (req.method === "POST" && String(req.headers["content-type"] || "").split(";")[0].trim().toLowerCase() !== "application/json") {
+        sendJson(res, 415, { error: "API requests must use application/json." });
+        return;
+      }
+    }
     if (url.pathname.startsWith("/api/")) await handleApi(req, res, url);
     else await serveStatic(req, res, url.pathname);
   } catch (error) {
     const statusCode = Number(error.statusCode || 500);
     console.error(error);
-    sendJson(res, statusCode, { error: statusCode >= 500 ? "Internal server error." : error.message });
+    if (!res.destroyed && !res.headersSent) {
+      sendJson(res, statusCode, { error: statusCode >= 500 ? "Internal server error." : error.message });
+    }
   }
 }
 
