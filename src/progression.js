@@ -99,7 +99,7 @@ function resources(classDef,level=1,player=null){
     if(id==='bardicInspiration') max+=Math.floor(level/4);
     result[id]={name:def.name,current:max,max,refresh:def.refresh||'long'};
   }
-  if(level>=2){const max=2+Math.floor((level-2)/3)+(level>=9?1:0)+(player&&ensure(player).choices['5']==='economy'?1:0);result.technique={name:'Technique',current:max,max,refresh:'short'};}
+  if(level>=2){const max=2+(level>=5?1:0)+(level>=7?1:0)+(level>=9?1:0)+(player&&ensure(player).choices['5']==='economy'?1:0);result.technique={name:'Technique',current:max,max,refresh:'short'};}
   if(player&&ensure(player).specialization) result.advancement={name:'Advancement',current:2,max:2,refresh:'long'};
   return result;
 }

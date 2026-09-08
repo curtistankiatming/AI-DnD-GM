@@ -10,7 +10,22 @@ const AI_PROVIDER_URL = /\/chat\/completions\/?$/.test(RAW_PROVIDER_URL) ? RAW_P
 const AI_MODEL = process.env.AI_MODEL || "gpt-4.1-mini";
 const AI_KEY = process.env.OPENAI_API_KEY || "";
 const AI_NARRATOR_MODE = String(process.env.AI_NARRATOR || "off").toLowerCase();
-const AI_TIMEOUT_MS = Math.max(3000, Number(process.env.AI_TIMEOUT_MS || 20000));
+const configuredTimeout = Number(process.env.AI_TIMEOUT_MS || 20000);
+const AI_TIMEOUT_MS = Number.isFinite(configuredTimeout)
+  ? Math.min(60000, Math.max(3000, Math.floor(configuredTimeout))) : 20000;
+
+// A combat turn has its own facts; lastOutcome may still describe an earlier
+// story choice. Never turn that earlier reward into a fresh combat result.
+function resolvedOutcome(state, action, events = []) {
+  const warning = events.find((event) => event.type === "warning");
+  const substantive = events.some((event) => ["roll", "damage", "heal", "story", "item", "world", "rest", "reward", "objective", "combat", "party", "level"].includes(event.type));
+  if (warning && !substantive) return warning.text;
+  if (action?.type === "combat") {
+    const current = events.find((event) => event.text && event.type !== "warning");
+    return current?.text || "No new mechanical event was recorded for this combat action.";
+  }
+  return state.story.lastOutcome?.text || STORY_NODES[state.story.nodeId].opening;
+}
 
 function compactFlags(flags = {}) {
   return Object.entries(flags)
@@ -77,7 +92,7 @@ function buildNarratorPrompt(state, view, action, events) {
     `Scene: ${node.title}`,
     `Objective: ${node.objective}`,
     `Baseline scene description: ${node.opening}`,
-    `Latest resolved outcome: ${state.story.lastOutcome?.text || "none"}`,
+    `Latest resolved outcome: ${resolvedOutcome(state, action, events)}`,
     "",
     "PLAYER AND PARTY — authoritative",
     `Player: ${state.player.name}, level ${state.player.level} ${state.player.className}, ${state.player.backgroundName}; HP ${state.player.hp}/${state.player.maxHp}; AC ${state.player.ac}.`,
@@ -100,10 +115,7 @@ function buildNarratorPrompt(state, view, action, events) {
 }
 
 function deterministicFallback(state, view, action, events) {
-  const node = STORY_NODES[state.story.nodeId];
-  const rejected=events.find(e=>e.type==="warning");
-  const substantive=events.some(e=>["roll","damage","heal","story","item","world","rest","reward","objective","combat","party","level"].includes(e.type));
-  const outcome = rejected&&!substantive ? rejected.text : (state.story.lastOutcome?.text || node.opening);
+  const outcome = resolvedOutcome(state, action, events);
   const seen = new Set([outcome]);
   const mechanics = events
     .filter((event) => ["story", "roll", "damage", "heal", "combat", "condition", "clue", "item", "party", "level", "world", "rest", "reward", "objective", "feature", "practice", "warning"].includes(event.type))
@@ -177,10 +189,10 @@ async function callNarrator(prompt) {
   }
 }
 
-async function narrate(state, view, action, events = []) {
+async function narrate(state, view, action, events = [], result = null) {
   const fallback = deterministicFallback(state, view, action, events);
   const narrativeAction=["opening","scene-opening","story-choice","combat","confirm-intent"].includes(action?.type);
-  if (!narratorEnabled() || !narrativeAction) {
+  if (result?.ok === false || !narratorEnabled() || !narrativeAction) {
     state.lastNarration = fallback;
     return { text: fallback, source: "deterministic", model: null };
   }

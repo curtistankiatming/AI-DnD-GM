@@ -1,8 +1,26 @@
-# Briarwatch: Roads Beyond the Bell — V4.0.0
+# Briarwatch: Roads Beyond the Bell — V4.0.1
 
 A local, single-player, story-led d20 adventure. This is the **implemented V4 upgrade of Story Engine V3 / The Bell Beneath Briarwatch**, not the separate Bellfire Echoes build.
 
 **Playable scope: levels 1–10, a first advancement at level 10, and a post-advancement expedition.** Level-30 and level-70 advancements are shown as future expansion milestones, not playable systems or content in this release. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+
+## V4.0.1 reliability patch
+
+This is a focused maintenance update, not an expansion of the level cap. It fixes
+the level-7 Technique capacity, stale combat narration and model calls for rejected
+actions. Save names are checked for Windows portability; HTTP tests use isolated
+save folders. The health endpoint reads the package version rather than a second
+hard-coded version string.
+
+Node.js 24 LTS is recommended; Node.js 22 remains supported. Node.js 18 and 20 are
+end-of-life and are no longer the documented baseline. No third-party runtime
+packages or model account are required.
+
+`npm run validate` runs syntax, unit/integration, campaign and state checks. The
+GitHub workflow runs on pull requests and main/master pushes, using Windows/Linux
+and Node 22/24 for tests. It does not deploy or use model credentials. See
+[the repository review](docs/REVIEW-2026-09-08.md) for measured results and limits;
+root-level V4.0.0 reports remain historical evidence, not this patch's results.
 
 ## Repo quickstart
 
@@ -10,7 +28,7 @@ This repository contains a ready-to-run local game. It has no external runtime d
 
 ### Prerequisites
 
-- Node.js 18 or newer
+- Node.js 22 or newer
 - Git
 
 ### One-time setup
@@ -45,7 +63,7 @@ npm run fuzz
 
 No `npm install` is required for normal gameplay because no third-party packages are used.
 
-## Start on Windows
+## Start on Windows (ZIP installation)
 
 1. Stop the old server. Rename the existing `dnd-ai-gm` folder to `dnd-ai-gm-v3-backup`.
 2. Extract this archive. It contains one project folder named `dnd-ai-gm`.
@@ -53,9 +71,9 @@ No `npm install` is required for normal gameplay because no third-party packages
 4. Double-click `run-local.bat`. Leave the console open while playing.
 5. The game opens at `http://localhost:4173`. Press Ctrl+C in the console to stop it.
 
-Node.js 18 or newer is required; this package was tested with Node.js 22.16.0. The application has no external runtime dependencies: **no `npm install` is needed**. Browser assets are included; no CDN or account is required. The deterministic narrator works offline. Windows launcher execution was not available in the build/test environment; the server was tested on Linux.
+Node.js 22 or newer is required; this package was tested with Node.js 22.16.0. The application has no external runtime dependencies: **no `npm install` is needed**. Browser assets are included; no CDN or account is required. The deterministic narrator works offline. Windows launcher execution was not available in the build/test environment; the server was tested on Linux.
 
-Do not merge this folder over an old build: stale scripts can obscure which version is running. Verify the heading says **AI Dungeon Master V4** and `/api/health` reports `4.0.0`. When a port is occupied, stop the other server or set a different `PORT` before launching. A browser refresh may be needed after replacing old assets.
+Do not merge this folder over an old build: stale scripts can obscure which version is running. Verify the heading says **AI Dungeon Master V4** and `/api/health` reports `4.0.1`. When a port is occupied, stop the other server or set a different `PORT` before launching. A browser refresh may be needed after replacing old assets.
 
 ## What is actually implemented
 
@@ -161,7 +179,7 @@ To change the simulation size, set `PLAYTEST_RUNS` (seeds per class/route/diffic
 
 ## Local-only security and hosting
 
-The default host is `127.0.0.1`. This is a trusted single-player local application: the API accepts client-supplied state and has **no accounts, authentication or anti-cheat**. Do not expose it to the internet. The old public-tunnel launcher has been removed. `start-host.bat` is an explicit trusted-LAN option with a warning, not secure public hosting. Never forward its port on your router.
+The default host is `127.0.0.1`. This is a trusted single-player local application: the API accepts client-supplied state and has **no accounts, authentication or anti-cheat**. Do not expose it to the internet. Mutating browser requests must come from the game’s own origin; JSON requests must use `application/json`. These checks do not turn the client-state API into authenticated hosting. The old public-tunnel launcher has been removed. `start-host.bat` is an explicit trusted-LAN option with a warning, not secure public hosting. Never forward its port on your router.
 
 ## Project structure
 

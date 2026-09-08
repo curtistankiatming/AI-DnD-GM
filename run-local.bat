@@ -4,7 +4,7 @@ cd /d "%~dp0"
 
 where node >nul 2>nul
 if errorlevel 1 (
-  echo Node.js 18 or newer is required.
+  echo Node.js 22 or newer is required.
   echo Install Node.js, then run this file again.
   pause
   exit /b 1
@@ -15,8 +15,8 @@ if "%PORT%"=="" set "PORT=4173"
 set "HOST=127.0.0.1"
 
 for /f "tokens=1 delims=." %%V in ('node -p "process.versions.node"') do set "NODE_MAJOR=%%V"
-if %NODE_MAJOR% LSS 18 (
-  echo Node.js 18 or newer is required. Detected: 
+if %NODE_MAJOR% LSS 22 (
+  echo Node.js 22 or newer is required. Detected:
   node -v
   pause
   exit /b 1
