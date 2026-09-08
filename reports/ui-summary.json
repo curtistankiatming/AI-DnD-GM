@@ -1,0 +1,132 @@
+{
+  "complete": true,
+  "level": 10,
+  "xp": 20710,
+  "specialization": "guardian",
+  "steps": 223,
+  "javascriptErrors": [],
+  "additionalMenuChecks": [
+    "bargained",
+    "crafted",
+    "favor",
+    "merchant-buy"
+  ],
+  "party": [
+    {
+      "name": "Orin Stoneward",
+      "level": 10
+    },
+    {
+      "name": "Sister Maren Vale",
+      "level": 10
+    },
+    {
+      "name": "Nessa Reed",
+      "level": 10
+    }
+  ],
+  "completedQuests": [
+    {
+      "id": "bell",
+      "name": "The Bell Beneath Briarwatch",
+      "day": 1,
+      "quality": "force",
+      "method": "force",
+      "xp": 300,
+      "gold": 60
+    },
+    {
+      "id": "road",
+      "name": "The Toll of Empty Wagons",
+      "day": 5,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 850,
+      "gold": 75
+    },
+    {
+      "id": "marsh",
+      "name": "Bitter Water at Fenmere",
+      "day": 8,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 1250,
+      "gold": 100
+    },
+    {
+      "id": "bridge",
+      "name": "The Last Cart over Ashford",
+      "day": 11,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 1700,
+      "gold": 125
+    },
+    {
+      "id": "archive",
+      "name": "Letters from the Drowned Archive",
+      "day": 14,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 2200,
+      "gold": 155
+    },
+    {
+      "id": "signal",
+      "name": "A Light above the Storm",
+      "day": 17,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 2700,
+      "gold": 180
+    },
+    {
+      "id": "summit",
+      "name": "The Price of a Keystone",
+      "day": 20,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 3200,
+      "gold": 215
+    },
+    {
+      "id": "breach",
+      "name": "The Quiet District",
+      "day": 23,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 3800,
+      "gold": 245
+    },
+    {
+      "id": "beacon",
+      "name": "The Chorus at Dawn",
+      "day": 26,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 4400,
+      "gold": 300
+    },
+    {
+      "id": "trial",
+      "name": "Oath of the Road \u2014 First Advancement",
+      "day": 29,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 0,
+      "gold": 0
+    },
+    {
+      "id": "aftermath",
+      "name": "The Road You Keep",
+      "day": 32,
+      "quality": "objective",
+      "method": "objective",
+      "xp": 0,
+      "gold": 240
+    }
+  ],
+  "method": "Unseeded local HTTP server; original UI rendered in isolated browser harness; DOM clicks only; no XP/state edits, forced rolls or failure reloads.",
+  "saveReload": true,
+  "mobileOverflow": false
+}

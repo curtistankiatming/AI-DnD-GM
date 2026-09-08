@@ -1,0 +1,9 @@
+{
+  "fixtures": 240,
+  "actions": 14400,
+  "accepted": 9087,
+  "rejected": 5313,
+  "reloads": 1440,
+  "failures": [],
+  "seed": 19429
+}

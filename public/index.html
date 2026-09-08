@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A local, story-first AI dungeon master with deterministic d20 rules and active companions." />
+    <title>Briarwatch V4 — Roads Beyond the Bell</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+    <div id="setupOverlay" class="overlay">
+      <section class="setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+        <div class="setup-heading">
+          <div>
+            <p class="eyebrow">New campaign</p>
+            <h1 id="setupTitle">Roads Beyond the Bell</h1>
+            <p id="setupPremise" class="lede"></p>
+          </div>
+          <div class="campaign-chip">Levels 1–10 · Party & preparation</div>
+        </div>
+
+        <div class="setup-layout">
+          <div class="setup-main">
+            <section class="setup-section">
+              <h2>1. Adventurer</h2>
+              <div class="field-grid">
+                <label>
+                  <span>Name</span>
+                  <input id="setupName" type="text" maxlength="28" value="Aster" autocomplete="off" />
+                </label>
+                <label>
+                  <span>Background</span>
+                  <select id="setupBackground"></select>
+                </label>
+                <label>
+                  <span>Difficulty</span>
+                  <select id="setupDifficulty"></select>
+                </label>
+              </div>
+              <p id="backgroundDescription" class="field-help"></p>
+              <p id="difficultyDescription" class="field-help"></p>
+            </section>
+
+            <section class="setup-section">
+              <div class="section-heading-row">
+                <div>
+                  <h2>2. Class</h2>
+                  <p>Each class has a distinct action economy, resources, and exploration strengths.</p>
+                </div>
+              </div>
+              <div id="classCards" class="class-card-grid"></div>
+            </section>
+
+            <section class="setup-section">
+              <div class="section-heading-row">
+                <div>
+                  <h2>3. Ability scores</h2>
+                  <p>27-point buy. Scores before later campaign rewards are limited to 8–15.</p>
+                </div>
+                <button id="useClassPresetBtn" class="btn btn-secondary" type="button">Use class preset</button>
+              </div>
+              <div id="abilityBuilder" class="ability-builder"></div>
+              <div class="point-budget">
+                <span>Points spent</span>
+                <strong id="pointSpent">0 / 27</strong>
+                <span id="pointStatus" class="muted"></span>
+              </div>
+            </section>
+          </div>
+
+          <aside class="setup-summary">
+            <p class="eyebrow">Character preview</p>
+            <h2 id="setupSummaryName">Aster</h2>
+            <p id="setupSummaryIdentity" class="lede"></p>
+            <dl id="setupSummaryStats" class="summary-stats"></dl>
+            <div>
+              <h3>Starting features</h3>
+              <div id="setupFeatureList" class="feature-list"></div>
+            </div>
+            <div>
+              <h3>Starting party</h3>
+              <p>Orin Stoneward acts as guardian. Sister Maren Vale heals, advises, and challenges cruel decisions.</p>
+            </div>
+            <button id="startCampaignBtn" class="btn btn-primary btn-large" type="button">Begin campaign</button>
+            <p id="setupError" class="form-error" role="alert"></p>
+          </aside>
+        </div>
+      </section>
+    </div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <p class="eyebrow">AI Dungeon Master V4</p>
+          <h1 id="campaignTitle">The Bell Beneath Briarwatch</h1>
+          <p id="campaignSubtitle" class="subtitle"></p>
+        </div>
+        <div class="topbar-actions">
+          <div id="narratorBadge" class="status-badge">Narrator: checking…</div>
+          <button id="saveQuickBtn" class="btn btn-secondary" type="button">Quick save</button>
+          <button id="newGameBtn" class="btn btn-ghost" type="button">New campaign</button>
+        </div>
+      </header>
+
+      <main id="gameLayout" class="game-layout is-hidden">
+        <aside class="left-rail">
+          <section class="panel character-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Character</p>
+                <h2 id="playerIdentity"></h2>
+              </div>
+              <span id="playerLevel" class="level-badge"></span>
+            </div>
+            <div class="vital-row">
+              <div>
+                <span>Hit points</span>
+                <strong id="playerHp"></strong>
+              </div>
+              <div>
+                <span>Armor class</span>
+                <strong id="playerAc"></strong>
+              </div>
+              <div>
+                <span>Proficiency</span>
+                <strong id="playerProf"></strong>
+              </div>
+            </div>
+            <div class="meter"><div id="hpMeter" class="meter-fill"></div></div>
+            <div id="xpSummary" class="xp-summary"></div>
+            <div id="playerConditions" class="tag-row"></div>
+            <div id="resourceList" class="resource-list"></div>
+            <button id="inspirationBtn" class="btn btn-secondary btn-full" type="button"></button>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Character sheet</p>
+                <h2>Abilities & skills</h2>
+              </div>
+              <button id="toggleSkillsBtn" class="text-button" type="button">Show skills</button>
+            </div>
+            <div id="abilitySummary" class="ability-summary"></div>
+            <div id="skillSummary" class="skill-summary is-hidden"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Active companions</p>
+                <h2>Party</h2>
+              </div>
+            </div>
+            <div id="partyCards" class="party-cards"></div>
+          </section>
+        </aside>
+
+        <section class="story-column">
+          <section id="progressionPanel" class="panel is-hidden" aria-live="polite"></section>
+          <section id="intentPanel" class="panel is-hidden"></section>
+          <article class="scene-card">
+            <div class="scene-meta-row">
+              <span id="sceneAct" class="act-label"></span>
+              <span id="sceneLocation" class="location-label"></span>
+            </div>
+            <h2 id="sceneTitle"></h2>
+            <div class="objective-box">
+              <span>Current objective</span>
+              <p id="sceneObjective"></p>
+            </div>
+            <div id="narrationCard" class="narration-card">
+              <div class="narration-heading">
+                <span>Dungeon Master</span>
+                <span id="narrationSource" class="muted"></span>
+              </div>
+              <p id="narrationText"></p>
+            </div>
+          </article>
+
+          <section id="worldPanel" class="panel world-panel"></section>
+
+          <section id="combatPanel" class="panel combat-panel is-hidden">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Initiative</p>
+                <h2 id="combatTitle"></h2>
+              </div>
+              <div id="combatRound" class="round-badge"></div>
+            </div>
+            <div id="initiativeTrack" class="initiative-track"></div>
+            <div id="combatObjective" class="objective-box is-hidden"></div>
+            <div id="turnEconomy" class="turn-economy"></div>
+            <div id="combatActions" class="combat-actions"></div>
+          </section>
+
+          <section id="choicePanel" class="panel choice-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Your decision</p>
+                <h2>Available approaches</h2>
+              </div>
+              <button id="shortRestBtn" class="btn btn-secondary is-hidden" type="button">Take short rest</button>
+            </div>
+            <div id="storyChoices" class="story-choices"></div>
+          </section>
+
+          <section class="panel freeform-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Free-form action</p>
+                <h2>Describe another approach</h2>
+              </div>
+            </div>
+            <p class="muted">Supported commands include buying, selling, equipping, using items, talking to companions, and resting. Story interpretations require confirmation; unsupported requests do not trigger unrelated actions.</p>
+            <form id="actionForm" class="action-form">
+              <textarea id="actionInput" rows="2" placeholder="Example: buy 2 healing potions · use antitoxin on Orin · return to town"></textarea>
+              <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Resolve action</button>
+            </form>
+          </section>
+
+          <section class="panel event-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Transparent mechanics</p>
+                <h2>Dice & consequences</h2>
+              </div>
+              <button id="clearEventsBtn" class="text-button" type="button">Clear view</button>
+            </div>
+            <div id="eventFeed" class="event-feed"></div>
+          </section>
+        </section>
+
+        <aside class="right-rail">
+          <nav class="tab-bar" aria-label="Campaign information">
+            <button class="tab-button is-active" data-tab="inventory" type="button">Inventory</button>
+            <button class="tab-button" data-tab="journal" type="button">Journal</button>
+            <button class="tab-button" data-tab="saves" type="button">Saves</button>
+          </nav>
+
+          <div id="tabInventory" class="tab-panel">
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Readied gear</p>
+                  <h2>Equipment</h2>
+                </div>
+              </div>
+              <div id="equipmentSlots" class="equipment-slots"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Carried items</p>
+                  <h2>Inventory</h2>
+                </div>
+              </div>
+              <div id="inventoryCards" class="inventory-cards"></div>
+            </section>
+          </div>
+
+          <div id="tabJournal" class="tab-panel is-hidden">
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Established facts</p>
+                  <h2>Clues</h2>
+                </div>
+              </div>
+              <div id="clueList" class="clue-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Campaign record</p>
+                  <h2>Story history</h2>
+                </div>
+              </div>
+              <ol id="historyList" class="history-list"></ol>
+            </section>
+          </div>
+
+          <div id="tabSaves" class="tab-panel is-hidden">
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Local JSON saves</p>
+                  <h2>Save campaign</h2>
+                </div>
+              </div>
+              <label class="stacked-field">
+                <span>Save name</span>
+                <input id="saveSlotInput" type="text" maxlength="48" placeholder="briarwatch-01" />
+              </label>
+              <button id="saveBtn" class="btn btn-primary btn-full" type="button">Save current state</button>
+            </section>
+            <section class="panel">
+              <div class="panel-heading compact">
+                <div>
+                  <p class="eyebrow">Existing slots</p>
+                  <h2>Load or delete</h2>
+                </div>
+                <button id="refreshSavesBtn" class="text-button" type="button">Refresh</button>
+              </div>
+              <div id="saveList" class="save-list"></div>
+            </section>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <div id="targetDialog" class="target-dialog is-hidden" role="dialog" aria-modal="true" aria-labelledby="targetDialogTitle">
+      <div class="target-dialog-card">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Choose target</p>
+            <h2 id="targetDialogTitle"></h2>
+          </div>
+          <button id="targetDialogClose" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+        <p id="targetDialogDescription" class="muted"></p>
+        <div id="targetOptions" class="target-options"></div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+    <script src="/expedition.js"></script>
+  </body>
+</html>
