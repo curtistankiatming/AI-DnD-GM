@@ -1,0 +1,40 @@
+"use strict";
+// Dependency-free static build. Exact source allowlist; no .env, saves or server.
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const root = path.resolve(__dirname, '..');
+const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'engine', 'narrator', 'save-slots', 'public-preview'];
+const ASSETS = ['public/index.html', 'public/styles.css', 'public/app.js', 'public/expedition.js', 'public/testing-tools.js'];
+const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
+function buildPublic(out = path.join(root, 'dist-public')) {
+  fs.mkdirSync(out, { recursive: true });
+  const sourceFiles = [...SOURCES.map(id => `src/${id}.js`), ...ASSETS, 'scripts/build-public.js', 'package.json'];
+  const digest = crypto.createHash('sha256');
+  for (const file of sourceFiles) digest.update(file + '\0' + read(file) + '\0');
+  const build = { version: JSON.parse(read('package.json')).version, channel: 'public-playtest', sourceSha256: digest.digest('hex'), sourceCommit: process.env.GITHUB_SHA || null };
+  const modules = SOURCES.map(id => `${JSON.stringify('./' + id)}: function(module, exports, require) {\n${read(`src/${id}.js`)}\n}`).join(',\n');
+  const bootstrap = `(function () {\n'use strict';\nconst process = Object.freeze({env: Object.freeze({AI_NARRATOR: 'off'})});\nconst factories = {\n${modules}\n};\nconst cache = Object.create(null);\nfunction require(id) {\n if (!Object.prototype.hasOwnProperty.call(factories, id)) throw new Error('Unavailable browser module: ' + id);\n if (!cache[id]) { const module = {exports: {}}; cache[id] = module; factories[id](module, module.exports, require); }\n return cache[id].exports;\n}\nlet storage;\ntry {storage = window.localStorage;} catch {}\nif (!storage) storage = {get length(){return 0;},key(){return null;},getItem(){return null;},setItem(){throw new Error('Storage unavailable');},removeItem(){}};\nwindow.BriarwatchOffline = require('./public-preview').createClient(storage, ${JSON.stringify(build)});\n})();`;
+  let app = read('public/app.js');
+  if (app.split('await fetch(path,').length !== 2) throw new Error('Review API seam: expected exactly one fetch entry.');
+  app = app.replace('await fetch(path,', 'await window.BriarwatchOffline.request(path,').replace(/\blocalStorage\b/g, 'window.BriarwatchOffline.storage');
+  app = app.replace('The local server could not be reached:', 'The public preview could not start:');
+  const js = [bootstrap, app, read('public/expedition.js'), read('public/testing-tools.js')].join('\n;\n').replace(/<\/script/gi, '<\\/script');
+  const css = read('public/styles.css').replace(/<\/style/gi, '<\\/style');
+  let html = read('public/index.html');
+  if (!html.includes('<link rel="stylesheet" href="/styles.css" />') || !html.includes('<script src="/app.js"></script>')) throw new Error('Public asset template changed: review the builder.');
+  html = html.replace('<link rel="stylesheet" href="/styles.css" />', `<style>${css}\n.preview-notice{background:#18302a;color:#f3f6f3;padding:12px 18px;border:1px solid #638677;border-radius:8px;margin-bottom:14px;line-height:1.5}.preview-notice button,.preview-notice select{margin:5px;max-width:100%}.preview-notice summary{cursor:pointer}.preview-notice a{color:#caf0d7}.preview-status{font-weight:bold}.preview-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}</style>`);
+  html = html.replace('<title>Briarwatch V4 — Roads Beyond the Bell</title>', `<title>Briarwatch ${build.version} — Public Playtest</title>`);
+  html = html.replace('<script src="/app.js"></script>', () => `<script>${js}</script>`).replace('<script src="/expedition.js"></script>', '');
+  html = html.replace('</head>', '<meta name="referrer" content="no-referrer" /><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'" /></head>');
+  fs.writeFileSync(path.join(out, 'index.html'), html);
+  fs.writeFileSync(path.join(out, 'briarwatch-playtest.html'), html);
+  fs.writeFileSync(path.join(out, '.nojekyll'), '');
+  fs.writeFileSync(path.join(out, 'BUILD.json'), JSON.stringify(build, null, 2) + '\n');
+  fs.writeFileSync(path.join(out, 'START-HERE.txt'), 'BRIARWATCH — PUBLIC PLAYTEST\n\nOpen briarwatch-playtest.html in a modern desktop browser. No installation, Node.js, account, internet connection or API key is required after download.\n\nThis is unfinished software, not a stable release. The Public playtest toolbar includes JSON save export/import and opt-in sandbox checkpoints. Save before updating. Browser data can be cleared; exported saves are the durable backup.\n\nThe browser edition uses deterministic story narration, not an AI model. Gameplay runs entirely in your browser. No telemetry or shared server saves.\n\nReport bugs with the build ID and reproduction steps. Do not post private information or credentials.\nhttps://github.com/curtistankiatming/AI-DnD-GM/issues\n');
+  const files = ['index.html', 'briarwatch-playtest.html', 'BUILD.json', 'START-HERE.txt'];
+  fs.writeFileSync(path.join(out, 'SHA256SUMS.txt'), files.map(f => `${crypto.createHash('sha256').update(fs.readFileSync(path.join(out, f))).digest('hex')}  ${f}`).join('\n') + '\n');
+  return { build, html, files };
+}
+if (require.main === module) console.log(JSON.stringify(buildPublic(process.argv[2]).build, null, 2));
+module.exports = { buildPublic, SOURCES };
