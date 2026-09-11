@@ -1,0 +1,23 @@
+BRIARWATCH 4.1.0-alpha.3 — LANTERN ROAD & CAMPAIGN JOURNAL
+
+Complete review build; do not apply another patch on top of this folder.
+
+LOCAL GAME: Node.js 22 or newer. Open run-local.bat. No npm install required.
+OFFLINE: Open browser-preview/briarwatch-playtest.html in a desktop browser.
+For a Git checkout, run npm run build:public and open dist-public/index.html.
+
+Keep the older game and saves backed up. Use separate folders. Export a JSON save
+before updating or changing browsers. The public browser edition uses no model;
+local AI is optional and off until selected through the local game's settings.
+
+Start Lantern Road in Briarwatch. It adds a medicine-delivery journey with real
+repairs, passage, promises, trust and follow-up. The Campaign journal remembers
+confirmed facts and unfinished leads. Your notes remain explicitly unverified.
+
+Playable main campaign: levels 1–10 with a first advancement and follow-on mission.
+Levels 30/70 and an unlimited generated world are not implemented.
+
+GitHub review: PR #4 on review/alpha2-integration. Master and existing public
+releases are not automatically replaced by this review package. Stage1/2 hosted
+Windows/Linux tests passed; the final report identifies this candidate's checks.
+Actual Qwen/Gemma/7B model quality, speed, and your specific PC remain untested.

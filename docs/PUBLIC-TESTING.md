@@ -16,6 +16,6 @@ Export a JSON save before closing, updating or changing browsers. Import accepts
 
 **Export bug report** produces build/class/level/scene/browser details without a character name, history or full save. You choose whether to submit it. GitHub feedback is public: review attachments and never post private data or keys.
 
-Known issues are not hidden: Orin's higher-level short rest can reduce Second Wind uses (issue #2); expeditions reuse a structural rhythm; browser narration is not an AI model. Ordinary progression and combat remain subject to ongoing balance work.
+This alpha candidate fixes Orin's higher-level short-rest capacity issue. Remaining limitations: expeditions reuse a structural rhythm; the new ferry scenario is bounded; browser narration is not an AI model. Ordinary progression and combat remain subject to ongoing balance work.
 
 The source ZIP is optional and requires Node.js 22+ to run the local server. It is not required for browser play. The public download is not a hosted click-to-play website. Never expose the local unauthenticated server just to let people test.

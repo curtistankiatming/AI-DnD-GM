@@ -165,6 +165,20 @@ function companionResources(id,level){
   if(id==='maren')return {healingWords:2+Math.floor(level/3),guidingBolt:1+Math.floor(level/5)};
   return {trickShot:1+Math.floor(level/4)};
 }
+// One resource policy for loading, level changes and both rest types.
+// The save format keeps plain numeric remaining uses for compatibility.
+function refreshCompanion(member, rest = 'none') {
+  const caps = companionResources(member.id, member.level || 1);
+  const previous = member.resources || {};
+  member.resources = {};
+  for (const [id, maximum] of Object.entries(caps)) {
+    const current = previous[id];
+    const refresh = rest === 'long' || (rest === 'short' && id === 'secondWind');
+    member.resources[id] = refresh ? maximum : Number.isFinite(current)
+      ? Math.min(maximum, Math.max(0, Math.floor(current))) : 0;
+  }
+  return member.resources;
+}
 function levelCompanion(member,level){
   const base=COMPANIONS[member.id];
   const oldMax=member.maxHp;
@@ -173,7 +187,7 @@ function levelCompanion(member,level){
   member.maxHp=base.maxHp+(level-1)*(member.id==='orin'?7:6);
   member.hp=Math.min(member.maxHp,member.hp+Math.max(0,member.maxHp-oldMax));
   member.baseMaxHp=member.maxHp;
-  if(level>oldLevel)member.resources=companionResources(member.id,level);
+  refreshCompanion(member, level > oldLevel ? 'long' : 'none');
 }
 function view(player,world){
   const p=ensure(player);
@@ -190,4 +204,4 @@ function view(player,world){
     trialComplete:Boolean(world?.completed?.trial)
   };
 }
-module.exports={MAX_LEVEL,XP_NEXT,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,view};
+module.exports={MAX_LEVEL,XP_NEXT,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};

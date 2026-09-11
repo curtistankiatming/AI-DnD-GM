@@ -210,14 +210,14 @@
           <section class="panel freeform-panel">
             <div class="panel-heading compact">
               <div>
-                <p class="eyebrow">Free-form action</p>
-                <h2>Describe another approach</h2>
+                <p class="eyebrow">Campaign conversation</p>
+                <h2>Your message</h2>
               </div>
             </div>
-            <p class="muted">Supported commands include buying, selling, equipping, using items, talking to companions, and resting. Story interpretations require confirmation; unsupported requests do not trigger unrelated actions.</p>
+            <p class="muted">Set campaign preferences, speak, ask questions, or propose an action. The guide asks for confirmation before a model-selected action changes the game.</p>
             <form id="actionForm" class="action-form">
               <textarea id="actionInput" rows="2" placeholder="Example: buy 2 healing potions · use antitoxin on Orin · return to town"></textarea>
-              <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Resolve action</button>
+              <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Send message</button>
             </form>
           </section>
 
@@ -327,5 +327,6 @@
 
     <script src="/app.js"></script>
     <script src="/expedition.js"></script>
+    <script src="/chat-ui.js"></script>
   </body>
 </html>

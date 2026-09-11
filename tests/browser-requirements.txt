@@ -1,0 +1,5 @@
+# Development/test only. Not installed by players and never bundled with the game.
+# Exact versions installed in the authoring environment; no GPU/model requirement.
+playwright==1.57.0
+pyee==13.0.1
+greenlet==3.5.1

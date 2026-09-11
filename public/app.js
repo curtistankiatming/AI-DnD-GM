@@ -130,12 +130,14 @@ function setBusy(next) {
   for (const control of $$('button, select')) {
     if (!control.dataset.keepEnabled) control.disabled = busy || control.dataset.disabled === "true";
   }
-  dom.actionInput.disabled = busy || Boolean(view?.combat?.active);
+  dom.actionInput.disabled = busy;
 }
 
 function toast(message, tone = "neutral") {
   const item = createElement("div", `toast toast-${tone}`);
   item.textContent = message;
+  // Fast successive actions must not cover the whole mobile screen.
+  while (dom.toastRegion.children.length >= 3) dom.toastRegion.firstElementChild.remove();
   dom.toastRegion.appendChild(item);
   window.setTimeout(() => item.classList.add("is-visible"), 10);
   window.setTimeout(() => {
@@ -371,7 +373,7 @@ async function sendAction(action) {
 
 function renderNarratorBadge() {
   if (!narratorInfo) return;
-  if (lastNarration?.source === "ai") {
+  if (["ai", "ai-chat", "ai-proposal"].includes(lastNarration?.source)) {
     dom.narratorBadge.textContent = `Narrator: AI · ${lastNarration.model || narratorInfo.model || "configured model"}`;
     dom.narratorBadge.className = "status-badge status-online";
   } else if (lastNarration?.source === "deterministic-fallback") {
@@ -543,9 +545,9 @@ function renderCombat() {
   const combat = view.combat;
   dom.combatPanel.classList.toggle("is-hidden", !combat?.active);
   dom.choicePanel.classList.toggle("is-hidden", Boolean(combat?.active));
-  dom.actionInput.disabled = busy || Boolean(combat?.active);
-  dom.actionSubmitBtn.dataset.disabled = String(Boolean(combat?.active));
-  dom.actionSubmitBtn.disabled = busy || Boolean(combat?.active);
+  dom.actionInput.disabled = busy;
+  dom.actionSubmitBtn.dataset.disabled = "false";
+  dom.actionSubmitBtn.disabled = busy;
   if (!combat?.active) return;
 
   dom.combatTitle.textContent = combat.name;
@@ -618,11 +620,15 @@ function renderScene() {
   dom.sceneObjective.textContent = view.scene.objective;
   const text = lastNarration?.text || state.lastNarration || view.scene.lastOutcome?.text || view.scene.opening;
   dom.narrationText.textContent = text;
-  dom.narrationSource.textContent = lastNarration?.source === "ai"
+  dom.narrationSource.textContent = ["ai", "ai-chat", "ai-proposal"].includes(lastNarration?.source)
     ? `AI prose · mechanics locked`
-    : lastNarration?.source === "deterministic-fallback"
-      ? "Local fallback · mechanics locked"
-      : "Deterministic prose · mechanics locked";
+    : lastNarration?.source === "save"
+      ? "Saved narration · no new action"
+      : lastNarration?.source === "save-recap"
+        ? "Saved-game recap · no new action"
+        : lastNarration?.source === "deterministic-fallback"
+          ? "Local fallback · mechanics locked"
+          : "Deterministic prose · mechanics locked";
   dom.shortRestBtn.classList.toggle("is-hidden", !view.scene.canShortRest);
   dom.shortRestBtn.dataset.disabled = String(!view.scene.canShortRest);
   dom.shortRestBtn.disabled = busy || !view.scene.canShortRest;
@@ -772,6 +778,7 @@ function renderGame() {
   renderJournal();
   renderEvents();
   if (typeof renderExpansion === "function") renderExpansion();
+  if (window.BriarwatchChat) window.BriarwatchChat.render();
   setBusy(busy);
 }
 
@@ -930,7 +937,8 @@ function wireEvents() {
     const text = dom.actionInput.value.trim();
     if (!text) return;
     dom.actionInput.value = "";
-    void sendAction({ type: "freeform", text });
+    if (window.BriarwatchChat) void window.BriarwatchChat.send(text);
+    else void sendAction({ type: "freeform", text });
   });
   dom.clearEventsBtn.addEventListener("click", () => {
     eventHistory = [];

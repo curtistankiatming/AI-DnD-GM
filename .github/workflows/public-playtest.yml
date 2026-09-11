@@ -13,7 +13,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validation:
+    uses: ./.github/workflows/validate.yml
   package:
+    needs: validation
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/public-testing'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -49,6 +52,14 @@ jobs:
           sha256sum briarwatch-browser-playtest.zip briarwatch-source.zip > PLAYTEST-SHA256.txt
           printf '## Public development snapshot\n\nSource commit: `%s`\n\n' "$GITHUB_SHA" > /tmp/playtest-notes.md
           cat docs/PUBLIC-TESTING.md >> /tmp/playtest-notes.md
+      - name: Verify the packaged browser game before publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r tests/browser-requirements.txt
+          python -m playwright install --with-deps chromium
+          python -c "import zipfile; zipfile.ZipFile('briarwatch-browser-playtest.zip').extractall('/tmp/briarwatch-packaged')"
+          python tests/browser_smoke.py --engine chromium --target file --bundle /tmp/briarwatch-packaged/index.html
       - name: Publish immutable-by-commit prerelease assets
         shell: bash
         env:

@@ -2,6 +2,7 @@
 
 // Browser-only transport. Never calls a server, provider, or external model.
 const E = require('./engine');
+const Chat = require('./chat-runtime');
 const N = require('./narrator');
 const P = require('./progression');
 const { CLASSES, STORY_NODES, CAMPAIGN } = require('./content');
@@ -69,9 +70,10 @@ function createClient(storage, build = {}, rng = Math.random) {
   }
   function payload(state, action, events = [], result = null, autosave = false) {
     const view = E.buildView(state);
-    const text = N.deterministicFallback(state, view, action, events);
-    state.lastNarration = text;
-    const out = { state, view, narration: { text, source: 'deterministic', model: null }, events, result, build };
+    const narration = action?.type === 'loaded' ? N.savedNarration(state, view)
+      : { text: N.deterministicFallback(state, view, action, events), source: 'deterministic', model: null };
+    state.lastNarration = narration.text;
+    const out = { state, view, narration, events, result, build };
     if (autosave) {
       try { write('autosave', state); }
       catch (error) { out.storageWarning = error.message; }
@@ -100,6 +102,10 @@ function createClient(storage, build = {}, rng = Math.random) {
         result = payload(state, { type: 'opening' }, [], null, true);
       } else if (url.pathname === '/api/test/start' && method === 'POST') {
         result = payload(makeSandbox(body), { type: 'opening' }, [], null, true);
+      } else if (url.pathname === '/api/chat' && method === 'POST') {
+        result=await Chat.resolveChat(body.state,body.request,null,rng);
+        status=result.result.ok===false?422:200;
+        if(status===200){try{write('autosave',result.state);}catch(error){result.storageWarning=error.message;}}
       } else if (url.pathname === '/api/action' && method === 'POST') {
         const resolved = E.resolveAction(body.state, body.action, rng);
         result = payload(resolved.state, body.action, resolved.events, resolved.result, resolved.result.ok !== false);

@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 // This file runs in its own node:test process; all model requests are mocked.
 process.env.AI_NARRATOR = 'on';
+process.env.AI_MODEL = 'local-mock';
 process.env.LM_STUDIO_BASE_URL = 'http://127.0.0.1:1234/v1';
 process.env.OPENAI_API_KEY = '';
 const E = require('../src/engine');
@@ -42,7 +43,7 @@ test('rejected narrative actions never call the model or re-narrate an old succe
   };
   const { state, view } = fixture();
   const result = await N.narrate(state, view, { type: 'story-choice' },
-    [{ type: 'warning', text: 'That choice is unavailable. Nothing was spent.' }], { ok: false });
+    [{ type: 'warning', text: 'That choice is unavailable. Nothing was spent.' }], { ok: false }, global.fetch);
   assert.equal(calls, 0);
   assert.equal(result.source, 'deterministic');
   assert.match(result.text, /That choice is unavailable/);
@@ -59,7 +60,7 @@ test('valid narrative actions still use the configured adapter without changing 
   };
   const { state, view } = fixture();
   const before = JSON.stringify({ player: state.player, party: state.party, world: state.world });
-  const result = await N.narrate(state, view, { type: 'opening' }, [], { ok: true });
+  const result = await N.narrate(state, view, { type: 'opening' }, [], { ok: true }, global.fetch);
   assert.equal(calls, 1);
   assert.equal(result.source, 'ai');
   assert.equal(JSON.stringify({ player: state.player, party: state.party, world: state.world }), before);

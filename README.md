@@ -1,4 +1,90 @@
-# Briarwatch — public playtest
+# Briarwatch — Lantern Road & Campaign Journal 4.1.0-alpha.3
+
+**Review build on GitHub, not the published default game.** PR #4 combines the
+chat foundation with a connected medicine-delivery adventure and a lasting
+campaign journal. The master branch and public download remain unchanged until
+review and promotion. No Qwen, Gemma or other real-model result is claimed.
+
+## What is new
+
+- Saved campaign instructions, confirmed chat actions and a replaceable loopback
+  AI adapter with Compact/Balanced/Expanded workload settings (7B/12B/27B-class
+  starting points, not restrictions or quality certifications).
+- **Lantern Road: A Promise in the Rain**: three linked locations, wagon repairs,
+  a flooded crossing, medicine delivery, trust, a sealed-letter promise, fail-forward
+  alternatives and a one-time town follow-up. Start it in Briarwatch via chat or
+  its button. It supplements rather than replaces the level-1–10 main campaign.
+- **Campaign journal**: verified clues, rumors, promises, relationships, lasting
+  regional decisions, unresolved leads and completed adventures. Ask for a recap
+  or add your own clearly labelled notes. It survives pruning of old chat.
+- Actual hosted browser validation for the earlier integration and Lantern Road
+  stages has passed on Windows Chromium and Ubuntu Chromium/Firefox, including
+  closing/reopening real saved profiles. Each subsequent candidate receives its
+  own checks; consult PR #4 for current results.
+
+The game is still a finite authored adventure. Models can propose validated
+approaches and provide dialogue; arbitrary new worlds or unrestricted mechanical
+changes are not implemented. Offline browser play does not connect to AI.
+
+### Start this review build
+
+Extract to a separate folder and keep old saves backed up. `run-local.bat` starts
+the local game with Node.js 22 or newer; no npm install or model account is needed.
+Use the game's **Local AI settings for chat** only when your local model is ready.
+The endpoint is loopback-only; paid/cloud/LAN fallbacks and model downloads are off.
+
+The supplied `browser-preview/briarwatch-playtest.html` can be opened directly for
+model-free play. In a source checkout, `npm run build:public` creates that edition
+under `dist-public`. The browser's toolbar supports save export/import; export
+before moving files, changing browsers or updating. Browser profiles and file
+origins vary, so JSON backups remain important even after our test matrix passes.
+
+`npm test` needs only Node. Browser automation additionally uses test-only Python
+packages from `tests/browser-requirements.txt`; ordinary players do not need them.
+All automated saves, profiles and mock model services are isolated test fixtures.
+
+Details: [Lantern Road](docs/STAGE2-LANTERN-ROAD.md),
+[Journal](docs/STAGE3-JOURNAL.md), [Chat foundation](docs/CHAT-FOUNDATION.md),
+[GitHub integration status](docs/INTEGRATE-CANDIDATE.md).
+Root V4.0.0 reports and earlier alpha reports are historical evidence, not new
+measurements. The known companion-rest defect is fixed in this review branch.
+
+## Alpha.2 corrections
+
+- Local chat and legacy local narration now honor their configured wait through
+  connection, headers and body, instead of failing at the previous five-minute
+  network boundary. Real-duration fixture tests completed after 5 minutes 35
+  seconds and stopped a never-finishing request at the 10-minute limit.
+- Import, named-save load and autosave resume restore saved narration without
+  rerunning an action. Older saves without narration get a labelled current-state
+  recap, not an unrelated scene opening.
+- Chat requests include current combatants, turn/action state and remaining class
+  resources. Smaller profiles explicitly compact optional descriptions and older
+  context while preserving core combat facts and campaign instructions.
+
+No real model quality or speed is certified by these fixes. The separate Bionic
+connection/diagnostic ZIPs from earlier conversations are not modified by this game
+package. The game's own Local AI settings apply to its new chat connection.
+
+Use `run-local.bat` in this separately extracted folder to play with Node.js 22+.
+There are no external runtime dependencies or default model calls. Start without
+AI, then use the game's **Local AI settings for chat** to explicitly enable your
+installed model later. Do not overwrite your existing game or saves.
+
+`npm run build:public` creates an offline-only browser edition. Chat preferences
+and the optional ferry scenario work there, but it does not connect to a model.
+`npm test` requires only Node; browser automation additionally uses the test-only
+Python packages in `tests/browser-requirements.txt`. Ordinary players do not need them.
+
+The companion-rest bug referenced in the older release notes below is fixed in
+**this candidate**, not yet in the live repository. PR #3 is already merged; this
+candidate is a separate subsequent work package. It does not add levels 30/70 or
+unlimited generated campaigns.
+
+---
+
+## Existing public playtest information (published baseline)
+
 
 A story-led, single-player d20 adventure with active companions, towns, travelling merchants, equipment and progression through level 10.
 
