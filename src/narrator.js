@@ -1,6 +1,7 @@
 "use strict";
 
 const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
+const Journal = require("./journal");
 
 const RAW_PROVIDER_URL =
   process.env.LM_STUDIO_BASE_URL ||
@@ -104,6 +105,9 @@ function buildNarratorPrompt(state, view, action, events) {
     clues,
     `Available public approaches: ${view.scene.choices.filter(c=>!c.completed&&!c.locked).map(c=>c.label).join("; ")}`,
     `Adventure record: ${(view.world?.completed||[]).map(q=>`${q.name}: ${q.quality}`).join("; ")||"No contracts reported yet."}`,
+    "",
+    "DURABLE PLAYER KNOWLEDGE — confirmed records; rumors stay labelled",
+    JSON.stringify(Journal.forPrompt(state,1200)),
     "",
     "RECENT CANONICAL HISTORY",
     recentHistory(state),

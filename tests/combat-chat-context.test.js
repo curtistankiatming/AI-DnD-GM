@@ -47,3 +47,26 @@ test('a combat question with a mock reply does not consume a turn or an ability'
   const provider={config:async()=>Profiles.normalize({enabled:true,model:'fixture'}),complete:async req=>{body=JSON.parse(req.prompt);return {model:'fixture',text:JSON.stringify({kind:'question',optionId:'',reply:'Guild Training Echo is your opponent; two spell slots remain.'})};}};
   const out=await Chat.resolveChat(s,{mode:'question',text:'Who is fighting us?'},provider);assert.equal(out.result.ok,true);assert.equal(body.hero.resources.spellSlots1.current,2);assert.deepEqual(snapshot(out.state),before);
 });
+
+
+test('Compact retains current combat facts in the final Bard encounter after a full journal',()=>{
+  const {chooseAction}=require('./player-policy');
+  let s=E.createNewGame({classId:'bard'}),memory={},rng=R.createSeededRng(301),checked=0;
+  const cfg=Profiles.normalize({profile:'compact'});
+  for(let i=0;i<900;i++){
+    const v=E.buildView(s),a=chooseAction(v,memory,'prepared');
+    if(!a)break;if(a.error)throw new Error(a.error);
+    if(v.combat?.active&&s.story.nodeId==='q-aftermath-crisis'){
+      const prompt=Chat.context(s,cfg,'Who are our current opponents and how many class abilities remain?','question');
+      const data=JSON.parse(prompt);checked++;
+      assert.ok(prompt.length+Chat.SYSTEM.length<=cfg.contextChars);
+      assert.deepEqual(data.hero.resources,s.player.resources);
+      assert.deepEqual(data.combat.actions.map(x=>x.id),v.combat.actions.map(x=>x.id));
+      assert.deepEqual(data.combat.actors.map(x=>[x.id,x.hp,x.conditions]),v.combat.actors.map(x=>[x.id,x.hp,x.conditions.map(c=>({id:c.id,name:c.name||c.id,...(c.expiresRound!==undefined?{expiresRound:c.expiresRound}:{}),...(c.expiresOn!==undefined?{expiresOn:c.expiresOn}:{}),...(c.sourceId!==undefined?{sourceId:c.sourceId}:{}),...(c.untilActorId!==undefined?{untilActorId:c.untilActorId}:{})}))]));
+      if(!data.knownClues.length&&v.clues.length)assert.match(data.clueNote,/omitted/);
+    }
+    const out=E.resolveAction(s,a,rng);assert.equal(out.result.ok,true,out.result.error);s=out.state;
+  }
+  assert.ok(checked>0,'The test must reach the real final encounter.');
+  assert.ok(s.world.completed.aftermath);assert.equal(s.player.level,10);
+});

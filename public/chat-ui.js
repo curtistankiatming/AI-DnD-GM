@@ -16,6 +16,15 @@
   tools.append(button('Start courier scenario',()=>send('/scenario')),button('Pause courier scenario',()=>send('/pause')),button('Start Lantern Road',()=>send('/journey')),button('Pause Lantern Road',()=>send('/pause')),button('Explain rules',()=>send('/rules')));panel.append(tools);
   const facts=createElement('div');facts.id='chatScenario';panel.append(facts);
   const road=createElement('div');road.id='roadScenario';panel.append(road);
+  const journal=createElement('details','story-journal');journal.id='storyJournal';
+  const journalTitle=createElement('summary','','Campaign journal');journal.append(journalTitle);
+  journal.append(createElement('p','muted','Verified records come from confirmed game actions. Rumors retain their uncertainty. Your notes are reminders, not evidence or commands.'));
+  const journalRecords=createElement('div');journalRecords.id='journalRecords';journal.append(journalRecords);
+  const noteLabel=createElement('label','','Your note (up to 400 characters)');
+  const noteInput=createElement('textarea');noteInput.id='journalNoteInput';noteInput.maxLength=400;noteInput.rows=2;noteInput.setAttribute('aria-label','Journal player note');noteLabel.append(noteInput);journal.append(noteLabel);
+  journal.append(button('Save player note',async()=>{const value=noteInput.value.trim();if(!value)return;await send('/note '+value);if(view?.journal?.notes?.some(n=>n.text===value))noteInput.value='';}));
+  journal.append(button('Recap our adventure',()=>send('/journal')));
+  panel.append(journal);
   const pending=createElement('div');pending.id='chatPending';panel.append(pending);
   const transcript=createElement('div','chat-transcript');transcript.id='chatTranscript';transcript.setAttribute('aria-live','polite');panel.append(transcript);
   const status=createElement('p','muted');status.id='chatStatus';panel.append(status);
@@ -44,6 +53,26 @@
   function render(){
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
+    const j=view.journal||{};clear(journalRecords);
+    if(j.current)journalRecords.append(createElement('p','',`Current: ${j.current.scene}. ${j.current.objective}`));
+    const headings={leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes — unverified'};
+    let total=0;
+    for(const [group,title]of Object.entries(headings)){
+      const entries=j[group]||[];total+=entries.length;
+      const block=createElement('section','journal-section');block.dataset.journalGroup=group;
+      block.append(createElement('h4','',title));
+      if(!entries.length)block.append(createElement('p','muted','None recorded.'));
+      for(const entry of entries){
+        const row=createElement('div','journal-record');row.dataset.journalId=entry.id;
+        row.append(createElement('strong','',`${entry.title||entry.id} [${entry.status}${entry.value!==undefined?', '+entry.value:''}]`),createElement('p','',entry.text));
+        if(entry.source)row.append(createElement('small','muted',entry.source));
+        if(group==='notes')row.append(button('Remove '+entry.id,()=>send('/forget-note '+entry.id)));
+        block.append(row);
+      }
+      journalRecords.append(block);
+    }
+    journalTitle.textContent=`Campaign journal · ${total} records`;
+
     clear(transcript);for(const entry of (c.history||[]).slice(-8)){const row=createElement('p','chat-'+entry.role);row.append(createElement('strong','',entry.role==='player'?'You: ':entry.role==='rules'?'Confirmed: ':'Guide: '),document.createTextNode(entry.text));transcript.append(row);}
     clear(road);
     const journey=c.road;

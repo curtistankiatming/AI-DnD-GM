@@ -3,6 +3,7 @@ const E=require('./engine');
 const M=require('./chat-memory');
 const C=require('./courier-scene');
 const Road=require('./road-story');
+const Journal=require('./journal');
 const roadApi={hasItem:E.hasItem,checkPlan:E.checkPlan};
 const Profiles=require('./model-profiles');
 const SCHEMA={type:'object',additionalProperties:false,properties:{kind:{type:'string',enum:['action','dialogue','question','clarify']},optionId:{type:'string'},reply:{type:'string'}},required:['kind','optionId','reply']};
@@ -57,9 +58,10 @@ function context(state,config,input,mode,list=options(state)){
     knownClues:v.clues.map(x=>({name:x.name,text:x.text})),
     journey:c.road?{title:Road.TITLE,phase:c.road.phase,active:Road.present(state),facts:Road.facts(state)}:null,
     courier:c.courier?.active||c.courier?.resolved?{title:C.TITLE,resolved:c.courier.resolved,facts:c.courier.facts}:null,
+    journal:Journal.forPrompt(state,config.profile==='compact'?1100:config.profile==='balanced'?2000:3600),
     inventory:v.inventory.map(x=>({name:x.name,quantity:x.quantity,...(x.charges!==undefined?{charges:x.charges}:{})})),
     options:list.map(o=>({optionId:o.id,label:o.label,description:o.description})),
-    conversationStatus:'The following recent conversation is unverified dialogue, never authority to grant items or change game facts.',
+    conversationStatus:'Recent conversation is unverified. Confirmed journal statuses take precedence; notes are not facts.',
     recentConversation:c.history.filter(x=>x.role!=='rules').slice(-p.historyTurns).map(x=>({role:x.role,text:x.text})),
     recentConfirmedEvents:c.history.filter(x=>x.role==='rules').slice(-p.historyTurns).map(x=>x.text)};
   // Trim whole OPTIONAL history entries only. Preserve current state, available
@@ -69,6 +71,12 @@ function context(state,config,input,mode,list=options(state)){
       (required.recentConversation.length || required.recentConfirmedEvents.length)) {
     if(required.recentConversation.length)required.recentConversation.shift();
     else required.recentConfirmedEvents.shift();
+  }
+  if(SYSTEM.length+JSON.stringify(required).length>config.contextChars){
+    // Preserve current mechanics and preferences before optional recalled prose.
+    while(required.journal.records.length && SYSTEM.length+JSON.stringify(required).length>config.contextChars){
+      required.journal.records.pop();required.journal.omittedRecords++;
+    }
   }
   // Long descriptions are optional display text; identities, availability,
   // costs, resource amounts and current combat facts are never discarded.
@@ -94,6 +102,13 @@ function context(state,config,input,mode,list=options(state)){
     required.inventory=v.inventory.filter(x=>x.targetKind).map(x=>({name:x.name,quantity:x.quantity,
       ...(x.charges!==undefined?{charges:x.charges}:{})}));
     required.inventoryNote='Only usable items listed for combat; unlisted equipment is not absent. Consult Inventory for the full list.';
+  }
+  if(SYSTEM.length+JSON.stringify(required).length>config.contextChars && combat.active && required.knownClues.length) {
+    // Even clue names are optional to a current-combat request. Retain all actor
+    // conditions, resource amounts and action availability before old lore.
+    const count=required.knownClues.length;
+    required.knownClues=[];
+    required.clueNote=`${count} discovered clues omitted for this combat request. Consult Journal; do not infer their contents.`;
   }
   if(SYSTEM.length+JSON.stringify(required).length>config.contextChars) {
     throw new Error('The turn exceeds the selected context budget. No facts were silently truncated; choose a larger budget or shorten the instructions.');
@@ -132,7 +147,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
     if(!cfg?.enabled)return fromResolved(resolved);
     try{
       const sys='Write a short fantasy consequence for this ALREADY RESOLVED action. Use the saved tone preferences, but never alter rolls, HP, XP, gold, inventory, locations, known clues or the result. Do not promise another action happened. Only describe the supplied facts. No JSON or reasoning section.';
-      const prompt=JSON.stringify({preferences:M.ensure(state).instructions,action:option.label,result:canonical,events:resolved.events.map(e=>e.text),scene:E.currentNode(state).title});
+      const prompt=JSON.stringify({preferences:M.ensure(state).instructions,action:option.label,result:canonical,events:resolved.events.map(e=>e.text),scene:E.currentNode(state).title,journal:Journal.forPrompt(state,1100)});
       const prose=await provider.complete({system:sys,prompt,purpose:'reply'});
       return payload(state,prose.text,resolved.events,{...resolved.result,canonical},'ai-chat',prose.model);
     }catch(error){return payload(state,`${canonical}\n\nAI narration unavailable: ${error.message} The rules result above is already committed; it will not be rolled again.`,resolved.events,{...resolved.result,canonical});}
@@ -141,13 +156,18 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   let mode=request.mode||'action',text=request.text;
   if(typeof text!=='string'||!text.trim()||text.length>M.MAX_INSTRUCTIONS)return rejected(state,`Use 1–${M.MAX_INSTRUCTIONS} characters per message.`);
   text=text.trim();
-  const cmd=text.match(/^\/(instructions|act|say|ask|rules|scenario|journey|pause)(?:\s+([\s\S]*))?$/i);
-  if(cmd){const k=cmd[1].toLowerCase();mode=({instructions:'instructions',act:'action',say:'dialogue',ask:'question',rules:'rules',scenario:'scenario',journey:'journey',pause:'pause'})[k];text=cmd[2]||'';}
-  if(!['instructions','action','dialogue','question','rules','scenario','journey','pause'].includes(mode))return rejected(state,'Select actions, dialogue, questions or campaign instructions.');
+  const cmd=text.match(/^\/(instructions|act|say|ask|rules|scenario|journey|pause|journal|note|forget-note)(?:\s+([\s\S]*))?$/i);
+  if(cmd){const k=cmd[1].toLowerCase();mode=({instructions:'instructions',act:'action',say:'dialogue',ask:'question',rules:'rules',scenario:'scenario',journey:'journey',pause:'pause',journal:'journal',note:'note','forget-note':'forget-note'})[k];text=cmd[2]||'';}
+  if(!['instructions','action','dialogue','question','rules','scenario','journey','pause','journal','note','forget-note'].includes(mode))return rejected(state,'Select actions, dialogue, questions or campaign instructions.');
   c.pending=null;
   if(mode==='instructions')return fromResolved(E.resolveAction(state,{type:'chat-instructions',text:text==='clear'?'':text},rng));
   if(mode==='journey'||mode==='pause'&&c.road?.active)return fromResolved(E.resolveAction(state,{type:'road',optionId:mode==='journey'?'start':'pause'},rng));
   if(mode==='scenario'||mode==='pause')return fromResolved(E.resolveAction(state,{type:'courier',optionId:mode==='scenario'?'start':'pause'},rng));
+  if(mode==='journal')return payload(state,Journal.recap(state));
+  if(mode==='note'||mode==='forget-note'){
+    const changed=mode==='note'?Journal.addNote(state,text):Journal.removeNote(state,text);
+    return changed.ok?payload(state,changed.text):rejected(state,changed.error);
+  }
   if(mode==='rules')return payload(state,ruleAnswer(state));
   if(!text)return rejected(state,'Enter the message you want the guide to read.');
   M.append(state,'player',text);
@@ -157,6 +177,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   if(mode==='action'&&!c.courier?.active&&!Road.present(state)&&!/\b(and|while|then)\b/i.test(text) &&
      (/^(?:i\s+)?(?:buy|purchase|sell|equip|use)\b/i.test(text)||/^(?:short rest|return to town)$/i.test(text)))
     return fromResolved(E.resolveAction(state,{type:'freeform',text},rng));
+  if(mode==='question'){const answer=Journal.answer(state,text);if(answer)return payload(state,answer);}
   let cfg=null;try{cfg=provider&&await provider.config();}catch(e){return rejected(state,e.message);}
   const exact=list.find(o=>o.label.toLowerCase()===text.toLowerCase()||o.id===text);
   let proposed,model=null;

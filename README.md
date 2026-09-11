@@ -1,13 +1,53 @@
-# Briarwatch — Chat Foundation 4.1.0-alpha.2
+# Briarwatch — Lantern Road & Campaign Journal 4.1.0-alpha.3
 
-**Unmerged review candidate.** This package includes saved campaign instructions,
-confirmed chat actions, a local model adapter with 7B/12B/27B-class workload profiles,
-and a bounded interactive side story. The user's real Qwen/Gemma models have not
-been tested in this environment. Live GitHub and the published download are unchanged.
+**Review build on GitHub, not the published default game.** PR #4 combines the
+chat foundation with a connected medicine-delivery adventure and a lasting
+campaign journal. The master branch and public download remain unchanged until
+review and promotion. No Qwen, Gemma or other real-model result is claimed.
 
-See [Chat foundation](docs/CHAT-FOUNDATION.md) for what is implemented, model settings,
-and limits. See [Alpha.2 validation](docs/VALIDATION-4.1.0-alpha.2.md) for the latest
-measurements. The [initialization report](docs/INITIALIZATION-REPORT.md) is historical alpha.1 evidence.
+## What is new
+
+- Saved campaign instructions, confirmed chat actions and a replaceable loopback
+  AI adapter with Compact/Balanced/Expanded workload settings (7B/12B/27B-class
+  starting points, not restrictions or quality certifications).
+- **Lantern Road: A Promise in the Rain**: three linked locations, wagon repairs,
+  a flooded crossing, medicine delivery, trust, a sealed-letter promise, fail-forward
+  alternatives and a one-time town follow-up. Start it in Briarwatch via chat or
+  its button. It supplements rather than replaces the level-1–10 main campaign.
+- **Campaign journal**: verified clues, rumors, promises, relationships, lasting
+  regional decisions, unresolved leads and completed adventures. Ask for a recap
+  or add your own clearly labelled notes. It survives pruning of old chat.
+- Actual hosted browser validation for the earlier integration and Lantern Road
+  stages has passed on Windows Chromium and Ubuntu Chromium/Firefox, including
+  closing/reopening real saved profiles. Each subsequent candidate receives its
+  own checks; consult PR #4 for current results.
+
+The game is still a finite authored adventure. Models can propose validated
+approaches and provide dialogue; arbitrary new worlds or unrestricted mechanical
+changes are not implemented. Offline browser play does not connect to AI.
+
+### Start this review build
+
+Extract to a separate folder and keep old saves backed up. `run-local.bat` starts
+the local game with Node.js 22 or newer; no npm install or model account is needed.
+Use the game's **Local AI settings for chat** only when your local model is ready.
+The endpoint is loopback-only; paid/cloud/LAN fallbacks and model downloads are off.
+
+The supplied `browser-preview/briarwatch-playtest.html` can be opened directly for
+model-free play. In a source checkout, `npm run build:public` creates that edition
+under `dist-public`. The browser's toolbar supports save export/import; export
+before moving files, changing browsers or updating. Browser profiles and file
+origins vary, so JSON backups remain important even after our test matrix passes.
+
+`npm test` needs only Node. Browser automation additionally uses test-only Python
+packages from `tests/browser-requirements.txt`; ordinary players do not need them.
+All automated saves, profiles and mock model services are isolated test fixtures.
+
+Details: [Lantern Road](docs/STAGE2-LANTERN-ROAD.md),
+[Journal](docs/STAGE3-JOURNAL.md), [Chat foundation](docs/CHAT-FOUNDATION.md),
+[GitHub integration status](docs/INTEGRATE-CANDIDATE.md).
+Root V4.0.0 reports and earlier alpha reports are historical evidence, not new
+measurements. The known companion-rest defect is fixed in this review branch.
 
 ## Alpha.2 corrections
 

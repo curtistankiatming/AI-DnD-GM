@@ -2,10 +2,16 @@
   "repository": "curtistankiatming/AI-DnD-GM",
   "baselineCommit": "5e34236c4c840ab512912f05e3a5ccbfbda7b12f",
   "baselineTree": "1698292f99770a45c3eaa45214bee3055af53eb7",
-  "candidateVersion": "4.1.0-alpha.2",
-  "status": "local review candidate; not pushed, merged or published",
+  "candidateVersion": "4.1.0-alpha.3",
+  "status": "GitHub review candidate PR4; not merged or publicly released",
   "realModelValidation": "pending",
-  "hostedBrowserValidation": "pending",
+  "hostedBrowserValidation": {
+    "stage1": 34562198820,
+    "stage2": 34563544179,
+    "stage3": "read final PR checks; not claimed before execution"
+  },
   "inputAlpha1ZipSha256": "0c09bd6a78439ab8a330c724b77e8f68bb134e3b9e4f849ebfaa78f290120d7c",
-  "localValidation": "See docs/VALIDATION-4.1.0-alpha.2.md"
+  "localValidation": "docs/STAGE3-JOURNAL.md",
+  "reviewBranch": "review/alpha2-integration",
+  "pullRequest": 4
 }

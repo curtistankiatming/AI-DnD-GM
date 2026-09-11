@@ -136,6 +136,8 @@ function setBusy(next) {
 function toast(message, tone = "neutral") {
   const item = createElement("div", `toast toast-${tone}`);
   item.textContent = message;
+  // Fast successive actions must not cover the whole mobile screen.
+  while (dom.toastRegion.children.length >= 3) dom.toastRegion.firstElementChild.remove();
   dom.toastRegion.appendChild(item);
   window.setTimeout(() => item.classList.add("is-visible"), 10);
   window.setTimeout(() => {

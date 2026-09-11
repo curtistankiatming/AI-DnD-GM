@@ -35,6 +35,7 @@ const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
 const Road = require("./road-story");
 Road.register(STORY_NODES);
+const Journal = require("./journal");
 const SCHEMA_VERSION = 4;
 const MAX_LOGS = 180;
 const MAX_HISTORY = 80;
@@ -358,6 +359,7 @@ function normalizeIncomingState(raw) {
   ChatMemory.ensure(state, true);
   if (state.combat?.active) normalizeCombat(state);
   else state.combat = null;
+  Journal.sync(state);
   return state;
 }
 
@@ -2176,6 +2178,7 @@ function buildView(state) {
     progression:P.view(state.player,state.world),
     world:W.view(state),
     chat:{...ChatMemory.view(state),road:Road.view(state,{hasItem,checkPlan}),roadAvailable:Road.home(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
+    journal:Journal.sync(state),
     pendingIntent:state.pendingIntent||null
   };
 }

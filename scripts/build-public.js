@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'road-state', 'chat-memory', 'courier-scene', 'road-story', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
+const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'road-state', 'chat-memory', 'courier-scene', 'road-story', 'journal', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
 const ASSETS = ['public/index.html', 'public/styles.css', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js'];
 const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
 function buildPublic(out = path.join(root, 'dist-public')) {

@@ -1814,3 +1814,12 @@ textarea {
 #chatPending { white-space:pre-wrap; margin:10px 0; }
 #chatPending button { margin:6px; }
 .chat-ai-settings { margin-top:12px; }
+
+/* Durable journal uses plain text and collapses on small screens. */
+.story-journal { margin: 12px 0; padding: 12px; border: 1px solid var(--border, #465158); border-radius: 8px; }
+.story-journal summary { cursor: pointer; font-weight: 600; }
+.story-journal textarea { display: block; width: 100%; max-width: 100%; box-sizing: border-box; margin: 8px 0; }
+.journal-section { margin: 14px 0; }
+.journal-record { padding: 8px 0; border-top: 1px solid var(--border, #465158); overflow-wrap: anywhere; }
+.journal-record p { margin: 4px 0; }
+.journal-record small { display: block; }
