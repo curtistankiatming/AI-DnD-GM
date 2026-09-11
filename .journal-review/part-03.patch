@@ -1,0 +1,92 @@
++  const j={version:1,facts:[],rumors:[],promises:[],relationships:[],leads:[],completed:[],notes:normalizeNotes(state.journal?.notes)};
++  const node=STORY_NODES[state.story?.nodeId];
++  j.current={scene:node?.title||'Current adventure',objective:node?.objective||'Consult the available approaches.',combat:Boolean(state.combat?.active)};
++  for(const id of [...new Set(state.story?.clues||[])]){
++    const clue=CLUES[id];if(clue)j.facts.push({id:'clue:'+id,title:clue.name,text:clue.text,status:'verified',source:'Discovered through a resolved game action'});
++  }
++  const r=RoadState.normalize(state.chat?.road);
++  if(r){
++    if(r.rumorHeard)j.rumors.push({id:'wagon-bandits',title:'Bandits damaged the medicine wagon',status:r.axleKnown?'disproved':'unverified',text:r.axleKnown?'Inspection established wood-rot as the cause of this wagon’s axle failure; the bandit claim is disproved for this wagon.':'A roadside bystander blamed bandits. The claim has not been verified.',source:r.axleKnown?'Confirmed axle inspection':'Bystander account'});
++    if(r.axleKnown)j.facts.push({id:'axle',title:'Cause of the broken axle',text:'Old wood-rot caused the medicine wagon’s axle failure, not a blade cut.',status:'verified',source:'Confirmed axle inspection'});
++    if(r.wagon!=='blocked')j.facts.push({id:'wagon',title:'Medicine wagon repaired',text:({repaired:'The hero repaired the wagon using Tamsin’s loaned tools; no payment was required.',hired:'An 8-gold payment hired a wheelwright.',crew:'The civic crew repaired the wagon without payment, costing delivery time.'})[r.wagon],status:'verified',source:'Confirmed repair outcome'});
++    if(r.riverKnown)j.facts.push({id:'river',title:'A safer rope route',text:'Scouting confirmed sound upstream posts and a quiet eddy.',status:'verified',source:'Confirmed river scouting'});
++    if(r.crossing!=='blocked')j.facts.push({id:'crossing',title:'Medicine crossed Lantern Brook',text:({rope:'The party used its owned rope, which was retained.',ferry:'The ferryman agreed to passage after negotiation.',raft:'The party waited for the free public relief raft.'})[r.crossing],status:'verified',source:'Confirmed crossing outcome'});
++    if(r.promise!=='none')j.promises.push({id:'letter',title:'Tamsin’s sealed letter',status:r.promise,text:({active:'Deliver Tamsin’s letter to Iona unopened. The promise is still outstanding.',kept:'The letter was delivered unopened. The promise was kept.',broken:'The seal was opened after accepting the promise. The promise was broken.',declined:'You declined to carry the sealed letter. No promise was made.'})[r.promise],source:'Confirmed letter decision and delivery state'});
++    const reasons=[];
++    if(r.wagon==='repaired')reasons.push('You successfully repaired her wagon.');
++    if(['active','kept','broken'].includes(r.promise))reasons.push('You accepted responsibility for her sealed letter.');
++    if(r.promise==='kept')reasons.push('You kept the promise by delivering the letter unopened.');
++    if(r.promise==='broken')reasons.push('Opening the seal broke that commitment and lowered trust.');
++    if(r.care==='aided')reasons.push('You helped sort the medical supplies.');
++    j.relationships.push({id:'tamsin',title:'Tamsin Reed',value:r.trust,status:r.trust>0?'trusting':r.trust<0?'wary':'neutral',text:reasons.join(' ')||'No trust-changing outcome has been recorded yet.',source:'Confirmed wagon, letter and medical-help outcomes'});
++    if(r.phase!=='complete'){
++      j.leads.push({id:'lantern-road',title:'Medicine for the old mill infirmary',status:r.active?'active':'paused',text:r.active?'Continue the '+r.phase+' stage; free alternatives remain available.':'Resume Lantern Road from Briarwatch. Its attempts, delays and promises are retained.'});
++    }else{
++      j.completed.push({id:'lantern-road',title:'Lantern Road medicine delivery',status:r.quality,text:'Delivery '+r.quality+'. The objective reward was recorded once; repeating dialogue does not earn it again.'});
++      if(r.trust>0&&!r.cacheClaimed)j.leads.push({id:'herbs',title:'Tamsin’s follow-up gift',status:'available',text:'Collect the promised medicinal herbs in Briarwatch. This is a one-time gift, not another XP reward.'});
++      if(r.cacheClaimed)j.facts.push({id:'herbs-collected',title:'Medicinal herbs collected',status:'verified',text:'Tamsin’s one-time follow-up gift was collected.',source:'Confirmed collection'});
++    }
++  }
++  const courier=state.chat?.courier;
++  if(courier?.clue)j.facts.push({id:'courier-ledger',title:'Duplicate ferry toll',status:'verified',text:'The inspected ledger charged the courier twice for the same crossing.',source:'Confirmed ledger inspection'});
++  if(courier?.rapport)j.facts.push({id:'courier-witness',title:'The ferryman’s testimony',status:'verified',text:'The ferryman agreed to testify that the courier already paid.',source:'Confirmed witness agreement; not an invented confession'});
++  if(courier?.resolved)j.completed.push({id:'courier',title:'Ferry courier released',status:'completed',text:'The courier was helped. Its objective reward has already been recorded.'});
++  else if(courier)j.leads.push({id:'courier',title:'The detained ferry courier',status:courier.active?'active':'paused',text:'Continue or resume the courier scenario in Briarwatch; its confirmed discoveries persist.'});
++  for(const member of state.party||[]){
++    const bond=Number.isFinite(Number(member.bond))?Number(member.bond):0;
++    const personal=state.world?.personal?.[member.id],def=PERSONAL[member.id];
++    j.relationships.push({id:'companion:'+member.id,title:safeText(member.name,60),value:bond,status:bond>0?'friendly':bond<0?'strained':'neutral',text:personal?.rewarded?'Personal request completed; '+(personal.style==='watchful'?'Watchful':'Decisive')+' development was chosen.':'Companion bond reflects confirmed adventure choices; dialogue alone does not grant equipment or abilities.',source:'Companion bond and resolved personal request'});
++    if(def&&personal?.started){
++      if(personal.rewarded)j.completed.push({id:'personal:'+member.id,title:def.name,status:'completed',text:'Discussed and resolved with '+safeText(member.name,60)+'.'});
++      else j.leads.push({id:'personal:'+member.id,title:def.name,status:state.world?.completed?.[def.quest]?'ready-to-discuss':'active',text:state.world?.completed?.[def.quest]?'Return to town and discuss the outcome with '+safeText(member.name,60)+'.':def.goal});
++    }
++  }
++  for(const [id,record]of Object.entries(state.world?.completed||{})){
++    if(id!=='bell'&&!Object.hasOwn(QUESTS,id))continue;
++    const title=QUESTS[id]?.name||'The Bell Beneath Briarwatch';
++    j.completed.push({id:'quest:'+id,title,status:'completed',text:'Resolved '+(['peaceful','objective','force','costly'].includes(record?.quality)?record.quality:'as recorded')+'. Rewards are already accounted for.'});
++    for(const decision of QUESTS[id]?.decisions||[]){
++      if(state.story?.flags?.[decision.flag])j.facts.push({id:'decision:'+id+':'+decision.id,title:decision.label,status:'verified',text:decision.text,source:'Chosen consequence of the completed '+title+' adventure'});
++    }
++
++  }
++  for(const [id,heard]of Object.entries(state.world?.rumors||{})){
++    if(heard&&Object.hasOwn(QUESTS,id)&&!state.world?.completed?.[id])j.rumors.push({id:'briefing:'+id,title:QUESTS[id].name+' briefing',status:'reported',text:QUESTS[id].threat,source:'A requested town briefing; not independent confirmation'});
++  }
++  const active=state.world?.activeQuest;
++  if(active&&Object.hasOwn(QUESTS,active)&&!state.world?.completed?.[active])j.leads.push({id:'quest:'+active,title:QUESTS[active].name,status:state.world.onExpedition?'active':'paused',text:QUESTS[active].brief});
++  state.journal=j;return j;
++}
++function addNote(state,value){
++  if(typeof value!=='string'||!value.trim()||value.length>MAX_NOTE_LENGTH)return {ok:false,error:`A note must contain 1–${MAX_NOTE_LENGTH} characters. Existing notes were not changed.`};
++  const j=sync(state),text=value.trim();
++  if(j.notes.some(n=>n.text===text))return {ok:true,text:'That player note is already saved. It is not verified game evidence.'};
++  if(j.notes.length>=MAX_NOTES)return {ok:false,error:`Your ${MAX_NOTES} note slots are full. Remove an old note before adding another; none were deleted.`};
++  let n=1;while(j.notes.some(x=>x.id==='note-'+n))n++;
++  j.notes.push({id:'note-'+n,text,status:'player-note'});return {ok:true,text:'Player note saved. It does not create a fact, promise, item, or quest.'};
++}
++function removeNote(state,id){
++  const j=sync(state),i=j.notes.findIndex(x=>x.id===id);
++  if(i<0)return {ok:false,error:'That player note was not found. Nothing was removed.'};
++  j.notes.splice(i,1);return {ok:true,text:'Player note removed. Verified game records are unchanged.'};
++}
++function recap(state){
++  const j=sync(state),out=[`Current: ${j.current.scene}. ${j.current.objective}`];
++  if(j.current.combat)out.push('Initiative is active; consult combat controls for the current turn and targets.');
++  for(const lead of j.leads.slice(0,4))out.push(`${lead.title} [${lead.status}]: ${lead.text}`);
++  for(const p of j.promises.filter(x=>x.status==='active'))out.push(`Outstanding promise: ${p.text}`);
++  if(j.completed.length)out.push('Completed: '+j.completed.slice(-3).map(x=>x.title).join('; ')+'.');
++  return out.join('\n');
++}
++function answer(state,input){
++  const text=String(input).toLowerCase();
++  if(!/promise|letter|tamsin|bandit|wood.rot|axle|journal|recap|what (?:were|are) we doing|what happened|outstanding|unresolved|player notes|my notes/.test(text))return null;
++  const j=sync(state);let entries;
++  if(/my notes|player notes/.test(text))return j.notes.length?'Unverified player notes (not game facts):\n'+j.notes.map(n=>n.id+': '+n.text).join('\n'):'You have no player notes.';
++  if(/promise|letter/.test(text))entries=j.promises;
++  else if(/tamsin/.test(text))entries=j.relationships.filter(r=>r.id==='tamsin');
++  else if(/bandit|wood.rot|axle/.test(text))entries=[...j.rumors.filter(r=>r.id==='wagon-bandits'),...j.facts.filter(f=>f.id==='axle')];
++  else return recap(state);
++  return entries.length?entries.map(x=>`${x.title} [${x.status}${x.value!==undefined?', '+x.value:''}]: ${x.text}`).join('\n'):'No confirmed record or heard report about that has been discovered. The journal does not invent an answer.';
++}
++function forPrompt(state,maxChars=1200){

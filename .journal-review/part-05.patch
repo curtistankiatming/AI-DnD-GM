@@ -1,0 +1,339 @@
++          "itemId": "chain-shirt",
++          "quantity": 2
++        },
++        {
++          "itemId": "healing-potion",
++          "quantity": 1
++        },
++        {
++          "itemId": "silk-rope",
++          "quantity": 1
++        },
++        {
++          "itemId": "war-mace",
++          "quantity": 1
++        },
++        {
++          "itemId": "ash-wand",
++          "quantity": 1
++        },
++        {
++          "itemId": "leather-armor",
++          "quantity": 1
++        }
++      ],
++      "equipment": {
++        "mainHand": "iron-longsword",
++        "offHand": "steel-shield",
++        "armor": "chain-shirt",
++        "accessory": null
++      },
++      "resources": {
++        "secondWind": {
++          "name": "Second Wind",
++          "current": 1,
++          "max": 1,
++          "refresh": "short"
++        }
++      },
++      "hitDice": {
++        "die": 10,
++        "max": 1,
++        "current": 1
++      },
++      "conditions": [],
++      "gold": 9,
++      "inspiration": 1,
++      "inspirationPrepared": false,
++      "deathSaves": {
++        "successes": 0,
++        "failures": 0,
++        "stable": false
++      },
++      "skillBonuses": {},
++      "saveBonuses": {
++        "str": 0,
++        "dex": 0,
++        "con": 0,
++        "int": 0,
++        "wis": 0,
++        "cha": 0
++      },
++      "used": {
++        "cloakReady": true
++      },
++      "progression": {
++        "choices": {},
++        "talents": [],
++        "specialization": null
++      },
++      "gearAttackBonus": 0,
++      "gearDamageBonus": 0,
++      "gearSpellAttack": 0,
++      "gearSpellDc": 0
++    },
++    "party": [
++      {
++        "id": "orin",
++        "name": "Orin Stoneward",
++        "role": "Guardian",
++        "pronouns": "he/him",
++        "summary": "A plain-spoken shield veteran who treats retreat as a tool, not a shame.",
++        "personality": "Practical, protective, suspicious of needless cruelty, and dryly humorous under pressure.",
++        "abilities": {
++          "str": 15,
++          "dex": 10,
++          "con": 14,
++          "int": 9,
++          "wis": 12,
++          "cha": 11
++        },
++        "skills": [
++          "athletics",
++          "perception"
++        ],
++        "maxHp": 15,
++        "ac": 15,
++        "attack": {
++          "name": "Warhammer",
++          "bonus": 4,
++          "damage": "1d8+2",
++          "damageType": "bludgeoning"
++        },
++        "tactic": "protective",
++        "aiRole": "guardian",
++        "resources": {
++          "secondWind": 1
++        },
++        "bond": 1,
++        "dialogue": {
++          "default": "We decide what matters, then we stand where it matters.",
++          "briarwatch-square": "Someone wanted that bell silent. Bells do not cut their own ropes.",
++          "forest-edge": "Main road is fastest and easiest to trap. I would choose certainty over speed.",
++          "bell-vault": "Give me a chain to break or a doorway to hold. Do not ask me to out-sing a ghost."
++        },
++        "kind": "companion",
++        "level": 1,
++        "hp": 15,
++        "conditions": [],
++        "recruited": true,
++        "deathSaves": {
++          "successes": 0,
++          "failures": 0,
++          "stable": false
++        },
++        "equipment": {
++          "mainHand": "war-mace",
++          "offHand": "steel-shield",
++          "armor": "chain-shirt",
++          "accessory": null
++        },
++        "skillBonuses": {},
++        "saveBonuses": {},
++        "gearAttackBonus": 0,
++        "gearDamageBonus": 0,
++        "gearSpellAttack": 0,
++        "gearSpellDc": 0,
++        "baseMaxHp": 15
++      },
++      {
++        "id": "maren",
++        "name": "Sister Maren Vale",
++        "role": "Healer",
++        "pronouns": "she/her",
++        "summary": "A travelling shrine-keeper who hears lies as changes in a speaker's breathing.",
++        "personality": "Compassionate without being naive, attentive to ritual, and openly opposed to intimidation of the helpless.",
++        "abilities": {
++          "str": 10,
++          "dex": 12,
++          "con": 13,
++          "int": 11,
++          "wis": 16,
++          "cha": 14
++        },
++        "skills": [
++          "insight",
++          "medicine",
++          "religion"
++        ],
++        "maxHp": 12,
++        "ac": 14,
++        "attack": {
++          "name": "Sacred Flame",
++          "bonus": 5,
++          "damage": "1d8",
++          "damageType": "radiant",
++          "save": "dex"
++        },
++        "tactic": "support",
++        "aiRole": "healer",
++        "resources": {
++          "healingWords": 2,
++          "guidingBolt": 1
++        },
++        "bond": 1,
++        "dialogue": {
++          "default": "Mercy and caution are not opposites. Both ask us to see clearly.",
++          "briarwatch-square": "The silence feels made, not natural. There is a ritual shape to it.",
++          "old-shrine": "This shrine remembers the bell before it became a weapon. We should listen before touching anything.",
++          "bell-vault": "The spirit is furious, but fury is not always malice. Its true name may still reach it."
++        },
++        "kind": "companion",
++        "level": 1,
++        "hp": 12,
++        "conditions": [],
++        "recruited": true,
++        "deathSaves": {
++          "successes": 0,
++          "failures": 0,
++          "stable": false
++        },
++        "equipment": {
++          "mainHand": "ash-wand",
++          "offHand": "steel-shield",
++          "armor": "leather-armor",
++          "accessory": null
++        },
++        "skillBonuses": {},
++        "saveBonuses": {},
++        "gearAttackBonus": 0,
++        "gearDamageBonus": 0,
++        "gearSpellAttack": 1,
++        "gearSpellDc": 0,
++        "baseMaxHp": 12
++      }
++    ],
++    "story": {
++      "nodeId": "briarwatch-square",
++      "visitedNodes": [
++        "briarwatch-square"
++      ],
++      "completedChoices": {},
++      "flags": {
++        "courierHelped": true
++      },
++      "clues": [],
++      "history": [
++        {
++          "turn": 0,
++          "nodeId": "briarwatch-square",
++          "summary": "Entered The Silent Bell.",
++          "ts": "2026-09-11T05:03:39.579Z",
++          "kind": "node"
++        }
++      ],
++      "shortRestsUsed": {},
++      "lastOutcome": {
++        "kind": "node",
++        "title": "The Silent Bell",
++        "text": "Rain beads on a bell rope cut cleanly at shoulder height. Briarwatch's ward-bell hangs above the square, mute for the first time in living memory. Reeve Aveline watches shuttered windows while your companions study the gathered villagers.",
++        "location": "Briarwatch Village Square",
++        "act": "Act I — A Village Holding Its Breath"
++      }
++    },
++    "combat": null,
++    "logs": [
++      {
++        "source": "GM",
++        "message": "Rain beads on a bell rope cut cleanly at shoulder height. Briarwatch's ward-bell hangs above the square, mute for the first time in living memory. Reeve Aveline watches shuttered windows while your companions study the gathered villagers.",
++        "type": "story",
++        "ts": "2026-09-11T05:03:39.579Z"
++      },
++      {
++        "source": "Rules",
++        "message": "At Briarwatch’s ferry, a courier is being held over a disputed toll. A ledger lies on the desk, a ferryman watches the quay, and a guard blocks the gangway. You can investigate, negotiate, distract the guard, or find a practical way to help. This is an optional side story; the original campaign remains available.",
++        "type": "mechanics",
++        "ts": "2026-09-11T05:03:39.583Z"
++      },
++      {
++        "source": "Rules",
++        "message": "The Courier at the Ferry: +40 XP. Courier resolved once: 40 XP, 0 gold, and +1 trade reputation. A civic official resolves the duplicate toll. The courier leaves safely, after a delay.",
++        "type": "mechanics",
++        "ts": "2026-09-11T05:03:39.600Z"
++      }
++    ],
++    "lastNarration": "A civic official resolves the duplicate toll. The courier leaves safely, after a delay.",
++    "world": {
++      "day": 1,
++      "cycle": 0,
++      "townId": "briarwatch",
++      "completed": {},
++      "progress": {},
++      "stock": {
++        "briarwatch": {
++          "healing-potion": 5,
++          "antitoxin": 5,
++          "healers-kit": 3,
++          "holy-water": 5,
++          "smoke-bomb": 5,
++          "silk-rope": 2,
++          "climbing-kit": 2,
++          "lantern": 2,
++          "herb-bundle": 4,
++          "iron-longsword": 2,
++          "shortbow": 2,
++          "chain-shirt": 2,
++          "studded-leather": 2,
++          "steel-shield": 2,
++          "ash-wand": 2
++        }
++      },
++      "meetings": {},
++      "personal": {},
++      "rumors": {},
++      "favors": {},
++      "servicesUsed": {},
++      "reputation": {
++        "wardens": 0,
++        "trade": 1,
++        "wilds": 0
++      },
++      "unlockedTowns": [
++        "briarwatch"
++      ],
++      "storage": [],
++      "onExpedition": false,
++      "activeQuest": null,
++      "setbacks": 0
++    },
++    "chat": {
++      "version": 1,
++      "instructions": "Prefer diplomacy and concise descriptions.",
++      "history": [
++        {
++          "role": "rules",
++          "text": "Campaign preferences saved. They guide future AI replies, not dice, XP, inventory, or automatic victories.",
++          "turn": 0
++        },
++        {
++          "role": "rules",
++          "text": "At Briarwatch’s ferry, a courier is being held over a disputed toll. A ledger lies on the desk, a ferryman watches the quay, and a guard blocks the gangway. You can investigate, negotiate, distract the guard, or find a practical way to help. This is an optional side story; the original campaign remains available.",
++          "turn": 1
++        },
++        {
++          "role": "rules",
++          "text": "A civic official resolves the duplicate toll. The courier leaves safely, after a delay.",
++          "turn": 2
++        }
++      ],
++      "pending": null,
++      "courier": {
++        "active": false,
++        "resolved": true,
++        "clue": false,
++        "rapport": false,
++        "distraction": false,
++        "setbacks": 0,
++        "attempted": [
++          "aid"
++        ],
++        "facts": [
++          "A civic official resolves the duplicate toll. The courier leaves safely, after a delay."
++        ]
++      }
++    }
++  }
++}
+\ No newline at end of file
+diff --git a/tests/journal.test.js b/tests/journal.test.js
+new file mode 100644

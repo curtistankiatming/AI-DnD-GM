@@ -5,26 +5,23 @@ on:
 permissions:
   contents: read
 jobs:
-  snapshot:
+  verify-source:
     if: github.repository == 'curtistankiatming/AI-DnD-GM' && github.ref == 'refs/heads/work/journal-validation-transfer'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: e1bb9f5731f449ede5d39b672fc4e57725385fc5
+          fetch-depth: 0
           persist-credentials: false
-      - name: Archive exact existing review source for comparison
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD^{tree})" = b3ec7937fe88dc974e44296842e5b797aea94cb2
-          git archive --format=zip --output=journal-baseline.zip HEAD
-          sha256sum journal-baseline.zip > journal-baseline.sha256.txt
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          name: journal-baseline
-          path: |
-            journal-baseline.zip
-            journal-baseline.sha256.txt
-          retention-days: 1
+          node-version: '24'
+          package-manager-cache: false
+      - name: Verify exact reviewed source; store tree only, never update branches
+        env:
+          IMPORT_TOKEN: ${{ github.token }}
+          AI_NARRATOR: 'off'
+        run: python .journal-review/import.py
