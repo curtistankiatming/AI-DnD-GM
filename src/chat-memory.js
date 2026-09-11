@@ -1,5 +1,6 @@
 'use strict';
 // Campaign-owned data only. Provider settings, tokens and endpoints never enter saves.
+const RoadState = require('./road-state');
 const MAX_INSTRUCTIONS = 2000;
 const MAX_MESSAGE = 1600;
 function text(value, limit) { return typeof value === 'string' ? value.slice(0, limit) : ''; }
@@ -9,6 +10,7 @@ function ensure(state, force = false) {
   const history = Array.isArray(old.history) ? old.history : [];
   state.chat = {
     version: 1,
+    road: RoadState.normalize(old.road),
     instructions: text(old.instructions, MAX_INSTRUCTIONS),
     history: history.slice(-40).filter(x => x && ['player','guide','rules'].includes(x.role))
       .map(x => ({ role:x.role, text:text(x.text, MAX_MESSAGE), turn:Number(x.turn)||0 })),

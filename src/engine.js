@@ -33,6 +33,8 @@ const G = require("./equipment");
 const W = require("./world");
 const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
+const Road = require("./road-story");
+Road.register(STORY_NODES);
 const SCHEMA_VERSION = 4;
 const MAX_LOGS = 180;
 const MAX_HISTORY = 80;
@@ -423,7 +425,7 @@ function enterNode(state, nodeId, events = []) {
   if (state.world && node.townId) { state.world.townId = node.townId; state.world.onExpedition = false; }
   if (firstVisit) {
     state.story.visitedNodes.push(nodeId);
-    if (!node.questId && !node.townId && !node.defeat) awardXp(state, 8, events, `Reached ${node.title}`);
+    if (!node.questId && !node.townId && !node.defeat && !node.sideStory) awardXp(state, 8, events, `Reached ${node.title}`);
     if (node.onEnter?.clues) for (const clue of node.onEnter.clues) addClue(state, clue, events);
     if (node.onEnter?.setFlags) Object.assign(state.story.flags, node.onEnter.setFlags);
     if (nodeId === "vault-antechamber" && state.player.level < 2) {
@@ -2173,7 +2175,7 @@ function buildView(state) {
     difficulty: state.difficulty,
     progression:P.view(state.player,state.world),
     world:W.view(state),
-    chat:{...ChatMemory.view(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
+    chat:{...ChatMemory.view(state),road:Road.view(state,{hasItem,checkPlan}),roadAvailable:Road.home(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
     pendingIntent:state.pendingIntent||null
   };
 }
@@ -2185,6 +2187,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   if(!['chat-instructions','courier'].includes(action.type))ChatMemory.ensure(state).pending=null;
   if(action.type==='chat-instructions')result=ChatMemory.instructions(state,action.text);
   else if(action.type==='courier')result=Courier.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
+  else if(action.type==='road')result=Road.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
   else if(action.type==='set-tactic')result=setTactic(state,action.companionId,action.tactic,events);
   else if(state.combat?.active){
     result=action.type==='combat'?resolveCombatAction(state,action,rng,events):invalidResult(state,events,'Use combat controls while initiative is active.');
@@ -2205,6 +2208,11 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
     state.chat.courier.active=false;state.chat.pending=null;
     events.push({type:'story',text:'The courier side story is paused while you leave Briarwatch or enter combat. Its discoveries are retained.'});
   }
+  if(ChatMemory.ensure(state).road?.active&&!Road.present(state)){
+    state.chat.road.active=false;state.chat.pending=null;
+    events.push({type:'story',text:'Lantern Road paused. Its confirmed progress and promises remain in your save.'});
+  }
+  if(action.type==='road'&&result.ok&&result.outcomeText)state.story.lastOutcome={kind:'road',title:Road.TITLE,text:result.outcomeText};
   G.normalizeEquipment(state);
   if(state.player.hp<=0&&!state.combat?.active&&!currentNode(state).defeat){state.player.hp=1;events.push({type:'warning',tone:'warning',text:'Outside combat, the party prevents a lethal collapse; the hero remains at 1 HP.'});}
   if(result.ok&&result.outcomeText&&['world','item','equipment','rest','party','level','dialogue','clarification'].includes(result.kind))state.story.lastOutcome={kind:result.kind,title:currentNode(state).title,text:result.outcomeText};

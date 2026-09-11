@@ -141,6 +141,9 @@ function savedNarration(state, view) {
     parts.push(`Combat round ${view.combat.round}; current turn: ${view.combat.currentActorName || 'not recorded'}.`);
     const enemies = view.combat.actors.filter(actor => actor.team === 'enemy');
     parts.push(`Opponents: ${enemies.map(actor => `${actor.name} (${actor.hp}/${actor.maxHp} HP)`).join('; ')}.`);
+  } else if (view.chat?.road?.active || view.chat?.road?.phase === 'complete') {
+    const road=view.chat.road;parts.push(road.phase==='complete'?'Lantern Road is complete.':`Lantern Road: ${road.phase}.`);
+    parts.push(...road.facts);
   } else if (view.chat?.courier?.active || view.chat?.courier?.resolved) {
     const courier = view.chat.courier;
     parts.push(courier.resolved ? 'The courier side story is resolved.' : 'The courier side story is in progress.');

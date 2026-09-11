@@ -94,6 +94,50 @@ def exercise(page, output: Path, offline: bool) -> None:
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     page.screenshot(path=str(output/'mobile.png'),full_page=True)
 
+    # Connected journey uses actual visible controls; no XP, items or outcomes
+    # are injected. A failed repair uses the disclosed civic fallback.
+    page.set_viewport_size({'width':1440,'height':1100})
+    page.get_by_role('button',name='Start Lantern Road',exact=True).click()
+    road=page.locator('#roadScenario')
+    expect(road).to_contain_text('Active: wagon')
+    def approach(name):
+        road.get_by_role('button',name=name,exact=True).click()
+        page.get_by_role('button',name='Confirm chat action',exact=True).click()
+        expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    approach('Promise to deliver Tamsin’s letter unopened')
+    page.locator('#chatMode').select_option('action')
+    page.locator('#actionInput').fill('I offer to repair the merchant’s wagon instead of paying full price.')
+    page.locator('#actionForm button[type=submit]').click()
+    expect(page.locator('#chatPending')).to_contain_text('Repair the wagon')
+    page.get_by_role('button',name='Confirm chat action',exact=True).click()
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    if road.get_by_role('button',name='Wait for the civic repair crew',exact=True).count():
+        approach('Wait for the civic repair crew')
+    approach('Depart with the repaired medicine wagon')
+    expect(road).to_contain_text('Active: crossing')
+    approach('Wait for the public relief raft')
+    expect(road).to_contain_text('Active: infirmary')
+    approach('Deliver the medicine and report to Iona')
+    expect(road).to_contain_text('Delivery completed — reward recorded once')
+    expect(road).to_contain_text('promise: kept')
+    approach('Collect Tamsin’s promised medicinal herbs')
+    expect(road.get_by_role('button',name='Collect Tamsin’s promised medicinal herbs',exact=True)).to_have_count(0)
+    page.locator('#saveQuickBtn').click()
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    if offline:
+        with page.expect_download() as event:
+            panel.get_by_role('button',name='Export current save',exact=True).click()
+        journey_save=output/'journey-save.json';event.value.save_as(journey_save)
+        saved_state=json.loads(journey_save.read_text(encoding='utf-8'))['state']
+        assert saved_state['player']['xp']==160
+        assert saved_state['chat']['road']['promise']=='kept'
+        assert saved_state['chat']['road']['cacheClaimed']
+        panel.locator('input[type=file]').set_input_files(str(journey_save))
+        expect(road).to_contain_text('Delivery completed')
+    page.set_viewport_size({'width':390,'height':844})
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    page.screenshot(path=str(output/'journey-complete-mobile.png'),full_page=True)
+
 def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--engine',choices=['chromium','firefox'],default='chromium')
@@ -149,7 +193,9 @@ def main() -> None:
                         page.locator('.setup-card .preview-notice').get_by_role('button',name='Resume autosave',exact=True).click()
                         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
                         expect(page.locator('#campaignInstructions')).to_have_text('Prefer diplomacy and concise descriptions.')
-                        expect(page.locator('#narrationText')).to_contain_text('The courier leaves safely')
+                        expect(page.locator('#roadScenario')).to_contain_text('Delivery completed')
+                        expect(page.locator('#roadScenario')).to_contain_text('promise: kept')
+                        expect(page.locator('#narrationText')).to_contain_text('one promised bundle')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
                     summaries.append({'target':target,'status':'passed','diskRestart':target!='server'})
                 except Exception as error:

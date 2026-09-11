@@ -7,14 +7,15 @@
   const mode=createElement('select');mode.id='chatMode';mode.setAttribute('aria-label','Chat message type');
   for(const [id,label]of [['action','Attempt an action'],['dialogue','Speak in character'],['question','Ask a question'],['instructions','Campaign instructions (replace)']]){const o=createElement('option','',label);o.value=id;mode.append(o);}
   const label=createElement('label','','Message type ');label.append(mode);panel.append(label);
-  panel.append(createElement('p','muted','Instructions guide the style of future AI replies, not rules. AI-interpreted actions require confirmation. The optional ferry scenario is the first bounded chat scenario, not an unlimited generated world.'));
+  panel.append(createElement('p','muted','Instructions guide the style of future AI replies, not rules. AI-interpreted actions require confirmation. The ferry and Lantern Road are authored chat adventures with persistent consequences, not unlimited generated worlds. Every proposed action still needs your confirmation.'));
   const memory=createElement('details');const summary=createElement('summary','','Saved campaign instructions');memory.append(summary);
   const saved=createElement('p');saved.id='campaignInstructions';memory.append(saved);
   const edit=createElement('button','btn btn-secondary btn-small','Edit instructions');edit.type='button';edit.addEventListener('click',()=>{mode.value='instructions';dom.actionInput.value=view?.chat?.instructions||'';dom.actionInput.focus();});memory.append(edit);panel.append(memory);
   const tools=createElement('div','chat-controls');
   function button(text,fn){const b=createElement('button','btn btn-secondary btn-small',text);b.type='button';b.addEventListener('click',fn);return b;}
-  tools.append(button('Start courier scenario',()=>send('/scenario')),button('Pause courier scenario',()=>send('/pause')),button('Explain rules',()=>send('/rules')));panel.append(tools);
+  tools.append(button('Start courier scenario',()=>send('/scenario')),button('Pause courier scenario',()=>send('/pause')),button('Start Lantern Road',()=>send('/journey')),button('Pause Lantern Road',()=>send('/pause')),button('Explain rules',()=>send('/rules')));panel.append(tools);
   const facts=createElement('div');facts.id='chatScenario';panel.append(facts);
+  const road=createElement('div');road.id='roadScenario';panel.append(road);
   const pending=createElement('div');pending.id='chatPending';panel.append(pending);
   const transcript=createElement('div','chat-transcript');transcript.id='chatTranscript';transcript.setAttribute('aria-live','polite');panel.append(transcript);
   const status=createElement('p','muted');status.id='chatStatus';panel.append(status);
@@ -44,6 +45,13 @@
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
     clear(transcript);for(const entry of (c.history||[]).slice(-8)){const row=createElement('p','chat-'+entry.role);row.append(createElement('strong','',entry.role==='player'?'You: ':entry.role==='rules'?'Confirmed: ':'Guide: '),document.createTextNode(entry.text));transcript.append(row);}
+    clear(road);
+    const journey=c.road;
+    if(journey){road.append(createElement('h4','',journey.title),createElement('p','',journey.phase==='complete'?'Delivery completed — reward recorded once':(journey.active?'Active: ':'Paused: ')+journey.phase));
+      for(const line of journey.facts||[])road.append(createElement('p','muted',line));
+      for(const option of journey.options||[])road.append(button(option.label,()=>send('road:'+option.id,{mode:'action'})),createElement('p','muted',option.description));
+    }
+    for(const b of tools.querySelectorAll('button')){if(b.textContent==='Start Lantern Road')b.disabled=busy||!c.roadAvailable||journey?.phase==='complete';if(b.textContent==='Pause Lantern Road')b.disabled=busy||!journey?.active;}
     clear(pending);
     if(c.pending){pending.append(createElement('strong','','Confirm only this action: '+c.pending.label),createElement('p','muted','No roll or resource change has happened yet.'),button('Confirm chat action',()=>send('',{confirm:true})),button('Cancel proposal',()=>send('',{cancel:true})));}
     clear(facts);if(c.courier){facts.append(createElement('strong','',c.courier.resolved?'Courier helped — reward recorded once':c.courier.active?'Courier scenario active':'Courier scenario paused'));for(const line of c.courier.facts||[])facts.append(createElement('p','muted',line));
