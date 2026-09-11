@@ -1,0 +1,17 @@
+{
+  "model": "REPLACE_WITH_EXACT_LOCAL_MODEL_ID",
+  "baseUrl": "http://127.0.0.1:1234/v1",
+  "profile": "compact",
+  "selection": "quick",
+  "repeats": 1,
+  "warmup": false,
+  "timeoutMs": 600000,
+  "maxMinutes": 30,
+  "format": "plain-json",
+  "roles": "system-user",
+  "environment": {
+    "hardware": "",
+    "runtime": "",
+    "quantization": ""
+  }
+}

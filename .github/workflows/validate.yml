@@ -36,6 +36,8 @@ jobs:
           package-manager-cache: false
       - run: npm run check
       - run: npm test
+      - name: Exercise shared evaluation with simulated replies only
+        run: npm run eval:mock
 
   campaign:
     name: Campaign and state checks

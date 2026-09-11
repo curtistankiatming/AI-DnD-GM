@@ -18,3 +18,7 @@ playwright-report/
 test-results/
 __pycache__/
 *.pyc
+
+# Private model evaluations: never publish transcripts or machine settings.
+evaluation-results/
+.model-eval*.json

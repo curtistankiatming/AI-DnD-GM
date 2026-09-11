@@ -11,7 +11,11 @@
     "fuzz": "node tests/fuzz.js",
     "check": "node scripts/verify.js check",
     "validate": "npm run check && npm test && npm run playtest && npm run fuzz",
-    "build:public": "node scripts/build-public.js"
+    "build:public": "node scripts/build-public.js",
+    "eval:plan": "node scripts/model-eval/cli.js",
+    "eval:mock": "node scripts/model-eval/cli.js --mock --full",
+    "eval:model": "node scripts/model-eval/cli.js --live",
+    "eval:compare": "node scripts/model-eval/cli.js --compare"
   },
   "engines": {
     "node": ">=22"
