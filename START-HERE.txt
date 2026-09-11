@@ -1,0 +1,44 @@
+BRIARWATCH — CHAT FOUNDATION 4.1.0-alpha.2
+
+This is a corrected review build, not an update already published to GitHub.
+No action is required while your PC is unavailable.
+
+CORRECTED IN THIS BUILD
+- Slow local responses can use the full configured ten-minute request wait.
+- Loading restores the latest narration or a clearly labelled current-state recap.
+- Combat chat receives enemies, turn status and remaining class resources, with
+  explicit compact context for smaller models. Actual models still need testing.
+
+WHEN YOU ARE READY TO TRY IT
+1. Extract this ZIP into a NEW folder; do not overwrite your existing game/saves.
+2. For the full local game, use run-local.bat (Node.js 22+ required).
+3. The new Chat with the guide section saves campaign preferences and offers a
+   bounded courier scenario. Everything works offline except live AI conversation.
+4. When Bionic/local AI is available, use Local AI settings for chat. List models,
+   choose the exact installed ID, choose Compact/Balanced/Expanded, and enable it.
+   Qwen is still the first intended live test. No model is selected automatically.
+
+NO-INSTALL OFFLINE PREVIEW
+Open browser-preview/briarwatch-playtest.html. This runs locally in your browser,
+not through Bionic. Campaign instructions and exact scenario approaches work;
+unknown free-text interpretation needs the local-server edition and a model.
+Export a save backup before updating or changing browsers.
+
+WHAT THIS DOES NOT CLAIM
+No real Qwen/Gemma/7B model was tested in the authoring environment. Real browser
+restart testing was blocked there and remains a pending check. This is not yet
+unlimited generated storytelling or playable level-30/70 content.
+
+DETAILS
+- docs/CHAT-FOUNDATION.md: features, model settings and limitations.
+- docs/VALIDATION-4.1.0-alpha.2.md: new test results and remaining checks.
+- docs/INITIALIZATION-REPORT.md: historical alpha.1 results, not this patch.
+- docs/INTEGRATE-CANDIDATE.md: instructions for the development session, not a
+  requirement for you to do manual Git work now.
+- REVIEW-CHANGES.patch: optional source patch; do not apply it to this already
+  updated folder. It is for integrating the changes into a clean baseline later.
+- ALPHA1-TO-ALPHA2.patch: alternative source-only delta for the preceding alpha.1.
+  Do not apply both patches or apply either to the already updated game.
+
+No paid API, cloud fallback, automatic retry/model switching, or model download
+is enabled. No connection to your PC is created merely by downloading this ZIP.

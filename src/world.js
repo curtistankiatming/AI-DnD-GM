@@ -89,7 +89,7 @@ function longRest(state,premium,events){
     else a.temporaryHp=0;
     a.used ||= {};a.used.cloakReady=true;
     if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=a.level;}
-    else a.resources=P.companionResources(a.id,a.level);
+    else P.refreshCompanion(a,'long');
   }
   state.world.day+=1;
   if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}

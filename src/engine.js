@@ -31,6 +31,8 @@ const EXP = require("./expansion");
 const P = require("./progression");
 const G = require("./equipment");
 const W = require("./world");
+const ChatMemory = require("./chat-memory");
+const Courier = require("./courier-scene");
 const SCHEMA_VERSION = 4;
 const MAX_LOGS = 180;
 const MAX_HISTORY = 80;
@@ -224,6 +226,7 @@ function createNewGame(setup = {}) {
     lastNarration: ""
   };
   W.init(state);
+  ChatMemory.ensure(state, true);
   const events = [];
   enterNode(state, CAMPAIGN.startNode, events);
   pushLog(state, "GM", STORY_NODES[CAMPAIGN.startNode].opening, "story");
@@ -350,6 +353,7 @@ function normalizeIncomingState(raw) {
   state.turnCount = Math.max(0, Math.floor(Number(state.turnCount || 0)));
   state.updatedAt = nowIso();
   W.init(state);
+  ChatMemory.ensure(state, true);
   if (state.combat?.active) normalizeCombat(state);
   else state.combat = null;
   return state;
@@ -783,7 +787,7 @@ function shortRest(state, rng, events) {
   }
   for (const companion of state.party) {
     if (companion.hp > 0 && companion.hp < companion.maxHp) healEntity(companion, rollFormula(rng, "1d6+2").total, events, "the short rest");
-    if (Object.prototype.hasOwnProperty.call(companion.resources, "secondWind")) companion.resources.secondWind = 1;
+    P.refreshCompanion(companion, 'short');
   }
   state.player.conditions = state.player.conditions.filter((condition) => !["bleeding", "frightened", "deafened"].includes(condition.id));
   const message = "The party takes a guarded short rest, spends recovery resources, and reviews what it has learned.";
@@ -2169,6 +2173,7 @@ function buildView(state) {
     difficulty: state.difficulty,
     progression:P.view(state.player,state.world),
     world:W.view(state),
+    chat:{...ChatMemory.view(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
     pendingIntent:state.pendingIntent||null
   };
 }
@@ -2177,7 +2182,10 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   const state=normalizeIncomingState(rawState);
   const action=rawAction&&typeof rawAction==='object'?rawAction:{type:'freeform',text:String(rawAction||'')};
   const events=[];state.turnCount+=1;state.updatedAt=nowIso();let result;
-  if(action.type==='set-tactic')result=setTactic(state,action.companionId,action.tactic,events);
+  if(!['chat-instructions','courier'].includes(action.type))ChatMemory.ensure(state).pending=null;
+  if(action.type==='chat-instructions')result=ChatMemory.instructions(state,action.text);
+  else if(action.type==='courier')result=Courier.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
+  else if(action.type==='set-tactic')result=setTactic(state,action.companionId,action.tactic,events);
   else if(state.combat?.active){
     result=action.type==='combat'?resolveCombatAction(state,action,rng,events):invalidResult(state,events,'Use combat controls while initiative is active.');
   } else if(action.type==='confirm-intent'){
@@ -2193,10 +2201,15 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='talk')result=talkToCompanion(state,action.companionId,events);
   else if(action.type==='prepare-inspiration')result=prepareInspiration(state,events);
   else result=W.handle(state,action,rng,events,extensionApi())||invalidResult(state,events,'Unknown action type.');
+  if(ChatMemory.ensure(state).courier?.active&&!Courier.available(state)){
+    state.chat.courier.active=false;state.chat.pending=null;
+    events.push({type:'story',text:'The courier side story is paused while you leave Briarwatch or enter combat. Its discoveries are retained.'});
+  }
   G.normalizeEquipment(state);
   if(state.player.hp<=0&&!state.combat?.active&&!currentNode(state).defeat){state.player.hp=1;events.push({type:'warning',tone:'warning',text:'Outside combat, the party prevents a lethal collapse; the hero remains at 1 HP.'});}
   if(result.ok&&result.outcomeText&&['world','item','equipment','rest','party','level','dialogue','clarification'].includes(result.kind))state.story.lastOutcome={kind:result.kind,title:currentNode(state).title,text:result.outcomeText};
   if(currentNode(state).questId)(state.world.progress[currentNode(state).questId]||={}).node=state.story.nodeId;
+  if(result.ok&&result.outcomeText&&action.type!=='chat-instructions')ChatMemory.append(state,'rules',result.outcomeText);
   const eventText=events.map(e=>e.text).filter(Boolean).join(' ');if(eventText)pushLog(state,'Rules',eventText,'mechanics');
   return {state,view:buildView(state),events,result};
 }

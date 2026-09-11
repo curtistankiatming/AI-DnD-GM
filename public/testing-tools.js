@@ -71,7 +71,7 @@
       finally { setBusy(false); }
     }));
     details.append(controls); panel.append(details);
-    panel.append(el('p', 'Known limitations: Orin’s short-rest resource bug (#2), recurring expedition structure, no live AI narrator in this edition. Clearing browser data can erase local saves; file:// storage varies by browser.'));
+    panel.append(el('p', 'Alpha foundation: companion recovery corrected; the chat side story is bounded. Recurring expedition structure and no live AI narrator in this offline edition remain limitations. Clearing browser data can erase local saves; file:// storage varies by browser.'));
     parent.prepend(panel);
   }
   makePanel(document.querySelector('.setup-card'), true);

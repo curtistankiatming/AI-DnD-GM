@@ -5,6 +5,7 @@ on:
   push:
     branches: [master, main]
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -55,3 +56,47 @@ jobs:
           package-manager-cache: false
       - run: npm run playtest
       - run: npm run fuzz
+
+  browser:
+    name: Browser (${{ matrix.os }}, ${{ matrix.browser }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            browser: chromium
+          - os: ubuntu-latest
+            browser: firefox
+          - os: windows-latest
+            browser: chromium
+    env:
+      AI_NARRATOR: 'off'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install test-only browser tooling
+        run: |
+          python --version
+          python -m pip install -r tests/browser-requirements.txt
+          python -m playwright install --with-deps ${{ matrix.browser }}
+      - run: npm run build:public
+      - name: Test real navigation and persistent temporary profiles
+        run: python tests/browser_smoke.py --engine ${{ matrix.browser }} --target all
+      - name: Print browser result
+        if: always()
+        run: python -c "from pathlib import Path; p=Path('test-results/browser/summary.json'); print(p.read_text() if p.exists() else 'Browser test did not reach result reporting; inspect the failed step.')"
+      - name: Retain short-lived browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: browser-${{ matrix.os }}-${{ matrix.browser }}-${{ github.run_id }}
+          path: test-results/browser/
+          retention-days: 3
+          if-no-files-found: warn

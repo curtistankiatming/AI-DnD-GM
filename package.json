@@ -1,6 +1,6 @@
 {
   "name": "ai-dungeon-master-briarwatch",
-  "version": "4.0.2-preview.1",
+  "version": "4.1.0-alpha.2",
   "private": true,
   "description": "A local story-led level 1\u201310 RPG: towns, merchants, equipment, companion growth and meaningful class advancement.",
   "main": "server.js",

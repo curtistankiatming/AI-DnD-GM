@@ -4,8 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'engine', 'narrator', 'save-slots', 'public-preview'];
-const ASSETS = ['public/index.html', 'public/styles.css', 'public/app.js', 'public/expedition.js', 'public/testing-tools.js'];
+const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'chat-memory', 'courier-scene', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
+const ASSETS = ['public/index.html', 'public/styles.css', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js'];
 const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
 function buildPublic(out = path.join(root, 'dist-public')) {
   fs.mkdirSync(out, { recursive: true });
@@ -19,13 +19,13 @@ function buildPublic(out = path.join(root, 'dist-public')) {
   if (app.split('await fetch(path,').length !== 2) throw new Error('Review API seam: expected exactly one fetch entry.');
   app = app.replace('await fetch(path,', 'await window.BriarwatchOffline.request(path,').replace(/\blocalStorage\b/g, 'window.BriarwatchOffline.storage');
   app = app.replace('The local server could not be reached:', 'The public preview could not start:');
-  const js = [bootstrap, app, read('public/expedition.js'), read('public/testing-tools.js')].join('\n;\n').replace(/<\/script/gi, '<\\/script');
+  const js = [bootstrap, app, read('public/expedition.js'), read('public/chat-ui.js'), read('public/testing-tools.js')].join('\n;\n').replace(/<\/script/gi, '<\\/script');
   const css = read('public/styles.css').replace(/<\/style/gi, '<\\/style');
   let html = read('public/index.html');
   if (!html.includes('<link rel="stylesheet" href="/styles.css" />') || !html.includes('<script src="/app.js"></script>')) throw new Error('Public asset template changed: review the builder.');
   html = html.replace('<link rel="stylesheet" href="/styles.css" />', `<style>${css}\n.preview-notice{background:#18302a;color:#f3f6f3;padding:12px 18px;border:1px solid #638677;border-radius:8px;margin-bottom:14px;line-height:1.5}.preview-notice button,.preview-notice select{margin:5px;max-width:100%}.preview-notice summary{cursor:pointer}.preview-notice a{color:#caf0d7}.preview-status{font-weight:bold}.preview-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}</style>`);
   html = html.replace('<title>Briarwatch V4 — Roads Beyond the Bell</title>', `<title>Briarwatch ${build.version} — Public Playtest</title>`);
-  html = html.replace('<script src="/app.js"></script>', () => `<script>${js}</script>`).replace('<script src="/expedition.js"></script>', '');
+  html = html.replace('<script src="/app.js"></script>', () => `<script>${js}</script>`).replace('<script src="/expedition.js"></script>', '').replace('<script src="/chat-ui.js"></script>', '');
   html = html.replace('</head>', '<meta name="referrer" content="no-referrer" /><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'" /></head>');
   fs.writeFileSync(path.join(out, 'index.html'), html);
   fs.writeFileSync(path.join(out, 'briarwatch-playtest.html'), html);

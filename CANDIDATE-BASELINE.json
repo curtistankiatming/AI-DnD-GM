@@ -1,0 +1,11 @@
+{
+  "repository": "curtistankiatming/AI-DnD-GM",
+  "baselineCommit": "5e34236c4c840ab512912f05e3a5ccbfbda7b12f",
+  "baselineTree": "1698292f99770a45c3eaa45214bee3055af53eb7",
+  "candidateVersion": "4.1.0-alpha.2",
+  "status": "local review candidate; not pushed, merged or published",
+  "realModelValidation": "pending",
+  "hostedBrowserValidation": "pending",
+  "inputAlpha1ZipSha256": "0c09bd6a78439ab8a330c724b77e8f68bb134e3b9e4f849ebfaa78f290120d7c",
+  "localValidation": "See docs/VALIDATION-4.1.0-alpha.2.md"
+}

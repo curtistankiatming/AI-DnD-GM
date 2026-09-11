@@ -13,7 +13,7 @@ const {
   setupCatalog,
   currentNode
 } = require("./src/engine");
-const { narrate, narratorEnabled, AI_MODEL } = require("./src/narrator");
+const { narrate, narratorEnabled, AI_MODEL, savedNarration } = require("./src/narrator");
 
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "127.0.0.1";
@@ -21,6 +21,10 @@ const PUBLIC_DIR = path.join(__dirname, "public");
 const SAVE_DIR = path.resolve(process.env.SAVE_DIR || path.join(__dirname, "saves"));
 const { sanitizeSaveName, validSaveName } = require("./src/save-slots");
 const VERSION = require("./package.json").version;
+const {createLocalAI}=require('./src/local-ai');
+const {createCoordinator}=require('./src/chat-coordinator');
+const localAI=createLocalAI({configPath:process.env.AI_CONFIG_PATH || path.join(__dirname,'.local-ai.json')});
+const chatCoordinator=createCoordinator(localAI);
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
   console.error("PORT must be a whole number from 1 to 65535.");
   process.exit(1);
@@ -178,6 +182,30 @@ async function sessionPayload(state, action, events = [], result = null) {
 async function handleApi(req, res, url) {
   const pathname = url.pathname;
 
+  if(pathname.startsWith('/api/ai/')) {
+    try {
+      if(pathname==='/api/ai/settings'&&req.method==='GET') {
+        sendJson(res,200,{config:await localAI.config(),...localAI.manifest(),...localAI.status()}); return;
+      }
+      if(pathname==='/api/ai/settings'&&req.method==='POST') {
+        const body=await readJsonBody(req); sendJson(res,200,{config:await localAI.save(body.config)}); return;
+      }
+      if(pathname==='/api/ai/models'&&req.method==='POST') {
+        const body=await readJsonBody(req); sendJson(res,200,{models:await localAI.models(body.config)}); return;
+      }
+      if(pathname==='/api/ai/cancel'&&req.method==='POST') {
+        sendJson(res,200,{cancelled:localAI.cancel()}); return;
+      }
+    } catch(error) {sendJson(res,400,{error:error.message});return;}
+  }
+  if(pathname==='/api/chat'&&req.method==='POST') {
+    const body=await readJsonBody(req);
+    try {const payload=await chatCoordinator.run(body.state,body.request);
+      sendJson(res,payload.result?.ok===false?422:200,payload);}
+    catch(error){sendJson(res,400,{error:error.message});}
+    return;
+  }
+
   if (req.method === "GET" && (pathname === "/api/setup" || pathname === "/api/session/new")) {
     sendJson(res, 200, {
       catalog: setupCatalog(),
@@ -241,10 +269,7 @@ async function handleApi(req, res, url) {
       sendJson(res, 200, {
         state,
         view,
-        narration: {
-          text: state.lastNarration || state.story.lastOutcome?.text || currentNode(state).opening,
-          source: "save"
-        },
+        narration: savedNarration(state, view),
         events: []
       });
     } catch (error) {

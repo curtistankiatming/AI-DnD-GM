@@ -7,3 +7,14 @@ saves/*.tmp
 *.log
 
 dist-public/
+
+# Local models/settings and test output are never release inputs.
+.local-ai.json
+.local-ai.json.tmp
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
+__pycache__/
+*.pyc

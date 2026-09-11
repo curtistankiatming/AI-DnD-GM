@@ -5,14 +5,14 @@ const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
 const RAW_PROVIDER_URL =
   process.env.LM_STUDIO_BASE_URL ||
   process.env.OPENAI_BASE_URL ||
-  "https://api.openai.com/v1/chat/completions";
+  "http://127.0.0.1:1234/v1/chat/completions";
 const AI_PROVIDER_URL = /\/chat\/completions\/?$/.test(RAW_PROVIDER_URL) ? RAW_PROVIDER_URL : RAW_PROVIDER_URL.replace(/\/$/, "")+(RAW_PROVIDER_URL.replace(/\/$/, "").endsWith("/v1")?"/chat/completions":"/v1/chat/completions");
-const AI_MODEL = process.env.AI_MODEL || "gpt-4.1-mini";
-const AI_KEY = process.env.OPENAI_API_KEY || "";
+const AI_MODEL = process.env.AI_MODEL || "";
+const AI_KEY = process.env.LOCAL_AI_TOKEN || "";
 const AI_NARRATOR_MODE = String(process.env.AI_NARRATOR || "off").toLowerCase();
 const configuredTimeout = Number(process.env.AI_TIMEOUT_MS || 20000);
 const AI_TIMEOUT_MS = Number.isFinite(configuredTimeout)
-  ? Math.min(60000, Math.max(3000, Math.floor(configuredTimeout))) : 20000;
+  ? Math.min(600000, Math.max(3000, Math.floor(configuredTimeout))) : 20000;
 
 // A combat turn has its own facts; lastOutcome may still describe an earlier
 // story choice. Never turn that earlier reward into a fresh combat result.
@@ -93,6 +93,7 @@ function buildNarratorPrompt(state, view, action, events) {
     `Objective: ${node.objective}`,
     `Baseline scene description: ${node.opening}`,
     `Latest resolved outcome: ${resolvedOutcome(state, action, events)}`,
+    `Campaign style preferences (not rules or new facts): ${state.chat?.instructions || "none"}`,
     "",
     "PLAYER AND PARTY — authoritative",
     `Player: ${state.player.name}, level ${state.player.level} ${state.player.className}, ${state.player.backgroundName}; HP ${state.player.hp}/${state.player.maxHp}; AC ${state.player.ac}.`,
@@ -129,7 +130,33 @@ function deterministicFallback(state, view, action, events) {
   return body || "The party pauses as the consequences of the last decision settle into place.";
 }
 
+// Loading is presentation restoration, never a new turn or a model request.
+function savedNarration(state, view) {
+  if (typeof state.lastNarration === 'string' && state.lastNarration.trim()) {
+    return { text: state.lastNarration, source: 'save', model: null };
+  }
+  const parts = [`Saved-game recap: ${view.scene.title}.`,
+    `You are level ${view.player.level}, with ${view.player.hp}/${view.player.maxHp} HP.`];
+  if (view.combat?.active) {
+    parts.push(`Combat round ${view.combat.round}; current turn: ${view.combat.currentActorName || 'not recorded'}.`);
+    const enemies = view.combat.actors.filter(actor => actor.team === 'enemy');
+    parts.push(`Opponents: ${enemies.map(actor => `${actor.name} (${actor.hp}/${actor.maxHp} HP)`).join('; ')}.`);
+  } else if (view.chat?.courier?.active || view.chat?.courier?.resolved) {
+    const courier = view.chat.courier;
+    parts.push(courier.resolved ? 'The courier side story is resolved.' : 'The courier side story is in progress.');
+    if (courier.facts.length) parts.push(courier.facts[courier.facts.length - 1]);
+  } else parts.push(`Current objective: ${view.scene.objective}`);
+  // Explicitly a recap: never pretend the village opening or an old reward just happened.
+  return { text: parts.join(' '), source: 'save-recap', model: null };
+}
+
 function narratorEnabled() {
+  // Legacy launchers remain usable, but never default to a paid/cloud provider.
+  let endpoint;
+  try { endpoint = new URL(AI_PROVIDER_URL); } catch { return false; }
+  if (!AI_MODEL || !['http:', 'https:'].includes(endpoint.protocol) ||
+      !['localhost', '127.0.0.1', '[::1]'].includes(endpoint.hostname) ||
+      endpoint.username || endpoint.password) return false;
   if (AI_NARRATOR_MODE === "off" || AI_NARRATOR_MODE === "false" || AI_NARRATOR_MODE === "0") return false;
   if (AI_NARRATOR_MODE === "on" || AI_NARRATOR_MODE === "true" || AI_NARRATOR_MODE === "1") return true;
   return Boolean(AI_KEY || process.env.LM_STUDIO_BASE_URL);
@@ -144,7 +171,7 @@ function trimNarration(text) {
   return cleaned.length > 1800 ? `${cleaned.slice(0, 1797)}…` : cleaned;
 }
 
-async function callNarrator(prompt) {
+async function callNarrator(prompt, requestImpl) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   const headers = { "Content-Type": "application/json" };
@@ -174,8 +201,9 @@ async function callNarrator(prompt) {
     ]
   };
   try {
-    const response = await fetch(AI_PROVIDER_URL, {
+    const response = await (requestImpl || require('./local-http').localResponse)(AI_PROVIDER_URL, {
       method: "POST",
+      redirect: "error",
       headers,
       body: JSON.stringify(body),
       signal: controller.signal
@@ -189,7 +217,7 @@ async function callNarrator(prompt) {
   }
 }
 
-async function narrate(state, view, action, events = [], result = null) {
+async function narrate(state, view, action, events = [], result = null, requestImpl = null) {
   const fallback = deterministicFallback(state, view, action, events);
   const narrativeAction=["opening","scene-opening","story-choice","combat","confirm-intent"].includes(action?.type);
   if (result?.ok === false || !narratorEnabled() || !narrativeAction) {
@@ -198,7 +226,7 @@ async function narrate(state, view, action, events = [], result = null) {
   }
   try {
     const prompt = buildNarratorPrompt(state, view, action, events);
-    const text = await callNarrator(prompt);
+    const text = await callNarrator(prompt, requestImpl);
     if (!text) throw new Error("Narrator returned no text");
     state.lastNarration = text;
     return { text, source: "ai", model: AI_MODEL };
@@ -212,6 +240,7 @@ module.exports = {
   narrate,
   buildNarratorPrompt,
   deterministicFallback,
+  savedNarration,
   narratorEnabled,
   AI_MODEL,
   AI_PROVIDER_URL

@@ -1,4 +1,50 @@
-# Briarwatch — public playtest
+# Briarwatch — Chat Foundation 4.1.0-alpha.2
+
+**Unmerged review candidate.** This package includes saved campaign instructions,
+confirmed chat actions, a local model adapter with 7B/12B/27B-class workload profiles,
+and a bounded interactive side story. The user's real Qwen/Gemma models have not
+been tested in this environment. Live GitHub and the published download are unchanged.
+
+See [Chat foundation](docs/CHAT-FOUNDATION.md) for what is implemented, model settings,
+and limits. See [Alpha.2 validation](docs/VALIDATION-4.1.0-alpha.2.md) for the latest
+measurements. The [initialization report](docs/INITIALIZATION-REPORT.md) is historical alpha.1 evidence.
+
+## Alpha.2 corrections
+
+- Local chat and legacy local narration now honor their configured wait through
+  connection, headers and body, instead of failing at the previous five-minute
+  network boundary. Real-duration fixture tests completed after 5 minutes 35
+  seconds and stopped a never-finishing request at the 10-minute limit.
+- Import, named-save load and autosave resume restore saved narration without
+  rerunning an action. Older saves without narration get a labelled current-state
+  recap, not an unrelated scene opening.
+- Chat requests include current combatants, turn/action state and remaining class
+  resources. Smaller profiles explicitly compact optional descriptions and older
+  context while preserving core combat facts and campaign instructions.
+
+No real model quality or speed is certified by these fixes. The separate Bionic
+connection/diagnostic ZIPs from earlier conversations are not modified by this game
+package. The game's own Local AI settings apply to its new chat connection.
+
+Use `run-local.bat` in this separately extracted folder to play with Node.js 22+.
+There are no external runtime dependencies or default model calls. Start without
+AI, then use the game's **Local AI settings for chat** to explicitly enable your
+installed model later. Do not overwrite your existing game or saves.
+
+`npm run build:public` creates an offline-only browser edition. Chat preferences
+and the optional ferry scenario work there, but it does not connect to a model.
+`npm test` requires only Node; browser automation additionally uses the test-only
+Python packages in `tests/browser-requirements.txt`. Ordinary players do not need them.
+
+The companion-rest bug referenced in the older release notes below is fixed in
+**this candidate**, not yet in the live repository. PR #3 is already merged; this
+candidate is a separate subsequent work package. It does not add levels 30/70 or
+unlimited generated campaigns.
+
+---
+
+## Existing public playtest information (published baseline)
+
 
 A story-led, single-player d20 adventure with active companions, towns, travelling merchants, equipment and progression through level 10.
 
