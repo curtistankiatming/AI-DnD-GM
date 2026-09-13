@@ -125,12 +125,37 @@ function apply(state,id,rng,events,api){
   M.ensure(state).pending=null;note(state,line,events);
   return {ok:true,kind:'chat',outcomeText:line};
 }
+// Recognize a complete affirmative repair request with a payment-only contrast.
+// Never erase a global "not"/"without": the rest of a refusal, condition, quote
+// or compound request must not become an affirmative action. Unknown wording
+// stays on the conservative clarification/model path. No payment is negotiated
+// here: this selects the existing no-gold repair option for confirmation only.
+const NONPAYMENT_REPAIR=new RegExp(
+  "^(?:(?:i(?:'ll|\\s+will)?\\s+)|please\\s+)?"+
+  "(?:offer\\s+(?:(?:my\\s+)?(?:labor|labour|help|work)\\s+)?to\\s+|(?:try|attempt)\\s+to\\s+)?"+
+  "(?:repair|fix|mend)\\s+(?:(?:the|this|that)\\s+)?(?:(?:merchant|tamsin)'s\\s+)?"+
+  "(?:(?:broken|damaged)\\s+)?(?:wagon|wheel|axle)"+
+  "(?:\\s+in\\s+exchange\\s+for\\s+help(?:\\s+at\\s+the\\s+crossing)?)?"+
+  "(?:\\s*,\\s*|\\s+)(?:"+
+    "not\\s+(?:a\\s+payment|payment|gold|money|(?:with|for)\\s+(?:gold|money)|by\\s+paying)|"+
+    "no\\s+(?:payment|gold)|"+
+    "without\\s+(?:payment|paying(?:\\s+(?:gold|money|full\\s+price))?|spending\\s+(?:gold|money))|"+
+    "(?:instead\\s+of|rather\\s+than)\\s+(?:a\\s+payment|payment|pay(?:ing)?(?:\\s+(?:gold|money|full\\s+price))?)"+
+  ")[.!]?$"
+);
 function infer(text,state,api){
   // A deliberately small offline grammar. Ambiguity never silently chooses a route.
   if(!present(state))return null;
-  const input=String(text).toLowerCase();
-  if(/\b(and|then|while)\b/.test(input))return {clarify:'Describe one step first. A distraction, repair and departure are separate actions.'};
-  if(/\b(not|never|don’t|don't|cannot|can’t|can't)\b/.test(input)||/^(can|could|should|would|what|how)\b/.test(input)||input.endsWith('?'))return {clarify:'Is this a question, or an action you want to attempt? Choose a visible approach or use Question mode. Nothing has happened yet.'};
+  const input=String(text).toLowerCase().replace(/[‘’]/g,"'").trim();
+  const repairMention=/\b(repair|fix|mend)\b[\s\S]*\b(wagon|wheel|axle)\b/.test(input);
+  // Keep new repair-specific caution from changing other approaches (for example,
+  // negotiating ferry passage without paying remains a separate supported action).
+  if(/\b(and|then|while)\b/.test(input)||repairMention&&/\b(also|or)\b|[;\r\n]|[.!]\s+\S/.test(input))return {clarify:'Describe one step first. A distraction, repair and departure are separate actions.'};
+  if(NONPAYMENT_REPAIR.test(input))return options(state,api).some(o=>o.id==='repair')
+    ?{optionId:'road:repair'}
+    :{clarify:'That repair is no longer available. Choose a currently offered approach. Nothing has happened yet.'};
+  if(/\b(not|never|don't|cannot|can't)\b/.test(input)||/^(can|could|should|would|what|how)\b/.test(input)||input.endsWith('?')||
+      repairMention&&(/\b(no|won't|wouldn't|couldn't|shouldn't|refuse|decline|without|if|unless|maybe|perhaps|might|would|could|should)\b|\b(instead of|rather than)\b/.test(input)||input.includes('?')))return {clarify:'Is this a question, or an action you want to attempt? Choose a visible approach or use Question mode. Nothing has happened yet.'};
   const matches=[];const offered=options(state,api);
   const rules={repair:/\b(repair|fix|mend)\b.*\b(wagon|wheel|axle)\b/,inspect:/\b(inspect|examine|investigate)\b.*\b(axle|wheel|wagon)\b/,promise:/\b(promise|agree)\b.*\b(letter|sealed|unopened)\b/,rope:/\b(rope)\b.*\b(cross|anchor|rig|medicine)\b|\b(rig|cross|anchor)\b.*\brope\b/,ferry:/\b(negotiate|persuade|bargain)\b.*\b(ferry|ferryman|passage)\b/,deliver:/\b(deliver|hand over)\b.*\b(medicine|supplies)\b/,scout:/\b(study|inspect|scout)\b.*\b(current|river|posts)\b/};
   for(const [id,re]of Object.entries(rules))if(re.test(input)&&offered.some(o=>o.id===id))matches.push(id);
