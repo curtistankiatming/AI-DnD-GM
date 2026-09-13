@@ -114,6 +114,8 @@ def exercise(page, output: Path, offline: bool) -> None:
         with page.expect_response(lambda r: r.url.endswith('/api/ai/settings') and r.request.method=='POST') as capped:
             page.get_by_role('button',name='Save AI settings',exact=True).click()
         assert capped.value.json()['config']['replyTokens']==160
+        from response_browser import exercise_response_policy
+        exercise_response_policy(page, output)
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     page.screenshot(path=str(output/'mobile.png'),full_page=True)
@@ -301,7 +303,7 @@ def main() -> None:
                         # while canonical adventure outcomes live in the journal.
                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server'})
+                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server'})
                     # Successful traces are large and redundant with summaries
                     # and screenshots. Retain failure traces, not endless archives.
                     (out/'trace.zip').unlink(missing_ok=True)
