@@ -1,23 +1,31 @@
 BRIARWATCH 4.1.0-alpha.3 — LANTERN ROAD & CAMPAIGN JOURNAL
 
-Complete review build; do not apply another patch on top of this folder.
+PR #4 and PR #5 are merged. Shared Model Evaluation v1 is included in full source.
+This is an unfinished public alpha. See docs/CURRENT-STATUS.md for dated evidence.
 
-LOCAL GAME: Node.js 22 or newer. Open run-local.bat. No npm install required.
-OFFLINE: Open browser-preview/briarwatch-playtest.html in a desktop browser.
-For a Git checkout, run npm run build:public and open dist-public/index.html.
+BROWSER DOWNLOAD
+Extract briarwatch-browser-playtest.zip and open briarwatch-playtest.html.
+No Node.js, model account, API key, or internet is needed after downloading.
 
-Keep the older game and saves backed up. Use separate folders. Export a JSON save
-before updating or changing browsers. The public browser edition uses no model;
-local AI is optional and off until selected through the local game's settings.
+FULL SOURCE
+Extract briarwatch-source.zip to a separate folder. Open run-local.bat beside
+package.json, or run npm start. Node.js 22 or newer is required. No npm install.
+For a browser build from source, run npm run build:public and open
+ dist-public/briarwatch-playtest.html.
+Earlier chat-delivered ZIPs may instead include browser-preview; it is not a
+required or promised directory in GitHub source downloads.
 
-Start Lantern Road in Briarwatch. It adds a medicine-delivery journey with real
-repairs, passage, promises, trust and follow-up. The Campaign journal remembers
-confirmed facts and unfinished leads. Your notes remain explicitly unverified.
+Back up the old installation and export a JSON save before updating or changing
+browsers. Do not overwrite old files or publish saves/credentials. Keep the local
+server and model private; neither is a secure public service.
 
-Playable main campaign: levels 1–10 with a first advancement and follow-on mission.
-Levels 30/70 and an unlimited generated world are not implemented.
+The offline browser edition makes no model calls. In full-source play, enable an
+installed model explicitly in Local AI settings for chat. The chat connection
+allows ten minutes per request. EVALUATE-MODEL.bat offers a guided three-prompt
+test with explicit START confirmation. Actual model quality and speed are still
+unverified; no paid fallback, automatic model replacement, or download is enabled.
 
-GitHub review: PR #4 on review/alpha2-integration. Master and existing public
-releases are not automatically replaced by this review package. Stage1/2 hosted
-Windows/Linux tests passed; the final report identifies this candidate's checks.
-Actual Qwen/Gemma/7B model quality, speed, and your specific PC remain untested.
+Start Lantern Road in Briarwatch for a journey with repairs, trust, promises and
+lasting consequences. The Campaign journal remembers confirmed facts and leads.
+Playable main campaign: levels 1–10, first advancement and follow-on mission.
+Levels 30/70 and unlimited AI-generated worlds are not implemented.
