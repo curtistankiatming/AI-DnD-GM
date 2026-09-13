@@ -46,6 +46,8 @@
       const request={mode:mode.value,text,requestId:globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'_'+Math.random().toString(36).slice(2),...extra};
       const {payload}=await api('/api/chat',{method:'POST',body:JSON.stringify({state,request})});
       ingestPayload(payload);status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'Ready. Model prose is presentation; the mechanics feed and confirmed results determine game state.';
+      const routing=payload.result?.responseType;
+      if(routing?.adjusted)status.textContent=`Kept in ${routing.effective} mode; the model labelled this ${routing.returned}. Read-only: no action was performed. This does not verify the answer's facts.`;
       if(payload.result?.ok===false&&!extra.confirm)dom.actionInput.value=text;
     }catch(e){status.textContent=e.message;if(!extra.confirm)dom.actionInput.value=text;toast(e.message,'warning');}
     finally{clearInterval(timer);cancel.classList.add('is-hidden');setBusy(false);render();}

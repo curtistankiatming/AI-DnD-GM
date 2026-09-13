@@ -116,10 +116,12 @@ function apply(state,id,rng,events,api){
     if(r.promise==='active'){r.promise='kept';r.trust=Math.min(3,r.trust+1);}
     r.quality=r.delay>=3?'delayed':'timely';r.phase='complete';r.active=false;r.rewardClaimed=true;
     const gold=r.quality==='timely'?25:15;state.player.gold+=gold;api.awardXp(state,120,events,TITLE);
+    const tradeBefore=state.world.reputation.trade;
     state.world.reputation.trade=Math.min(20,state.world.reputation.trade+(r.trust>0?1:0));
+    const tradeChange=state.world.reputation.trade-tradeBefore;
     state.story.flags.lanternRoadDelivered=true;
     api.enterNode(state,r.returnNode,events);
-    line=`Iona accepts the ${r.quality} medicine delivery. You earn 120 XP and ${gold} gold once. Letter promise: ${r.promise}. Tamsin’s trust: ${r.trust}.${r.trust>0?' Trade reputation rises by 1; Tamsin offers one bundle of herbs on your return.':' No trust-based supply gift is available.'} You return to Briarwatch.`;
+    line=`Iona accepts the ${r.quality} medicine delivery. You earn 120 XP and ${gold} gold once. Letter promise: ${r.promise}. Tamsin’s trust: ${r.trust}. Your party’s trade reputation ${tradeChange>0?`rises by ${tradeChange}`:'is unchanged'}.${r.trust>0?' Tamsin offers one bundle of herbs on your return; it is not collected yet.':' No trust-based supply gift is available.'} You return to Briarwatch.`;
     events.push({type:'reward',text:`Lantern Road completed once: 120 XP and ${gold} gold.`});
   }
   M.ensure(state).pending=null;note(state,line,events);
