@@ -1,27 +1,31 @@
 # Current development and release status
 
-Status snapshot: **13 September 2026**, checked against GitHub. This is the
-current-status entry point; dated validation reports remain historical evidence.
-This housekeeping revision changes documentation only and needs its own review;
-it does not claim that its edits are already in an older release download.
+Status snapshot: **13 September 2026**, checked against GitHub. This page records
+the post-PR #5 baseline below; dated validation reports remain historical evidence.
+Curtis approved the housekeeping validations and requested a further check on
+13 September. [PR #6](https://github.com/curtistankiatming/AI-DnD-GM/pull/6) records
+the final recheck, merge outcome and any subsequent publication. Consult that PR
+and [Releases](https://github.com/curtistankiatming/AI-DnD-GM/releases) for later
+housekeeping snapshots. Documentation edits do not rewrite older release assets.
 
-## Integrated and published baseline
+## Verified post-PR #5 baseline (before housekeeping integration)
 
 | Item | Verified state |
 | --- | --- |
 | Game version | 4.1.0-alpha.3 |
 | Evaluation suite | 1.0.0; 13 synthetic cases |
 | Default development branch | `master` |
-| Verified master commit | `6978757638845b807000fad205b1eea74797b286` |
+| Post-PR #5 baseline commit | `6978757638845b807000fad205b1eea74797b286` |
 | Source tree at that commit | `c0863f81814312ea5e0a82a28384577177968fb5` |
 | PR #4 | Merged 11 September; chat foundation, Lantern Road, journal and fixes |
 | PR #5 | Merged 12 September; shared local-model evaluator, no runtime gameplay change |
-| Public release | Published 12 September, `playtest-6978757638845b807000fad205b1eea74797b286` |
+| Post-PR #5 public release | Published 12 September, `playtest-6978757638845b807000fad205b1eea74797b286` |
 | Issue #2 | Companion-rest fix merged through PR #4; closed with evidence 13 September |
 
 The same game version occurs in more than one release because evaluation tooling
-has its own version. Use the commit suffix and build metadata as well as the name.
-Repository edits never update a user's local installation automatically.
+has its own version and documentation-only snapshots do not change gameplay.
+Use the commit suffix and build metadata as well as the name. Repository edits
+never update a user's local installation automatically.
 
 ## Direct evidence
 
@@ -33,7 +37,7 @@ Repository edits never update a user's local installation automatically.
   [34622959879](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34622959879).
 - [Post-PR #5 validation and packaging](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34702058328):
   completed successfully, including the packaged-browser check.
-- [Published browser/source downloads](https://github.com/curtistankiatming/AI-DnD-GM/releases/tag/playtest-6978757638845b807000fad205b1eea74797b286).
+- [Published post-PR #5 browser/source downloads](https://github.com/curtistankiatming/AI-DnD-GM/releases/tag/playtest-6978757638845b807000fad205b1eea74797b286).
 - [Companion recovery issue and closure evidence](https://github.com/curtistankiatming/AI-DnD-GM/issues/2).
 
 PR #5's recorded suite contains 297 passing tests. Its eight hosted jobs cover
