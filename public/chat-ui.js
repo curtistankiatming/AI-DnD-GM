@@ -102,12 +102,15 @@
   const roles=select('Prompt template','localAIRoles',[['system-user','System + user messages'],['single-user','Single user message · alternate templates']]);
   const budget=field('Context character budget (not tokens)','localAIContext','number');budget.min=4000;budget.max=32000;budget.value=8000;
   const tokens=field('Maximum reply tokens','localAITokens','number');tokens.min=64;tokens.max=768;tokens.value=160;
+  const uncapped=field('Uncapped requested output (compatible local servers only)','localAIUncapped','checkbox');
+  uncapped.addEventListener('change',()=>{tokens.disabled=uncapped.checked;});
+  ai.append(createElement('p','muted','Uncapped sends max_tokens=-1. It does not remove the wait limit, model context/reasoning limits, or response-size guard. Keep final replies concise. This controls chat only; the separate legacy narrator uses AI_REPLY_TOKENS.'));
   const timeout=field('Wait limit per request, in seconds','localAITimeout','number');timeout.min=3;timeout.max=600;timeout.value=600;
   const info=createElement('p','muted');info.id='aiSettingsStatus';ai.append(info);
   profile.addEventListener('change',()=>{const p={compact:[8000,160],balanced:[14000,240],expanded:[22000,320]}[profile.value];budget.value=p[0];tokens.value=p[1];});
-  const value=()=>({enabled:enabled.checked,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,contextChars:Number(budget.value),replyTokens:Number(tokens.value),timeoutMs:Number(timeout.value)*1000});
+  const value=()=>({enabled:enabled.checked,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,contextChars:Number(budget.value),replyTokens:uncapped.checked?-1:Number(tokens.value),timeoutMs:Number(timeout.value)*1000});
   ai.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field; none was selected or loaded automatically.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved on this computer. This is not a successful model test; send a message to test the selected model. No model was downloaded or switched automatically.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   panel.append(ai);
-  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;budget.value=c.contextChars;tokens.value=c.replyTokens;timeout.value=c.timeoutMs/1000;}).catch(e=>{info.textContent=e.message;});
+  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;tokens.disabled=uncapped.checked;timeout.value=c.timeoutMs/1000;}).catch(e=>{info.textContent=e.message;});
 })();

@@ -90,6 +90,30 @@ def exercise(page, output: Path, offline: bool) -> None:
         # Save disabled settings, not an inference request or model load.
         page.get_by_role('button',name='Save AI settings',exact=True).click()
         expect(page.locator('#aiSettingsStatus')).to_contain_text('Settings saved')
+        # Explicit uncapped output persists; defaults and wait budget do not change.
+        expect(page.locator('#localAIUncapped')).not_to_be_checked()
+        page.locator('#localAIUncapped').check()
+        expect(page.locator('#localAITokens')).to_be_disabled()
+        page.locator('#localAIProfile').select_option('compact')
+        expect(page.locator('#localAIUncapped')).to_be_checked()
+        expect(page.locator('#localAITokens')).to_have_value('160')
+        with page.expect_response(lambda r: r.url.endswith('/api/ai/settings') and r.request.method=='POST') as saved:
+            page.get_by_role('button',name='Save AI settings',exact=True).click()
+        assert saved.value.json()['config']['replyTokens']==-1
+        assert saved.value.json()['config']['timeoutMs']==600000
+        assert saved.value.json()['config']['enabled'] is False
+        # New real page reads disk settings; no campaign or inference in that tab.
+        other=page.context.new_page()
+        other.goto(page.url,wait_until='load')
+        expect(other.locator('#localAIUncapped')).to_be_checked()
+        expect(other.locator('#localAITokens')).to_be_disabled()
+        expect(other.locator('#localAITimeout')).to_have_value('600')
+        other.close()
+        page.locator('#localAIUncapped').uncheck()
+        expect(page.locator('#localAITokens')).to_be_enabled()
+        with page.expect_response(lambda r: r.url.endswith('/api/ai/settings') and r.request.method=='POST') as capped:
+            page.get_by_role('button',name='Save AI settings',exact=True).click()
+        assert capped.value.json()['config']['replyTokens']==160
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     page.screenshot(path=str(output/'mobile.png'),full_page=True)
@@ -277,7 +301,7 @@ def main() -> None:
                         # while canonical adventure outcomes live in the journal.
                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True})
+                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server'})
                     # Successful traces are large and redundant with summaries
                     # and screenshots. Retain failure traces, not endless archives.
                     (out/'trace.zip').unlink(missing_ok=True)
