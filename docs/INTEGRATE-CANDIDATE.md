@@ -1,34 +1,45 @@
-# GitHub review integration
+# Integration and validation history
 
-The live base remains `5e34236c4c840ab512912f05e3a5ccbfbda7b12f` on master.
-The review branch is `review/alpha2-integration`, PR #4. It now holds the game
-sources directly; no user needs to copy a cumulative patch out of this ZIP.
+**Integration is complete for PR #4 and PR #5.** The default development branch is
+`master`; the older `main`/`public-testing` branches are not the current baseline.
+See [Current status](CURRENT-STATUS.md) for the dated master/release snapshot.
+These names do not authorize deletion or rewriting of old branches.
 
-Stage 1 imported exact alpha2 tree `5d534084fe11f34410c6156fd88a83c5f0e203a5`
-and passed all eight hosted validation jobs in run 34562198820.
-Stage 2 added Lantern Road (tree `b3ec7937fe88dc974e44296842e5b797aea94cb2`)
-and passed all eight jobs in run 34563544179 before Stage 3 began.
-Stage 3 adds the reconciled journal and must pass its own hosted checks before
-acceptance. Consult current PR checks and the packaged final report for status.
+## Sequential evidence
 
-The browser matrix tests original generated assets by navigating normally. File
-and static-HTTP sessions restart actual temporary disk profiles; the Node-server
-interface uses a temporary SAVE_DIR. No mocked browser storage substitutes for
-those hosted checks. The local authoring environment still blocks browser navigation.
+| Stage | Tested review head | Hosted validation |
+| --- | --- | --- |
+| Alpha.2 integration | `0611af7074f27bb920852258983a5d7938e4d7d9` | [34562198820](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34562198820) |
+| Lantern Road | `e1bb9f5731f449ede5d39b672fc4e57725385fc5` | [34563544179](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34563544179) |
+| Final journal | `672205bcc365998f8345b5f82f0cb009b8ec2908` | [34609171882](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34609171882) |
+| Shared evaluator v1 | `723252012bec33fb28a2a6a19fe12da23e496d0c` | [34622959879](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34622959879) |
 
-The temporary source-transfer branch is not part of the game PR, its history or
-its release package. Its bounded action reconstructs hash-verified source deltas,
-tests them, then stores Git objects without moving game branches or publishing.
-Workflow-file changes use the GitHub connector, not the Actions content token.
+Each stage passed its own eight hosted jobs. PR #4 merged at
+`9a9122fefd77f862340b05321ec8dc4c7fa54127`; PR #5 merged at
+`6978757638845b807000fad205b1eea74797b286`. The latter's
+[post-merge validation/publication](https://github.com/curtistankiatming/AI-DnD-GM/actions/runs/34702058328)
+also succeeded. No unresolved source-transfer or final-journal gate remains.
 
-Run npm run check, npm test, npm run playtest, npm run fuzz, npm run build:public.
-For browsers install tests/browser-requirements.txt and the chosen Playwright
-browser, then run python tests/browser_smoke.py --engine chromium --target all.
-The separate tests/long-wait-check.js takes about ten minutes against loopback
-mock servers and is not part of ordinary fast unit tests. Model context sweeps
-use tests/combat-context-policy.js. Do not present these as real model inference.
+Hosted browsers navigated the built file, static HTTP edition and local-server
+UI. The file/static targets closed and reopened real temporary disk profiles;
+the Node UI used an isolated SAVE_DIR and was tested in-session. Earlier local
+memory-backed harness results are not the basis for those restart claims.
 
-Keep private saves, .local-ai.json, tokens, .env and browser profiles out of Git.
-Do not merge/publish, change licensing, expose the local PC or enable paid APIs
-without the owner's required approval. Existing public downloads stay available
-until a validated candidate is promoted.
+One-time transfer workflows/branches were used during source integration. They
+are not part of the game source, its review commits or release package. Historical
+reports describing those temporary procedures are not instructions for players.
+
+## Reproduction and future review boundary
+
+Run `npm run check`, `npm test`, `npm run playtest`, `npm run fuzz`,
+`npm run build:public`, and `npm run eval:mock`. For browser checks, install
+`tests/browser-requirements.txt` and the appropriate Playwright browser, then run
+`python tests/browser_smoke.py --engine chromium --target all`.
+`tests/long-wait-check.js` uses roughly ten minutes of loopback fixtures; it is not
+part of ordinary fast tests. `tests/combat-context-policy.js` checks prompt sizes,
+not actual model performance. Live inference is not part of CI.
+
+Use dedicated review branches for future edits. Run source-specific checks and
+obtain Curtis's approval before merging/publishing or changing repository policy.
+Keep saves, local settings, tokens and profiles private. Existing release assets
+are retained; documentation cleanup does not replace them in place.

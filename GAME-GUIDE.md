@@ -1,24 +1,25 @@
-# Briarwatch: Roads Beyond the Bell — V4.0.1
+# Briarwatch — Game guide for 4.1.0-alpha.3
 
-A local, single-player, story-led d20 adventure. This is the **implemented V4 upgrade of Story Engine V3 / The Bell Beneath Briarwatch**, not the separate Bellfire Echoes build.
+A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
 **Playable scope: levels 1–10, a first advancement at level 10, and a post-advancement expedition.** Level-30 and level-70 advancements are shown as future expansion milestones, not playable systems or content in this release. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
-## V4.0.1 reliability patch
+## Earlier reliability fixes (V4.0.1)
 
-This is a focused maintenance update, not an expansion of the level cap. It fixes
+That earlier focused maintenance update did not expand the level cap. It fixed
 the level-7 Technique capacity, stale combat narration and model calls for rejected
 actions. Save names are checked for Windows portability; HTTP tests use isolated
 save folders. The health endpoint reads the package version rather than a second
 hard-coded version string.
 
-Node.js 24 LTS is recommended; Node.js 22 remains supported. Node.js 18 and 20 are
-end-of-life and are no longer the documented baseline. No third-party runtime
-packages or model account are required.
+Use Node.js 22 or newer; the repository tests Node 22 and 24. No third-party
+runtime packages or model account are required. The old review below records
+V4.0.1 measurements, not current live-model acceptance.
 
 `npm run validate` runs syntax, unit/integration, campaign and state checks. The
 GitHub workflow runs on pull requests and main/master pushes, using Windows/Linux
-and Node 22/24 for tests. It does not deploy or use model credentials. See
+and Node 22/24 for tests. Validation uses no real-model credentials. A separate
+public-playtest workflow validates and publishes browser/source downloads. See
 [the repository review](docs/REVIEW-2026-09-08.md) for measured results and limits;
 root-level V4.0.0 reports remain historical evidence, not this patch's results.
 
@@ -29,7 +30,7 @@ This repository contains a ready-to-run local game. It has no external runtime d
 ### Prerequisites
 
 - Node.js 22 or newer
-- Git
+- Git only when cloning (not required for an extracted ZIP)
 
 ### One-time setup
 
@@ -65,15 +66,21 @@ No `npm install` is required for normal gameplay because no third-party packages
 
 ## Start on Windows (ZIP installation)
 
-1. Stop the old server. Rename the existing `dnd-ai-gm` folder to `dnd-ai-gm-v3-backup`.
-2. Extract this archive. It contains one project folder named `dnd-ai-gm`.
-3. Place it in `C:\Users\Admin\OneDrive\Documents\ChatGPT\ComfyUI\`.
-4. Double-click `run-local.bat`. Leave the console open while playing.
-5. The game opens at `http://localhost:4173`. Press Ctrl+C in the console to stop it.
+1. Stop the old game server. Keep the existing folder and export/back up saves.
+2. Extract the new source ZIP into a separate folder; do not overlay an old build.
+3. Open the folder containing `server.js` and `package.json`, regardless of its name.
+4. Double-click `run-local.bat` and keep its console open while playing.
+5. Open `http://localhost:4173`; use Ctrl+C in the console to stop the server.
 
-Node.js 22 or newer is required; this package was tested with Node.js 22.16.0. The application has no external runtime dependencies: **no `npm install` is needed**. Browser assets are included; no CDN or account is required. The deterministic narrator works offline. Windows launcher execution was not available in the build/test environment; the server was tested on Linux.
+No `npm install` is required. Verify `/api/health` reports `4.1.0-alpha.3` and check
+the release commit; the interface's generic "AI Dungeon Master V4" title does not
+identify a patch. If a port is occupied, stop the other server or set a different
+`PORT` before launching. The actual user's interactive Windows launcher remains
+untested; hosted Windows browser/Node tests are documented separately.
 
-Do not merge this folder over an old build: stale scripts can obscure which version is running. Verify the heading says **AI Dungeon Master V4** and `/api/health` reports `4.0.1`. When a port is occupied, stop the other server or set a different `PORT` before launching. A browser refresh may be needed after replacing old assets.
+The browser-only ZIP instead opens `briarwatch-playtest.html` directly without
+Node or a model. Source downloads do not promise a `browser-preview` directory;
+`npm run build:public` produces generated HTML under `dist-public`.
 
 ## What is actually implemented
 
@@ -81,7 +88,7 @@ Do not merge this folder over an old build: stale scripts can obscure which vers
 
 The original Briarwatch mystery now leads into ten authored regional expeditions, including the advancement trial and its follow-on mission. Eight expeditions carry the party from the opening chapter toward level 10; the trial and final mission make that level usable rather than ending at its unlock.
 
-The complete content set contains **57 scene definitions and 134 choice definitions**. These include towns, transitional scenes and endings; they are not 57 separate towns or 134 mutually exclusive campaign branches. The regional adventures have a deliberately structured investigation → approach → crisis → consequence rhythm. No endless procedural world is claimed.
+The earlier V4.0.1 catalog contained **57 scene definitions and 134 choice definitions**; those historical counts exclude the later chat side-adventure modules. These include towns, transitional scenes and endings; they are not 57 separate towns or 134 mutually exclusive campaign branches. The regional adventures have a deliberately structured investigation → approach → crisis → consequence rhythm. No endless procedural world is claimed.
 
 Three settlements provide preparation hubs:
 
@@ -150,20 +157,63 @@ Quick Save and the Saves tab use JSON files under `saves/` by default. `SAVE_DIR
 
 For a fresh V4 playthrough, start a new campaign. Compatible **Story Engine V3** JSON saves can be copied from the backup into the new `saves/` directory and loaded. The loader adds V4 systems; existing authored discoveries and identity are retained. Test coverage includes representative V3 migration, not every possible old save. V2 identity migration restarts the authored adventure rather than preserving the obsolete random world. Do not import the separate Bellfire Echoes build's saves. Keep original save backups: V4 saves are not intended for older versions.
 
-## Optional local narration
+## Chat, journal and optional local AI
 
-By default `AI_NARRATOR=off`; configuring a key alone does not turn external narration on. To use an already running compatible local chat-completions server, set environment variables in the same terminal before starting the game, for example:
+The game's chat separates Action, Dialogue, Question and Campaign Instructions.
+Instructions replace previous preference text and are saved with the campaign;
+`/instructions clear` clears them. A model proposal must be confirmed before a
+roll, inventory change or scene transition. Combat still uses explicit controls.
+Exact supported commands and journal questions can work without a model.
+
+Start Courier at the Ferry or Lantern Road from Briarwatch. Lantern Road connects
+wagon repairs, a crossing and medicine delivery, with trust, timing, a sealed-letter
+promise and one-time follow-up. The journal distinguishes verified facts, rumors,
+promises, relationships and leads. `/journal` gives a recap; `/note text` adds an
+unverified reminder; `/forget-note note-1` removes it. The panel has equivalent
+controls. Twelve note slots allow up to 400 characters each; notes grant no rewards
+and are excluded from regular model prompts.
+
+AI is optional and off by default. Start Bionic or another compatible local server,
+then use **Local AI settings for chat** to list and explicitly select the installed
+model ID. The usual address is `http://127.0.0.1:1234/v1`. Compact/Balanced/Expanded
+are request workloads, not certifications of a model size. The chat connection
+allows ten minutes per request; a proposal and later narration can be separate
+requests. The provider rejects overlapping work instead of retrying or silently
+switching models. Cancellation may not immediately stop the model server's GPU
+work; inspect it before another request. Actual model quality/speed is unverified.
+
+Settings are stored in `.local-ai.json`; `AI_CONFIG_PATH` can select an isolated
+file. A local server's optional token comes from `LOCAL_AI_TOKEN`, never chat,
+saves, a public repository or a screenshot. Listing models does not download or
+load them; inference may trigger the local server's just-in-time loading.
+
+The legacy environment-variable narrator remains a separate opt-in route:
 
 ```bat
 set AI_NARRATOR=on
 set LM_STUDIO_BASE_URL=http://127.0.0.1:1234/v1
-set AI_MODEL=YOUR_LOADED_MODEL_IDENTIFIER
+set AI_MODEL=YOUR_EXACT_INSTALLED_MODEL_ID
+set AI_TIMEOUT_MS=600000
 node server.js
 ```
 
-The adapter also accepts `OPENAI_BASE_URL`, optional `OPENAI_API_KEY`, and `AI_TIMEOUT_MS`. Do not place secrets in the ZIP or a public repository. No model is bundled and this release does not install or start a model server. External providers may have separate terms and charges; there is no requirement to use one.
+Its default timeout is 20 seconds unless `AI_TIMEOUT_MS` is set; 600000 selects
+ten minutes. The new chat UI does not automatically reconfigure this older route.
+`OPENAI_BASE_URL` is only a legacy endpoint alias; accepted endpoints remain
+loopback-only. Authentication uses `LOCAL_AI_TOKEN`, not a cloud `OPENAI_API_KEY`.
+No paid/cloud/LAN fallback, automatic model switching or downloads are enabled.
 
-The engine decides the rules first. Narration receives public scene facts, discovered clues, party state and exact events; internal hidden facts are omitted. Transactions do not need model calls. Network/model failures fall back to deterministic prose. A model can still write misleading prose: its text is **not** an executable rules result, and the mechanics feed remains authoritative. The adapter was tested against a local mock, not a real model or the user's Windows configuration.
+The engine resolves rules first. The model receives bounded public facts, current
+combat resources and confirmed events; hidden facts are omitted. Its prose can
+still be wrong and is not an executable result. The mechanics feed is authoritative.
+Loading restores saved narration or a current-state recap without another roll.
+Offline browser HTML never calls a model. These are bounded authored adventures,
+not unrestricted generation of new worlds, quests, NPCs or mechanics.
+
+For a controlled live check later, use `EVALUATE-MODEL.bat` (explicit START consent)
+or follow [Shared model evaluation](docs/MODEL-EVALUATION.md). It uses synthetic
+cases and isolated settings, not player saves. `npm run eval:plan` uses no model;
+`npm run eval:mock` tests the evaluator, not real intelligence or performance.
 
 ## Validation and reproducibility
 
@@ -173,7 +223,7 @@ npm run playtest
 npm run fuzz
 ```
 
-`npm test` runs rules, economy, progression, item/gear, companion, narration-adapter and HTTP save-lifecycle checks. `npm run playtest` runs deterministic whole-campaign policies across classes, routes and difficulties. `npm run fuzz` performs bounded diagnostic actions on isolated high-level fixtures; those fixture levels are not evidence of natural levelling. See `TEST_REPORT.md` and `BALANCE_REPORT.md` for actual results and limitations.
+`npm test` runs rules, economy, progression, item/gear, companion, narration-adapter and HTTP save-lifecycle checks. `npm run playtest` runs deterministic whole-campaign policies across classes, routes and difficulties. `npm run fuzz` performs bounded diagnostic actions on isolated high-level fixtures; those fixture levels are not evidence of natural levelling. See [Current status](docs/CURRENT-STATUS.md) for source-specific hosted results and limits. `TEST_REPORT.md` and `BALANCE_REPORT.md` remain historical V4.0.0 reports.
 
 To change the simulation size, set `PLAYTEST_RUNS` (seeds per class/route/difficulty). `PLAYTEST_OUTPUT` selects a JSON result file; `FUZZ_CASES`, `FUZZ_STEPS` and `FUZZ_OUTPUT` control diagnostic fuzzing. The test policies read public game views. They are not estimates of human enjoyment or human win rates.
 
