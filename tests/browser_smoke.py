@@ -115,6 +115,26 @@ def exercise(page, output: Path, offline: bool) -> None:
     expect(page.locator('#chatTranscript')).to_contain_text('promise is still outstanding')
     journal.locator('summary').click()
     page.locator('#chatMode').select_option('action')
+    # Regression: decline the action or describe two steps; neither creates a proposal.
+    # Wait for the submitted text in the rendered transcript before inspecting state.
+    for text in ['I do not repair the wagon, not a payment.',
+                 'I repair the wagon and then depart immediately.']:
+        page.locator('#actionInput').fill(text)
+        page.locator('#actionForm button[type=submit]').click()
+        expect(page.locator('#chatTranscript')).to_contain_text(text)
+        expect(page.locator('#chatPending')).to_be_empty()
+        expect(road).to_contain_text('Active: wagon')
+        expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    # The live-evaluation wording declines payment, not repair. It proposes only.
+    page.locator('#actionInput').fill('I offer my labor to fix the wagon in exchange for help, not a payment.')
+    page.locator('#actionForm button[type=submit]').click()
+    expect(page.locator('#chatPending')).to_contain_text('Repair the wagon')
+    expect(page.locator('#chatPending')).to_contain_text('No roll or resource change has happened yet.')
+    expect(road).to_contain_text('Active: wagon')
+    page.get_by_role('button',name='Cancel proposal',exact=True).click()
+    expect(page.locator('#chatPending')).to_be_empty()
+    expect(road).to_contain_text('Active: wagon')
+    # A second wording still follows the same explicit confirmation/fallback flow.
     page.locator('#actionInput').fill('I offer to repair the merchant’s wagon instead of paying full price.')
     page.locator('#actionForm button[type=submit]').click()
     expect(page.locator('#chatPending')).to_contain_text('Repair the wagon')
@@ -257,7 +277,7 @@ def main() -> None:
                         # while canonical adventure outcomes live in the journal.
                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True})
+                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True})
                     # Successful traces are large and redundant with summaries
                     # and screenshots. Retain failure traces, not endless archives.
                     (out/'trace.zip').unlink(missing_ok=True)
