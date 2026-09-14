@@ -179,6 +179,15 @@ function trimNarration(text) {
 }
 
 async function callNarrator(prompt, requestImpl) {
+  // Separate legacy opt-in; chat UI settings do not silently enable this route.
+  const rawLimit = process.env.AI_REPLY_TOKENS;
+  let replyTokens = 260;
+  if (rawLimit !== undefined) {
+    try {
+      if (!/^(?:-1|[0-9]+)$/.test(rawLimit)) throw new Error('invalid');
+      replyTokens = require('./model-profiles').replyTokenLimit(Number(rawLimit));
+    } catch { throw new Error('AI_REPLY_TOKENS must be -1 (compatible server uncapped output) or 64–768.'); }
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   const headers = { "Content-Type": "application/json" };
@@ -186,7 +195,7 @@ async function callNarrator(prompt, requestImpl) {
   const body = {
     model: AI_MODEL,
     temperature: 0.55,
-    max_tokens: 260,
+    max_tokens: replyTokens,
     messages: [
       {
         role: "system",
@@ -217,7 +226,10 @@ async function callNarrator(prompt, requestImpl) {
     });
     if (!response.ok) throw new Error(`Narrator HTTP ${response.status}`);
     const payload = await response.json();
-    const text = payload?.choices?.[0]?.message?.content;
+    const choice = payload?.choices?.[0];
+    if (choice?.finish_reason === 'length') throw new Error('Narrator reached its output limit before finishing.');
+    const text = choice?.message?.content;
+    if (typeof text !== 'string' || !text.trim()) throw new Error('Narrator returned no finished text; reasoning-only output is not narration.');
     return trimNarration(text);
   } finally {
     clearTimeout(timeout);

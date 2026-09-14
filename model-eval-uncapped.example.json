@@ -1,0 +1,10 @@
+{
+  "model": "qwen3.8-27b-uncensored-hauhaucs-aggressive-mtp",
+  "profile": "compact",
+  "replyTokens": -1,
+  "timeoutMs": 600000,
+  "selection": "full",
+  "repeats": 1,
+  "warmup": false,
+  "maxMinutes": 130
+}
