@@ -1,0 +1,19 @@
+name: Transfer reviewed Batch 2 source objects
+on:
+  push:
+    branches: [transport/uiux-batch2-20261004]
+permissions:
+  contents: write
+jobs:
+  store:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Verify readable patch and store immutable blobs only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python .transport/store-batch2.py
