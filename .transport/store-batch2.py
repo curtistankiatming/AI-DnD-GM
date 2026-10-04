@@ -1,31 +1,17 @@
-"""One-time reviewed source transport. Creates blobs only, no refs or releases."""
-import hashlib, json, os, pathlib, subprocess, tempfile
-from urllib.request import Request, urlopen
-BASE='c86a1bc826d8fd7b1e0c9e9500309ec5ff1af926'
-REPO='curtistankiatming/AI-DnD-GM'
-EXPECTED={
- 'public/index.html':'795c8b699721ca93f8a532e6891a790a2a92907e',
- 'scripts/build-public.js':'2077350c2c3d995214a6d601a1304888feab865f',
- 'tests/browser_smoke.py':'4cc600d0971a15e7359e27b00816afa50a1f7ef7',
- 'tests/response_browser.py':'57a371063ef3fba932524ee8d0cba0156ceaa335',
- 'tests/ui_safety_browser.py':'7436f86996f4da9aadf985cc615fb1f90ef93265'
-}
-patch=pathlib.Path('.transport/batch2-existing.patch').resolve()
-assert hashlib.sha256(patch.read_bytes()).hexdigest()=='080942232c0794be7649a53a42ea30834db2deba17351d4bdc00d0fd1ab50685'
-with tempfile.TemporaryDirectory(prefix='reviewed-batch2-') as temp:
- work=pathlib.Path(temp)/'source'
- subprocess.run(['git','worktree','add','--detach',str(work),BASE],check=True)
- subprocess.run(['git','apply','--check',str(patch)],cwd=work,check=True)
- subprocess.run(['git','apply',str(patch)],cwd=work,check=True)
- changed=set(subprocess.check_output(['git','diff','--name-only'],cwd=work,text=True).splitlines())
- assert changed==set(EXPECTED),changed
- for name,want in EXPECTED.items():
-  data=(work/name).read_bytes();digest=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
-  assert digest==want,(name,digest,want)
-  body=json.dumps({'content':data.decode('utf-8'),'encoding':'utf-8'}).encode()
-  req=Request('https://api.github.com/repos/'+REPO+'/git/blobs',data=body,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'})
-  with urlopen(req,timeout=30) as response: result=json.load(response)
-  assert result['sha']==want,(name,result)
-  print(name,want)
- subprocess.run(['git','worktree','remove','--force',str(work)],check=True)
-print('Five reviewed blobs stored. No source execution, ref update, merge or publication.')
+"""Store one verified UI correction as an immutable blob; never execute game code."""
+import base64,hashlib,json,os
+from urllib.request import Request,urlopen
+URL='https://api.github.com/repos/curtistankiatming/AI-DnD-GM/git/blobs'
+HEADERS={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'}
+old='e34807636dfec1d2b085be6db976e7d0da95f012'
+expected='0997a462d2bf8a1dd0d6c9b47c3ce8639fff5700'
+with urlopen(Request(URL+'/'+old,headers=HEADERS),timeout=30) as r: payload=json.load(r)
+raw=base64.b64decode(payload['content'])
+assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==old
+text=raw.decode('utf-8');anchor=' const heading=(pane,text,description)=>'
+assert text.count(anchor)==1
+text=text.replace(anchor,' // Keep destinations attached while moving controls so later ID lookups remain valid.\n main.append(...Object.values(panes));\n'+anchor)
+raw=text.encode();assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==expected
+with urlopen(Request(URL,data=json.dumps({'content':text,'encoding':'utf-8'}).encode(),headers=HEADERS),timeout=30) as r: result=json.load(r)
+assert result['sha']==expected
+print('public/adventure-ui.js',expected,'stored. No ref, merge, release or source execution.')
