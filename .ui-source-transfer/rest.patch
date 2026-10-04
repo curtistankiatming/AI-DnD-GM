@@ -1,0 +1,280 @@
+diff --git a/public/chat-ui.js b/public/chat-ui.js
+index a2ee905..943682c 100644
+--- a/public/chat-ui.js
++++ b/public/chat-ui.js
+@@ -39,7 +39,7 @@
+ 
+   async function send(text,extra={}){
+     if(!state||busy)return;
+-    setBusy(true);const started=Date.now();cancel.classList.toggle('is-hidden',offline);
++    showActionFeedback();setBusy(true, "model");const started=Date.now();cancel.classList.toggle('is-hidden',offline);
+     const update=()=>{status.textContent=`Working on this message · ${Math.floor((Date.now()-started)/1000)}s elapsed. Local model requests may wait up to 10 minutes each. No automatic retries or paid fallback.`;};update();
+     const timer=setInterval(update,1000);
+     try{
+@@ -48,8 +48,8 @@
+       ingestPayload(payload);status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'Ready. Model prose is presentation; the mechanics feed and confirmed results determine game state.';
+       const routing=payload.result?.responseType;
+       if(routing?.adjusted)status.textContent=`Kept in ${routing.effective} mode; the model labelled this ${routing.returned}. Read-only: no action was performed. This does not verify the answer's facts.`;
+-      if(payload.result?.ok===false&&!extra.confirm)dom.actionInput.value=text;
+-    }catch(e){status.textContent=e.message;if(!extra.confirm)dom.actionInput.value=text;toast(e.message,'warning');}
++      if(payload.result?.ok===false&&!extra.confirm&&!dom.actionInput.value)dom.actionInput.value=text;
++    }catch(e){status.textContent=e.message;showActionFeedback(e.message);if(!extra.confirm&&!dom.actionInput.value)dom.actionInput.value=text;toast(e.message,'warning');}
+     finally{clearInterval(timer);cancel.classList.add('is-hidden');setBusy(false);render();}
+   }
+   function render(){
+@@ -105,7 +105,7 @@
+   const budget=field('Context character budget (not tokens)','localAIContext','number');budget.min=4000;budget.max=32000;budget.value=8000;
+   const tokens=field('Maximum reply tokens','localAITokens','number');tokens.min=64;tokens.max=768;tokens.value=160;
+   const uncapped=field('Uncapped requested output (compatible local servers only)','localAIUncapped','checkbox');
+-  uncapped.addEventListener('change',()=>{tokens.disabled=uncapped.checked;});
++  uncapped.addEventListener('change',()=>{tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);});
+   ai.append(createElement('p','muted','Uncapped sends max_tokens=-1. It does not remove the wait limit, model context/reasoning limits, or response-size guard. Keep final replies concise. This controls chat only; the separate legacy narrator uses AI_REPLY_TOKENS.'));
+   const timeout=field('Wait limit per request, in seconds','localAITimeout','number');timeout.min=3;timeout.max=600;timeout.value=600;
+   const info=createElement('p','muted');info.id='aiSettingsStatus';ai.append(info);
+@@ -114,5 +114,5 @@
+   ai.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field; none was selected or loaded automatically.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+   ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved on this computer. This is not a successful model test; send a message to test the selected model. No model was downloaded or switched automatically.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+   panel.append(ai);
+-  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;tokens.disabled=uncapped.checked;timeout.value=c.timeoutMs/1000;}).catch(e=>{info.textContent=e.message;});
++  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;}).catch(e=>{info.textContent=e.message;});
+ })();
+diff --git a/public/index.html b/public/index.html
+index 3ee04bd..80de79f 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -12,6 +12,16 @@
+ 
+     <div id="setupOverlay" class="overlay">
+       <section class="setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
++        <section id="resumePanel" class="resume-panel" aria-label="Continue or load a campaign">
++          <h2>Your campaigns</h2>
++          <button id="continueBtn" class="btn btn-primary" type="button" disabled>Continue (checking saves…)</button>
++          <button id="returnToGameBtn" class="btn btn-secondary is-hidden" type="button">Return to current adventure</button>
++          <p id="homeSaveStatus" class="muted" role="status">Checking saved campaigns…</p>
++          <details id="homeSaves"><summary>Load a saved campaign</summary>
++            <button id="homeRefreshSavesBtn" class="text-button" type="button">Refresh saves</button>
++            <div id="homeSaveList" class="save-list"></div>
++          </details>
++        </section>
+         <div class="setup-heading">
+           <div>
+             <p class="eyebrow">New campaign</p>
+@@ -104,6 +114,8 @@
+         </div>
+       </header>
+ 
++      <p id="saveStatus" class="session-status" role="status">No campaign open</p>
++      <p id="waitNotice" class="session-status is-hidden">Waiting for the guide. You can read your party, equipment and journal, or draft a message. These are the last confirmed facts; sending, saving and game-changing controls are paused. Cancelling narration does not undo an action already resolved.</p>
+       <main id="gameLayout" class="game-layout is-hidden">
+         <aside class="left-rail">
+           <section class="panel character-panel">
+@@ -215,6 +227,7 @@
+               </div>
+             </div>
+             <p class="muted">Set campaign preferences, speak, ask questions, or propose an action. The guide asks for confirmation before a model-selected action changes the game.</p>
++            <p id="actionFeedback" class="action-feedback is-hidden" role="status" aria-live="polite"></p>
+             <form id="actionForm" class="action-form">
+               <textarea id="actionInput" rows="2" placeholder="Example: buy 2 healing potions · use antitoxin on Orin · return to town"></textarea>
+               <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Send message</button>
+@@ -325,6 +338,7 @@
+       </div>
+     </div>
+ 
++    <script src="/ui-session.js"></script>
+     <script src="/app.js"></script>
+     <script src="/expedition.js"></script>
+     <script src="/chat-ui.js"></script>
+diff --git a/public/styles.css b/public/styles.css
+index d573e8b..0b4ede1 100644
+--- a/public/styles.css
++++ b/public/styles.css
+@@ -272,8 +272,7 @@ p:last-child {
+   background: rgba(111, 82, 33, 0.28);
+ }
+ 
+-.btn:disabled,
+-.is-busy .btn {
++.btn:disabled {
+   opacity: 0.52;
+ }
+ 
+@@ -1823,3 +1822,16 @@ textarea {
+ .journal-record { padding: 8px 0; border-top: 1px solid var(--border, #465158); overflow-wrap: anywhere; }
+ .journal-record p { margin: 4px 0; }
+ .journal-record small { display: block; }
++
++/* Batch 1: visible session safety without a full layout redesign. */
++.resume-panel { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid var(--border, #435268); border-radius: 12px; }
++.resume-panel .save-list { max-height: 300px; overflow-y: auto; margin-top: .75rem; }
++.session-status { line-height: 1.55; padding: .7rem 1rem; border: 1px solid var(--border, #435268); border-radius: 10px; overflow-wrap: anywhere; }
++.action-feedback { border-left: 3px solid #e7ba70; padding: .75rem 1rem; line-height: 1.5; background: rgba(231,186,112,.08); overflow-wrap: anywhere; }
++.session-decision { color: #edf2f8; background: #182131; border: 1px solid #63738b; border-radius: 16px; width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; padding: 1.5rem; }
++.session-decision::backdrop { background: rgba(0,0,0,.72); }
++.session-decision p { white-space: pre-wrap; line-height: 1.6; overflow-wrap: anywhere; }
++.session-decision-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
++.session-decision button, .resume-panel button { min-height: 44px; }
++.session-decision button:focus-visible { outline: 3px solid #b9d9ff; outline-offset: 3px; }
++@media (max-width: 600px) { .session-decision-actions { flex-direction: column; } .resume-panel .save-card { flex-wrap: wrap; } }
+diff --git a/public/testing-tools.js b/public/testing-tools.js
+index 86c5d28..4035fbe 100644
+--- a/public/testing-tools.js
++++ b/public/testing-tools.js
+@@ -36,11 +36,8 @@
+         if (busy || !input.files[0]) return;
+         if (input.files[0].size > 1024 * 1024) throw new Error('Save imports must be smaller than 1 MiB.');
+         const payload = client.importText(await input.files[0].text());
+-        if (state && !confirm('Replace the current on-screen campaign? Export it first if needed. Existing named saves are not deleted.')) return;
+-        eventHistory = []; ingestPayload(payload, { appendEvents: false });
+-        dom.setupOverlay.classList.add('is-hidden'); dom.gameLayout.classList.remove('is-hidden');
+-        dom.saveSlotInput.value = payload.state.publicTest?.mode === 'sandbox' ? 'sandbox-import' : 'imported-campaign';
+-        toast('Save imported. Use Quick Save to keep a browser copy.', 'good');
++        const applied = await sessionUI.replace(async () => payload, {label: 'importing a saved campaign'});
++        if (applied) toast('Save imported. Quick Save uses a new named destination; existing saves are untouched.', 'good');
+       } catch (error) { toast(error.message, 'bad'); }
+       finally { input.value = ''; }
+     });
+@@ -59,16 +56,11 @@
+     for (const s of client.scenarios) { const o = el('option', `${s.name} (level ${s.level}+)`); o.value = s.id; scenario.append(o); }
+     controls.append(level, scenario, button('Start sandbox', async () => {
+       if (busy) return;
+-      if (state && !confirm('Switch to a sandbox character? Export unsaved progress first. Named campaign saves and normal autosave will not be overwritten.')) return;
+-      try {
+-        setBusy(true);
+-        const { payload } = await api('/api/test/start', { method: 'POST', body: JSON.stringify({ classId: setupPanel ? setup.classId : state?.player.classId || setup.classId, level: Number(level.value), questId: scenario.value }) });
+-        eventHistory = []; ingestPayload(payload);
+-        dom.setupOverlay.classList.add('is-hidden'); dom.gameLayout.classList.remove('is-hidden');
+-        dom.saveSlotInput.value = 'sandbox-session';
+-        toast('Sandbox fixture created. Choose pending rewards and use the expedition board.', 'good');
+-      } catch (error) { toast(error.message, 'bad'); }
+-      finally { setBusy(false); }
++      await sessionUI.replace(async () => {
++        const { response, payload } = await api('/api/test/start', { method: 'POST', body: JSON.stringify({ classId: setupPanel ? setup.classId : state?.player.classId || setup.classId, level: Number(level.value), questId: scenario.value }) });
++        if (!response.ok) throw new Error(payload.error || 'Sandbox creation failed.');
++        return payload;
++      }, {label: 'switching to a sandbox character'});
+     }));
+     details.append(controls); panel.append(details);
+     panel.append(el('p', 'Alpha foundation: companion recovery corrected; the chat side story is bounded. Recurring expedition structure and no live AI narrator in this offline edition remain limitations. Clearing browser data can erase local saves; file:// storage varies by browser.'));
+@@ -90,16 +82,4 @@
+       if (!warnedStorage) { warnedStorage = true; toast(payload.storageWarning, 'warning'); }
+     }
+   };
+-  // A fresh campaign must not Quick Save over the last sandbox/imported slot.
+-  const originalStart = startCampaign;
+-  dom.startCampaignBtn.removeEventListener('click', originalStart);
+-  dom.startCampaignBtn.addEventListener('click', async () => {
+-    client.storage.setItem('dnd-ai-gm-v4-last-slot', 'campaign-save');
+-    await originalStart();
+-  });
+-  const originalSave = saveGame;
+-  saveGame = function (slot) {
+-    if (state?.publicTest?.mode !== 'sandbox' && String(slot || '').startsWith('sandbox-')) slot = 'campaign-save';
+-    return originalSave(slot);
+-  };
+ })();
+diff --git a/scripts/build-public.js b/scripts/build-public.js
+index bde7e00..7f5ba0e 100644
+--- a/scripts/build-public.js
++++ b/scripts/build-public.js
+@@ -5,7 +5,7 @@ const path = require('node:path');
+ const crypto = require('node:crypto');
+ const root = path.resolve(__dirname, '..');
+ const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'road-state', 'chat-memory', 'courier-scene', 'road-story', 'journal', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
+-const ASSETS = ['public/index.html', 'public/styles.css', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js'];
++const ASSETS = ['public/index.html', 'public/styles.css', 'public/ui-session.js', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js'];
+ const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
+ function buildPublic(out = path.join(root, 'dist-public')) {
+   fs.mkdirSync(out, { recursive: true });
+@@ -19,13 +19,13 @@ function buildPublic(out = path.join(root, 'dist-public')) {
+   if (app.split('await fetch(path,').length !== 2) throw new Error('Review API seam: expected exactly one fetch entry.');
+   app = app.replace('await fetch(path,', 'await window.BriarwatchOffline.request(path,').replace(/\blocalStorage\b/g, 'window.BriarwatchOffline.storage');
+   app = app.replace('The local server could not be reached:', 'The public preview could not start:');
+-  const js = [bootstrap, app, read('public/expedition.js'), read('public/chat-ui.js'), read('public/testing-tools.js')].join('\n;\n').replace(/<\/script/gi, '<\\/script');
++  const js = [bootstrap, read('public/ui-session.js'), app, read('public/expedition.js'), read('public/chat-ui.js'), read('public/testing-tools.js')].join('\n;\n').replace(/<\/script/gi, '<\\/script');
+   const css = read('public/styles.css').replace(/<\/style/gi, '<\\/style');
+   let html = read('public/index.html');
+   if (!html.includes('<link rel="stylesheet" href="/styles.css" />') || !html.includes('<script src="/app.js"></script>')) throw new Error('Public asset template changed: review the builder.');
+   html = html.replace('<link rel="stylesheet" href="/styles.css" />', `<style>${css}\n.preview-notice{background:#18302a;color:#f3f6f3;padding:12px 18px;border:1px solid #638677;border-radius:8px;margin-bottom:14px;line-height:1.5}.preview-notice button,.preview-notice select{margin:5px;max-width:100%}.preview-notice summary{cursor:pointer}.preview-notice a{color:#caf0d7}.preview-status{font-weight:bold}.preview-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}</style>`);
+   html = html.replace('<title>Briarwatch V4 — Roads Beyond the Bell</title>', `<title>Briarwatch ${build.version} — Public Playtest</title>`);
+-  html = html.replace('<script src="/app.js"></script>', () => `<script>${js}</script>`).replace('<script src="/expedition.js"></script>', '').replace('<script src="/chat-ui.js"></script>', '');
++  html = html.replace('<script src="/ui-session.js"></script>', '').replace('<script src="/app.js"></script>', () => `<script>${js}</script>`).replace('<script src="/expedition.js"></script>', '').replace('<script src="/chat-ui.js"></script>', '');
+   html = html.replace('</head>', '<meta name="referrer" content="no-referrer" /><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'" /></head>');
+   fs.writeFileSync(path.join(out, 'index.html'), html);
+   fs.writeFileSync(path.join(out, 'briarwatch-playtest.html'), html);
+diff --git a/tests/browser_smoke.py b/tests/browser_smoke.py
+index c4adf83..748b500 100644
+--- a/tests/browser_smoke.py
++++ b/tests/browser_smoke.py
+@@ -68,6 +68,8 @@ def exercise(page, output: Path, offline: bool) -> None:
+         panel.get_by_role('button',name='Start sandbox',exact=True).click()
+         expect(page.locator('#playerLevel')).to_have_text('Level 10')
+         panel.get_by_role('button',name='Resume autosave',exact=True).click()
++        from ui_safety_browser import choose
++        choose(page, 'Discard and continue')
+         expect(page.locator('#playerLevel')).to_have_text('Level 1')
+         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
+         expect(page.locator('#narrationText')).to_have_text(expected_narration)
+@@ -225,6 +227,7 @@ def exercise(page, output: Path, offline: bool) -> None:
+         # engine. Its evidence migrates to the journal without any new rewards.
+         old_fixture=ROOT/'tests/fixtures/alpha2-courier-export.json'
+         panel.locator('input[type=file]').set_input_files(str(old_fixture))
++        choose(page, 'Discard and continue')
+         expect(page.locator('#playerLevel')).to_have_text('Level 1')
+         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
+         journal.locator('summary').click()
+@@ -232,6 +235,7 @@ def exercise(page, output: Path, offline: bool) -> None:
+         expect(journal.locator('[data-journal-id=letter]')).to_have_count(0)
+         journal.locator('summary').click()
+         panel.locator('input[type=file]').set_input_files(str(journey_save))
++        choose(page, 'Discard and continue')
+         expect(road).to_contain_text('Delivery completed')
+     page.set_viewport_size({'width':390,'height':844})
+     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+@@ -281,6 +285,17 @@ def main() -> None:
+                     page.on('pageerror',lambda e:errors.append(str(e)))
+                     page.on('dialog',lambda d:d.accept())
+                     page.goto(url,wait_until='load')
++                    from ui_safety_browser import exercise_safety
++                    safety_out=out/'batch1';safety_out.mkdir(exist_ok=True)
++                    safety=browser_type.launch_persistent_context(str(temporary/('safety-'+target)),**launch)
++                    try:
++                        safety_page=safety.pages[0] if safety.pages else safety.new_page()
++                        safety_page.on('pageerror',lambda e:errors.append(str(e)))
++                        safety_page.on('dialog',lambda d:d.accept())
++                        safety_page.goto(url,wait_until='load')
++                        exercise_safety(safety_page,safety_out,target!='server')
++                    finally:
++                        safety.close()
+                     exercise(page,out,target!='server')
+                     assert not errors,errors
+                     context.tracing.stop(path=str(out/'trace.zip'));context.close();context=None
+@@ -303,7 +318,7 @@ def main() -> None:
+                         # while canonical adventure outcomes live in the journal.
+                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
+                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
+-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server'})
++                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server','batch1Safety':True})
+                     # Successful traces are large and redundant with summaries
+                     # and screenshots. Retain failure traces, not endless archives.
+                     (out/'trace.zip').unlink(missing_ok=True)
+diff --git a/tests/response_browser.py b/tests/response_browser.py
+index 147276c..a156be6 100644
+--- a/tests/response_browser.py
++++ b/tests/response_browser.py
+@@ -57,6 +57,7 @@ def exercise_response_policy(page, output):
+                                  ('question', 'Check the action boundary.', False)]:
+             page.locator('#chatMode').select_option(mode)
+             page.locator('#actionInput').fill(text)
++            prior_narration = page.locator('#narrationText').inner_text()
+             with page.expect_response(lambda r: r.url.endswith('/api/chat')) as event:
+                 page.locator('#actionForm button[type=submit]').click()
+             response = event.value
+@@ -79,6 +80,8 @@ def exercise_response_policy(page, output):
+             else:
+                 assert response.status == 422
+                 expect(page.locator('#chatTranscript')).to_contain_text('cannot spend an action')
++                expect(page.locator('#narrationText')).to_have_text(prior_narration)
++                expect(page.locator('#actionFeedback')).to_contain_text('cannot spend an action')
+             results.append({'mode': mode, 'readOnly': True, 'adjustmentShown': good, 'actionRejected': not good})
+         assert len(calls) == 3 and not errors, errors
+         (output / 'response-routing.json').write_text(json.dumps({'checks': results, 'mockModelCalls': len(calls), 'realModelCalls': 0}, indent=2), encoding='utf-8')

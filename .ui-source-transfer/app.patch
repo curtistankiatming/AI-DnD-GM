@@ -1,0 +1,366 @@
+diff --git a/public/app.js b/public/app.js
+index 6655843..9f34a1d 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -83,6 +83,7 @@ let state = null;
+ let view = null;
+ let lastNarration = null;
+ let busy = false;
++let busyMode = "";
+ let eventHistory = [];
+ let targetAction = null;
+ 
+@@ -124,13 +125,54 @@ function percentage(current, max) {
+   return Math.max(0, Math.min(100, (Number(current || 0) / Math.max(1, Number(max || 1))) * 100));
+ }
+ 
+-function setBusy(next) {
++function setBusy(next, mode = "") {
+   busy = Boolean(next);
++  if (busy) { if (mode) busyMode = mode; }
++  else busyMode = "";
+   document.body.classList.toggle("is-busy", busy);
+-  for (const control of $$('button, select')) {
+-    if (!control.dataset.keepEnabled) control.disabled = busy || control.dataset.disabled === "true";
+-  }
+-  dom.actionInput.disabled = busy;
++  for (const control of $$('button, select, input, textarea')) {
++    const readOnly = control.dataset.readOnly === "true" || control.classList.contains("tab-button") ||
++      control.id === "toggleSkillsBtn" || control.id === "clearEventsBtn" || control.id === "targetDialogClose";
++    const draft = control === dom.actionInput && busyMode === "model";
++    if (!control.dataset.keepEnabled) control.disabled = (busy && !readOnly && !draft) || control.dataset.disabled === "true";
++  }
++  const notice = $("#waitNotice");
++  if (notice) notice.classList.toggle("is-hidden", !busy || busyMode !== "model");
++}
++
++function showActionFeedback(message = "", tone = "warning") {
++  const node = $("#actionFeedback");
++  node.textContent = message;
++  node.classList.toggle("is-hidden", !message);
++  node.dataset.tone = tone;
++}
++
++// Native dialog supplies modal keyboard behaviour; Escape always means Cancel.
++function askSessionDecision({ title, message, choices }) {
++  return new Promise(resolve => {
++    const previous = document.activeElement;
++    const dialog = createElement("dialog", "session-decision");
++    dialog.id = "sessionDecision";
++    dialog.setAttribute("aria-labelledby", "sessionDecisionTitle");
++    dialog.setAttribute("aria-describedby", "sessionDecisionMessage");
++    const heading = createElement("h2", "", title); heading.id = "sessionDecisionTitle";
++    const text = createElement("p", "", message); text.id = "sessionDecisionMessage";
++    const form = createElement("form", "session-decision-actions"); form.method = "dialog";
++    for (const [value, label] of choices) {
++      const button = createElement("button", value === "cancel" ? "btn btn-secondary" : "btn btn-primary", label);
++      button.type = "submit"; button.value = value; button.dataset.keepEnabled = "true";
++      if (value === "cancel") button.autofocus = true;
++      form.append(button);
++    }
++    dialog.append(heading, text, form); document.body.append(dialog);
++    dialog.addEventListener("close", () => {
++      const result = dialog.returnValue || "cancel"; dialog.remove();
++      if (previous?.isConnected && !previous.disabled) previous.focus();
++      resolve(result);
++    }, { once: true });
++    if (typeof dialog.showModal !== "function") { dialog.remove(); toast("This browser cannot show the safety confirmation. Nothing was changed.", "warning"); resolve("cancel"); }
++    else dialog.showModal();
++  });
+ }
+ 
+ function toast(message, tone = "neutral") {
+@@ -312,52 +354,46 @@ function renderSetup() {
+ function ingestPayload(payload, { appendEvents = true } = {}) {
+   if (payload.state) state = payload.state;
+   if (payload.view) view = payload.view;
+-  if (payload.narration) lastNarration = payload.narration;
++  if (payload.result?.ok === false) {
++    showActionFeedback(payload.result.error || "That request was not applied.");
++    // Rejection text stays in the transcript/feed, not the current story card or saved presentation.
++    if (state && lastNarration?.text) state.lastNarration = lastNarration.text;
++  } else if (payload.narration) {
++    lastNarration = payload.narration;
++    if (payload.result?.canonical && payload.narration.source === "deterministic") {
++      lastNarration = { ...payload.narration, text: payload.result.canonical };
++      state.lastNarration = lastNarration.text;
++      showActionFeedback("The action is already resolved. AI narration was unavailable; its confirmed result is shown. It will not be rolled again.");
++    }
++  }
+   if (appendEvents && Array.isArray(payload.events) && payload.events.length) {
+     eventHistory.push(...payload.events.map((event) => ({ ...event, at: Date.now() })));
+     eventHistory = eventHistory.slice(-120);
+   }
+   if (payload.result?.ok === false) toast(payload.result.error || "The rules rejected that action.", "warning");
+   renderGame();
++  sessionUI.changed();
+ }
+ 
+ async function startCampaign() {
++  if (busy) return;
+   dom.setupError.textContent = "";
+-  const spent = pointBuySpent();
+-  if (spent > 27) {
+-    dom.setupError.textContent = "Ability scores exceed the 27-point budget.";
+-    return;
+-  }
+-  setBusy(true);
+-  try {
+-    const { payload } = await api("/api/session/new", {
+-      method: "POST",
+-      body: JSON.stringify({
+-        setup: {
+-          name: dom.setupName.value.trim() || "Aster",
+-          classId: setup.classId,
+-          backgroundId: setup.backgroundId,
+-          difficulty: setup.difficulty,
+-          abilities: setup.abilities
+-        }
+-      })
+-    });
+-    eventHistory = [];
+-    ingestPayload(payload);
+-    dom.setupOverlay.classList.add("is-hidden");
+-    dom.gameLayout.classList.remove("is-hidden");
+-    dom.saveSlotInput.value = `${state.player.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-briarwatch`;
+-    toast("Campaign started. The listed choices are authoritative story routes.", "good");
+-  } catch (error) {
+-    dom.setupError.textContent = error.message;
+-  } finally {
+-    setBusy(false);
+-  }
++  if (pointBuySpent() > 27) { dom.setupError.textContent = "Ability scores exceed the 27-point budget."; return; }
++  const ok = await sessionUI.replace(async () => {
++    const { response, payload } = await api("/api/session/new", {method: "POST", body: JSON.stringify({setup: {
++      name: dom.setupName.value.trim() || "Aster", classId: setup.classId,
++      backgroundId: setup.backgroundId, difficulty: setup.difficulty, abilities: setup.abilities
++    }})});
++    if (!response.ok) throw new Error(payload.error || "Campaign creation failed.");
++    return payload;
++  }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline ? "autosave" : null});
++  if (ok) toast("Campaign started. Quick Save has its own new destination.", "good");
+ }
+ 
+ async function sendAction(action) {
+   if (!state || busy) return;
+-  setBusy(true);
++  showActionFeedback();
++  setBusy(true, "model");
+   try {
+     const { payload } = await api("/api/action", {
+       method: "POST",
+@@ -365,6 +401,7 @@ async function sendAction(action) {
+     });
+     ingestPayload(payload);
+   } catch (error) {
++    showActionFeedback(error.message);
+     toast(error.message, "bad");
+   } finally {
+     setBusy(false);
+@@ -505,11 +542,7 @@ function renderStoryChoices() {
+   clear(dom.storyChoices);
+   const choices = view.scene.choices;
+   if (!choices.length) {
+-    const message = view.scene.defeat
+-      ? "This campaign state is a defeat. Load a save or begin a new campaign."
+-      : view.scene.ending
+-        ? "The chapter has reached its epilogue."
+-        : "No story choices are available while combat is active.";
++    const message = window.BriarwatchSession.emptyChoices(view);
+     dom.storyChoices.appendChild(createElement("p", "empty-state", message));
+     return;
+   }
+@@ -695,6 +728,12 @@ function renderInventory() {
+     const purpose = createElement("div", "purpose-box");
+     purpose.append(createElement("span", "", "Purpose"), createElement("p", "", item.purpose));
+     const actions = createElement("div", "inventory-actions");
++    const inspect = createElement("button", "btn btn-secondary btn-small", "Inspect");
++    inspect.type = "button"; inspect.dataset.readOnly = "true";
++    inspect.addEventListener("click", () => askSessionDecision({title: item.name,
++      message: [item.purpose, item.description, ...(item.comparisons || []).map(c => typeof compareDescription === "function" ? compareDescription(c) : c.name)].filter(Boolean).join("\n\n"),
++      choices: [["cancel", "Close"]]}));
++    actions.append(inspect);
+     if (item.canEquip) {
+       const equip = createElement("button", "btn btn-secondary btn-small", item.equippedSlots.length ? "Re-equip" : "Equip");
+       equip.type = "button";
+@@ -813,83 +852,44 @@ function closeTargetDialog() {
+   dom.targetDialog.classList.add("is-hidden");
+ }
+ 
+-async function saveGame(slotOverride) {
+-  if (!state) return;
+-  const slot = String(slotOverride || dom.saveSlotInput.value || "quick-save").trim();
+-  setBusy(true);
+-  try {
+-    const { payload } = await api("/api/session/save", {
+-      method: "POST",
+-      body: JSON.stringify({ slot, state })
+-    });
+-    dom.saveSlotInput.value = payload.slot;
+-    localStorage.setItem("dnd-ai-gm-v4-last-slot", payload.slot);
+-    toast(`Saved as “${payload.slot}”.`, "good");
+-    await refreshSaves();
+-  } catch (error) {
+-    toast(error.message, "bad");
+-  } finally {
+-    setBusy(false);
+-  }
+-}
+-
+-async function loadGame(slot) {
+-  setBusy(true);
+-  try {
+-    const { payload } = await api(`/api/session/load?slot=${encodeURIComponent(slot)}`);
+-    eventHistory = [];
+-    ingestPayload(payload, { appendEvents: false });
+-    dom.setupOverlay.classList.add("is-hidden");
+-    dom.saveSlotInput.value = slot;
+-    localStorage.setItem("dnd-ai-gm-v4-last-slot", slot);
+-    toast(`Loaded “${slot}”.`, "good");
+-  } catch (error) {
+-    toast(error.message, "bad");
+-  } finally {
+-    setBusy(false);
+-  }
+-}
+-
+-async function deleteGame(slot) {
+-  setBusy(true);
+-  try {
+-    await api(`/api/session/delete?slot=${encodeURIComponent(slot)}`, { method: "DELETE" });
+-    toast(`Deleted “${slot}”.`, "neutral");
+-    await refreshSaves();
+-  } catch (error) {
+-    toast(error.message, "bad");
+-  } finally {
+-    setBusy(false);
+-  }
+-}
+-
++async function saveGame(slotOverride) { return sessionUI.save(slotOverride); }
++async function loadGame(slot) { return sessionUI.load(slot); }
++async function deleteGame(slot) { return sessionUI.delete(slot); }
+ async function refreshSaves() {
+-  try {
+-    const { payload } = await api("/api/session/list");
+-    clear(dom.saveList);
+-    if (!payload.saves.length) {
+-      dom.saveList.appendChild(createElement("p", "empty-state", "No save files yet."));
+-      return;
+-    }
+-    for (const save of payload.saves) {
++  try { await sessionUI.list(); }
++  catch (error) {
++    $("#homeSaveStatus").textContent = `Could not list saves: ${error.message}. Existing saves have not been deleted.`;
++    $("#continueBtn").disabled = true;
++    $("#continueBtn").dataset.disabled = "true";
++    toast(`Could not list saves: ${error.message}`, "warning");
++  }
++}
++function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
++  $("#saveStatus").textContent = state ? `${dirty ? "Unsaved changes" : "Saved checkpoint"} · Quick Save: ${activeSlot || dom.saveSlotInput.value || "new named save"}` : "No campaign open";
++  $("#returnToGameBtn").classList.toggle("is-hidden", !state);
++  dom.saveQuickBtn.dataset.disabled = String(!state);
++  dom.saveBtn.dataset.disabled = String(!state);
++  $("#continueBtn").dataset.disabled = String(!continueSave);
++  $("#continueBtn").disabled = busy || !continueSave;
++  $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue (no saved campaign)";
++  $("#homeSaveStatus").textContent = continueSave ? `Continue opens “${continueSave.slot}”. Load below to choose another checkpoint.` : "No readable save found here. Begin a new campaign below.";
++  for (const list of [dom.saveList, $("#homeSaveList")]) {
++    clear(list);
++    if (!saves.length) list.append(createElement("p", "empty-state", "No save files yet."));
++    for (const save of saves) {
+       const card = createElement("article", `save-card ${save.corrupted ? "is-corrupted" : ""}`);
++      card.dataset.saveSlot = save.slot;
+       const info = createElement("div");
+-      info.append(createElement("strong", "", save.slot), createElement("span", "", save.corrupted ? "Unreadable save" : `${save.playerName} · Level ${save.level} · ${save.scene}`));
++      info.append(createElement("strong", "", save.slot), createElement("span", "", save.corrupted ? "Unreadable save — kept until you explicitly delete it" : `${save.playerName} · Level ${save.level} · ${save.scene}`));
+       const controls = createElement("div", "save-actions");
+       const load = createElement("button", "btn btn-secondary btn-small", "Load");
+-      load.type = "button";
+-      load.dataset.disabled = String(Boolean(save.corrupted));
+-      load.disabled = busy || save.corrupted;
++      load.type = "button"; load.dataset.disabled = String(Boolean(save.corrupted)); load.disabled = busy || Boolean(save.corrupted);
+       load.addEventListener("click", () => loadGame(save.slot));
+       const remove = createElement("button", "btn btn-ghost btn-small", "Delete");
+-      remove.type = "button";
++      remove.type = "button"; remove.disabled = busy;
+       remove.addEventListener("click", () => deleteGame(save.slot));
+-      controls.append(load, remove);
+-      card.append(info, controls);
+-      dom.saveList.appendChild(card);
++      controls.append(load, remove); card.append(info, controls); list.append(card);
+     }
+-  } catch (error) {
+-    toast(`Could not list saves: ${error.message}`, "bad");
+   }
+ }
+ 
+@@ -917,15 +917,16 @@ function wireEvents() {
+   });
+   dom.startCampaignBtn.addEventListener("click", startCampaign);
+   dom.newGameBtn.addEventListener("click", () => {
+-    state = null;
+-    view = null;
+-    lastNarration = null;
+-    eventHistory = [];
++    if (busy) return;
++    // Opening setup is not abandoning a campaign. Begin/Load guards the actual replacement.
+     dom.setupOverlay.classList.remove("is-hidden");
+-    dom.gameLayout.classList.add("is-hidden");
++    $("#returnToGameBtn").classList.toggle("is-hidden", !state);
+     renderSetup();
+   });
+-  dom.saveQuickBtn.addEventListener("click", () => saveGame(localStorage.getItem("dnd-ai-gm-v4-last-slot") || dom.saveSlotInput.value || "quick-save"));
++  $("#returnToGameBtn").addEventListener("click", () => { if (state && !busy) dom.setupOverlay.classList.add("is-hidden"); });
++  $("#continueBtn").addEventListener("click", () => { const save = sessionUI.status().continueSave; if (save) void loadGame(save.slot); });
++  $("#homeRefreshSavesBtn").addEventListener("click", refreshSaves);
++  dom.saveQuickBtn.addEventListener("click", () => sessionUI.quickSave());
+   dom.inspirationBtn.addEventListener("click", () => sendAction({ type: "prepare-inspiration" }));
+   dom.toggleSkillsBtn.addEventListener("click", () => {
+     const hidden = dom.skillSummary.classList.toggle("is-hidden");
+@@ -934,6 +935,7 @@ function wireEvents() {
+   dom.shortRestBtn.addEventListener("click", () => sendAction({ type: "short-rest" }));
+   dom.actionForm.addEventListener("submit", (event) => {
+     event.preventDefault();
++    if (busy || !state) return;
+     const text = dom.actionInput.value.trim();
+     if (!text) return;
+     dom.actionInput.value = "";
+@@ -955,7 +957,7 @@ function wireEvents() {
+     if (event.key === "Escape") closeTargetDialog();
+     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+       event.preventDefault();
+-      void saveGame(localStorage.getItem("dnd-ai-gm-v4-last-slot") || dom.saveSlotInput.value || "quick-save");
++      void sessionUI.quickSave();
+     }
+   });
+ }
+@@ -971,7 +973,7 @@ async function initialize() {
+     setup.backgroundId = catalog.backgrounds.find((entry) => entry.id === "outlander")?.id || catalog.backgrounds[0].id;
+     setup.difficulty = "standard";
+     setup.abilities = { ...catalog.classes[0].preset };
+-    dom.saveSlotInput.value = localStorage.getItem("dnd-ai-gm-v4-last-slot") || "briarwatch-01";
++    dom.saveSlotInput.value = "";
+     renderSetup();
+     renderNarratorBadge();
+     await refreshSaves();
+@@ -982,4 +984,18 @@ async function initialize() {
+   }
+ }
+ 
++const sessionUI = window.BriarwatchSession.create({
++  state: () => state, draft: () => dom.actionInput.value,
++  clearDraft: () => { dom.actionInput.value = ""; },
++  slot: value => value === undefined ? dom.saveSlotInput.value : (dom.saveSlotInput.value = value),
++  unique: () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2),
++  storage: () => localStorage, busy: () => busy, setBusy, api, ask: askSessionDecision, notify: toast,
++  activate: payload => {
++    eventHistory = []; showActionFeedback(); ingestPayload(payload, { appendEvents: false });
++    dom.setupOverlay.classList.add("is-hidden"); dom.gameLayout.classList.remove("is-hidden");
++  }, changed: renderSaveChoices
++});
++window.addEventListener("beforeunload", event => {
++  if (busy || sessionUI.dirty() || sessionUI.hasDraft()) { event.preventDefault(); event.returnValue = ""; }
++});
+ void initialize();

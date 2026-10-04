@@ -1,0 +1,65 @@
+# One-time source transport only. Not part of the feature branch or release.
+# Applies two readable, hash-pinned patches and creates immutable Git blobs.
+# Never updates refs, merges PRs, publishes releases, or executes changed game code.
+name: Transfer reviewed UI source objects
+on:
+  push:
+    branches: [transport/uiux-batch1-20261004]
+permissions:
+  contents: read
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Verify readable patches and resulting source objects
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD^)" = e0d58f82e9d3f5a494d513166a0da14cd9268ae4
+          echo '87c65c5ca0cc181e18f0d4abea41f09723c0fd925de062e0ec66bd85504897c5  .ui-source-transfer/app.patch' | sha256sum -c -
+          echo 'a003a4975e8e982d92d4e2f0f2b523440833d609bfc32d9656922a12f11256d3  .ui-source-transfer/rest.patch' | sha256sum -c -
+          git apply --check .ui-source-transfer/app.patch .ui-source-transfer/rest.patch
+          git apply .ui-source-transfer/app.patch .ui-source-transfer/rest.patch
+          git diff --check
+      - name: Store only verified immutable blobs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, os, pathlib, urllib.request
+          expected = {
+            'public/app.js':'9f34a1dd66252fd77deb89ecbf18911ac7f0c920',
+            'public/chat-ui.js':'943682c1158fd388e668f93ab964b51fc72a46b2',
+            'public/index.html':'80de79f8b1ae05eda9ae69dc51dc12ddeb0582c9',
+            'public/styles.css':'0b4ede1d4af65e06100fbbd494e080d782b06cfd',
+            'public/testing-tools.js':'4035fbe8e194720f59516b7d9e7c48cc75c25338',
+            'scripts/build-public.js':'7f5ba0efb19e9fb4cc91c6fdec0bae2dff83a853',
+            'tests/browser_smoke.py':'748b50073ada2aeaedd7da482a688d271ec34dff',
+            'tests/response_browser.py':'a156be6ace98738f422361c179221c29a924c691'
+          }
+          data = {}
+          for name, sha in expected.items():
+            path = pathlib.Path(name)
+            assert not path.is_symlink()
+            raw = path.read_bytes()
+            actual = hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+            assert actual == sha, (name, actual, sha)
+            data[name] = raw
+          # All hashes must match before any write. No secrets enter blob contents.
+          for name, raw in data.items():
+            body = json.dumps({'encoding':'base64','content':base64.b64encode(raw).decode()}).encode()
+            req = urllib.request.Request('https://api.github.com/repos/curtistankiatming/AI-DnD-GM/git/blobs', data=body,
+              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'})
+            with urllib.request.urlopen(req, timeout=30) as response:
+              result = json.load(response)
+            assert result['sha'] == expected[name], name
+            print(name, result['sha'])
+          print('Verified 8 immutable blobs. No refs, merge, release or model call.')
+          PY
