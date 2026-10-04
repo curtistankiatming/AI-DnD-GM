@@ -19,6 +19,8 @@
   const pane=el('section','workspace-pane');pane.id='workspace-'+id;pane.setAttribute('role','tabpanel');pane.setAttribute('aria-labelledby',b.id);pane.tabIndex=0;
   panes[id]=pane;tabs[id]=b;nav.append(b);
  }
+ // Keep destinations attached while moving controls so later ID lookups remain valid.
+ main.append(...Object.values(panes));
  const heading=(pane,text,description)=>{pane.append(el('h2','workspace-title',text));if(description)pane.append(el('p','muted',description));};
  heading(panes.party,'Party & pack','Your existing character sheet, companions and equipment. Inspecting an item does not use it.');
  heading(panes.journal,'Campaign journal','Confirmed evidence, uncertain reports, promises and personal notes remain distinct.');
