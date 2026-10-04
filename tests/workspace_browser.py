@@ -111,11 +111,28 @@ def exercise_workspace(page, output, offline):
     page.keyboard.press('Tab')
     expect(page.locator('#targetDialogClose')).to_be_focused()
     page.keyboard.press('Shift+Tab')
-    expect(page.locator('#targetOptions button:not([disabled])').last).to_be_focused()
+    # Starter equipment is fully assigned: only Close is actionable.
+    expect(page.locator('#targetOptions button:not([disabled])')).to_have_count(0)
+    expect(page.locator('#targetDialogClose')).to_be_focused()
     page.keyboard.press('Escape')
     expect(page.locator('#targetDialog')).to_be_hidden()
     expect(equip).to_be_focused()
     assert not page.locator('.app-shell').evaluate('(n)=>n.inert')
+    # An owned potion provides multiple legal targets; cancel before consumption.
+    before_picker = page.evaluate('JSON.stringify(state)')
+    potion = page.locator('[data-use-item=healing-potion]')
+    potion.click()
+    expect(page.locator('#targetDialogTitle')).to_be_focused()
+    page.keyboard.press('Tab')
+    expect(page.locator('#targetDialogClose')).to_be_focused()
+    page.keyboard.press('Shift+Tab')
+    expect(page.locator('#targetOptions button:not([disabled])').last).to_be_focused()
+    page.keyboard.press('Tab')
+    expect(page.locator('#targetDialogClose')).to_be_focused()
+    page.keyboard.press('Escape')
+    expect(page.locator('#targetDialog')).to_be_hidden()
+    expect(potion).to_be_focused()
+    assert page.evaluate('JSON.stringify(state)') == before_picker
     journal(page)
     assert page.locator('#workspace-journal #storyJournal').count()==1
     assert page.locator('#workspace-journal #clueList').count()==1
