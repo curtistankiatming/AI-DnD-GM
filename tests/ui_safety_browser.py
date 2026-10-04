@@ -4,6 +4,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import Request, urlopen
 from playwright.sync_api import expect
+from workspace_browser import go, mode as choose_mode, instructions, scenario, model_settings
 
 
 def choose(page, name):
@@ -14,14 +15,17 @@ def choose(page, name):
 
 
 def submit(page, text, mode='action'):
-    page.locator('#chatMode').select_option(mode)
+    if mode=='instructions':
+        instructions(page,text)
+        return
+    choose_mode(page,mode)
     page.locator('#actionInput').fill(text)
     page.locator('#actionSubmitBtn').click()
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
 
 
 def save_as(page, slot):
-    page.get_by_role('button', name='Saves', exact=True).click()
+    go(page,'settings')
     page.locator('#saveSlotInput').fill(slot)
     page.locator('#saveBtn').click()
     expect(page.locator('#saveStatus')).to_contain_text('Saved checkpoint')
@@ -30,7 +34,7 @@ def save_as(page, slot):
 
 
 def select_save(page, slot):
-    page.get_by_role('button', name='Saves', exact=True).click()
+    go(page,'settings')
     card = page.locator('#saveList .save-card').filter(has=page.get_by_text(slot, exact=True))
     expect(card).to_have_count(1)
     return card
@@ -67,6 +71,7 @@ def exercise_safety(page, output, offline):
     expect(page.locator('#saveStatus')).to_contain_text('Saved checkpoint')
     expect(page.locator('#saveStatus')).to_contain_text(second_slot)
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    go(page,'settings')
     page.locator('#saveSlotInput').fill('ui-safety-a')
     page.locator('#saveBtn').click()
     expect(page.locator('#sessionDecision')).to_contain_text('Safety Hero A')
@@ -77,10 +82,12 @@ def exercise_safety(page, output, offline):
     select_save(page, 'ui-safety-a').get_by_role('button', name='Load', exact=True).click()
     expect(page.locator('#playerIdentity')).to_contain_text('Safety Hero A')
     expect(page.locator('#campaignInstructions')).to_have_text('Keep the weather calm.')
+    go(page,'adventure')
     page.locator('#actionInput').fill('An unsent draft to keep.')
     select_save(page, second_slot).get_by_role('button', name='Load', exact=True).click()
     choose(page, 'Cancel')
     expect(page.locator('#actionInput')).to_have_value('An unsent draft to keep.')
+    go(page,'adventure')
     page.locator('#actionInput').fill('')
     page.locator('#newGameBtn').click()
     expect(page.locator('#continueBtn')).to_contain_text('Safety Hero A')
@@ -90,11 +97,11 @@ def exercise_safety(page, output, offline):
     select_save(page, second_slot).get_by_role('button', name='Delete', exact=True).click()
     choose(page, 'Delete saved file')
     expect(page.locator('#saveList')).not_to_contain_text(second_slot)
-    page.get_by_role('button', name='Start Lantern Road', exact=True).click()
+    scenario(page,'Start Lantern Road')
     expect(page.locator('#roadScenario')).to_contain_text('Active: wagon')
     expect(page.locator('#storyChoices')).to_contain_text('Lantern Road')
     expect(page.locator('#storyChoices')).not_to_contain_text('combat is active')
-    page.get_by_role('button', name='Inventory', exact=True).click()
+    go(page,'party')
     page.locator('#inventoryCards').get_by_role('button', name='Inspect', exact=True).first.click()
     expect(page.locator('#sessionDecision')).to_be_visible()
     choose(page, 'Close')
@@ -146,14 +153,14 @@ def exercise_wait(page, output):
     model = ThreadingHTTPServer(('127.0.0.1',0),Model)
     threading.Thread(target=model.serve_forever,daemon=True).start()
     try:
-        page.locator('#localAISettings summary').click()
+        model_settings(page)
         page.locator('#localAIBase').fill(f'http://127.0.0.1:{model.server_port}/v1')
         page.locator('#localAIModel').fill('ui-wait-synthetic')
         page.locator('#localAIEnabled').check()
         with page.expect_response(lambda r:r.url.endswith('/api/ai/settings') and r.request.method=='POST'):
             page.get_by_role('button',name='Save AI settings',exact=True).click()
         expect(page.locator('#saveQuickBtn')).to_be_enabled()
-        page.locator('#chatMode').select_option('question')
+        choose_mode(page,'question')
         # Does not match the deterministic journal/road answer keywords.
         page.locator('#actionInput').fill('Describe the surrounding atmosphere.')
         page.locator('#actionSubmitBtn').click()
@@ -162,11 +169,12 @@ def exercise_wait(page, output):
         expect(page.locator('#saveQuickBtn')).to_be_disabled()
         expect(page.locator('#actionSubmitBtn')).to_be_disabled()
         expect(page.locator('#localAIModel')).to_be_disabled()
-        page.get_by_role('button',name='Journal',exact=True).click()
+        go(page,'journal')
         expect(page.locator('#tabJournal')).to_be_visible()
-        page.get_by_role('button',name='Inventory',exact=True).click()
+        go(page,'party')
         page.locator('#inventoryCards').get_by_role('button',name='Inspect',exact=True).first.click()
         choose(page,'Close')
+        go(page,'adventure')
         page.locator('#actionInput').fill('Draft preserved during the wait.')
         page.keyboard.press('Control+s')
         expect(page.locator('#actionInput')).to_have_value('Draft preserved during the wait.')

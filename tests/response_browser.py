@@ -4,6 +4,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import Request, urlopen
 from playwright.sync_api import expect
+from workspace_browser import go, mode as choose_mode, model_settings
 
 
 def exercise_response_policy(page, output):
@@ -55,7 +56,7 @@ def exercise_response_policy(page, output):
         for mode, text, good in [('question', 'Describe this place.', True),
                                  ('dialogue', 'I greet the people nearby.', True),
                                  ('question', 'Check the action boundary.', False)]:
-            page.locator('#chatMode').select_option(mode)
+            choose_mode(page,mode)
             page.locator('#actionInput').fill(text)
             prior_narration = page.locator('#narrationText').inner_text()
             with page.expect_response(lambda r: r.url.endswith('/api/chat')) as event:
@@ -94,6 +95,7 @@ def exercise_response_policy(page, output):
         finally:
             model.shutdown()
             model.server_close()
+        model_settings(page)
         page.locator('#localAIEnabled').uncheck()
         page.locator('#localAIUncapped').uncheck()
         page.locator('#localAIBase').fill(original['baseUrl'])

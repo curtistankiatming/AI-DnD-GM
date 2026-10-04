@@ -1,0 +1,120 @@
+/* Batch 2: story-first workspace. Uses the existing palette and system fonts. */
+.story-workspace [hidden] { display:none !important; }
+.workspace-sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; overflow:hidden !important; clip-path:inset(50%); white-space:nowrap; }
+.workspace-skip { position:fixed; top:-100px; left:12px; z-index:200; padding:12px; background:var(--panel); color:var(--text); }
+.workspace-skip:focus { top:12px; }
+.story-workspace .app-shell { max-width:1360px; padding:0 20px 20px; }
+.story-workspace .topbar { position:static; min-height:74px; margin:0; padding:12px 0; gap:12px; }
+.story-workspace .brand-block h1 { font-size:clamp(1.1rem,2vw,1.6rem); }
+.story-workspace .topbar .subtitle { font-size:.8rem; }
+.story-workspace .topbar .eyebrow { font-size:.63rem; }
+.story-workspace .status-badge { max-width:260px; overflow-wrap:anywhere; font-size:.7rem; }
+.story-workspace #saveStatus { margin:6px 0; padding:4px 8px; font-size:.76rem; overflow-wrap:anywhere; }
+.story-workspace #waitNotice { margin:6px 0; padding:8px; font-size:.82rem; border-left:3px solid var(--accent); }
+.story-workspace .game-layout { display:block; }
+.workspace-nav { position:sticky; top:0; z-index:25; display:flex; gap:4px; padding:6px; margin:0 0 10px; border:1px solid var(--border); border-radius:12px; background:var(--bg-elevated); }
+.workspace-nav button { flex:1; border-color:transparent; min-height:44px; border-radius:8px; white-space:normal; }
+.workspace-nav [aria-selected=true],.message-modes [aria-checked=true],.journal-filters [aria-pressed=true] { background:var(--accent-dark); color:var(--accent-strong); border-color:var(--accent); box-shadow:inset 0 -2px 0 var(--accent); }
+.workspace-pane { min-width:0; outline-offset:3px; }
+.workspace-title { font-size:1.7rem; margin:16px 0 8px; }
+#workspace-adventure { height:var(--workspace-height,70dvh); display:grid; grid-template-rows:auto minmax(100px,1fr) auto; min-height:420px; gap:8px; }
+.adventure-overview { padding:12px 16px; background:var(--panel); border:1px solid var(--border); border-radius:12px; }
+.adventure-overview h2 { margin:5px 0 8px; font-size:clamp(1.25rem,2vw,1.65rem); }
+.adventure-overview .objective-box { margin:0 0 6px; padding:8px 10px; }
+.adventure-overview .objective-box p { font-size:.9rem; }
+.party-snapshot { width:100%; padding:4px 6px; border:0; background:transparent; font-size:.78rem; line-height:1.5; text-align:left; }
+.adventure-shortcuts { display:flex; gap:8px; }
+.adventure-shortcuts button { min-height:32px; padding:4px 8px; font-size:.75rem; }
+.adventure-scroll { overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; overflow-anchor:none; padding:2px 8px 18px 2px; min-height:0; border-radius:10px; }
+.adventure-scroll .scene-card { padding:16px 20px; margin:0 0 10px; }
+.adventure-conversation { max-height:none; overflow:visible; margin:0; padding:0; border:0; }
+.adventure-conversation p { padding:10px 12px; margin:8px 0; border-left:2px solid var(--border); border-radius:6px; line-height:1.65; white-space:pre-wrap; }
+.adventure-conversation .chat-player { background:var(--panel-soft); border-color:var(--accent); }
+.adventure-conversation .chat-rules { font-size:.85em; border-color:var(--good); }
+.history-caption { color:var(--muted); font-size:.75rem; margin:0 0 12px; }
+.adventure-scroll .narration-card { margin:8px 0 0; background:transparent; border:0; padding:8px 0; }
+.adventure-scroll #narrationText { line-height:1.75; white-space:pre-wrap; font-size:1rem; max-width:78ch; }
+.adventure-scroll .narration-heading { flex-wrap:wrap; }
+.adventure-approaches,.adventure-mechanics,.workspace-help { border:1px solid var(--border); background:var(--panel); border-radius:10px; margin-bottom:10px; padding:12px; }
+.adventure-approaches > summary,.adventure-mechanics > summary,.workspace-help > summary { cursor:pointer; font-weight:650; min-height:32px; padding:4px; }
+.adventure-approaches #roadScenario,.adventure-approaches #chatScenario { padding:8px; }
+.adventure-approaches #roadScenario > button,.adventure-approaches #chatScenario > button { display:block; width:100%; text-align:left; min-height:44px; margin-top:10px; white-space:normal; }
+.adventure-approaches #roadScenario > p,.adventure-approaches #chatScenario > p { line-height:1.55; font-size:.86rem; }
+.adventure-scroll .combat-actions,.adventure-scroll .story-choices,.adventure-scroll .event-feed { max-height:none; overflow:visible; }
+.adventure-scroll .panel { margin:0; }
+.adventure-composer { background:var(--bg-elevated); border:1px solid var(--border); border-radius:12px; padding:10px 14px; min-width:0; box-shadow:0 -8px 20px rgba(0,0,0,.15); }
+.composer-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.message-modes { display:flex; gap:4px; }
+.message-modes button { min-width:68px; min-height:40px; padding:6px 14px; }
+#editInstructionsBtn { font-size:.76rem; padding:6px; }
+.mode-help { margin:6px 0; color:var(--muted); font-size:.78rem; line-height:1.4; }
+.adventure-composer .action-form { margin:4px 0; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+.adventure-composer textarea { min-height:60px; max-height:160px; resize:vertical; }
+.adventure-composer #chatStatus { font-size:.72rem; line-height:1.4; margin:5px 0 0; }
+.adventure-composer #chatPending:not(:empty) { padding:10px; margin-bottom:8px; border:1px solid var(--accent); border-radius:8px; }
+.adventure-composer #chatPending button { min-height:40px; margin:4px 6px 0 0; }
+#newReplyBtn { width:100%; margin-bottom:6px; }
+.return-to-message { margin-top:14px; min-height:44px; }
+#workspace-party .left-rail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:start; position:static; max-height:none; overflow:visible; }
+#workspace-party #tabInventory { display:grid; grid-template-columns:minmax(250px,1fr) minmax(0,2fr); gap:16px; }
+#workspace-party .inventory-cards { max-height:none; overflow:visible; }
+#workspace-journal #storyJournal { margin:12px 0; }
+.journal-filters { display:flex; flex-wrap:wrap; gap:6px; padding:10px 0; }
+.journal-filters button { min-height:44px; padding:6px 10px; font-size:.84rem; }
+#workspace-journal #journalRecords { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+#journalRecords > p { grid-column:1/-1; }
+#workspace-journal .journal-section { border:1px solid var(--border-soft); border-radius:9px; padding:10px; }
+#workspace-journal #tabJournal { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+#workspace-journal .history-list,#workspace-journal .clue-list { max-height:none; }
+#workspace-settings > details { margin:14px 0; border:1px solid var(--border); border-radius:10px; padding:12px; }
+#workspace-settings #tabSaves { display:grid; grid-template-columns:minmax(240px,1fr) minmax(0,2fr); gap:16px; }
+#workspace-settings .save-list { max-height:none; }
+#workspace-settings #localAISettings { max-width:900px; }
+.reading-setting { display:flex; align-items:center; gap:12px; padding:12px 0; }
+.instruction-dialog { width:min(640px,calc(100% - 24px)); max-height:90dvh; overflow:auto; background:var(--panel); color:var(--text); border:1px solid var(--accent); border-radius:12px; padding:24px; }
+.instruction-dialog::backdrop { background:rgba(0,0,0,.75); }
+.instruction-dialog textarea { width:100%; min-height:160px; }
+.story-workspace :focus-visible { outline:3px solid var(--accent-strong); outline-offset:3px; }
+.story-workspace [data-reading-size=large] { font-size:1.1rem; }
+.story-workspace[data-reading-size=large] #narrationText,.story-workspace[data-reading-size=large] .adventure-conversation,.story-workspace[data-reading-size=large] .journal-record { font-size:1.12rem; }
+.story-workspace[data-reading-size=larger] #narrationText,.story-workspace[data-reading-size=larger] .adventure-conversation,.story-workspace[data-reading-size=larger] .journal-record { font-size:1.25rem; }
+@media(max-width:760px){
+ .story-workspace .app-shell { padding:0 8px 16px; }
+ .story-workspace .topbar { align-items:flex-start; padding:8px 0; gap:6px; }
+ .story-workspace .topbar .brand-block { min-width:0; }
+ .story-workspace .topbar .subtitle,.story-workspace .topbar .eyebrow { display:none; }
+ .story-workspace .topbar-actions { gap:4px; flex-wrap:wrap; max-width:180px; }
+ .story-workspace .topbar-actions button { min-height:36px; padding:6px; font-size:.72rem; }
+ .story-workspace .status-badge { max-width:175px; font-size:.6rem; }
+ .workspace-nav { gap:2px; padding:3px; margin-bottom:6px; }
+ .workspace-nav button { min-width:0; min-height:44px; padding:5px 2px; font-size:.74rem; }
+ #workspace-adventure { gap:5px; }
+ .adventure-overview { padding:8px; }
+ .adventure-overview h2 { font-size:1.15rem; margin:4px 0; }
+ .adventure-overview .scene-meta-row { font-size:.7rem; }
+ .adventure-overview .objective-box { padding:6px; }
+ .adventure-overview .objective-box span { font-size:.65rem; }
+ .adventure-overview .objective-box p { font-size:.78rem; }
+ .party-snapshot { font-size:.67rem; }
+ .adventure-shortcuts button { min-height:32px; font-size:.66rem; }
+ .adventure-scroll { padding-right:2px; }
+ .adventure-scroll .scene-card { padding:10px; }
+ .adventure-composer { padding:8px; }
+ .message-modes button { min-width:46px; min-height:40px; padding:5px 10px; }
+ #editInstructionsBtn { max-width:116px; min-height:40px; }
+ .mode-help { font-size:.71rem; }
+ .adventure-composer .action-form { grid-template-columns:minmax(0,1fr) auto; }
+ .adventure-composer #actionSubmitBtn { min-width:50px; padding:8px; font-size:.8rem; }
+ .adventure-composer textarea { min-height:52px; font-size:16px; }
+ #workspace-party .left-rail,#workspace-party #tabInventory,#workspace-journal #journalRecords,#workspace-journal #tabJournal,#workspace-settings #tabSaves { display:block; }
+ #workspace-party .panel,#workspace-settings .panel { margin-bottom:12px; }
+ .instruction-dialog { padding:16px; }
+}
+/* In a short viewport or with an on-screen keyboard, prefer natural page scrolling
+   over squeezing the story/input out of view. No fixed composer overlays content. */
+@media(max-height:650px){
+ #workspace-adventure { display:flex; height:auto; min-height:0; flex-direction:column; }
+ .adventure-scroll { overflow:visible; }
+ .adventure-composer { position:sticky; bottom:0; z-index:10; }
+}
+@media(prefers-reduced-motion:reduce){.story-workspace *{scroll-behavior:auto !important;transition:none !important;animation:none !important;}}
