@@ -68,6 +68,8 @@ def exercise(page, output: Path, offline: bool) -> None:
         panel.get_by_role('button',name='Start sandbox',exact=True).click()
         expect(page.locator('#playerLevel')).to_have_text('Level 10')
         panel.get_by_role('button',name='Resume autosave',exact=True).click()
+        from ui_safety_browser import choose
+        choose(page, 'Discard and continue')
         expect(page.locator('#playerLevel')).to_have_text('Level 1')
         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
         expect(page.locator('#narrationText')).to_have_text(expected_narration)
@@ -225,6 +227,7 @@ def exercise(page, output: Path, offline: bool) -> None:
         # engine. Its evidence migrates to the journal without any new rewards.
         old_fixture=ROOT/'tests/fixtures/alpha2-courier-export.json'
         panel.locator('input[type=file]').set_input_files(str(old_fixture))
+        choose(page, 'Discard and continue')
         expect(page.locator('#playerLevel')).to_have_text('Level 1')
         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
         journal.locator('summary').click()
@@ -232,6 +235,7 @@ def exercise(page, output: Path, offline: bool) -> None:
         expect(journal.locator('[data-journal-id=letter]')).to_have_count(0)
         journal.locator('summary').click()
         panel.locator('input[type=file]').set_input_files(str(journey_save))
+        choose(page, 'Discard and continue')
         expect(road).to_contain_text('Delivery completed')
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
@@ -281,6 +285,17 @@ def main() -> None:
                     page.on('pageerror',lambda e:errors.append(str(e)))
                     page.on('dialog',lambda d:d.accept())
                     page.goto(url,wait_until='load')
+                    from ui_safety_browser import exercise_safety
+                    safety_out=out/'batch1';safety_out.mkdir(exist_ok=True)
+                    safety=browser_type.launch_persistent_context(str(temporary/('safety-'+target)),**launch)
+                    try:
+                        safety_page=safety.pages[0] if safety.pages else safety.new_page()
+                        safety_page.on('pageerror',lambda e:errors.append(str(e)))
+                        safety_page.on('dialog',lambda d:d.accept())
+                        safety_page.goto(url,wait_until='load')
+                        exercise_safety(safety_page,safety_out,target!='server')
+                    finally:
+                        safety.close()
                     exercise(page,out,target!='server')
                     assert not errors,errors
                     context.tracing.stop(path=str(out/'trace.zip'));context.close();context=None
@@ -303,7 +318,7 @@ def main() -> None:
                         # while canonical adventure outcomes live in the journal.
                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server'})
+                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server','batch1Safety':True})
                     # Successful traces are large and redundant with summaries
                     # and screenshots. Retain failure traces, not endless archives.
                     (out/'trace.zip').unlink(missing_ok=True)

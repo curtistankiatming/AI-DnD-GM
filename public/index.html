@@ -12,6 +12,16 @@
 
     <div id="setupOverlay" class="overlay">
       <section class="setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+        <section id="resumePanel" class="resume-panel" aria-label="Continue or load a campaign">
+          <h2>Your campaigns</h2>
+          <button id="continueBtn" class="btn btn-primary" type="button" disabled>Continue (checking saves…)</button>
+          <button id="returnToGameBtn" class="btn btn-secondary is-hidden" type="button">Return to current adventure</button>
+          <p id="homeSaveStatus" class="muted" role="status">Checking saved campaigns…</p>
+          <details id="homeSaves"><summary>Load a saved campaign</summary>
+            <button id="homeRefreshSavesBtn" class="text-button" type="button">Refresh saves</button>
+            <div id="homeSaveList" class="save-list"></div>
+          </details>
+        </section>
         <div class="setup-heading">
           <div>
             <p class="eyebrow">New campaign</p>
@@ -104,6 +114,8 @@
         </div>
       </header>
 
+      <p id="saveStatus" class="session-status" role="status">No campaign open</p>
+      <p id="waitNotice" class="session-status is-hidden">Waiting for the guide. You can read your party, equipment and journal, or draft a message. These are the last confirmed facts; sending, saving and game-changing controls are paused. Cancelling narration does not undo an action already resolved.</p>
       <main id="gameLayout" class="game-layout is-hidden">
         <aside class="left-rail">
           <section class="panel character-panel">
@@ -215,6 +227,7 @@
               </div>
             </div>
             <p class="muted">Set campaign preferences, speak, ask questions, or propose an action. The guide asks for confirmation before a model-selected action changes the game.</p>
+            <p id="actionFeedback" class="action-feedback is-hidden" role="status" aria-live="polite"></p>
             <form id="actionForm" class="action-form">
               <textarea id="actionInput" rows="2" placeholder="Example: buy 2 healing potions · use antitoxin on Orin · return to town"></textarea>
               <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Send message</button>
@@ -325,6 +338,7 @@
       </div>
     </div>
 
+    <script src="/ui-session.js"></script>
     <script src="/app.js"></script>
     <script src="/expedition.js"></script>
     <script src="/chat-ui.js"></script>

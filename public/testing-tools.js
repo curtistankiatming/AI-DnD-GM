@@ -36,11 +36,8 @@
         if (busy || !input.files[0]) return;
         if (input.files[0].size > 1024 * 1024) throw new Error('Save imports must be smaller than 1 MiB.');
         const payload = client.importText(await input.files[0].text());
-        if (state && !confirm('Replace the current on-screen campaign? Export it first if needed. Existing named saves are not deleted.')) return;
-        eventHistory = []; ingestPayload(payload, { appendEvents: false });
-        dom.setupOverlay.classList.add('is-hidden'); dom.gameLayout.classList.remove('is-hidden');
-        dom.saveSlotInput.value = payload.state.publicTest?.mode === 'sandbox' ? 'sandbox-import' : 'imported-campaign';
-        toast('Save imported. Use Quick Save to keep a browser copy.', 'good');
+        const applied = await sessionUI.replace(async () => payload, {label: 'importing a saved campaign'});
+        if (applied) toast('Save imported. Quick Save uses a new named destination; existing saves are untouched.', 'good');
       } catch (error) { toast(error.message, 'bad'); }
       finally { input.value = ''; }
     });
@@ -59,16 +56,11 @@
     for (const s of client.scenarios) { const o = el('option', `${s.name} (level ${s.level}+)`); o.value = s.id; scenario.append(o); }
     controls.append(level, scenario, button('Start sandbox', async () => {
       if (busy) return;
-      if (state && !confirm('Switch to a sandbox character? Export unsaved progress first. Named campaign saves and normal autosave will not be overwritten.')) return;
-      try {
-        setBusy(true);
-        const { payload } = await api('/api/test/start', { method: 'POST', body: JSON.stringify({ classId: setupPanel ? setup.classId : state?.player.classId || setup.classId, level: Number(level.value), questId: scenario.value }) });
-        eventHistory = []; ingestPayload(payload);
-        dom.setupOverlay.classList.add('is-hidden'); dom.gameLayout.classList.remove('is-hidden');
-        dom.saveSlotInput.value = 'sandbox-session';
-        toast('Sandbox fixture created. Choose pending rewards and use the expedition board.', 'good');
-      } catch (error) { toast(error.message, 'bad'); }
-      finally { setBusy(false); }
+      await sessionUI.replace(async () => {
+        const { response, payload } = await api('/api/test/start', { method: 'POST', body: JSON.stringify({ classId: setupPanel ? setup.classId : state?.player.classId || setup.classId, level: Number(level.value), questId: scenario.value }) });
+        if (!response.ok) throw new Error(payload.error || 'Sandbox creation failed.');
+        return payload;
+      }, {label: 'switching to a sandbox character'});
     }));
     details.append(controls); panel.append(details);
     panel.append(el('p', 'Alpha foundation: companion recovery corrected; the chat side story is bounded. Recurring expedition structure and no live AI narrator in this offline edition remain limitations. Clearing browser data can erase local saves; file:// storage varies by browser.'));
@@ -89,17 +81,5 @@
       for (const note of notes) note.textContent += ' STORAGE UNAVAILABLE: export your save to keep progress.';
       if (!warnedStorage) { warnedStorage = true; toast(payload.storageWarning, 'warning'); }
     }
-  };
-  // A fresh campaign must not Quick Save over the last sandbox/imported slot.
-  const originalStart = startCampaign;
-  dom.startCampaignBtn.removeEventListener('click', originalStart);
-  dom.startCampaignBtn.addEventListener('click', async () => {
-    client.storage.setItem('dnd-ai-gm-v4-last-slot', 'campaign-save');
-    await originalStart();
-  });
-  const originalSave = saveGame;
-  saveGame = function (slot) {
-    if (state?.publicTest?.mode !== 'sandbox' && String(slot || '').startsWith('sandbox-')) slot = 'campaign-save';
-    return originalSave(slot);
   };
 })();

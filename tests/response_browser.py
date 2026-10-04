@@ -57,6 +57,7 @@ def exercise_response_policy(page, output):
                                  ('question', 'Check the action boundary.', False)]:
             page.locator('#chatMode').select_option(mode)
             page.locator('#actionInput').fill(text)
+            prior_narration = page.locator('#narrationText').inner_text()
             with page.expect_response(lambda r: r.url.endswith('/api/chat')) as event:
                 page.locator('#actionForm button[type=submit]').click()
             response = event.value
@@ -79,6 +80,8 @@ def exercise_response_policy(page, output):
             else:
                 assert response.status == 422
                 expect(page.locator('#chatTranscript')).to_contain_text('cannot spend an action')
+                expect(page.locator('#narrationText')).to_have_text(prior_narration)
+                expect(page.locator('#actionFeedback')).to_contain_text('cannot spend an action')
             results.append({'mode': mode, 'readOnly': True, 'adjustmentShown': good, 'actionRejected': not good})
         assert len(calls) == 3 and not errors, errors
         (output / 'response-routing.json').write_text(json.dumps({'checks': results, 'mockModelCalls': len(calls), 'realModelCalls': 0}, indent=2), encoding='utf-8')
