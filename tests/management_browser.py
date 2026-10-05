@@ -1,5 +1,8 @@
 """Batch 3 through actual UI controls. No live model or injected campaign state."""
 import json
+import subprocess
+from pathlib import Path
+from urllib.request import Request, urlopen
 from playwright.sync_api import expect
 
 
@@ -96,10 +99,65 @@ def exercise_management(page, output):
     page.set_viewport_size({'width':1440,'height':1100})
     go('party');page.locator('#equipmentOwner').select_option('player')
     page.locator('#inventoryFilterReset').click();go('adventure')
+    permanent = False
+    if not page.evaluate('Boolean(window.BriarwatchOffline)'):
+        exercise_advancement_fixture(page, output)
+        permanent = True
     (output/'management-summary.json').write_text(json.dumps({
         'readOnlyFiltersAndComparison':True,'fourSlotsAllOwners':True,
         'engineBackedEquipmentRoundtrip':True,'prepareDestination':True,
         'groupedOriginalCombatButtons':True,'practiceRoundtrip':True,
         'contributionUsesActualFeed':True,'widths':[320,1440],
-        'realModelCalls':0,'permanentSpecializationBrowserAcceptance':False
+        'realModelCalls':0,'permanentSpecializationBrowserAcceptance':permanent
     },indent=2),encoding='utf-8')
+
+
+def exercise_advancement_fixture(page, output):
+    """Controlled level-10 sandbox save: not naturally earned progression."""
+    script = """
+const E=require('./src/engine'),S=require('./src/public-preview');
+const s=S.makeSandbox({classId:'fighter',level:10,questId:'aftermath'});
+if(E.buildView(s).progression.specializationOptions.length!==2)throw Error('Fixture changed');
+process.stdout.write(JSON.stringify(s));
+"""
+    fixture = json.loads(subprocess.check_output(['node','-e',script],
+                          cwd=Path(__file__).resolve().parents[1],text=True))
+    base=page.url.rstrip('/')
+    # Normal game save API, directed to the smoke test's isolated SAVE_DIR.
+    data=json.dumps({'slot':'sandbox-management-trial','state':fixture}).encode()
+    with urlopen(Request(base+'/api/session/save',data=data,
+                         headers={'Content-Type':'application/json','Origin':base}),timeout=5) as response:
+        assert response.status==200
+    page.locator('#nav-settings').click()
+    page.locator('#refreshSavesBtn').click()
+    page.locator('#saveList [data-save-slot=sandbox-management-trial]').get_by_role('button',name='Load',exact=True).click()
+    expect(page.locator('#sessionDecision')).to_be_visible()
+    page.locator('#sessionDecision').get_by_role('button',name='Discard and continue',exact=True).click()
+    expect(page.locator('#playerLevel')).to_have_text('Level 10')
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    page.locator('#nav-prepare').click()
+    choose=page.locator('#progressionPanel button[data-action]').filter(has_text='Guardian')
+    before=page.evaluate('JSON.stringify(state)')
+    choose.click()
+    expect(page.locator('#sessionDecisionTitle')).to_have_text('Confirm permanent advancement')
+    expect(page.locator('#sessionDecisionMessage')).to_contain_text('permanent')
+    expect(page.locator('#sessionDecision button[value=cancel]')).to_be_focused()
+    page.keyboard.press('Escape')
+    expect(page.locator('#sessionDecision')).to_have_count(0)
+    assert page.evaluate('JSON.stringify(state)')==before
+    choose.click()
+    page.screenshot(path=str(output/'permanent-advancement.png'),full_page=True)
+    page.locator('#sessionDecision').get_by_role('button',name='Choose Guardian',exact=True).click()
+    expect(page.locator('#sessionDecision')).to_have_count(0)
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    assert page.evaluate('state.player.progression.specialization')=='guardian'
+    assert page.evaluate('state.player.gold')==fixture['player']['gold']
+    assert page.evaluate('state.player.xp')==fixture['player']['xp']
+    assert page.evaluate('view.progression.specializationOptions.length')==0
+    page.locator('#saveQuickBtn').click()
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    page.locator('#nav-settings').click()
+    page.locator('#saveList [data-save-slot=sandbox-management-trial]').get_by_role('button',name='Load',exact=True).click()
+    expect(page.locator('#saveQuickBtn')).to_be_enabled()
+    assert page.evaluate('state.player.progression.specialization')=='guardian'
+    page.locator('#nav-adventure').click()
