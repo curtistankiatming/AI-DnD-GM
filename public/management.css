@@ -1,0 +1,20 @@
+/* Management presentation uses the existing theme; no external assets or fonts. */
+.management-workspace .management-field{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.85rem;margin:6px 0;min-width:0}
+.management-field select,.management-field input{max-width:100%;min-width:0;min-height:40px}
+.inventory-filter-bar{display:flex;gap:8px 16px;flex-wrap:wrap;align-items:end;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.inventory-filter-bar input[type=search]{width:220px}.inventory-filter-bar input[type=checkbox]{width:22px;min-height:22px}
+#inventoryFilterCount{width:100%;margin:0}.item-usage,.item-owners{font-size:.8rem;line-height:1.55;overflow-wrap:anywhere}
+.item-usage{border-left:3px solid var(--accent);padding-left:9px}.item-owners{color:var(--muted)}
+.management-dialog{width:min(740px,calc(100% - 24px));max-height:90dvh;overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--accent);border-radius:12px;padding:20px}
+.management-dialog::backdrop{background:rgba(0,0,0,.75)}.management-dialog select{max-width:100%;margin:8px 0}
+.gear-comparison{width:100%;border-collapse:collapse;table-layout:fixed;margin:12px 0;font-size:.82rem;text-align:left}
+.gear-comparison caption{text-align:left;line-height:1.5;padding:6px 0}.gear-comparison th,.gear-comparison td{border-bottom:1px solid var(--border);padding:7px 5px;overflow-wrap:anywhere;vertical-align:top}
+.gear-comparison th:first-child{width:38%}.gear-comparison tbody th{font-weight:500}
+.management-card{border:1px solid var(--border);border-radius:12px;background:var(--panel);padding:16px;margin:12px 0}
+.management-card h2{font-size:1.2rem;margin:0 0 8px}.management-card summary{min-height:36px;cursor:pointer;font-weight:650}.readiness-line{font-size:.85rem;line-height:1.55;margin:7px 0}
+.management-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.management-tabs button{min-height:44px}
+.management-tabs [aria-pressed=true]{border-color:var(--accent);background:var(--accent-dark);color:var(--accent-strong)}
+.companion-contribution{font-size:.82rem;border-top:1px solid var(--border);padding-top:9px;line-height:1.5}
+.management-workspace #combatActions{display:block}.combat-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.combat-group h3{grid-column:1/-1;font-size:.9rem;margin:3px 0}
+.combat-group [data-action-id=end-turn]{border-color:var(--accent);font-weight:650}.management-workspace .equipment-slot>strong{display:block;margin:6px 0}
+@media(max-width:760px){.management-workspace #workspace-party .left-rail{display:block}.combat-group{grid-template-columns:1fr}.management-dialog{padding:12px}.gear-comparison{font-size:.75rem}.inventory-filter-bar{display:block}.inventory-filter-bar input[type=search]{width:100%}.management-field{justify-content:space-between}.management-card{padding:12px}}
