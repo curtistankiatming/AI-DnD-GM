@@ -64,9 +64,10 @@ def exercise_workspace(page, output, offline):
     expect(page.locator('#nav-adventure')).to_have_attribute('aria-selected', 'true')
     assert page.locator('#workspaceNav [role=tab]').count() == 5
     assert page.evaluate('(()=>{const ids=[...document.querySelectorAll("[id]")].map(n=>n.id);return ids.length===new Set(ids).size;})()')
-    # One composer, three explicit modes, no everyday instructions replacement mode.
+    # One composer and one confirmation, three explicit modes, no everyday instructions replacement mode.
     expect(page.locator('#adventureComposer #actionForm')).to_have_count(1)
-    expect(page.locator('#adventureComposer #chatPending')).to_have_count(1)
+    expect(page.locator('#adventureScroll #chatPending')).to_have_count(1)
+    expect(page.locator('#adventureComposer #chatPending')).to_have_count(0)
     expect(page.locator('#messageModes [role=radio]')).to_have_count(3)
     expect(page.locator('#chatMode option[value=instructions]')).to_have_count(0)
     before = page.evaluate('JSON.stringify(state)')
@@ -159,7 +160,19 @@ def exercise_workspace(page, output, offline):
         assert box['width']<=width and box['x']>=0
         if height>650:
             assert box['y']+box['height']<=height+3, (width,height,box)
+        expect(page.locator('#adventureOverview')).to_have_count(1)
+        expect(page.locator('#adventureScroll > #adventureOverview')).to_have_count(1 if width<=760 else 0)
         page.screenshot(path=str(output/f'workspace-{width}.png'),full_page=True)
+    # A long confirmation must not force the composer out of a narrow viewport.
+    page.set_viewport_size({'width':320,'height':740});go(page,'adventure')
+    mechanics_before = page.evaluate('JSON.stringify([state.player,state.party,state.story,state.world,state.turnCount])')
+    page.locator('#roadScenario').get_by_role('button',name='Repair the wagon in exchange for help at the crossing',exact=True).click()
+    expect(page.locator('#chatPending')).to_contain_text('No roll or resource change has happened yet.')
+    box=page.locator('#adventureComposer').bounding_box()
+    assert box['y']+box['height']<=743, box
+    page.get_by_role('button',name='Cancel proposal',exact=True).click()
+    expect(page.locator('#chatPending')).to_be_empty()
+    assert page.evaluate('JSON.stringify([state.player,state.party,state.story,state.world,state.turnCount])') == mechanics_before
     go(page,'settings');page.locator('#readingSize').select_option('larger')
     go(page,'journal');page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
@@ -169,6 +182,6 @@ def exercise_workspace(page, output, offline):
     (output/'workspace-summary.json').write_text(json.dumps({
         'fiveDestinations':True,'keyboardTabsAndModes':True,'draftPreserved':True,
         'separateInstructionEditor':True,'cancelDoesNotSave':True,'targetFocusAndInert':True,
-        'unifiedJournalFilters':True,'navigationReadOnly':True,
+        'unifiedJournalFilters':True,'navigationReadOnly':True,'narrowConfirmationAndComposer':True,
         'widths':[1440,390,320,760],'largeReadingText':True,'realModelCalls':0
     },indent=2),encoding='utf-8')

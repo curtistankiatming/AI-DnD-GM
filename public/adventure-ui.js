@@ -45,7 +45,8 @@
  const approaches=el('details','adventure-approaches');approaches.id='adventureApproaches';approaches.open=true;
  const approachTitle=el('summary','','Available approaches');approaches.append(approachTitle,byId('roadScenario'),byId('chatScenario'),dom.choicePanel);
  const mechanics=el('details','adventure-mechanics');mechanics.id='mechanicsDetails';mechanics.append(el('summary','','Dice & confirmed consequences'),dom.eventFeed.closest('section'));
- scroll.append(storyCard,byId('intentPanel'),dom.combatPanel,approaches,mechanics);
+ // A proposal can be long: keep it in the reading flow, not the input's fixed row.
+ scroll.append(storyCard,byId('chatPending'),byId('intentPanel'),dom.combatPanel,approaches,mechanics);
  const composer=el('section','adventure-composer');composer.id='adventureComposer';composer.setAttribute('aria-label','Your message');
  const unread=button('New response — jump to latest',()=>{navigate('adventure');jumpToLatest();});unread.id='newReplyBtn';unread.hidden=true;
  const modes=el('div','message-modes');modes.id='messageModes';modes.setAttribute('role','radiogroup');modes.setAttribute('aria-label','Message mode');
@@ -58,7 +59,7 @@
  const modeHelp=el('p','mode-help');modeHelp.id='messageModeHelp';
  const settingsLink=button('Campaign instructions',()=>openInstructions(),false);settingsLink.id='editInstructionsBtn';
  const modeRow=el('div','composer-toolbar');modeRow.append(modes,settingsLink);
- composer.append(backing.parentElement,unread,byId('chatPending'),modeRow,modeHelp,dom.actionForm,byId('actionFeedback'),byId('chatStatus'));
+ composer.append(backing.parentElement,unread,modeRow,modeHelp,dom.actionForm,byId('actionFeedback'),byId('chatStatus'));
  const cancel=byId('chatFoundation').querySelector('button[data-keep-enabled]');if(cancel)composer.append(cancel);
  dom.actionInput.setAttribute('aria-label','Your message');dom.actionInput.setAttribute('aria-describedby','messageModeHelp');
  const foundation=byId('chatFoundation'),memory=byId('campaignInstructions').closest('details'),tools=foundation.querySelector('.chat-controls');
@@ -113,6 +114,13 @@
   byId('historyList').closest('section').hidden=!['all','completed'].includes(filter);
  }
  function measure(){if(active!=='adventure'||main.classList.contains('is-hidden'))return;
+  // At narrow widths the overview wraps to several lines. Scroll it with the
+  // story rather than forcing an oversized auto row above the message composer.
+  // Move the existing node; do not clone controls or create a second objective.
+  const compact=window.innerWidth<=760;
+  panes.adventure.classList.toggle('adventure-compact',compact);
+  if(compact&&overview.parentElement!==scroll)scroll.prepend(overview);
+  else if(!compact&&overview.parentElement!==panes.adventure)panes.adventure.prepend(overview);
   const height=Math.max(280,window.innerHeight-panes.adventure.getBoundingClientRect().top-12);
   panes.adventure.style.setProperty('--workspace-height',height+'px');
  }
