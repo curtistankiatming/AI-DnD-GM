@@ -22,6 +22,7 @@ import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import urlopen
 from playwright.sync_api import sync_playwright, expect
+from workspace_browser import go, mode, journal as show_journal, model_settings, offline_tools, scenario, instructions, exercise_workspace
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -39,11 +40,9 @@ def exercise(page, output: Path, offline: bool) -> None:
     page.locator('#setupName').fill('Browser Test Hero')
     page.locator('#startCampaignBtn').click()
     expect(page.locator('#gameLayout')).to_be_visible()
-    page.locator('#chatMode').select_option('instructions')
-    page.locator('#actionInput').fill('Prefer diplomacy and concise descriptions.')
-    page.locator('#actionForm button[type=submit]').click()
+    instructions(page, 'Prefer diplomacy and concise descriptions.')
     expect(page.locator('#campaignInstructions')).to_have_text('Prefer diplomacy and concise descriptions.')
-    page.get_by_role('button',name='Start courier scenario',exact=True).click()
+    scenario(page, 'Start courier scenario')
     page.get_by_role('button',name='Request civic assistance and wait for a lawful release',exact=True).click()
     expect(page.get_by_role('button',name='Confirm chat action',exact=True)).to_be_visible()
     page.get_by_role('button',name='Confirm chat action',exact=True).click()
@@ -54,6 +53,7 @@ def exercise(page, output: Path, offline: bool) -> None:
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     if offline:
         panel=page.locator('.app-shell .preview-notice').first
+        offline_tools(page)
         with page.expect_download() as event:
             panel.get_by_role('button',name='Export current save',exact=True).click()
         save=output/'export.json'
@@ -63,10 +63,12 @@ def exercise(page, output: Path, offline: bool) -> None:
         assert data['player']['xp']==40
         assert data['chat']['courier']['resolved']
         assert data['chat']['instructions']=='Prefer diplomacy and concise descriptions.'
+        offline_tools(page)
         panel.locator('summary').click()
         panel.get_by_label('Sandbox level').select_option('10')
         panel.get_by_role('button',name='Start sandbox',exact=True).click()
         expect(page.locator('#playerLevel')).to_have_text('Level 10')
+        offline_tools(page)
         panel.get_by_role('button',name='Resume autosave',exact=True).click()
         from ui_safety_browser import choose
         choose(page, 'Discard and continue')
@@ -76,15 +78,17 @@ def exercise(page, output: Path, offline: bool) -> None:
         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
         # Invalid import must leave the current campaign alone.
         bad=output/'bad-import.json';bad.write_text('{',encoding='utf-8')
+        offline_tools(page)
         panel.locator('input[type=file]').set_input_files(str(bad))
         expect(page.locator('#toastRegion')).to_contain_text('JSON')
         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
+        offline_tools(page)
         panel.locator('input[type=file]').set_input_files(str(save))
         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
         expect(page.locator('#narrationText')).to_have_text(expected_narration)
         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
     else:
-        page.locator('#localAISettings summary').click()
+        model_settings(page)
         expect(page.locator('#localAIProfile')).to_have_value('compact')
         page.locator('#localAIProfile').select_option('expanded')
         expect(page.locator('#localAIContext')).to_have_value('22000')
@@ -120,29 +124,31 @@ def exercise(page, output: Path, offline: bool) -> None:
         exercise_response_policy(page, output)
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    go(page,'adventure')
     page.screenshot(path=str(output/'mobile.png'),full_page=True)
 
     # Connected journey uses actual visible controls; no XP, items or outcomes
     # are injected. A failed repair uses the disclosed civic fallback.
     page.set_viewport_size({'width':1440,'height':1100})
-    page.get_by_role('button',name='Start Lantern Road',exact=True).click()
+    scenario(page, 'Start Lantern Road')
     road=page.locator('#roadScenario')
     expect(road).to_contain_text('Active: wagon')
     def approach(name):
+        go(page,'adventure')
         road.get_by_role('button',name=name,exact=True).click()
         page.get_by_role('button',name='Confirm chat action',exact=True).click()
         expect(page.locator('#saveQuickBtn')).to_be_enabled()
     approach('Promise to deliver Tamsin’s letter unopened')
     journal=page.locator('#storyJournal')
-    journal.locator('summary').click()
+    show_journal(page)
     expect(journal.locator('[data-journal-id=letter]')).to_contain_text('[active]')
     # Read-only questions and player notes must not execute game actions.
-    page.locator('#chatMode').select_option('question')
+    mode(page,'question')
     page.locator('#actionInput').fill('What did we promise?')
     page.locator('#actionForm button[type=submit]').click()
     expect(page.locator('#chatTranscript')).to_contain_text('promise is still outstanding')
-    journal.locator('summary').click()
-    page.locator('#chatMode').select_option('action')
+    show_journal(page)
+    mode(page,'action')
     # Regression: decline the action or describe two steps; neither creates a proposal.
     # Wait for the submitted text in the rendered transcript before inspecting state.
     for text in ['I do not repair the wagon, not a payment.',
@@ -177,13 +183,13 @@ def exercise(page, output: Path, offline: bool) -> None:
     approach('Deliver the medicine and report to Iona')
     expect(road).to_contain_text('Delivery completed — reward recorded once')
     expect(road).to_contain_text('promise: kept')
-    journal.locator('summary').click()
+    show_journal(page)
     expect(journal.locator('[data-journal-id=letter]')).to_contain_text('[kept]')
     expect(journal.locator('[data-journal-id=herbs]')).to_be_visible()
-    journal.locator('summary').click()
+    show_journal(page)
     approach('Collect Tamsin’s promised medicinal herbs')
     expect(road.get_by_role('button',name='Collect Tamsin’s promised medicinal herbs',exact=True)).to_have_count(0)
-    journal.locator('summary').click()
+    show_journal(page)
     expect(journal.locator('[data-journal-id=herbs]')).to_have_count(0)
     expect(journal.locator('[data-journal-id=herbs-collected]')).to_be_visible()
     # Treat HTML-looking player notes as text; no rendered markup or authority.
@@ -203,11 +209,12 @@ def exercise(page, output: Path, offline: bool) -> None:
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     journal.screenshot(path=str(output/'journal-mobile.png'))
-    journal.locator('summary').click()
+    show_journal(page)
 
     page.locator('#saveQuickBtn').click()
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     if offline:
+        offline_tools(page)
         with page.expect_download() as event:
             panel.get_by_role('button',name='Export current save',exact=True).click()
         journey_save=output/'journey-save.json';event.value.save_as(journey_save)
@@ -217,23 +224,26 @@ def exercise(page, output: Path, offline: bool) -> None:
         assert saved_state['chat']['road']['cacheClaimed']
         assert saved_state['journal']['promises'][0]['status']=='kept'
         assert saved_state['journal']['notes'][0]['text']=='Check the river weather before the next trip.'
+        offline_tools(page)
         panel.locator('input[type=file]').set_input_files(str(journey_save))
         expect(road).to_contain_text('Delivery completed')
-        journal.locator('summary').click()
+        show_journal(page)
         expect(journal.locator('[data-journal-id=letter]')).to_contain_text('[kept]')
         expect(journal.locator('[data-journal-group=notes]')).to_contain_text('Check the river weather')
-        journal.locator('summary').click()
+        show_journal(page)
         # Import a genuine alpha2 save generated by the previously delivered
         # engine. Its evidence migrates to the journal without any new rewards.
         old_fixture=ROOT/'tests/fixtures/alpha2-courier-export.json'
+        offline_tools(page)
         panel.locator('input[type=file]').set_input_files(str(old_fixture))
         choose(page, 'Discard and continue')
         expect(page.locator('#playerLevel')).to_have_text('Level 1')
         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
-        journal.locator('summary').click()
+        show_journal(page)
         expect(journal.locator('[data-journal-id=courier]')).to_contain_text('completed')
         expect(journal.locator('[data-journal-id=letter]')).to_have_count(0)
-        journal.locator('summary').click()
+        show_journal(page)
+        offline_tools(page)
         panel.locator('input[type=file]').set_input_files(str(journey_save))
         choose(page, 'Discard and continue')
         expect(road).to_contain_text('Delivery completed')
@@ -296,6 +306,15 @@ def main() -> None:
                         exercise_safety(safety_page,safety_out,target!='server')
                     finally:
                         safety.close()
+                    workspace=browser_type.launch_persistent_context(str(temporary/('workspace-'+target)),**launch)
+                    try:
+                        workspace_page=workspace.pages[0] if workspace.pages else workspace.new_page()
+                        workspace_page.on('pageerror',lambda e:errors.append(str(e)))
+                        workspace_page.on('dialog',lambda d:d.accept())
+                        workspace_page.goto(url,wait_until='load')
+                        exercise_workspace(workspace_page,out/'batch2',target!='server')
+                    finally:
+                        workspace.close()
                     exercise(page,out,target!='server')
                     assert not errors,errors
                     context.tracing.stop(path=str(out/'trace.zip'));context.close();context=None
@@ -304,21 +323,22 @@ def main() -> None:
                         context=browser_type.launch_persistent_context(str(profile),**launch)
                         page=context.pages[0] if context.pages else context.new_page()
                         page.goto(url,wait_until='load')
+                        offline_tools(page, setup=True)
                         page.locator('.setup-card .preview-notice').get_by_role('button',name='Resume autosave',exact=True).click()
                         expect(page.locator('#chatScenario')).to_contain_text('Courier helped')
                         expect(page.locator('#campaignInstructions')).to_have_text('Prefer diplomacy and concise descriptions.')
                         expect(page.locator('#roadScenario')).to_contain_text('Delivery completed')
                         expect(page.locator('#roadScenario')).to_contain_text('promise: kept')
-                        journal=page.locator('#storyJournal');journal.locator('summary').click()
+                        journal=page.locator('#storyJournal');show_journal(page)
                         expect(journal.locator('[data-journal-id=letter]')).to_contain_text('[kept]')
                         expect(journal.locator('[data-journal-group=notes]')).to_contain_text('Check the river weather before the next trip.')
                         expect(journal.locator('[data-journal-id=herbs]')).to_have_count(0)
-                        journal.locator('summary').click()
+                        show_journal(page)
                         # The latest utility reply (saved note) is restored,
                         # while canonical adventure outcomes live in the journal.
                         expect(page.locator('#narrationText')).to_contain_text('Player note saved')
                         expect(page.locator('#narrationSource')).to_have_text('Saved narration · no new action')
-                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server','batch1Safety':True})
+                    summaries.append({'target':target,'status':'passed','diskRestart':target!='server','journal':True,'legacyAlpha2Import':target!='server','htmlNotesRenderedAsText':True,'repairPaymentContrast':True,'repairRefusalAndCompound':True,'repairCancellation':True,'uncappedSettingsRoundTrip':target=='server','readOnlyRoutingWithMock':target=='server','batch1Safety':True,'batch2Workspace':True})
                     # Successful traces are large and redundant with summaries
                     # and screenshots. Retain failure traces, not endless archives.
                     (out/'trace.zip').unlink(missing_ok=True)
