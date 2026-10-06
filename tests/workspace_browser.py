@@ -179,6 +179,8 @@ def exercise_workspace(page, output, offline):
     page.screenshot(path=str(output/'journal-large-text.png'),full_page=True)
     go(page,'settings');page.locator('#readingSize').select_option('normal')
     go(page,'adventure');page.set_viewport_size({'width':1440,'height':1100})
+    from management_browser import exercise_management
+    exercise_management(page, output/'batch3')
     (output/'workspace-summary.json').write_text(json.dumps({
         'fiveDestinations':True,'keyboardTabsAndModes':True,'draftPreserved':True,
         'separateInstructionEditor':True,'cancelDoesNotSave':True,'targetFocusAndInert':True,
