@@ -49,7 +49,7 @@ test('single-user and explicit JSON Schema are opt-in independent settings',asyn
 });
 test('listing model IDs does not select, load or generate with any model',async t=>{
   const calls=[];const {ai}=await setup(t,async(url,opt)=>{calls.push({url,opt});return json({data:[{id:'a'},{id:'b@q4'},null,{}]});},null);
-  const models=await ai.models();assert.deepEqual(models,['a','b@q4']);assert.equal(calls.length,1);assert.equal(calls[0].opt.method,'GET');
+  const models=await ai.models({provider:'local'});assert.deepEqual(models,['a','b@q4']);assert.equal(calls.length,1);assert.equal(calls[0].opt.method,'GET');
   const c=await ai.config();assert.equal(c.enabled,false);assert.equal(c.model,'');assert.equal(calls[0].url.endsWith('/models'),true);
 });
 test('settings persist outside campaign files; unknown or corrupt settings fail honestly',async t=>{
@@ -80,7 +80,7 @@ for(const [name,response,match]of [
 });
 test('disconnect errors do not disclose raw server data or tokens',async t=>{
   const {ai}=await setup(t,async()=>{throw new Error('socket private token abc');});
-  try{await ai.complete({system:'R',prompt:'Hi'});assert.fail();}catch(e){assert.doesNotMatch(e.message,/private token/);assert.match(e.message,/No cloud fallback/);}
+  try{await ai.complete({system:'R',prompt:'Hi'});assert.fail();}catch(e){assert.doesNotMatch(e.message,/private token/);assert.match(e.message,/local server is running/);}
 });
 test('a busy local model rejects overlapping generation and settings changes; cancel aborts it',async t=>{
   let begin;const started=new Promise(r=>begin=r);let calls=0;

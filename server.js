@@ -13,7 +13,9 @@ const {
   setupCatalog,
   currentNode
 } = require("./src/engine");
-const { narrate, narratorEnabled, AI_MODEL, savedNarration } = require("./src/narrator");
+const { narrate, savedNarration } = require("./src/narrator");
+// Optional git-ignored .env beside package.json (for ANTHROPIC_API_KEY).
+try { process.loadEnvFile(path.join(__dirname, ".env")); } catch {}
 
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "127.0.0.1";
@@ -162,6 +164,17 @@ async function listSaves() {
   return saves.sort((a, b) => String(b.savedAt).localeCompare(String(a.savedAt)));
 }
 
+async function narratorInfo() {
+  if (!(await localAI.narrationEnabled())) return { enabled: false, model: null };
+  const c = await localAI.config();
+  return { enabled: true, model: c.provider === "claude" ? c.claudeModel : c.model };
+}
+
+async function narratorLabel() {
+  const info = await narratorInfo();
+  return info.enabled ? `AI (${info.model})` : "deterministic";
+}
+
 function appendNarrationLog(state, narration) {
   state.logs = Array.isArray(state.logs) ? state.logs : [];
   const last = state.logs[state.logs.length - 1];
@@ -173,7 +186,7 @@ function appendNarrationLog(state, narration) {
 
 async function sessionPayload(state, action, events = [], result = null) {
   let view = buildView(state);
-  const narration = await narrate(state, view, action, events, result);
+  const narration = await narrate(state, view, action, events, result, localAI);
   appendNarrationLog(state, narration);
   view = buildView(state);
   return { state, view, narration, events };
@@ -209,7 +222,7 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && (pathname === "/api/setup" || pathname === "/api/session/new")) {
     sendJson(res, 200, {
       catalog: setupCatalog(),
-      narrator: { enabled: narratorEnabled(), model: narratorEnabled() ? AI_MODEL : null }
+      narrator: await narratorInfo()
     });
     return;
   }
@@ -299,7 +312,7 @@ async function handleApi(req, res, url) {
     sendJson(res, 200, {
       status: "ok",
       version: VERSION,
-      narrator: narratorEnabled() ? `AI (${AI_MODEL})` : "deterministic",
+      narrator: await narratorLabel(),
       timestamp: new Date().toISOString()
     });
     return;
@@ -340,5 +353,5 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`AI Dungeon Master V4 running at http://localhost:${PORT}`);
-  console.log(`Narrator: ${narratorEnabled() ? `AI (${AI_MODEL})` : "deterministic story engine"}`);
+  narratorLabel().then(label => console.log(`Narrator: ${label}`));
 });

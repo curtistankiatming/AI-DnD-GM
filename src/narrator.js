@@ -3,18 +3,6 @@
 const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
 const Journal = require("./journal");
 
-const RAW_PROVIDER_URL =
-  process.env.LM_STUDIO_BASE_URL ||
-  process.env.OPENAI_BASE_URL ||
-  "http://127.0.0.1:1234/v1/chat/completions";
-const AI_PROVIDER_URL = /\/chat\/completions\/?$/.test(RAW_PROVIDER_URL) ? RAW_PROVIDER_URL : RAW_PROVIDER_URL.replace(/\/$/, "")+(RAW_PROVIDER_URL.replace(/\/$/, "").endsWith("/v1")?"/chat/completions":"/v1/chat/completions");
-const AI_MODEL = process.env.AI_MODEL || "";
-const AI_KEY = process.env.LOCAL_AI_TOKEN || "";
-const AI_NARRATOR_MODE = String(process.env.AI_NARRATOR || "off").toLowerCase();
-const configuredTimeout = Number(process.env.AI_TIMEOUT_MS || 20000);
-const AI_TIMEOUT_MS = Number.isFinite(configuredTimeout)
-  ? Math.min(600000, Math.max(3000, Math.floor(configuredTimeout))) : 20000;
-
 // A combat turn has its own facts; lastOutcome may still describe an earlier
 // story choice. Never turn that earlier reward into a fresh combat result.
 function resolvedOutcome(state, action, events = []) {
@@ -157,18 +145,6 @@ function savedNarration(state, view) {
   return { text: parts.join(' '), source: 'save-recap', model: null };
 }
 
-function narratorEnabled() {
-  // Legacy launchers remain usable, but never default to a paid/cloud provider.
-  let endpoint;
-  try { endpoint = new URL(AI_PROVIDER_URL); } catch { return false; }
-  if (!AI_MODEL || !['http:', 'https:'].includes(endpoint.protocol) ||
-      !['localhost', '127.0.0.1', '[::1]'].includes(endpoint.hostname) ||
-      endpoint.username || endpoint.password) return false;
-  if (AI_NARRATOR_MODE === "off" || AI_NARRATOR_MODE === "false" || AI_NARRATOR_MODE === "0") return false;
-  if (AI_NARRATOR_MODE === "on" || AI_NARRATOR_MODE === "true" || AI_NARRATOR_MODE === "1") return true;
-  return Boolean(AI_KEY || process.env.LM_STUDIO_BASE_URL);
-}
-
 function trimNarration(text) {
   const cleaned = String(text || "")
     .replace(/^```(?:json|text)?/i, "")
@@ -178,80 +154,36 @@ function trimNarration(text) {
   return cleaned.length > 1800 ? `${cleaned.slice(0, 1797)}…` : cleaned;
 }
 
-async function callNarrator(prompt, requestImpl) {
-  // Separate legacy opt-in; chat UI settings do not silently enable this route.
-  const rawLimit = process.env.AI_REPLY_TOKENS;
-  let replyTokens = 260;
-  if (rawLimit !== undefined) {
-    try {
-      if (!/^(?:-1|[0-9]+)$/.test(rawLimit)) throw new Error('invalid');
-      replyTokens = require('./model-profiles').replyTokenLimit(Number(rawLimit));
-    } catch { throw new Error('AI_REPLY_TOKENS must be -1 (compatible server uncapped output) or 64–768.'); }
-  }
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
-  const headers = { "Content-Type": "application/json" };
-  if (AI_KEY) headers.Authorization = `Bearer ${AI_KEY}`;
-  const body = {
-    model: AI_MODEL,
-    temperature: 0.55,
-    max_tokens: replyTokens,
-    messages: [
-      {
-        role: "system",
-        content: [
-          "You are the prose voice of a rules-authoritative fantasy campaign engine.",
-          "The engine, not you, decides rolls, damage, inventory, clues, NPC knowledge, combat outcomes, and scene transitions.",
-          "Narrate only the authoritative result supplied by the engine. Never change a number, revive a defeated actor, grant an item, reveal or foreshadow a GM-only fact, reveal an undiscovered clue, solve a choice, or invent a new route.",
-          "Do not speak as a chatbot and do not explain rules. Do not list menu options; the interface already displays valid choices.",
-          "Use second person for the player. Give active companions brief reactions consistent with their supplied personality and bond, but do not make strategic decisions for the player.",
-          "Keep continuity with the current location, objective, discovered clues, and recent history.",
-          "Remain grounded high fantasy. Never introduce science fiction, guns, computers, modern slang, or out-of-setting references.",
-          "Write 70–150 words in one to three paragraphs. End on a concrete sensory beat or immediate tension, not an invented question."
-        ].join(" ")
-      },
-      {
-        role: "user",
-        content: `Narrate this resolved game state exactly as established:\n\n${prompt}`
-      }
-    ]
-  };
-  try {
-    const response = await (requestImpl || require('./local-http').localResponse)(AI_PROVIDER_URL, {
-      method: "POST",
-      redirect: "error",
-      headers,
-      body: JSON.stringify(body),
-      signal: controller.signal
-    });
-    if (!response.ok) throw new Error(`Narrator HTTP ${response.status}`);
-    const payload = await response.json();
-    const choice = payload?.choices?.[0];
-    if (choice?.finish_reason === 'length') throw new Error('Narrator reached its output limit before finishing.');
-    const text = choice?.message?.content;
-    if (typeof text !== 'string' || !text.trim()) throw new Error('Narrator returned no finished text; reasoning-only output is not narration.');
-    return trimNarration(text);
-  } finally {
-    clearTimeout(timeout);
-  }
-}
+const NARRATOR_SYSTEM = [
+  "You are the prose voice of a rules-authoritative fantasy campaign engine.",
+  "The engine, not you, decides rolls, damage, inventory, clues, NPC knowledge, combat outcomes, and scene transitions.",
+  "Narrate only the authoritative result supplied by the engine. Never change a number, revive a defeated actor, grant an item, reveal or foreshadow a GM-only fact, reveal an undiscovered clue, solve a choice, or invent a new route.",
+  "Do not speak as a chatbot and do not explain rules. Do not list menu options; the interface already displays valid choices.",
+  "Use second person for the player. Give active companions brief reactions consistent with their supplied personality and bond, but do not make strategic decisions for the player.",
+  "Keep continuity with the current location, objective, discovered clues, and recent history.",
+  "Remain grounded high fantasy. Never introduce science fiction, guns, computers, modern slang, or out-of-setting references.",
+  "Write 70–150 words in one to three paragraphs. End on a concrete sensory beat or immediate tension, not an invented question."
+].join(" ");
 
-async function narrate(state, view, action, events = [], result = null, requestImpl = null) {
+// `ai` is the shared AI service (src/local-ai.js). Without it — as in the
+// offline browser build — narration is always the deterministic story prose.
+async function narrate(state, view, action, events = [], result = null, ai = null) {
   const fallback = deterministicFallback(state, view, action, events);
-  const narrativeAction=["opening","scene-opening","story-choice","combat","confirm-intent"].includes(action?.type);
-  if (result?.ok === false || !narratorEnabled() || !narrativeAction) {
+  const narrativeAction = ["opening", "scene-opening", "story-choice", "combat", "confirm-intent"].includes(action?.type);
+  if (result?.ok === false || !narrativeAction || !ai || !(await ai.narrationEnabled())) {
     state.lastNarration = fallback;
     return { text: fallback, source: "deterministic", model: null };
   }
   try {
-    const prompt = buildNarratorPrompt(state, view, action, events);
-    const text = await callNarrator(prompt, requestImpl);
+    const prompt = `Narrate this resolved game state exactly as established:\n\n${buildNarratorPrompt(state, view, action, events)}`;
+    const out = await ai.complete({ system: NARRATOR_SYSTEM, prompt, purpose: "narrate" });
+    const text = trimNarration(out.text);
     if (!text) throw new Error("Narrator returned no text");
     state.lastNarration = text;
-    return { text, source: "ai", model: AI_MODEL };
+    return { text, source: "ai", model: out.model };
   } catch (error) {
     state.lastNarration = fallback;
-    return { text: fallback, source: "deterministic-fallback", model: AI_MODEL, error: error.message };
+    return { text: fallback, source: "deterministic-fallback", model: null, error: error.message };
   }
 }
 
@@ -260,7 +192,5 @@ module.exports = {
   buildNarratorPrompt,
   deterministicFallback,
   savedNarration,
-  narratorEnabled,
-  AI_MODEL,
-  AI_PROVIDER_URL
+  NARRATOR_SYSTEM
 };

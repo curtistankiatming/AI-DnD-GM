@@ -44,6 +44,7 @@ def exercise_response_policy(page, output):
     model = ThreadingHTTPServer(('127.0.0.1', 0), Model)
     threading.Thread(target=model.serve_forever, daemon=True).start()
     try:
+        page.locator('#aiProvider').select_option('local')
         page.locator('#localAIBase').fill(f'http://127.0.0.1:{model.server_port}/v1')
         page.locator('#localAIModel').fill('synthetic-browser-only')
         page.locator('#localAIEnabled').check()

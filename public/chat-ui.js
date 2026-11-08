@@ -91,14 +91,22 @@
   }
   window.BriarwatchChat={send,render};
 
-  const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','Local AI settings for chat'));
-  if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the local Node server edition to connect Bionic or another compatible local model.'));panel.append(ai);return;}
-  const note=createElement('p','muted','Select an installed model explicitly. Profiles tune request size, not the model itself. No cloud endpoint, automatic download, model switching or performance guarantee.');ai.append(note);
-  function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);ai.append(box);return input;}
-  const enabled=field('Enable local AI','localAIEnabled','checkbox');
+  const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
+  if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}
+  ai.append(createElement('p','muted','The game rules stay in charge: the AI interprets your words and writes prose, but dice, items, XP and scene changes are always resolved by the game.'));
+  let target=ai;
+  function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);target.append(box);return input;}
+  function select(name,id,entries){const box=createElement('label','chat-field',name),s=createElement('select');s.id=id;for(const [value,title]of entries){const o=createElement('option','',title);o.value=value;s.append(o);}box.append(s);target.append(box);return s;}
+  const enabled=field('Enable AI','localAIEnabled','checkbox');
+  const provider=select('Provider','aiProvider',[['claude','Claude API (recommended)'],['local','Local model server']]);
+  const narration=field('AI narration for story scenes','aiNarration','checkbox');
+  const claudeBox=createElement('div','chat-provider');claudeBox.id='claudeSettings';ai.append(claudeBox);target=claudeBox;
+  const claudeModel=select('Claude model','claudeModel',[['claude-opus-5-5','Claude Opus 5.5 · best storytelling'],['claude-sonnet-5-5','Claude Sonnet 5.5 · faster, cheaper'],['claude-haiku-5-5','Claude Haiku 5.5 · fastest, cheapest']]);
+  const effort=select('Thinking effort','claudeEffort',[['low','Low · quickest replies'],['medium','Medium'],['high','High · slowest, most careful']]);
+  const keyStatus=createElement('p','muted');keyStatus.id='claudeKeyStatus';claudeBox.append(keyStatus);
+  const localBox=createElement('div','chat-provider');localBox.id='localModelSettings';ai.append(localBox);target=localBox;
   const base=field('Local API address','localAIBase');base.value='http://127.0.0.1:1234/v1';
-  const model=field('Exact model ID','localAIModel');const dl=createElement('datalist');dl.id='installedLocalModels';model.setAttribute('list',dl.id);ai.append(dl);
-  function select(name,id,entries){const box=createElement('label','chat-field',name),s=createElement('select');s.id=id;for(const [value,title]of entries){const o=createElement('option','',title);o.value=value;s.append(o);}box.append(s);ai.append(box);return s;}
+  const model=field('Exact model ID','localAIModel');const dl=createElement('datalist');dl.id='installedLocalModels';model.setAttribute('list',dl.id);localBox.append(dl);
   const profile=select('Workload profile','localAIProfile',[['compact','Compact · 7B-class starting point'],['balanced','Balanced · 12B-class starting point'],['expanded','Expanded · 27B-class starting point']]);
   const format=select('Response format','localAIFormat',[['plain-json','Plain JSON · broad compatibility'],['json-schema','JSON Schema · only when supported by the server/model']]);
   const roles=select('Prompt template','localAIRoles',[['system-user','System + user messages'],['single-user','Single user message · alternate templates']]);
@@ -106,13 +114,21 @@
   const tokens=field('Maximum reply tokens','localAITokens','number');tokens.min=64;tokens.max=768;tokens.value=160;
   const uncapped=field('Uncapped requested output (compatible local servers only)','localAIUncapped','checkbox');
   uncapped.addEventListener('change',()=>{tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);});
-  ai.append(createElement('p','muted','Uncapped sends max_tokens=-1. It does not remove the wait limit, model context/reasoning limits, or response-size guard. Keep final replies concise. This controls chat only; the separate legacy narrator uses AI_REPLY_TOKENS.'));
+  localBox.append(createElement('p','muted','Uncapped sends max_tokens=-1. It does not remove the wait limit or the response-size guard.'));
+  target=ai;
   const timeout=field('Wait limit per request, in seconds','localAITimeout','number');timeout.min=3;timeout.max=600;timeout.value=600;
   const info=createElement('p','muted');info.id='aiSettingsStatus';ai.append(info);
+  const showProvider=()=>{claudeBox.hidden=provider.value!=='claude';localBox.hidden=provider.value!=='local';};
+  provider.addEventListener('change',showProvider);
   profile.addEventListener('change',()=>{const p={compact:[8000,160],balanced:[14000,240],expanded:[22000,320]}[profile.value];budget.value=p[0];tokens.value=p[1];});
-  const value=()=>({enabled:enabled.checked,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,contextChars:Number(budget.value),replyTokens:uncapped.checked?-1:Number(tokens.value),timeoutMs:Number(timeout.value)*1000});
-  ai.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field; none was selected or loaded automatically.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
-  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved on this computer. This is not a successful model test; send a message to test the selected model. No model was downloaded or switched automatically.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
-  panel.append(ai);
-  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;}).catch(e=>{info.textContent=e.message;});
+  const value=()=>{const common={enabled:enabled.checked,provider:provider.value,narration:narration.checked,claudeModel:claudeModel.value,effort:effort.value,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,timeoutMs:Number(timeout.value)*1000};
+    return provider.value==='local'?{...common,contextChars:Number(budget.value),replyTokens:uncapped.checked?-1:Number(tokens.value)}:common;};
+  localBox.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved on this computer. Send a message to try them.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+  panel.append(ai);showProvider();
+  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
+    keyStatus.textContent=payload.claudeKeyConfigured?'API key found (ANTHROPIC_API_KEY).':'No API key found. Put ANTHROPIC_API_KEY=your-key in a file named .env beside package.json, then restart the game.';
+    base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;
+    if(c.provider==='local'){budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;}
+    tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;showProvider();}).catch(e=>{info.textContent=e.message;});
 })();

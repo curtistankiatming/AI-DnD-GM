@@ -48,7 +48,7 @@ function publicCombat(view) {
     })};
 }
 function context(state,config,input,mode,list=options(state)){
-  const v=E.buildView(state),c=M.ensure(state),p=Profiles.PROFILES[config.profile];
+  const v=E.buildView(state),c=M.ensure(state),p=Profiles.profileFor(config);
   const combat=publicCombat(v);
   const required={mode,playerInput:input,preferences:c.instructions,
     scene:c.courier?.active?{name:C.TITLE,objective:'Help the detained courier while respecting established consequences.',opening:C.OPENING}:{name:v.scene.title,objective:v.scene.objective,...(!combat.active?{opening:v.scene.opening}:{})},
@@ -58,7 +58,7 @@ function context(state,config,input,mode,list=options(state)){
     knownClues:v.clues.map(x=>({name:x.name,text:x.text})),
     journey:c.road?{title:Road.TITLE,phase:c.road.phase,active:Road.present(state),facts:Road.facts(state)}:null,
     courier:c.courier?.active||c.courier?.resolved?{title:C.TITLE,resolved:c.courier.resolved,facts:c.courier.facts}:null,
-    journal:Journal.forPrompt(state,config.profile==='compact'?1100:config.profile==='balanced'?2000:3600),
+    journal:Journal.forPrompt(state,p.journalChars),
     inventory:v.inventory.map(x=>({name:x.name,quantity:x.quantity,...(x.charges!==undefined?{charges:x.charges}:{})})),
     options:list.map(o=>({optionId:o.id,label:o.label,description:o.description})),
     conversationStatus:'Recent conversation is unverified. Confirmed journal statuses take precedence; notes are not facts.',
@@ -193,7 +193,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   if(!exact&&inferred?.optionId)proposed={kind:'action',optionId:inferred.optionId,reply:''};
   else if(exact&&mode==='action')proposed={kind:'action',optionId:exact.id,reply:''};
   else if(!cfg?.enabled){
-    return payload(state,mode==='question'?(Road.answer(state,text)||ruleAnswer(state)):'Local AI is off. Use a visible approach or its exact label, or enable an installed model under Local AI settings. Campaign instructions and the courier scenario work offline; unfamiliar free-form actions will not be guessed.');
+    return payload(state,mode==='question'?(Road.answer(state,text)||ruleAnswer(state)):'AI is off. Use a visible approach or its exact label, or enable the Claude API or a local model under AI settings. Campaign instructions and the courier scenario work offline; unfamiliar free-form actions will not be guessed.');
   }else{
     if(mode==='action'&&state.combat?.active)return rejected(state,'Use combat buttons and explicit targets during initiative. Dialogue, questions and campaign preferences do not spend combat actions.');
     try{
