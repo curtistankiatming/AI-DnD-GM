@@ -29,6 +29,7 @@ function createClaudeProvider({ clientFactory = null, env = process.env } = {}) 
   }
 
   async function complete(config, { system, prompt, schema = null, purpose = 'reply' }, signal) {
+    const api = client(); // Checks the key before needing the SDK.
     const SDK = clientFactory ? null : loadSdk();
     const body = {
       model: config.claudeModel,
@@ -43,7 +44,7 @@ function createClaudeProvider({ clientFactory = null, env = process.env } = {}) 
     const started = Date.now();
     let response;
     try {
-      response = await client().beta.messages.create(body, { signal, timeout: config.timeoutMs });
+      response = await api.beta.messages.create(body, { signal, timeout: config.timeoutMs });
     } catch (error) {
       throw new Error(describeError(error, SDK, signal));
     }

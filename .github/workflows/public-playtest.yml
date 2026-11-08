@@ -18,7 +18,7 @@ jobs:
   package:
     needs: validation
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/public-testing'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Playwright 1.57 has no Ubuntu 26.04 browser build
     timeout-minutes: 15
     # Release publishing only; never runs on pull_request or pull_request_target.
     permissions:

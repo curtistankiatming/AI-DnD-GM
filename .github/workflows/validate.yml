@@ -67,9 +67,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04  # Playwright 1.57 has no Ubuntu 26.04 browser build
             browser: chromium
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             browser: firefox
           - os: windows-latest
             browser: chromium
