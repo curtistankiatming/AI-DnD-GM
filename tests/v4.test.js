@@ -101,7 +101,7 @@ test('talent and ability choices are consequential, pending, and not repeatable'
  s=act(s,{type:'choose-reward',level:4,optionId:'ability:con'});assert.equal(s.player.abilities.con,16);assert.equal(s.player.maxHp,hp+4+4);
 });
 test('level cap is genuine and future advancement milestones are not falsely available',()=>{
- const s=hero();E.awardXp(s,P.XP_NEXT[P.MAX_LEVEL-1]*3,[]);assert.equal(s.player.level,P.MAX_LEVEL);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,20,40,70]);assert.deepEqual(P.ADVANCEMENTS.slice(0,2).map(x=>x.status),['Playable','Playable']);assert.ok(P.ADVANCEMENTS.slice(2).every(x=>/later update/.test(x.status)));
+ const s=hero();E.awardXp(s,P.XP_NEXT[P.MAX_LEVEL-1]*3,[]);assert.equal(s.player.level,P.MAX_LEVEL);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,20,40,70]);assert.deepEqual(P.ADVANCEMENTS.slice(0,3).map(x=>x.status),['Playable','Playable','Playable']);assert.ok(P.ADVANCEMENTS.slice(3).every(x=>/later update/.test(x.status)));
 });
 test('the 2nd job requires level 20 and the trial, gives its resource, and cannot be changed silently',()=>{
  let early=hero('fighter',19);early.world.completed.trial={};assert.equal(E.resolveAction(early,{type:'specialize',specializationId:'guardian'}).result.ok,false);

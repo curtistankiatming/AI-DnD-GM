@@ -110,7 +110,7 @@ function normalizeQuest(raw) {
   // unbounded definition. The numbers are recomputed from the level.
   if (!raw || typeof raw !== 'object' || !/^ai-\d{1,4}-[a-z0-9]{7}$/.test(raw.id || '')) return null;
   const level = Math.max(1, Math.min(P.MAX_LEVEL, Math.floor(Number(raw.level) || 1)));
-  const out = bound({ level, power: raw.power, tier: raw.tier, town: raw.town, unlock: 'bell' }, raw, raw.id);
+  const out = bound({ level, power: raw.power, tier: raw.tier, trial: raw.trial, town: raw.town, unlock: 'bell' }, raw, raw.id);
   return out.ok ? finalize({ ...out.quest, createdDay: Math.max(1, Math.floor(Number(raw.createdDay) || 1)), createdLevel: level }) : null;
 }
 
@@ -139,7 +139,7 @@ function install(q) {
       const node = STORY_NODES[`q-${q.id}-${phase}`];
       node.directorHash = q.hash;
       node.generated = true;
-      if (phase !== 'after') node.act = `AI-directed expedition • ${q.power ? `Renown challenge ${q.power}` : `Level ${q.level}`}${q.tier ? ` • ${XP.tier(q.tier).name}` : ''}`;
+      if (phase !== 'after') node.act = `${q.trial ? '3rd job trial' : 'AI-directed expedition'} • ${q.power ? `Renown challenge ${q.power}` : `Level ${q.level}`}${q.tier && !q.trial ? ` • ${XP.tier(q.tier).name}` : ''}`;
     }
   }
   return q;
@@ -152,14 +152,18 @@ function quest(state, id) {
 }
 const list = state => Object.values(state?.director?.quests || {});
 const open = state => list(state).filter(q => !state.world?.completed?.[q.id]);
+const openAdventures = state => open(state).filter(q => !q.trial);
 
 // A quest pays a share of the hero's current level (one renown rank past the
 // final level); the battle inside it pays separately by its rating. Hard and
 // Heroic adventures multiply both. Gold grows with the challenge level.
-function rewards(level, power = level, tierId = 'normal') {
+function rewards(level, power = level, tierId = 'normal', trial = null) {
   const t = XP.tier(tierId);
+  if (trial) return { xp: XP.share(level, XP.TRIAL_SHARE), gold: Math.round((20 + power * 20) * t.reward) };
   return { xp: Math.round(XP.share(level, XP.QUEST_SHARE) * t.reward / 10) * 10, gold: Math.round((20 + power * 20) * t.reward) };
 }
+// A job trial is always fought at Hard and pays half a level once.
+const TRIALS = Object.freeze({ third: { level: P.THIRD_JOB_LEVEL, tier: 'hard' } });
 
 // The director may send the party home to any town it has already reached; it
 // cannot open a locked region early.
@@ -176,7 +180,8 @@ function bound(state, draft, forcedId = null) {
   // Challenge level: the hero's level, plus renown at level 10 (capped).
   const extra = state.player ? P.renownPower(state.player) : Math.floor(Number(state.power) - level) || 0;
   const power = level < P.MAX_LEVEL ? level : level + Math.max(0, Math.min(P.RENOWN_POWER_CAP, extra));
-  const tier = XP.tier(state.tier);
+  const trial = Object.hasOwn(TRIALS, state.trial) ? state.trial : null;
+  const tier = XP.tier(trial ? TRIALS[trial].tier : state.tier);
   const town = TOWNS[state.town] ? state.town : TOWNS[state.world?.townId] ? state.world.townId : 'briarwatch';
   const text = (v, limit, fallback = '') => clean(v, limit) || fallback;
   const ck = (raw, label) => {
@@ -212,7 +217,7 @@ function bound(state, draft, forcedId = null) {
   }).filter(Boolean);
   if (decisions.length < 2) return fail('The new adventure needs at least two final decisions. Nothing was added.');
   const body = {
-    name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
+    name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), ...(trial ? { trial } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
     faction: FACTIONS.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
@@ -220,7 +225,7 @@ function bound(state, draft, forcedId = null) {
     foeName: text(draft.foeName, TEXT.name, 'The Opposition'), enemyTheme: THEMES.includes(draft.enemyTheme) ? draft.enemyTheme : 'soldier',
     after: text(draft.after, TEXT.long, 'The dust settles.'),
     nextTown: destination(state, draft.destination || draft.nextTown, town),
-    ...rewards(level, power, tier.id)
+    ...rewards(level, power, tier.id, trial)
   };
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
@@ -241,8 +246,66 @@ function availability(state) {
   if (state.combat?.active) return 'Finish the fight before asking for a new adventure.';
   if (!w.completed?.bell) return 'Finish the bell investigation first. After that, the AI game master can write new adventures for you.';
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
-  if (open(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
+  if (openAdventures(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
   return null;
+}
+
+// The 3rd job trial: a hero at level 40 with a 2nd job branch asks for it in
+// town. It does not count against the one-adventure limit.
+function trialAvailability(state) {
+  const p = P.ensure(state.player), b = P.branchOf(state.player);
+  if (!b) return 'Choose your 2nd job branch first.';
+  if (p.thirdJob) return `You are already a ${b.third}.`;
+  if (state.player.level < P.THIRD_JOB_LEVEL) return `Reach level ${P.THIRD_JOB_LEVEL} to face the ${b.third} trial.`;
+  if (state.combat?.active) return 'Finish the fight first.';
+  if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for your trial from a town.';
+  if (open(state).some(q => q.trial === 'third')) return 'Your trial is already on the expedition board.';
+  return null;
+}
+// The written trial, used when the AI game master is off. Each branch's trial
+// tests what that job is about.
+const TRIAL_SKILLS = {
+  fighter: ['athletics', 'intimidation', 'athletics'], rogue: ['stealth', 'deception', 'sleightOfHand'], wizard: ['arcana', 'investigation', 'arcana'],
+  cleric: ['religion', 'insight', 'medicine'], ranger: ['survival', 'perception', 'nature'], bard: ['performance', 'persuasion', 'history']
+};
+function writtenTrial(state) {
+  const b = P.branchOf(state.player), [route, peace, obj] = TRIAL_SKILLS[state.player.classId] || TRIAL_SKILLS.fighter;
+  const hero = state.player.name;
+  return {
+    name: `The ${b.third} Trial`, region: 'The Proving Ground beyond the old border road', faction: 'wardens',
+    brief: `The elders of the ${b.name} path have named ${hero} a candidate. Pass their trial to become a ${b.third}.`,
+    threat: `The trial ends with a warden who fights the way a ${b.third} must: ${b.style.toLowerCase()}`,
+    opening: `Banners of every ${b.name} who came before line the road to the Proving Ground. An examiner waits at the gate.`,
+    clue: `The examiners care less about winning than about how a ${b.third} wins.`,
+    investigate: { label: 'Hear the examiners out', skill: 'insight', alt: ['history', 'persuasion'], success: 'They tell you what the last candidate got wrong.', failure: 'They say little, but you learn the order of the trials.' },
+    route: { label: 'Walk the proving road', skill: route, alt: ['athletics', 'survival'], tools: [], success: 'You reach the final circle with strength to spare.', failure: 'The road takes its toll, but you reach the final circle.' },
+    crisis: `The final examiner steps into the circle. ${b.style} Show that you are ready.`,
+    peaceful: { label: 'Answer the examiner with the creed of your path', skill: peace, alt: ['persuasion', 'insight'], success: 'The examiner lowers their weapon and bows.', failure: 'The examiner shakes their head and raises their weapon.' },
+    objective: { name: 'The trial marker', label: 'Claim the trial marker', description: 'Take the marker from the centre of the circle while the examiner watches.', skill: obj, alt: ['athletics', 'acrobatics'], failText: 'The marker slips away; the examiner presses on.', successText: 'The marker is yours.' },
+    foeName: `The ${b.third} Examiner`, enemyTheme: 'soldier',
+    after: `The elders gather. The banner of the ${b.third} is yours to carry.`,
+    decisions: [
+      { label: 'Swear to guard the border roads', text: 'The wardens count on your new rank.', favors: 'wardens', also: 'wilds' },
+      { label: 'Swear to protect the trade roads', text: 'The merchants will remember the oath.', favors: 'trade', also: 'wardens' }
+    ]
+  };
+}
+// Engine action: put the 3rd job trial on the board, from Claude's draft or
+// the written trial.
+function commissionTrial(state, draft, events) {
+  const blocked = trialAvailability(state);
+  if (blocked) return { ok: false, error: blocked };
+  const d = normalize(state), b = P.branchOf(state.player);
+  let out = draft ? bound({ ...state, trial: 'third' }, draft) : null;
+  const written = !out?.ok;
+  if (written) out = bound({ ...state, trial: 'third' }, writtenTrial(state));
+  if (!out.ok) return out;
+  const q = finalize({ ...out.quest, createdDay: state.world.day, createdLevel: out.quest.level }, d.count + 1);
+  d.count += 1;
+  d.quests[q.id] = install(q);
+  const text = `Your ${b.third} trial is on the expedition board: ${q.name}. ${q.brief} Pass it to become a ${b.third}. Reward: ${q.xp} XP and ${q.gold} gold.${written && draft ? ' The written trial was used because the AI draft could not be used.' : ''}`;
+  events.push({ type: 'quest', tone: 'good', text });
+  return { ok: true, kind: 'director', questId: q.id, written, outcomeText: text };
 }
 
 // Engine action: add a bounded adventure to the board.
@@ -278,6 +341,7 @@ function dismiss(state, id, events) {
 function setTier(state, id, tierId, events) {
   const q = state.director?.quests?.[id];
   if (!q || state.world.completed?.[id]) return { ok: false, error: 'That adventure is not on the board.' };
+  if (q.trial) return { ok: false, error: 'A job trial is always Hard.' };
   if (!Object.hasOwn(XP.TIERS, tierId)) return { ok: false, error: 'Choose Normal, Hard or Heroic.' };
   if (state.world.activeQuest === id || state.world.progress?.[id]?.node) return { ok: false, error: 'The difficulty is fixed once you set out.' };
   const out = bound({ level: q.level, power: q.power, tier: tierId, town: q.town }, q, id);
@@ -301,7 +365,7 @@ function prune(state) {
 }
 
 // What Claude sees. Facts come from the game state, never from earlier prose.
-function prompt(state, { hint = '', journal = '', instructions = '' } = {}) {
+function prompt(state, { hint = '', journal = '', instructions = '', trial = false } = {}) {
   const w = state.world;
   const completed = Object.entries(w.completed || {}).map(([id, r]) => {
     const q = quest(state, id);
@@ -311,7 +375,8 @@ function prompt(state, { hint = '', journal = '', instructions = '' } = {}) {
   return JSON.stringify({
     request: clean(hint, TEXT.hint) || 'Surprise us with what happens next.',
     preferences: clean(instructions, 1200),
-    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player) },
+    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player), job: P.jobView(state.player)?.title, branchStyle: P.branchOf(state.player)?.style || null },
+    ...(trial ? { trial: trialBrief(state) } : {}),
     party: state.party.map(m => ({ name: m.name, bond: m.bond })),
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.map(id => TOWNS[id].name),
     reputation: w.reputation,
@@ -322,13 +387,25 @@ function prompt(state, { hint = '', journal = '', instructions = '' } = {}) {
   });
 }
 
+function trialBrief(state) {
+  const b = P.branchOf(state.player);
+  return `This adventure is ${state.player.name}'s 3rd job trial: the test that turns a ${b.name} into a ${b.third}. ${b.style} Make the opening, crisis and objective test exactly that, ending with an examiner, rival or ordeal worthy of the title. Name the adventure after the trial.`;
+}
+function trialView(state) {
+  const b = P.branchOf(state.player);
+  if (!b || P.ensure(state.player).thirdJob || state.player.level < P.THIRD_JOB_LEVEL) return null;
+  const q = open(state).find(x => x.trial === 'third');
+  const blocked = trialAvailability(state);
+  return { branch: b.name, third: b.third, style: b.style, canRequest: !blocked, reason: blocked, questId: q?.id || null, started: Boolean(q && (state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node)) };
+}
 function view(state) {
   const blocked = availability(state);
   return {
     canCommission: !blocked, reason: blocked, arc: state.director?.arc || '',
-    open: open(state).map(q => ({ id: q.id, name: q.name, started: Boolean(state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node) })),
+    open: openAdventures(state).map(q => ({ id: q.id, name: q.name, started: Boolean(state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node) })),
+    trial: trialView(state),
     generated: list(state).length
   };
 }
 
-module.exports = { SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, normalize, install, quest, list, open, bound, rewards, commission, dismiss, setTier, prompt, view, availability };
+module.exports = { SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };

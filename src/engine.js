@@ -766,8 +766,8 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='story-choice') {state.pendingIntent=null;result=resolveStoryChoice(state,action.choiceId,rng,events);}
   else if(action.type==='freeform')result=resolveFreeform(state,action.text,rng,events);
   else if(action.type==='improvise')result=resolveImprovised(state,action.proposal,rng,events);
-  else if(action.type==='director-commission'||action.type==='director-dismiss'||action.type==='adventure-tier'){
-    const r=action.type==='director-commission'?Director.commission(state,action.draft,events):action.type==='adventure-tier'?Director.setTier(state,String(action.questId||''),String(action.tier||''),events):Director.dismiss(state,String(action.questId||''),events);
+  else if(action.type==='director-commission'||action.type==='director-dismiss'||action.type==='adventure-tier'||action.type==='job-trial'){
+    const r=action.type==='job-trial'?Director.commissionTrial(state,action.draft||null,events):action.type==='director-commission'?Director.commission(state,action.draft,events):action.type==='adventure-tier'?Director.setTier(state,String(action.questId||''),String(action.tier||''),events):Director.dismiss(state,String(action.questId||''),events);
     result=r.ok?r:invalidResult(state,events,r.error);
   }
   else if(action.type==='equip')result=equipItem(state,action.itemId,events,action.actorId||'player');

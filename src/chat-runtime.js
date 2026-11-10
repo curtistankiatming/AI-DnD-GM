@@ -176,6 +176,20 @@ async function commissionAdventure(state,hint,provider,rng){
   if(!resolved.result.ok)return fromResolved(resolved);
   return payload(resolved.state,resolved.result.outcomeText,resolved.events,resolved.result,'ai-director',out.model);
 }
+// The 3rd job trial: Claude writes it for the hero's branch when the AI game
+// master is on; otherwise, or if the draft cannot be used, the written trial.
+async function commissionTrial(state,provider,rng){
+  const blocked=Director.trialAvailability(state);if(blocked)return rejected(state,blocked);
+  let cfg=null;try{cfg=provider&&await provider.config();}catch{}
+  let draft=null,model=null,note='';
+  if(cfg?.enabled&&cfg.provider==='claude'){
+    try{const out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions,trial:true}),schema:Director.SCHEMA,purpose:'director'});draft=JSON.parse(out.text);model=out.model;}
+    catch(e){note=` The AI game master could not write it (${e.message}), so the written trial is used.`;}
+  }
+  const resolved=E.resolveAction(state,{type:'job-trial',draft},rng);
+  if(!resolved.result.ok)return fromResolved(resolved);
+  return payload(resolved.state,resolved.result.outcomeText+note,resolved.events,resolved.result,model&&!resolved.result.written?'ai-director':undefined,model&&!resolved.result.written?model:undefined);
+}
 async function resolveChat(raw,request={},provider=null,rng=Math.random){
   let state=E.normalizeIncomingState(raw);const c=M.ensure(state);
   if(!request||typeof request!=='object')return rejected(state,'Send one chat request at a time.');
@@ -210,9 +224,9 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   let mode=request.mode||'action',text=request.text;
   if(typeof text!=='string'||!text.trim()||text.length>M.MAX_INSTRUCTIONS)return rejected(state,`Use 1–${M.MAX_INSTRUCTIONS} characters per message.`);
   text=text.trim();
-  const cmd=text.match(/^\/(instructions|act|say|ask|rules|scenario|journey|pause|journal|note|forget-note|adventure)(?:\s+([\s\S]*))?$/i);
-  if(cmd){const k=cmd[1].toLowerCase();mode=({instructions:'instructions',act:'action',say:'dialogue',ask:'question',rules:'rules',scenario:'scenario',journey:'journey',pause:'pause',journal:'journal',note:'note','forget-note':'forget-note',adventure:'adventure'})[k];text=cmd[2]||'';}
-  if(!['instructions','action','dialogue','question','rules','scenario','journey','pause','journal','note','forget-note','adventure'].includes(mode))return rejected(state,'Select actions, dialogue, questions or campaign instructions.');
+  const cmd=text.match(/^\/(instructions|act|say|ask|rules|scenario|journey|pause|journal|note|forget-note|adventure|trial)(?:\s+([\s\S]*))?$/i);
+  if(cmd){const k=cmd[1].toLowerCase();mode=({instructions:'instructions',act:'action',say:'dialogue',ask:'question',rules:'rules',scenario:'scenario',journey:'journey',pause:'pause',journal:'journal',note:'note','forget-note':'forget-note',adventure:'adventure',trial:'trial'})[k];text=cmd[2]||'';}
+  if(!['instructions','action','dialogue','question','rules','scenario','journey','pause','journal','note','forget-note','adventure','trial'].includes(mode))return rejected(state,'Select actions, dialogue, questions or campaign instructions.');
   c.pending=null;
   if(mode==='instructions')return fromResolved(E.resolveAction(state,{type:'chat-instructions',text:text==='clear'?'':text},rng));
   if(mode==='journey'||mode==='pause'&&c.road?.active)return fromResolved(E.resolveAction(state,{type:'road',optionId:mode==='journey'?'start':'pause'},rng));
@@ -224,6 +238,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   }
   if(mode==='rules')return payload(state,ruleAnswer(state));
   if(mode==='adventure')return commissionAdventure(state,text,provider,rng);
+  if(mode==='trial')return commissionTrial(state,provider,rng);
   if(!text)return rejected(state,'Enter the message you want the guide to read.');
   M.append(state,'player',text);
   const list=options(state);

@@ -108,6 +108,7 @@ def exercise_management(page, output):
     permanent = False
     if not page.evaluate('Boolean(window.BriarwatchOffline)'):
         exercise_advancement_fixture(page, output)
+        exercise_trial_fixture(page, output)
         permanent = True
     (output/'management-summary.json').write_text(json.dumps({
         'readOnlyFiltersAndComparison':True,'fourSlotsAllOwners':True,
@@ -177,4 +178,42 @@ process.stdout.write(JSON.stringify(s));
     page.locator('#saveList [data-save-slot=sandbox-management-trial]').get_by_role('button',name='Load',exact=True).click()
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     assert page.evaluate('state.player.progression.specialization')=='guardian'
+    page.locator('#nav-adventure').click()
+
+
+def exercise_trial_fixture(page, output):
+    """Controlled level-40 Guardian save: the 3rd job trial. AI is off, so the written trial is used."""
+    script = """
+const E=require('./src/engine'),S=require('./src/public-preview'),P=require('./src/progression');
+const s=S.makeSandbox({classId:'fighter',level:10,questId:'aftermath'});
+E.awardXp(s,P.XP_NEXT[39]-s.player.xp,[],'Sandbox fixture - not earned progression');
+s.player.progression.specialization='guardian';
+if(!E.buildView(E.normalizeIncomingState(s)).world.director.trial)throw Error('Fixture changed');
+process.stdout.write(JSON.stringify(s));
+"""
+    fixture = json.loads(subprocess.check_output(['node','-e',script],
+                          cwd=Path(__file__).resolve().parents[1],text=True))
+    base=page.url.rstrip('/')
+    data=json.dumps({'slot':'sandbox-third-job','state':fixture}).encode()
+    with urlopen(Request(base+'/api/session/save',data=data,
+                         headers={'Content-Type':'application/json','Origin':base}),timeout=5) as response:
+        assert response.status==200
+    page.locator('#nav-settings').click()
+    page.locator('#refreshSavesBtn').click()
+    page.locator('#saveList [data-save-slot=sandbox-third-job]').get_by_role('button',name='Load',exact=True).click()
+    decision=page.locator('#sessionDecision')
+    if decision.count():
+        decision.get_by_role('button',name='Discard and continue',exact=True).click()
+    expect(page.locator('#playerLevel')).to_have_text('Level 40')
+    page.locator('#nav-prepare').click()
+    expect(page.locator('#jobTree .job-trial-note')).to_contain_text('Bulwark Knight trial')
+    expect(page.locator('#jobTree .job-branch[data-branch=guardian] .job-third-title')).to_have_text('3rd job · Bulwark Knight')
+    page.locator('#trialBtn').click()
+    card=page.locator('#worldPanel .v4-card').filter(has_text='3rd job trial').filter(has_text='The Bulwark Knight Trial')
+    expect(card).to_have_count(1)
+    expect(card).to_contain_text('always Hard')
+    expect(page.locator('#trialBtn')).to_have_count(0)
+    assert page.evaluate("Object.values(state.director.quests).some(q=>q.trial==='third')")
+    card.scroll_into_view_if_needed()
+    page.screenshot(path=str(output/'third-job-trial.png'))
     page.locator('#nav-adventure').click()
