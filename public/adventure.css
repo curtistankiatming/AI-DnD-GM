@@ -182,9 +182,11 @@
 @media(max-width:760px){
  .story-workspace .topbar { align-items:center; padding:6px 0; gap:6px 8px; }
  .story-workspace .brand-block h1 { max-width:12ch; font-size:.95rem; }
- .story-workspace .topbar .workspace-nav { order:3; flex:1 1 100%; max-width:none; }
- .story-workspace .topbar .workspace-nav button { min-height:40px; padding:5px 2px; font-size:.78rem; }
- .story-workspace .topbar-actions { gap:4px; }
+ .story-workspace .topbar .workspace-nav { order:3; flex:1 1 100%; min-width:0; max-width:100%; }
+ .story-workspace .topbar .workspace-nav button { flex:1 1 0; }
+ .story-workspace .topbar .workspace-nav button { min-width:0; min-height:40px; padding:5px 2px; font-size:.78rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ /* Wrap instead of overflowing: text widths differ between browsers at 320px. */
+ .story-workspace .topbar-actions { min-width:0; flex-wrap:wrap; justify-content:flex-end; gap:4px; }
  .story-workspace .topbar-actions .btn { min-height:36px; padding:6px 8px; font-size:.72rem; }
  .adventure-overview { grid-template-columns:minmax(0,1fr); padding:8px 10px; }
  .adventure-overview .objective-box p { font-size:.84rem; }
