@@ -43,9 +43,13 @@
     const update=()=>{const waited=Math.floor((Date.now()-started)/1000);status.textContent=waited<2?'':`The game master is thinking · ${waited}s${waited>=20?'. A local model can take several minutes; nothing is retried or charged twice.':''}`;};update();
     const timer=setInterval(update,1000);
     try{
+      const attempted=view?.chat?.pending?.label||'';lastRoll=null;
       const request={mode:mode.value,text,requestId:globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'_'+Math.random().toString(36).slice(2),...extra};
       const {payload}=await api('/api/chat',{method:'POST',body:JSON.stringify({state,request})});
-      ingestPayload(payload);status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'';
+      ingestPayload(payload);
+      // Keep the dice result of an improvised attempt on screen beside the story.
+      if(extra.confirm&&payload.result?.kind==='improvise')lastRoll={intent:attempted,success:Boolean(payload.result.success),roll:(payload.events||[]).find(e=>e.type==='roll')?.roll||null,turn:payload.state?.turnCount};
+      status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'';
       const routing=payload.result?.responseType;
       if(routing?.adjusted)status.textContent=`Kept in ${routing.effective} mode; the model labelled this ${routing.returned}. Read-only: no action was performed. This does not verify the answer's facts.`;
       if(payload.result?.ok===false&&!extra.confirm&&!dom.actionInput.value)dom.actionInput.value=text;
@@ -54,6 +58,29 @@
   }
   // Story director: an optional wish in the message box becomes the hint.
   function adventure(){const hint=dom.actionInput.value.trim();dom.actionInput.value='';return send(('/adventure '+hint).trim());}
+  // One card for an improvised attempt: the odds, what is at stake and the roll button together.
+  let lastRoll=null;
+  function rollCard(p){
+    const head=createElement('div','roll-card-head');head.append(createElement('strong','',p.intent));
+    pending.append(head);
+    if(p.check){
+      const odds=createElement('span','roll-card-odds',p.check.chance+'%');odds.dataset.odds=p.check.chance>=65?'good':p.check.chance>=40?'even':'poor';
+      odds.setAttribute('aria-label',`${p.check.chance}% chance to succeed`);head.append(odds);
+      const meter=createElement('div','roll-card-meter'),fill=createElement('span');fill.style.width=Math.max(2,Math.min(100,p.check.chance))+'%';fill.dataset.odds=odds.dataset.odds;meter.append(fill);meter.setAttribute('aria-hidden','true');
+      const bonus=(p.check.bonus>=0?'+':'')+p.check.bonus;
+      pending.append(meter,createElement('p','muted roll-card-check',`${p.check.actor} rolls ${p.check.name} ${bonus} and needs ${p.check.dc} or more${p.check.mode==='normal'?'':' · rolling with '+p.check.mode}.`));
+    }else pending.append(createElement('p','muted roll-card-check','No roll needed. This simply works.'));
+    const stakes=createElement('div','roll-card-stakes');
+    const side=(kind,title,text,extra)=>{const box=createElement('div','roll-card-side');box.dataset.kind=kind;box.append(createElement('span','roll-card-label',title),createElement('p','',text));if(extra)box.append(createElement('p','muted',extra));stakes.append(box);};
+    const plain=value=>value&&value!=='nothing beyond the story'?value:'';
+    side('win',p.check?'If it works':'What happens',p.success,plain(p.reward)&&'You gain '+p.reward+'.');
+    if(p.check)side('lose','If it fails',p.failure,plain(p.risk)&&'You risk '+p.risk+'.');
+    pending.append(stakes);
+    for(const note of p.notes||[])pending.append(createElement('p','muted',note));
+    const actions=createElement('div','roll-card-actions'),go=button(p.check?'Roll the dice':'Yes, do it',()=>send('',{confirm:true}));go.classList.remove('btn-secondary');go.classList.add('btn-primary');
+    actions.append(go,button('No, cancel',()=>send('',{cancel:true})));
+    pending.append(actions,createElement('p','muted','No roll or resource change has happened yet.'));
+  }
   function render(){
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
@@ -86,7 +113,11 @@
     }
     for(const b of tools.querySelectorAll('button')){if(b.textContent==='Start Lantern Road')b.disabled=busy||!c.roadAvailable||journey?.phase==='complete';if(b.textContent==='Pause Lantern Road')b.disabled=busy||!journey?.active;}
     clear(pending);
-    if(c.pending){pending.append(createElement('strong','','Do this? '+c.pending.label),createElement('p','muted','No roll or resource change has happened yet.'),button('Yes, do it',()=>send('',{confirm:true})),button('No, cancel',()=>send('',{cancel:true})));}
+    pending.classList.toggle('roll-card',Boolean(c.pending&&c.pendingPreview));pending.classList.remove('roll-result');
+    if(!c.pending&&lastRoll&&lastRoll.turn===state?.turnCount){pending.classList.add('roll-result');pending.dataset.outcome=lastRoll.success?'success':'failure';
+      pending.append(createElement('strong','',lastRoll.success?'Success':'It did not work'),createElement('span','',lastRoll.roll?` · you rolled ${lastRoll.roll.total} and needed ${lastRoll.roll.dc}`:' · no roll was needed'),createElement('p','muted',lastRoll.intent||''));}
+    if(c.pending&&c.pendingPreview)rollCard(c.pendingPreview);
+    else if(c.pending){pending.append(createElement('strong','','Do this? '+c.pending.label),createElement('p','muted','No roll or resource change has happened yet.'),button('Yes, do it',()=>send('',{confirm:true})),button('No, cancel',()=>send('',{cancel:true})));}
     clear(facts);if(c.courier){facts.append(createElement('strong','',c.courier.resolved?'Courier helped — reward recorded once':c.courier.active?'Courier scenario active':'Courier scenario paused'));for(const line of c.courier.facts||[])facts.append(createElement('p','muted',line));
       for(const option of c.courierOptions||[]){const b=button(option.label,()=>send(option.label,{mode:'action'}));b.title=option.description;facts.append(b,createElement('p','muted',option.description));}
       if(c.courier.active&&!c.courierAvailable)facts.append(createElement('p','muted','Return to Briarwatch outside combat to continue this side story, or pause it.'));}

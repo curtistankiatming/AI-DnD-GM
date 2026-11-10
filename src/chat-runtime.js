@@ -146,15 +146,12 @@ function decode(text){
   return x;
 }
 function improvisePreview(preview,framing=''){
+  // The roll card on screen carries the full odds and stakes; this line is what
+  // stays in the conversation history.
   const p=preview.proposal,lines=[];
   if(framing)lines.push(framing.trim());
-  lines.push(`Proposed attempt: ${p.intent}.`);
-  if(preview.check)lines.push(`${preview.check.actor}: ${preview.check.name} ${preview.check.bonus>=0?'+':''}${preview.check.bonus} vs DC ${preview.check.dc} · about ${preview.check.chance}%${preview.check.mode==='normal'?'':` (${preview.check.mode})`}.`);
-  else lines.push('No roll needed.');
-  lines.push(`On success: ${p.success} Reward: ${preview.effects.reward}.`);
-  if(preview.check)lines.push(`On failure: ${p.failure} Risk: ${preview.effects.risk}.`);
-  for(const note of preview.notes)lines.push(note);
-  lines.push('Confirm below to roll, or cancel. Nothing has happened yet.');
+  lines.push(preview.check?`You could try: ${p.intent}. About ${preview.check.chance}% to succeed.`:`You could try: ${p.intent}. No roll needed.`);
+  lines.push('Nothing has happened yet. Roll or cancel below.');
   return lines.join('\n');
 }
 function payload(state,text,events=[],result={ok:true},source='deterministic',model=null){
