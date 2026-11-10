@@ -2,7 +2,7 @@
 
 A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
-**Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, the 3rd job at level 40, and endless renown ranks after level 100.** The 4th job (levels 70 to 100) is planned and shown as coming in a later update; it is not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+**Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, the 3rd job at level 40, the 4th job at level 70 with an ultimate at level 100, and endless renown ranks once the 4th job is learnt at level 100.** This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
 ## Earlier reliability fixes (V4.0.1)
 
@@ -140,7 +140,9 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | 25, 30, 35 | The branch's next three skills |
 | 40 | **3rd job**: pass your branch's trial to take its 3rd job and learn its first skill |
 | 48, 56, 64 | The 3rd job's next three skills |
-| 70 to 100 | 4th job (later update) |
+| 70 | **4th job**: pass your branch's legendary trial to take its 4th job and learn its first skill |
+| 80, 90 | The 4th job's next two skills |
+| 100 | The 4th job's **ultimate**: one use per long rest |
 
 | Class | Mastery (10) | 1st-job skills (13, 16) | 2nd job branches (20) |
 | --- | --- | --- | --- |
@@ -152,11 +154,11 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | Bard | Song of Rest | Jack of All Trades, Cutting Words | Lorekeeper / Battle Cantor / Envoy |
 
 Branch skills use the Advancement resource (2 uses per long rest, 3 from level
-30, 4 with the 3rd job). The **job tree** in the development panel (Prepare tab) shows your 1st job,
+30, 4 with the 3rd job, 5 with the 4th). The **job tree** in the development panel (Prepare tab) shows your 1st job,
 all three 2nd-job branches with their skills and the 3rd and 4th jobs each one
 leads to, which skills you have learnt, and your next skill. Once you choose a
 branch, the other two are greyed out. In combat, the skill bar groups your
-actions into 1st job, 2nd job and 3rd job skills.
+actions into 1st, 2nd, 3rd and 4th job skills.
 
 **The 3rd job trial.** At level 40, with a 2nd job branch, any town's expedition
 board offers your branch's trial (for example, a Guardian's trial makes them a
@@ -166,6 +168,14 @@ used, a written trial is used instead. A trial is always Hard, pays half a
 level of XP plus its battle, and does not take up the slot for an AI adventure.
 Passing it gives the new job title, its first skill and one more Advancement
 use per long rest; its other skills arrive at 48, 56 and 64.
+
+**The legendary trial.** At level 70, with the 3rd job, the board offers your
+branch's legendary trial (a Bulwark Knight's makes them an Aegis Paragon). It
+works like the 3rd job trial, but it is always Heroic. Passing it gives the 4th
+job title, its first skill and one more Advancement use; its next skills arrive
+at 80 and 90, and its ultimate at 100. An ultimate is the branch's strongest
+skill and can be used once per long rest. A hero who skipped the 3rd job trial
+takes it first.
 
 ### Companions and equipment
 
@@ -302,6 +312,7 @@ level needs, so each level takes about the same effort from start to finish.
 | Quest or AI adventure, on completion | 25%, plus its battle |
 | Improvised action | 2 to 8% by difficulty, capped per scene |
 | 3rd job trial, on completion | 50%, plus its battle (always Hard) |
+| Legendary (4th job) trial, on completion | 50%, plus its battle (always Heroic) |
 
 The game rates each AI adventure battle by comparing its enemies with a standard
 fight for your level; the AI never sets XP. Resolving the crisis peacefully pays
@@ -322,15 +333,15 @@ The choice is fixed once you set out.
 Growth past level 20 is deliberately gentle so the d20 still matters: the
 proficiency bonus stops at +6, enemy AC, attacks and DCs stop at their level-20
 values, and health and damage keep growing slowly on both sides (+2 HP a level
-and +1 damage and healing every 10 levels for heroes). New power past 20 will
-comes from job skills: the 2nd and 3rd jobs now, the 4th job in a later update.
+and +1 damage and healing every 10 levels for heroes). New power past 20
+comes from job skills: the 2nd, 3rd and 4th jobs.
 
 Saves from when level 10 was the cap keep their XP: XP past level 10 now counts
 as levels, and boons picked then return when renown starts after level 100.
 
 ### Renown: progression after level 100
 
-After level 100, every 26,750 XP earns a **renown rank**, without end. Each rank
+After level 100, once the 4th job is learnt, every 26,750 XP earns a **renown rank**, without end. Each rank
 gives one boon, chosen in the character development panel. Boons stack up to a
 limit, so they never break the d20 maths:
 

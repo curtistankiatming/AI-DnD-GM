@@ -82,9 +82,9 @@ function completeQuest(state,id,events,api){
     reputation(state,{wardens:state.story.flags.spiritFreed?3:2});
     if(state.story.flags.tovinFrightened)reputation(state,{wardens:-1});
   }
-  if(q?.trial==='third'){const p=P.ensure(state.player),b=P.branchOf(state.player);p.thirdJob=true;
-    state.player.resources.advancement=P.resources(CLASSES[state.player.classId],state.player.level,state.player).advancement;state.player.maxHp=P.maxHp(state.player);
-    const first=(b?.thirdSkills||[])[0];if(b)emit(events,`${state.player.name} passes the trial and takes the 3rd job: ${b.third}.${first?` New skill: ${first.name}. ${first.description}`:''} One more Advancement use per long rest.`,'level','good');}
+  if(q?.trial==='third'||q?.trial==='fourth'&&P.ensure(state.player).thirdJob){const p=P.ensure(state.player),b=P.branchOf(state.player),fourth=q.trial==='fourth';p[fourth?'fourthJob':'thirdJob']=true;
+    const r=P.resources(CLASSES[state.player.classId],state.player.level,state.player);state.player.resources.advancement=r.advancement;if(r.ultimate)state.player.resources.ultimate=r.ultimate;state.player.maxHp=P.maxHp(state.player);
+    const first=(b?.[fourth?'fourthSkills':'thirdSkills']||[])[0];if(b)emit(events,`${state.player.name} passes the trial and takes the ${fourth?'4th':'3rd'} job: ${b[q.trial]}.${first?` New skill: ${first.name}. ${first.description}`:''} One more Advancement use per long rest.${fourth?` The ultimate arrives at level ${P.MAX_LEVEL}.`:''}`,'level','good');}
   if(id==='trial'){const m=P.JOBS[state.player.classId]?.mastery;P.ensure(state.player).mastery=true;if(m)emit(events,`The Oath of the Road is sworn. ${state.player.name} learns the class mastery skill ${m.name}: ${m.description}`,'level','good');}
   if(q?.nextTown&&!state.world.unlockedTowns.includes(q.nextTown))state.world.unlockedTowns.push(q.nextTown);
   const destination=q?.nextTown||q?.town||'briarwatch';state.world.townId=destination;
@@ -325,7 +325,7 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,...o,cost:45+Math.floor(item.value/2),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];

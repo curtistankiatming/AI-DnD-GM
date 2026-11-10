@@ -58,10 +58,14 @@ const REWARDS = {
   40:'3rd job: pass your branch\u2019s trial to take its 3rd job, learn its first skill and gain one more Advancement use.',
   48:'A new 3rd job skill (passive).',
   56:'A new 3rd job skill.',
-  64:'A new 3rd job skill (passive).'
+  64:'A new 3rd job skill (passive).',
+  70:'4th job: pass your branch\u2019s legendary trial to take its 4th job, learn its first skill and gain one more Advancement use.',
+  80:'A new 4th job skill (passive).',
+  90:'A new 4th job skill.',
+  100:`Your 4th job ultimate, used once per long rest. The final level: renown ranks begin after this.`
 };
 const LATE_REWARD='More health, a little more damage and healing, and stronger enemies to match.';
-const rewardText=level=>REWARDS[level]||(level===MAX_LEVEL?`The final level. ${LATE_REWARD} Renown ranks begin after this.`:level===70?`${LATE_REWARD} The 4th job arrives in a later update.`:LATE_REWARD);
+const rewardText=level=>REWARDS[level]||(level===MAX_LEVEL?`The final level. ${LATE_REWARD} Renown ranks begin after this.`:LATE_REWARD);
 const TALENTS = {
   precise:{id:'precise',name:'Measured Strikes',description:'+1 weapon and spell attack bonus. Does not increase save DCs.'},
   bulwark:{id:'bulwark',name:'Stalwart',description:'+1 AC and 4 maximum HP. Works with any armor.'},
@@ -112,7 +116,7 @@ const ADVANCEMENTS = [
   {level:10,name:'Class mastery',status:'Playable',requirement:'Resolve the regional crisis, reach level 10, then complete the Oath of the Road trial to learn your class mastery skill.'},
   {level:20,name:'2nd job',status:'Playable',requirement:'Reach level 20 after the Oath of the Road trial, then choose one of three branches for your class.'},
   {level:40,name:'3rd job',status:'Playable',requirement:'Reach level 40 with a 2nd job branch, then pass your branch\u2019s 3rd job trial from any town\u2019s expedition board.'},
-  {level:70,name:'4th job',status:'Coming in a later update',requirement:'Your branch\u2019s final job; its last skill is learnt at level 100.'}
+  {level:70,name:'4th job',status:'Playable',requirement:'Reach level 70 as a 3rd job, then pass your branch\u2019s legendary trial. The 4th job\u2019s last skill, its ultimate, is learnt at level 100.'}
 ];
 // The 2nd job's first skill: today's specializations for the original two
 // branches, the level-20 job skill for the new third branch.
@@ -124,7 +128,16 @@ for(const [cls,def] of Object.entries(JOBS)){
     list.push({...first,id:b.id,name:b.name,description:`${first.name}: ${first.description}`,skillName:first.name});
   }
 }
-const SECOND_JOB_LEVEL=20,THIRD_JOB_LEVEL=40;
+const SECOND_JOB_LEVEL=20,THIRD_JOB_LEVEL=40,FOURTH_JOB_LEVEL=70;
+const TRIAL_LEVELS=Object.freeze({third:THIRD_JOB_LEVEL,fourth:FOURTH_JOB_LEVEL});
+// The job trial the hero can take now, if any: 'third' at 40, 'fourth' at 70.
+function nextTrial(player){
+  const b=branchOf(player),p=ensure(player);
+  if(!b)return null;
+  if(!p.thirdJob)return player.level>=THIRD_JOB_LEVEL?'third':null;
+  if(!p.fourthJob)return player.level>=FOURTH_JOB_LEVEL?'fourth':null;
+  return null;
+}
 const branchOf=player=>(JOBS[player.classId]?.branches||[]).find(b=>b.id===ensure(player).specialization)||null;
 // Formulas in job skills scale with the hero's power level ({p}, {p/N}).
 function jobFormula(formula,level){
@@ -141,6 +154,7 @@ function learntSkills(player){
   const b=branchOf(player);
   if(b)for(const s of b.skills)if(s.level===SECOND_JOB_LEVEL||player.level>=s.level)out.push({...s,source:b.name});
   if(b&&p.thirdJob)for(const s of b.thirdSkills||[])if(player.level>=s.level)out.push({...s,source:b.third});
+  if(b&&p.thirdJob&&p.fourthJob)for(const s of b.fourthSkills||[])if(player.level>=s.level)out.push({...s,source:b.fourth});
   return out;
 }
 const passiveTotals=player=>learntSkills(player).filter(s=>s.passive).reduce((t,s)=>{for(const [k,v] of Object.entries(s.passive))t[k]=(t[k]||0)+v;return t;},{});
@@ -150,24 +164,28 @@ const BONUS_CAPS=Object.freeze({attack:4,ac:4,save:4});
 function jobView(player){
   const job=JOBS[player.classId];if(!job)return null;
   const b=branchOf(player),p=ensure(player);
-  const third=Boolean(b&&p.thirdJob);
-  const title=b?(third?b.third:b.name):CLASSES[player.classId]?.name;
-  const describe=s=>({level:s.level,id:s.legacy||s.id,name:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description.split(':')[0]||b?.name:s.name,description:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description:s.description,passive:Boolean(s.passive)});
+  const third=Boolean(b&&p.thirdJob),fourth=Boolean(third&&p.fourthJob);
+  const title=b?(fourth?b.fourth:third?b.third:b.name):CLASSES[player.classId]?.name;
+  const describe=s=>({level:s.level,id:s.legacy||s.id,name:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description.split(':')[0]||b?.name:s.name,description:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description:s.description,passive:Boolean(s.passive),...(s.ultimate?{ultimate:true}:{})});
   const learnt=new Set(learntSkills(player).map(s=>s.id||s.legacy));
   const row=(s,source)=>({...describe(s),source,learnt:learnt.has(s.id||s.legacy)});
-  const skills=[row(job.mastery,'1st job'),...job.firstJob.map(s=>row(s,'1st job')),...(b?b.skills.map(s=>row(s,b.name)):[]),...(b?(b.thirdSkills||[]).map(s=>({...row(s,b.third),third:true})):[])];
+  const skills=[row(job.mastery,'1st job'),...job.firstJob.map(s=>row(s,'1st job')),...(b?b.skills.map(s=>row(s,b.name)):[]),
+    ...(b?(b.thirdSkills||[]).map(s=>({...row(s,b.third),third:true})):[]),...(b?(b.fourthSkills||[]).map(s=>({...row(s,b.fourth),fourth:true})):[])];
   // The whole tree, for the job screen: every branch with its skills, even
   // before one is chosen, and the 3rd and 4th jobs that follow each branch.
-  const options=branchOptions(player);
-  const branches=options.map(o=>({id:o.id,name:o.name,style:o.style,third:o.third,fourth:o.fourth,chosen:b?.id===o.id,closed:Boolean(b)&&b.id!==o.id,
-    skills:o.skills.map((s,i)=>({...s,id:job.branches.find(x=>x.id===o.id).skills[i].id||o.id,learnt:b?.id===o.id&&(s.level===SECOND_JOB_LEVEL||player.level>=s.level)})),
-    thirdSkills:(job.branches.find(x=>x.id===o.id).thirdSkills||[]).map(s=>({level:s.level,id:s.id,name:s.name,description:s.description,passive:Boolean(s.passive),learnt:b?.id===o.id&&third&&player.level>=s.level}))}));
-  const next=skills.find(s=>!s.learnt&&!(s.level===10&&player.level>=10)&&!(s.third&&!third&&player.level>=THIRD_JOB_LEVEL));
-  const ahead=!b?{level:SECOND_JOB_LEVEL,name:'Choose your 2nd job branch'}:!third&&player.level>=THIRD_JOB_LEVEL?{level:THIRD_JOB_LEVEL,name:`Pass the ${b.third} trial`}:null;
-  const nextSkill=((player.level<SECOND_JOB_LEVEL||b&&player.level<THIRD_JOB_LEVEL)&&next)?next:(ahead||next||null);
-  return {title,tier:b?(third?3:2):1,thirdJob:third,trialReady:Boolean(b&&!third&&player.level>=THIRD_JOB_LEVEL),className:CLASSES[player.classId]?.name,branch:b?{id:b.id,name:b.name,third:b.third,fourth:b.fourth,style:b.style}:null,mastery:Boolean(p.mastery),
+  const later=(list,unlocked)=>(list||[]).map(s=>({level:s.level,id:s.id,name:s.name,description:s.description,passive:Boolean(s.passive),...(s.ultimate?{ultimate:true}:{}),learnt:unlocked&&player.level>=s.level}));
+  const branches=branchOptions(player).map(o=>{const def=job.branches.find(x=>x.id===o.id),mine=b?.id===o.id;
+    return {id:o.id,name:o.name,style:o.style,third:o.third,fourth:o.fourth,chosen:mine,closed:Boolean(b)&&!mine,
+      skills:o.skills.map((s,i)=>({...s,id:def.skills[i].id||o.id,learnt:mine&&(s.level===SECOND_JOB_LEVEL||player.level>=s.level)})),
+      thirdSkills:later(def.thirdSkills,mine&&third),fourthSkills:later(def.fourthSkills,mine&&fourth)};});
+  // A gate (choosing a branch or passing a trial) comes before the skills behind it.
+  const trial=nextTrial(player);
+  const gate=!b&&player.level>=SECOND_JOB_LEVEL?{level:SECOND_JOB_LEVEL,name:'Choose your 2nd job branch'}:trial?{level:TRIAL_LEVELS[trial],name:`Pass the ${b[trial]} trial`}:null;
+  const nextSkill=gate||skills.find(s=>!s.learnt&&s.level>player.level)||null;
+  return {title,tier:b?(fourth?4:third?3:2):1,thirdJob:third,fourthJob:fourth,trialReady:Boolean(trial),trial,trialTitle:trial?b[trial]:null,
+    className:CLASSES[player.classId]?.name,branch:b?{id:b.id,name:b.name,third:b.third,fourth:b.fourth,style:b.style}:null,mastery:Boolean(p.mastery),
     skills,branches,nextSkill:nextSkill?{level:nextSkill.level,name:nextSkill.name}:null,
-    tiers:[{tier:1,name:'1st job',levels:'1 to 19'},{tier:2,name:'2nd job',levels:'20 to 39'},{tier:3,name:'3rd job',levels:'40 to 69'},{tier:4,name:'4th job',levels:'70 to 100',later:true}]};
+    tiers:[{tier:1,name:'1st job',levels:'1 to 19'},{tier:2,name:'2nd job',levels:'20 to 39'},{tier:3,name:'3rd job',levels:'40 to 69'},{tier:4,name:'4th job',levels:'70 to 100'}]};
 }
 
 function ensure(player){
@@ -179,8 +197,10 @@ function ensure(player){
 }
 // Ranks come from XP, so they cannot be edited separately; chosen boons are
 // clamped to each cap and to the number of ranks earned.
+// Renown begins only after the final level, once the 4th job (and with it the
+// ultimate) is learnt.
 function renownRank(player){
-  if((player.level||1)<MAX_LEVEL)return 0;
+  if((player.level||1)<MAX_LEVEL||!player.progression?.fourthJob)return 0;
   return Math.max(0,Math.floor(((Number(player.xp)||0)-XP_NEXT[MAX_LEVEL-1])/RANK_XP));
 }
 function normalizeBoons(player){
@@ -247,7 +267,8 @@ function resources(classDef,level=1,player=null){
     result[id]={name:def.name,current:max,max,refresh:def.refresh||'long'};
   }
   if(level>=2){const max=2+(level>=5?1:0)+(level>=7?1:0)+(level>=9?1:0)+(player&&ensure(player).choices['5']==='economy'?1:0);result.technique={name:'Technique',current:max,max,refresh:'short'};}
-  if(player&&ensure(player).specialization){const max=2+(player.level>=30?1:0)+(ensure(player).thirdJob?1:0);result.advancement={name:'Advancement',current:max,max,refresh:'long'};}
+  if(player&&ensure(player).specialization){const p=ensure(player),max=2+(player.level>=30?1:0)+(p.thirdJob?1:0)+(p.thirdJob&&p.fourthJob?1:0);result.advancement={name:'Advancement',current:max,max,refresh:'long'};
+    if(p.thirdJob&&p.fourthJob&&player.level>=MAX_LEVEL)result.ultimate={name:'Ultimate',current:1,max:1,refresh:'long'};}
   return result;
 }
 function maxHp(player){
@@ -363,4 +384,4 @@ function view(player,world){
     trialComplete:Boolean(world?.completed?.trial)
   };
 }
-module.exports={JOBS,SECOND_JOB_LEVEL,THIRD_JOB_LEVEL,branchOf,BONUS_CAPS,passiveTotals,jobFormula,learntSkills,jobView,branchOptions,MAX_LEVEL,XP_NEXT,BOUNDED_LEVEL,levelBand,accuracyLevel,powerLevel,lateGrowth,hitDiceMax,rewardText,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};
+module.exports={JOBS,SECOND_JOB_LEVEL,THIRD_JOB_LEVEL,FOURTH_JOB_LEVEL,TRIAL_LEVELS,nextTrial,branchOf,BONUS_CAPS,passiveTotals,jobFormula,learntSkills,jobView,branchOptions,MAX_LEVEL,XP_NEXT,BOUNDED_LEVEL,levelBand,accuracyLevel,powerLevel,lateGrowth,hitDiceMax,rewardText,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};
