@@ -13,17 +13,7 @@
     <div id="toastRegion" class="toast-region" aria-live="polite"></div>
 
     <div id="setupOverlay" class="overlay">
-      <section class="setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
-        <section id="resumePanel" class="resume-panel" aria-label="Continue or load a campaign">
-          <h2 id="resumeTitle">Welcome to Briarwatch</h2>
-          <button id="continueBtn" class="btn btn-primary is-hidden" type="button" disabled>Continue</button>
-          <button id="returnToGameBtn" class="btn btn-secondary is-hidden" type="button">Return to current adventure</button>
-          <p id="homeSaveStatus" class="muted" role="status">Looking for saved games…</p>
-          <details id="homeSaves" class="is-hidden"><summary>Load a different save</summary>
-            <button id="homeRefreshSavesBtn" class="text-button" type="button">Refresh saves</button>
-            <div id="homeSaveList" class="save-list"></div>
-          </details>
-        </section>
+      <section class="setup-card title-mode" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
         <div class="setup-heading">
           <div>
             <p class="eyebrow">A story you play</p>
@@ -32,6 +22,17 @@
           </div>
           <div class="campaign-chip">Solo adventure · Levels 1 to 100</div>
         </div>
+        <section id="resumePanel" class="resume-panel" aria-label="Continue or load a campaign">
+          <h2 id="resumeTitle">Welcome to Briarwatch</h2>
+          <button id="continueBtn" class="btn btn-primary is-hidden" type="button" disabled>Continue</button>
+          <button id="titleNewBtn" class="btn btn-primary" type="button">New adventure</button>
+          <button id="returnToGameBtn" class="btn btn-secondary is-hidden" type="button">Return to current adventure</button>
+          <p id="homeSaveStatus" class="muted" role="status">Looking for saved games…</p>
+          <details id="homeSaves" class="is-hidden"><summary>Load a different save</summary>
+            <button id="homeRefreshSavesBtn" class="text-button" type="button">Refresh saves</button>
+            <div id="homeSaveList" class="save-list"></div>
+          </details>
+        </section>
 
         <div class="setup-layout">
           <div class="setup-main">

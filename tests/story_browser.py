@@ -10,6 +10,7 @@ def exercise_story(page, output):
     output.mkdir(exist_ok=True)
     page.set_viewport_size({'width': 1440, 'height': 900})
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
+    page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Story Hero')
     page.locator('#startCampaignBtn').click()
     expect(page.locator('#workspace-adventure')).to_be_visible()

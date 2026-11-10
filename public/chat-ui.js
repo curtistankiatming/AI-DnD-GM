@@ -131,7 +131,7 @@
   function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);target.append(box);return input;}
   function select(name,id,entries){const box=createElement('label','chat-field',name),s=createElement('select');s.id=id;for(const [value,title]of entries){const o=createElement('option','',title);o.value=value;s.append(o);}box.append(s);target.append(box);return s;}
   const enabled=field('Turn on the AI game master','localAIEnabled','checkbox');
-  const provider=select('Provider','aiProvider',[['claude','Claude API (recommended)'],['local','Local model server']]);
+  const provider=select('AI service','aiProvider',[['claude','Claude (recommended)'],['local','A model running on this computer']]);
   const narration=field('Let the AI narrate story scenes','aiNarration','checkbox');
   const claudeBox=createElement('div','chat-provider');claudeBox.id='claudeSettings';ai.append(claudeBox);target=claudeBox;
   const claudeModel=select('Claude model','claudeModel',[['claude-opus-5-5','Claude Opus 5.5 · best storytelling'],['claude-sonnet-5-5','Claude Sonnet 5.5 · faster, cheaper'],['claude-haiku-5-5','Claude Haiku 5.5 · fastest, cheapest']]);
@@ -150,8 +150,15 @@
   localBox.append(createElement('p','muted','Uncapped sends max_tokens=-1. It does not remove the wait limit or the response-size guard.'));
   target=ai;
   const timeout=field('Wait limit per request, in seconds','localAITimeout','number');timeout.min=3;timeout.max=600;timeout.value=600;
+  // Everyday controls stay in view; tuning lives under one closed section. A local model
+  // always needs tuning, so the section opens by itself for that provider.
+  const adv=createElement('details','ai-advanced');adv.id='aiAdvanced';adv.append(createElement('summary','','Advanced settings'));
+  const advClaude=createElement('div','chat-provider'),advLocal=createElement('div','chat-provider');
+  advClaude.append(claudeModel.closest('label'),effort.closest('label'));
+  advLocal.append(profile.closest('label'),format.closest('label'),roles.closest('label'),budget.closest('label'),tokens.closest('label'),uncapped.closest('label'),localBox.querySelector('p.muted'));
+  adv.append(advClaude,advLocal,timeout.closest('label'));ai.append(adv);
   const info=createElement('p','muted');info.id='aiSettingsStatus';ai.append(info);
-  const showProvider=()=>{claudeBox.hidden=provider.value!=='claude';localBox.hidden=provider.value!=='local';};
+  const showProvider=()=>{const local=provider.value==='local';claudeBox.hidden=local;localBox.hidden=!local;advClaude.hidden=local;advLocal.hidden=!local;if(local)adv.open=true;};
   provider.addEventListener('change',showProvider);
   profile.addEventListener('change',()=>{const p={compact:[8000,160],balanced:[14000,240],expanded:[22000,320]}[profile.value];budget.value=p[0];tokens.value=p[1];});
   const value=()=>{const common={enabled:enabled.checked,provider:provider.value,narration:narration.checked,claudeModel:claudeModel.value,effort:effort.value,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,timeoutMs:Number(timeout.value)*1000};
