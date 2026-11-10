@@ -26,22 +26,44 @@
         </section>
         <div class="setup-heading">
           <div>
-            <p class="eyebrow">New campaign</p>
+            <p class="eyebrow">A story you play</p>
             <h1 id="setupTitle">Roads Beyond the Bell</h1>
             <p id="setupPremise" class="lede"></p>
           </div>
-          <div class="campaign-chip">Levels 1–10 · Party & preparation</div>
+          <div class="campaign-chip">Solo adventure · Levels 1 to 10</div>
         </div>
 
         <div class="setup-layout">
           <div class="setup-main">
             <section class="setup-section">
-              <h2>1. Adventurer</h2>
-              <div class="field-grid">
+              <h2>1. Name your hero</h2>
+              <div class="name-row">
                 <label>
                   <span>Name</span>
-                  <input id="setupName" type="text" maxlength="28" value="Aster" autocomplete="off" />
+                  <input id="setupName" type="text" maxlength="28" value="" placeholder="Aster" autocomplete="off" />
                 </label>
+                <button id="surpriseNameBtn" class="btn btn-secondary" type="button">Surprise me</button>
+              </div>
+            </section>
+
+            <section class="setup-section">
+              <div class="section-heading-row">
+                <div>
+                  <h2>2. Pick a class</h2>
+                  <p>Pick the way you like to play. Each class has its own abilities in and out of a fight.</p>
+                </div>
+              </div>
+              <div id="classCards" class="class-card-grid"></div>
+            </section>
+
+            <section id="gmChoice" class="setup-section" hidden>
+              <h2>3. Choose your game master</h2>
+              <div id="gmChoiceBody"></div>
+            </section>
+
+            <details id="setupCustomise" class="setup-section setup-customise">
+              <summary>Customise background, difficulty and ability scores <span class="muted">(optional)</span></summary>
+              <div class="field-grid">
                 <label>
                   <span>Background</span>
                   <select id="setupBackground"></select>
@@ -53,23 +75,10 @@
               </div>
               <p id="backgroundDescription" class="field-help"></p>
               <p id="difficultyDescription" class="field-help"></p>
-            </section>
-
-            <section class="setup-section">
               <div class="section-heading-row">
                 <div>
-                  <h2>2. Class</h2>
-                  <p>Pick the way you like to play. Each class has its own abilities in and out of a fight.</p>
-                </div>
-              </div>
-              <div id="classCards" class="class-card-grid"></div>
-            </section>
-
-            <section class="setup-section">
-              <div class="section-heading-row">
-                <div>
-                  <h2>3. Ability scores</h2>
-                  <p>Optional. The recommended scores for your class are already set. To change them you have 27 points to spend, and each score can be 8 to 15.</p>
+                  <h3>Ability scores</h3>
+                  <p>The recommended scores for your class are already set. To change them you have 27 points to spend, and each score can be 8 to 15.</p>
                 </div>
                 <button id="useClassPresetBtn" class="btn btn-secondary" type="button">Use recommended scores</button>
               </div>
@@ -79,7 +88,7 @@
                 <strong id="pointSpent">0 / 27</strong>
                 <span id="pointStatus" class="muted"></span>
               </div>
-            </section>
+            </details>
           </div>
 
           <aside class="setup-summary">
@@ -95,7 +104,7 @@
               <h3>Starting party</h3>
               <p>Orin Stoneward acts as guardian. Sister Maren Vale heals, advises, and challenges cruel decisions.</p>
             </div>
-            <button id="startCampaignBtn" class="btn btn-primary btn-large" type="button">Begin campaign</button>
+            <button id="startCampaignBtn" class="btn btn-primary btn-large" type="button">Begin adventure</button>
             <p id="setupError" class="form-error" role="alert"></p>
           </aside>
         </div>
@@ -348,6 +357,8 @@
     <script src="/adventure-ui.js"></script>
     <script src="/management-view.js"></script>
     <script src="/management-ui.js"></script>
+    <script src="/gm-setup.js"></script>
     <script src="/first-steps.js"></script>
+    <script src="/whats-next.js"></script>
   </body>
 </html>

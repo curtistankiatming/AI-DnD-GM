@@ -14,6 +14,29 @@ function apiKey(env = process.env) {
   return key || null;
 }
 
+// The key lives only in the environment and a git-ignored .env file, never in
+// saves or AI settings. The game can write that file so a player does not have to.
+function validKey(key) {
+  return typeof key === 'string' && /^sk-ant-[A-Za-z0-9_-]{16,400}$/.test(key);
+}
+
+async function saveKey(file, raw) {
+  const fs = require('node:fs/promises');
+  const key = typeof raw === 'string' ? raw.trim() : '';
+  if (!validKey(key)) throw new Error('That does not look like a Claude API key. A key starts with sk-ant- and has no spaces. Copy the whole key and try again.');
+  let existing = '';
+  try { existing = await fs.readFile(file, 'utf8'); } catch (e) { if (e.code !== 'ENOENT') throw new Error('The key file could not be read. Nothing was changed.'); }
+  const kept = existing.split(/\r?\n/).filter(line => !/^\s*(export\s+)?ANTHROPIC_API_KEY\s*=/.test(line));
+  while (kept.length && !kept.at(-1).trim()) kept.pop();
+  const temp = file + '.tmp';
+  try {
+    await fs.writeFile(temp, [...kept, 'ANTHROPIC_API_KEY=' + key].join('\n') + '\n', { mode: 0o600 });
+    await fs.rename(temp, file);
+  } catch { throw new Error('The key file could not be written. Nothing was changed.'); }
+  finally { await fs.unlink(temp).catch(() => {}); }
+  return key;
+}
+
 function createClaudeProvider({ clientFactory = null, env = process.env } = {}) {
   let cached = null;
   function client() {
@@ -63,7 +86,7 @@ function describeError(error, SDK, signal) {
   if (signal?.aborted) return 'aborted';
   const is = name => SDK && SDK[name] && error instanceof SDK[name];
   if (is('APIConnectionTimeoutError')) return 'Claude did not answer within the configured wait limit. Nothing was applied.';
-  if (is('AuthenticationError')) return 'Claude rejected the API key. Check ANTHROPIC_API_KEY. Nothing was applied.';
+  if (is('AuthenticationError')) return 'Claude did not accept this API key. Check that you copied the whole key. Nothing was applied.';
   if (is('PermissionDeniedError')) return 'This API key cannot use the selected Claude model. Nothing was applied.';
   if (is('NotFoundError')) return 'The selected Claude model was not found. Check the model ID. Nothing was applied.';
   if (is('RateLimitError')) return 'Claude is rate limiting this key. Wait a moment and try again. Nothing was applied.';
@@ -73,4 +96,4 @@ function describeError(error, SDK, signal) {
   return String(error?.message || 'Claude request failed. Nothing was applied.');
 }
 
-module.exports = { createClaudeProvider, apiKey, STRUCTURED_FALLBACK_BETA };
+module.exports = { createClaudeProvider, apiKey, validKey, saveKey, STRUCTURED_FALLBACK_BETA };

@@ -15,7 +15,8 @@ const {
 } = require("./src/engine");
 const { narrate, savedNarration } = require("./src/narrator");
 // Optional git-ignored .env beside package.json (for ANTHROPIC_API_KEY).
-try { process.loadEnvFile(path.join(__dirname, ".env")); } catch {}
+const ENV_FILE = path.resolve(process.env.ENV_FILE_PATH || path.join(__dirname, ".env"));
+try { process.loadEnvFile(ENV_FILE); } catch {}
 
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "127.0.0.1";
@@ -24,6 +25,7 @@ const SAVE_DIR = path.resolve(process.env.SAVE_DIR || path.join(__dirname, "save
 const { sanitizeSaveName, validSaveName } = require("./src/save-slots");
 const VERSION = require("./package.json").version;
 const {createLocalAI}=require('./src/local-ai');
+const {saveKey}=require('./src/claude-ai');
 const {createCoordinator}=require('./src/chat-coordinator');
 const localAI=createLocalAI({configPath:process.env.AI_CONFIG_PATH || path.join(__dirname,'.local-ai.json')});
 const chatCoordinator=createCoordinator(localAI);
@@ -207,6 +209,16 @@ async function handleApi(req, res, url) {
       }
       if(pathname==='/api/ai/models'&&req.method==='POST') {
         const body=await readJsonBody(req); sendJson(res,200,{models:await localAI.models(body.config)}); return;
+      }
+      if(pathname==='/api/ai/key'&&req.method==='POST') {
+        // The key is written to the git-ignored key file and is never sent back.
+        if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)) {sendJson(res,403,{error:'A key can only be saved from the computer that runs the game.'});return;}
+        const body=await readJsonBody(req);
+        process.env.ANTHROPIC_API_KEY=await saveKey(ENV_FILE,body.key);
+        sendJson(res,200,{claudeKeyConfigured:true}); return;
+      }
+      if(pathname==='/api/ai/test'&&req.method==='POST') {
+        const body=await readJsonBody(req); sendJson(res,200,await localAI.test(body.config)); return;
       }
       if(pathname==='/api/ai/cancel'&&req.method==='POST') {
         sendJson(res,200,{cancelled:localAI.cancel()}); return;
