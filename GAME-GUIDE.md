@@ -196,6 +196,24 @@ file. A local server's optional token comes from `LOCAL_AI_TOKEN`, never chat,
 saves, a public repository or a screenshot. Listing models does not download or
 load them; inference may trigger the local server's just-in-time loading.
 
+### Improvised actions (Claude only)
+
+In Action mode, describe anything sensible your hero tries. If no listed approach
+fits, Claude proposes how to resolve it: a skill (or ability), a difficulty, what
+happens on success and failure, a reward and a risk. Before anything happens you
+see the roll you need and your chance. The engine enforces the limits:
+
+| Difficulty | DC | Can earn |
+| --- | --- | --- |
+| Trivial | no roll | a recorded discovery only |
+| Easy | 10 | discovery, 1d4 gold per level, Inspiration |
+| Moderate / Hard / Very hard | 13 / 16 / 19 | also XP: 5% / 8% / 12% of your current level band |
+
+Each scene allows 8 improvised attempts, 3 material rewards and XP once. Failure
+risks are a story setback, ⌈level/3⌉d6 damage, or losing up to 3 gold per level.
+Repeating the same attempt in a scene is refused. Improvising is paused in combat.
+Successful discoveries appear in the journal as *established* facts.
+
 Story narration uses the same AI settings: tick **AI narration for story
 scenes** to have the selected provider narrate resolved story choices and combat.
 The older `AI_NARRATOR`/`AI_MODEL`/`LM_STUDIO_BASE_URL` environment variables were

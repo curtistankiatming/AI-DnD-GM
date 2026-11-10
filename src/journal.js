@@ -5,6 +5,7 @@
 const {CLUES,STORY_NODES}=require('./content');
 const {QUESTS,PERSONAL}=require('./expansion');
 const RoadState=require('./road-state');
+const Improvise=require('./improvise');
 const MAX_NOTES=12,MAX_NOTE_LENGTH=400;
 const safeText=(value,limit)=>typeof value==='string'?value.slice(0,limit):'';
 function normalizeNotes(raw){
@@ -26,6 +27,7 @@ function sync(state){
   for(const id of [...new Set(state.story?.clues||[])]){
     const clue=CLUES[id];if(clue)j.facts.push({id:'clue:'+id,title:clue.name,text:clue.text,status:'verified',source:'Discovered through a resolved game action'});
   }
+  j.facts.push(...Improvise.journalFacts(state));
   const r=RoadState.normalize(state.chat?.road);
   if(r){
     if(r.rumorHeard)j.rumors.push({id:'wagon-bandits',title:'Bandits damaged the medicine wagon',status:r.axleKnown?'disproved':'unverified',text:r.axleKnown?'Inspection established wood-rot as the cause of this wagon’s axle failure; the bandit claim is disproved for this wagon.':'A roadside bystander blamed bandits. The claim has not been verified.',source:r.axleKnown?'Confirmed axle inspection':'Bystander account'});

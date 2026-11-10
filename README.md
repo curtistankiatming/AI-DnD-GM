@@ -62,6 +62,12 @@ Start the full-source game without AI, then open **Settings → AI settings**.
 - **Local model:** choose *Local model server* and select the exact model ID from
   a loopback OpenAI-compatible server such as Bionic (`http://127.0.0.1:1234/v1`).
 
+With Claude, you can also **improvise**: type any sensible action that no listed
+approach covers ("climb the bell tower to look over the square"). Claude proposes
+a skill check, difficulty, stakes, reward and risk; the engine caps them by level
+and per scene, shows you the odds, and rolls only after you confirm. Successful
+discoveries are recorded in the journal so the story remembers them.
+
 Either way, the AI interprets what you type and writes prose; the rules engine
 still resolves dice, items, XP and scene changes, and proposed actions need your
 confirmation. Run `npm install` once (or let `run-local.bat` do it) to get the
