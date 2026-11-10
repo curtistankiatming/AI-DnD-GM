@@ -37,6 +37,7 @@ const Road = require("./road-story");
 Road.register(STORY_NODES);
 const Journal = require("./journal");
 const Improvise = require("./improvise");
+const Director = require("./director");
 const SCHEMA_VERSION = 4;
 const MAX_LOGS = 180;
 const MAX_HISTORY = 80;
@@ -232,6 +233,7 @@ function createNewGame(setup = {}) {
   W.init(state);
   ChatMemory.ensure(state, true);
   Improvise.normalize(state);
+  Director.normalize(state);
   const events = [];
   enterNode(state, CAMPAIGN.startNode, events);
   pushLog(state, "GM", STORY_NODES[CAMPAIGN.startNode].opening, "story");
@@ -343,6 +345,8 @@ function normalizeIncomingState(raw) {
     })
     .filter(Boolean);
 
+  // Generated adventures must be installed before their story nodes are validated.
+  Director.normalize(state);
   state.story = {
     nodeId: STORY_NODES[state.story?.nodeId] ? state.story.nodeId : CAMPAIGN.startNode,
     visitedNodes: Array.isArray(state.story?.visitedNodes) ? state.story.visitedNodes.filter((id) => STORY_NODES[id]) : [],
@@ -1044,7 +1048,7 @@ function startCombat(state, encounterId, rng, events) {
     summary: []
   };
   if(encounter.objective){
-    const q=EXP.QUESTS[encounter.questId];
+    const q=Director.quest(state,encounter.questId);
     const prepared=Boolean(state.story.flags[`prepared:${q.id}`]);
     const approached=Boolean(state.story.flags[`approach:${q.id}`]);
     state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor(q.level/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
@@ -1357,7 +1361,7 @@ function objectivePlan(state) {
   const o=state.combat?.objective;if(!o)return null;
   const a=combatActor(state,'player')||state.player;
   const skill=[o.skill,...(o.alt||[])].filter(id=>SKILLS[id]).sort((x,y)=>actorSkillBonus(a,y)-actorSkillBonus(a,x))[0];
-  const q=EXP.QUESTS[o.questId];
+  const q=Director.quest(state,o.questId);
   const tools=(q?.route.tools||[]).filter(id=>hasItem(state,id));
   const toolBonus=tools.length?P.stats(state.player).tool:0;
   const bonus=actorSkillBonus(a,skill)+P.stats(state.player).objective+(state.world.rumors[o.questId]?1:0)+toolBonus;
@@ -2229,6 +2233,10 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='story-choice') {state.pendingIntent=null;result=resolveStoryChoice(state,action.choiceId,rng,events);}
   else if(action.type==='freeform')result=resolveFreeform(state,action.text,rng,events);
   else if(action.type==='improvise')result=resolveImprovised(state,action.proposal,rng,events);
+  else if(action.type==='director-commission'||action.type==='director-dismiss'){
+    const r=action.type==='director-commission'?Director.commission(state,action.draft,events):Director.dismiss(state,String(action.questId||''),events);
+    result=r.ok?r:invalidResult(state,events,r.error);
+  }
   else if(action.type==='equip')result=equipItem(state,action.itemId,events,action.actorId||'player');
   else if(action.type==='unequip')result=unequipItem(state,action.slot,events,action.actorId||'player');
   else if(action.type==='use-item')result=storyUseItem(state,action.itemId,action.targetId,rng,events);
