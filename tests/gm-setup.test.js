@@ -72,8 +72,16 @@ test('HTTP: paste a key, test the connection, and the key never comes back',asyn
   assert.doesNotMatch(JSON.stringify(after),/sk-ant-/);
 
   const tested=await post('/api/ai/test',{config:{provider:'claude'}});
-  assert.equal(tested.status,200,tested.text);assert.equal(JSON.parse(tested.text).ok,true);assert.doesNotMatch(tested.text,/sk-ant-/);
-  assert.equal(seen.length,1);assert.equal(seen[0].key,KEY);assert.equal(seen[0].body.max_tokens,1024);
+  assert.doesNotMatch(tested.text,/sk-ant-/);
+  // CI runs the suite without installing the optional Claude SDK. The request leg is
+  // checked where the SDK exists; without it the player must be told how to get it.
+  let sdk=true;try{require.resolve('@anthropic-ai/sdk');}catch{sdk=false;}
+  if(sdk){
+    assert.equal(tested.status,200,tested.text);assert.equal(JSON.parse(tested.text).ok,true);
+    assert.equal(seen.length,1);assert.equal(seen[0].key,KEY);assert.equal(seen[0].body.max_tokens,1024);
+  }else{
+    assert.equal(tested.status,400);assert.match(tested.text,/npm install/);assert.equal(seen.length,0);
+  }
   assert.equal((await settings()).config.enabled,false,'a test alone does not turn the AI on');
   await assert.rejects(fs.access(path.join(dir,'settings.json')),'no settings file is written by a key or a test');
   assert.doesNotMatch(output,/sk-ant-/,'the key is not logged');
