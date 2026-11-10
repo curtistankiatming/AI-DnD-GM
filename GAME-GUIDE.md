@@ -2,7 +2,7 @@
 
 A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
-**Playable scope: levels 1–10, a first advancement at level 10, and a post-advancement expedition.** Level-30 and level-70 advancements are shown as future expansion milestones, not playable systems or content in this release. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+**Playable scope: authored levels 1–10, a first advancement at level 10, a post-advancement expedition, then endless renown ranks with AI-directed adventures.** Level-30 and level-70 advancements are shown as future expansion milestones, not playable systems or content in this release. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
 ## Earlier reliability fixes (V4.0.1)
 
@@ -239,7 +239,31 @@ One generated adventure can wait on the board at a time; dismiss it if you would
 rather have another. It returns you to a town you already know, so it cannot
 open a locked region early. Generated adventures are stored in the save,
 re-checked against these limits whenever a save loads, and play without AI once
-written. Above level 10 the XP is banked until later progression arrives.
+written. Past level 10 an adventure is worth 30% of a renown rank (1,200 XP), and
+its challenge level rises with your renown (see below).
+
+### Renown: progression after level 10
+
+Level 10 is the last level with new class features. After it, every 4,000 XP
+earns a **renown rank**, without end. Each rank gives one boon, chosen in the
+character development panel. Boons stack up to a limit, so they never break the
+d20 maths:
+
+| Boon | Effect per pick | Limit |
+| --- | --- | --- |
+| Vigor | +6 maximum HP | 5 |
+| Precision | +1 to attack rolls | 2 |
+| Warding | +1 Armor Class | 1 |
+| Resolve | +1 to saving throws | 2 |
+| Might | +1 damage on attacks and spells | 3 |
+| Mending | +2 to healing you give | 3 |
+| Purpose | +1 to combat-objective checks | 2 |
+
+When every boon is full (18 ranks), ranks still record your legend. AI-directed
+adventures use a challenge level of 10 plus half your renown rank, up to 16:
+their DCs, enemy health, armour and attacks follow the authored formulas for
+that level, and their gold grows with it. Improvised actions keep earning XP
+past level 10.
 
 Story narration uses the same AI settings: tick **AI narration for story
 scenes** to have the selected provider narrate resolved story choices and combat.

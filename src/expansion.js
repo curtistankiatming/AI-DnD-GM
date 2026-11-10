@@ -51,28 +51,31 @@ const QUESTS=require('./data/quests.json');
 function choice(id,label,rest={}){return {id,label,description:rest.description||'',once:true,...rest};}
 function clue(id,name,text){CLUES[id]={id,name,text};}
 function installQuest(q){
+  // Challenge level drives DCs and enemy strength. AI adventures past level 10
+  // set q.power from renown; authored quests use their level.
+  const L=q.power||q.level;
   const prefix=`q-${q.id}`;
   const evidence=`${q.id}-evidence`;
   clue(evidence,`${q.name}: established lead`,q.clue);
   const preparation=`prepared:${q.id}`;
   const approach=`approach:${q.id}`;
-  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+Math.floor(q.level/2),tools:q.investigate.tools};
-  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+Math.floor(q.level/2),tools:q.route.tools};
-  STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,opening:q.opening,safeRest:true,questId:q.id,phase:'start',choices:[
+  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+Math.floor(L/2),tools:q.investigate.tools};
+  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+Math.floor(L/2),tools:q.route.tools};
+  STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${L}`,title:q.name,location:q.region,objective:q.brief,opening:q.opening,safeRest:true,questId:q.id,phase:'start',choices:[
     choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{text:q.investigate.success,clues:[evidence],setFlags:{[preparation]:true}},failure:{text:q.investigate.failure,clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
     choice('advance',q.route.label,{nextNode:`${prefix}-approach`,description:'Proceed toward the crisis. Preparation remains optional.'})
   ]};
-  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${q.level}`,title:'The approach',location:q.region,objective:q.route.label,opening:'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.',safeRest:false,questId:q.id,phase:'approach',choices:[
-    choice('careful',q.route.label,{check:routeCheck,description:`${q.route.tools?.length?'The listed equipment can grant advantage. ':''}A failed approach causes injury (and poison only where described), but does not block the story.`,success:{text:q.route.success,setFlags:{[approach]:true},nextNode:`${prefix}-crisis`},failure:{text:q.route.failure,partyDamage:q.id==='trial'?'0':`${1+Math.floor(q.level/5)}d4`,poison:q.route.poison,nextNode:`${prefix}-crisis`}}),
+  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${L}`,title:'The approach',location:q.region,objective:q.route.label,opening:'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.',safeRest:false,questId:q.id,phase:'approach',choices:[
+    choice('careful',q.route.label,{check:routeCheck,description:`${q.route.tools?.length?'The listed equipment can grant advantage. ':''}A failed approach causes injury (and poison only where described), but does not block the story.`,success:{text:q.route.success,setFlags:{[approach]:true},nextNode:`${prefix}-crisis`},failure:{text:q.route.failure,partyDamage:q.id==='trial'?'0':`${1+Math.floor(L/5)}d4`,poison:q.route.poison,nextNode:`${prefix}-crisis`}}),
     choice('direct','Take the obvious route and keep the party together',{description:'No check. Arrive openly without an approach advantage.',result:{text:'The party arrives together by the direct route. You have surrendered surprise, not the opportunity to decide what happens next.',nextNode:`${prefix}-crisis`}})
   ]};
-  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,opening:q.crisis,safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{requires:{cluesAll:[evidence]},check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+Math.floor(q.level/2)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; failure starts the objective encounter.',success:{text:q.peaceful.success,setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{text:q.peaceful.failure,combat:`quest:${q.id}`}}),
+  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${L}`,title:'The deciding moment',location:q.region,objective:q.objective.name,opening:q.crisis,safeRest:false,questId:q.id,phase:'crisis',choices:[
+    choice('resolve',q.peaceful.label,{requires:{cluesAll:[evidence]},check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+Math.floor(L/2)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; failure starts the objective encounter.',success:{text:q.peaceful.success,setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{text:q.peaceful.failure,combat:`quest:${q.id}`}}),
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
   STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',opening:q.after,safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:'This decision is permanent. The objective reward is the same for every approach.',result:{text:d.text,setFlags:{[d.flag]:true},completeQuest:q.id,reputation:d.rep,nextNode:`town-${q.nextTown||q.town}`}}))};
-  const level=q.level;
+  const level=L;
   const type=q.enemyTheme;
   const mainHp=22+level*6;
   ENEMIES[q.foe]={id:q.foe,name:q.foeName,maxHp:mainHp,ac:12+Math.floor(level/3),level,abilities:{str:14,dex:12,con:14,int:13,wis:13,cha:14},attack:{name:type==='wild'?'Briar Lash':type==='undead'?'Remembered Toll':'Ward Strike',bonus:3+Math.floor(level/2),damage:`${1+Math.floor(level/5)}d6+${2+Math.floor(level/3)}`,damageType:type==='undead'?'necrotic':type==='storm'?'lightning':'slashing'},aiRole:level>=8?'boss':'leader',tags:type==='undead'?['undead']:[],resistances:type==='undead'?['slashing','piercing','bludgeoning']:[],xp:0};

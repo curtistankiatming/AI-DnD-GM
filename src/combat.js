@@ -160,7 +160,7 @@ function startCombat(state, encounterId, rng, events) {
     const q=Director.quest(state,encounter.questId);
     const prepared=Boolean(state.story.flags[`prepared:${q.id}`]);
     const approached=Boolean(state.story.flags[`approach:${q.id}`]);
-    state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor(q.level/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
+    state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor((q.power||q.level)/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
     if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }

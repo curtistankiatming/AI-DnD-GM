@@ -82,8 +82,9 @@ function scene(state, sceneId) {
 
 function xpFor(level, difficulty) {
   const share = XP_SHARE[difficulty];
-  if (!share || level >= P.MAX_LEVEL) return 0;
-  const band = (P.XP_NEXT[level] || 0) - (P.XP_NEXT[level - 1] || 0);
+  if (!share) return 0;
+  // Past level 10 the band is one renown rank.
+  const band = level >= P.MAX_LEVEL ? P.RANK_XP : (P.XP_NEXT[level] || 0) - (P.XP_NEXT[level - 1] || 0);
   return Math.max(5, Math.round(band * share / 5) * 5);
 }
 
@@ -152,7 +153,7 @@ function summary(state, sceneId) {
   return {
     attemptsLeft: Math.max(0, MAX_ATTEMPTS_PER_SCENE - s.attempts),
     materialRewardsLeft: Math.max(0, MAX_REWARDS_PER_SCENE - s.rewards),
-    xpAvailable: !s.xpGranted && state.player.level < P.MAX_LEVEL,
+    xpAvailable: !s.xpGranted,
     alreadyTried: s.attempts
   };
 }

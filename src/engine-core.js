@@ -126,9 +126,16 @@ function successProbability(dc, bonus, mode = "normal") {
 function awardXp(state, amount, events = [], reason = "Progress") {
   const gain = Math.max(0, Math.floor(Number(amount || 0)));
   if (!gain) return;
+  const rankBefore = P.renownRank(state.player);
   state.player.xp += gain;
   events.push({ type: "xp", tone: "good", text: `${reason}: +${gain} XP.` });
   checkLevelUp(state, events);
+  const rank = P.renownRank(state.player);
+  if (rank > rankBefore) {
+    const open = P.pendingBoons(state.player);
+    const text = `${state.player.name} reached renown rank ${rank}. ${open ? `Choose ${open === 1 ? "a renown boon" : `${open} renown boons`} on the character sheet.` : "Every boon is already at its maximum; the legend still grows."}`;
+    events.push({ type: "level", tone: "good", text }); pushLog(state, "Progression", text, "level");
+  }
 }
 
 function checkLevelUp(state, events = []) {

@@ -109,7 +109,7 @@ function normalizeQuest(raw) {
   // unbounded definition. The numbers are recomputed from the level.
   if (!raw || typeof raw !== 'object' || !/^ai-\d{1,4}-[a-z0-9]{7}$/.test(raw.id || '')) return null;
   const level = Math.max(1, Math.min(P.MAX_LEVEL, Math.floor(Number(raw.level) || 1)));
-  const out = bound({ level, town: raw.town, unlock: 'bell' }, raw, raw.id);
+  const out = bound({ level, power: raw.power, town: raw.town, unlock: 'bell' }, raw, raw.id);
   return out.ok ? finalize({ ...out.quest, createdDay: Math.max(1, Math.floor(Number(raw.createdDay) || 1)), createdLevel: level }) : null;
 }
 
@@ -138,7 +138,7 @@ function install(q) {
       const node = STORY_NODES[`q-${q.id}-${phase}`];
       node.directorHash = q.hash;
       node.generated = true;
-      if (phase !== 'after') node.act = `AI-directed expedition • Level ${q.level}`;
+      if (phase !== 'after') node.act = `AI-directed expedition • ${q.power ? `Renown challenge ${q.power}` : `Level ${q.level}`}`;
     }
   }
   return q;
@@ -152,9 +152,11 @@ function quest(state, id) {
 const list = state => Object.values(state?.director?.quests || {});
 const open = state => list(state).filter(q => !state.world?.completed?.[q.id]);
 
-function rewards(level) {
-  const band = level < P.MAX_LEVEL ? P.XP_NEXT[level] - (P.XP_NEXT[level - 1] || 0) : 1000;
-  return { xp: Math.round(band * 0.3 / 10) * 10, gold: 20 + level * 20 };
+// Past level 10 the band is one renown rank, so about three or four
+// adventures earn the next rank. Gold grows with the challenge level.
+function rewards(level, power = level) {
+  const band = level < P.MAX_LEVEL ? P.XP_NEXT[level] - (P.XP_NEXT[level - 1] || 0) : P.RANK_XP;
+  return { xp: Math.round(band * 0.3 / 10) * 10, gold: 20 + power * 20 };
 }
 
 // The director may send the party home to any town it has already reached; it
@@ -169,6 +171,9 @@ function bound(state, draft, forcedId = null) {
   const fail = error => ({ ok: false, error });
   if (!draft || typeof draft !== 'object' || Array.isArray(draft)) return fail('The new adventure was incomplete. Nothing was added.');
   const level = Math.max(1, Math.min(P.MAX_LEVEL, Math.floor(Number(state.level ?? state.player?.level) || 1)));
+  // Challenge level: the hero's level, plus renown at level 10 (capped).
+  const extra = state.player ? P.renownPower(state.player) : Math.floor(Number(state.power) - level) || 0;
+  const power = level < P.MAX_LEVEL ? level : level + Math.max(0, Math.min(P.RENOWN_POWER_CAP, extra));
   const town = TOWNS[state.town] ? state.town : TOWNS[state.world?.townId] ? state.world.townId : 'briarwatch';
   const text = (v, limit, fallback = '') => clean(v, limit) || fallback;
   const ck = (raw, label) => {
@@ -204,7 +209,7 @@ function bound(state, draft, forcedId = null) {
   }).filter(Boolean);
   if (decisions.length < 2) return fail('The new adventure needs at least two final decisions. Nothing was added.');
   const body = {
-    name, level, town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
+    name, level, ...(power > level ? { power } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
     faction: FACTIONS.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
@@ -212,7 +217,7 @@ function bound(state, draft, forcedId = null) {
     foeName: text(draft.foeName, TEXT.name, 'The Opposition'), enemyTheme: THEMES.includes(draft.enemyTheme) ? draft.enemyTheme : 'soldier',
     after: text(draft.after, TEXT.long, 'The dust settles.'),
     nextTown: destination(state, draft.destination || draft.nextTown, town),
-    ...rewards(level)
+    ...rewards(level, power)
   };
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
@@ -250,7 +255,7 @@ function commission(state, draft, events) {
   d.quests[q.id] = install(q);
   if (out.arc) d.arc = out.arc;
   prune(state);
-  const text = `New adventure on the expedition board: ${q.name} (level ${q.level}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
+  const text = `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
   events.push({ type: 'quest', tone: 'good', text });
   return { ok: true, kind: 'director', questId: q.id, outcomeText: text };
 }
@@ -286,7 +291,7 @@ function prompt(state, { hint = '', journal = '', instructions = '' } = {}) {
   return JSON.stringify({
     request: clean(hint, TEXT.hint) || 'Surprise us with what happens next.',
     preferences: clean(instructions, 1200),
-    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level },
+    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player) },
     party: state.party.map(m => ({ name: m.name, bond: m.bond })),
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.map(id => TOWNS[id].name),
     reputation: w.reputation,
