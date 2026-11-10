@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'road-state', 'improvise', 'director', 'engine-core', 'combat', 'engine-view', 'chat-memory', 'courier-scene', 'road-story', 'journal', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
+const SOURCES = ['content', 'rules', 'expansion', 'progression', 'xp', 'equipment', 'world', 'road-state', 'improvise', 'director', 'engine-core', 'combat', 'engine-view', 'chat-memory', 'courier-scene', 'road-story', 'journal', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
 const ASSETS = ['public/index.html', 'public/styles.css', 'public/ui-session.js', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js', 'public/adventure-view.js', 'public/adventure-ui.js', 'public/adventure.css', 'public/management-view.js', 'public/management-ui.js', 'public/management.css', 'public/gm-setup.js', 'public/first-steps.js', 'public/whats-next.js'];
 // Authored content tables, bundled as modules so require('./data/x.json') works offline.
 const DATA = fs.readdirSync(path.join(root, 'src/data')).filter(f => f.endsWith('.json')).sort();
