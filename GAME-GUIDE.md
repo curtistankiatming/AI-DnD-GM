@@ -214,6 +214,33 @@ risks are a story setback, ⌈level/3⌉d6 damage, or losing up to 3 gold per le
 Repeating the same attempt in a scene is refused. Improvising is paused in combat.
 Successful discoveries appear in the journal as *established* facts.
 
+### Story director: new adventures (Claude only)
+
+After the bell chapter, every town's expedition board has **Ask the GM for a new
+adventure**. Type an optional wish in the message box first, or use
+`/adventure <wish>` in chat. Claude writes a complete expedition in the same
+shape as the authored ones: a briefing, an investigation, an approach, a crisis
+with a peaceful resolution and a fight-side objective, an opponent, and two or
+three permanent decisions. It also updates a short *story so far* arc, shown on
+the board, that the next adventure continues.
+
+Claude writes the story and chooses which skills, tools and factions matter. The
+engine sets every number with the authored formulas:
+
+| Part | Set by the engine |
+| --- | --- |
+| Level | your current level (max 10) |
+| Checks | DC 11/12/14 + ½ level for investigate/approach/resolve |
+| Opponent | same health, armour and attacks as an authored expedition of that level |
+| Reward | 30% of your current level's XP band, 20 + 20 × level gold |
+| Decisions | +2 to the favoured faction, +1 to an optional second |
+
+One generated adventure can wait on the board at a time; dismiss it if you would
+rather have another. It returns you to a town you already know, so it cannot
+open a locked region early. Generated adventures are stored in the save,
+re-checked against these limits whenever a save loads, and play without AI once
+written. Above level 10 the XP is banked until later progression arrives.
+
 Story narration uses the same AI settings: tick **AI narration for story
 scenes** to have the selected provider narrate resolved story choices and combat.
 The older `AI_NARRATOR`/`AI_MODEL`/`LM_STUDIO_BASE_URL` environment variables were
@@ -223,8 +250,8 @@ The engine resolves rules first. The model receives bounded public facts, curren
 combat resources and confirmed events; hidden facts are omitted. Its prose can
 still be wrong and is not an executable result. The mechanics feed is authoritative.
 Loading restores saved narration or a current-state recap without another roll.
-Offline browser HTML never calls a model. These are bounded authored adventures,
-not unrestricted generation of new worlds, quests, NPCs or mechanics.
+Offline browser HTML never calls a model. Generated adventures use the existing
+rules, towns, items and enemy formulas; Claude cannot add new mechanics.
 
 For a controlled live check later, use `EVALUATE-MODEL.bat` (explicit START consent)
 or follow [Shared model evaluation](docs/MODEL-EVALUATION.md). It uses synthetic

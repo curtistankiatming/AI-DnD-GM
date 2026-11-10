@@ -3,9 +3,10 @@
 // narration or the short chat transcript. Notes are kept separately and cannot
 // authorize mechanics. This is save continuity, not anti-cheat for edited saves.
 const {CLUES,STORY_NODES}=require('./content');
-const {QUESTS,PERSONAL}=require('./expansion');
+const {PERSONAL}=require('./expansion');
 const RoadState=require('./road-state');
 const Improvise=require('./improvise');
+const Director=require('./director');
 const MAX_NOTES=12,MAX_NOTE_LENGTH=400;
 const safeText=(value,limit)=>typeof value==='string'?value.slice(0,limit):'';
 function normalizeNotes(raw){
@@ -66,19 +67,23 @@ function sync(state){
     }
   }
   for(const [id,record]of Object.entries(state.world?.completed||{})){
-    if(id!=='bell'&&!Object.hasOwn(QUESTS,id))continue;
-    const title=QUESTS[id]?.name||'The Bell Beneath Briarwatch';
+    const def=Director.quest(state,id);
+    if(id!=='bell'&&!def&&!record?.name)continue;
+    const title=def?.name||record?.name||'The Bell Beneath Briarwatch';
     j.completed.push({id:'quest:'+id,title,status:'completed',text:'Resolved '+(['peaceful','objective','force','costly'].includes(record?.quality)?record.quality:'as recorded')+'. Rewards are already accounted for.'});
-    for(const decision of QUESTS[id]?.decisions||[]){
+    for(const decision of def?.decisions||[]){
       if(state.story?.flags?.[decision.flag])j.facts.push({id:'decision:'+id+':'+decision.id,title:decision.label,status:'verified',text:decision.text,source:'Chosen consequence of the completed '+title+' adventure'});
     }
 
   }
   for(const [id,heard]of Object.entries(state.world?.rumors||{})){
-    if(heard&&Object.hasOwn(QUESTS,id)&&!state.world?.completed?.[id])j.rumors.push({id:'briefing:'+id,title:QUESTS[id].name+' briefing',status:'reported',text:QUESTS[id].threat,source:'A requested town briefing; not independent confirmation'});
+    const def=Director.quest(state,id);
+    if(heard&&def&&!state.world?.completed?.[id])j.rumors.push({id:'briefing:'+id,title:def.name+' briefing',status:'reported',text:def.threat,source:'A requested town briefing; not independent confirmation'});
   }
   const active=state.world?.activeQuest;
-  if(active&&Object.hasOwn(QUESTS,active)&&!state.world?.completed?.[active])j.leads.push({id:'quest:'+active,title:QUESTS[active].name,status:state.world.onExpedition?'active':'paused',text:QUESTS[active].brief});
+  const activeDef=Director.quest(state,active);
+  if(activeDef&&!state.world?.completed?.[active])j.leads.push({id:'quest:'+active,title:activeDef.name,status:state.world.onExpedition?'active':'paused',text:activeDef.brief});
+  for(const q of Director.open(state))if(q.id!==active)j.leads.push({id:'quest:'+q.id,title:q.name,status:'offered',text:q.brief,source:'Expedition board (AI-directed)'});
   state.journal=j;return j;
 }
 function addNote(state,value){

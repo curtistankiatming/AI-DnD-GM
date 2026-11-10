@@ -2,6 +2,7 @@
 const { ITEMS, COMPANIONS, STORY_NODES, CLASSES }=require('./content');
 const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS }=require('./expansion');
 const P=require('./progression');
+const Director=require('./director');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
 const TOWN_ACTIONS=new Set(['buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize']);
@@ -54,13 +55,13 @@ function rewardPersonal(state,id,events){
 }
 function completeQuest(state,id,events,api){
   if(completed(state,id))return false;
-  const q=QUESTS[id];if(id!=='bell'&&!q)return false;
+  const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
   const progress=state.world.progress[id]||{};
   if(q?.requiresAdvancement&&!P.ensure(state.player).specialization)return false;
   const quality=progress.setback?'costly':state.story.flags[`method:${id}`]==='peace'?'peaceful':state.story.flags[`method:${id}`]==='objective'?'objective':'force';
   const xp=id==='bell'?300:q.xp;
   const gold=id==='bell'?60:Math.floor(q.gold*(progress.setback?0.8:1));
-  state.world.completed[id]={day:state.world.day,quality,method:state.story.flags[`method:${id}`]||'force',xp,gold};
+  state.world.completed[id]={day:state.world.day,quality,method:state.story.flags[`method:${id}`]||'force',xp,gold,...(q?.generated?{name:q.name}:{})};
   state.player.gold+=gold;
   state.world.cycle+=1;state.world.day+=1;
   state.world.activeQuest=null;state.world.onExpedition=false;state.world.resumeNode=null;state.world.pendingBattle=null;
@@ -113,7 +114,7 @@ function depart(state,id,rng,events,api){
     state.world.onExpedition=true;state.world.activeQuest='bell';
     api.enterNode(state,state.world.resumeNode||'briarwatch-square',events);return emit(events,'Return to the bell investigation. Your earlier discoveries and decisions remain.');
   }
-  const q=QUESTS[id];
+  const q=Director.quest(state,id);
   if(!q||!unlocked(state,q)||completed(state,id))return fail(events,'That expedition is not currently available. Complete the prior contract and meet its level requirement.');
   if(t.id!==q.town)return fail(events,`Travel to ${TOWNS[q.town].name} to depart for this expedition.`);
   if(state.world.activeQuest&&state.world.activeQuest!==id)return fail(events,'Finish or resume the current expedition before starting another.');
@@ -226,7 +227,7 @@ function handle(state,action,rng,events,api){
     return fail(events,'That service is not offered.');
   }
   if(action.type==='rumor'){
-    const q=QUESTS[action.questId];if(!q||!completed(state,q.unlock))return fail(events,'There is no established lead for that expedition yet.');
+    const q=Director.quest(state,action.questId);if(!q||!completed(state,q.unlock))return fail(events,'There is no established lead for that expedition yet.');
     if(w.rumors[q.id])return fail(events,'That briefing is already recorded in your journal.');
     if(!charge(state,5,events))return {ok:false,error:'Not enough gold.'};w.rumors[q.id]=true;
     return emit(events,`Briefing: ${q.threat} This information also gives +1 to that expedition’s combat-objective checks.`,'clue','good');
@@ -285,7 +286,7 @@ function handle(state,action,rng,events,api){
 function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:item.purpose,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
 function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
-  const ready=Object.values(QUESTS).filter(q=>completed(state,q.unlock)&&!completed(state,q.id));
+  const ready=[...Object.values(QUESTS),...Director.list(state)].filter(q=>completed(state,q.unlock)&&!completed(state,q.id));
   const services=t?[
     {id:'civic-rest',name:'Civic lodging',cost:0,description:'Full HP and resources; persistent poison needs treatment. No stock refresh or XP.'},
     {id:'inn',name:'Inn: expedition lodging',cost:10+state.player.level,description:`Full recovery, ${4+state.player.level} temporary HP each and +1 Inspiration. Once per progress cycle.`,disabled:Boolean(w.servicesUsed[`inn:${w.cycle}`])},
@@ -298,9 +299,9 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,...o,cost:45+Math.floor(item.value/2),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,name:q.name,level:q.level,town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
-    const original=QUESTS[q.id];const tools=original.route.tools||[];
+    const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];
     for(const a of G.actors(state))if(a.hp<a.maxHp*0.65)warnings.push(`${a.name} is below 65% health.`);
     if(!state.player.inventory.some(e=>['healing-potion','greater-healing'].includes(e.itemId)))warnings.push('No healing potions are carried; companions and class abilities may provide alternatives.');
@@ -316,8 +317,8 @@ function view(state){
     upgrades:t?eq:[],recipes:t?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
     storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:ITEMS[e.itemId].purpose})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
-    quests:questCards,preparation:prep,
-    completed:Object.entries(w.completed).map(([id,v])=>({id,name:QUESTS[id]?.name||'The Bell Beneath Briarwatch',...v})),
+    quests:questCards,preparation:prep,director:Director.view(state),
+    completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
     bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),regionalCrisisResolved:completed(state,'beacon'),
     canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa'),
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),

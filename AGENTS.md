@@ -8,6 +8,10 @@
 - Direction (Nov 2026): Claude API is the primary AI provider; the goal is an
   open-ended AI GM. Offline/browser play must keep working without AI. The only
   runtime dependency is `@anthropic-ai/sdk`, loaded lazily by `src/claude-ai.js`.
+- Claude-authored content (improvised actions in `src/improvise.js`, generated
+  adventures in `src/director.js`) supplies story and choices only. Every number
+  (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved
+  generated content is re-bounded on load.
 - Tests and CI never call the paid Claude API or a real model: inject a fake
   client (see `tests/claude-ai.test.js`) or use isolated loopback mocks.
 - Keep save schema compatibility explicit. Use an OS temporary SAVE_DIR for all

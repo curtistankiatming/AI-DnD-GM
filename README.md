@@ -68,6 +68,15 @@ a skill check, difficulty, stakes, reward and risk; the engine caps them by leve
 and per scene, shows you the odds, and rolls only after you confirm. Successful
 discoveries are recorded in the journal so the story remembers them.
 
+With Claude, the **story director** also writes new adventures. Once the bell
+chapter is done, press **Ask the GM for a new adventure** on a town's expedition
+board (or type `/adventure` plus an optional wish, such as `/adventure a rival
+from my past`). Claude continues the campaign from your choices, reputation and
+journal, and keeps a running story arc so later adventures build on earlier ones.
+The engine sets the level, difficulty, enemies, XP, gold and reputation, so a
+generated adventure is never worth more than an authored one. Generated
+adventures are saved with your campaign and still load without AI.
+
 Either way, the AI interprets what you type and writes prose; the rules engine
 still resolves dice, items, XP and scene changes, and proposed actions need your
 confirmation. Run `npm install` once (or let `run-local.bat` do it) to get the

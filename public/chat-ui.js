@@ -52,6 +52,9 @@
     }catch(e){status.textContent=e.message;showActionFeedback(e.message);if(!extra.confirm&&!dom.actionInput.value)dom.actionInput.value=text;toast(e.message,'warning');}
     finally{clearInterval(timer);cancel.classList.add('is-hidden');setBusy(false);render();}
   }
+  // Story director: an optional wish in the message box becomes the hint.
+  function adventure(){const hint=dom.actionInput.value.trim();dom.actionInput.value='';return send(('/adventure '+hint).trim());}
+  window.BriarwatchChat={send,adventure};
   function render(){
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';

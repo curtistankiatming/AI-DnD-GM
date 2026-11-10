@@ -37,7 +37,8 @@ function createClaudeProvider({ clientFactory = null, env = process.env } = {}) 
       // The system prompt is stable per purpose, so it is cached across turns.
       system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: prompt }],
-      output_config: { effort: config.effort, ...(schema ? { format: { type: 'json_schema', schema } } : {}) },
+      // Writing a whole adventure is rare and creative, so it gets at least medium effort.
+      output_config: { effort: purpose === 'director' && config.effort === 'low' ? 'medium' : config.effort, ...(schema ? { format: { type: 'json_schema', schema } } : {}) },
       betas: [STRUCTURED_FALLBACK_BETA],
       fallbacks: 'default'
     };

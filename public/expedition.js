@@ -57,11 +57,19 @@ function renderExpansion(){
     const expeditions=v4Section(root,'expedition','Expedition board & preparation');
     if(w.activeQuest)expeditions.append(v4Button(w.pendingBattle?'Resume interrupted encounter':'Resume expedition',{type:'resume'}));
     if(!w.bellComplete)expeditions.appendChild(createElement('p','','Finish the bell investigation using the story choices. Report the outcome in Briarwatch to unlock the regional roads.'));
-    for(const q of w.quests){const c=v4Card(`${q.name} · Level ${q.level}`,q.brief);c.appendChild(createElement('p','',`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold. Peaceful and combat resolutions grant equal objective XP.`));
+    for(const q of w.quests){const c=v4Card(`${q.name} · Level ${q.level}${q.generated?' · AI-directed':''}`,q.brief);c.appendChild(createElement('p','',`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold. Peaceful and combat resolutions grant equal objective XP.`));
       if(q.knownThreat)c.appendChild(createElement('p','briefing',q.knownThreat));else c.appendChild(v4Button('Tavern briefing · 5 gold',{type:'rumor',questId:q.id},hero.gold<5));
       const prep=w.preparation.find(x=>x.questId===q.id);for(const warning of prep?.warnings||[])c.appendChild(createElement('p','prep-warning',warning));
       c.appendChild(v4Button(q.returning?'Continue expedition':'Depart',{type:'depart',questId:q.id},!q.canDepart,`Departure point: ${q.townName}. Level ${q.level} required.`));
       if(!q.canDepart)c.appendChild(createElement('p','muted',`Departure point: ${q.townName}; required level ${q.level}.${q.id==='aftermath'?' Choose your specialization first.':''}`));expeditions.appendChild(c);}
+    const d=w.director;
+    if(d&&w.bellComplete){const c=v4Card('Ask the GM for a new adventure',d.canCommission?'Claude writes the next expedition from your choices so far. The game sets its level, difficulty and rewards. Optional: type a wish in the message box first, such as “something in the marshes” or “a rival from my past”. Needs the Claude API provider.':d.reason);
+      c.dataset.director='true';
+      if(d.arc)c.appendChild(createElement('p','muted',`Story so far: ${d.arc}`));
+      const b=createElement('button','btn btn-primary btn-small','Ask the GM for a new adventure');b.type='button';b.id='directorBtn';b.dataset.disabled=String(!d.canCommission);b.disabled=busy||!d.canCommission;
+      b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.adventure();});c.appendChild(b);
+      for(const q of d.open)if(!q.started)c.appendChild(v4Button(`Dismiss “${q.name}”`,{type:'director-dismiss',questId:q.id}));
+      expeditions.appendChild(c);}
     const towns=createElement('div','v4-controls');for(const t of w.towns)towns.appendChild(v4Button(`Travel: ${t.name}`,{type:'travel-town',townId:t.id},t.current));expeditions.appendChild(towns);
     const shop=v4Section(root,'shop','Outfitter & apothecary — buy supplies and equipment');v4Shop(shop,w.shop,'town');
     const smith=v4Section(root,'smith','Blacksmith & workshop','One meaningful quality upgrade per weapon, armor, shield or focus; no endless upgrade ladder.');
