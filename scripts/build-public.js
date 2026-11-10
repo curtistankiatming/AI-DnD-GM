@@ -6,14 +6,19 @@ const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
 const SOURCES = ['content', 'rules', 'expansion', 'progression', 'equipment', 'world', 'road-state', 'improvise', 'director', 'engine-core', 'combat', 'engine-view', 'chat-memory', 'courier-scene', 'road-story', 'journal', 'model-profiles', 'engine', 'chat-runtime', 'narrator', 'save-slots', 'public-preview'];
 const ASSETS = ['public/index.html', 'public/styles.css', 'public/ui-session.js', 'public/app.js', 'public/expedition.js', 'public/chat-ui.js', 'public/testing-tools.js', 'public/adventure-view.js', 'public/adventure-ui.js', 'public/adventure.css', 'public/management-view.js', 'public/management-ui.js', 'public/management.css'];
+// Authored content tables, bundled as modules so require('./data/x.json') works offline.
+const DATA = fs.readdirSync(path.join(root, 'src/data')).filter(f => f.endsWith('.json')).sort();
 const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
 function buildPublic(out = path.join(root, 'dist-public')) {
   fs.mkdirSync(out, { recursive: true });
-  const sourceFiles = [...SOURCES.map(id => `src/${id}.js`), ...ASSETS, 'scripts/build-public.js', 'package.json'];
+  const sourceFiles = [...SOURCES.map(id => `src/${id}.js`), ...DATA.map(f => `src/data/${f}`), ...ASSETS, 'scripts/build-public.js', 'package.json'];
   const digest = crypto.createHash('sha256');
   for (const file of sourceFiles) digest.update(file + '\0' + read(file) + '\0');
   const build = { version: JSON.parse(read('package.json')).version, channel: 'public-playtest', sourceSha256: digest.digest('hex'), sourceCommit: process.env.GITHUB_SHA || null };
-  const modules = SOURCES.map(id => `${JSON.stringify('./' + id)}: function(module, exports, require) {\n${read(`src/${id}.js`)}\n}`).join(',\n');
+  const modules = [
+    ...DATA.map(f => `${JSON.stringify('./data/' + f)}: function(module) {\nmodule.exports = ${JSON.stringify(JSON.parse(read(`src/data/${f}`)))};\n}`),
+    ...SOURCES.map(id => `${JSON.stringify('./' + id)}: function(module, exports, require) {\n${read(`src/${id}.js`)}\n}`)
+  ].join(',\n');
   const bootstrap = `(function () {\n'use strict';\nconst process = Object.freeze({env: Object.freeze({AI_NARRATOR: 'off'})});\nconst factories = {\n${modules}\n};\nconst cache = Object.create(null);\nfunction require(id) {\n if (!Object.prototype.hasOwnProperty.call(factories, id)) throw new Error('Unavailable browser module: ' + id);\n if (!cache[id]) { const module = {exports: {}}; cache[id] = module; factories[id](module, module.exports, require); }\n return cache[id].exports;\n}\nlet storage;\ntry {storage = window.localStorage;} catch {}\nif (!storage) storage = {get length(){return 0;},key(){return null;},getItem(){return null;},setItem(){throw new Error('Storage unavailable');},removeItem(){}};\nwindow.BriarwatchOffline = require('./public-preview').createClient(storage, ${JSON.stringify(build)});\n})();`;
   let app = read('public/app.js');
   if (app.split('await fetch(path,').length !== 2) throw new Error('Review API seam: expected exactly one fetch entry.');

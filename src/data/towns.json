@@ -1,0 +1,111 @@
+{
+  "briarwatch": {
+    "id": "briarwatch",
+    "name": "Briarwatch",
+    "subtitle": "The Bell & Bramble",
+    "description": "Rain taps the inn’s copper awning. Smith Dera keeps a place for your party beside the forge, and Reeve Aveline pins reports from the wider roads to a public board.",
+    "faction": "wardens",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "smoke-bomb",
+      "silk-rope",
+      "climbing-kit",
+      "lantern",
+      "herb-bundle",
+      "iron-longsword",
+      "shortbow",
+      "chain-shirt",
+      "studded-leather",
+      "steel-shield",
+      "ash-wand"
+    ],
+    "rumor": "The missing caravans did not simply vanish. A western tollhouse has been ringing the wrong road signal."
+  },
+  "ashford": {
+    "id": "ashford",
+    "name": "Ashford Crossing",
+    "subtitle": "The Three Roads Market",
+    "description": "River barges unload beneath a bridge crowded with petitioners. Quartermaster Iona offers contracts, while merchants argue over who should pay to repair the region’s wards.",
+    "faction": "trade",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "smoke-bomb",
+      "herb-bundle",
+      "ward-fragment",
+      "climbing-kit",
+      "storm-grounder",
+      "ward-coating",
+      "dueling-blade",
+      "greatsword",
+      "warbow",
+      "ward-staff",
+      "duelist-buckler",
+      "wayfarer-boots"
+    ],
+    "rumor": "Sabotage at the western span and poison in the marsh share the same copper dust. Someone is moving ward machinery downstream."
+  },
+  "highpass": {
+    "id": "highpass",
+    "name": "Highpass Watch",
+    "subtitle": "The Last Warm Hearth",
+    "description": "The outpost’s lamps swing in the mountain wind. Captain Sorrel has room for refugees but not another failed expedition. Beyond the parapet, stormlight threads the old signal towers.",
+    "faction": "wilds",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "smoke-bomb",
+      "herb-bundle",
+      "ward-fragment",
+      "storm-grounder",
+      "climbing-kit",
+      "ward-coating",
+      "field-plate",
+      "sentinel-charm",
+      "scholars-lens",
+      "resonant-blade",
+      "warbow",
+      "ward-staff"
+    ],
+    "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command."
+  }
+}

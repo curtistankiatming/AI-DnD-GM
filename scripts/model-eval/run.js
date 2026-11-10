@@ -43,7 +43,7 @@ function fingerprint() {
     for (const f of syncfs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
       const name = dir + '/' + f.name;
       if (f.isDirectory()) walk(name);
-      else if (f.name.endsWith('.js')) files.push(name);
+      else if (/\.(js|json)$/.test(f.name)) files.push(name);
     }
   }
   walk('src'); walk('scripts/model-eval');

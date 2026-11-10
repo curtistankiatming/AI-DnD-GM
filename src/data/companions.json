@@ -1,0 +1,127 @@
+{
+  "orin": {
+    "id": "orin",
+    "name": "Orin Stoneward",
+    "role": "Guardian",
+    "pronouns": "he/him",
+    "summary": "A plain-spoken shield veteran who treats retreat as a tool, not a shame.",
+    "personality": "Practical, protective, suspicious of needless cruelty, and dryly humorous under pressure.",
+    "abilities": {
+      "str": 15,
+      "dex": 10,
+      "con": 14,
+      "int": 9,
+      "wis": 12,
+      "cha": 11
+    },
+    "skills": [
+      "athletics",
+      "perception"
+    ],
+    "maxHp": 15,
+    "ac": 16,
+    "attack": {
+      "name": "Warhammer",
+      "bonus": 4,
+      "damage": "1d8+2",
+      "damageType": "bludgeoning"
+    },
+    "tactic": "protective",
+    "aiRole": "guardian",
+    "resources": {
+      "secondWind": 1
+    },
+    "bond": 1,
+    "dialogue": {
+      "default": "We decide what matters, then we stand where it matters.",
+      "briarwatch-square": "Someone wanted that bell silent. Bells do not cut their own ropes.",
+      "forest-edge": "Main road is fastest and easiest to trap. I would choose certainty over speed.",
+      "bell-vault": "Give me a chain to break or a doorway to hold. Do not ask me to out-sing a ghost."
+    }
+  },
+  "maren": {
+    "id": "maren",
+    "name": "Sister Maren Vale",
+    "role": "Healer",
+    "pronouns": "she/her",
+    "summary": "A travelling shrine-keeper who hears lies as changes in a speaker's breathing.",
+    "personality": "Compassionate without being naive, attentive to ritual, and openly opposed to intimidation of the helpless.",
+    "abilities": {
+      "str": 10,
+      "dex": 12,
+      "con": 13,
+      "int": 11,
+      "wis": 16,
+      "cha": 14
+    },
+    "skills": [
+      "insight",
+      "medicine",
+      "religion"
+    ],
+    "maxHp": 12,
+    "ac": 14,
+    "attack": {
+      "name": "Sacred Flame",
+      "bonus": 5,
+      "damage": "1d8",
+      "damageType": "radiant",
+      "save": "dex"
+    },
+    "tactic": "support",
+    "aiRole": "healer",
+    "resources": {
+      "healingWords": 2,
+      "guidingBolt": 1
+    },
+    "bond": 1,
+    "dialogue": {
+      "default": "Mercy and caution are not opposites. Both ask us to see clearly.",
+      "briarwatch-square": "The silence feels made, not natural. There is a ritual shape to it.",
+      "old-shrine": "This shrine remembers the bell before it became a weapon. We should listen before touching anything.",
+      "bell-vault": "The spirit is furious, but fury is not always malice. Its true name may still reach it."
+    }
+  },
+  "nessa": {
+    "id": "nessa",
+    "name": "Nessa Reed",
+    "role": "Scout",
+    "pronouns": "she/her",
+    "summary": "A Briarwatch outrider with quick eyes, quicker arrows, and unfinished business below the wood.",
+    "personality": "Restless, observant, protective of villagers, and impatient with ceremonial caution.",
+    "abilities": {
+      "str": 9,
+      "dex": 16,
+      "con": 12,
+      "int": 12,
+      "wis": 14,
+      "cha": 10
+    },
+    "skills": [
+      "perception",
+      "stealth",
+      "survival"
+    ],
+    "maxHp": 11,
+    "ac": 14,
+    "attack": {
+      "name": "Shortbow",
+      "bonus": 5,
+      "damage": "1d6+3",
+      "damageType": "piercing",
+      "ranged": true
+    },
+    "tactic": "aggressive",
+    "aiRole": "scout",
+    "resources": {
+      "trickShot": 1
+    },
+    "bond": 0,
+    "dialogue": {
+      "default": "Point me at the thing that thinks it is hidden.",
+      "mist-hollow": "I was following the bell's echo. It doubled back like a hunter covering tracks.",
+      "root-gate": "Seals, locks, guards—I prefer problems with hinges.",
+      "bell-vault": "The robed one carries a bronze key. Give me ten breaths and a distraction."
+    }
+  }
+}

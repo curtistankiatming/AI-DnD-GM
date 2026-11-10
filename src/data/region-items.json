@@ -1,0 +1,246 @@
+[
+  {
+    "id": "greater-healing",
+    "name": "Greater Healing Draught",
+    "category": "consumable",
+    "rarity": "Uncommon",
+    "value": 38,
+    "description": "A concentrated field remedy with a copper seal.",
+    "purpose": "Action: heal 4d4+4 HP in or out of combat.",
+    "usable": {
+      "contexts": [
+        "story",
+        "combat"
+      ],
+      "effect": "heal",
+      "formula": "4d4+4",
+      "target": "ally",
+      "cost": "action"
+    }
+  },
+  {
+    "id": "climbing-kit",
+    "name": "Climbing Kit",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 24,
+    "description": "Pitons, harness and tested anchors, packed to be used rather than collected.",
+    "purpose": "Reusable: grants advantage on climbing routes that name this tool. At level 6, Fieldcraft also adds +2 to those checks."
+  },
+  {
+    "id": "storm-grounder",
+    "name": "Storm Grounder",
+    "category": "tool",
+    "rarity": "Uncommon",
+    "value": 32,
+    "description": "A braid of copper with ceramic handholds.",
+    "purpose": "Reusable: opens protected approaches to charged ward machinery and grants advantage on the named storm checks."
+  },
+  {
+    "id": "lantern",
+    "name": "Shuttered Lantern",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 12,
+    "description": "A hooded lamp with a long-burning wick.",
+    "purpose": "Reusable: helps investigation in mines and drowned ruins when shown on a route card. Routine fuel tracking is deliberately omitted."
+  },
+  {
+    "id": "herb-bundle",
+    "name": "Medicinal Herbs",
+    "category": "material",
+    "rarity": "Common",
+    "value": 8,
+    "description": "Dried marshleaf wrapped against damp.",
+    "purpose": "Workshop ingredient: two bundles and 8 gold make one Greater Healing Draught. May also be sold."
+  },
+  {
+    "id": "ward-fragment",
+    "name": "Ward Crystal Fragment",
+    "category": "material",
+    "rarity": "Uncommon",
+    "value": 25,
+    "description": "A stable splinter recovered from a damaged ward.",
+    "purpose": "Workshop ingredient: one fragment and 30 gold make a Sentinel Charm. No quest requires this material, so crafting or selling is safe."
+  },
+  {
+    "id": "sentinel-charm",
+    "name": "Sentinel Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 70,
+    "description": "A small ward which firms the wearer’s resolve.",
+    "purpose": "Equip: +1 to every saving throw; useful for poison and magical hazards.",
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    }
+  },
+  {
+    "id": "wayfarer-boots",
+    "name": "Wayfarer’s Boots",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 45,
+    "description": "Boots stitched for sure footing, not speed.",
+    "purpose": "Equip in the accessory slot: +2 Athletics and Survival. Replaces any other accessory.",
+    "skillBonuses": {
+      "athletics": 2,
+      "survival": 2
+    }
+  },
+  {
+    "id": "dueling-blade",
+    "name": "Dueling Blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 65,
+    "description": "A narrow, carefully weighted sword.",
+    "purpose": "Finesse, 1d8 piercing, +1 to hit. A precision alternative to heavier weapons.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 1
+  },
+  {
+    "id": "greatsword",
+    "name": "Roadwarden Greatsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 65,
+    "description": "A two-handed blade that makes defending a doorway a commitment.",
+    "purpose": "Strength, 2d6 slashing. Two-handed: equipping removes your shield, trading defense for damage.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    }
+  },
+  {
+    "id": "warbow",
+    "name": "Frontier Warbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 65,
+    "description": "A reinforced bow for deliberate shots.",
+    "purpose": "Dexterity, 1d8 piercing. Two-handed ranged weapon; +1 to hit.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 1
+  },
+  {
+    "id": "ward-staff",
+    "name": "Wardbinder Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 65,
+    "description": "Its bronze rings hum when a spell holds steady.",
+    "purpose": "Equip: +2 spell attack bonus, +1 spell save DC. Occupies your main hand.",
+    "spellAttackBonus": 2,
+    "spellDcBonus": 1
+  },
+  {
+    "id": "field-plate",
+    "name": "Field Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Rare",
+    "value": 130,
+    "description": "Articulated plate repaired by an outpost smith.",
+    "purpose": "Base AC 17, no Dexterity bonus. Heavy and conspicuous: −2 Stealth. Any class may wear it in this custom ruleset.",
+    "armor": {
+      "base": 17,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    }
+  },
+  {
+    "id": "duelist-buckler",
+    "name": "Duelist’s Buckler",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Uncommon",
+    "value": 45,
+    "description": "A light buckler for turning blows into openings.",
+    "purpose": "+1 AC (less than a steel shield), but +1 weapon attack bonus. Cannot be used with a two-handed weapon.",
+    "acBonus": 1,
+    "attackBonus": 1
+  },
+  {
+    "id": "ward-coating",
+    "name": "Ward Oil",
+    "category": "consumable",
+    "rarity": "Uncommon",
+    "value": 24,
+    "description": "One application makes a blade resonate against bound spirits.",
+    "purpose": "Apply outside combat to a party member. Their next three successful weapon hits deal +1d4 radiant damage; persists across battles until used.",
+    "usable": {
+      "contexts": [
+        "story"
+      ],
+      "effect": "coating",
+      "target": "ally",
+      "cost": "action"
+    }
+  },
+  {
+    "id": "scholars-lens",
+    "name": "Scholar’s Lens",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 80,
+    "description": "A glass lens mounted in a ring of etched silver.",
+    "purpose": "Equip: +2 Arcana and Investigation; −1 AC. Helps deciphering at the cost of protection.",
+    "skillBonuses": {
+      "arcana": 2,
+      "investigation": 2
+    },
+    "acBonus": -1
+  },
+  {
+    "id": "resonant-blade",
+    "name": "Resonant Blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 120,
+    "description": "An unusual blade traded for stories of broken wards.",
+    "purpose": "Finesse, 1d8 radiant damage. Bypasses physical resistance, but no extra attack bonus.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "radiant",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    }
+  }
+]

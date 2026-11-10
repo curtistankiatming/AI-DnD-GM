@@ -1,0 +1,26 @@
+{
+  "orin": {
+    "id": "orin",
+    "quest": "bridge",
+    "name": "The People Behind the Shield",
+    "prompt": "Orin recognizes a refugee’s old company badge. “We left civilians behind once. Not again. Help me secure a route for them before we charge the gate.”",
+    "goal": "Resolve the Ashford bridge crisis after talking to Orin. The rescue can succeed by force or a negotiated crossing.",
+    "reward": "At level 7, Shield-and-Strike becomes available: protect the whole party and grant Orin an immediate attack."
+  },
+  "maren": {
+    "id": "maren",
+    "quest": "archive",
+    "name": "Names Worth Remembering",
+    "prompt": "Maren carries a list of vanished shrine keepers. “The archive may have their last letters. Even if we cannot save them, their families deserve the truth.”",
+    "goal": "Resolve the drowned archive after talking to Maren; bring its findings to the living.",
+    "reward": "At level 7, Shared Resolve becomes available: Maren and the hero heal together and clear a harmful condition."
+  },
+  "nessa": {
+    "id": "nessa",
+    "quest": "signal",
+    "name": "A Signal for Home",
+    "prompt": "Nessa knows the signal tower’s keeper. “She taught me to leave a light for the lost. Let’s make sure her last signal reaches someone.”",
+    "goal": "Resolve the Highpass signal tower after talking to Nessa.",
+    "reward": "At level 7, Crossfire becomes available: Nessa fires an immediate attack and exposes the target."
+  }
+}
