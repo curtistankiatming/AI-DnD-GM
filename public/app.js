@@ -411,13 +411,13 @@ async function sendAction(action) {
 function renderNarratorBadge() {
   if (!narratorInfo) return;
   if (["ai", "ai-chat", "ai-proposal"].includes(lastNarration?.source)) {
-    dom.narratorBadge.textContent = `Narrator: AI · ${lastNarration.model || narratorInfo.model || "configured model"}`;
+    dom.narratorBadge.textContent = `Game master: AI · ${lastNarration.model || narratorInfo.model || "configured model"}`;
     dom.narratorBadge.className = "status-badge status-online";
   } else if (lastNarration?.source === "deterministic-fallback") {
-    dom.narratorBadge.textContent = "Narrator: deterministic fallback";
+    dom.narratorBadge.textContent = "Game master: offline story (the AI did not answer)";
     dom.narratorBadge.className = "status-badge status-warning";
   } else {
-    dom.narratorBadge.textContent = narratorInfo.enabled ? "Narrator: AI configured" : "Narrator: deterministic story prose";
+    dom.narratorBadge.textContent = narratorInfo.enabled ? "Game master: AI ready" : "Game master: offline story";
     dom.narratorBadge.className = `status-badge ${narratorInfo.enabled ? "status-online" : ""}`;
   }
 }
@@ -532,8 +532,8 @@ function renderParty() {
 
 function checkSummary(check) {
   if (!check) return "No roll required";
-  const parts = [`${check.actor}: ${check.skill} ${signed(check.bonus)} vs DC ${check.dc}`, `${check.probability}% estimated`];
-  if (check.mode !== "normal") parts.push(check.mode);
+  const parts = [`${check.actor} rolls ${check.skill} ${signed(check.bonus)} against ${check.dc}`];
+  if (check.mode !== "normal") parts.push(`with ${check.mode}`);
   if (check.helper) parts.push(`${check.helper} helps`);
   return parts.join(" · ");
 }
@@ -654,14 +654,14 @@ function renderScene() {
   const text = lastNarration?.text || state.lastNarration || view.scene.lastOutcome?.text || view.scene.opening;
   dom.narrationText.textContent = text;
   dom.narrationSource.textContent = ["ai", "ai-chat", "ai-proposal"].includes(lastNarration?.source)
-    ? `AI prose · mechanics locked`
+    ? "Written by the AI game master"
     : lastNarration?.source === "save"
       ? "Saved narration · no new action"
       : lastNarration?.source === "save-recap"
         ? "Saved-game recap · no new action"
         : lastNarration?.source === "deterministic-fallback"
-          ? "Local fallback · mechanics locked"
-          : "Deterministic prose · mechanics locked";
+          ? "Offline story · the AI did not answer"
+          : "";
   dom.shortRestBtn.classList.toggle("is-hidden", !view.scene.canShortRest);
   dom.shortRestBtn.dataset.disabled = String(!view.scene.canShortRest);
   dom.shortRestBtn.disabled = busy || !view.scene.canShortRest;
@@ -865,7 +865,12 @@ async function refreshSaves() {
   }
 }
 function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
-  $("#saveStatus").textContent = state ? `${dirty ? "Unsaved changes" : "Saved checkpoint"} · Quick Save: ${activeSlot || dom.saveSlotInput.value || "new named save"}` : "No campaign open";
+  const saveStatus = $("#saveStatus"), saveName = activeSlot || dom.saveSlotInput.value || "new named save";
+  // Short visible state; the save name stays in the text for assistive tech and as a tooltip.
+  saveStatus.textContent = state ? (dirty ? "Unsaved changes" : "Saved") : "No campaign open";
+  saveStatus.dataset.dirty = String(Boolean(state && dirty));
+  saveStatus.title = state ? `Quick save goes to: ${saveName}` : "";
+  if (state) saveStatus.append(createElement("span", "save-slot-name", ` · Quick Save: ${saveName}`));
   $("#returnToGameBtn").classList.toggle("is-hidden", !state);
   dom.saveQuickBtn.dataset.disabled = String(!state);
   dom.saveBtn.dataset.disabled = String(!state);

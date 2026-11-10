@@ -43,7 +43,7 @@
  };
  const chooseOwner=chooseEquipmentOwner;
  chooseEquipmentOwner=function(item){chooseOwner(item);for(const b of dom.targetOptions.querySelectorAll('[data-target-id]')){const c=item.comparisons.find(c=>c.actorId===b.dataset.targetId);if(!c)continue;b.querySelector('p')?.remove();b.append(table(c));if(c.clearsOffHand)b.append(el('p','tag tag-warning','Two-handed: removes the off-hand item.'));if(c.blocked)b.append(el('p','tag tag-warning',c.blocked));if(item.available<1)b.append(el('p','muted','No spare copy. Unequip its current owner first.'));}};
- const readiness=el('section','management-card');readiness.id='readinessPanel';const readinessTitle=el('h2','','Before you depart'),readyBody=el('div');readiness.append(readinessTitle,el('p','muted','Last confirmed state, not a win probability. Preparation is optional; this does not reveal undiscovered threats.'),readyBody);$id('workspace-prepare').prepend(readiness);
+ const readiness=el('section','management-card');readiness.id='readinessPanel';const readinessTitle=el('h2','','Before you depart'),readyBody=el('div');readiness.append(readinessTitle,el('p','muted','A quick look at your party before you set out.'),readyBody);$id('workspace-prepare').prepend(readiness);
  const progress=el('details','management-card');progress.id='developmentOverview';progress.append(el('summary','','Your development — earned, next and pending'));const progressBody=el('div');progress.append(progressBody);readiness.after(progress);
  const serviceNav=el('div','management-tabs');serviceNav.id='preparationCategories';serviceNav.setAttribute('role','group');serviceNav.setAttribute('aria-label','Preparation category');
  for(const [id,name]of [['all','All services'],['services','Rest'],['shop','Supplies'],['smith','Smith'],['personal','Companions'],['expedition','Expeditions'],['storage','Storage']]){const b=button(name,()=>{prepareFilter=id;filterPrepare();});b.dataset.prepareCategory=id;serviceNav.append(b);}progress.after(serviceNav);
@@ -57,14 +57,23 @@
   if(view.progression.pending.length||view.progression.specializationOptions.length)progressBody.append(button('Review pending choices',()=>{$id('progressionPanel').scrollIntoView({block:'start'});}));
   for(const reward of view.progression.rewards){const row=el('p','');row.append(el('strong','',`Level ${reward.level} · ${reward.reached?'Reached':'Ahead'}: `),document.createTextNode(reward.description));progressBody.append(row);}
   const abilities=el('details');abilities.append(el('summary','','Your current abilities — use combat controls during initiative'));for(const a of view.progression.techniques||[])abilities.append(el('p','',`${a.name}: ${a.description}`));progressBody.append(abilities,el('p','muted','Level-30 and level-70 advancements are future plans, not available rewards.'));
-  for(const [i,member]of view.party.entries()){const card=dom.partyCards.children[i];if(!card)continue;card.querySelector('.companion-contribution')?.remove();const text=M.contribution(member,eventHistory);card.append(el('p','companion-contribution',text?'Recent confirmed contribution: '+text:'No attributable contribution in the current mechanics feed. This is not a claim that the companion did nothing.'));}
+  for(const [i,member]of view.party.entries()){const card=dom.partyCards.children[i];if(!card)continue;card.querySelector('.companion-contribution')?.remove();const text=M.contribution(member,eventHistory);if(text)card.append(el('p','companion-contribution','Most recently: '+text));}
  }
  const combatRender=renderCombat;
- renderCombat=function(){combatRender();if(!view.combat?.active)return;const buttons=[...dom.combatActions.querySelectorAll('button[data-action-id]')];if(!buttons.length)return;const groups={};for(const [id,title]of [['turn','Turn & recovery'],['objectives','Encounter objective'],['attacks','Attacks & defense'],['abilities','Class abilities'],['items','Items'],['party','Party orders & combinations']]){const s=el('section','combat-group');s.dataset.combatGroup=id;s.append(el('h3','',title));groups[id]=s;}
-  for(const b of buttons){const g=M.actionGroup(b.dataset.actionId);groups[g].append(b);}clear(dom.combatActions);for(const s of Object.values(groups))if(s.children.length>1)dom.combatActions.append(s);
+ renderCombat=function(){combatRender();if(!view.combat?.active)return;const buttons=[...dom.combatActions.querySelectorAll('button[data-action-id]')];if(!buttons.length)return;const groups={};for(const [id,title]of [['objectives','Encounter objective'],['attacks','Attacks & defense'],['abilities','Class abilities'],['items','Items'],['party','Party orders & combinations'],['turn','Finish your turn']]){const s=el('section','combat-group');s.dataset.combatGroup=id;s.append(el('h3','',title));groups[id]=s;}
+  for(const b of buttons){const g=M.actionGroup(b.dataset.actionId);groups[g].append(b);}
+  // Retreat costs gold: keep it last, after End Turn, so it is never the first thing under the cursor.
+  const flee=groups.turn.querySelector('[data-action-id=retreat]');if(flee)groups.turn.append(flee);clear(dom.combatActions);for(const s of Object.values(groups))if(s.children.length>1)dom.combatActions.append(s);
  };
  const baseSend=sendAction;
- sendAction=async function(action){if(action?.type!=='specialize')return baseSend(action);if(specializing||busy||view.combat?.active)return;const option=view.progression.specializationOptions.find(s=>s.id===action.specializationId);if(!option)return baseSend(action);
+ let retreating=false;
+ sendAction=async function(action){
+  if(action?.type==='combat'&&action.actionId==='retreat'){
+   if(retreating||busy)return;const info=view.combat?.actions?.find(a=>a.id==='retreat');retreating=true;const before=state;
+   try{const choice=await askSessionDecision({title:'Retreat from this fight?',message:info?.description||'You leave the fight and return to safety.',choices:[['cancel','Keep fighting'],['confirm','Retreat']]});if(choice==='confirm'&&!busy&&state===before)return await baseSend(action);}finally{retreating=false;}
+   return;
+  }
+  if(action?.type!=='specialize')return baseSend(action);if(specializing||busy||view.combat?.active)return;const option=view.progression.specializationOptions.find(s=>s.id===action.specializationId);if(!option)return baseSend(action);
   specializing=true;const before=state;try{const choice=await askSessionDecision({title:'Confirm permanent advancement',message:`${option.name}\n\n${option.description}\n\nThis choice is permanent for this save. Cancel keeps all choices available.`,choices:[['cancel','Keep deciding'],['confirm','Choose '+option.name]]});if(choice==='confirm'&&!busy&&state===before&&view.progression.specializationOptions.some(s=>s.id===action.specializationId))return await baseSend(action);}finally{specializing=false;}
  };
  const oldRender=renderGame;renderGame=function(){oldRender();managementSync();A.sync();};

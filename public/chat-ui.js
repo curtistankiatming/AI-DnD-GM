@@ -18,7 +18,7 @@
   const road=createElement('div');road.id='roadScenario';panel.append(road);
   const journal=createElement('details','story-journal');journal.id='storyJournal';
   const journalTitle=createElement('summary','','Campaign journal');journal.append(journalTitle);
-  journal.append(createElement('p','muted','Verified records come from confirmed game actions. Rumors retain their uncertainty. Your notes are reminders, not evidence or commands.'));
+  journal.append(createElement('p','muted','What you have learned, who you know and what you have promised. Rumours are marked until you confirm them.'));
   const journalRecords=createElement('div');journalRecords.id='journalRecords';journal.append(journalRecords);
   const noteLabel=createElement('label','','Your note (up to 400 characters)');
   const noteInput=createElement('textarea');noteInput.id='journalNoteInput';noteInput.maxLength=400;noteInput.rows=2;noteInput.setAttribute('aria-label','Journal player note');noteLabel.append(noteInput);journal.append(noteLabel);
@@ -35,17 +35,17 @@
   const chatShell=dom.actionForm.closest('.freeform-panel');
   document.getElementById('worldPanel').before(chatShell);
   dom.actionInput.maxLength=2000;
-  dom.actionInput.placeholder='Describe an action, speak to someone, or set campaign instructions. Choose the message type above.';
+  dom.actionInput.placeholder='What do you do?';
 
   async function send(text,extra={}){
     if(!state||busy)return;
     showActionFeedback();setBusy(true, "model");const started=Date.now();cancel.classList.toggle('is-hidden',offline);
-    const update=()=>{status.textContent=`Working on this message · ${Math.floor((Date.now()-started)/1000)}s elapsed. Local model requests may wait up to 10 minutes each. No automatic retries or paid fallback.`;};update();
+    const update=()=>{const waited=Math.floor((Date.now()-started)/1000);status.textContent=waited<2?'':`The game master is thinking · ${waited}s${waited>=20?'. A local model can take several minutes; nothing is retried or charged twice.':''}`;};update();
     const timer=setInterval(update,1000);
     try{
       const request={mode:mode.value,text,requestId:globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'_'+Math.random().toString(36).slice(2),...extra};
       const {payload}=await api('/api/chat',{method:'POST',body:JSON.stringify({state,request})});
-      ingestPayload(payload);status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'Ready. Model prose is presentation; the mechanics feed and confirmed results determine game state.';
+      ingestPayload(payload);status.textContent=payload.result?.ok===false?'Message not applied. Your mechanical progress is unchanged.':'';
       const routing=payload.result?.responseType;
       if(routing?.adjusted)status.textContent=`Kept in ${routing.effective} mode; the model labelled this ${routing.returned}. Read-only: no action was performed. This does not verify the answer's facts.`;
       if(payload.result?.ok===false&&!extra.confirm&&!dom.actionInput.value)dom.actionInput.value=text;
@@ -60,13 +60,13 @@
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
     const j=view.journal||{};clear(journalRecords);
     if(j.current)journalRecords.append(createElement('p','',`Current: ${j.current.scene}. ${j.current.objective}`));
-    const headings={leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes — unverified'};
+    const headings={leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes'};
     let total=0;
     for(const [group,title]of Object.entries(headings)){
       const entries=j[group]||[];total+=entries.length;
       const block=createElement('section','journal-section');block.dataset.journalGroup=group;
       block.append(createElement('h4','',title));
-      if(!entries.length)block.append(createElement('p','muted','None recorded.'));
+      if(!entries.length)block.append(createElement('p','muted','Nothing yet.'));
       for(const entry of entries){
         const row=createElement('div','journal-record');row.dataset.journalId=entry.id;
         row.append(createElement('strong','',`${entry.title||entry.id} [${entry.status}${entry.value!==undefined?', '+entry.value:''}]`),createElement('p','',entry.text));
@@ -78,7 +78,7 @@
     }
     journalTitle.textContent=`Campaign journal · ${total} records`;
 
-    clear(transcript);for(const entry of (c.history||[]).slice(-8)){const row=createElement('p','chat-'+entry.role);row.append(createElement('strong','',entry.role==='player'?'You: ':entry.role==='rules'?'Confirmed: ':'Guide: '),document.createTextNode(entry.text));transcript.append(row);}
+    clear(transcript);for(const entry of (c.history||[]).slice(-8)){const row=createElement('p','chat-'+entry.role);row.append(createElement('strong','',entry.role==='player'?'You: ':entry.role==='rules'?'':'Game master: '),document.createTextNode(entry.text));transcript.append(row);}
     clear(road);
     const journey=c.road;
     if(journey){road.append(createElement('h4','',journey.title),createElement('p','',journey.phase==='complete'?'Delivery completed — reward recorded once':(journey.active?'Active: ':'Paused: ')+journey.phase));
@@ -87,12 +87,12 @@
     }
     for(const b of tools.querySelectorAll('button')){if(b.textContent==='Start Lantern Road')b.disabled=busy||!c.roadAvailable||journey?.phase==='complete';if(b.textContent==='Pause Lantern Road')b.disabled=busy||!journey?.active;}
     clear(pending);
-    if(c.pending){pending.append(createElement('strong','','Confirm only this action: '+c.pending.label),createElement('p','muted','No roll or resource change has happened yet.'),button('Confirm chat action',()=>send('',{confirm:true})),button('Cancel proposal',()=>send('',{cancel:true})));}
+    if(c.pending){pending.append(createElement('strong','','Do this? '+c.pending.label),createElement('p','muted','No roll or resource change has happened yet.'),button('Yes, do it',()=>send('',{confirm:true})),button('No, cancel',()=>send('',{cancel:true})));}
     clear(facts);if(c.courier){facts.append(createElement('strong','',c.courier.resolved?'Courier helped — reward recorded once':c.courier.active?'Courier scenario active':'Courier scenario paused'));for(const line of c.courier.facts||[])facts.append(createElement('p','muted',line));
       for(const option of c.courierOptions||[]){const b=button(option.label,()=>send(option.label,{mode:'action'}));b.title=option.description;facts.append(b,createElement('p','muted',option.description));}
       if(c.courier.active&&!c.courierAvailable)facts.append(createElement('p','muted','Return to Briarwatch outside combat to continue this side story, or pause it.'));}
   }
-  window.BriarwatchChat={send,render};
+  window.BriarwatchChat={send,render,adventure};
 
   const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
   if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}

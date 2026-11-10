@@ -72,6 +72,11 @@ def exercise_workspace(page, output, offline):
     expect(page.locator('#adventureScroll #chatPending')).to_have_count(1)
     expect(page.locator('#adventureComposer #chatPending')).to_have_count(0)
     expect(page.locator('#messageModes [role=radio]')).to_have_count(3)
+    # The expedition board's 'Ask the GM for a new adventure' button needs this export.
+    assert page.evaluate("typeof window.BriarwatchChat.adventure==='function'")
+    # One slim header: the tabs and save state share the title bar; Retreat is never first in a fight.
+    expect(page.locator('.topbar #workspaceNav')).to_have_count(1)
+    expect(page.locator('.topbar #saveStatus')).to_have_count(1)
     expect(page.locator('#chatMode option[value=instructions]')).to_have_count(0)
     before = page.evaluate('JSON.stringify(state)')
     page.locator('#nav-adventure').focus()
@@ -173,7 +178,7 @@ def exercise_workspace(page, output, offline):
     expect(page.locator('#chatPending')).to_contain_text('No roll or resource change has happened yet.')
     box=page.locator('#adventureComposer').bounding_box()
     assert box['y']+box['height']<=743, box
-    page.get_by_role('button',name='Cancel proposal',exact=True).click()
+    page.get_by_role('button',name='No, cancel',exact=True).click()
     expect(page.locator('#chatPending')).to_be_empty()
     assert page.evaluate('JSON.stringify([state.player,state.party,state.story,state.world,state.turnCount])') == mechanics_before
     go(page,'settings');page.locator('#readingSize').select_option('larger')

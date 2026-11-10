@@ -77,6 +77,7 @@ def exercise_management(page, output):
     expect(page.locator('#combatPanel')).to_be_visible()
     expect(page.locator('#combatActions [data-action-id=end-turn]')).to_have_count(1)
     assert page.locator('#combatActions [data-combat-group]').count()>1
+    assert page.locator('#combatActions button[data-action-id]').last.get_attribute('data-action-id')=='retreat'
     assert page.evaluate("view.combat.actions.length")==page.locator('#combatActions button[data-action-id]').count()
     page.screenshot(path=str(output/'combat-groups.png'),full_page=True)
     page.locator('#combatActions [data-action-id=end-turn]').click();ready()
@@ -85,10 +86,15 @@ def exercise_management(page, output):
     lines=page.locator('.companion-contribution').all_text_contents()
     events=page.evaluate('eventHistory.map(e=>e.text)')
     for line in lines:
-        assert line.startswith('No attributable') or line.removeprefix('Recent confirmed contribution: ') in events
+        assert line.removeprefix('Most recently: ') in events
     go('adventure')
     if page.locator('#combatActions [data-action-id=retreat]').count():
-        page.locator('#combatActions [data-action-id=retreat]').click();ready()
+        page.locator('#combatActions [data-action-id=retreat]').click()
+        expect(page.locator('#sessionDecisionTitle')).to_have_text('Retreat from this fight?')
+        page.locator('#sessionDecision button[value=cancel]').click()
+        expect(page.locator('#combatPanel')).to_be_visible()
+        page.locator('#combatActions [data-action-id=retreat]').click()
+        page.locator('#sessionDecision button[value=confirm]').click();ready()
     assert page.evaluate('state.player.gold')==gold
     assert page.evaluate('state.player.xp')==xp
     assert page.evaluate('JSON.stringify(state.player.inventory)')==inventory
