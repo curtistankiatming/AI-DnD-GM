@@ -151,8 +151,11 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | Bard | Song of Rest | Jack of All Trades, Cutting Words | Lorekeeper / Battle Cantor / Envoy |
 
 Branch skills use the Advancement resource (2 uses per long rest, 3 from level
-30). The development panel shows every skill of your job, which ones you have
-learnt, and the names of your branch's 3rd and 4th jobs.
+30). The **job tree** in the development panel (Prepare tab) shows your 1st job,
+all three 2nd-job branches with their skills and the 3rd and 4th jobs each one
+leads to, which skills you have learnt, and your next skill. Once you choose a
+branch, the other two are greyed out. In combat, the skill bar groups your
+actions into 1st job skills and 2nd job skills.
 
 ### Companions and equipment
 

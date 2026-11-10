@@ -143,6 +143,11 @@ process.stdout.write(JSON.stringify(s));
     expect(page.locator('#playerLevel')).to_have_text('Level 20')
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     page.locator('#nav-prepare').click()
+    # Job tree: all three branches are open before the choice.
+    tree=page.locator('#jobTree')
+    expect(tree.locator('.job-branch')).to_have_count(3)
+    expect(tree.locator('.job-branch[data-state=open]')).to_have_count(3)
+    expect(tree.locator('.job-tiers [aria-current]')).to_have_text('1st job · levels 1 to 19')
     choose=page.locator('#progressionPanel button[data-action]').filter(has_text='Guardian')
     before=page.evaluate('JSON.stringify(state)')
     choose.click()
@@ -161,6 +166,11 @@ process.stdout.write(JSON.stringify(s));
     assert page.evaluate('state.player.gold')==fixture['player']['gold']
     assert page.evaluate('state.player.xp')==fixture['player']['xp']
     assert page.evaluate('view.progression.specializationOptions.length')==0
+    expect(page.locator('#jobTree .job-branch[data-branch=guardian]')).to_have_attribute('data-state','chosen')
+    expect(page.locator('#jobTree .job-branch[data-state=closed]')).to_have_count(2)
+    expect(page.locator('#jobTree .job-tiers [aria-current]')).to_contain_text('2nd job')
+    page.locator('#jobTree').scroll_into_view_if_needed()
+    page.screenshot(path=str(output/'job-tree.png'))
     page.locator('#saveQuickBtn').click()
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     page.locator('#nav-settings').click()
