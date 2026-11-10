@@ -12,7 +12,7 @@
  function readiness(v){const r=[];for(const a of members(v)){r.push(`${a.name}: HP ${a.hp}/${a.maxHp}${a.hp<=0?' · unconscious':''}${a.conditions?.length?' · '+a.conditions.map(c=>c.name||c.id).join(', '):''}.`);}
   for(const x of Object.values(v.player?.resources||{}))r.push(`${x.name}: ${x.current}/${x.max}${x.refresh?' · '+x.refresh+' rest refresh':''}.`);
   const n=v.progression?.pending?.length||0;if(n)r.push(`${n} development choice${n===1?'':'s'} awaiting selection.`);
-  if(v.progression?.specializationOptions?.length)r.push('Your permanent first advancement is ready to choose.');
+  if(v.progression?.specializationOptions?.length)r.push('Your 2nd job branch is ready to choose.');
   if(v.progression?.renown?.pending)r.push(`Renown rank ${v.progression.renown.rank}: ${v.progression.renown.pending} boon${v.progression.renown.pending===1?'':'s'} to choose.`);
   for(const p of v.world?.preparation||[])for(const warning of p.warnings||[])r.push(`${v.world.quests?.find(q=>q.id===p.questId)?.name||'Known expedition'}: ${warning}`);
   return r;

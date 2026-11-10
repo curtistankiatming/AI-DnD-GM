@@ -2,7 +2,7 @@
 
 A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
-**Playable scope: authored levels 1–10, a first advancement at level 10, a post-advancement expedition, then AI-directed adventures up to level 100 and endless renown ranks after that.** The 2nd, 3rd and 4th jobs (levels 20, 40 and 70) are planned and shown as coming in later updates; they are not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+**Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, and endless renown ranks after level 100.** The 3rd and 4th jobs (levels 40 and 70) are planned and shown as coming in later updates; they are not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
 ## Earlier reliability fixes (V4.0.1)
 
@@ -119,11 +119,40 @@ Stock and appearances persist across menu changes, travel and saves. Town stock 
 | 7 | Companion combinations after personal quests; more Technique uses |
 | 8 | A second talent or ability improvement |
 | 9 | +2 to objective checks and another Technique use |
-| 10 | A trial, permanent specialization, its signature action, and a subsequent expedition |
+| 10 | The Oath of the Road trial, which teaches your class mastery skill, and a subsequent expedition |
 
-Talent choices appear in the development panel. They cannot be silently selected twice. XP, the next unlock, and outstanding rewards remain visible. Companions share the earned level. The first advancement has **two choices per class**: Guardian/Duelist; Shadow Agent/Saboteur; Evoker/Chronist; Lifewarden/Exorcist; Wild Warden/Deadeye; Lorekeeper/Battle Cantor.
+Talent choices appear in the development panel. They cannot be silently selected twice. XP, the next unlock, and outstanding rewards remain visible. Companions share the earned level.
 
-The first advancement is permanent for that save. The trial can be retried without losing a specialization to one unlucky check. Additional XP at the current level cap is recorded, but it does not unlock nonexistent levels. Level 30 is reserved for an advanced path; level 70 for legendary identity. No future build or save-compatibility promise is implied.
+The trial can be retried without losing anything to one unlucky check. Heroes who chose a specialization at level 10 in an earlier version keep it as their 2nd job branch.
+
+### Jobs: class mastery and the 2nd job
+
+Your class is your 1st job. Each later job adds new skills; you keep every skill
+you already have. Skills that are always on (passives) add small bonuses, and
+attack, Armor Class and saving throw bonuses from all sources together stop at +4.
+
+| Level | What you learn |
+| --- | --- |
+| 10 | Class mastery skill, from the Oath of the Road trial |
+| 13 | A passive 1st-job skill |
+| 16 | An active 1st-job skill |
+| 20 | **2nd job**: choose one of three branches for your class (permanent) and learn its first skill |
+| 25, 30, 35 | The branch's next three skills |
+| 40 | 3rd job (later update) |
+| 70 to 100 | 4th job (later update) |
+
+| Class | Mastery (10) | 1st-job skills (13, 16) | 2nd job branches (20) |
+| --- | --- | --- | --- |
+| Fighter | Battle Surge | Hardened, Crushing Blow | Guardian / Duelist / Warlord |
+| Rogue | Vanishing Step | Evasion, Twin Daggers | Shadow Agent / Saboteur / Grifter |
+| Wizard | Arcane Barrier | Spell Focus, Lightning Lance | Evoker / Chronist / Binder |
+| Cleric | Divine Aegis | Blessed Vigor, Radiant Burst | Lifewarden / Exorcist / Battle Priest |
+| Ranger | Volley | Trailwise, Hunter's Snare | Wild Warden / Deadeye / Pathfinder |
+| Bard | Song of Rest | Jack of All Trades, Cutting Words | Lorekeeper / Battle Cantor / Envoy |
+
+Branch skills use the Advancement resource (2 uses per long rest, 3 from level
+30). The development panel shows every skill of your job, which ones you have
+learnt, and the names of your branch's 3rd and 4th jobs.
 
 ### Companions and equipment
 
@@ -280,7 +309,7 @@ Growth past level 20 is deliberately gentle so the d20 still matters: the
 proficiency bonus stops at +6, enemy AC, attacks and DCs stop at their level-20
 values, and health and damage keep growing slowly on both sides (+2 HP a level
 and +1 damage and healing every 10 levels for heroes). New power past 20 will
-come from the 2nd, 3rd and 4th jobs in later updates.
+comes from job skills: the 2nd job now, the 3rd and 4th jobs in later updates.
 
 Saves from when level 10 was the cap keep their XP: XP past level 10 now counts
 as levels, and boons picked then return when renown starts after level 100.

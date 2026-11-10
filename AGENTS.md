@@ -22,7 +22,11 @@
   adventures. XP rewards are shares of the current level (`src/xp.js`); growth
   past level 20 is bounded (proficiency +6, enemy AC/attacks/DCs stop at their
   level-20 values). After 100, XP earns renown ranks with capped boons
-  (`src/progression.js`). Do not replace content depth with inflated XP or
+  (`src/progression.js`). Job skills (class mastery at 10, 1st-job skills at
+  13/16, three 2nd-job branches per class with skills at 20/25/30/35) are data
+  in `src/data/jobs.json`, built from effect primitives that
+  `resolveJobAction` in `src/combat.js` runs; flat attack/AC/save bonuses are
+  capped by `BONUS_CAPS`. Do not replace content depth with inflated XP or
   uncapped bonuses.
 - Before a fix, reproduce it in a targeted regression test. Run `npm run check`,
   `npm test`, `npm run playtest` and `npm run fuzz` after changes.

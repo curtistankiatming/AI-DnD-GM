@@ -15,7 +15,7 @@ function fixture(){let resolve;const calls=[],dialogs=[];const decision=new Prom
 }
 test('permanent choice preview is explicit and cancellation does not send an action',async()=>{
  const f=fixture(),pending=f.c.sendAction({type:'specialize',specializationId:'guardian'});
- assert.equal(f.calls.length,0);assert.equal(f.dialogs[0].title,'Confirm permanent advancement');
+ assert.equal(f.calls.length,0);assert.equal(f.dialogs[0].title,'Confirm your 2nd job branch');
  assert.match(f.dialogs[0].message,/Guardian/);assert.match(f.dialogs[0].message,/Protect the party/);assert.match(f.dialogs[0].message,/permanent/);
  assert.equal(f.dialogs[0].choices[0][0],'cancel');f.resolve('cancel');await pending;
  assert.equal(f.calls.length,0);assert.equal(f.c.specializing,false);

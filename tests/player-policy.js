@@ -50,7 +50,7 @@ function chooseAction(v,m={},style='prepared'){
     if(r.level===8)opt=r.options.find(x=>x.id==='bulwark')||opt;
     return done('choose-reward',{level:r.level,optionId:opt.id});}
   if(p.specializationOptions.length)return done('specialize',{specializationId:p.specializationOptions[0].id});
-  if(p.specialization&&w.campaignComplete)return null;
+  if((p.specialization||p.job?.mastery)&&w.campaignComplete)return null;
   if(w.town){
     if([hero,...v.party].some(a=>a.hp<a.maxHp)||Object.values(hero.resources).some(r=>r.current<r.max))return done('town-service',{serviceId:'civic-rest'});
     const treatment=w.services.find(s=>s.id==='treatment'&&!s.disabled);if(treatment&&hero.gold>=treatment.cost)return done('town-service',{serviceId:'treatment'});
