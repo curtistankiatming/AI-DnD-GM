@@ -54,7 +54,6 @@
   }
   // Story director: an optional wish in the message box becomes the hint.
   function adventure(){const hint=dom.actionInput.value.trim();dom.actionInput.value='';return send(('/adventure '+hint).trim());}
-  window.BriarwatchChat={send,adventure};
   function render(){
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
@@ -92,7 +91,7 @@
       for(const option of c.courierOptions||[]){const b=button(option.label,()=>send(option.label,{mode:'action'}));b.title=option.description;facts.append(b,createElement('p','muted',option.description));}
       if(c.courier.active&&!c.courierAvailable)facts.append(createElement('p','muted','Return to Briarwatch outside combat to continue this side story, or pause it.'));}
   }
-  window.BriarwatchChat={send,render};
+  window.BriarwatchChat={send,render,adventure};
 
   const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
   if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}

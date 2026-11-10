@@ -41,3 +41,15 @@ test('busy submit never clears a draft or sends another request',()=>{
 });
 test('non-model busy operations do not admit editing the message box',()=>{const {ctx,node}=setup();ctx.$$=()=>[node('actionInput')];vm.runInContext(fn('setBusy')+'\nsetBusy(true);',ctx);assert.equal(node('actionInput').disabled,true);});
 test('real story-choice renderer explains journey approaches instead of nonexistent combat',()=>{const {ctx,node}=setup();vm.runInContext(fn('renderStoryChoices')+'\nrenderStoryChoices();',ctx);assert.match(node('storyChoices').children[0].text,/Lantern Road/);assert.doesNotMatch(node('storyChoices').children[0].text,/combat is active/);});
+test('every chat function another screen calls is still exported after chat-ui.js finishes loading',()=>{
+  // Regression: a second window.BriarwatchChat assignment dropped `adventure`, so the
+  // "Ask the GM for a new adventure" button threw and did nothing.
+  const dir=path.join(__dirname,'../public'),chat=fs.readFileSync(path.join(dir,'chat-ui.js'),'utf8');
+  const exportsList=[...chat.matchAll(/window\.BriarwatchChat=\{([^}]*)\}/g)];assert.ok(exportsList.length,'chat-ui.js exports BriarwatchChat');
+  const exported=exportsList.at(-1)[1].split(',').map(k=>k.split(':')[0].trim());
+  const used=new Set();
+  for(const file of fs.readdirSync(dir).filter(f=>f.endsWith('.js')))
+    for(const m of fs.readFileSync(path.join(dir,file),'utf8').matchAll(/BriarwatchChat\??\.(\w+)/g))used.add(m[1]);
+  assert.ok(used.has('adventure'),'the expedition board calls adventure()');
+  for(const name of used)assert.ok(exported.includes(name),`BriarwatchChat.${name} is used but not exported`);
+});
