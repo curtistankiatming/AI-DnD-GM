@@ -315,6 +315,16 @@ def main() -> None:
                         exercise_workspace(workspace_page,out/'batch2',target!='server')
                     finally:
                         workspace.close()
+                    story=browser_type.launch_persistent_context(str(temporary/('story-'+target)),**launch)
+                    try:
+                        from story_browser import exercise_story
+                        story_page=story.pages[0] if story.pages else story.new_page()
+                        story_page.on('pageerror',lambda e:errors.append(str(e)))
+                        story_page.on('dialog',lambda d:d.accept())
+                        story_page.goto(url,wait_until='load')
+                        exercise_story(story_page,out/'story')
+                    finally:
+                        story.close()
                     exercise(page,out,target!='server')
                     assert not errors,errors
                     context.tracing.stop(path=str(out/'trace.zip'));context.close();context=None
