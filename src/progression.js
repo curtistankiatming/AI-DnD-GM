@@ -6,6 +6,21 @@ const { CLASSES, COMPANIONS, ITEMS, SKILLS } = require('./content');
 const { abilityModifier, proficiencyBonus, deepClone } = require('./rules');
 const MAX_LEVEL = 10;
 const XP_NEXT = {1:300,2:1100,3:2300,4:3900,5:5900,6:8400,7:11400,8:14900,9:18900};
+// Endless progression after level 10: every RANK_XP earns a renown rank and one
+// boon. Each boon has a stack cap so ranks never break the d20 maths; once every
+// boon is full, ranks still record the legend. AI-directed adventures scale
+// their enemies and DCs with renown up to RENOWN_POWER_CAP extra levels.
+const RANK_XP = 4000;
+const RENOWN_POWER_CAP = 6;
+const BOONS = Object.freeze({
+  vigor:{id:'vigor',name:'Vigor',description:'+6 maximum HP.',cap:5},
+  precision:{id:'precision',name:'Precision',description:'+1 to attack rolls.',cap:2},
+  warding:{id:'warding',name:'Warding',description:'+1 Armor Class.',cap:1},
+  resolve:{id:'resolve',name:'Resolve',description:'+1 to saving throws.',cap:2},
+  might:{id:'might',name:'Might',description:'+1 damage on your attacks and spells.',cap:3},
+  mending:{id:'mending',name:'Mending',description:'+2 to healing you give.',cap:3},
+  purpose:{id:'purpose',name:'Purpose',description:'+1 to combat-objective checks.',cap:2}
+});
 const REWARDS = {
   1:'Your base class, signature actions, starting gear and exploration skills.',
   2:'A new class technique and 2 Technique uses per short rest.',
@@ -73,20 +88,63 @@ function ensure(player){
   player.progression ||= { choices:{}, talents:[], specialization:null };
   player.progression.choices ||= {};
   player.progression.talents ||= [];
+  player.progression.boons=normalizeBoons(player);
   return player.progression;
+}
+// Ranks come from XP, so they cannot be edited separately; chosen boons are
+// clamped to each cap and to the number of ranks earned.
+function renownRank(player){
+  if((player.level||1)<MAX_LEVEL)return 0;
+  return Math.max(0,Math.floor(((Number(player.xp)||0)-XP_NEXT[MAX_LEVEL-1])/RANK_XP));
+}
+function normalizeBoons(player){
+  const raw=player.progression.boons&&typeof player.progression.boons==='object'?player.progression.boons:{};
+  let left=renownRank(player);const out={};
+  for(const b of Object.values(BOONS)){
+    const n=Math.min(b.cap,left,Math.max(0,Math.floor(Number(raw[b.id])||0)));
+    if(n){out[b.id]=n;left-=n;}
+  }
+  return out;
+}
+const boon=(player,id)=>player.progression?.boons?.[id]||0;
+function pendingBoons(player){
+  const p=ensure(player);
+  const used=Object.values(p.boons).reduce((a,n)=>a+n,0);
+  const open=Object.values(BOONS).some(b=>(p.boons[b.id]||0)<b.cap);
+  return open?Math.max(0,renownRank(player)-used):0;
+}
+function chooseBoon(player,id){
+  const b=BOONS[id];
+  if(!b)return {ok:false,error:'Choose one of the offered boons.'};
+  if(!pendingBoons(player))return {ok:false,error:'No renown boon is waiting. Earn the next renown rank first.'};
+  const p=ensure(player);
+  if((p.boons[id]||0)>=b.cap)return {ok:false,error:`${b.name} is already at its maximum of ${b.cap}.`};
+  const before=maxHp(player);
+  p.boons[id]=(p.boons[id]||0)+1;
+  player.maxHp=maxHp(player);player.hp=Math.min(player.maxHp,player.hp+Math.max(0,player.maxHp-before));
+  return {ok:true,name:b.name,description:b.description};
+}
+// Extra levels of challenge for AI-directed adventures at this renown.
+const renownPower=player=>Math.min(RENOWN_POWER_CAP,Math.floor(renownRank(player)/2));
+function renownView(player){
+  const rank=renownRank(player),p=ensure(player);
+  if((player.level||1)<MAX_LEVEL)return null;
+  const into=Math.max(0,Number(player.xp)-XP_NEXT[MAX_LEVEL-1]-rank*RANK_XP);
+  return {rank,rankXp:RANK_XP,xpIntoRank:into,xpToNext:RANK_XP-into,pending:pendingBoons(player),power:renownPower(player),
+    boons:Object.values(BOONS).map(b=>({...b,stacks:p.boons[b.id]||0,available:(p.boons[b.id]||0)<b.cap}))};
 }
 function talents(player){return ensure(player).talents;}
 function hasTalent(player,id){return talents(player).includes(id);}
 function stats(player){
   const p=ensure(player);
   return {
-    ac:hasTalent(player,'bulwark')?1:0,
-    hp:(hasTalent(player,'bulwark')?4:0)+(hasTalent(player,'resilient')?4:0),
-    attack:hasTalent(player,'precise')?1:0,
-    save:hasTalent(player,'resilient')?1:0,
-    healing:hasTalent(player,'medic')?3:0,
-    damage:p.choices['5']==='force'?2:0,
-    objective:(player.level>=9?2:0)+(p.choices['5']==='economy'?1:0),
+    ac:(hasTalent(player,'bulwark')?1:0)+boon(player,'warding'),
+    hp:(hasTalent(player,'bulwark')?4:0)+(hasTalent(player,'resilient')?4:0)+6*boon(player,'vigor'),
+    attack:(hasTalent(player,'precise')?1:0)+boon(player,'precision'),
+    save:(hasTalent(player,'resilient')?1:0)+boon(player,'resolve'),
+    healing:(hasTalent(player,'medic')?3:0)+2*boon(player,'mending'),
+    damage:(p.choices['5']==='force'?2:0)+boon(player,'might'),
+    objective:(player.level>=9?2:0)+(p.choices['5']==='economy'?1:0)+boon(player,'purpose'),
     tool:player.level>=6?2:0
   };
 }
@@ -194,8 +252,9 @@ function view(player,world){
   const previous=player.level===1?0:XP_NEXT[player.level-1];
   const next=XP_NEXT[player.level]||null;
   return {
-    maxLevel:MAX_LEVEL,previousXp:previous,nextXp:next,bankedXp:next?0:Math.max(0,player.xp-XP_NEXT[9]),
-    nextReward:next?REWARDS[player.level+1]:'Available level cap reached. Continue the trial, party quests, shops, and practice arena; later chapters are not included.',
+    maxLevel:MAX_LEVEL,previousXp:previous,nextXp:next,bankedXp:0,
+    nextReward:next?REWARDS[player.level+1]:`Renown rank ${renownRank(player)+1}: one more boon. Every ${RANK_XP} XP after level 10 earns a rank.`,
+    renown:renownView(player),
     pending:[3,4,5,6,8].filter(l=>player.level>=l&&!p.choices[l]).map(level=>({level,description:REWARDS[level],options:options(player,level)})),
     rewards:Object.entries(REWARDS).map(([level,description])=>({level:Number(level),description,reached:player.level>=Number(level),choice:p.choices[level]||null})),
     techniques:classActions(player),talents:p.talents.map(id=>TALENTS[id]),
@@ -204,4 +263,4 @@ function view(player,world){
     trialComplete:Boolean(world?.completed?.trial)
   };
 }
-module.exports={MAX_LEVEL,XP_NEXT,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};
+module.exports={MAX_LEVEL,XP_NEXT,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};

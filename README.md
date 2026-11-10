@@ -1,7 +1,8 @@
 # Briarwatch — Lantern Road & Campaign Journal 4.1.0-alpha.3
 
 A local, single-player, story-led d20 adventure with active companions, towns,
-travelling merchants, equipment, and progression through level 10.
+travelling merchants, equipment, and progression through level 10, then
+endless renown ranks alongside AI-directed adventures.
 
 **PR #4 and PR #5 are merged into `master`.** The public alpha includes Lantern
 Road and the persistent journal; its source ZIP also includes Shared Model
@@ -34,7 +35,8 @@ the local Node server, its save API, or your local model to the internet.
 
 ## What is implemented
 
-- Authored level-1–10 campaign, level-10 advancement trial and follow-on mission;
+- Authored level-1–10 campaign, level-10 advancement trial and follow-on mission,
+  then renown ranks with capped boons for endless play;
   active companions, equipment comparisons, merchants, town services and recovery.
 - Campaign instructions saved through chat; separate Action, Dialogue and Question
   modes; confirmation before model-proposed actions affect rolls or resources.

@@ -54,7 +54,7 @@
   serviceNav.after($id('worldPanel'));filterPrepare();
   clear(readyBody);for(const line of M.readiness(view))readyBody.append(el('p','readiness-line',line));
   clear(progressBody);progressBody.append(el('p','',`Level ${view.player.level} · ${view.player.xp} XP. Next: ${view.progression.nextReward}`));
-  if(view.progression.pending.length||view.progression.specializationOptions.length)progressBody.append(button('Review pending choices',()=>{$id('progressionPanel').scrollIntoView({block:'start'});}));
+  if(view.progression.pending.length||view.progression.specializationOptions.length||view.progression.renown?.pending)progressBody.append(button('Review pending choices',()=>{$id('progressionPanel').scrollIntoView({block:'start'});}));
   for(const reward of view.progression.rewards){const row=el('p','');row.append(el('strong','',`Level ${reward.level} · ${reward.reached?'Reached':'Ahead'}: `),document.createTextNode(reward.description));progressBody.append(row);}
   const abilities=el('details');abilities.append(el('summary','','Your current abilities — use combat controls during initiative'));for(const a of view.progression.techniques||[])abilities.append(el('p','',`${a.name}: ${a.description}`));progressBody.append(abilities,el('p','muted','Level-30 and level-70 advancements are future plans, not available rewards.'));
   for(const [i,member]of view.party.entries()){const card=dom.partyCards.children[i];if(!card)continue;card.querySelector('.companion-contribution')?.remove();const text=M.contribution(member,eventHistory);if(text)card.append(el('p','companion-contribution','Most recently: '+text));}

@@ -5,7 +5,7 @@ const P=require('./progression');
 const Director=require('./director');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
-const TOWN_ACTIONS=new Set(['buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize']);
+const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize']);
 function init(state){
   const w=state.world ||= {};
   w.day=Number.isInteger(w.day)&&w.day>0?w.day:1;
@@ -139,6 +139,12 @@ function handle(state,action,rng,events,api){
     for(const [id,r]of Object.entries(defaults))r.current=Math.min(r.max,(before[id]?.current??r.max)+Math.max(0,r.max-(before[id]?.max??r.max)));
     state.player.resources=defaults;G.derive(state.player);
     return emit(events,`Level ${action.level} reward chosen: ${result.name}. The character sheet and available actions now reflect it.`,'level','good');
+  }
+  if(action.type==='choose-boon'){
+    const result=P.chooseBoon(state.player,String(action.boonId||''));
+    if(!result.ok)return fail(events,result.error);
+    G.derive(state.player);
+    return emit(events,`Renown boon chosen: ${result.name}. ${result.description}`,'level','good');
   }
   if(action.type==='specialize'){
     const spec=(P.SPECIALIZATIONS[state.player.classId]||[]).find(s=>s.id===action.specializationId);
