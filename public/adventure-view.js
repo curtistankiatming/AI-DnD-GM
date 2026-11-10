@@ -5,9 +5,9 @@
 })(typeof window==='object'?window:globalThis,function(){
  'use strict';
  const MODES={
-  action:{id:'action',label:'Act',readOnly:false,help:'Describe one action. An interpreted proposal needs your confirmation before it changes the game.'},
-  dialogue:{id:'dialogue',label:'Say',readOnly:true,help:'Speak in character. Dialogue cannot spend resources or execute a proposed action.'},
-  question:{id:'question',label:'Ask',readOnly:true,help:'Ask about the world or rules. Questions are read-only; uncertain claims remain uncertain.'}
+  action:{id:'action',label:'Act',readOnly:false,placeholder:'What do you do?',help:'Act: say what you do. If the game master has to interpret it, you confirm before anything changes.'},
+  dialogue:{id:'dialogue',label:'Say',readOnly:true,placeholder:'What do you say?',help:'Say: speak in character. Talking never spends items or resources.'},
+  question:{id:'question',label:'Ask',readOnly:true,placeholder:'Ask the game master a question',help:'Ask: a question about the world or the rules. Asking never changes the game.'}
  };
  const SECTIONS=['adventure','party','journal','prepare','settings'];
  const FILTERS={all:null,leads:['leads'],evidence:['facts','rumors'],promises:['promises'],people:['relationships'],notes:['notes'],completed:['completed']};

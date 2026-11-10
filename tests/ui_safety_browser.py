@@ -28,7 +28,7 @@ def save_as(page, slot):
     go(page,'settings')
     page.locator('#saveSlotInput').fill(slot)
     page.locator('#saveBtn').click()
-    expect(page.locator('#saveStatus')).to_contain_text('Saved checkpoint')
+    expect(page.locator('#saveStatus')).to_contain_text('Saved')
     expect(page.locator('#saveStatus')).to_contain_text(slot)
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
 
@@ -68,7 +68,7 @@ def exercise_safety(page, output, offline):
     second_slot = page.locator('#saveSlotInput').input_value()
     assert second_slot != 'ui-safety-a'
     page.locator('#saveQuickBtn').click()
-    expect(page.locator('#saveStatus')).to_contain_text('Saved checkpoint')
+    expect(page.locator('#saveStatus')).to_contain_text('Saved')
     expect(page.locator('#saveStatus')).to_contain_text(second_slot)
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     go(page,'settings')
