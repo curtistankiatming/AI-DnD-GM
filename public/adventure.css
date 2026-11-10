@@ -391,6 +391,65 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
  .combat-board-ui #combatActions .combat-action { flex:1 1 132px; max-width:none; }
  .combat-log .narration-card { max-height:28vh; }
 }
+/* ---- Step 4 (Nov 2026): party sheet, journal and town ---- */
+.sheets-ui #workspace-party,.sheets-ui #workspace-journal,.sheets-ui #workspace-prepare { max-width:1240px; margin-inline:auto; }
+.sheet-jump { display:none; }
+.sheet-waiting { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:10px 0 14px; padding:10px 14px; border:1px solid var(--accent); border-radius:12px; background:var(--accent-dark); }
+.sheet-waiting[hidden] { display:none; }
+.sheet-waiting p { margin:0; min-width:0; }
+#workspaceNav [data-waiting] { position:relative; }
+#workspaceNav [data-waiting]::after { content:""; position:absolute; top:7px; right:9px; width:8px; height:8px; border-radius:50%; background:var(--accent); }
+/* Party sheet */
+.sheets-ui #workspace-party .left-rail { gap:16px; margin-bottom:16px; }
+.sheets-ui #workspace-party .panel { scroll-margin-top:64px; }
+.sheets-ui #playerIdentity { font-size:1.45rem; }
+.sheets-ui #workspace-party .vital-row { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.sheets-ui #workspace-party .inventory-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; align-items:start; }
+.sheets-ui #workspace-party .inventory-card { margin:0; padding:12px 14px; min-width:0; }
+.sheets-ui .inventory-card .item-description,.sheets-ui .sheet-fold { display:none; }
+.sheets-ui .inventory-card .purpose-box { margin:6px 0 8px; padding:0; border:0; background:none; }
+.sheets-ui .inventory-card .purpose-box > span { display:none; }
+.sheets-ui .inventory-card .purpose-box p { margin:0; }
+.sheets-ui .inventory-card .item-usage { margin:8px 0 0; padding:0; border:0; color:var(--muted); }
+.sheets-ui .inventory-card .item-owners { margin:6px 0 0; }
+.sheets-ui #workspace-party .inventory-actions { gap:6px; }
+/* Journal */
+.sheets-ui #workspace-journal #storyJournal { border:0; padding:0; }
+.sheets-ui #workspace-journal > .workspace-title + p { display:none; }
+.sheets-ui #storyJournal > summary { list-style:none; cursor:default; color:var(--muted); font-size:.85rem; font-weight:500; }
+.sheets-ui #storyJournal > summary::-webkit-details-marker { display:none; }
+.sheets-ui #workspace-journal #journalRecords { display:block; columns:2 400px; column-gap:14px; }
+.sheets-ui #workspace-journal .journal-section { break-inside:avoid; margin:0 0 14px; padding:12px 14px; background:var(--panel); }
+.sheets-ui .journal-section h4 { margin:0 0 6px; font-family:var(--font-display); font-size:1.15rem; color:var(--accent-strong); }
+.journal-current { column-span:all; margin:4px 0 14px; padding:10px 14px; border-left:3px solid var(--accent); border-radius:0 10px 10px 0; background:var(--panel); font-family:var(--font-display); font-size:1.08rem; line-height:1.5; }
+#workspace-journal[data-filter=all] .journal-section.is-empty,#workspace-journal[data-filter=all] .is-repeat { display:none; }
+#workspace-journal[data-filter=all] #tabJournal { display:block; }
+#workspace-journal:not([data-filter=all]) .journal-empties,.journal-empties:empty { display:none; }
+.journal-empties { margin:0 0 14px; font-size:.88rem; }
+.sheets-ui .journal-record > strong { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:4px 10px; }
+.journal-status { flex:none; padding:1px 9px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font:600 .74rem/1.5 var(--font-body); letter-spacing:.02em; text-transform:capitalize; white-space:nowrap; }
+.journal-status[data-status=verified],.journal-status[data-status=kept],.journal-status[data-status=completed],.journal-status[data-status=friendly] { color:var(--good); border-color:color-mix(in srgb,var(--good) 45%,transparent); }
+.journal-status[data-status=active],.journal-status[data-status=open] { color:var(--accent-strong); border-color:color-mix(in srgb,var(--accent) 50%,transparent); }
+.journal-status[data-status=broken],.journal-status[data-status=failed],.journal-status[data-status=hostile] { color:var(--bad); border-color:color-mix(in srgb,var(--bad) 45%,transparent); }
+.sheets-ui #workspace-journal .history-list { max-height:340px; overflow:auto; }
+/* Town */
+.sheets-ui #workspace-prepare > .workspace-title { margin-top:16px; }
+.sheets-ui #workspace-prepare > #progressionPanel { margin:12px 0; border-color:var(--accent); }
+.sheets-ui #readinessPanel > div { display:flex; flex-wrap:wrap; gap:8px; }
+.sheets-ui .readiness-line { margin:0; padding:4px 12px; border:1px solid var(--border); border-radius:999px; background:var(--panel-soft); min-width:0; overflow-wrap:anywhere; }
+.town-purse { margin:2px 0 0; color:var(--muted); }
+.town-purse strong { color:var(--accent-strong); }
+.sheets-ui #worldPanel > details[data-section=expedition] > .v4-card { display:inline-block; vertical-align:top; width:calc(50% - 14px); margin:.6rem 12px .6rem 0; border-top:3px solid var(--accent); background:color-mix(in srgb,var(--accent) 6%,var(--panel)); }
+.sheets-ui #worldPanel > details[data-section=expedition] > .v4-card[data-director] { display:block; width:auto; margin-right:0; border-top-color:var(--good); background:color-mix(in srgb,var(--good) 6%,var(--panel)); }
+.sheets-ui #worldPanel .v4-card h3 { font-family:var(--font-display); font-size:1.12rem; }
+.sheets-ui #worldPanel .v4-card button[data-action*='"type":"depart"']:not(:disabled) { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700; }
+@media (max-width:760px) {
+ .sheet-jump { display:flex; gap:6px; position:sticky; top:0; z-index:6; margin:0 -4px 8px; padding:6px 4px; background:var(--bg); overflow-x:auto; }
+ .sheet-jump button { flex:1 0 auto; min-height:40px; }
+ .sheets-ui #workspace-party .inventory-cards { grid-template-columns:minmax(0,1fr); }
+ .sheets-ui #workspace-journal #journalRecords { columns:1; }
+ .sheets-ui #worldPanel > details[data-section=expedition] > .v4-card { display:block; width:auto; margin-right:0; }
+}
 @media(prefers-reduced-motion:reduce){.story-workspace *{scroll-behavior:auto !important;transition:none !important;animation:none !important;}}
 
 /* Roll card: an improvised attempt with its odds, stakes and roll button in one place. */
