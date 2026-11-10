@@ -11,7 +11,7 @@
  const button=(text,fn,readOnly=true)=>{const b=el('button','btn btn-secondary',text);b.type='button';if(readOnly)b.dataset.readOnly='true';b.addEventListener('click',fn);return b;};
  document.body.classList.add('story-workspace');
  const main=dom.gameLayout,sourceColumn=main.querySelector('.story-column'),left=main.querySelector('.left-rail'),right=main.querySelector('.right-rail');
- let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null;
+ let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false;
  const panes={},tabs={};
  const nav=el('nav','workspace-nav');nav.id='workspaceNav';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Game sections');
  for(const [id,label]of [['adventure','Adventure'],['party','Party'],['journal','Journal'],['prepare','Prepare'],['settings','Settings']]){
@@ -22,10 +22,10 @@
  // Keep destinations attached while moving controls so later ID lookups remain valid.
  main.append(...Object.values(panes));
  const heading=(pane,text,description)=>{pane.append(el('h2','workspace-title',text));if(description)pane.append(el('p','muted',description));};
- heading(panes.party,'Party & pack','Your existing character sheet, companions and equipment. Inspecting an item does not use it.');
- heading(panes.journal,'Campaign journal','Confirmed evidence, uncertain reports, promises and personal notes remain distinct.');
- heading(panes.prepare,'Prepare for the road','Recovery, development, supplies and expeditions. Only currently available services and discovered information are shown.');
- heading(panes.settings,'Saves & settings','Local campaign saves and optional model settings. Changing a screen never enables a model.');
+ heading(panes.party,'Party & pack','Your hero, your companions and everything you carry.');
+ heading(panes.journal,'Journal','What you know, who you know and what you have promised.');
+ heading(panes.prepare,'Prepare','Rest, shop, grow your party and choose the next expedition.');
+ heading(panes.settings,'Saves & settings','Save or load a game and set up the AI game master.');
  const storyCard=dom.narrationText.closest('.scene-card');
  const objective=dom.sceneObjective.closest('.objective-box');
  const overview=el('header','adventure-overview');overview.id='adventureOverview';
@@ -33,33 +33,37 @@
  overview.append(where,dom.sceneTitle,objective);
  const partyStrip=button('',()=>navigate('party'));partyStrip.id='partySnapshot';partyStrip.classList.add('party-snapshot');
  overview.append(partyStrip);
- const shortcuts=el('div','adventure-shortcuts');
- shortcuts.append(button('Available approaches',()=>{approaches.open=true;approaches.scrollIntoView({block:'start'});approaches.querySelector('summary').focus();}),button('Preparation & development',()=>navigate('prepare')));
- overview.append(shortcuts);
  const scroll=el('div','adventure-scroll');scroll.id='adventureScroll';scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Story and recent conversation');
  const conversation=byId('chatTranscript');conversation.setAttribute('aria-live','off');conversation.classList.add('adventure-conversation');
- const historyLabel=el('p','history-caption','Recent conversation · older verified records are in Journal');
+ const historyLabel=el('p','history-caption','Earlier');
  storyCard.prepend(historyLabel,conversation);
  storyCard.querySelector('.scene-meta-row')?.remove();
  const latest=byId('narrationCard');latest.setAttribute('aria-label','Latest story response');latest.tabIndex=-1;
  const approaches=el('details','adventure-approaches');approaches.id='adventureApproaches';approaches.open=true;
- const approachTitle=el('summary','','Available approaches');approaches.append(approachTitle,byId('roadScenario'),byId('chatScenario'),dom.choicePanel);
- const mechanics=el('details','adventure-mechanics');mechanics.id='mechanicsDetails';mechanics.append(el('summary','','Dice & confirmed consequences'),dom.eventFeed.closest('section'));
+ const approachTitle=el('summary','','What do you do?');approaches.append(approachTitle,byId('roadScenario'),byId('chatScenario'),dom.choicePanel);
+ const mechanics=el('details','adventure-mechanics');mechanics.id='mechanicsDetails';mechanics.append(el('summary','','Roll history'),dom.eventFeed.closest('section'));
  // A proposal can be long: keep it in the reading flow, not the input's fixed row.
  scroll.append(storyCard,byId('chatPending'),byId('intentPanel'),dom.combatPanel,approaches,mechanics);
  const composer=el('section','adventure-composer');composer.id='adventureComposer';composer.setAttribute('aria-label','Your message');
- const unread=button('New response — jump to latest',()=>{navigate('adventure');jumpToLatest();});unread.id='newReplyBtn';unread.hidden=true;
+ const unread=button('See what happened',()=>{navigate('adventure');jumpToLatest();});unread.id='newReplyBtn';unread.hidden=true;
  const modes=el('div','message-modes');modes.id='messageModes';modes.setAttribute('role','radiogroup');modes.setAttribute('aria-label','Message mode');
  const backing=byId('chatMode');backing.parentElement.classList.add('workspace-sr-only');backing.tabIndex=-1;backing.setAttribute('aria-hidden','true');
  // Replacement instructions have their own editor, not an everyday message mode.
  backing.querySelector('option[value=instructions]')?.remove();
  const modeButtons={};
- function selectMode(id,focus=false){const selected=U.mode(id);backing.value=selected.id;for(const [key,b]of Object.entries(modeButtons)){b.setAttribute('aria-checked',String(key===selected.id));b.tabIndex=key===selected.id?0:-1;}modeHelp.textContent=selected.help;if(focus)modeButtons[selected.id].focus();}
+ function selectMode(id,focus=false){const selected=U.mode(id);backing.value=selected.id;for(const [key,b]of Object.entries(modeButtons)){b.setAttribute('aria-checked',String(key===selected.id));b.tabIndex=key===selected.id?0:-1;b.title=U.mode(key).help;}modeHelp.textContent=selected.help;dom.actionInput.placeholder=selected.placeholder;if(focus)modeButtons[selected.id].focus();}
  for(const id of ['action','dialogue','question']){const m=U.mode(id),b=button(m.label,()=>selectMode(id));b.id='mode-'+id;b.setAttribute('role','radio');b.setAttribute('aria-describedby','messageModeHelp');modeButtons[id]=b;modes.append(b);}
- const modeHelp=el('p','mode-help');modeHelp.id='messageModeHelp';
+ const modeHelp=el('p','mode-help workspace-sr-only');modeHelp.id='messageModeHelp';
  const settingsLink=button('Campaign instructions',()=>openInstructions(),false);settingsLink.id='editInstructionsBtn';
- const modeRow=el('div','composer-toolbar');modeRow.append(modes,settingsLink);
- composer.append(backing.parentElement,unread,modeRow,modeHelp,dom.actionForm,byId('actionFeedback'),byId('chatStatus'));
+ const modeRow=el('div','composer-row');modeRow.append(modes,dom.actionForm);
+ const meta=el('div','composer-meta');meta.append(byId('chatStatus'),settingsLink);
+ composer.append(backing.parentElement,unread,modeRow,modeHelp,byId('actionFeedback'),meta);
+ // One-line box that grows with the text. Enter sends; Shift+Enter starts a new line.
+ dom.actionInput.rows=1;
+ const fitInput=()=>{dom.actionInput.style.height='auto';dom.actionInput.style.height=Math.min(160,dom.actionInput.scrollHeight+2)+'px';};
+ dom.actionInput.addEventListener('input',fitInput);
+ dom.actionInput.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();dom.actionForm.requestSubmit();}});
+ dom.actionForm.addEventListener('submit',()=>{ownAction=true;setTimeout(fitInput,0);},true);
  const cancel=byId('chatFoundation').querySelector('button[data-keep-enabled]');if(cancel)composer.append(cancel);
  dom.actionInput.setAttribute('aria-label','Your message');dom.actionInput.setAttribute('aria-describedby','messageModeHelp');
  const foundation=byId('chatFoundation'),memory=byId('campaignInstructions').closest('details'),tools=foundation.querySelector('.chat-controls');
@@ -87,7 +91,10 @@
  const preview=document.querySelector('.app-shell > .preview-notice');if(preview){const d=el('details','workspace-help');d.id='offlineTools';d.append(el('summary','','Offline backups & sandbox tools'),preview);panes.settings.append(d);}
  const setupPreview=document.querySelector('.setup-card > .preview-notice');if(setupPreview){const d=el('details','workspace-help');d.id='setupOfflineTools';d.append(el('summary','','Offline backups & sandbox tools'),setupPreview);byId('resumePanel').append(d);}
  foundation.remove();sourceColumn.remove();right.remove();
- main.replaceChildren(nav,...Object.values(panes));
+ main.replaceChildren(...Object.values(panes));
+ const topbar=document.querySelector('.topbar'),topActions=topbar.querySelector('.topbar-actions');
+ topbar.querySelector('.brand-block').after(nav);topActions.prepend(byId('saveStatus'));
+ panes.settings.append(dom.narratorBadge);
  const announcement=el('p','workspace-sr-only');announcement.id='workspaceAnnouncement';announcement.setAttribute('role','status');announcement.setAttribute('aria-live','polite');main.append(announcement);
  const mobileDraft=button('Back to your message',()=>{navigate('adventure');dom.actionInput.focus();});mobileDraft.id='returnToMessage';mobileDraft.classList.add('return-to-message');
  main.append(mobileDraft);
@@ -105,6 +112,8 @@
  modes.addEventListener('keydown',e=>arrowGroup(e,Object.values(modeButtons),b=>selectMode(b.id.slice(5))));
  backing.addEventListener('change',()=>selectMode(backing.value));
  scroll.addEventListener('scroll',()=>{previousTop=scroll.scrollTop;follow=U.nearEnd(scroll);},{passive:true});
+ // A choice, combat action or confirmation the player clicked: its result should scroll into view.
+ scroll.addEventListener('click',event=>{if(event.target.closest('button'))ownAction=true;},true);
  function jumpToLatest(){latest.scrollIntoView({block:'start',behavior:'instant'});unread.hidden=true;latest.focus({preventScroll:true});}
  function filterJournal(){
   for(const b of journalFilters.children)b.setAttribute('aria-pressed',String(b.dataset.filter===filter));
@@ -128,7 +137,12 @@
   if(!state||!view)return;
   const identity=[state.createdAt,state.campaignId,state.player.name,state.publicTest?.mode||'normal'].join('|');
   if(identity!==campaignKey){campaignKey=identity;lastSignature='';follow=true;previousTop=0;unread.hidden=true;navigate('adventure');}
-  partyStrip.textContent=U.partySummary(view);
+  // Name, health number and a small bar for each party member; the full sentence stays as the label.
+  partyStrip.setAttribute('aria-label',U.partySummary(view)+'. Open the party screen.');
+  partyStrip.replaceChildren(...[view.player,...(view.party||[])].map(a=>{
+   const ratio=a.maxHp?Math.max(0,Math.min(1,a.hp/a.maxHp)):0,chip=el('span','party-chip'),bar=el('span','party-chip-bar'),fill=el('span');
+   chip.dataset.health=a.hp<=0?'down':ratio<=.5?'hurt':'ok';fill.style.width=Math.round(ratio*100)+'%';bar.append(fill);
+   chip.append(el('strong','',a.name),el('span','party-chip-hp',`${a.hp}/${a.maxHp}`),bar);return chip;}));
   const rows=(view.chat?.history||[]).slice(-8),duplicate=U.duplicateLast(rows,dom.narrationText.textContent);
   [...conversation.children].forEach((node,i)=>{node.hidden=i===duplicate;});
   historyLabel.hidden=!rows.length||rows.length===1&&duplicate===0;
@@ -146,6 +160,7 @@
    const first=!lastSignature;lastSignature=signature;
    if(!first){announcement.textContent='New response available in Adventure.';if(active!=='adventure'||!follow)unread.hidden=false;}
    if(first)scroll.scrollTop=0;
+   else if(ownAction&&active==='adventure'){ownAction=false;scroll.scrollTop+=latest.getBoundingClientRect().top-scroll.getBoundingClientRect().top-8;unread.hidden=true;}
    else if(follow&&active==='adventure'){const box=latest.getBoundingClientRect(),frame=scroll.getBoundingClientRect();if(box.bottom>frame.bottom)scroll.scrollTop+=box.bottom-frame.bottom;if(box.top<frame.top)scroll.scrollTop+=box.top-frame.top;unread.hidden=true;}
    else scroll.scrollTop=previousTop;
   }

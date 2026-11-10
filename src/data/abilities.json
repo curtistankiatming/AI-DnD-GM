@@ -1,0 +1,32 @@
+{
+  "str": {
+    "id": "str",
+    "name": "Strength",
+    "summary": "Athletics, forcing obstacles, and heavy melee weapons."
+  },
+  "dex": {
+    "id": "dex",
+    "name": "Dexterity",
+    "summary": "Stealth, initiative, finesse and ranged weapons, and reflexes."
+  },
+  "con": {
+    "id": "con",
+    "name": "Constitution",
+    "summary": "Hit points, endurance, and resistance to bodily harm."
+  },
+  "int": {
+    "id": "int",
+    "name": "Intelligence",
+    "summary": "Investigation, lore, arcana, and deliberate reasoning."
+  },
+  "wis": {
+    "id": "wis",
+    "name": "Wisdom",
+    "summary": "Perception, insight, survival, medicine, and resolve."
+  },
+  "cha": {
+    "id": "cha",
+    "name": "Charisma",
+    "summary": "Persuasion, deception, intimidation, and force of personality."
+  }
+}

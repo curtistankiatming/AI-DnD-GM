@@ -1,0 +1,21 @@
+{
+  "id": "bell-beneath-briarwatch",
+  "title": "The Bell Beneath Briarwatch",
+  "subtitle": "A branching d20 campaign for one player and an active companion party",
+  "startNode": "briarwatch-square",
+  "premise": "The protective bell of Briarwatch has fallen silent. Its keeper returned wounded, its warden vanished, and something beneath the forest has begun to answer in the bell's voice.",
+  "themes": [
+    "mystery",
+    "loyalty",
+    "mercy",
+    "the misuse of sacred power"
+  ],
+  "levelRange": "1–2",
+  "narratorFacts": [
+    "Briarwatch is a small rain-soaked frontier village protected by an ancient ward-bell.",
+    "Warden Sable secretly altered the old rite to bind the first bell-keeper's spirit.",
+    "The spirit is dangerous while bound, but it is not inherently evil.",
+    "The cult uses black wax bearing a thorn around a cracked bell.",
+    "The campaign must remain grounded high fantasy; no science-fiction or modern technology exists in the setting."
+  ]
+}

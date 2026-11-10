@@ -1,0 +1,126 @@
+{
+  "road-ambush": {
+    "id": "road-ambush",
+    "name": "Ambush on the Bell Road",
+    "enemies": [
+      "goblin-cutthroat",
+      "cult-lookout",
+      "goblin-cutthroat"
+    ],
+    "storyScale": 0.85,
+    "standardScale": 1,
+    "grittyScale": 1.15,
+    "victoryNode": "ambush-aftermath",
+    "defeatNode": "defeat",
+    "xp": 70,
+    "loot": [
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      },
+      {
+        "itemId": "cult-seal",
+        "quantity": 1
+      }
+    ],
+    "intro": "Cords snap tight across the road. Goblins rise from the fern while a masked lookout signals from the rocks."
+  },
+  "snare-rescue": {
+    "id": "snare-rescue",
+    "name": "The Snare-Keeper's Pack",
+    "enemies": [
+      "briar-wolf",
+      "briar-wolf"
+    ],
+    "storyScale": 0.85,
+    "standardScale": 1,
+    "grittyScale": 1.1,
+    "victoryNode": "mist-hollow-after",
+    "defeatNode": "defeat",
+    "xp": 65,
+    "loot": [
+      {
+        "itemId": "thornward-cloak",
+        "quantity": 1
+      }
+    ],
+    "intro": "The snare line rings like wire. Two briar wolves burst from the mist, thorns bristling through their hides."
+  },
+  "hollow-guards": {
+    "id": "hollow-guards",
+    "name": "The Hollow Court",
+    "enemies": [
+      "rootbound-guard",
+      "bell-acolyte",
+      "cult-lookout"
+    ],
+    "storyScale": 0.82,
+    "standardScale": 1,
+    "grittyScale": 1.15,
+    "victoryNode": "vault-antechamber",
+    "defeatNode": "defeat",
+    "xp": 105,
+    "loot": [
+      {
+        "itemId": "bellfire-locket",
+        "quantity": 1
+      },
+      {
+        "itemId": "warden-ledger",
+        "quantity": 1
+      }
+    ],
+    "intro": "The court erupts. A rootbound sentinel tears free of the wall while an acolyte raises a cracked bronze censer."
+  },
+  "finale-full": {
+    "id": "finale-full",
+    "name": "The Bell Beneath Briarwatch",
+    "enemies": [
+      "warden-sable",
+      "bell-wraith"
+    ],
+    "storyScale": 0.78,
+    "standardScale": 1,
+    "grittyScale": 1.12,
+    "victoryNode": "ending",
+    "defeatNode": "defeat",
+    "xp": 220,
+    "loot": [],
+    "intro": "Sable draws his sabre as the broken bell exhales a figure made of smoke, iron dust, and remembered grief."
+  },
+  "finale-weakened": {
+    "id": "finale-weakened",
+    "name": "The Bell Beneath Briarwatch",
+    "enemies": [
+      "warden-sable",
+      "bell-wraith"
+    ],
+    "modifiers": {
+      "enemyHp": 0.72,
+      "wraithNoResistance": true
+    },
+    "storyScale": 0.72,
+    "standardScale": 0.9,
+    "grittyScale": 1.02,
+    "victoryNode": "ending",
+    "defeatNode": "defeat",
+    "xp": 220,
+    "loot": [],
+    "intro": "The true chime fractures the ritual. Sable turns on you, and the wraith forms only halfway, its outline leaking silver light."
+  },
+  "finale-sable-only": {
+    "id": "finale-sable-only",
+    "name": "The Traitor at the Bell",
+    "enemies": [
+      "warden-sable"
+    ],
+    "storyScale": 0.9,
+    "standardScale": 1,
+    "grittyScale": 1.12,
+    "victoryNode": "ending",
+    "defeatNode": "defeat",
+    "xp": 160,
+    "loot": [],
+    "intro": "The ward-spirit withdraws from Sable's command. Alone and exposed, the warden answers with steel."
+  }
+}

@@ -117,7 +117,7 @@
       </header>
 
       <p id="saveStatus" class="session-status" role="status">No campaign open</p>
-      <p id="waitNotice" class="session-status is-hidden">Waiting for the guide. You can read your party, equipment and journal, or draft a message. These are the last confirmed facts; sending, saving and game-changing controls are paused. Cancelling narration does not undo an action already resolved.</p>
+      <p id="waitNotice" class="session-status is-hidden">The game master is thinking. You can still read your party, pack and journal, or draft your next message. Buttons that change the game are paused until the reply arrives. Cancelling the reply does not undo an action that already happened.</p>
       <main id="gameLayout" class="game-layout is-hidden">
         <aside class="left-rail">
           <section class="panel character-panel">
@@ -182,12 +182,12 @@
             </div>
             <h2 id="sceneTitle"></h2>
             <div class="objective-box">
-              <span>Current objective</span>
+              <span>Goal</span>
               <p id="sceneObjective"></p>
             </div>
             <div id="narrationCard" class="narration-card">
               <div class="narration-heading">
-                <span>Dungeon Master</span>
+                <span>Game master</span>
                 <span id="narrationSource" class="muted"></span>
               </div>
               <p id="narrationText"></p>
@@ -214,7 +214,7 @@
             <div class="panel-heading compact">
               <div>
                 <p class="eyebrow">Your decision</p>
-                <h2>Available approaches</h2>
+                <h2>What do you do?</h2>
               </div>
               <button id="shortRestBtn" class="btn btn-secondary is-hidden" type="button">Take short rest</button>
             </div>
@@ -228,19 +228,19 @@
                 <h2>Your message</h2>
               </div>
             </div>
-            <p class="muted">Set campaign preferences, speak, ask questions, or propose an action. The guide asks for confirmation before a model-selected action changes the game.</p>
+            <p class="muted">Say what you do, speak to someone, or ask a question.</p>
             <p id="actionFeedback" class="action-feedback is-hidden" role="status" aria-live="polite"></p>
             <form id="actionForm" class="action-form">
               <textarea id="actionInput" rows="2" placeholder="Example: buy 2 healing potions · use antitoxin on Orin · return to town"></textarea>
-              <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Send message</button>
+              <button id="actionSubmitBtn" class="btn btn-primary" type="submit">Send</button>
             </form>
           </section>
 
           <section class="panel event-panel">
             <div class="panel-heading compact">
               <div>
-                <p class="eyebrow">Transparent mechanics</p>
-                <h2>Dice & consequences</h2>
+                <p class="eyebrow">Every roll, newest first</p>
+                <h2>Roll history</h2>
               </div>
               <button id="clearEventsBtn" class="text-button" type="button">Clear view</button>
             </div>
@@ -301,7 +301,7 @@
             <section class="panel">
               <div class="panel-heading compact">
                 <div>
-                  <p class="eyebrow">Local JSON saves</p>
+                  <p class="eyebrow">Saved games</p>
                   <h2>Save campaign</h2>
                 </div>
               </div>
@@ -314,7 +314,7 @@
             <section class="panel">
               <div class="panel-heading compact">
                 <div>
-                  <p class="eyebrow">Existing slots</p>
+                  <p class="eyebrow">Your saves</p>
                   <h2>Load or delete</h2>
                 </div>
                 <button id="refreshSavesBtn" class="text-button" type="button">Refresh</button>

@@ -1,0 +1,37 @@
+{
+  "black-wax": {
+    "id": "black-wax",
+    "name": "Black Wax on the Bell Rope",
+    "text": "The ward-bell was silenced with the same thorn-and-bell wax used by the hidden cult."
+  },
+  "sable-dispute": {
+    "id": "sable-dispute",
+    "name": "Sable's Private Dispute",
+    "text": "Warden Sable argued with the bell-keeper hours before the disappearance."
+  },
+  "hushed-verse": {
+    "id": "hushed-verse",
+    "name": "The Hushed Verse",
+    "text": "The cult repeats: ‘Name the grief, then ring it home.’"
+  },
+  "thorn-wound": {
+    "id": "thorn-wound",
+    "name": "Ritual Thorn Wound",
+    "text": "Tovin's wound came from a ritual briar hook, not an animal or ordinary weapon."
+  },
+  "bell-true-name": {
+    "id": "bell-true-name",
+    "name": "The Bell's True Name",
+    "text": "The ward-bell was once called Aster Vey, ‘the star that answers.’"
+  },
+  "sable-payments": {
+    "id": "sable-payments",
+    "name": "Sable's Payments",
+    "text": "A cipher ledger proves Sable funded the cult and sold access to the ward-vault."
+  },
+  "wraith-bound": {
+    "id": "wraith-bound",
+    "name": "The Bound Wraith",
+    "text": "The spirit below is the first bell-keeper, bound by Sable's altered ritual rather than willingly hostile."
+  }
+}
