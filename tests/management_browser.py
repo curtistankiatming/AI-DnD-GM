@@ -59,7 +59,7 @@ def exercise_management(page, output):
     expect(page.locator('#workspace-prepare #worldPanel')).to_have_count(1)
     expect(page.locator('#readinessPanel')).to_contain_text('HP')
     page.locator('#developmentOverview > summary').click()
-    expect(page.locator('#developmentOverview')).to_contain_text('future plans')
+    expect(page.locator('#developmentOverview')).to_contain_text('Every job is playable')
     d=page.locator('#sideAdventures')
     if not d.evaluate('(n)=>n.open'):d.locator(':scope > summary').click()
     d.get_by_role('button',name='Pause Lantern Road',exact=True).click()

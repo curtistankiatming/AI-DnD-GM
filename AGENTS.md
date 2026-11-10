@@ -21,15 +21,17 @@
 - Authored content is levels 1–10; the cap is 100, reached through AI-directed
   adventures. XP rewards are shares of the current level (`src/xp.js`); growth
   past level 20 is bounded (proficiency +6, enemy AC/attacks/DCs stop at their
-  level-20 values). After 100, XP earns renown ranks with capped boons
+  level-20 values). After 100, with the 4th job, XP earns renown ranks with capped boons
   (`src/progression.js`). Job skills (class mastery at 10, 1st-job skills at
   13/16, three 2nd-job branches per class with skills at 20/25/30/35, and each
-  branch's 3rd job at 40/48/56/64 as `thirdSkills`) are data
+  branch's 3rd job at 40/48/56/64 as `thirdSkills` and 4th job at 70/80/90/100 as
+  `fourthSkills`, the last an `ultimate` once per long rest) are data
   in `src/data/jobs.json`, built from effect primitives that
   `resolveJobAction` in `src/combat.js` runs; flat attack/AC/save bonuses are
-  capped by `BONUS_CAPS`. The 3rd job is unlocked by a trial (`commissionTrial` in
+  capped by `BONUS_CAPS`. The 3rd and 4th jobs are unlocked by trials (`commissionTrial` in
   `src/director.js`): Claude may write it, a written trial is the fallback, and
-  the engine sets its level, Hard challenge and 50% XP. Do not replace content depth with inflated XP or
+  the engine sets the level, challenge (Hard, or Heroic for the legendary trial)
+  and 50% XP. Do not replace content depth with inflated XP or
   uncapped bonuses.
 - Before a fix, reproduce it in a targeted regression test. Run `npm run check`,
   `npm test`, `npm run playtest` and `npm run fuzz` after changes.

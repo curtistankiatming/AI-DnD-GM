@@ -10,9 +10,11 @@ const draft=require('./fixtures/director-draft');
 
 const clone=x=>JSON.parse(JSON.stringify(x));
 const MAX=P.MAX_LEVEL,CAP=P.XP_NEXT[MAX-1];
-function hero(xp=CAP,{town=false}={}){
+function hero(xp=CAP,{town=false,fourthJob=true}={}){
   const s=E.createNewGame({name:'Rhea',classId:'fighter'});
   s.player.level=MAX;s.player.xp=xp;
+  // Renown needs the 4th job fully learnt as well as the final level.
+  Object.assign(s.player.progression,{specialization:'guardian',thirdJob:true,fourthJob});
   if(town){s.world.completed.bell={day:1,quality:'force'};s.story.nodeId='town-briarwatch';s.world.townId='briarwatch';}
   return E.normalizeIncomingState(s);
 }
@@ -25,6 +27,7 @@ test('ranks come from XP after the final level, one every RANK_XP',()=>{
   assert.equal(P.renownRank(hero(CAP+50*P.RANK_XP).player),50,'Ranks never run out.');
   const below=E.createNewGame({classId:'fighter'});below.player.xp=CAP*3;
   assert.equal(P.renownRank(below.player),0,'Only a hero at the final level earns renown.');
+  assert.equal(P.renownRank(hero(CAP+5*P.RANK_XP,{fourthJob:false}).player),0,'No renown before the 4th job is learnt.');
 });
 
 test('earning a rank announces it and offers a boon; XP is no longer wasted',()=>{
@@ -42,7 +45,7 @@ test('boons apply through the normal stat paths and respect their caps',()=>{
   out=act(s,{type:'choose-boon',boonId:'warding'});s=out.state;assert.equal(out.result.ok,true);
   assert.equal(act(s,{type:'choose-boon',boonId:'warding'}).result.ok,false,'Warding caps at 1.');
   s=act(s,{type:'choose-boon',boonId:'precision'}).state;
-  assert.equal(P.stats(s.player).attack,1);assert.equal(P.stats(s.player).ac,1);
+  assert.equal(P.stats(s.player).attack,(P.passiveTotals(s.player).attack||0)+1);assert.equal(P.stats(s.player).ac,(P.passiveTotals(s.player).ac||0)+1,'Warding stacks on the job passives.');
   assert.equal(P.pendingBoons(s.player),0);
   assert.match(act(s,{type:'choose-boon',boonId:'might'}).result.error,/No renown boon/);
   assert.equal(act(s,{type:'choose-boon',boonId:'flight'}).result.ok,false);
