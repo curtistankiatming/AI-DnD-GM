@@ -16,6 +16,21 @@ const requirementStatus = (...args) => Engine.requirementStatus(...args);
 const completedChoice = (...args) => Engine.completedChoice(...args);
 const checkPlan = (...args) => Engine.checkPlan(...args);
 const Combat = require("./combat");
+
+// Odds and stakes of a waiting improvised attempt, recomputed from the current
+// state so the roll card always shows what confirming would actually roll.
+function pendingPreview(state) {
+  const pending = ChatMemory.ensure(state).pending;
+  if (!pending || pending.kind !== "improvise") return null;
+  const preview = Engine.previewImprovised(state, pending.proposal);
+  if (!preview.ok) return null;
+  const c = preview.check;
+  return {
+    intent: preview.proposal.intent, success: preview.proposal.success, failure: preview.proposal.failure,
+    check: c ? { actor: c.actor, name: c.name, bonus: c.bonus, dc: c.dc, mode: c.mode, chance: c.chance } : null,
+    reward: preview.effects.reward, risk: preview.effects.risk, notes: preview.notes
+  };
+}
 const currentCombatActor = (...args) => Combat.currentCombatActor(...args);
 const combatView = (...args) => Combat.combatView(...args);
 
@@ -191,7 +206,7 @@ function buildView(state) {
     difficulty: state.difficulty,
     progression:P.view(state.player,state.world),
     world:W.view(state),
-    chat:{...ChatMemory.view(state),road:Road.view(state,{hasItem,checkPlan}),roadAvailable:Road.home(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
+    chat:{...ChatMemory.view(state),pendingPreview:pendingPreview(state),road:Road.view(state,{hasItem,checkPlan}),roadAvailable:Road.home(state),courierOptions:Courier.options(state,{hasItem,checkPlan}).map(o=>({id:o.id,label:o.label,description:o.description})),courierAvailable:Courier.available(state)},
     journal:Journal.sync(state),
     pendingIntent:state.pendingIntent||null
   };
