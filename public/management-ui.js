@@ -48,6 +48,25 @@
  const serviceNav=el('div','management-tabs');serviceNav.id='preparationCategories';serviceNav.setAttribute('role','group');serviceNav.setAttribute('aria-label','Preparation category');
  for(const [id,name]of [['all','All services'],['services','Rest'],['shop','Supplies'],['smith','Smith'],['personal','Companions'],['expedition','Expeditions'],['storage','Storage']]){const b=button(name,()=>{prepareFilter=id;filterPrepare();});b.dataset.prepareCategory=id;serviceNav.append(b);}progress.after(serviceNav);
  function filterPrepare(){for(const b of serviceNav.children)b.setAttribute('aria-pressed',String(b.dataset.prepareCategory===prepareFilter));for(const d of $id('worldPanel').querySelectorAll(':scope > details[data-section]'))d.hidden=prepareFilter!=='all'&&d.dataset.section!==prepareFilter;}
+ // Job tree: 1st job, the three 2nd-job branches and the 3rd and 4th jobs that follow each.
+ function skillRow(k){const li=el('li','job-skill');li.dataset.state=k.learnt?'learnt':'ahead';
+  li.append(el('span','job-skill-level',`Lv ${k.level}`),el('strong','',k.passive?`${k.name} (passive)`:k.name),el('span','job-skill-tag',k.learnt?'Learnt':'Ahead'));
+  if(k.description)li.append(el('span','job-skill-text',k.description));return li;}
+ function jobTree(job,level){const box=el('section','job-tree');box.id='jobTree';box.setAttribute('aria-label','Job tree');
+  const head=el('div','job-tree-head');head.append(el('h3','',`Job tree · ${job.title}`));
+  head.append(el('p','muted',job.nextSkill?`Next: ${job.nextSkill.name} at level ${job.nextSkill.level}.`:'Every skill on this path is learnt.'));
+  const tiers=el('ol','job-tiers');for(const t of job.tiers){const li=el('li','',`${t.name} · levels ${t.levels}${t.later?' (later update)':''}`);if(t.tier===job.tier)li.setAttribute('aria-current','step');li.dataset.tier=t.tier;tiers.append(li);}
+  head.append(tiers);box.append(head);
+  const first=el('div','job-node job-first');first.dataset.state='chosen';first.append(el('h4','',`1st job · ${job.className}`),el('p','muted','Your class. Its skills stay with you on every path.'));
+  const list=el('ul','job-skills');for(const k of job.skills.filter(k=>k.source==='1st job'))list.append(skillRow(k));first.append(list);box.append(first);
+  const grid=el('div','job-branches');
+  for(const b of job.branches){const card=el('div','job-node job-branch');card.dataset.state=b.chosen?'chosen':b.closed?'closed':'open';card.dataset.branch=b.id;
+   card.append(el('h4','',`2nd job · ${b.name}`),el('p','muted',b.style));
+   const path=el('p','job-path');path.append(el('span','',b.name),' → ',el('span','',`${b.third} (40)`),' → ',el('span','',`${b.fourth} (70)`));card.append(path);
+   const ul=el('ul','job-skills');for(const k of b.skills)ul.append(skillRow(k));card.append(ul);
+   card.append(el('p','job-branch-state',b.chosen?'Your branch.':b.closed?'Not taken on this save.':level>=20?'Available now: choose it under Choose your development.':'Choose one of the three at level 20.'));
+   grid.append(card);}
+  box.append(grid);return box;}
  function managementSync(){if(!state||!view)return;const key=JSON.stringify([state.createdAt,state.player.name,state.publicTest?.mode]);if(key!==identity){identity=key;actorId='player';search.value='';group.value='all';spare.checked=false;prepareFilter='all';renderEquipment();applyFilter();}
   // The older expansion renderer repositions this node in Adventure each render.
   // Keep its original handlers, but restore Batch2's single Prepare destination.
@@ -56,18 +75,14 @@
   clear(progressBody);progressBody.append(el('p','',`Level ${view.player.level} · ${view.player.xp} XP. Next: ${view.progression.nextReward}`));
   if(view.progression.pending.length||view.progression.specializationOptions.length||view.progression.renown?.pending)progressBody.append(button('Review pending choices',()=>{$id('progressionPanel').scrollIntoView({block:'start'});}));
   const job=view.progression.job;
-  if(job){const path=el('details');path.id='jobPath';path.append(el('summary','',`Your job: ${job.title}${job.branch?` (2nd job · ${job.branch.name} branch)`:' (1st job)'}`));
-    if(job.branch)path.append(el('p','muted',`${job.branch.style} Path: ${job.branch.name} → ${job.branch.third} at level 40 → ${job.branch.fourth} at level 70.`));
-    else path.append(el('p','muted','At level 20 you choose one of three branches for your 2nd job.'));
-    for(const k of job.skills){const row=el('p','');row.append(el('strong','',`Level ${k.level} · ${k.name}${k.passive?' (passive)':''} · ${k.learnt?'Learnt':'Ahead'}: `),document.createTextNode(k.description||''));path.append(row);}
-    progressBody.append(path);}
+  if(job)progressBody.append(jobTree(job,view.player.level));
   for(const reward of view.progression.rewards){const row=el('p','');row.append(el('strong','',`Level ${reward.through?`${reward.level} to ${reward.through}`:reward.level} · ${reward.reached?'Reached':'Ahead'}: `),document.createTextNode(reward.description));progressBody.append(row);}
   const abilities=el('details');abilities.append(el('summary','','Your current abilities — use combat controls during initiative'));for(const a of view.progression.techniques||[])abilities.append(el('p','',`${a.name}: ${a.description}`));progressBody.append(abilities,el('p','muted','The 3rd and 4th jobs (levels 40 and 70) are future plans for later updates, not available rewards yet.'));
   for(const [i,member]of view.party.entries()){const card=dom.partyCards.children[i];if(!card)continue;card.querySelector('.companion-contribution')?.remove();const text=M.contribution(member,eventHistory);if(text)card.append(el('p','companion-contribution','Most recently: '+text));}
  }
  const combatRender=renderCombat;
- renderCombat=function(){combatRender();if(!view.combat?.active)return;const buttons=[...dom.combatActions.querySelectorAll('button[data-action-id]')];if(!buttons.length)return;const groups={};for(const [id,title]of [['objectives','Encounter objective'],['attacks','Attacks & defense'],['abilities','Class abilities'],['items','Items'],['party','Party orders & combinations'],['turn','Finish your turn']]){const s=el('section','combat-group');s.dataset.combatGroup=id;s.append(el('h3','',title));groups[id]=s;}
-  for(const b of buttons){const g=M.actionGroup(b.dataset.actionId);groups[g].append(b);}
+ renderCombat=function(){combatRender();if(!view.combat?.active)return;const buttons=[...dom.combatActions.querySelectorAll('button[data-action-id]')];if(!buttons.length)return;const groups={};const job=view.progression?.job;for(const [id,title]of [['objectives','Encounter objective'],['attacks','Attacks & defense'],['abilities',job?`1st job · ${job.className} skills`:'Class abilities'],['job2',job?.branch?`2nd job · ${job.branch.name} skills`:'2nd job skills'],['items','Items'],['party','Party orders & combinations'],['turn','Finish your turn']]){const s=el('section','combat-group');s.dataset.combatGroup=id;s.append(el('h3','',title));groups[id]=s;}
+  for(const b of buttons){const g=M.actionGroup(b.dataset.actionId,job);groups[g].append(b);}
   // Retreat costs gold: keep it last, after End Turn, so it is never the first thing under the cursor.
   const flee=groups.turn.querySelector('[data-action-id=retreat]');if(flee)groups.turn.append(flee);clear(dom.combatActions);for(const s of Object.values(groups))if(s.children.length>1)dom.combatActions.append(s);
  };

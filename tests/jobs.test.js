@@ -114,3 +114,34 @@ test('a hero who chose a specialization at level 10 keeps it', () => {
   assert.ok(P.classActions(n.player).some(a => a.id === 'spec:guardian'));
   assert.ok(P.learntSkills(n.player).some(x => x.legacy === 'guardian'));
 });
+
+test('the job tree shows every branch before the choice and closes the others after it', () => {
+  const s = hero('cleric', 12);
+  s.player.progression.mastery = true;
+  let tree = P.jobView(s.player);
+  assert.equal(tree.className, 'Cleric');
+  assert.deepEqual(tree.branches.map(b => b.id), JOBS.cleric.branches.map(b => b.id));
+  assert.ok(tree.branches.every(b => !b.chosen && !b.closed && b.skills.length === 4 && b.third && b.fourth));
+  assert.deepEqual(tree.nextSkill, { level: 13, name: JOBS.cleric.firstJob[0].name });
+  assert.deepEqual(tree.tiers.map(t => t.levels), ['1 to 19', '20 to 39', '40 to 69', '70 to 100']);
+  E.awardXp(s, P.XP_NEXT[19] - s.player.xp, []);
+  assert.equal(P.jobView(s.player).nextSkill.name, 'Choose your 2nd job branch');
+  s.player.progression.specialization = 'battlepriest';
+  tree = P.jobView(s.player);
+  assert.deepEqual(tree.branches.map(b => [b.chosen, b.closed]), [[false, true], [false, true], [true, false]]);
+  assert.deepEqual(tree.branches[2].skills.map(k => k.learnt), [true, false, false, false]);
+  assert.equal(tree.nextSkill.level, 25);
+});
+
+test('the combat skill bar puts 2nd job skills in their own group', () => {
+  const M = require('../public/management-view');
+  const s = hero('fighter', 30);
+  s.player.progression.mastery = true; s.player.progression.specialization = 'warlord';
+  const job = P.jobView(s.player);
+  const groups = Object.fromEntries(P.classActions(s.player).map(a => [a.id, M.actionGroup(a.id, job)]));
+  assert.equal(groups['spec:warlord'], 'job2');
+  assert.equal(groups['job:coordinated-assault'], 'job2');
+  assert.equal(groups[`job:${JOBS.fighter.mastery.id}`], 'abilities');
+  assert.equal(groups['job:crushing-blow'], 'abilities');
+  assert.equal(M.actionGroup('spec:warlord'), 'abilities', 'Without a job view it falls back to class abilities.');
+});

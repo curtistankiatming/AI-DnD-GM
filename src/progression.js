@@ -149,8 +149,18 @@ function jobView(player){
   const describe=s=>({level:s.level,id:s.legacy||s.id,name:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description.split(':')[0]||b?.name:s.name,description:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description:s.description,passive:Boolean(s.passive)});
   const learnt=new Set(learntSkills(player).map(s=>s.id||s.legacy));
   const row=(s,source)=>({...describe(s),source,learnt:learnt.has(s.id||s.legacy)});
-  return {title,tier:b?(player.level>=70?4:player.level>=40?3:2):1,branch:b?{id:b.id,name:b.name,third:b.third,fourth:b.fourth,style:b.style}:null,mastery:Boolean(p.mastery),
-    skills:[row(job.mastery,'1st job'),...job.firstJob.map(s=>row(s,'1st job')),...(b?b.skills.map(s=>row(s,b.name)):[])]};
+  const skills=[row(job.mastery,'1st job'),...job.firstJob.map(s=>row(s,'1st job')),...(b?b.skills.map(s=>row(s,b.name)):[])];
+  // The whole tree, for the job screen: every branch with its skills, even
+  // before one is chosen, and the 3rd and 4th jobs that follow each branch.
+  const options=branchOptions(player);
+  const branches=options.map(o=>({id:o.id,name:o.name,style:o.style,third:o.third,fourth:o.fourth,chosen:b?.id===o.id,closed:Boolean(b)&&b.id!==o.id,
+    skills:o.skills.map((s,i)=>({...s,id:job.branches.find(x=>x.id===o.id).skills[i].id||o.id,learnt:b?.id===o.id&&(s.level===SECOND_JOB_LEVEL||player.level>=s.level)}))}));
+  const next=skills.find(s=>!s.learnt&&!(s.level===10&&player.level>=10));
+  const ahead=b?null:{level:SECOND_JOB_LEVEL,name:'Choose your 2nd job branch'};
+  const nextSkill=(player.level<SECOND_JOB_LEVEL&&next)?next:(ahead||next||null);
+  return {title,tier:b?(player.level>=70?4:player.level>=40?3:2):1,className:CLASSES[player.classId]?.name,branch:b?{id:b.id,name:b.name,third:b.third,fourth:b.fourth,style:b.style}:null,mastery:Boolean(p.mastery),
+    skills,branches,nextSkill:nextSkill?{level:nextSkill.level,name:nextSkill.name}:null,
+    tiers:[{tier:1,name:'1st job',levels:'1 to 19'},{tier:2,name:'2nd job',levels:'20 to 39'},{tier:3,name:'3rd job',levels:'40 to 69',later:true},{tier:4,name:'4th job',levels:'70 to 100',later:true}]};
 }
 
 function ensure(player){
@@ -322,10 +332,11 @@ function levelCompanion(member,level){
   member.baseMaxHp=member.maxHp;
   refreshCompanion(member, level > oldLevel ? 'long' : 'none');
 }
+const capital=t=>t.charAt(0).toUpperCase()+t.slice(1);
 function branchOptions(player){
   return (JOBS[player.classId]?.branches||[]).map(b=>{const spec=(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===b.id);
     return {...spec,id:b.id,name:b.name,style:b.style,third:b.third,fourth:b.fourth,description:`${b.style} ${spec.description}`,
-      skills:b.skills.map(s=>s.legacy?{level:s.level,name:spec.description.split(':')[0],description:spec.description.split(': ').slice(1).join(': ')}:{level:s.level,name:s.name,description:s.description,passive:Boolean(s.passive)})};});
+      skills:b.skills.map(s=>s.legacy?{level:s.level,name:spec.description.split(':')[0],description:capital(spec.description.split(': ').slice(1).join(': '))}:{level:s.level,name:s.name,description:s.description,passive:Boolean(s.passive)})};});
 }
 function view(player,world){
   const p=ensure(player);

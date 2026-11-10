@@ -18,3 +18,19 @@
 .management-workspace #combatActions{display:block}.combat-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.combat-group h3{grid-column:1/-1;font-size:.9rem;margin:3px 0}
 .combat-group [data-action-id=end-turn]{border-color:var(--accent);font-weight:650}.management-workspace .equipment-slot>strong{display:block;margin:6px 0}
 @media(max-width:760px){.management-workspace #workspace-party .left-rail{display:block}.combat-group{grid-template-columns:1fr}.management-dialog{padding:12px}.gear-comparison{font-size:.75rem}.inventory-filter-bar{display:block}.inventory-filter-bar input[type=search]{width:100%}.management-field{justify-content:space-between}.management-card{padding:12px}}
+/* Job tree (job advancement step 3) */
+.job-tree{margin:10px 0 16px;display:grid;gap:12px}.job-tree h3{margin:0;font-size:1.1rem}.job-tree-head p{margin:4px 0}
+.job-tiers{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:8px 0 0;padding:0}.job-tiers li{padding:3px 10px;border:1px solid var(--border);border-radius:999px;font-size:.78rem;color:var(--muted)}
+.job-tiers li[aria-current]{border-color:var(--accent);color:var(--accent-strong);font-weight:650}
+.job-node{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--panel);min-width:0}.job-node h4{margin:0 0 4px;font-size:1rem}.job-node>p{margin:4px 0;font-size:.85rem;line-height:1.5}
+.job-node[data-state=chosen]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}.job-node[data-state=closed]{opacity:.62}
+.job-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.job-path{font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}.job-path span:first-child{color:var(--accent-strong);font-weight:650}
+.job-skills{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.job-skill{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 8px;align-items:baseline;padding:6px 0;border-top:1px solid var(--border);font-size:.84rem}
+.job-skill-level{color:var(--muted);font-size:.75rem;white-space:nowrap}.job-skill strong{overflow-wrap:anywhere}
+.job-skill-tag{font-size:.72rem;padding:0 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);white-space:nowrap}
+.job-skill[data-state=learnt] .job-skill-tag{color:var(--good);border-color:var(--good)}
+.job-skill-text{grid-column:1/-1;color:var(--muted);font-size:.8rem;line-height:1.5;overflow-wrap:anywhere}
+.job-branch-state{font-size:.8rem;font-weight:600}
+@media(max-width:1000px){.job-branches{grid-template-columns:1fr}}
