@@ -7,7 +7,7 @@
   const mode=createElement('select');mode.id='chatMode';mode.setAttribute('aria-label','Chat message type');
   for(const [id,label]of [['action','Attempt an action'],['dialogue','Speak in character'],['question','Ask a question'],['instructions','Campaign instructions (replace)']]){const o=createElement('option','',label);o.value=id;mode.append(o);}
   const label=createElement('label','','Message type ');label.append(mode);panel.append(label);
-  panel.append(createElement('p','muted','Instructions guide the style of future AI replies, not rules. AI-interpreted actions require confirmation. The ferry and Lantern Road are authored chat adventures with persistent consequences, not unlimited generated worlds. Every proposed action still needs your confirmation.'));
+  panel.append(createElement('p','muted','Campaign instructions tell the AI game master what tone and style you like. They never change the rules. You always see the odds and confirm before anything you type is rolled.'));
   const memory=createElement('details');const summary=createElement('summary','','Saved campaign instructions');memory.append(summary);
   const saved=createElement('p');saved.id='campaignInstructions';memory.append(saved);
   const edit=createElement('button','btn btn-secondary btn-small','Edit instructions');edit.type='button';edit.addEventListener('click',()=>{mode.value='instructions';dom.actionInput.value=view?.chat?.instructions||'';dom.actionInput.focus();});memory.append(edit);panel.append(memory);
@@ -95,13 +95,13 @@
 
   const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
   if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}
-  ai.append(createElement('p','muted','The game rules stay in charge: the AI interprets your words and writes prose, but dice, items, XP and scene changes are always resolved by the game.'));
+  ai.append(createElement('p','muted','With the AI game master on, you can type anything you want to try and Claude narrates the story. The game still rolls the dice and keeps track of items, gold and experience.'));
   let target=ai;
   function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);target.append(box);return input;}
   function select(name,id,entries){const box=createElement('label','chat-field',name),s=createElement('select');s.id=id;for(const [value,title]of entries){const o=createElement('option','',title);o.value=value;s.append(o);}box.append(s);target.append(box);return s;}
-  const enabled=field('Enable AI','localAIEnabled','checkbox');
+  const enabled=field('Turn on the AI game master','localAIEnabled','checkbox');
   const provider=select('Provider','aiProvider',[['claude','Claude API (recommended)'],['local','Local model server']]);
-  const narration=field('AI narration for story scenes','aiNarration','checkbox');
+  const narration=field('Let the AI narrate story scenes','aiNarration','checkbox');
   const claudeBox=createElement('div','chat-provider');claudeBox.id='claudeSettings';ai.append(claudeBox);target=claudeBox;
   const claudeModel=select('Claude model','claudeModel',[['claude-opus-5-5','Claude Opus 5.5 · best storytelling'],['claude-sonnet-5-5','Claude Sonnet 5.5 · faster, cheaper'],['claude-haiku-5-5','Claude Haiku 5.5 · fastest, cheapest']]);
   const effort=select('Thinking effort','claudeEffort',[['low','Low · quickest replies'],['medium','Medium'],['high','High · slowest, most careful']]);
@@ -126,10 +126,10 @@
   const value=()=>{const common={enabled:enabled.checked,provider:provider.value,narration:narration.checked,claudeModel:claudeModel.value,effort:effort.value,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,timeoutMs:Number(timeout.value)*1000};
     return provider.value==='local'?{...common,contextChars:Number(budget.value),replyTokens:uncapped.checked?-1:Number(tokens.value)}:common;};
   localBox.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
-  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved on this computer. Send a message to try them.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved. Go to Adventure and type what you want to do.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   panel.append(ai);showProvider();
   api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
-    keyStatus.textContent=payload.claudeKeyConfigured?'API key found (ANTHROPIC_API_KEY).':'No API key found. Put ANTHROPIC_API_KEY=your-key in a file named .env beside package.json, then restart the game.';
+    keyStatus.textContent=payload.claudeKeyConfigured?'Claude key found. Tick “Turn on the AI game master” and save.':'No Claude key yet. To add one: 1) get a key from console.anthropic.com, 2) in the game folder, copy the file “.env.example” and name the copy “.env”, 3) open it and paste your key after ANTHROPIC_API_KEY=, 4) close the game window and start it again.';
     base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;
     if(c.provider==='local'){budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;}
     tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;showProvider();}).catch(e=>{info.textContent=e.message;});

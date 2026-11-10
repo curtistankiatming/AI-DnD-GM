@@ -151,7 +151,7 @@ test('/adventure asks Claude (fake client) once and puts the bounded adventure o
 test('/adventure refuses without Claude and on unreadable output',async t=>{
   const local=await claudeService(t,['{}'],'local');
   const off=await Chat.resolveChat(inTown(),{mode:'action',text:'/adventure'},local.ai,high);
-  assert.equal(off.result.ok,false);assert.match(off.narration.text,/Claude API provider/);
+  assert.equal(off.result.ok,false);assert.match(off.narration.text,/Claude AI game master/);
   const {ai}=await claudeService(t,['not json']);
   const bad=await Chat.resolveChat(inTown(),{mode:'action',text:'/adventure'},ai,high);
   assert.equal(bad.result.ok,false);assert.deepEqual(bad.state.director.quests,{});
