@@ -52,7 +52,7 @@ def exercise_story(page, output):
     expect(page.locator('#workspace-party')).to_be_visible()
     page.evaluate('window.scrollTo(0, document.documentElement.scrollHeight)')
     last = page.evaluate("(()=>{const r=document.getElementById('returnToMessage').getBoundingClientRect(),n=document.getElementById('workspaceNav').getBoundingClientRect();return r.bottom<=n.top+1;})()")
-    assert last
+    assert last, 'tabs clear of the last control on the Party screen'
     page.locator('#nav-adventure').click()
     exercise_combat_board(page, output)
 
@@ -65,7 +65,7 @@ def exercise_combat_board(page, output):
             break
         page.locator('#storyChoices button[data-choice-id]:not([disabled])').last.click()
         expect(page.locator('#actionSubmitBtn')).to_be_enabled()
-    assert page.evaluate('Boolean(view.combat&&view.combat.active)')
+    assert page.evaluate('Boolean(view.combat&&view.combat.active)'), 'story choices reach the first fight'
     expect(page.locator('#combatPanel')).to_be_visible()
     actors = page.evaluate('view.combat.actors.length')
     foes = page.evaluate("view.combat.actors.filter(a=>a.team==='enemy').length")
@@ -97,19 +97,21 @@ def exercise_combat_board(page, output):
     page.locator('#combatActions [data-action-id=brace]').click()
     expect(page.locator('#combatActions [data-action-id=brace]')).to_have_attribute('aria-pressed', 'true')
     expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
-    assert page.locator('#combatParty button.fighter-card').count() > 1
+    assert page.locator('#combatParty button.fighter-card').count() > 1, 'party members are targets for Brace'
     expect(page.locator('#targetDialog')).to_be_hidden()
-    assert page.evaluate('JSON.stringify(state)') == before
+    assert page.evaluate('JSON.stringify(state)') == before, 'arming sends nothing'
     page.screenshot(path=str(output / 'combat-1440.png'))
     # Attack by tapping an enemy: the exact engine action is sent, with no pop-up, and the roll shows in the log.
     page.locator('#combatActions [data-action-id=weapon-attack]').click()
     target_id = targets[0][0]
     page.locator(f'#combatEnemies button[data-target-id="{target_id}"]').click()
-    expect(page.locator('#combatLog .roll-chip').first).to_be_visible()
+    # The log already holds the initiative chip, so wait for the engine's answer, not for any chip.
+    page.wait_for_function('view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy')
+    expect(page.locator('#storyDid')).to_contain_text('Iron Longsword')
+    expect(page.locator('#combatLog .roll-die').first).to_be_visible()
     expect(page.locator('#combatLog .roll-outcome').first).to_have_text(re.compile(r'^(Hit|Miss|Critical hit|Critical miss)', re.I))
     expect(page.locator('#targetDialog')).to_be_hidden()
-    assert page.evaluate('JSON.stringify(state)') != before
-    assert page.evaluate('view.combat.economy.actionUsed')
+    assert page.evaluate('JSON.stringify(state)') != before, 'the attack reached the engine'
     expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
     for width, height in [(390, 844), (320, 740)]:
         page.set_viewport_size({'width': width, 'height': height})
