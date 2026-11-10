@@ -11,7 +11,7 @@
  const button=(text,fn,readOnly=true)=>{const b=el('button','btn btn-secondary',text);b.type='button';if(readOnly)b.dataset.readOnly='true';b.addEventListener('click',fn);return b;};
  document.body.classList.add('story-workspace');
  const main=dom.gameLayout,sourceColumn=main.querySelector('.story-column'),left=main.querySelector('.left-rail'),right=main.querySelector('.right-rail');
- let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false;
+ let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false,pendingDid='',shownDid='';
  const panes={},tabs={};
  const nav=el('nav','workspace-nav');nav.id='workspaceNav';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Game sections');
  for(const [id,label]of [['adventure','Adventure'],['party','Party'],['journal','Journal'],['prepare','Prepare'],['settings','Settings']]){
@@ -39,6 +39,66 @@
  storyCard.prepend(historyLabel,conversation);
  storyCard.querySelector('.scene-meta-row')?.remove();
  const latest=byId('narrationCard');latest.setAttribute('aria-label','Latest story response');latest.tabIndex=-1;
+ // The latest turn reads as a book: what you chose, the dice as chips, then what happened.
+ // #narrationText keeps the exact saved narration for assistive technology and tests; the
+ // visible prose is the same text with any sentences the chips already show taken out.
+ const did=el('p','story-did');did.id='storyDid';did.hidden=true;
+ const chips=el('div','story-chips');chips.id='storyChips';chips.hidden=true;
+ const prose=el('p','story-prose');prose.id='storyProse';prose.setAttribute('aria-hidden','true');
+ dom.narrationText.classList.add('workspace-sr-only');dom.narrationText.after(did,chips,prose);
+ const sign=n=>{const v=Number(n||0);return (v<0?'− ':'+ ')+Math.abs(v);};
+ const tidy=t=>String(t||'').replace(/\.$/,'').replace(/\bd20 /g,'').replace(/ vs DC /g,' against ').replace(/ vs AC /g,' against armour ').replace(/ vs /g,' against ');
+ function rollChip(e){
+  const c=el('div','roll-chip'),r=e.roll||{};c.dataset.tone=e.tone||'neutral';
+  let body=tidy(e.text),outcome='';
+  const m=body.match(/^(.*?)(?::| —) ([A-Za-z][A-Za-z ]{1,28})$/);if(m){body=m[1];outcome=m[2];}
+  if(r.checkName&&Number.isFinite(r.natural)&&Number.isFinite(r.total)&&Number.isFinite(r.dc)){
+   const who=e.text.match(/^(.{1,40}?) rolled /);
+   body=`${who?who[1]+' · ':''}${r.checkName} ${r.natural} ${sign(r.bonus)} = ${r.total} against ${r.dc}`;
+  }
+  if(Number.isFinite(r.natural)){const die=el('span','roll-die',String(r.natural));if(r.rolls?.length>1)die.title='Dice rolled: '+r.rolls.join(' and ');c.append(die);}
+  const line=el('span','roll-body',body);c.append(line);
+  if(!outcome&&Number.isFinite(r.dc)&&['good','bad'].includes(e.tone))outcome=e.tone==='good'?'success':'failure';
+  if(outcome)line.append(' ',el('strong','roll-outcome',outcome[0].toUpperCase()+outcome.slice(1)));
+  return c;
+ }
+ function renderStory(){
+  const full=dom.narrationText.textContent;let text=full,covered=true;
+  const events=(Array.isArray(lastEvents)?lastEvents:[]).filter(e=>e&&e.type!=='story'&&e.text);
+  const rolls=[],notes=[];
+  for(const e of events){
+   if(text.includes(e.text))text=text.replace(e.text,'');else covered=false;
+   if(e.type==='roll')rolls.push(rollChip(e));else{const n=el('span','story-pill',tidy(e.text));n.dataset.tone=e.tone||'neutral';notes.push(n);}
+  }
+  text=text.replace(/[ \t]{2,}/g,' ').replace(/ +\n/g,'\n').trim();
+  const row=el('div','story-pills');row.append(...notes);
+  chips.replaceChildren(...rolls,...(notes.length?[row]:[]));chips.hidden=!events.length;
+  // When the narration already says every chip aloud, the chips are a visual duplicate only.
+  if(covered)chips.setAttribute('aria-hidden','true');else chips.removeAttribute('aria-hidden');
+  prose.textContent=text;prose.hidden=!text;
+  did.replaceChildren();if(shownDid)did.append(el('span','workspace-sr-only','You chose: '),shownDid);did.hidden=!shownDid;
+ }
+ // Party, resources and purse beside the story on a wide screen.
+ const side=el('aside','adventure-side');side.id='adventureSide';side.setAttribute('aria-label','Party at a glance');
+ const sideParty=button('',()=>navigate('party'));sideParty.id='sideParty';sideParty.className='side-block side-party';
+ const sideReady=el('div','side-block'),sidePurse=el('div','side-block');side.append(sideParty,sideReady,sidePurse);
+ const sideRow=(name,value)=>{const r=el('div','side-row');r.append(el('span','',name),el('small','',value));return r;};
+ function renderSide(){
+  const p=view.player;
+  sideParty.setAttribute('aria-label',U.partySummary(view)+'. Open the party screen.');
+  sideParty.replaceChildren(el('span','side-h','Party'),...[p,...(view.party||[])].map((a,i)=>{
+   const ratio=a.maxHp?Math.max(0,Math.min(1,a.hp/a.maxHp)):0,m=el('span','side-member'),bar=el('span','party-chip-bar'),fill=el('span');
+   m.dataset.health=a.hp<=0?'down':ratio<=.5?'hurt':'ok';fill.style.width=Math.round(ratio*100)+'%';bar.append(fill);
+   const head=el('span','side-row');head.append(el('strong','',a.name),el('small','',`${a.hp} / ${a.maxHp}`));
+   const about=i?[a.role,a.ac?'Armour '+a.ac:''].filter(Boolean).join(' · '):`Level ${a.level} ${a.className} · Armour ${a.ac}`;
+   m.append(head,bar,el('small','side-about',about));return m;}));
+  const ready=Object.values(p.resources||{}).filter(r=>r&&r.name&&Number.isFinite(r.max)).map(r=>sideRow(r.name,`${r.current} of ${r.max}`));
+  if(Number.isFinite(p.inspiration))ready.push(sideRow('Inspiration',String(p.inspiration)));
+  if(p.hitDice&&Number.isFinite(p.hitDice.max))ready.push(sideRow('Hit dice',`${p.hitDice.current} of ${p.hitDice.max}`));
+  sideReady.replaceChildren(el('span','side-h','Ready to use'),...ready);sideReady.hidden=!ready.length;
+  const xp=Number.isFinite(p.nextLevelXp)?[sideRow('Experience',`${p.xp} of ${p.nextLevelXp}`)]:[];
+  sidePurse.replaceChildren(el('span','side-h','Purse'),sideRow('Gold',String(p.gold)),...xp);
+ }
  const approaches=el('details','adventure-approaches');approaches.id='adventureApproaches';approaches.open=true;
  const approachTitle=el('summary','','What do you do?');approaches.append(approachTitle,byId('roadScenario'),byId('chatScenario'),dom.choicePanel);
  const mechanics=el('details','adventure-mechanics');mechanics.id='mechanicsDetails';mechanics.append(el('summary','','Roll history'),dom.eventFeed.closest('section'));
@@ -63,7 +123,7 @@
  const fitInput=()=>{dom.actionInput.style.height='auto';dom.actionInput.style.height=Math.min(160,dom.actionInput.scrollHeight+2)+'px';};
  dom.actionInput.addEventListener('input',fitInput);
  dom.actionInput.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();dom.actionForm.requestSubmit();}});
- dom.actionForm.addEventListener('submit',()=>{ownAction=true;setTimeout(fitInput,0);},true);
+ dom.actionForm.addEventListener('submit',()=>{ownAction=true;pendingDid='';setTimeout(fitInput,0);},true);
  const cancel=byId('chatFoundation').querySelector('button[data-keep-enabled]');if(cancel)composer.append(cancel);
  dom.actionInput.setAttribute('aria-label','Your message');dom.actionInput.setAttribute('aria-describedby','messageModeHelp');
  const foundation=byId('chatFoundation'),memory=byId('campaignInstructions').closest('details'),tools=foundation.querySelector('.chat-controls');
@@ -71,7 +131,7 @@
  memory.append(button('Edit campaign instructions',()=>openInstructions(),false));
  const help=el('details','workspace-help');help.id='sideAdventures';help.append(el('summary','','Side adventures & rules'),tools);
  tools.addEventListener('click',event=>{if(event.target.closest('button'))navigate('adventure');},true);
- panes.adventure.append(overview,scroll,composer);
+ panes.adventure.append(overview,scroll,composer,side);
  panes.party.append(left,byId('tabInventory'));left.classList.add('party-sheet');
  panes.prepare.append(byId('progressionPanel'),byId('worldPanel'));
  const journal=byId('storyJournal');journal.open=true;
@@ -113,7 +173,7 @@
  backing.addEventListener('change',()=>selectMode(backing.value));
  scroll.addEventListener('scroll',()=>{previousTop=scroll.scrollTop;follow=U.nearEnd(scroll);},{passive:true});
  // A choice, combat action or confirmation the player clicked: its result should scroll into view.
- scroll.addEventListener('click',event=>{if(event.target.closest('button'))ownAction=true;},true);
+ scroll.addEventListener('click',event=>{const b=event.target.closest('button');if(!b)return;ownAction=true;const named=b.closest('[data-choice-id],[data-action-id]');pendingDid=named?(named.querySelector('strong')?.textContent||'').trim():'';},true);
  function jumpToLatest(){latest.scrollIntoView({block:'start',behavior:'instant'});unread.hidden=true;latest.focus({preventScroll:true});}
  function filterJournal(){
   for(const b of journalFilters.children)b.setAttribute('aria-pressed',String(b.dataset.filter===filter));
@@ -122,7 +182,11 @@
   byId('clueList').closest('section').hidden=!['all','evidence'].includes(filter);
   byId('historyList').closest('section').hidden=!['all','completed'].includes(filter);
  }
- function measure(){if(active!=='adventure'||main.classList.contains('is-hidden'))return;
+ function measure(){
+  // On a phone the section tabs sit at the bottom edge; keep every screen clear of them.
+  const tabsHeight=getComputedStyle(nav).position==='fixed'?nav.offsetHeight:0;
+  document.body.style.setProperty('--bottom-tabs',tabsHeight+'px');
+  if(active!=='adventure'||main.classList.contains('is-hidden'))return;
   // At narrow widths the overview wraps to several lines. Scroll it with the
   // story rather than forcing an oversized auto row above the message composer.
   // Move the existing node; do not clone controls or create a second objective.
@@ -130,7 +194,7 @@
   panes.adventure.classList.toggle('adventure-compact',compact);
   if(compact&&overview.parentElement!==scroll)scroll.prepend(overview);
   else if(!compact&&overview.parentElement!==panes.adventure)panes.adventure.prepend(overview);
-  const height=Math.max(280,window.innerHeight-panes.adventure.getBoundingClientRect().top-12);
+  const height=Math.max(280,window.innerHeight-panes.adventure.getBoundingClientRect().top-12-tabsHeight);
   panes.adventure.style.setProperty('--workspace-height',height+'px');
  }
  function sync(){
@@ -156,6 +220,8 @@
    (replacement&&!replacement.disabled&&replacement.getClientRects().length?replacement:panes[active]).focus({preventScroll:true});
   }
   const signature=JSON.stringify([identity,dom.narrationText.textContent,rows,view.chat?.pending]);
+  if(signature!==lastSignature){shownDid=lastSignature&&ownAction?pendingDid:'';pendingDid='';}
+  renderStory();renderSide();
   if(signature!==lastSignature){
    const first=!lastSignature;lastSignature=signature;
    if(!first){announcement.textContent='New response available in Adventure.';if(active!=='adventure'||!follow)unread.hidden=false;}

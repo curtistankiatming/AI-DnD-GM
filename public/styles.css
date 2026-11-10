@@ -1,30 +1,32 @@
 :root {
   color-scheme: dark;
-  --bg: #0d1012;
-  --bg-elevated: #14191c;
-  --panel: #171d20;
-  --panel-soft: #1c2428;
-  --panel-strong: #202a2f;
-  --border: #324047;
-  --border-soft: #263238;
-  --text: #edf1ed;
-  --muted: #a8b3ad;
-  --faint: #74817b;
-  --accent: #d3ae63;
-  --accent-strong: #f0cc7e;
-  --accent-dark: #5d4822;
-  --good: #79bc91;
-  --good-bg: #173226;
+  /* Pine ink, parchment, bell bronze, verdigris and briar red. */
+  --bg: #0f1716;
+  --bg-elevated: #172120;
+  --panel: #172120;
+  --panel-soft: #1f2c2a;
+  --panel-strong: #253532;
+  --border: #33453f;
+  --border-soft: #26332f;
+  --text: #ece4d2;
+  --muted: #a3b0a8;
+  --faint: #7b8a82;
+  --accent: #d2a24c;
+  --accent-strong: #e8c078;
+  --accent-dark: #4a3a1c;
+  --accent-ink: #1b1408;
+  --good: #63b8a4;
+  --good-bg: #15302b;
   --warning: #dda75d;
   --warning-bg: #3b2a17;
-  --bad: #d77a72;
-  --bad-bg: #3d2020;
+  --bad: #d8695d;
+  --bad-bg: #3a1f1c;
   --blue: #84abc6;
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
   --radius: 14px;
   --radius-small: 9px;
-  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: "Alegreya Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Alegreya", "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
 }
 
 * {
@@ -41,11 +43,11 @@ body {
   min-height: 100vh;
   color: var(--text);
   background:
-    radial-gradient(circle at 15% -10%, rgba(128, 98, 48, 0.18), transparent 34rem),
-    radial-gradient(circle at 92% 8%, rgba(45, 86, 77, 0.16), transparent 28rem),
-    linear-gradient(180deg, #101416 0%, var(--bg) 32rem);
+    radial-gradient(circle at 15% -10%, rgba(128, 98, 48, 0.12), transparent 34rem),
+    radial-gradient(circle at 92% 8%, rgba(45, 86, 77, 0.14), transparent 28rem),
+    var(--bg);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
 }
 

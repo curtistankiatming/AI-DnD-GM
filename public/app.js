@@ -85,6 +85,8 @@ let lastNarration = null;
 let busy = false;
 let busyMode = "";
 let eventHistory = [];
+// Events of the action whose narration is on screen; the story view shows them as roll chips.
+let lastEvents = [];
 let targetAction = null;
 
 const setup = {
@@ -360,6 +362,7 @@ function ingestPayload(payload, { appendEvents = true } = {}) {
     if (state && lastNarration?.text) state.lastNarration = lastNarration.text;
   } else if (payload.narration) {
     lastNarration = payload.narration;
+    lastEvents = appendEvents && Array.isArray(payload.events) ? payload.events : [];
     if (payload.result?.canonical && payload.narration.source === "deterministic") {
       lastNarration = { ...payload.narration, text: payload.result.canonical };
       state.lastNarration = lastNarration.text;
