@@ -1,5 +1,5 @@
 {
- "_note": "Job advancement. 1st job = class (mastery at 10 after the Oath trial, skills at 13 and 16). 2nd job = branch picked at 20, skills at 20/25/30/35. 3rd job = the branch's next job, unlocked by its trial at 40, skills at 40/48/56/64 (thirdSkills). 4th job (70) names are listed; its skills arrive in a later update. Formulas: {p} is the hero's power level, {p/N} is max(1, floor(power/N)); mod is the primary ability modifier.",
+ "_note": "Job advancement. 1st job = class (mastery at 10 after the Oath trial, skills at 13 and 16). 2nd job = branch picked at 20, skills at 20/25/30/35. 3rd job = unlocked by its trial at 40, skills at 40/48/56/64 (thirdSkills). 4th job = unlocked by the legendary trial at 70, skills at 70/80/90 and the ultimate at 100 (fourthSkills; the ultimate uses its own once-per-long-rest resource). Formulas: {p} is the hero's power level, {p/N} is max(1, floor(power/N)); mod is the primary ability modifier.",
  "classes": {
   "fighter": {
    "mastery": {
@@ -179,6 +179,101 @@
        },
        "description": "+16 maximum HP and +2 to healing you give."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "aegis-of-ages",
+       "name": "Aegis of Ages",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "ward",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Aegis of Ages",
+         "on": "party",
+         "rounds": 2
+        }
+       ],
+       "description": "Every ally gains an interception ward, temporary HP equal to your level plus Strength, and +2 AC for two rounds."
+      },
+      {
+       "level": 80,
+       "id": "paragon-hide",
+       "name": "Paragon Hide",
+       "passive": {
+        "hp": 20
+       },
+       "description": "+20 maximum HP."
+      },
+      {
+       "level": 90,
+       "id": "retribution",
+       "name": "Retribution",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "times": 2,
+         "extra": "{p/5}d8"
+        },
+        {
+         "do": "heal",
+         "amount": "2d8+mod",
+         "on": "self"
+        }
+       ],
+       "description": "Strike twice with extra damage on each hit, then recover 2d8 + Strength HP."
+      },
+      {
+       "level": 100,
+       "id": "immortal-bastion",
+       "name": "Immortal Bastion",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p}",
+         "on": "party"
+        },
+        {
+         "do": "ward",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Immortal Bastion",
+         "on": "party",
+         "rounds": 3
+        }
+       ],
+       "description": "Ultimate. Every ally heals your level plus Strength, gains that much temporary HP and an interception ward, and has +2 AC for three rounds. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -285,6 +380,78 @@
         "hp": 8
        },
        "description": "+2 damage and +8 maximum HP."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "saints-guard",
+       "name": "Saint's Guard",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "self",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Saint's Guard",
+         "on": "self",
+         "rounds": 2
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Saint's Guard: next attack advantaged",
+         "on": "self"
+        }
+       ],
+       "description": "A perfect guard: +2 AC for two rounds and advantage on your next attack."
+      },
+      {
+       "level": 80,
+       "id": "edge-of-mastery",
+       "name": "Edge of Mastery",
+       "passive": {
+        "damage": 3
+       },
+       "description": "+3 damage on your attacks."
+      },
+      {
+       "level": 90,
+       "id": "finishing-stroke",
+       "name": "Finishing Stroke",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "advantage": true,
+         "extra": "{p/2}d8"
+        }
+       ],
+       "description": "A finishing strike with advantage that deals heavy extra damage on a hit."
+      },
+      {
+       "level": 100,
+       "id": "one-cut",
+       "name": "One Cut",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d10",
+         "type": "slashing",
+         "on": "target"
+        }
+       ],
+       "description": "Ultimate. A single perfect cut deals enormous slashing damage without a roll. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -427,6 +594,99 @@
         "healing": 2
        },
        "description": "+2 damage and +2 to healing you give."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "marshals-command",
+       "name": "Marshal's Command",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p/2}+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Marshal's Command: next attack advantaged",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Ordered target",
+         "on": "enemies"
+        }
+       ],
+       "description": "Every ally gains temporary HP and advantage on their next attack, and the next attack against every enemy has advantage."
+      },
+      {
+       "level": 80,
+       "id": "legendary-captain",
+       "name": "Legendary Captain",
+       "passive": {
+        "hp": 12,
+        "healing": 2,
+        "damage": 1
+       },
+       "description": "+12 maximum HP, +2 to healing you give and +1 damage."
+      },
+      {
+       "level": 90,
+       "id": "combined-arms",
+       "name": "Combined Arms",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "times": 3,
+         "advantage": true
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        }
+       ],
+       "description": "Strike three times with advantage as the party presses in; the combat objective advances one step."
+      },
+      {
+       "level": 100,
+       "id": "last-stand-of-legions",
+       "name": "Last Stand of Legions",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Legions: next attack advantaged",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Overrun: loses next action",
+         "on": "enemies"
+        }
+       ],
+       "description": "Ultimate. Every ally heals your level plus Strength and has advantage on their next attack, and every enemy loses its next action. Once per long rest.",
+       "ultimate": true
       }
      ]
     }
@@ -599,6 +859,96 @@
        },
        "description": "+12 maximum HP and +1 damage."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "phantom-step",
+       "name": "Phantom Step",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "self",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "hidden",
+         "name": "Hidden",
+         "on": "self"
+        },
+        {
+         "do": "condition",
+         "id": "shadowStrike",
+         "name": "Phantom: next hit +2d6",
+         "on": "self"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Phantom Step",
+         "on": "self",
+         "rounds": 2
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "self"
+        }
+       ],
+       "description": "You fade from sight: Hidden, your next hit deals 2d6 extra damage, +2 AC for two rounds and temporary HP equal to half your level."
+      },
+      {
+       "level": 80,
+       "id": "ghostblade",
+       "name": "Ghostblade",
+       "passive": {
+        "damage": 3
+       },
+       "description": "+3 damage on your attacks."
+      },
+      {
+       "level": 90,
+       "id": "thousand-shadows",
+       "name": "Thousand Shadows",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/4}d8",
+         "type": "necrotic",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Haunted: next attack disadvantaged",
+         "on": "enemies"
+        }
+       ],
+       "description": "Shadows strike every enemy for necrotic damage without a roll; each has disadvantage on its next attack."
+      },
+      {
+       "level": 100,
+       "id": "unseen-death",
+       "name": "Unseen Death",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "weapon",
+         "times": 3,
+         "advantage": true,
+         "extra": "{p/4}d6"
+        }
+       ],
+       "description": "Ultimate. Three strikes with advantage from nowhere, each with heavy extra damage on a hit. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -720,6 +1070,89 @@
         "hp": 8
        },
        "description": "+2 damage and +8 maximum HP."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "chain-reaction",
+       "name": "Chain Reaction",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "dex",
+         "damage": "{p/3}d6",
+         "type": "fire",
+         "half": true,
+         "area": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Caught in the blast: loses next action"
+         }
+        }
+       ],
+       "description": "A chain of charges: every enemy makes a Dexterity save, taking fire damage and losing its next action on a failure, half damage on a success."
+      },
+      {
+       "level": 80,
+       "id": "ruinmakers-touch",
+       "name": "Ruinmaker's Touch",
+       "passive": {
+        "damage": 2,
+        "objective": 1
+       },
+       "description": "+2 damage and +1 to combat-objective checks."
+      },
+      {
+       "level": 90,
+       "id": "collapse",
+       "name": "Collapse",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "objective",
+         "steps": 3
+        },
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Off balance: next attack disadvantaged",
+         "on": "enemies"
+        }
+       ],
+       "description": "Bring the place down around them: the combat objective advances three steps and every enemy has disadvantage on its next attack."
+      },
+      {
+       "level": 100,
+       "id": "total-ruin",
+       "name": "Total Ruin",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "fire",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Ruined: loses next action",
+         "on": "enemies"
+        }
+       ],
+       "description": "Ultimate. Every enemy takes massive fire damage without a roll and loses its next action. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -876,6 +1309,97 @@
         "damage": 1
        },
        "description": "+12 maximum HP and +1 damage."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "whisper-network",
+       "name": "Whisper Network",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Every weakness known",
+         "on": "enemies"
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        },
+        {
+         "do": "condition",
+         "id": "hidden",
+         "name": "Hidden",
+         "on": "self"
+        }
+       ],
+       "description": "Your informants expose every enemy: the next attack against each has advantage, the combat objective advances one step, and you become Hidden."
+      },
+      {
+       "level": 80,
+       "id": "lord-of-secrets",
+       "name": "Lord of Secrets",
+       "passive": {
+        "hp": 16,
+        "damage": 1
+       },
+       "description": "+16 maximum HP and +1 damage."
+      },
+      {
+       "level": 90,
+       "id": "puppet-strings",
+       "name": "Puppet Strings",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "wis",
+         "damage": "{p/2}d6",
+         "type": "psychic",
+         "half": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Puppeted: loses next action"
+         }
+        }
+       ],
+       "description": "The enemy makes a Wisdom save: on a failure it takes heavy psychic damage and loses its next action; on a success, half damage."
+      },
+      {
+       "level": 100,
+       "id": "the-great-lie",
+       "name": "The Great Lie",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Believes the lie: loses next action",
+         "on": "enemies"
+        },
+        {
+         "do": "objective",
+         "steps": 3
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. Every enemy loses its next action, the combat objective advances three steps, and every ally gains temporary HP. Once per long rest.",
+       "ultimate": true
       }
      ]
     }
@@ -1050,6 +1574,77 @@
        },
        "description": "+12 maximum HP and +1 damage."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "meteor",
+       "name": "Meteor",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "dex",
+         "damage": "{p/2}d8",
+         "type": "fire",
+         "half": true,
+         "area": true
+        }
+       ],
+       "description": "A meteor falls: every enemy makes a Dexterity save against heavy fire damage, half on a success."
+      },
+      {
+       "level": 80,
+       "id": "arcane-ruin",
+       "name": "Arcane Ruin",
+       "passive": {
+        "damage": 3
+       },
+       "description": "+3 damage on your spells and attacks."
+      },
+      {
+       "level": 90,
+       "id": "prismatic-ray",
+       "name": "Prismatic Ray",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "spell",
+         "damage": "{p/2}d10",
+         "type": "force",
+         "onHit": {
+          "id": "stunned",
+          "name": "Dazzled: loses next action"
+         }
+        }
+       ],
+       "description": "A spell attack of blinding colour deals heavy force damage and, on a hit, the enemy loses its next action."
+      },
+      {
+       "level": 100,
+       "id": "cataclysm",
+       "name": "Cataclysm",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "fire",
+         "on": "enemies"
+        }
+       ],
+       "description": "Ultimate. Every enemy takes enormous fire damage without a roll. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -1178,6 +1773,94 @@
         "healing": 2
        },
        "description": "+12 maximum HP and +2 to healing you give."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "stasis",
+       "name": "Stasis",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Held in stasis: loses next action",
+         "on": "target"
+        },
+        {
+         "do": "damage",
+         "damage": "{p/3}d8",
+         "type": "force",
+         "on": "target"
+        }
+       ],
+       "description": "An enemy is held in stasis: it takes force damage without a roll and loses its next action."
+      },
+      {
+       "level": 80,
+       "id": "eternal-hour",
+       "name": "Eternal Hour",
+       "passive": {
+        "hp": 16,
+        "healing": 2
+       },
+       "description": "+16 maximum HP and +2 to healing you give."
+      },
+      {
+       "level": 90,
+       "id": "borrowed-time",
+       "name": "Borrowed Time",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "2d8+mod",
+         "on": "party"
+        },
+        {
+         "do": "refresh",
+         "resource": "technique",
+         "amount": 2
+        }
+       ],
+       "description": "Every ally heals 2d8 + Intelligence, and you recover two Technique uses."
+      },
+      {
+       "level": 100,
+       "id": "undo",
+       "name": "Undo",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Undone",
+         "on": "party",
+         "rounds": 2
+        },
+        {
+         "do": "refresh",
+         "resource": "advancement",
+         "amount": 1
+        }
+       ],
+       "description": "Ultimate. Time runs backward: every ally heals your level plus Intelligence and has +2 AC for two rounds, and you recover one Advancement use. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -1323,6 +2006,99 @@
         "objective": 1
        },
        "description": "+12 maximum HP and +1 to combat-objective checks."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "open-the-gate",
+       "name": "Open the Gate",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/3}d6",
+         "type": "force",
+         "on": "enemies"
+        },
+        {
+         "do": "ward",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/3}",
+         "on": "party"
+        }
+       ],
+       "description": "A gate opens: every enemy takes force damage without a roll, and every ally gains an interception ward and temporary HP."
+      },
+      {
+       "level": 80,
+       "id": "wardens-pact",
+       "name": "Warden's Pact",
+       "passive": {
+        "damage": 2,
+        "hp": 12
+       },
+       "description": "+2 damage and +12 maximum HP."
+      },
+      {
+       "level": 90,
+       "id": "bound-titan",
+       "name": "Bound Titan",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "bludgeoning",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Pinned by a titan: loses next action",
+         "on": "target"
+        }
+       ],
+       "description": "A bound titan crushes one enemy for heavy damage without a roll; it loses its next action."
+      },
+      {
+       "level": 100,
+       "id": "host-of-the-gate",
+       "name": "Host of the Gate",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "force",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Overwhelmed: next attack disadvantaged",
+         "on": "enemies"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p}",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. A host of summoned creatures strikes every enemy for massive force damage, each enemy's next attack has disadvantage, and every ally gains temporary HP equal to your level. Once per long rest.",
+       "ultimate": true
       }
      ]
     }
@@ -1506,6 +2282,92 @@
        },
        "description": "+16 maximum HP and +1 to healing you give."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "mass-restoration",
+       "name": "Mass Restoration",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "4d8+mod+{p/4}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Restored",
+         "on": "party",
+         "rounds": 1
+        }
+       ],
+       "description": "Every ally heals 4d8 + Wisdom + a quarter of your level and has +2 AC until your next turn."
+      },
+      {
+       "level": 80,
+       "id": "saints-grace",
+       "name": "Saint's Grace",
+       "passive": {
+        "healing": 4
+       },
+       "description": "+4 to healing you give."
+      },
+      {
+       "level": 90,
+       "id": "guardian-spirit",
+       "name": "Guardian Spirit",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "ally",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p}+mod",
+         "on": "target"
+        },
+        {
+         "do": "ward",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Guardian Spirit",
+         "on": "target",
+         "rounds": 2
+        }
+       ],
+       "description": "A guardian spirit wraps an ally: temporary HP equal to your level plus Wisdom, an interception ward and +2 AC for two rounds."
+      },
+      {
+       "level": 100,
+       "id": "miracle",
+       "name": "Miracle",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p}+{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. Every ally, even one who has fallen, heals twice your level plus Wisdom and gains temporary HP. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -1629,6 +2491,90 @@
         "damage": 1
        },
        "description": "+12 maximum HP and +1 damage."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "divine-wrath",
+       "name": "Divine Wrath",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "wis",
+         "damage": "{p/2}d8",
+         "type": "radiant",
+         "half": true,
+         "area": true,
+         "onFail": {
+          "id": "frightened",
+          "name": "Wrath: frightened"
+         }
+        }
+       ],
+       "description": "Every enemy makes a Wisdom save against heavy radiant damage: frightened on a failure, half damage on a success."
+      },
+      {
+       "level": 80,
+       "id": "hand-of-judgment",
+       "name": "Hand of Judgment",
+       "passive": {
+        "damage": 3
+       },
+       "description": "+3 damage on your attacks and spells."
+      },
+      {
+       "level": 90,
+       "id": "excommunicate",
+       "name": "Excommunicate",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d10",
+         "type": "radiant",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Cast out",
+         "on": "target"
+        }
+       ],
+       "description": "Cast out one enemy: heavy radiant damage without a roll, and the next attack against it has advantage."
+      },
+      {
+       "level": 100,
+       "id": "final-judgment",
+       "name": "Final Judgment",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "radiant",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "frightened",
+         "name": "Judged: frightened",
+         "on": "enemies"
+        }
+       ],
+       "description": "Ultimate. Every enemy takes enormous radiant damage without a roll and is frightened. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -1771,6 +2717,94 @@
         "hp": 8
        },
        "description": "+2 damage and +8 maximum HP."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "hallowed-onslaught",
+       "name": "Hallowed Onslaught",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "times": 3,
+         "extra": "1d8+{p/10}"
+        },
+        {
+         "do": "heal",
+         "amount": "2d8+mod",
+         "on": "party"
+        }
+       ],
+       "description": "Three weapon attacks, each with extra damage on a hit, and every ally heals 2d8 + Wisdom."
+      },
+      {
+       "level": 80,
+       "id": "champions-faith",
+       "name": "Champion's Faith",
+       "passive": {
+        "hp": 16,
+        "damage": 1
+       },
+       "description": "+16 maximum HP and +1 damage."
+      },
+      {
+       "level": 90,
+       "id": "avatar-of-war",
+       "name": "Avatar of War",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "self",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p}+mod",
+         "on": "self"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Avatar: next attack advantaged",
+         "on": "self"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Avatar of War",
+         "on": "self",
+         "rounds": 2
+        }
+       ],
+       "description": "Become an avatar: temporary HP equal to your level plus Wisdom, advantage on your next attack and +2 AC for two rounds."
+      },
+      {
+       "level": 100,
+       "id": "crusaders-dawn",
+       "name": "Crusader's Dawn",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "radiant",
+         "on": "enemies"
+        },
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. Holy light burns every enemy for massive radiant damage without a roll and heals every ally your level plus Wisdom. Once per long rest.",
+       "ultimate": true
       }
      ]
     }
@@ -1950,6 +2984,95 @@
        },
        "description": "+2 to healing you give and +1 damage."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "wild-hunt",
+       "name": "Wild Hunt",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/3}d8",
+         "type": "piercing",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Hunted",
+         "on": "enemies"
+        }
+       ],
+       "description": "The wild hunt rides: every enemy takes damage without a roll and the next attack against each has advantage."
+      },
+      {
+       "level": 80,
+       "id": "primal-vigor",
+       "name": "Primal Vigor",
+       "passive": {
+        "hp": 16,
+        "healing": 2
+       },
+       "description": "+16 maximum HP and +2 to healing you give."
+      },
+      {
+       "level": 90,
+       "id": "apex-predator",
+       "name": "Apex Predator",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/3}d8",
+         "type": "slashing",
+         "on": "target"
+        },
+        {
+         "do": "weapon",
+         "times": 2,
+         "advantage": true
+        }
+       ],
+       "description": "Your great beast mauls an enemy without a roll, then you strike it twice with advantage."
+      },
+      {
+       "level": 100,
+       "id": "lord-of-beasts",
+       "name": "Lord of Beasts",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "piercing",
+         "on": "enemies"
+        },
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Lord of Beasts: next attack advantaged",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. Every beast of the land answers: every enemy takes massive damage without a roll, and every ally heals your level plus Wisdom and has advantage on their next attack. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -2059,6 +3182,72 @@
         "hp": 12
        },
        "description": "+1 damage and +12 maximum HP."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "starfall-volley",
+       "name": "Starfall Volley",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "dex",
+         "damage": "{p/2}d8",
+         "type": "radiant",
+         "half": true,
+         "area": true
+        }
+       ],
+       "description": "Arrows fall like stars: every enemy makes a Dexterity save against heavy radiant damage, half on a success."
+      },
+      {
+       "level": 80,
+       "id": "perfect-aim",
+       "name": "Perfect Aim",
+       "passive": {
+        "damage": 3
+       },
+       "description": "+3 damage on your attacks."
+      },
+      {
+       "level": 90,
+       "id": "eagle-eye",
+       "name": "Eagle Eye",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "times": 3,
+         "advantage": true
+        }
+       ],
+       "description": "Three shots with advantage at one enemy."
+      },
+      {
+       "level": 100,
+       "id": "the-last-arrow",
+       "name": "The Last Arrow",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "weapon",
+         "advantage": true,
+         "extra": "{p/2}d10"
+        }
+       ],
+       "description": "Ultimate. One perfect arrow with advantage; on a hit it deals enormous extra damage. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -2207,6 +3396,97 @@
         "damage": 1
        },
        "description": "+2 to healing you give and +1 damage."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "worldwalk",
+       "name": "Worldwalk",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "objective",
+         "steps": 2
+        },
+        {
+         "do": "condition",
+         "id": "hidden",
+         "name": "Hidden",
+         "on": "self"
+        },
+        {
+         "do": "heal",
+         "amount": "2d8+mod",
+         "on": "party"
+        }
+       ],
+       "description": "You know every path: the combat objective advances two steps, you become Hidden, and every ally heals 2d8 + Wisdom."
+      },
+      {
+       "level": 80,
+       "id": "endless-road",
+       "name": "Endless Road",
+       "passive": {
+        "hp": 16,
+        "objective": 1
+       },
+       "description": "+16 maximum HP and +1 to combat-objective checks."
+      },
+      {
+       "level": 90,
+       "id": "terrain-master",
+       "name": "Terrain Master",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "dex",
+         "damage": "{p/3}d6",
+         "type": "bludgeoning",
+         "half": true,
+         "area": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Caught by the land: loses next action"
+         }
+        }
+       ],
+       "description": "The land itself turns on them: every enemy makes a Dexterity save, taking damage and losing its next action on a failure, half damage on a success."
+      },
+      {
+       "level": 100,
+       "id": "road-beyond-roads",
+       "name": "Road Beyond Roads",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "objective",
+         "steps": 4
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Lost on a strange road: loses next action",
+         "on": "enemies"
+        }
+       ],
+       "description": "Ultimate. You open a road no one else can see: the combat objective advances four steps, every ally gains temporary HP equal to your level, and every enemy loses its next action. Once per long rest.",
+       "ultimate": true
       }
      ]
     }
@@ -2389,6 +3669,94 @@
        },
        "description": "+12 maximum HP and +1 to healing you give."
       }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "song-of-unmaking",
+       "name": "Song of Unmaking",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "int",
+         "damage": "{p/2}d6",
+         "type": "psychic",
+         "half": true,
+         "area": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Unmade: loses next action"
+         }
+        }
+       ],
+       "description": "Every enemy makes an Intelligence save, taking heavy psychic damage and losing its next action on a failure, half damage on a success."
+      },
+      {
+       "level": 80,
+       "id": "ancient-memory",
+       "name": "Ancient Memory",
+       "passive": {
+        "hp": 12,
+        "objective": 1,
+        "damage": 1
+       },
+       "description": "+12 maximum HP, +1 to combat-objective checks and +1 damage."
+      },
+      {
+       "level": 90,
+       "id": "words-of-creation",
+       "name": "Words of Creation",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "3d8+mod",
+         "on": "party"
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        }
+       ],
+       "description": "Every ally heals 3d8 + Charisma and the combat objective advances one step."
+      },
+      {
+       "level": 100,
+       "id": "the-first-song",
+       "name": "The First Song",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/2}d8",
+         "type": "psychic",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Silenced by the First Song: loses next action",
+         "on": "enemies"
+        },
+        {
+         "do": "heal",
+         "amount": "{p/2}+mod",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. The song that began the world: every enemy takes massive psychic damage without a roll and loses its next action, and every ally heals half your level plus Charisma. Once per long rest.",
+       "ultimate": true
+      }
      ]
     },
     {
@@ -2520,6 +3888,101 @@
         "healing": 1
        },
        "description": "+2 damage and +1 to healing you give."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "anthem-of-legions",
+       "name": "Anthem of Legions",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "3d8+mod",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Anthem: next attack advantaged",
+         "on": "party"
+        }
+       ],
+       "description": "Every ally heals 3d8 + Charisma, gains temporary HP equal to half your level and has advantage on their next attack."
+      },
+      {
+       "level": 80,
+       "id": "voice-of-thunder",
+       "name": "Voice of Thunder",
+       "passive": {
+        "damage": 2,
+        "healing": 2
+       },
+       "description": "+2 damage and +2 to healing you give."
+      },
+      {
+       "level": 90,
+       "id": "shatter-song",
+       "name": "Shatter Song",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "con",
+         "damage": "{p/2}d6",
+         "type": "thunder",
+         "half": true,
+         "area": true
+        }
+       ],
+       "description": "Every enemy makes a Constitution save against heavy thunder damage, half on a success."
+      },
+      {
+       "level": 100,
+       "id": "song-of-a-thousand",
+       "name": "Song of a Thousand",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "A thousand voices: next attack advantaged",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "inspired",
+         "name": "Inspired",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. A thousand voices join yours: every ally heals your level plus Charisma, gains that much temporary HP, has advantage on their next attack and gains an Inspiration die. Once per long rest.",
+       "ultimate": true
       }
      ]
     },
@@ -2662,6 +4125,97 @@
         "damage": 1
        },
        "description": "+2 to healing you give and +1 damage."
+      }
+     ],
+     "fourthSkills": [
+      {
+       "level": 70,
+       "id": "royal-decree",
+       "name": "Royal Decree",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "cha",
+         "onFail": {
+          "id": "stunned",
+          "name": "Bound by decree: loses next action"
+         }
+        },
+        {
+         "do": "objective",
+         "steps": 2
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/3}",
+         "on": "party"
+        }
+       ],
+       "description": "Every enemy makes a Charisma save or loses its next action; the combat objective advances two steps and every ally gains temporary HP."
+      },
+      {
+       "level": 80,
+       "id": "crowned-in-silver",
+       "name": "Crowned in Silver",
+       "passive": {
+        "hp": 16,
+        "healing": 2
+       },
+       "description": "+16 maximum HP and +2 to healing you give."
+      },
+      {
+       "level": 90,
+       "id": "treaty",
+       "name": "Treaty",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Bound by treaty: next attack disadvantaged",
+         "on": "enemies"
+        },
+        {
+         "do": "ward",
+         "on": "party"
+        }
+       ],
+       "description": "Every enemy's next attack has disadvantage, and every ally gains an interception ward."
+      },
+      {
+       "level": 100,
+       "id": "kingmakers-word",
+       "name": "Kingmaker's Word",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "ultimate",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "stunned",
+         "name": "Kneels: loses next action",
+         "on": "enemies"
+        },
+        {
+         "do": "objective",
+         "steps": 4
+        },
+        {
+         "do": "heal",
+         "amount": "{p}+mod",
+         "on": "party"
+        }
+       ],
+       "description": "Ultimate. One word and the field kneels: every enemy loses its next action, the combat objective advances four steps and every ally heals your level plus Charisma. Once per long rest.",
+       "ultimate": true
       }
      ]
     }

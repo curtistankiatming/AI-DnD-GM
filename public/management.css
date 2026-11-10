@@ -34,4 +34,4 @@
 .job-skill-text{grid-column:1/-1;color:var(--muted);font-size:.8rem;line-height:1.5;overflow-wrap:anywhere}
 .job-branch-state{font-size:.8rem;font-weight:600}
 @media(max-width:1000px){.job-branches{grid-template-columns:1fr}}
-.job-third-title{margin:12px 0 0;font-size:.88rem;color:var(--accent-strong)}.job-trial-note{margin:6px 0 0;font-weight:650;color:var(--accent-strong)}
+.job-fourth-title{margin:12px 0 0;font-size:.88rem;color:var(--accent-strong)}.job-third-title{margin:12px 0 0;font-size:.88rem;color:var(--accent-strong)}.job-trial-note{margin:6px 0 0;font-weight:650;color:var(--accent-strong)}

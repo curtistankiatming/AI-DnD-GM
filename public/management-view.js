@@ -17,7 +17,7 @@
   for(const p of v.world?.preparation||[])for(const warning of p.warnings||[])r.push(`${v.world.quests?.find(q=>q.id===p.questId)?.name||'Known expedition'}: ${warning}`);
   return r;
  }
- function actionGroup(id,job){const k=id.startsWith('job:')?(job?.skills||[]).find(x=>x.id===id.slice(4)):null;if(job?.branch&&k?.third)return 'job3';if(job?.branch&&(id.startsWith('spec:')||(k&&k.source!=='1st job')))return 'job2';if(['weapon-attack','defend'].includes(id))return 'attacks';if(id.startsWith('item:'))return 'items';if(id.startsWith('order:')||id.startsWith('combo:'))return 'party';if(['objective','spec-objective'].includes(id))return 'objectives';if(['end-turn','retreat','death-save'].includes(id))return 'turn';return 'abilities';}
+ function actionGroup(id,job){const k=id.startsWith('job:')?(job?.skills||[]).find(x=>x.id===id.slice(4)):null;if(job?.branch&&k?.fourth)return 'job4';if(job?.branch&&k?.third)return 'job3';if(job?.branch&&(id.startsWith('spec:')||(k&&k.source!=='1st job')))return 'job2';if(['weapon-attack','defend'].includes(id))return 'attacks';if(id.startsWith('item:'))return 'items';if(id.startsWith('order:')||id.startsWith('combo:'))return 'party';if(['objective','spec-objective'].includes(id))return 'objectives';if(['end-turn','retreat','death-save'].includes(id))return 'turn';return 'abilities';}
  function contribution(member,events=[]){const name=String(member.name||'');if(!name)return null;
   for(const e of [...events].reverse()){
    if(!['party','roll','heal','damage','feature'].includes(e.type)||typeof e.text!=='string')continue;
