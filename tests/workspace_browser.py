@@ -25,6 +25,9 @@ def model_settings(page):
     d = page.locator('#localAISettings')
     if not d.evaluate('(n)=>n.open'):
         d.locator(':scope > summary').click()
+    # Browser checks only ever use a synthetic loopback model, never the Claude API.
+    if page.locator('#aiProvider').count():
+        page.locator('#aiProvider').select_option('local')
 
 
 def offline_tools(page, setup=False):

@@ -1,9 +1,19 @@
 'use strict';
 // Campaign-owned data only. Provider settings, tokens and endpoints never enter saves.
 const RoadState = require('./road-state');
+const Improvise = require('./improvise');
 const MAX_INSTRUCTIONS = 2000;
 const MAX_MESSAGE = 1600;
 function text(value, limit) { return typeof value === 'string' ? value.slice(0, limit) : ''; }
+// An improvised proposal is kept only in its validated form; the engine
+// bounds it again when the player confirms.
+function pendingFrom(p) {
+  if (!p || typeof p.optionId !== 'string' || !Number.isInteger(p.turn)) return null;
+  const base = { optionId:text(p.optionId,120), turn:p.turn, sceneId:text(p.sceneId,120), label:text(p.label,500), input:text(p.input,MAX_MESSAGE) };
+  if (p.kind !== 'improvise') return base;
+  const checked = Improvise.validate(p.proposal);
+  return checked.ok ? { ...base, kind:'improvise', proposal:checked.proposal } : null;
+}
 function ensure(state, force = false) {
   if (!force && state.chat?.version === 1) return state.chat;
   const old = state.chat && typeof state.chat === 'object' ? state.chat : {};
@@ -14,9 +24,7 @@ function ensure(state, force = false) {
     instructions: text(old.instructions, MAX_INSTRUCTIONS),
     history: history.slice(-40).filter(x => x && ['player','guide','rules'].includes(x.role))
       .map(x => ({ role:x.role, text:text(x.text, MAX_MESSAGE), turn:Number(x.turn)||0 })),
-    pending: old.pending && typeof old.pending.optionId === 'string' && Number.isInteger(old.pending.turn)
-      ? { optionId:text(old.pending.optionId,120), turn:old.pending.turn, sceneId:text(old.pending.sceneId,120),
-          label:text(old.pending.label,500), input:text(old.pending.input,MAX_MESSAGE) } : null,
+    pending: pendingFrom(old.pending),
     courier: old.courier && typeof old.courier === 'object' ? {
       active:Boolean(old.courier.active), resolved:Boolean(old.courier.resolved),
       clue:Boolean(old.courier.clue), rapport:Boolean(old.courier.rapport), distraction:Boolean(old.courier.distraction),

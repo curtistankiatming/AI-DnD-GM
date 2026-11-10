@@ -9,15 +9,6 @@ async function fixture(t,handler){
   t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));await fs.rm(dir,{recursive:true,force:true});});
   return {configPath:path.join(dir,'config.json'),baseUrl:`http://127.0.0.1:${server.address().port}/v1`};
 }
-function legacy(raw){
-  const keys=['AI_NARRATOR','AI_MODEL','LM_STUDIO_BASE_URL','AI_REPLY_TOKENS','AI_TIMEOUT_MS'];
-  const saved=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
-  Object.assign(process.env,{AI_NARRATOR:'on',AI_MODEL:'test-local',LM_STUDIO_BASE_URL:'http://127.0.0.1:1234/v1',AI_TIMEOUT_MS:'600000'});
-  if(raw===undefined)delete process.env.AI_REPLY_TOKENS;else process.env.AI_REPLY_TOKENS=raw;
-  delete require.cache[require.resolve('../src/narrator')];
-  const N=require('../src/narrator');
-  return {N,restore(){for(const k of keys){if(saved[k]===undefined)delete process.env[k];else process.env[k]=saved[k];}delete require.cache[require.resolve('../src/narrator')];}};
-}
 test('uncapped output is explicit and does not change defaults or input/wait budgets',()=>{
   for(const [profile,limit]of [['compact',160],['balanced',240],['expanded',320]]){
     const capped=P.normalize({profile});assert.equal(capped.replyTokens,limit);
@@ -64,25 +55,4 @@ test('uncapped output keeps the configured elapsed-time deadline',{timeout:6000}
   const ai=createLocalAI(f);await ai.save({enabled:true,model:'test',baseUrl:f.baseUrl,replyTokens:-1,timeoutMs:3000});
   const start=Date.now();await assert.rejects(ai.complete({system:'s',prompt:'p'}),/wait limit/);
   assert.ok(Date.now()-start>=2900);assert.equal(calls,1);assert.equal(ai.status().busy,false);
-});
-for(const [raw,expected]of [[undefined,260],['-1',-1],['240',240]])test('legacy narrator uses its explicit output setting: '+raw,async()=>{
-  const {N,restore}=legacy(raw);try{
-    const s=E.createNewGame({classId:'fighter'});let body;
-    const out=await N.narrate(s,E.buildView(s),{type:'opening'},[],null,async(_u,o)=>{body=JSON.parse(o.body);return {ok:true,json:async()=>({choices:[{finish_reason:'stop',message:{content:'The party waits.'}}]})};});
-    assert.equal(out.source,'ai');assert.equal(body.max_tokens,expected);
-  }finally{restore();}
-});
-for(const raw of ['-2','0','oops','','1.5'])test('invalid explicit legacy output does not contact a model: '+JSON.stringify(raw),async()=>{
-  const {N,restore}=legacy(raw);try{
-    let calls=0;const s=E.createNewGame({classId:'fighter'});
-    const out=await N.narrate(s,E.buildView(s),{type:'opening'},[],null,async()=>{calls++;return {ok:true,json:async()=>({choices:[{message:{content:'Wrong'}}]})};});
-    assert.equal(calls,0);assert.equal(out.source,'deterministic-fallback');assert.match(out.error,/AI_REPLY_TOKENS/);
-  }finally{restore();}
-});
-test('legacy narrator rejects truncated final text instead of displaying partial output',async()=>{
-  const {N,restore}=legacy('-1');try{
-    const s=E.createNewGame({classId:'fighter'}),before=JSON.stringify(s.player);let calls=0;
-    const out=await N.narrate(s,E.buildView(s),{type:'opening'},[],null,async()=>{calls++;return {ok:true,json:async()=>({choices:[{finish_reason:'length',message:{content:'Unfinished claims'}}]})};});
-    assert.equal(out.source,'deterministic-fallback');assert.equal(calls,1);assert.equal(JSON.stringify(s.player),before);assert.doesNotMatch(out.text,/Unfinished claims/);
-  }finally{restore();}
 });

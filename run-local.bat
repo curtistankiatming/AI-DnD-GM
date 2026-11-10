@@ -22,6 +22,12 @@ if %NODE_MAJOR% LSS 22 (
   exit /b 1
 )
 
+if not exist "node_modules\@anthropic-ai\sdk" (
+  echo Installing the Claude API library for AI play. This happens once.
+  call npm install --omit=dev --no-audit --no-fund
+  if errorlevel 1 echo Could not install it. The game still runs; Claude AI will be unavailable until "npm install" succeeds.
+)
+
 echo Starting AI Dungeon Master V4 at http://localhost:%PORT%
 echo Press Ctrl+C in this window to stop the server.
 start "" powershell -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 2; Start-Process 'http://localhost:%PORT%'"

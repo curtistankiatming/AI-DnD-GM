@@ -25,8 +25,7 @@ without changing game version 4.1.0-alpha.3. The verified post-PR #5 release is
 [4.1.0-alpha.3 (69787576)](https://github.com/curtistankiatming/AI-DnD-GM/releases/tag/playtest-6978757638845b807000fad205b1eea74797b286).
 
 Browser play needs no Node.js, account, API key, or internet after downloading.
-Full-source play needs Node.js 22 or newer; CI covers Node 22 and 24. No `npm
-install` is needed for the runtime or evaluator. A source checkout does not
+Full-source play needs Node.js 22 or newer; CI covers Node 22 and 24. Run `npm install` once for Claude API play; local-model and offline play need no install. A source checkout does not
 contain generated browser HTML: `npm run build:public` creates it in `dist-public`.
 Some earlier chat-delivered ZIPs separately included a `browser-preview` folder.
 
@@ -53,19 +52,28 @@ be wrong; it does not grant items or replace the confirmed mechanics feed.
 This remains a finite authored adventure, not unlimited generated quests/worlds.
 Levels 30 and 70 are planned advancement milestones, not playable content.
 
-## Local AI and model evaluation
+## AI: Claude API or a local model
 
-Start the full-source game without AI. When a compatible local model server such
-as Bionic is running, use **Local AI settings for chat** to select its exact
-installed model ID. The usual local address is `http://127.0.0.1:1234/v1`.
-Compact/Balanced/Expanded are adjustable workloads, not model-size restrictions or
-quality certifications. No paid/cloud/LAN fallback or automatic download is used.
+Start the full-source game without AI, then open **Settings → AI settings**.
 
-**Actual Qwen, Gemma and smaller-model performance remains unvalidated.**
-`EVALUATE-MODEL.bat` offers an explicitly confirmed three-prompt local test;
-`npm run eval:plan` prepares a plan without inference. The shared suite has 13
-synthetic game cases and separates completion, narrow correctness, latency and
-manual story review. See [Model evaluation](docs/MODEL-EVALUATION.md).
+- **Claude API (recommended):** copy `.env.example` to `.env`, add your
+  `ANTHROPIC_API_KEY`, restart, enable AI and pick a model (Claude Opus 5.5 by
+  default). Turn on **AI narration for story scenes** for Claude-written prose.
+- **Local model:** choose *Local model server* and select the exact model ID from
+  a loopback OpenAI-compatible server such as Bionic (`http://127.0.0.1:1234/v1`).
+
+With Claude, you can also **improvise**: type any sensible action that no listed
+approach covers ("climb the bell tower to look over the square"). Claude proposes
+a skill check, difficulty, stakes, reward and risk; the engine caps them by level
+and per scene, shows you the odds, and rolls only after you confirm. Successful
+discoveries are recorded in the journal so the story remembers them.
+
+Either way, the AI interprets what you type and writes prose; the rules engine
+still resolves dice, items, XP and scene changes, and proposed actions need your
+confirmation. Run `npm install` once (or let `run-local.bat` do it) to get the
+Claude library; the offline browser edition never calls a model.
+`npm run eval:plan` and `EVALUATE-MODEL.bat` still evaluate local models; see
+[Model evaluation](docs/MODEL-EVALUATION.md).
 
 ## Saves and updates
 

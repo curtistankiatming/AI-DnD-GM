@@ -173,8 +173,17 @@ unverified reminder; `/forget-note note-1` removes it. The panel has equivalent
 controls. Twelve note slots allow up to 400 characters each; notes grant no rewards
 and are excluded from regular model prompts.
 
-AI is optional and off by default. Start Bionic or another compatible local server,
-then use **Local AI settings for chat** to list and explicitly select the installed
+AI is optional and off by default. Two providers are available under
+**Settings → AI settings**:
+
+- **Claude API (recommended).** Copy `.env.example` to `.env` beside
+  `package.json`, put your key after `ANTHROPIC_API_KEY=`, restart the game, then
+  enable AI and pick a Claude model (Opus 5.5 by default; Sonnet 5.5 and Haiku 5.5
+  are faster and cheaper). Each chat turn is one API request and is billed to
+  your Anthropic account. `run-local.bat` installs the Claude library on first run;
+  from a terminal, run `npm install` once.
+- **Local model server.** Start Bionic or another compatible local server, choose
+  **Local model server**, then list and explicitly select the installed
 model ID. The usual address is `http://127.0.0.1:1234/v1`. Compact/Balanced/Expanded
 are request workloads, not certifications of a model size. The chat connection
 allows ten minutes per request; a proposal and later narration can be separate
@@ -187,21 +196,28 @@ file. A local server's optional token comes from `LOCAL_AI_TOKEN`, never chat,
 saves, a public repository or a screenshot. Listing models does not download or
 load them; inference may trigger the local server's just-in-time loading.
 
-The legacy environment-variable narrator remains a separate opt-in route:
+### Improvised actions (Claude only)
 
-```bat
-set AI_NARRATOR=on
-set LM_STUDIO_BASE_URL=http://127.0.0.1:1234/v1
-set AI_MODEL=YOUR_EXACT_INSTALLED_MODEL_ID
-set AI_TIMEOUT_MS=600000
-node server.js
-```
+In Action mode, describe anything sensible your hero tries. If no listed approach
+fits, Claude proposes how to resolve it: a skill (or ability), a difficulty, what
+happens on success and failure, a reward and a risk. Before anything happens you
+see the roll you need and your chance. The engine enforces the limits:
 
-Its default timeout is 20 seconds unless `AI_TIMEOUT_MS` is set; 600000 selects
-ten minutes. The new chat UI does not automatically reconfigure this older route.
-`OPENAI_BASE_URL` is only a legacy endpoint alias; accepted endpoints remain
-loopback-only. Authentication uses `LOCAL_AI_TOKEN`, not a cloud `OPENAI_API_KEY`.
-No paid/cloud/LAN fallback, automatic model switching or downloads are enabled.
+| Difficulty | DC | Can earn |
+| --- | --- | --- |
+| Trivial | no roll | a recorded discovery only |
+| Easy | 10 | discovery, 1d4 gold per level, Inspiration |
+| Moderate / Hard / Very hard | 13 / 16 / 19 | also XP: 5% / 8% / 12% of your current level band |
+
+Each scene allows 8 improvised attempts, 3 material rewards and XP once. Failure
+risks are a story setback, ⌈level/3⌉d6 damage, or losing up to 3 gold per level.
+Repeating the same attempt in a scene is refused. Improvising is paused in combat.
+Successful discoveries appear in the journal as *established* facts.
+
+Story narration uses the same AI settings: tick **AI narration for story
+scenes** to have the selected provider narrate resolved story choices and combat.
+The older `AI_NARRATOR`/`AI_MODEL`/`LM_STUDIO_BASE_URL` environment variables were
+removed; use the settings panel instead.
 
 The engine resolves rules first. The model receives bounded public facts, current
 combat resources and confirmed events; hidden facts are omitted. Its prose can

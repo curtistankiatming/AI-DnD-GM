@@ -154,6 +154,7 @@ def exercise_wait(page, output):
     threading.Thread(target=model.serve_forever,daemon=True).start()
     try:
         model_settings(page)
+        page.locator('#aiProvider').select_option('local')
         page.locator('#localAIBase').fill(f'http://127.0.0.1:{model.server_port}/v1')
         page.locator('#localAIModel').fill('ui-wait-synthetic')
         page.locator('#localAIEnabled').check()

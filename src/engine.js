@@ -36,6 +36,7 @@ const Courier = require("./courier-scene");
 const Road = require("./road-story");
 Road.register(STORY_NODES);
 const Journal = require("./journal");
+const Improvise = require("./improvise");
 const SCHEMA_VERSION = 4;
 const MAX_LOGS = 180;
 const MAX_HISTORY = 80;
@@ -230,6 +231,7 @@ function createNewGame(setup = {}) {
   };
   W.init(state);
   ChatMemory.ensure(state, true);
+  Improvise.normalize(state);
   const events = [];
   enterNode(state, CAMPAIGN.startNode, events);
   pushLog(state, "GM", STORY_NODES[CAMPAIGN.startNode].opening, "story");
@@ -357,6 +359,7 @@ function normalizeIncomingState(raw) {
   state.updatedAt = nowIso();
   W.init(state);
   ChatMemory.ensure(state, true);
+  Improvise.normalize(state);
   if (state.combat?.active) normalizeCombat(state);
   else state.combat = null;
   Journal.sync(state);
@@ -838,6 +841,31 @@ function findChoiceByFreeText(state,text) {
 
 function improvisedStoryAction(state,text,rng,events) {
   return invalidResult(state,events,'That approach has no implemented consequence here. Nothing was spent or rolled. Use an offered story choice, or type a supported command such as “buy 2 healing potions”, “use antitoxin on Orin”, “talk to Maren”, or “return to town”.');
+}
+
+// Claude-proposed free-form action. The proposal is re-validated and bounded
+// here on every call, so a stale or edited proposal can never exceed the caps.
+function previewImprovised(state, raw) {
+  const v=Improvise.validate(raw);if(!v.ok)return v;
+  const plan=Improvise.bound(state,v.proposal,state.story.nodeId);if(!plan.ok)return plan;
+  if(plan.dc===null)return {...plan,check:null};
+  const p=plan.proposal,check=checkPlan(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:plan.dc}});
+  const mode=check.advantage?'advantage':check.disadvantage?'disadvantage':'normal';
+  const name=check.skillId?SKILLS[check.skillId].name:ABILITIES[check.abilityId]?.name||'Check';
+  return {...plan,check:{actor:check.actor.name,name,bonus:check.bonus,dc:check.dc,mode,chance:Math.round(successProbability(check.dc,check.bonus,mode)*100),reasons:check.reasons}};
+}
+
+function resolveImprovised(state, raw, rng, events) {
+  const preview=previewImprovised(state,raw);if(!preview.ok)return invalidResult(state,events,preview.error);
+  const sceneId=state.story.nodeId,p=preview.proposal;
+  let success=true;
+  if(preview.dc!==null)success=resolveStoryCheck(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:preview.dc}},rng,events).success;
+  const text=Improvise.apply(state,preview,success,sceneId,rng,events,{rollFormula,awardXp,applyDamage:applyDamageToEntity});
+  recordHistory(state,`Improvised: ${p.intent} (${success?'success':'failure'}). ${text}`);
+  state.story.lastOutcome={kind:'improvise',title:currentNode(state).title,text};
+  pushLog(state,'GM',text,'story');
+  Journal.sync(state);
+  return {ok:true,kind:'improvise',outcomeText:text,success};
 }
 
 function resolveFreeform(state,text,rng,events) {
@@ -2200,6 +2228,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   } else if(action.type==='cancel-intent'){state.pendingIntent=null;result={ok:true,kind:'clarification',outcomeText:'Proposed interpretation cancelled. No action was taken.'};}
   else if(action.type==='story-choice') {state.pendingIntent=null;result=resolveStoryChoice(state,action.choiceId,rng,events);}
   else if(action.type==='freeform')result=resolveFreeform(state,action.text,rng,events);
+  else if(action.type==='improvise')result=resolveImprovised(state,action.proposal,rng,events);
   else if(action.type==='equip')result=equipItem(state,action.itemId,events,action.actorId||'player');
   else if(action.type==='unequip')result=unequipItem(state,action.slot,events,action.actorId||'player');
   else if(action.type==='use-item')result=storyUseItem(state,action.itemId,action.targetId,rng,events);
@@ -2273,5 +2302,5 @@ module.exports = {
   hasItem,
   playerAttackProfile,
   applyEquipmentDerivedStats,
-  startCombat, awardXp, checkPlan, successProbability, savingThrow, objectivePlan
+  startCombat, awardXp, checkPlan, successProbability, savingThrow, objectivePlan, previewImprovised
 };

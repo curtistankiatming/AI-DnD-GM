@@ -27,14 +27,11 @@ async function probe(kind){
   const start=performance.now();
   try{
     if(kind==='legacy'){
-      const keys=['AI_NARRATOR','AI_MODEL','LM_STUDIO_BASE_URL','AI_TIMEOUT_MS'];
-      const original=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
-      Object.assign(process.env,{AI_NARRATOR:'on',AI_MODEL:'local-fixture-only',LM_STUDIO_BASE_URL:baseUrl,AI_TIMEOUT_MS:String(DEADLINE)});
-      delete require.cache[require.resolve('../src/narrator')];
+      // Narration now shares the AI service, so this checks the same deadline through narrate().
+      await ai.save({enabled:true,baseUrl,model:'local-fixture-only',timeoutMs:DEADLINE,narration:true});
       const N=require('../src/narrator'),E=require('../src/engine');
       const state=E.createNewGame();
-      try{const output=await N.narrate(state,E.buildView(state),{type:'opening'});if(output.source!=='ai')throw new Error(output.error||'Legacy fallback');result.completed=true;}
-      finally{for(const key of keys){if(original[key]===undefined)delete process.env[key];else process.env[key]=original[key];}}
+      const output=await N.narrate(state,E.buildView(state),{type:'opening'},[],null,ai);if(output.source!=='ai')throw new Error(output.error||'Narration fallback');result.completed=true;
     }else{await ai.complete({system:'Describe only the facts.',prompt:'A courier was released.'});result.completed=true;}
   }catch(error){result.completed=false;result.error=error.message;}
   finally{

@@ -1,13 +1,16 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-// This file runs in its own node:test process; all model requests are mocked.
-process.env.AI_NARRATOR = 'on';
-process.env.AI_MODEL = 'local-mock';
-process.env.LM_STUDIO_BASE_URL = 'http://127.0.0.1:1234/v1';
-process.env.OPENAI_API_KEY = '';
+// All model requests go to an in-memory fake of the shared AI service.
 const E = require('../src/engine');
 const N = require('../src/narrator');
+
+function fakeAI(text, counter) {
+  return {
+    narrationEnabled: async () => true,
+    complete: async () => { counter.calls++; return { text, model: 'mock-model' }; }
+  };
+}
 
 function fixture() {
   const state = E.createNewGame({ classId: 'fighter' });
@@ -33,35 +36,23 @@ test('combat prompt identifies the current resolution rather than the last story
   assert.match(prompt, /The ward channel opens: 1 of 3 secured/);
 });
 
-test('rejected narrative actions never call the model or re-narrate an old success', async (t) => {
-  const originalFetch = global.fetch;
-  t.after(() => { global.fetch = originalFetch; });
-  let calls = 0;
-  global.fetch = async () => {
-    calls++;
-    return { ok: true, json: async () => ({ choices: [{ message: { content: 'Mock prose.' } }] }) };
-  };
+test('rejected narrative actions never call the model or re-narrate an old success', async () => {
+  const counter = { calls: 0 };
   const { state, view } = fixture();
   const result = await N.narrate(state, view, { type: 'story-choice' },
-    [{ type: 'warning', text: 'That choice is unavailable. Nothing was spent.' }], { ok: false }, global.fetch);
-  assert.equal(calls, 0);
+    [{ type: 'warning', text: 'That choice is unavailable. Nothing was spent.' }], { ok: false }, fakeAI('Mock prose.', counter));
+  assert.equal(counter.calls, 0);
   assert.equal(result.source, 'deterministic');
   assert.match(result.text, /That choice is unavailable/);
   assert.doesNotMatch(result.text, /emerald crown/);
 });
 
-test('valid narrative actions still use the configured adapter without changing game facts', async (t) => {
-  const originalFetch = global.fetch;
-  t.after(() => { global.fetch = originalFetch; });
-  let calls = 0;
-  global.fetch = async () => {
-    calls++;
-    return { ok: true, json: async () => ({ choices: [{ message: { content: 'The party takes stock of the road ahead.' } }] }) };
-  };
+test('valid narrative actions still use the configured adapter without changing game facts', async () => {
+  const counter = { calls: 0 };
   const { state, view } = fixture();
   const before = JSON.stringify({ player: state.player, party: state.party, world: state.world });
-  const result = await N.narrate(state, view, { type: 'opening' }, [], { ok: true }, global.fetch);
-  assert.equal(calls, 1);
+  const result = await N.narrate(state, view, { type: 'opening' }, [], { ok: true }, fakeAI('The party takes stock of the road ahead.', counter));
+  assert.equal(counter.calls, 1);
   assert.equal(result.source, 'ai');
   assert.equal(JSON.stringify({ player: state.player, party: state.party, world: state.world }), before);
 });
