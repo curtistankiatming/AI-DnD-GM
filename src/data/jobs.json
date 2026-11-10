@@ -1017,7 +1017,7 @@
         {
          "do": "save",
          "save": "dex",
-         "damage": "{p/5}d6",
+         "damage": "{p/4}d6",
          "type": "piercing",
          "half": true,
          "area": true,
@@ -1050,7 +1050,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/4}d6",
+         "damage": "{p/3}d6",
          "type": "fire",
          "on": "enemies"
         },
@@ -1118,7 +1118,7 @@
        "effects": [
         {
          "do": "objective",
-         "steps": 3
+         "steps": 2
         },
         {
          "do": "condition",
@@ -1127,7 +1127,7 @@
          "on": "enemies"
         }
        ],
-       "description": "Bring the place down around them: the combat objective advances three steps and every enemy has disadvantage on its next attack."
+       "description": "Bring the place down around them: the combat objective advances two steps and every enemy has disadvantage on its next attack."
       },
       {
        "level": 100,
@@ -1552,7 +1552,7 @@
         {
          "do": "save",
          "save": "con",
-         "damage": "{p/5}d8",
+         "damage": "{p/4}d8",
          "type": "thunder",
          "half": true,
          "area": true,
@@ -1742,9 +1742,10 @@
        "name": "Temporal Poise",
        "passive": {
         "healing": 2,
-        "hp": 8
+        "hp": 8,
+        "damage": 2
        },
-       "description": "+2 to healing you give and +8 maximum HP."
+       "description": "+2 to healing you give, +2 damage and +8 maximum HP."
       },
       {
        "level": 56,
@@ -1793,7 +1794,7 @@
         },
         {
          "do": "damage",
-         "damage": "{p/3}d8",
+         "damage": "{p/2}d8",
          "type": "force",
          "on": "target"
         }
@@ -1806,9 +1807,10 @@
        "name": "Eternal Hour",
        "passive": {
         "hp": 16,
-        "healing": 2
+        "healing": 2,
+        "damage": 2
        },
-       "description": "+16 maximum HP and +2 to healing you give."
+       "description": "+16 maximum HP, +2 to healing you give and +2 damage."
       },
       {
        "level": 90,
@@ -1882,7 +1884,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/4}d6",
+         "damage": "{p/3}d6",
          "type": "force",
          "on": "target"
         },
@@ -1948,7 +1950,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/3}d6",
+         "damage": "{p/2}d6",
          "type": "force",
          "on": "target"
         },
@@ -1986,7 +1988,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/5}d6",
+         "damage": "{p/4}d6",
          "type": "force",
          "on": "enemies"
         },
@@ -2664,8 +2666,7 @@
        "effects": [
         {
          "do": "weapon",
-         "times": 2,
-         "extra": "1d8+{p/8}"
+         "times": 2
         },
         {
          "do": "heal",
@@ -2673,7 +2674,7 @@
          "on": "party"
         }
        ],
-       "description": "Charge with two weapon attacks that each deal extra radiant force on a hit, and every ally heals 1d8 + Wisdom."
+       "description": "Charge with two weapon attacks, and every ally heals 1d8 + Wisdom."
       },
       {
        "level": 48,
@@ -2731,7 +2732,7 @@
        "effects": [
         {
          "do": "weapon",
-         "times": 3,
+         "times": 2,
          "extra": "1d8+{p/10}"
         },
         {
@@ -2740,7 +2741,7 @@
          "on": "party"
         }
        ],
-       "description": "Three weapon attacks, each with extra damage on a hit, and every ally heals 2d8 + Wisdom."
+       "description": "Two weapon attacks, each with extra damage on a hit, and every ally heals 2d8 + Wisdom."
       },
       {
        "level": 80,
@@ -3335,7 +3336,7 @@
        "effects": [
         {
          "do": "objective",
-         "steps": 2
+         "steps": 1
         },
         {
          "do": "condition",
@@ -3349,7 +3350,7 @@
          "on": "party"
         }
        ],
-       "description": "You find a way no one else saw: the combat objective advances two steps, you become Hidden, and every ally gains temporary HP equal to a third of your level."
+       "description": "You find a way no one else saw: the combat objective advances one step, you become Hidden, and every ally gains temporary HP equal to a third of your level."
       },
       {
        "level": 48,
@@ -3409,10 +3410,6 @@
        "resource": "advancement",
        "effects": [
         {
-         "do": "objective",
-         "steps": 2
-        },
-        {
          "do": "condition",
          "id": "hidden",
          "name": "Hidden",
@@ -3424,7 +3421,7 @@
          "on": "party"
         }
        ],
-       "description": "You know every path: the combat objective advances two steps, you become Hidden, and every ally heals 2d8 + Wisdom."
+       "description": "You know every path: you become Hidden and every ally heals 2d8 + Wisdom."
       },
       {
        "level": 80,
@@ -3631,9 +3628,9 @@
        "name": "Vast Learning",
        "passive": {
         "objective": 1,
-        "damage": 1
+        "damage": 2
        },
-       "description": "+1 to combat-objective checks and +1 damage."
+       "description": "+1 to combat-objective checks and +2 damage."
       },
       {
        "level": 56,
@@ -3647,7 +3644,7 @@
         {
          "do": "save",
          "save": "int",
-         "damage": "{p/4}d6",
+         "damage": "{p/3}d8",
          "type": "psychic",
          "half": true,
          "area": true
@@ -4080,10 +4077,10 @@
         },
         {
          "do": "objective",
-         "steps": 2
+         "steps": 1
         }
        ],
-       "description": "Offer terms: every enemy makes a Charisma save or loses its next action, and the combat objective advances two steps."
+       "description": "Offer terms: every enemy makes a Charisma save or loses its next action, and the combat objective advances one step."
       },
       {
        "level": 48,
@@ -4147,7 +4144,7 @@
         },
         {
          "do": "objective",
-         "steps": 2
+         "steps": 1
         },
         {
          "do": "tempHp",
@@ -4155,7 +4152,7 @@
          "on": "party"
         }
        ],
-       "description": "Every enemy makes a Charisma save or loses its next action; the combat objective advances two steps and every ally gains temporary HP."
+       "description": "Every enemy makes a Charisma save or loses its next action; the combat objective advances one step and every ally gains temporary HP."
       },
       {
        "level": 80,

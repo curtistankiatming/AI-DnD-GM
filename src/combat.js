@@ -128,6 +128,12 @@ function encounterScale(state, encounter) {
   return Number(encounter[key] || 1);
 }
 
+// Weapon attacks per Attack action: fighters and rangers gain a second at
+// level 5; fighters a third with the 2nd job (balance pass, job step 6).
+function attacksPerAction(actor){
+  if(actor?.kind!=='player')return 1;
+  return 1+(actor.level>=5&&['fighter','ranger'].includes(actor.classId)?1:0)+(actor.level>=P.SECOND_JOB_LEVEL&&actor.classId==='fighter'?1:0);
+}
 function startCombat(state, encounterId, rng, events) {
   const encounter = ENCOUNTERS[encounterId];
   if (!encounter) return false;
@@ -545,8 +551,12 @@ function resolveJobAction(state,actor,def,target,rng,events){
   const condition=(a,c)=>{if(a.hp>0)addCondition(a,{id:c.id,name:c.name||def.name,sourceId:actor.id,...(c.rounds?{expiresRound:round+c.rounds}:{})});};
   for(const e of def.effects||[]){
     if(e.do==='weapon'){
-      for(let n=0;n<(e.times||1)&&target?.hp>0;n++){
+      // A weapon skill never makes fewer attacks than the Attack action; the
+      // attacks it adds are plain follow-ups without the skill's extra damage.
+      const times=e.times||1;
+      for(let n=0;n<Math.max(times,attacksPerAction(actor))&&target?.hp>0;n++){
         const r=resolveWeaponAttack(state,actor,target,rng,events,{advantage:Boolean(e.advantage)});
+        if(n>=times)continue;
         if(r.hit&&e.extra&&target.hp>0)applyCombatDamage(state,target,damageRoll(rng,f(e.extra),r.critical).total,actor.attack?.damageType||'slashing',events,def.name);
         if(r.hit&&e.onHit)condition(target,e.onHit);
       }
@@ -603,7 +613,7 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
     case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(P.accuracyLevel(actor.level)/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
     case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
     case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8);ward(a);}break;
-    case 'precisionBurst':for(let n=0;n<2&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
+    case 'precisionBurst':for(let n=0;n<Math.max(2,attacksPerAction(actor))&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
     case 'shadow':actor.temporaryHp=Math.max(actor.temporaryHp||0,8);addCondition(actor,{id:'hidden',name:'Hidden'});addCondition(actor,{id:'shadowStrike',name:'Shadow strike: next hit +2d6'});break;
     case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,'3d6').total,actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
     case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,'4d6').total;applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
@@ -830,8 +840,7 @@ function resolvePlayerCombatAction(state, action, rng, events) {
     if (actor.actionUsed) return invalidResult(state, events, "Your action has already been used this turn.");
     const target = validateCombatTarget(state, action.targetId, "enemy");
     if (!target) return invalidResult(state, events, "Choose a living enemy target.");
-    resolveWeaponAttack(state, actor, target, rng, events);
-    if(actor.level>=5 && ['fighter','ranger'].includes(actor.classId) && target.hp>0)resolveWeaponAttack(state,actor,target,rng,events);
+    for(let n=0;n<attacksPerAction(actor)&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events);
     return { ok: true, kind: "combat", outcomeText: `${actor.name} attacks ${target.name}.` };
   }
   if (actionId === "defend") {
@@ -1094,7 +1103,7 @@ function combatActionView(state) {
       cost: "action",
       targetKind: "enemy",
       targets: actionTargetOptions(state, "enemy"),
-      description: `Attack ${formatSigned(actor.attack.attackBonus)} to hit; ${actor.attack.damageFormula} ${actor.attack.damageType} damage.${actor.level>=5&&["fighter","ranger"].includes(actor.classId)?" Two strikes against the selected target; second only if it survives.":""}`
+      description: `Attack ${formatSigned(actor.attack.attackBonus)} to hit; ${actor.attack.damageFormula} ${actor.attack.damageType} damage.${attacksPerAction(actor)===3?" Three strikes against the selected target; later strikes only if it survives.":attacksPerAction(actor)===2?" Two strikes against the selected target; second only if it survives.":""}`
     });
     actions.push({ id: "defend", name: "Dodge", cost: "action", targetKind: "self", targets: actionTargetOptions(state, "self"), description: "Attacks against you have disadvantage until your next turn." });
   }
