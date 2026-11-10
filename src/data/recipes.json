@@ -1,0 +1,28 @@
+[
+  {
+    "id": "brew",
+    "name": "Brew Greater Healing",
+    "itemId": "greater-healing",
+    "ingredients": [
+      {
+        "itemId": "herb-bundle",
+        "quantity": 2
+      }
+    ],
+    "gold": 8,
+    "description": "Two Medicinal Herbs + 8 gold → one Greater Healing Draught."
+  },
+  {
+    "id": "charm",
+    "name": "Assemble Sentinel Charm",
+    "itemId": "sentinel-charm",
+    "ingredients": [
+      {
+        "itemId": "ward-fragment",
+        "quantity": 1
+      }
+    ],
+    "gold": 30,
+    "description": "One Ward Crystal Fragment + 30 gold → one Sentinel Charm."
+  }
+]

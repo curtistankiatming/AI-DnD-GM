@@ -1,0 +1,44 @@
+{
+  "caravan": {
+    "id": "caravan",
+    "name": "Pella’s Road Caravan",
+    "role": "Field trader",
+    "personality": "Pella counts every flask twice and remembers anyone who returns an empty bottle.",
+    "stock": [
+      "healing-potion",
+      "healers-kit",
+      "smoke-bomb",
+      "silk-rope",
+      "herb-bundle"
+    ],
+    "offer": "Escort the wagon through the exposed stretch: the party loses a little daylight and 2 HP each, but Pella gives a permanent 5% caravan discount. Once per campaign."
+  },
+  "specialist": {
+    "id": "specialist",
+    "name": "Fen, the Weather Reader",
+    "role": "Expedition specialist",
+    "personality": "Fen listens to the ground before setting out a carefully limited kit of supplies.",
+    "stock": [
+      "antitoxin",
+      "climbing-kit",
+      "storm-grounder",
+      "lantern",
+      "ward-coating",
+      "greater-healing"
+    ],
+    "offer": "Fen sells regional tools, never a guaranteed solution to an undiscovered puzzle."
+  },
+  "relic": {
+    "id": "relic",
+    "name": "Edda’s Cabinet of Unlikely Things",
+    "role": "Relic broker",
+    "personality": "Edda will exchange a rare trinket for a stable ward fragment and a little honest coin.",
+    "stock": [
+      "resonant-blade",
+      "scholars-lens",
+      "wayfarer-boots",
+      "sentinel-charm"
+    ],
+    "offer": "Exchange one ward crystal fragment and 30 gold for a Wayfarer’s Boots pair. One exchange per meeting."
+  }
+}

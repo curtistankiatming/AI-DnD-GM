@@ -1,0 +1,517 @@
+{
+  "fighter": {
+    "id": "fighter",
+    "name": "Fighter",
+    "role": "Front-line defender",
+    "hitDie": 10,
+    "primaryAbility": "str",
+    "savingThrows": [
+      "str",
+      "con"
+    ],
+    "skillsChoose": [
+      "athletics",
+      "intimidation",
+      "perception",
+      "survival",
+      "insight"
+    ],
+    "defaultSkills": [
+      "athletics",
+      "perception"
+    ],
+    "preset": {
+      "str": 15,
+      "dex": 12,
+      "con": 14,
+      "int": 8,
+      "wis": 13,
+      "cha": 10
+    },
+    "equipment": {
+      "mainHand": "iron-longsword",
+      "offHand": "steel-shield",
+      "armor": "chain-shirt",
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      }
+    ],
+    "description": "Durable and direct. Protects the party, holds the line, and recovers through punishment.",
+    "resources": {
+      "secondWind": {
+        "name": "Second Wind",
+        "max": 1,
+        "refresh": "short"
+      }
+    },
+    "actions": [
+      {
+        "id": "second-wind",
+        "name": "Second Wind",
+        "kind": "heal",
+        "cost": "bonus",
+        "resource": "secondWind",
+        "target": "self",
+        "formula": "1d10+level",
+        "description": "Recover 1d10 + level hit points. Refreshes on a short rest."
+      },
+      {
+        "id": "brace",
+        "name": "Brace",
+        "kind": "guard",
+        "cost": "action",
+        "target": "ally",
+        "description": "Grant an ally +2 AC until your next turn and make enemies more likely to attack you."
+      }
+    ]
+  },
+  "rogue": {
+    "id": "rogue",
+    "name": "Rogue",
+    "role": "Skirmisher and expert",
+    "hitDie": 8,
+    "primaryAbility": "dex",
+    "savingThrows": [
+      "dex",
+      "int"
+    ],
+    "skillsChoose": [
+      "acrobatics",
+      "deception",
+      "insight",
+      "investigation",
+      "perception",
+      "persuasion",
+      "sleightOfHand",
+      "stealth"
+    ],
+    "defaultSkills": [
+      "stealth",
+      "investigation"
+    ],
+    "expertise": [
+      "stealth"
+    ],
+    "preset": {
+      "str": 8,
+      "dex": 15,
+      "con": 13,
+      "int": 14,
+      "wis": 12,
+      "cha": 10
+    },
+    "equipment": {
+      "mainHand": "shortsword",
+      "offHand": null,
+      "armor": "leather-armor",
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "smoke-bomb",
+        "quantity": 1
+      },
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      }
+    ],
+    "description": "Excels at stealth, investigation, precision attacks, and turning an ally's distraction into damage.",
+    "resources": {},
+    "passives": [
+      "sneakAttack"
+    ],
+    "actions": [
+      {
+        "id": "cunning-hide",
+        "name": "Cunning Hide",
+        "kind": "hide",
+        "cost": "bonus",
+        "target": "self",
+        "description": "Make a Stealth check against the enemies' awareness. On success, gain advantage on your next attack."
+      },
+      {
+        "id": "cunning-disengage",
+        "name": "Disengage",
+        "kind": "disengage",
+        "cost": "bonus",
+        "target": "self",
+        "description": "Withdraw safely; gain +2 AC against the next attack before your turn."
+      }
+    ]
+  },
+  "wizard": {
+    "id": "wizard",
+    "name": "Wizard",
+    "role": "Arcane controller",
+    "hitDie": 6,
+    "primaryAbility": "int",
+    "savingThrows": [
+      "int",
+      "wis"
+    ],
+    "skillsChoose": [
+      "arcana",
+      "history",
+      "insight",
+      "investigation",
+      "medicine",
+      "religion"
+    ],
+    "defaultSkills": [
+      "arcana",
+      "investigation"
+    ],
+    "preset": {
+      "str": 8,
+      "dex": 14,
+      "con": 13,
+      "int": 15,
+      "wis": 12,
+      "cha": 10
+    },
+    "equipment": {
+      "mainHand": "ash-wand",
+      "offHand": null,
+      "armor": null,
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      },
+      {
+        "itemId": "scholars-journal",
+        "quantity": 1
+      }
+    ],
+    "description": "Fragile but versatile. Uses cantrips freely and spell slots for decisive arcane effects.",
+    "resources": {
+      "spellSlots1": {
+        "name": "1st-level Spell Slots",
+        "max": 2,
+        "refresh": "long"
+      }
+    },
+    "actions": [
+      {
+        "id": "fire-bolt",
+        "name": "Fire Bolt",
+        "kind": "spellAttack",
+        "cost": "action",
+        "target": "enemy",
+        "ability": "int",
+        "damage": "1d10",
+        "damageType": "fire",
+        "description": "Ranged spell attack for 1d10 fire damage. No spell slot required."
+      },
+      {
+        "id": "magic-missile",
+        "name": "Magic Missile",
+        "kind": "autoDamage",
+        "cost": "action",
+        "target": "enemy",
+        "resource": "spellSlots1",
+        "damage": "3d4+3",
+        "damageType": "force",
+        "description": "Automatically hits for 3d4 + 3 force damage. Costs one spell slot."
+      },
+      {
+        "id": "sleep",
+        "name": "Sleep",
+        "kind": "sleep",
+        "cost": "action",
+        "target": "enemyGroup",
+        "resource": "spellSlots1",
+        "formula": "5d8",
+        "description": "Puts the weakest enemies into magical sleep, starting with the lowest current HP. Costs one spell slot."
+      }
+    ]
+  },
+  "cleric": {
+    "id": "cleric",
+    "name": "Cleric",
+    "role": "Divine support",
+    "hitDie": 8,
+    "primaryAbility": "wis",
+    "savingThrows": [
+      "wis",
+      "cha"
+    ],
+    "skillsChoose": [
+      "history",
+      "insight",
+      "medicine",
+      "persuasion",
+      "religion"
+    ],
+    "defaultSkills": [
+      "medicine",
+      "religion"
+    ],
+    "preset": {
+      "str": 13,
+      "dex": 10,
+      "con": 14,
+      "int": 8,
+      "wis": 15,
+      "cha": 12
+    },
+    "equipment": {
+      "mainHand": "war-mace",
+      "offHand": "steel-shield",
+      "armor": "chain-shirt",
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "holy-water",
+        "quantity": 1
+      },
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      }
+    ],
+    "description": "A resilient healer who can restore allies without surrendering the rest of a turn.",
+    "resources": {
+      "spellSlots1": {
+        "name": "1st-level Spell Slots",
+        "max": 2,
+        "refresh": "long"
+      }
+    },
+    "actions": [
+      {
+        "id": "sacred-flame",
+        "name": "Sacred Flame",
+        "kind": "saveDamage",
+        "cost": "action",
+        "target": "enemy",
+        "ability": "wis",
+        "saveAbility": "dex",
+        "damage": "1d8",
+        "damageType": "radiant",
+        "description": "Target makes a Dexterity save or takes 1d8 radiant damage. No spell slot required."
+      },
+      {
+        "id": "healing-word",
+        "name": "Healing Word",
+        "kind": "heal",
+        "cost": "bonus",
+        "target": "ally",
+        "resource": "spellSlots1",
+        "formula": "1d4+mod",
+        "ability": "wis",
+        "description": "Restore 1d4 + Wisdom modifier hit points at range. Costs one spell slot."
+      },
+      {
+        "id": "guiding-bolt",
+        "name": "Guiding Bolt",
+        "kind": "spellAttack",
+        "cost": "action",
+        "target": "enemy",
+        "resource": "spellSlots1",
+        "ability": "wis",
+        "damage": "4d6",
+        "damageType": "radiant",
+        "onHit": "guiding",
+        "description": "Ranged spell attack for 4d6 radiant damage; the next attack against the target has advantage. Costs one spell slot."
+      }
+    ]
+  },
+  "ranger": {
+    "id": "ranger",
+    "name": "Ranger",
+    "role": "Hunter and pathfinder",
+    "hitDie": 10,
+    "primaryAbility": "dex",
+    "savingThrows": [
+      "str",
+      "dex"
+    ],
+    "skillsChoose": [
+      "animalHandling",
+      "athletics",
+      "insight",
+      "investigation",
+      "nature",
+      "perception",
+      "stealth",
+      "survival"
+    ],
+    "defaultSkills": [
+      "perception",
+      "survival"
+    ],
+    "preset": {
+      "str": 10,
+      "dex": 15,
+      "con": 14,
+      "int": 8,
+      "wis": 13,
+      "cha": 12
+    },
+    "equipment": {
+      "mainHand": "shortbow",
+      "offHand": null,
+      "armor": "leather-armor",
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "antitoxin",
+        "quantity": 1
+      },
+      {
+        "itemId": "silk-rope",
+        "quantity": 1
+      },
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      }
+    ],
+    "description": "A reliable ranged combatant with exceptional wilderness skills and focused prey damage.",
+    "resources": {
+      "huntersMark": {
+        "name": "Hunter's Mark",
+        "max": 2,
+        "refresh": "long"
+      }
+    },
+    "actions": [
+      {
+        "id": "hunters-mark",
+        "name": "Hunter's Mark",
+        "kind": "mark",
+        "cost": "bonus",
+        "target": "enemy",
+        "resource": "huntersMark",
+        "description": "Mark one enemy. Your weapon hits deal +1d6 damage to it until it falls or combat ends."
+      },
+      {
+        "id": "field-dressing",
+        "name": "Field Dressing",
+        "kind": "heal",
+        "cost": "action",
+        "target": "ally",
+        "formula": "1d6+2",
+        "limit": "oncePerCombat",
+        "description": "Restore 1d6 + 2 hit points to an ally. Once per combat."
+      }
+    ]
+  },
+  "bard": {
+    "id": "bard",
+    "name": "Bard",
+    "role": "Social support and control",
+    "hitDie": 8,
+    "primaryAbility": "cha",
+    "savingThrows": [
+      "dex",
+      "cha"
+    ],
+    "skillsChoose": [
+      "athletics",
+      "acrobatics",
+      "sleightOfHand",
+      "stealth",
+      "arcana",
+      "history",
+      "investigation",
+      "nature",
+      "religion",
+      "animalHandling",
+      "insight",
+      "medicine",
+      "perception",
+      "survival",
+      "deception",
+      "intimidation",
+      "performance",
+      "persuasion"
+    ],
+    "defaultSkills": [
+      "persuasion",
+      "insight"
+    ],
+    "preset": {
+      "str": 8,
+      "dex": 14,
+      "con": 13,
+      "int": 10,
+      "wis": 12,
+      "cha": 15
+    },
+    "equipment": {
+      "mainHand": "lute-blade",
+      "offHand": null,
+      "armor": "leather-armor",
+      "accessory": null
+    },
+    "inventory": [
+      {
+        "itemId": "disguise-kit",
+        "quantity": 1
+      },
+      {
+        "itemId": "healing-potion",
+        "quantity": 1
+      }
+    ],
+    "description": "Shapes the party's luck through inspiration, sharp words, and flexible support magic.",
+    "resources": {
+      "bardicInspiration": {
+        "name": "Bardic Inspiration",
+        "max": 3,
+        "refresh": "long"
+      },
+      "spellSlots1": {
+        "name": "1st-level Spell Slots",
+        "max": 2,
+        "refresh": "long"
+      }
+    },
+    "actions": [
+      {
+        "id": "vicious-mockery",
+        "name": "Vicious Mockery",
+        "kind": "saveDamage",
+        "cost": "action",
+        "target": "enemy",
+        "ability": "cha",
+        "saveAbility": "wis",
+        "damage": "1d4",
+        "damageType": "psychic",
+        "onFail": "mocked",
+        "description": "Target makes a Wisdom save or takes 1d4 psychic damage and has disadvantage on its next attack."
+      },
+      {
+        "id": "bardic-inspiration",
+        "name": "Bardic Inspiration",
+        "kind": "inspire",
+        "cost": "bonus",
+        "target": "ally",
+        "resource": "bardicInspiration",
+        "description": "Give an ally a d6 that is automatically added to its next failed attack or saving throw."
+      },
+      {
+        "id": "healing-word",
+        "name": "Healing Word",
+        "kind": "heal",
+        "cost": "bonus",
+        "target": "ally",
+        "resource": "spellSlots1",
+        "formula": "1d4+mod",
+        "ability": "cha",
+        "description": "Restore 1d4 + Charisma modifier hit points at range. Costs one spell slot."
+      }
+    ]
+  }
+}

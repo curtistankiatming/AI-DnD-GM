@@ -1,0 +1,382 @@
+{
+  "iron-longsword": {
+    "id": "iron-longsword",
+    "name": "Iron Longsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 15,
+    "description": "A reliable one-handed blade with enough weight to turn a committed strike.",
+    "purpose": "Equip in your main hand. Uses Strength for attacks and deals 1d8 slashing damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    }
+  },
+  "steel-shield": {
+    "id": "steel-shield",
+    "name": "Steel Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Common",
+    "value": 10,
+    "description": "A broad shield marked by old repairs.",
+    "purpose": "Equip in your off hand for +2 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 2
+  },
+  "chain-shirt": {
+    "id": "chain-shirt",
+    "name": "Chain Shirt",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Common",
+    "value": 50,
+    "description": "Interlocking rings worn beneath a fitted leather coat.",
+    "purpose": "Sets base Armor Class to 13 and adds up to +2 from Dexterity.",
+    "armor": {
+      "base": 13,
+      "dexCap": 2
+    }
+  },
+  "leather-armor": {
+    "id": "leather-armor",
+    "name": "Leather Armor",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Common",
+    "value": 10,
+    "description": "Supple boiled leather that protects without impeding movement.",
+    "purpose": "Sets base Armor Class to 11 and adds your full Dexterity modifier.",
+    "armor": {
+      "base": 11,
+      "dexCap": null
+    }
+  },
+  "studded-leather": {
+    "id": "studded-leather",
+    "name": "Studded Leather",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Uncommon",
+    "value": 45,
+    "description": "Flexible leather reinforced with close-set metal studs.",
+    "purpose": "Sets base Armor Class to 12 and adds your full Dexterity modifier.",
+    "armor": {
+      "base": 12,
+      "dexCap": null
+    }
+  },
+  "shortsword": {
+    "id": "shortsword",
+    "name": "Shortsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 10,
+    "description": "A quick, narrow blade suited to close quarters.",
+    "purpose": "Equip in your main hand. Uses the better of Strength or Dexterity and deals 1d6 piercing damage.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    }
+  },
+  "shortbow": {
+    "id": "shortbow",
+    "name": "Shortbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 25,
+    "description": "A compact bow with a waxed string and a dozen serviceable arrows.",
+    "purpose": "Equip in your main hand. Uses Dexterity and deals 1d6 piercing damage at range.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    }
+  },
+  "oak-staff": {
+    "id": "oak-staff",
+    "name": "Oak Quarterstaff",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 2,
+    "description": "A straight-grained staff banded with iron near the grip.",
+    "purpose": "Equip in your main hand. Uses Strength and deals 1d6 bludgeoning damage.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    }
+  },
+  "ash-wand": {
+    "id": "ash-wand",
+    "name": "Ash Wand",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 10,
+    "description": "A scorched wand that steadies the shaping of arcane force.",
+    "purpose": "Equip as an arcane focus. Grants +1 to spell attack rolls.",
+    "spellAttackBonus": 1
+  },
+  "war-mace": {
+    "id": "war-mace",
+    "name": "War Mace",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 5,
+    "description": "A flanged iron mace balanced for one-handed use.",
+    "purpose": "Equip in your main hand. Uses Strength and deals 1d6 bludgeoning damage.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    }
+  },
+  "lute-blade": {
+    "id": "lute-blade",
+    "name": "Courtier's Rapier",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 25,
+    "description": "A slender duelling blade carried beside a travel-worn lute.",
+    "purpose": "Equip in your main hand. Uses the better of Strength or Dexterity and deals 1d8 piercing damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    }
+  },
+  "healing-potion": {
+    "id": "healing-potion",
+    "name": "Potion of Healing",
+    "category": "consumable",
+    "rarity": "Common",
+    "value": 50,
+    "description": "A thumb-sized red vial that warms when uncorked.",
+    "purpose": "Use as an action in or out of combat to restore 2d4 + 2 hit points.",
+    "usable": {
+      "contexts": [
+        "combat",
+        "story"
+      ],
+      "effect": "heal",
+      "formula": "2d4+2",
+      "target": "ally",
+      "cost": "action"
+    }
+  },
+  "antitoxin": {
+    "id": "antitoxin",
+    "name": "Antitoxin",
+    "category": "consumable",
+    "rarity": "Common",
+    "value": 50,
+    "description": "A bitter herbal draught sealed in green glass.",
+    "purpose": "Use to end the Poisoned condition or gain advantage against the next poison save.",
+    "usable": {
+      "contexts": [
+        "combat",
+        "story"
+      ],
+      "effect": "cure",
+      "condition": "poisoned",
+      "target": "ally",
+      "cost": "action"
+    }
+  },
+  "holy-water": {
+    "id": "holy-water",
+    "name": "Holy Water",
+    "category": "consumable",
+    "rarity": "Common",
+    "value": 25,
+    "description": "Consecrated water in a stoppered silver flask.",
+    "purpose": "Throw in combat to deal 2d6 radiant damage to undead, or use at certain profaned sites.",
+    "usable": {
+      "contexts": [
+        "combat",
+        "story"
+      ],
+      "effect": "holyWater",
+      "formula": "2d6",
+      "target": "enemy",
+      "cost": "action"
+    }
+  },
+  "smoke-bomb": {
+    "id": "smoke-bomb",
+    "name": "Smoke Bomb",
+    "category": "consumable",
+    "rarity": "Uncommon",
+    "value": 35,
+    "description": "A clay shell packed with soot, saltpetre, and bitterleaf.",
+    "purpose": "Use in combat to gain the Hidden condition and impose disadvantage on attacks against you until your next turn.",
+    "usable": {
+      "contexts": [
+        "combat"
+      ],
+      "effect": "hide",
+      "target": "self",
+      "cost": "bonus"
+    }
+  },
+  "healers-kit": {
+    "id": "healers-kit",
+    "name": "Healer's Kit",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 5,
+    "description": "Bandages, needles, splints, and clean bitter spirits.",
+    "purpose": "Outside combat, expend a use to restore 1d6 + 2 hit points. In combat, stabilize an unconscious ally.",
+    "charges": 3,
+    "usable": {
+      "contexts": [
+        "combat",
+        "story"
+      ],
+      "effect": "healersKit",
+      "formula": "1d6+2",
+      "target": "ally",
+      "cost": "action"
+    }
+  },
+  "thieves-tools": {
+    "id": "thieves-tools",
+    "name": "Thieves' Tools",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 25,
+    "description": "Picks, files, a narrow mirror, and folding pliers in a leather roll.",
+    "purpose": "Unlocks tool-assisted choices involving locks and traps; usually improves the odds of success.",
+    "tags": [
+      "lockpick"
+    ]
+  },
+  "silk-rope": {
+    "id": "silk-rope",
+    "name": "Silk Rope",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 10,
+    "description": "Fifty feet of light, strong rope.",
+    "purpose": "Unlocks safer traversal choices and can prevent damage from climbs, pits, and swift water.",
+    "tags": [
+      "rope"
+    ]
+  },
+  "disguise-kit": {
+    "id": "disguise-kit",
+    "name": "Disguise Kit",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 25,
+    "description": "Pigments, wax, false hair, and reversible costume pieces.",
+    "purpose": "Unlocks disguise-based social approaches and may grant advantage on Deception checks.",
+    "tags": [
+      "disguise"
+    ]
+  },
+  "scholars-journal": {
+    "id": "scholars-journal",
+    "name": "Scholar's Journal",
+    "category": "tool",
+    "rarity": "Common",
+    "value": 10,
+    "description": "A field journal indexed with historical and arcane references.",
+    "purpose": "Can assist History or Arcana checks when time permits.",
+    "tags": [
+      "reference"
+    ]
+  },
+  "silver-chime": {
+    "id": "silver-chime",
+    "name": "Silver Pilgrim Chime",
+    "category": "quest",
+    "rarity": "Rare",
+    "value": 0,
+    "description": "A small chime engraved with the first wardens' vow.",
+    "purpose": "A story item. Its clear note can awaken or quiet the ward-bell's ancient magic.",
+    "tags": [
+      "bell",
+      "consecrated"
+    ]
+  },
+  "cult-seal": {
+    "id": "cult-seal",
+    "name": "Black-Wax Cult Seal",
+    "category": "quest",
+    "rarity": "Uncommon",
+    "value": 0,
+    "description": "A seal pressed with a thorn coiled around a cracked bell.",
+    "purpose": "Evidence of the conspiracy and a possible key to cult-controlled doors.",
+    "tags": [
+      "cult",
+      "evidence",
+      "key"
+    ]
+  },
+  "warden-ledger": {
+    "id": "warden-ledger",
+    "name": "Warden's Cipher Ledger",
+    "category": "quest",
+    "rarity": "Rare",
+    "value": 0,
+    "description": "A coded ledger linking payments from Briarwatch to the bell cult.",
+    "purpose": "Strong evidence. It can turn frightened guards or villagers against the conspirator.",
+    "tags": [
+      "evidence",
+      "ledger"
+    ]
+  },
+  "bellfire-locket": {
+    "id": "bellfire-locket",
+    "name": "Bellfire Locket",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 75,
+    "description": "A warm brass locket holding a sliver of resonant crystal.",
+    "purpose": "Equip for +1 on Wisdom saving throws and certain checks involving the ward-bell.",
+    "saveBonuses": {
+      "wis": 1
+    },
+    "skillBonuses": {
+      "religion": 1,
+      "insight": 1
+    }
+  },
+  "thornward-cloak": {
+    "id": "thornward-cloak",
+    "name": "Thornward Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 80,
+    "description": "A moss-green cloak whose clasp is shaped like a closed briar.",
+    "purpose": "Equip for +1 Armor Class and advantage on the first Survival check made in the Briarwood after resting.",
+    "acBonus": 1,
+    "tags": [
+      "briarwood"
+    ]
+  }
+}

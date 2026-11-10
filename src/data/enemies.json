@@ -1,0 +1,186 @@
+{
+  "goblin-cutthroat": {
+    "id": "goblin-cutthroat",
+    "name": "Goblin Cutthroat",
+    "maxHp": 7,
+    "ac": 13,
+    "abilities": {
+      "str": 8,
+      "dex": 14,
+      "con": 10,
+      "int": 10,
+      "wis": 8,
+      "cha": 8
+    },
+    "attack": {
+      "name": "Jagged Blade",
+      "bonus": 4,
+      "damage": "1d6+2",
+      "damageType": "slashing"
+    },
+    "xp": 25,
+    "aiRole": "skirmisher"
+  },
+  "cult-lookout": {
+    "id": "cult-lookout",
+    "name": "Thorn-Bell Lookout",
+    "maxHp": 9,
+    "ac": 12,
+    "abilities": {
+      "str": 10,
+      "dex": 13,
+      "con": 11,
+      "int": 10,
+      "wis": 12,
+      "cha": 9
+    },
+    "attack": {
+      "name": "Hooked Spear",
+      "bonus": 3,
+      "damage": "1d6+1",
+      "damageType": "piercing"
+    },
+    "xp": 35,
+    "aiRole": "soldier"
+  },
+  "briar-wolf": {
+    "id": "briar-wolf",
+    "name": "Briar Wolf",
+    "maxHp": 11,
+    "ac": 13,
+    "abilities": {
+      "str": 12,
+      "dex": 15,
+      "con": 12,
+      "int": 3,
+      "wis": 12,
+      "cha": 6
+    },
+    "attack": {
+      "name": "Thorn Bite",
+      "bonus": 4,
+      "damage": "1d6+2",
+      "damageType": "piercing",
+      "onHit": "bleeding"
+    },
+    "xp": 40,
+    "aiRole": "beast"
+  },
+  "rootbound-guard": {
+    "id": "rootbound-guard",
+    "name": "Rootbound Guard",
+    "maxHp": 13,
+    "ac": 14,
+    "abilities": {
+      "str": 14,
+      "dex": 9,
+      "con": 14,
+      "int": 6,
+      "wis": 10,
+      "cha": 5
+    },
+    "attack": {
+      "name": "Briar Club",
+      "bonus": 4,
+      "damage": "1d8+2",
+      "damageType": "bludgeoning"
+    },
+    "xp": 50,
+    "aiRole": "brute"
+  },
+  "bell-acolyte": {
+    "id": "bell-acolyte",
+    "name": "Bell Acolyte",
+    "maxHp": 10,
+    "ac": 12,
+    "abilities": {
+      "str": 9,
+      "dex": 12,
+      "con": 11,
+      "int": 12,
+      "wis": 14,
+      "cha": 13
+    },
+    "attack": {
+      "name": "Resonant Hex",
+      "bonus": 4,
+      "damage": "1d8+2",
+      "damageType": "psychic",
+      "save": "wis"
+    },
+    "heal": {
+      "name": "Mend the Faithful",
+      "formula": "1d6+2",
+      "uses": 1
+    },
+    "xp": 55,
+    "aiRole": "caster"
+  },
+  "warden-sable": {
+    "id": "warden-sable",
+    "name": "Warden Sable",
+    "maxHp": 24,
+    "ac": 15,
+    "abilities": {
+      "str": 14,
+      "dex": 14,
+      "con": 14,
+      "int": 13,
+      "wis": 12,
+      "cha": 15
+    },
+    "attack": {
+      "name": "Blackthorn Sabre",
+      "bonus": 5,
+      "damage": "1d8+3",
+      "damageType": "slashing"
+    },
+    "special": {
+      "name": "Commanding Rebuke",
+      "recharge": 3,
+      "damage": "1d6+2",
+      "save": "wis",
+      "condition": "frightened"
+    },
+    "xp": 120,
+    "aiRole": "leader"
+  },
+  "bell-wraith": {
+    "id": "bell-wraith",
+    "name": "Wraith of the Hollow Bell",
+    "maxHp": 30,
+    "ac": 13,
+    "abilities": {
+      "str": 6,
+      "dex": 14,
+      "con": 16,
+      "int": 12,
+      "wis": 14,
+      "cha": 16
+    },
+    "attack": {
+      "name": "Grief Toll",
+      "bonus": 5,
+      "damage": "1d8+3",
+      "damageType": "necrotic",
+      "save": "wis"
+    },
+    "special": {
+      "name": "Shattering Peal",
+      "recharge": 3,
+      "damage": "2d6",
+      "save": "con",
+      "condition": "deafened"
+    },
+    "resistances": [
+      "slashing",
+      "piercing",
+      "bludgeoning"
+    ],
+    "tags": [
+      "undead"
+    ],
+    "xp": 160,
+    "aiRole": "boss"
+  }
+}

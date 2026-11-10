@@ -14,6 +14,8 @@
   generated content is re-bounded on load.
 - Tests and CI never call the paid Claude API or a real model: inject a fake
   client (see `tests/claude-ai.test.js`) or use isolated loopback mocks.
+- Authored content lives in `src/data/*.json`. Edit the data, not the loaders;
+  `tests/content-data.test.js` checks that every reference resolves.
 - Keep save schema compatibility explicit. Use an OS temporary SAVE_DIR for all
   HTTP tests; never touch real saves or include them in commits/releases.
 - Playable content is levels 1–10. Levels 30/70 are future advancement milestones,

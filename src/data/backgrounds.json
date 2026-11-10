@@ -1,0 +1,68 @@
+{
+  "soldier": {
+    "id": "soldier",
+    "name": "Soldier",
+    "summary": "A veteran used to discipline, danger, and command.",
+    "skills": [
+      "athletics",
+      "intimidation"
+    ],
+    "item": "healers-kit",
+    "gold": 12
+  },
+  "urchin": {
+    "id": "urchin",
+    "name": "Urchin",
+    "summary": "A survivor of alleys, rooftops, locks, and watchful crowds.",
+    "skills": [
+      "sleightOfHand",
+      "stealth"
+    ],
+    "item": "thieves-tools",
+    "gold": 8
+  },
+  "sage": {
+    "id": "sage",
+    "name": "Sage",
+    "summary": "A scholar of lost names, old powers, and dangerous texts.",
+    "skills": [
+      "arcana",
+      "history"
+    ],
+    "item": "scholars-journal",
+    "gold": 10
+  },
+  "acolyte": {
+    "id": "acolyte",
+    "name": "Acolyte",
+    "summary": "A temple-trained mediator familiar with rites and suffering.",
+    "skills": [
+      "insight",
+      "religion"
+    ],
+    "item": "holy-water",
+    "gold": 10
+  },
+  "outlander": {
+    "id": "outlander",
+    "name": "Outlander",
+    "summary": "A pathfinder who reads weather, spoor, and wild terrain.",
+    "skills": [
+      "perception",
+      "survival"
+    ],
+    "item": "silk-rope",
+    "gold": 9
+  },
+  "charlatan": {
+    "id": "charlatan",
+    "name": "Charlatan",
+    "summary": "A practiced liar with a talent for masks and social pressure.",
+    "skills": [
+      "deception",
+      "persuasion"
+    ],
+    "item": "disguise-kit",
+    "gold": 14
+  }
+}

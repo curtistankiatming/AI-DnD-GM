@@ -1,0 +1,1390 @@
+{
+  "briarwatch-square": {
+    "id": "briarwatch-square",
+    "act": "Act I — A Village Holding Its Breath",
+    "title": "The Silent Bell",
+    "location": "Briarwatch Village Square",
+    "safeRest": true,
+    "objective": "Learn why the ward-bell fell silent, then follow the missing bell-keeper into the Briarwood.",
+    "opening": "Rain beads on a bell rope cut cleanly at shoulder height. Briarwatch's ward-bell hangs above the square, mute for the first time in living memory. Reeve Aveline watches shuttered windows while your companions study the gathered villagers.",
+    "choices": [
+      {
+        "id": "inspect-rope",
+        "label": "Inspect the severed bell rope",
+        "description": "Examine the cut, residue, and nearby tower fittings.",
+        "keywords": [
+          "inspect rope",
+          "bell rope",
+          "tower",
+          "wax"
+        ],
+        "once": true,
+        "check": {
+          "skill": "investigation",
+          "dc": 11,
+          "tools": [
+            "scholars-journal"
+          ]
+        },
+        "success": {
+          "text": "Under the rain-dark fibres you find a thumbprint of black wax stamped with a thorn around a broken bell.",
+          "clues": [
+            "black-wax"
+          ],
+          "items": [
+            {
+              "itemId": "cult-seal",
+              "quantity": 1
+            }
+          ]
+        },
+        "failure": {
+          "text": "The rain has ruined most traces. Maren nevertheless notices that the rope was cut after the bell stopped, not before.",
+          "setFlags": {
+            "ropeTimingKnown": true
+          }
+        }
+      },
+      {
+        "id": "question-reeve",
+        "label": "Question Reeve Aveline",
+        "description": "Read what the reeve is reluctant to say about the bell-keeper and Warden Sable.",
+        "keywords": [
+          "question reeve",
+          "talk aveline",
+          "warden sable",
+          "ask reeve"
+        ],
+        "once": true,
+        "check": {
+          "skill": "insight",
+          "dc": 11
+        },
+        "success": {
+          "text": "Aveline admits Warden Sable met bell-keeper Tovin in secret. Their argument ended with Sable riding north before dawn.",
+          "clues": [
+            "sable-dispute"
+          ],
+          "approval": {
+            "orin": 1
+          }
+        },
+        "failure": {
+          "text": "Aveline gives only the official account, but Orin catches her glance toward the infirmary whenever Sable's name is spoken.",
+          "setFlags": {
+            "infirmaryHint": true
+          }
+        }
+      },
+      {
+        "id": "visit-tovin",
+        "label": "Visit the wounded bell-keeper",
+        "description": "Tovin survived the night but has not spoken coherently since returning from the wood.",
+        "keywords": [
+          "visit tovin",
+          "infirmary",
+          "bell keeper",
+          "survivor"
+        ],
+        "nextNode": "tovin-infirmary"
+      },
+      {
+        "id": "leave-village",
+        "label": "Follow the north road into the Briarwood",
+        "description": "Commit to the trail. More evidence may make later choices easier.",
+        "keywords": [
+          "leave village",
+          "north road",
+          "briarwood",
+          "depart"
+        ],
+        "nextNode": "forest-edge"
+      }
+    ]
+  },
+  "tovin-infirmary": {
+    "id": "tovin-infirmary",
+    "act": "Act I — A Village Holding Its Breath",
+    "title": "A Witness Who Hears the Bell",
+    "location": "Briarwatch Infirmary",
+    "safeRest": true,
+    "objective": "Learn what Tovin encountered without breaking what remains of his composure.",
+    "opening": "Tovin lies beneath wool blankets, fingers closed around an invisible rope. Each time thunder rolls, he whispers a line that almost becomes a prayer. Maren kneels at a respectful distance; Orin quietly closes the door.",
+    "choices": [
+      {
+        "id": "calm-tovin",
+        "label": "Calm Tovin and let him set the pace",
+        "description": "Use patience and reassurance to separate memory from panic.",
+        "keywords": [
+          "calm tovin",
+          "reassure",
+          "persuade witness"
+        ],
+        "once": true,
+        "check": {
+          "skill": "persuasion",
+          "dc": 11
+        },
+        "success": {
+          "text": "Tovin repeats the cult's whispered verse: ‘Name the grief, then ring it home.’ He says the words made the roots open beneath an old shrine.",
+          "clues": [
+            "hushed-verse"
+          ],
+          "setFlags": {
+            "oldShrineKnown": true
+          },
+          "approval": {
+            "maren": 1
+          }
+        },
+        "failure": {
+          "text": "Tovin cannot finish the verse, but he scratches the shape of a shrine arch into the bedside dust.",
+          "setFlags": {
+            "oldShrineKnown": true
+          }
+        }
+      },
+      {
+        "id": "examine-wound",
+        "label": "Examine the wound on Tovin's shoulder",
+        "description": "Determine what dragged or marked him in the wood.",
+        "keywords": [
+          "examine wound",
+          "medicine",
+          "shoulder wound"
+        ],
+        "once": true,
+        "check": {
+          "skill": "medicine",
+          "dc": 12
+        },
+        "success": {
+          "text": "The wound contains ritual ash and tiny barbs cut in repeating threes. It came from a consecrated briar hook, not a beast.",
+          "clues": [
+            "thorn-wound"
+          ],
+          "approval": {
+            "maren": 1
+          }
+        },
+        "failure": {
+          "text": "You clean and bind the wound but cannot identify the implement. Tovin's breathing steadies enough to point north.",
+          "setFlags": {
+            "tovinStabilized": true
+          }
+        }
+      },
+      {
+        "id": "press-tovin",
+        "label": "Press Tovin for an immediate answer",
+        "description": "Use fear and urgency. This may produce information at a human cost.",
+        "keywords": [
+          "threaten tovin",
+          "press tovin",
+          "intimidate witness"
+        ],
+        "once": true,
+        "check": {
+          "skill": "intimidation",
+          "dc": 10
+        },
+        "success": {
+          "text": "Tovin blurts out the hidden verse and the old shrine's location, then turns his face to the wall.",
+          "clues": [
+            "hushed-verse"
+          ],
+          "setFlags": {
+            "oldShrineKnown": true,
+            "tovinFrightened": true
+          },
+          "approval": {
+            "maren": -2,
+            "orin": -1
+          }
+        },
+        "failure": {
+          "text": "Tovin collapses into panic. Maren ends the questioning and spends several minutes bringing him back to the room.",
+          "damage": {
+            "target": "player",
+            "formula": "0"
+          },
+          "approval": {
+            "maren": -2
+          }
+        }
+      },
+      {
+        "id": "return-square",
+        "label": "Return to the village square",
+        "description": "Rejoin Reeve Aveline and prepare to leave.",
+        "keywords": [
+          "return square",
+          "leave infirmary",
+          "back"
+        ],
+        "nextNode": "briarwatch-square"
+      }
+    ]
+  },
+  "forest-edge": {
+    "id": "forest-edge",
+    "act": "Act II — Roads That Remember",
+    "title": "Three Ways into the Briarwood",
+    "location": "North Verge of the Briarwood",
+    "safeRest": false,
+    "objective": "Choose a route toward the hidden hollow and accept the risks that come with it.",
+    "opening": "The north road divides beneath trees knitted together by old thorns. Wagon ruts vanish into fern on the left. A pilgrim marker leans toward a narrow rise. From the misted hollow to the right comes one faint, impossible bell note.",
+    "choices": [
+      {
+        "id": "track-wagon",
+        "label": "Track the missing wagon through the fern",
+        "description": "Use spoor and broken vegetation to approach the ambushers on better terms.",
+        "keywords": [
+          "track wagon",
+          "follow trail",
+          "survival",
+          "fern"
+        ],
+        "check": {
+          "skill": "survival",
+          "dc": 12,
+          "tools": [
+            "silk-rope"
+          ]
+        },
+        "success": {
+          "text": "Nessa's kind of trailcraft would approve: you find the ambush line before it closes and turn the trap back on its makers.",
+          "setFlags": {
+            "ambushSurprise": true
+          },
+          "combat": "road-ambush"
+        },
+        "failure": {
+          "text": "The trail is deliberately doubled. A cord snaps behind you and masked figures rise from the brush.",
+          "combat": "road-ambush"
+        }
+      },
+      {
+        "id": "pilgrim-path",
+        "label": "Take the old pilgrim path",
+        "description": "Follow weathered ward-stones toward the shrine Tovin remembered.",
+        "keywords": [
+          "pilgrim path",
+          "old shrine",
+          "ward stones"
+        ],
+        "requires": {
+          "flagsAny": [
+            "oldShrineKnown"
+          ],
+          "cluesAny": [
+            "hushed-verse"
+          ]
+        },
+        "lockedText": "You have not learned enough to identify the pilgrim path with confidence.",
+        "check": {
+          "skill": "religion",
+          "dc": 11,
+          "alternateSkills": [
+            "history"
+          ]
+        },
+        "success": {
+          "text": "The old marks resolve into a sequence of safe steps. The path carries you above the traps and toward a forgotten shrine.",
+          "nextNode": "old-shrine"
+        },
+        "failure": {
+          "text": "You find the shrine, but a false ward-stone cuts the party with a burst of thorn splinters.",
+          "partyDamage": "1d4",
+          "nextNode": "old-shrine"
+        }
+      },
+      {
+        "id": "follow-whisper",
+        "label": "Follow the impossible bell-note into the mist",
+        "description": "Trust instinct and the sound no one in the village could hear.",
+        "keywords": [
+          "follow bell",
+          "mist",
+          "whisper",
+          "sound"
+        ],
+        "check": {
+          "ability": "wis",
+          "dc": 12
+        },
+        "success": {
+          "text": "You separate the true note from its echoes and discover a trapped Briarwatch scout before the hunters return.",
+          "nextNode": "mist-hollow"
+        },
+        "failure": {
+          "text": "The note leads in circles. By the time you find the snare clearing, the creatures guarding it are already moving.",
+          "setFlags": {
+            "snareEnemiesAlert": true
+          },
+          "nextNode": "mist-hollow"
+        }
+      },
+      {
+        "id": "main-road",
+        "label": "Advance openly along the main road",
+        "description": "Fast and direct, but the route offers little concealment.",
+        "keywords": [
+          "main road",
+          "advance openly",
+          "direct route"
+        ],
+        "combat": "road-ambush"
+      }
+    ]
+  },
+  "old-shrine": {
+    "id": "old-shrine",
+    "act": "Act II — Roads That Remember",
+    "title": "The Shrine of the First Answer",
+    "location": "Abandoned Pilgrim Shrine",
+    "safeRest": true,
+    "objective": "Recover the shrine's forgotten knowledge and find the under-road into the cult's hollow.",
+    "opening": "Roots split the shrine's roof but leave its little silver bell untouched. Six names have been chiselled from the altar. A seventh remains beneath soot, beside a stone reliquary with no visible hinge.",
+    "choices": [
+      {
+        "id": "read-altar",
+        "label": "Reconstruct the erased dedication",
+        "description": "Compare the surviving script, Tovin's verse, and the bell's old iconography.",
+        "keywords": [
+          "read altar",
+          "dedication",
+          "true name",
+          "inscription"
+        ],
+        "once": true,
+        "check": {
+          "skill": "religion",
+          "dc": 12,
+          "alternateSkills": [
+            "history",
+            "arcana"
+          ],
+          "tools": [
+            "scholars-journal"
+          ]
+        },
+        "success": {
+          "text": "The missing dedication names the bell Aster Vey—‘the star that answers.’ The silver chime rings once when you speak it aloud.",
+          "clues": [
+            "bell-true-name"
+          ],
+          "items": [
+            {
+              "itemId": "silver-chime",
+              "quantity": 1
+            }
+          ],
+          "approval": {
+            "maren": 1
+          }
+        },
+        "failure": {
+          "text": "The full name escapes you, but the surviving vow makes one fact clear: the ward-spirit once answered willing keepers, not masters.",
+          "clues": [
+            "wraith-bound"
+          ]
+        }
+      },
+      {
+        "id": "open-reliquary",
+        "label": "Open the seamless stone reliquary",
+        "description": "Search for the concealed catch or work the seal with proper tools.",
+        "keywords": [
+          "open reliquary",
+          "lock",
+          "thieves tools",
+          "stone box"
+        ],
+        "once": true,
+        "check": {
+          "skill": "sleightOfHand",
+          "dc": 13,
+          "toolsRequiredOrPenalty": "thieves-tools"
+        },
+        "success": {
+          "text": "A hidden pin yields. Inside are two flasks of holy water and a travel cloak woven with living-looking briars.",
+          "items": [
+            {
+              "itemId": "holy-water",
+              "quantity": 2
+            },
+            {
+              "itemId": "thornward-cloak",
+              "quantity": 1
+            }
+          ]
+        },
+        "failure": {
+          "text": "The catch bites like a thorn. The reliquary opens, but its ward burns your hand before fading.",
+          "damage": {
+            "target": "player",
+            "formula": "1d4"
+          },
+          "items": [
+            {
+              "itemId": "holy-water",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      {
+        "id": "enter-underroad",
+        "label": "Descend into the root-lined under-road",
+        "description": "Leave the shrine through the passage beneath its altar.",
+        "keywords": [
+          "descend",
+          "under road",
+          "passage",
+          "leave shrine"
+        ],
+        "nextNode": "underroad"
+      }
+    ]
+  },
+  "mist-hollow": {
+    "id": "mist-hollow",
+    "act": "Act II — Roads That Remember",
+    "title": "The Snared Scout",
+    "location": "Mist Hollow",
+    "safeRest": false,
+    "objective": "Free the trapped scout before the briar wolves close in.",
+    "opening": "A young scout hangs upside down above a carpet of thorn roots, one boot caught in a wire snare. She presses a finger to her lips and points to two low shapes pacing beyond the fog.",
+    "choices": [
+      {
+        "id": "quiet-release",
+        "label": "Disarm the snare without alerting the wolves",
+        "description": "Use careful hands and the scout's whispered directions.",
+        "keywords": [
+          "disarm snare",
+          "free scout quietly",
+          "cut wire"
+        ],
+        "check": {
+          "skill": "sleightOfHand",
+          "dc": 12,
+          "alternateSkills": [
+            "survival"
+          ]
+        },
+        "success": {
+          "text": "The wire slackens without a chime. Nessa drops into Orin's waiting arms and leads the party through a gap in the wolves' patrol.",
+          "recruit": "nessa",
+          "setFlags": {
+            "nessaRescuedQuietly": true
+          },
+          "nextNode": "mist-hollow-after",
+          "approval": {
+            "nessa": 1,
+            "orin": 1
+          }
+        },
+        "failure": {
+          "text": "The catch gives with a bright metallic snap. Nessa lands safely, but the briar wolves charge before anyone can withdraw.",
+          "recruit": "nessa",
+          "combat": "snare-rescue"
+        }
+      },
+      {
+        "id": "hold-wolves",
+        "label": "Have Orin hold the wolves while you cut Nessa free",
+        "description": "A companion-led plan: Orin becomes the obvious target while you work quickly.",
+        "keywords": [
+          "orin hold wolves",
+          "guardian plan",
+          "cut scout free"
+        ],
+        "requires": {
+          "companion": "orin"
+        },
+        "autoSuccess": true,
+        "result": {
+          "text": "Orin steps into the clearing and hammers his shield. Nessa drops free behind him; the wolves answer his challenge.",
+          "recruit": "nessa",
+          "setFlags": {
+            "orinStartsGuarding": true
+          },
+          "combat": "snare-rescue",
+          "approval": {
+            "orin": 1,
+            "nessa": 1
+          }
+        }
+      },
+      {
+        "id": "rush-snare",
+        "label": "Rush the snare and cut it by force",
+        "description": "Fast, loud, and physically demanding.",
+        "keywords": [
+          "rush snare",
+          "force",
+          "athletics"
+        ],
+        "check": {
+          "skill": "athletics",
+          "dc": 11
+        },
+        "success": {
+          "text": "You tear the anchor loose and pull Nessa clear before the wolves cross the clearing.",
+          "recruit": "nessa",
+          "setFlags": {
+            "playerStartsGuarding": true
+          },
+          "combat": "snare-rescue"
+        },
+        "failure": {
+          "text": "The thorn-root holds. Nessa cuts herself free as the pack reaches you, taking a hard fall in the process.",
+          "recruit": "nessa",
+          "companionDamage": {
+            "id": "nessa",
+            "formula": "1d4"
+          },
+          "combat": "snare-rescue"
+        }
+      }
+    ]
+  },
+  "mist-hollow-after": {
+    "id": "mist-hollow-after",
+    "act": "Act II — Roads That Remember",
+    "title": "What Nessa Saw",
+    "location": "Mist Hollow",
+    "safeRest": true,
+    "objective": "Hear Nessa's report and choose the route to the hidden gate.",
+    "opening": "Nessa binds her ankle and sketches the hollow from memory. She followed Warden Sable to a root-gate below the ridge. He carried a black seal and spoke to something that answered from underground.",
+    "onEnter": {
+      "clues": [
+        "sable-dispute"
+      ]
+    },
+    "choices": [
+      {
+        "id": "ask-nessa",
+        "label": "Ask Nessa what the bell sounded like",
+        "description": "Her answer may distinguish a monster from a bound spirit.",
+        "keywords": [
+          "ask nessa",
+          "bell sound",
+          "what saw"
+        ],
+        "once": true,
+        "check": {
+          "skill": "insight",
+          "dc": 10
+        },
+        "success": {
+          "text": "Nessa describes grief rather than hunger in the sound. Maren concludes the spirit is being forced through an altered rite.",
+          "clues": [
+            "wraith-bound"
+          ],
+          "approval": {
+            "nessa": 1,
+            "maren": 1
+          }
+        },
+        "failure": {
+          "text": "The memory is too tangled with fear to read cleanly, but Nessa is certain Sable commanded the cultists.",
+          "setFlags": {
+            "nessaSawSable": true
+          }
+        }
+      },
+      {
+        "id": "to-root-gate",
+        "label": "Let Nessa guide the party to the root-gate",
+        "description": "Take the scout's concealed ridge path.",
+        "keywords": [
+          "root gate",
+          "nessa guide",
+          "move on"
+        ],
+        "nextNode": "root-gate"
+      }
+    ]
+  },
+  "ambush-aftermath": {
+    "id": "ambush-aftermath",
+    "act": "Act II — Roads That Remember",
+    "title": "The Mask Comes Off",
+    "location": "Bell Road Ambush Site",
+    "safeRest": true,
+    "objective": "Search the ambush site and decide what to do with the wounded lookout.",
+    "opening": "The last goblin flees into the fern. A wounded cult lookout lies beside a dropped satchel, mask cracked, one hand held away from her spear. The black seal recovered from the fight is still warm.",
+    "choices": [
+      {
+        "id": "search-satchel",
+        "label": "Search the lookout's satchel",
+        "description": "Look for orders, maps, and proof of who funded the ambush.",
+        "keywords": [
+          "search satchel",
+          "search bodies",
+          "orders",
+          "evidence"
+        ],
+        "once": true,
+        "check": {
+          "skill": "investigation",
+          "dc": 10
+        },
+        "success": {
+          "text": "A false seam hides a cipher strip bearing Sable's crest and a route to the root-gate.",
+          "setFlags": {
+            "cipherStrip": true,
+            "rootGateKnown": true
+          },
+          "clues": [
+            "sable-dispute"
+          ]
+        },
+        "failure": {
+          "text": "You find the route marks but miss whatever the lookout tried hardest to conceal.",
+          "setFlags": {
+            "rootGateKnown": true
+          }
+        }
+      },
+      {
+        "id": "offer-mercy",
+        "label": "Offer the wounded lookout mercy for the truth",
+        "description": "Promise treatment and a fair hearing in exchange for useful information.",
+        "keywords": [
+          "offer mercy",
+          "spare lookout",
+          "persuade cultist"
+        ],
+        "once": true,
+        "check": {
+          "skill": "persuasion",
+          "dc": 11
+        },
+        "success": {
+          "text": "She gives her name—Lysa—and admits Sable changed the binding rite. The spirit below is a prisoner, not an ally. She marks a safe sign on the root-gate.",
+          "clues": [
+            "wraith-bound"
+          ],
+          "setFlags": {
+            "lysaSpared": true,
+            "safeGateSign": true
+          },
+          "approval": {
+            "maren": 2,
+            "orin": 1
+          }
+        },
+        "failure": {
+          "text": "Lysa refuses names but accepts treatment. Before leaving, she warns that the bell ‘remembers who betrayed it.’",
+          "setFlags": {
+            "lysaSpared": true
+          },
+          "approval": {
+            "maren": 1
+          }
+        }
+      },
+      {
+        "id": "threaten-lookout",
+        "label": "Threaten the lookout with the road's consequences",
+        "description": "Force directions quickly, risking the party's trust.",
+        "keywords": [
+          "threaten lookout",
+          "intimidate cultist",
+          "force answer"
+        ],
+        "once": true,
+        "check": {
+          "skill": "intimidation",
+          "dc": 10
+        },
+        "success": {
+          "text": "Lysa gives the route and Sable's hand-sign, then crawls away when released.",
+          "setFlags": {
+            "rootGateKnown": true,
+            "sableHandSign": true
+          },
+          "approval": {
+            "maren": -1
+          }
+        },
+        "failure": {
+          "text": "She calls your bluff. Orin takes the map from the fallen satchel and ends the exchange.",
+          "setFlags": {
+            "rootGateKnown": true
+          },
+          "approval": {
+            "orin": -1,
+            "maren": -1
+          }
+        }
+      },
+      {
+        "id": "follow-map",
+        "label": "Follow the route toward the hidden root-gate",
+        "description": "Leave the ambush site and enter the old underways.",
+        "keywords": [
+          "follow map",
+          "root gate",
+          "move on"
+        ],
+        "nextNode": "underroad"
+      }
+    ]
+  },
+  "underroad": {
+    "id": "underroad",
+    "act": "Act III — Beneath the Briars",
+    "title": "The Flooded Under-Road",
+    "location": "Pilgrim Tunnels",
+    "safeRest": false,
+    "objective": "Cross the drowned passage without arriving exhausted or exposed.",
+    "opening": "Black water fills the old pilgrim tunnel from wall to wall. Bell-shaped niches mark a path beneath the surface, but the current pulls toward a shaft where something large turns slowly below.",
+    "choices": [
+      {
+        "id": "rope-crossing",
+        "label": "Rig a rope line across the current",
+        "description": "Use fifty feet of rope to give the whole party a secure crossing.",
+        "keywords": [
+          "use rope",
+          "rope line",
+          "cross water"
+        ],
+        "consumesTagUse": null,
+        "requires": {
+          "item": "silk-rope"
+        },
+        "autoSuccess": true,
+        "result": {
+          "text": "The rope holds. One by one the party crosses while Orin anchors the line and Nessa watches the dark shaft.",
+          "setFlags": {
+            "crossedDry": true
+          },
+          "nextNode": "root-gate"
+        }
+      },
+      {
+        "id": "read-current",
+        "label": "Read the submerged pilgrim markers",
+        "description": "Find the old stepping route beneath the water.",
+        "keywords": [
+          "read current",
+          "markers",
+          "find steps"
+        ],
+        "check": {
+          "skill": "investigation",
+          "dc": 12,
+          "alternateSkills": [
+            "survival",
+            "perception"
+          ]
+        },
+        "success": {
+          "text": "The niches align with a raised spine of stone. The party crosses with wet boots and no worse.",
+          "setFlags": {
+            "crossedDry": true
+          },
+          "nextNode": "root-gate"
+        },
+        "failure": {
+          "text": "A false step drops everyone waist-deep into the current. Packs stay closed, but the cold takes its toll.",
+          "partyDamage": "1d4",
+          "nextNode": "root-gate"
+        }
+      },
+      {
+        "id": "force-current",
+        "label": "Wade through and hold the weaker swimmers",
+        "description": "Rely on raw strength and endurance.",
+        "keywords": [
+          "wade",
+          "swim",
+          "athletics",
+          "force current"
+        ],
+        "check": {
+          "skill": "athletics",
+          "dc": 13
+        },
+        "success": {
+          "text": "You break the current's line and create a moving shield for the others.",
+          "approval": {
+            "orin": 1
+          },
+          "nextNode": "root-gate"
+        },
+        "failure": {
+          "text": "The current slams the party against the stone lip before Orin drags everyone clear.",
+          "partyDamage": "1d6",
+          "nextNode": "root-gate"
+        }
+      }
+    ]
+  },
+  "root-gate": {
+    "id": "root-gate",
+    "act": "Act III — Beneath the Briars",
+    "title": "The Door That Drinks Names",
+    "location": "Root-Gate of the Hollow Court",
+    "safeRest": false,
+    "objective": "Open the cult's gate without surrendering the advantage.",
+    "opening": "A door grown from black roots seals the passage. Its bronze mouth bears no keyhole, only a shallow seal-mark and a line of script: WHAT ENTERS UNNAMED ENTERS OWNED.",
+    "choices": [
+      {
+        "id": "use-cult-seal",
+        "label": "Press the black-wax cult seal into the bronze mouth",
+        "description": "Use the conspirators' own sign to enter as expected guests.",
+        "keywords": [
+          "use seal",
+          "black wax",
+          "cult seal"
+        ],
+        "requires": {
+          "item": "cult-seal"
+        },
+        "autoSuccess": true,
+        "result": {
+          "text": "The roots taste the seal and draw aside. Beyond, cultists continue their work, unaware that the wrong party has entered.",
+          "setFlags": {
+            "infiltrated": true
+          },
+          "nextNode": "hollow-court"
+        }
+      },
+      {
+        "id": "speak-true-name",
+        "label": "Answer the gate with the bell's true name",
+        "description": "Invoke Aster Vey and reject the gate's claim of ownership.",
+        "keywords": [
+          "true name",
+          "aster vey",
+          "answer gate"
+        ],
+        "requires": {
+          "cluesAll": [
+            "bell-true-name"
+          ]
+        },
+        "autoSuccess": true,
+        "result": {
+          "text": "At the name Aster Vey, silver light travels through the roots. The door opens and the distant wraith answers with a note of recognition.",
+          "setFlags": {
+            "spiritRecognized": true
+          },
+          "nextNode": "hollow-court",
+          "approval": {
+            "maren": 1
+          }
+        }
+      },
+      {
+        "id": "pick-root-lock",
+        "label": "Find and work the living lock",
+        "description": "Use tools and patience to separate the root tendons around the latch.",
+        "keywords": [
+          "pick lock",
+          "thieves tools",
+          "living lock"
+        ],
+        "check": {
+          "skill": "sleightOfHand",
+          "dc": 13,
+          "toolsRequiredOrPenalty": "thieves-tools"
+        },
+        "success": {
+          "text": "The lock opens without a cry. Nessa catches the door before its bronze teeth can ring together.",
+          "setFlags": {
+            "infiltrated": true
+          },
+          "nextNode": "hollow-court"
+        },
+        "failure": {
+          "text": "The root-lock shrieks like metal under strain. The door opens, but the court beyond is ready.",
+          "setFlags": {
+            "guardsAlert": true
+          },
+          "nextNode": "hollow-court"
+        }
+      },
+      {
+        "id": "break-gate",
+        "label": "Break the root-gate by force",
+        "description": "Destroy the barrier before it can close around you.",
+        "keywords": [
+          "break gate",
+          "smash door",
+          "athletics"
+        ],
+        "check": {
+          "skill": "athletics",
+          "dc": 14
+        },
+        "success": {
+          "text": "The bronze mouth splits under a final blow. Every voice beyond falls silent.",
+          "setFlags": {
+            "guardsAlert": true,
+            "gateDestroyed": true
+          },
+          "nextNode": "hollow-court",
+          "approval": {
+            "orin": 1
+          }
+        },
+        "failure": {
+          "text": "The roots recoil and lash back before the weakened gate gives way.",
+          "partyDamage": "1d4",
+          "setFlags": {
+            "guardsAlert": true
+          },
+          "nextNode": "hollow-court"
+        }
+      }
+    ]
+  },
+  "hollow-court": {
+    "id": "hollow-court",
+    "act": "Act III — Beneath the Briars",
+    "title": "The Hollow Court",
+    "location": "Cult Antechamber",
+    "safeRest": false,
+    "objective": "Reach the bell-vault and obtain proof of Sable's role if possible.",
+    "opening": "The hollow court was once a wardens' hall. Now roots pin old shields to the walls. Acolytes carry bronze bowls between a cipher desk and a stair descending toward the bell-vault.",
+    "choices": [
+      {
+        "id": "eavesdrop-court",
+        "label": "Eavesdrop on the acolytes at the cipher desk",
+        "description": "Learn the ritual sequence and where Sable keeps his orders.",
+        "keywords": [
+          "eavesdrop",
+          "listen",
+          "cipher desk",
+          "spy"
+        ],
+        "check": {
+          "skill": "stealth",
+          "dc": 12,
+          "alternateSkills": [
+            "perception"
+          ]
+        },
+        "advantageIfFlag": "infiltrated",
+        "success": {
+          "text": "You hear that Sable altered the final verse and keeps the payment ledger beneath the desk's false bottom.",
+          "clues": [
+            "sable-payments",
+            "wraith-bound"
+          ],
+          "items": [
+            {
+              "itemId": "warden-ledger",
+              "quantity": 1
+            }
+          ],
+          "setFlags": {
+            "bossRitualKnown": true
+          },
+          "nextNode": "vault-antechamber"
+        },
+        "failure": {
+          "text": "A censer stops mid-swing. The acolyte looks directly toward your hiding place and calls the guards.",
+          "combat": "hollow-guards"
+        }
+      },
+      {
+        "id": "nessa-steal-ledger",
+        "label": "Let Nessa steal the ledger while the party creates a distraction",
+        "description": "A companion-led plan that depends on the rescued scout.",
+        "keywords": [
+          "nessa steal",
+          "steal ledger",
+          "distraction"
+        ],
+        "requires": {
+          "companion": "nessa"
+        },
+        "check": {
+          "companion": "nessa",
+          "skill": "stealth",
+          "dc": 11
+        },
+        "success": {
+          "text": "Orin begins a loud argument about delivery seals. Nessa slips behind the desk and returns with the ledger before the acolyte finishes objecting.",
+          "clues": [
+            "sable-payments"
+          ],
+          "items": [
+            {
+              "itemId": "warden-ledger",
+              "quantity": 1
+            }
+          ],
+          "setFlags": {
+            "infiltrated": true
+          },
+          "nextNode": "vault-antechamber",
+          "approval": {
+            "nessa": 1
+          }
+        },
+        "failure": {
+          "text": "The false bottom catches. Nessa gets the ledger, but the desk's bronze alarm rings through the court.",
+          "clues": [
+            "sable-payments"
+          ],
+          "items": [
+            {
+              "itemId": "warden-ledger",
+              "quantity": 1
+            }
+          ],
+          "combat": "hollow-guards"
+        }
+      },
+      {
+        "id": "challenge-guards",
+        "label": "Challenge the court and break through",
+        "description": "Abandon subtlety and clear the route by force.",
+        "keywords": [
+          "attack guards",
+          "challenge",
+          "fight court"
+        ],
+        "combat": "hollow-guards"
+      },
+      {
+        "id": "show-mercy-sign",
+        "label": "Use Lysa's safe sign to pass the court",
+        "description": "Trust the spared lookout's mark and walk through as defectors expected by the cult.",
+        "keywords": [
+          "safe sign",
+          "lysa sign",
+          "pass court"
+        ],
+        "requires": {
+          "flagsAll": [
+            "safeGateSign"
+          ]
+        },
+        "check": {
+          "skill": "deception",
+          "dc": 10
+        },
+        "success": {
+          "text": "The sentries return the sign. You pass beneath their eyes and reach the vault stairs without drawing steel.",
+          "setFlags": {
+            "infiltrated": true
+          },
+          "nextNode": "vault-antechamber"
+        },
+        "failure": {
+          "text": "One sentry knows the sign should be mirrored. His hand closes around the alarm chain.",
+          "combat": "hollow-guards"
+        }
+      }
+    ]
+  },
+  "vault-antechamber": {
+    "id": "vault-antechamber",
+    "act": "Act IV — The Bell Below",
+    "title": "Plans Before the Last Door",
+    "location": "Bell-Vault Antechamber",
+    "safeRest": true,
+    "objective": "Choose how the party will disrupt Sable's ritual before entering the bell-vault.",
+    "opening": "The last door trembles with each slow toll from below. Through its seams you see Sable at a circle of black candles and the outline of a chained spirit inside the cracked bell. Your companions speak in low voices; each has a different answer.",
+    "choices": [
+      {
+        "id": "maren-rite",
+        "label": "Follow Maren's plan: restore the original warding verse",
+        "description": "Use the true name or binding evidence to turn the ritual against Sable.",
+        "keywords": [
+          "maren plan",
+          "restore rite",
+          "warding verse"
+        ],
+        "requires": {
+          "companion": "maren",
+          "cluesAny": [
+            "bell-true-name",
+            "wraith-bound"
+          ]
+        },
+        "check": {
+          "companion": "maren",
+          "skill": "religion",
+          "dc": 12
+        },
+        "advantageIfItem": "silver-chime",
+        "success": {
+          "text": "Maren rebuilds the missing line and the vault answers. The spirit's chains become visible—and breakable.",
+          "setFlags": {
+            "ritualWeakened": true,
+            "spiritRecognized": true
+          },
+          "approval": {
+            "maren": 2
+          },
+          "nextNode": "bell-vault"
+        },
+        "failure": {
+          "text": "The verse catches but does not hold. It weakens the binding enough to deny the wraith some of Sable's protection.",
+          "setFlags": {
+            "ritualPartlyWeakened": true
+          },
+          "nextNode": "bell-vault"
+        }
+      },
+      {
+        "id": "orin-chain",
+        "label": "Follow Orin's plan: collapse the chain winch",
+        "description": "Destroy the mechanism feeding tension into the spirit's binding.",
+        "keywords": [
+          "orin plan",
+          "break winch",
+          "chain"
+        ],
+        "requires": {
+          "companion": "orin"
+        },
+        "check": {
+          "companion": "orin",
+          "skill": "athletics",
+          "dc": 13
+        },
+        "success": {
+          "text": "Orin wedges his shield into the winch and tears its axle free. The ritual circle lurches out of alignment.",
+          "setFlags": {
+            "ritualWeakened": true
+          },
+          "approval": {
+            "orin": 2
+          },
+          "nextNode": "bell-vault"
+        },
+        "failure": {
+          "text": "The axle bends but holds. Orin leaves it one blow from failure and readies his shield.",
+          "setFlags": {
+            "ritualPartlyWeakened": true,
+            "orinStartsGuarding": true
+          },
+          "nextNode": "bell-vault"
+        }
+      },
+      {
+        "id": "nessa-key",
+        "label": "Follow Nessa's plan: steal Sable's binding key",
+        "description": "Slip through the service slit and take the bronze key from Sable's belt.",
+        "keywords": [
+          "nessa plan",
+          "steal key",
+          "binding key"
+        ],
+        "requires": {
+          "companion": "nessa"
+        },
+        "check": {
+          "companion": "nessa",
+          "skill": "stealth",
+          "dc": 13
+        },
+        "success": {
+          "text": "Nessa returns with the bronze key and Sable's expression changes from certainty to fear.",
+          "setFlags": {
+            "bindingKey": true,
+            "ritualWeakened": true
+          },
+          "approval": {
+            "nessa": 2
+          },
+          "nextNode": "bell-vault"
+        },
+        "failure": {
+          "text": "Sable turns at the last instant. Nessa escapes with a cut sleeve and the knowledge that surprise is gone.",
+          "setFlags": {
+            "bossAlert": true
+          },
+          "nextNode": "bell-vault"
+        }
+      },
+      {
+        "id": "player-plan",
+        "label": "Enter together and confront Sable with what you know",
+        "description": "Rely on accumulated evidence, presence, and the party's united front.",
+        "keywords": [
+          "confront sable",
+          "enter together",
+          "my plan"
+        ],
+        "nextNode": "bell-vault"
+      }
+    ]
+  },
+  "bell-vault": {
+    "id": "bell-vault",
+    "act": "Act IV — The Bell Below",
+    "title": "The Bell Beneath Briarwatch",
+    "location": "The Ward-Bell Vault",
+    "safeRest": false,
+    "objective": "Break Sable's control of the ward-spirit and survive the final reckoning.",
+    "opening": "The buried bell is larger than the village tower above it. Black roots suspend it over a pit of pale fire. Warden Sable stands inside the ritual circle with one hand on a bronze chain. A human shape presses against the bell's inner surface each time it tolls.",
+    "choices": [
+      {
+        "id": "name-the-spirit",
+        "label": "Ring the silver chime and name Aster Vey",
+        "description": "Call the ward-spirit home through its true name rather than Sable's binding.",
+        "keywords": [
+          "aster vey",
+          "ring chime",
+          "true name",
+          "name spirit"
+        ],
+        "requires": {
+          "cluesAll": [
+            "bell-true-name"
+          ],
+          "item": "silver-chime"
+        },
+        "check": {
+          "skill": "religion",
+          "dc": 11,
+          "alternateSkills": [
+            "persuasion"
+          ]
+        },
+        "advantageIfFlag": "spiritRecognized",
+        "success": {
+          "text": "The silver chime cuts through the black toll. The spirit turns from you to Sable and the binding burns away from its wrists.",
+          "setFlags": {
+            "spiritFreed": true
+          },
+          "combat": "finale-sable-only"
+        },
+        "failure": {
+          "text": "The spirit hears its name but cannot reach it through the altered verse. Its resistance still tears gaps in Sable's protection.",
+          "setFlags": {
+            "ritualWeakened": true
+          },
+          "combat": "finale-weakened"
+        }
+      },
+      {
+        "id": "expose-sable",
+        "label": "Expose Sable with the cipher ledger",
+        "description": "Turn his followers against him before the ritual completes.",
+        "keywords": [
+          "expose sable",
+          "show ledger",
+          "evidence",
+          "traitor"
+        ],
+        "requires": {
+          "item": "warden-ledger",
+          "cluesAll": [
+            "sable-payments"
+          ]
+        },
+        "check": {
+          "skill": "persuasion",
+          "dc": 12,
+          "alternateSkills": [
+            "intimidation"
+          ]
+        },
+        "success": {
+          "text": "The ledger passes from hand to shaking hand. Two acolytes cut the secondary chains and flee; Sable loses control of the circle.",
+          "setFlags": {
+            "cultDefects": true,
+            "ritualWeakened": true
+          },
+          "combat": "finale-weakened"
+        },
+        "failure": {
+          "text": "Sable calls the ledger a forgery and orders the final toll. Doubt remains in the room, but not enough to stop him.",
+          "setFlags": {
+            "cultDoubts": true
+          },
+          "combat": "finale-full"
+        }
+      },
+      {
+        "id": "turn-binding-key",
+        "label": "Turn the stolen binding key against the ritual",
+        "description": "Release the primary chain using Sable's own key.",
+        "keywords": [
+          "binding key",
+          "turn key",
+          "release chain"
+        ],
+        "requires": {
+          "flagsAll": [
+            "bindingKey"
+          ]
+        },
+        "autoSuccess": true,
+        "result": {
+          "text": "The key turns once. Every chain but Sable's personal tether falls away, leaving the spirit free to resist him.",
+          "setFlags": {
+            "spiritFreed": true
+          },
+          "combat": "finale-sable-only"
+        }
+      },
+      {
+        "id": "attack-final",
+        "label": "Break the ritual by force",
+        "description": "Enter combat before the next toll. Prior preparations still affect the encounter.",
+        "keywords": [
+          "attack",
+          "fight sable",
+          "break ritual",
+          "charge"
+        ],
+        "dynamicCombat": true
+      }
+    ]
+  },
+  "ending": {
+    "id": "ending",
+    "act": "Epilogue",
+    "title": "When the Bell Answers",
+    "location": "Briarwatch at Dawn",
+    "safeRest": true,
+    "objective": "The chapter is complete. Review the consequences of your choices.",
+    "opening": "Dawn reaches Briarwatch before the party does. The ward-bell sounds once across the wet roofs—not as an alarm, but as an answer. Villagers step into the road while your companions carry the proof, the wounded, and the names of those who did not return.",
+    "ending": true,
+    "choices": [
+      {
+        "id": "new-chapter",
+        "label": "Conclude the chapter",
+        "description": "Record the ending and leave the party ready for a future campaign chapter.",
+        "keywords": [
+          "conclude",
+          "finish",
+          "epilogue"
+        ],
+        "once": true,
+        "autoSuccess": true,
+        "result": {
+          "text": "Briarwatch begins the work of choosing new wardens. Your party's bonds—and its disagreements—will follow you beyond the village.",
+          "setFlags": {
+            "chapterComplete": true
+          }
+        }
+      }
+    ]
+  },
+  "defeat": {
+    "id": "defeat",
+    "act": "Defeat",
+    "title": "The Bell Keeps Tolling",
+    "location": "A Memory of the Last Stand",
+    "safeRest": false,
+    "objective": "Reload a save or begin a new campaign.",
+    "opening": "The party falls before the ward can be restored. Briarwatch's bell continues beneath the earth, each toll carrying Sable's command farther through the roots.",
+    "defeat": true,
+    "choices": []
+  }
+}
