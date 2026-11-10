@@ -1,0 +1,1438 @@
+{
+ "_note": "Job advancement. 1st job = class (mastery at 10 after the Oath trial, skills at 13 and 16). 2nd job = branch picked at 20, skills at 20/25/30/35. 3rd job (40) and 4th job (70) names are listed; their skills arrive in later updates. Formulas: {p} is the hero's power level, {p/N} is max(1, floor(power/N)); mod is the primary ability modifier.",
+ "classes": {
+  "fighter": {
+   "mastery": {
+    "level": 10,
+    "id": "battle-surge",
+    "name": "Battle Surge",
+    "kind": "job",
+    "cost": "bonus",
+    "target": "self",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "tempHp",
+      "amount": "2d6+{p/4}",
+      "on": "self"
+     },
+     {
+      "do": "condition",
+      "id": "packReady",
+      "name": "Battle Surge: next attack advantaged",
+      "on": "self"
+     }
+    ],
+    "description": "Gain 2d6 + a quarter of your level temporary HP, and your next attack has advantage."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "hardened",
+     "name": "Hardened",
+     "passive": {
+      "hp": 6
+     },
+     "description": "+6 maximum HP."
+    },
+    {
+     "level": 16,
+     "id": "crushing-blow",
+     "name": "Crushing Blow",
+     "kind": "job",
+     "cost": "action",
+     "target": "enemy",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "weapon",
+       "extra": "1d6+{p/5}",
+       "onHit": {
+        "id": "mocked",
+        "name": "Staggered: next attack disadvantaged"
+       }
+      }
+     ],
+     "description": "Make a weapon attack that deals 1d6 extra damage (more at higher levels) and staggers the target: its next attack has disadvantage."
+    }
+   ],
+   "branches": [
+    {
+     "id": "guardian",
+     "name": "Guardian",
+     "third": "Bulwark Knight",
+     "fourth": "Aegis Paragon",
+     "style": "Takes hits for the party and shields allies.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "guardian"
+      },
+      {
+       "level": 25,
+       "id": "shield-wall",
+       "name": "Shield Wall",
+       "passive": {
+        "ac": 1
+       },
+       "description": "+1 Armor Class."
+      },
+      {
+       "level": 30,
+       "id": "bulwark-stand",
+       "name": "Bulwark Stand",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "ward",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Bulwark Stand",
+         "on": "party",
+         "rounds": 1
+        }
+       ],
+       "description": "Every ally gains an interception ward and +2 AC until your next turn."
+      },
+      {
+       "level": 35,
+       "id": "unbreakable",
+       "name": "Unbreakable",
+       "passive": {
+        "hp": 12,
+        "save": 1
+       },
+       "description": "+12 maximum HP and +1 to saving throws."
+      }
+     ]
+    },
+    {
+     "id": "duelist",
+     "name": "Duelist",
+     "third": "Blademaster",
+     "fourth": "Sword Saint",
+     "style": "Big single-target melee damage.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "duelist"
+      },
+      {
+       "level": 25,
+       "id": "riposte-footwork",
+       "name": "Riposte Footwork",
+       "passive": {
+        "attack": 1
+       },
+       "description": "+1 to attack rolls."
+      },
+      {
+       "level": 30,
+       "id": "disarming-flourish",
+       "name": "Disarming Flourish",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "advantage": true,
+         "onHit": {
+          "id": "stunned",
+          "name": "Disarmed: loses next action"
+         }
+        }
+       ],
+       "description": "Make a weapon attack with advantage; on a hit the enemy is disarmed and loses its next action."
+      },
+      {
+       "level": 35,
+       "id": "perfect-edge",
+       "name": "Perfect Edge",
+       "passive": {
+        "damage": 2
+       },
+       "description": "+2 damage on your attacks."
+      }
+     ]
+    },
+    {
+     "id": "warlord",
+     "name": "Warlord",
+     "third": "Banner Captain",
+     "fourth": "High Marshal",
+     "style": "Commands the party: buffs and coordinated attacks.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "battle-orders",
+       "name": "Battle Orders",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Battle Orders: next attack advantaged",
+         "on": "party"
+        }
+       ],
+       "description": "Every ally gains temporary HP equal to half your level and advantage on their next attack. Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "commanding-presence",
+       "name": "Commanding Presence",
+       "passive": {
+        "objective": 1,
+        "save": 1
+       },
+       "description": "+1 to combat-objective checks and saving throws."
+      },
+      {
+       "level": 30,
+       "id": "coordinated-assault",
+       "name": "Coordinated Assault",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Marked by the Warlord",
+         "on": "target"
+        },
+        {
+         "do": "weapon",
+         "advantage": true
+        }
+       ],
+       "description": "Mark an enemy so the next attack against it has advantage, then strike it with advantage yourself."
+      },
+      {
+       "level": 35,
+       "id": "inspiring-banner",
+       "name": "Inspiring Banner",
+       "passive": {
+        "healing": 2,
+        "damage": 1
+       },
+       "description": "+2 to healing you give and +1 damage."
+      }
+     ]
+    }
+   ]
+  },
+  "rogue": {
+   "mastery": {
+    "level": 10,
+    "id": "vanishing-step",
+    "name": "Vanishing Step",
+    "kind": "job",
+    "cost": "bonus",
+    "target": "self",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "condition",
+      "id": "hidden",
+      "name": "Hidden",
+      "on": "self"
+     },
+     {
+      "do": "tempHp",
+      "amount": "1d6+{p/4}",
+      "on": "self"
+     }
+    ],
+    "description": "Become Hidden and gain 1d6 + a quarter of your level temporary HP."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "evasion",
+     "name": "Evasion",
+     "passive": {
+      "save": 1
+     },
+     "description": "+1 to saving throws."
+    },
+    {
+     "level": 16,
+     "id": "twin-daggers",
+     "name": "Twin Daggers",
+     "kind": "job",
+     "cost": "action",
+     "target": "enemy",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "weapon",
+       "times": 2
+      }
+     ],
+     "description": "Make two weapon attacks against one enemy. Sneak Attack can apply once."
+    }
+   ],
+   "branches": [
+    {
+     "id": "shadow",
+     "name": "Shadow Agent",
+     "third": "Nightblade",
+     "fourth": "Phantom",
+     "style": "Vanish and strike from hiding.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "shadow"
+      },
+      {
+       "level": 25,
+       "id": "night-eyes",
+       "name": "Night Eyes",
+       "passive": {
+        "attack": 1
+       },
+       "description": "+1 to attack rolls."
+      },
+      {
+       "level": 30,
+       "id": "death-mark",
+       "name": "Death Mark",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "advantage": true,
+         "extra": "{p/4}d6"
+        }
+       ],
+       "description": "Make a weapon attack with advantage that deals extra damage dice (5d6 at level 20, more later)."
+      },
+      {
+       "level": 35,
+       "id": "ghost-step",
+       "name": "Ghost Step",
+       "passive": {
+        "ac": 1,
+        "hp": 6
+       },
+       "description": "+1 Armor Class and +6 maximum HP."
+      }
+     ]
+    },
+    {
+     "id": "saboteur",
+     "name": "Saboteur",
+     "third": "Trapwright",
+     "fourth": "Ruinmaker",
+     "style": "Stuns, traps and objectives won without fights.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "saboteur"
+      },
+      {
+       "level": 25,
+       "id": "trap-sense",
+       "name": "Trap Sense",
+       "passive": {
+        "objective": 1,
+        "save": 1
+       },
+       "description": "+1 to combat-objective checks and saving throws."
+      },
+      {
+       "level": 30,
+       "id": "smoke-and-snares",
+       "name": "Smoke and Snares",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Blinded by smoke: next attack disadvantaged",
+         "on": "enemies"
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        }
+       ],
+       "description": "Every enemy's next attack has disadvantage, and the combat objective advances one step."
+      },
+      {
+       "level": 35,
+       "id": "demolitions",
+       "name": "Demolitions",
+       "passive": {
+        "damage": 2
+       },
+       "description": "+2 damage on your attacks."
+      }
+     ]
+    },
+    {
+     "id": "grifter",
+     "name": "Grifter",
+     "third": "Spymaster",
+     "fourth": "Whisper Lord",
+     "style": "Talk, lies and secrets.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "misdirection",
+       "name": "Misdirection",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Misdirected: next attack disadvantaged",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "hidden",
+         "name": "Hidden",
+         "on": "self"
+        }
+       ],
+       "description": "Fool an enemy so its next attack has disadvantage, and slip out of sight (Hidden). Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "silver-tongue",
+       "name": "Silver Tongue",
+       "passive": {
+        "objective": 2
+       },
+       "description": "+2 to combat-objective checks."
+      },
+      {
+       "level": 30,
+       "id": "turncoat-gambit",
+       "name": "Turncoat Gambit",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "wis",
+         "damage": "{p/4}d6",
+         "type": "psychic",
+         "half": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Doubting its side: loses next action"
+         }
+        }
+       ],
+       "description": "The enemy makes a Wisdom save: on a failure it takes psychic damage and loses its next action; on a success, half damage."
+      },
+      {
+       "level": 35,
+       "id": "network-of-eyes",
+       "name": "Network of Eyes",
+       "passive": {
+        "attack": 1,
+        "save": 1
+       },
+       "description": "+1 to attack rolls and saving throws."
+      }
+     ]
+    }
+   ]
+  },
+  "wizard": {
+   "mastery": {
+    "level": 10,
+    "id": "arcane-barrier",
+    "name": "Arcane Barrier",
+    "kind": "job",
+    "cost": "bonus",
+    "target": "ally",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "tempHp",
+      "amount": "2d6+{p/2}",
+      "on": "target"
+     },
+     {
+      "do": "condition",
+      "id": "guarded",
+      "name": "Arcane Barrier",
+      "on": "target",
+      "rounds": 1
+     }
+    ],
+    "description": "An ally gains 2d6 + half your level temporary HP and +2 AC until your next turn."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "spell-focus",
+     "name": "Spell Focus",
+     "passive": {
+      "damage": 1
+     },
+     "description": "+1 damage on your attacks and spells."
+    },
+    {
+     "level": 16,
+     "id": "lightning-lance",
+     "name": "Lightning Lance",
+     "kind": "job",
+     "cost": "action",
+     "target": "enemy",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "spell",
+       "damage": "{p/4}d8",
+       "type": "lightning"
+      }
+     ],
+     "description": "Intelligence spell attack for lightning damage (4d8 at level 16, more later)."
+    }
+   ],
+   "branches": [
+    {
+     "id": "evoker",
+     "name": "Evoker",
+     "third": "Stormcaller",
+     "fourth": "Archmage of Ruin",
+     "style": "Hits every enemy with area spells.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "evoker"
+      },
+      {
+       "level": 25,
+       "id": "empowered-evocation",
+       "name": "Empowered Evocation",
+       "passive": {
+        "damage": 2
+       },
+       "description": "+2 damage on your spells and attacks."
+      },
+      {
+       "level": 30,
+       "id": "chain-lightning",
+       "name": "Chain Lightning",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "dex",
+         "damage": "{p/3}d6",
+         "type": "lightning",
+         "half": true,
+         "area": true
+        }
+       ],
+       "description": "Every enemy makes a Dexterity save against lightning damage, half on a success."
+      },
+      {
+       "level": 35,
+       "id": "elemental-ward",
+       "name": "Elemental Ward",
+       "passive": {
+        "save": 1,
+        "hp": 6
+       },
+       "description": "+1 to saving throws and +6 maximum HP."
+      }
+     ]
+    },
+    {
+     "id": "chronist",
+     "name": "Chronist",
+     "third": "Timeweaver",
+     "fourth": "Hourkeeper",
+     "style": "Bends time: extra turns and undone harm.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "chronist"
+      },
+      {
+       "level": 25,
+       "id": "foresight",
+       "name": "Foresight",
+       "passive": {
+        "ac": 1
+       },
+       "description": "+1 Armor Class."
+      },
+      {
+       "level": 30,
+       "id": "stolen-second",
+       "name": "Stolen Second",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "ally",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "{p/2}+mod",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Stolen Second: next attack advantaged",
+         "on": "target"
+        },
+        {
+         "do": "refresh",
+         "resource": "technique",
+         "amount": 1
+        }
+       ],
+       "description": "Heal an ally, give them advantage on their next attack, and recover one Technique use."
+      },
+      {
+       "level": 35,
+       "id": "hourglass",
+       "name": "Hourglass",
+       "passive": {
+        "healing": 2,
+        "save": 1
+       },
+       "description": "+2 to healing you give and +1 to saving throws."
+      }
+     ]
+    },
+    {
+     "id": "binder",
+     "name": "Binder",
+     "third": "Summoner",
+     "fourth": "Gatewarden",
+     "style": "Calls a bound creature to fight beside you.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "bound-familiar",
+       "name": "Bound Familiar",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/4}d6",
+         "type": "force",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Harried by a familiar",
+         "on": "target"
+        }
+       ],
+       "description": "Your bound familiar strikes an enemy for force damage (no roll) and harries it: the next attack against it has advantage. Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "binding-circle",
+       "name": "Binding Circle",
+       "passive": {
+        "attack": 1
+       },
+       "description": "+1 to attack rolls and spell attacks."
+      },
+      {
+       "level": 30,
+       "id": "summon-guardian",
+       "name": "Summon Guardian",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p/2}+mod",
+         "on": "party"
+        },
+        {
+         "do": "ward",
+         "on": "party"
+        }
+       ],
+       "description": "A summoned guardian shields the party: every ally gains temporary HP and an interception ward."
+      },
+      {
+       "level": 35,
+       "id": "gatecraft",
+       "name": "Gatecraft",
+       "passive": {
+        "damage": 1,
+        "objective": 1
+       },
+       "description": "+1 damage and +1 to combat-objective checks."
+      }
+     ]
+    }
+   ]
+  },
+  "cleric": {
+   "mastery": {
+    "level": 10,
+    "id": "divine-aegis",
+    "name": "Divine Aegis",
+    "kind": "job",
+    "cost": "bonus",
+    "target": "ally",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "heal",
+      "amount": "1d8+mod+{p/4}",
+      "on": "target"
+     },
+     {
+      "do": "condition",
+      "id": "guarded",
+      "name": "Divine Aegis",
+      "on": "target",
+      "rounds": 1
+     }
+    ],
+    "description": "Heal an ally for 1d8 + Wisdom + a quarter of your level and give them +2 AC until your next turn."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "blessed-vigor",
+     "name": "Blessed Vigor",
+     "passive": {
+      "healing": 1,
+      "hp": 4
+     },
+     "description": "+1 to healing you give and +4 maximum HP."
+    },
+    {
+     "level": 16,
+     "id": "radiant-burst",
+     "name": "Radiant Burst",
+     "kind": "job",
+     "cost": "action",
+     "target": "none",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "save",
+       "save": "con",
+       "damage": "{p/5}d8",
+       "type": "radiant",
+       "half": true,
+       "area": true
+      }
+     ],
+     "description": "Every enemy makes a Constitution save against radiant damage, half on a success."
+    }
+   ],
+   "branches": [
+    {
+     "id": "lifewarden",
+     "name": "Lifewarden",
+     "third": "Mender of Hosts",
+     "fourth": "Living Saint",
+     "style": "Heals the whole party and brings allies back.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "lifewarden"
+      },
+      {
+       "level": 25,
+       "id": "healers-grace",
+       "name": "Healer's Grace",
+       "passive": {
+        "healing": 3
+       },
+       "description": "+3 to healing you give."
+      },
+      {
+       "level": 30,
+       "id": "shield-of-faith",
+       "name": "Shield of Faith",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "guarded",
+         "name": "Shield of Faith",
+         "on": "party",
+         "rounds": 1
+        }
+       ],
+       "description": "Every ally gains temporary HP equal to half your level and +2 AC until your next turn."
+      },
+      {
+       "level": 35,
+       "id": "living-light",
+       "name": "Living Light",
+       "passive": {
+        "hp": 8,
+        "save": 1
+       },
+       "description": "+8 maximum HP and +1 to saving throws."
+      }
+     ]
+    },
+    {
+     "id": "exorcist",
+     "name": "Exorcist",
+     "third": "Inquisitor",
+     "fourth": "Hand of Judgment",
+     "style": "Smites undead and strips enemy defences.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "exorcist"
+      },
+      {
+       "level": 25,
+       "id": "hallowed-strikes",
+       "name": "Hallowed Strikes",
+       "passive": {
+        "damage": 2
+       },
+       "description": "+2 damage on your attacks and spells."
+      },
+      {
+       "level": 30,
+       "id": "judgment",
+       "name": "Judgment",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/3}d8",
+         "type": "radiant",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "frightened",
+         "name": "Judged: frightened",
+         "on": "target"
+        }
+       ],
+       "description": "Radiant judgment strikes an enemy without a roll and leaves it frightened."
+      },
+      {
+       "level": 35,
+       "id": "inquisitors-will",
+       "name": "Inquisitor's Will",
+       "passive": {
+        "save": 2
+       },
+       "description": "+2 to saving throws."
+      }
+     ]
+    },
+    {
+     "id": "battlepriest",
+     "name": "Battle Priest",
+     "third": "Templar",
+     "fourth": "Hallowed Champion",
+     "style": "Heavy armour, melee and blessings.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "spirit-weapon",
+       "name": "Spirit Weapon",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "1d8+{p/4}+mod",
+         "type": "radiant",
+         "on": "target"
+        },
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Marked by a spirit weapon",
+         "on": "target"
+        }
+       ],
+       "description": "A spectral weapon strikes an enemy for radiant damage without a roll, and the next attack against it has advantage. Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "templars-mail",
+       "name": "Templar's Mail",
+       "passive": {
+        "ac": 1
+       },
+       "description": "+1 Armor Class."
+      },
+      {
+       "level": 30,
+       "id": "crusade",
+       "name": "Crusade",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "heal",
+         "amount": "1d6+mod",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "Crusade: next attack advantaged",
+         "on": "party"
+        }
+       ],
+       "description": "Every ally heals 1d6 + Wisdom and gains advantage on their next attack."
+      },
+      {
+       "level": 35,
+       "id": "hallowed-champion",
+       "name": "Hallowed Champion",
+       "passive": {
+        "attack": 1,
+        "damage": 1
+       },
+       "description": "+1 to attack rolls and +1 damage."
+      }
+     ]
+    }
+   ]
+  },
+  "ranger": {
+   "mastery": {
+    "level": 10,
+    "id": "volley",
+    "name": "Volley",
+    "kind": "job",
+    "cost": "action",
+    "target": "none",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "save",
+      "save": "dex",
+      "damage": "{p/5}d8",
+      "type": "piercing",
+      "half": true,
+      "area": true
+     }
+    ],
+    "description": "Every enemy makes a Dexterity save against a rain of arrows, half damage on a success."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "trailwise",
+     "name": "Trailwise",
+     "passive": {
+      "objective": 1,
+      "hp": 4
+     },
+     "description": "+1 to combat-objective checks and +4 maximum HP."
+    },
+    {
+     "level": 16,
+     "id": "hunters-snare",
+     "name": "Hunter's Snare",
+     "kind": "job",
+     "cost": "action",
+     "target": "enemy",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "weapon",
+       "onHit": {
+        "id": "guiding",
+        "name": "Snared: next attack against it advantaged"
+       }
+      }
+     ],
+     "description": "Make a weapon attack; on a hit the enemy is snared and the next attack against it has advantage."
+    }
+   ],
+   "branches": [
+    {
+     "id": "beastwarden",
+     "name": "Wild Warden",
+     "third": "Beastbond",
+     "fourth": "Lord of the Wild",
+     "style": "Fights with an animal companion.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "beastwarden"
+      },
+      {
+       "level": 25,
+       "id": "beast-bond",
+       "name": "Beast Bond",
+       "passive": {
+        "attack": 1
+       },
+       "description": "+1 to attack rolls."
+      },
+      {
+       "level": 30,
+       "id": "stampede",
+       "name": "Stampede",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "damage",
+         "damage": "{p/4}d6",
+         "type": "bludgeoning",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Trampled: next attack disadvantaged",
+         "on": "enemies"
+        }
+       ],
+       "description": "Your animal companions stampede: every enemy takes damage without a roll and has disadvantage on its next attack."
+      },
+      {
+       "level": 35,
+       "id": "lord-of-the-wild",
+       "name": "Lord of the Wild",
+       "passive": {
+        "hp": 8,
+        "healing": 1
+       },
+       "description": "+8 maximum HP and +1 to healing you give."
+      }
+     ]
+    },
+    {
+     "id": "deadeye",
+     "name": "Deadeye",
+     "third": "Longshot",
+     "fourth": "Starfall Archer",
+     "style": "Long-range archery and multiple shots.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "deadeye"
+      },
+      {
+       "level": 25,
+       "id": "steady-aim",
+       "name": "Steady Aim",
+       "passive": {
+        "attack": 1
+       },
+       "description": "+1 to attack rolls."
+      },
+      {
+       "level": 30,
+       "id": "heartseeker",
+       "name": "Heartseeker",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "weapon",
+         "advantage": true,
+         "extra": "{p/3}d6"
+        }
+       ],
+       "description": "Make a weapon attack with advantage that deals heavy extra damage on a hit."
+      },
+      {
+       "level": 35,
+       "id": "starfall-eye",
+       "name": "Starfall Eye",
+       "passive": {
+        "damage": 2
+       },
+       "description": "+2 damage on your attacks."
+      }
+     ]
+    },
+    {
+     "id": "pathfinder",
+     "name": "Pathfinder",
+     "third": "Wayfinder",
+     "fourth": "Worldwalker",
+     "style": "Travel, tracking and survival.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "trailblazer",
+       "name": "Trailblazer",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "tempHp",
+         "amount": "{p/2}",
+         "on": "party"
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        }
+       ],
+       "description": "Every ally gains temporary HP equal to half your level, and the combat objective advances one step. Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "wayfinding",
+       "name": "Wayfinding",
+       "passive": {
+        "objective": 2
+       },
+       "description": "+2 to combat-objective checks."
+      },
+      {
+       "level": 30,
+       "id": "ambush-ground",
+       "name": "Ambush Ground",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "guiding",
+         "name": "Caught in the open",
+         "on": "enemies"
+        },
+        {
+         "do": "condition",
+         "id": "hidden",
+         "name": "Hidden",
+         "on": "self"
+        }
+       ],
+       "description": "You lead the enemy into open ground: the next attack against every enemy has advantage, and you become Hidden."
+      },
+      {
+       "level": 35,
+       "id": "worldwalker",
+       "name": "Worldwalker",
+       "passive": {
+        "save": 1,
+        "ac": 1
+       },
+       "description": "+1 to saving throws and Armor Class."
+      }
+     ]
+    }
+   ]
+  },
+  "bard": {
+   "mastery": {
+    "level": 10,
+    "id": "song-of-rest",
+    "name": "Song of Rest",
+    "kind": "job",
+    "cost": "action",
+    "target": "none",
+    "resource": "technique",
+    "effects": [
+     {
+      "do": "heal",
+      "amount": "1d6+mod+{p/5}",
+      "on": "party"
+     }
+    ],
+    "description": "Every ally heals 1d6 + Charisma + a fifth of your level."
+   },
+   "firstJob": [
+    {
+     "level": 13,
+     "id": "jack-of-all-trades",
+     "name": "Jack of All Trades",
+     "passive": {
+      "objective": 1,
+      "save": 1
+     },
+     "description": "+1 to combat-objective checks and saving throws."
+    },
+    {
+     "level": 16,
+     "id": "cutting-words",
+     "name": "Cutting Words",
+     "kind": "job",
+     "cost": "bonus",
+     "target": "enemy",
+     "resource": "technique",
+     "effects": [
+      {
+       "do": "damage",
+       "damage": "{p/5}d6",
+       "type": "psychic",
+       "on": "target"
+      },
+      {
+       "do": "condition",
+       "id": "mocked",
+       "name": "Cut down: next attack disadvantaged",
+       "on": "target"
+      }
+     ],
+     "description": "A cutting remark deals psychic damage without a roll; the enemy's next attack has disadvantage."
+    }
+   ],
+   "branches": [
+    {
+     "id": "lorekeeper",
+     "name": "Lorekeeper",
+     "third": "Loremaster",
+     "fourth": "Keeper of the First Song",
+     "style": "Knowledge; unravels enemies and puzzles.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "lorekeeper"
+      },
+      {
+       "level": 25,
+       "id": "deep-lore",
+       "name": "Deep Lore",
+       "passive": {
+        "objective": 1,
+        "attack": 1
+       },
+       "description": "+1 to combat-objective checks and attack rolls."
+      },
+      {
+       "level": 30,
+       "id": "word-of-unmaking",
+       "name": "Word of Unmaking",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "int",
+         "damage": "{p/3}d8",
+         "type": "psychic",
+         "half": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Unmade: loses next action"
+         }
+        }
+       ],
+       "description": "The enemy makes an Intelligence save: on a failure it takes psychic damage and loses its next action; on a success, half damage."
+      },
+      {
+       "level": 35,
+       "id": "first-song",
+       "name": "First Song",
+       "passive": {
+        "save": 2
+       },
+       "description": "+2 to saving throws."
+      }
+     ]
+    },
+    {
+     "id": "battlecantor",
+     "name": "Battle Cantor",
+     "third": "Warchanter",
+     "fourth": "Voice of Legions",
+     "style": "Songs that heal and power up the party.",
+     "skills": [
+      {
+       "level": 20,
+       "legacy": "battlecantor"
+      },
+      {
+       "level": 25,
+       "id": "martial-verse",
+       "name": "Martial Verse",
+       "passive": {
+        "damage": 1,
+        "healing": 1
+       },
+       "description": "+1 damage and +1 to healing you give."
+      },
+      {
+       "level": 30,
+       "id": "war-anthem",
+       "name": "War Anthem",
+       "kind": "job",
+       "cost": "bonus",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "packReady",
+         "name": "War Anthem: next attack advantaged",
+         "on": "party"
+        },
+        {
+         "do": "condition",
+         "id": "inspired",
+         "name": "Inspired",
+         "on": "party"
+        }
+       ],
+       "description": "Every ally gains advantage on their next attack and an Inspiration die."
+      },
+      {
+       "level": 35,
+       "id": "voice-of-legions",
+       "name": "Voice of Legions",
+       "passive": {
+        "hp": 8,
+        "healing": 2
+       },
+       "description": "+8 maximum HP and +2 to healing you give."
+      }
+     ]
+    },
+    {
+     "id": "envoy",
+     "name": "Envoy",
+     "third": "Diplomat",
+     "fourth": "Kingmaker",
+     "style": "Faction deals, persuasion and reputation.",
+     "skills": [
+      {
+       "level": 20,
+       "id": "parley",
+       "name": "Parley",
+       "kind": "job",
+       "cost": "action",
+       "target": "enemy",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "save",
+         "save": "cha",
+         "onFail": {
+          "id": "stunned",
+          "name": "Hesitating: loses next action"
+         }
+        },
+        {
+         "do": "objective",
+         "steps": 1
+        }
+       ],
+       "description": "The enemy makes a Charisma save or loses its next action, and the combat objective advances one step. Two uses per long rest."
+      },
+      {
+       "level": 25,
+       "id": "diplomats-poise",
+       "name": "Diplomat's Poise",
+       "passive": {
+        "objective": 2
+       },
+       "description": "+2 to combat-objective checks."
+      },
+      {
+       "level": 30,
+       "id": "grand-bargain",
+       "name": "Grand Bargain",
+       "kind": "job",
+       "cost": "action",
+       "target": "none",
+       "resource": "advancement",
+       "effects": [
+        {
+         "do": "condition",
+         "id": "mocked",
+         "name": "Wavering: next attack disadvantaged",
+         "on": "enemies"
+        },
+        {
+         "do": "tempHp",
+         "amount": "{p/3}",
+         "on": "party"
+        }
+       ],
+       "description": "Every enemy's next attack has disadvantage, and every ally gains temporary HP."
+      },
+      {
+       "level": 35,
+       "id": "kingmaker",
+       "name": "Kingmaker",
+       "passive": {
+        "attack": 1,
+        "save": 1
+       },
+       "description": "+1 to attack rolls and saving throws."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

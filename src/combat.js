@@ -165,7 +165,7 @@ function startCombat(state, encounterId, rng, events) {
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
     if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }
-  if(encounter.practice){for(const e of enemies){e.maxHp=25+state.player.level*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(state.player.level/3);}}
+  if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
   if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice) {
     const orin = actors.find((actor) => actor.refId === "orin");
     if (orin) addCondition(orin, { id: "dodging", name: "Guarding Stance", expiresRound: 1 });
@@ -393,7 +393,7 @@ function resolveWeaponAttack(state, attacker, target, rng, events, options = {})
   if (attacker.kind === "player" && attacker.classId === "rogue" && !attacker.used.sneakAttackTurn) {
     const allyEngaged = livingActors(state, "party").some((actor) => actor.id !== attacker.id);
     if (attack.d20.mode === "advantage" || allyEngaged) {
-      const sneak = damageRoll(rng, `${1+Math.floor((attacker.level-1)/2)}d6`, attack.critical).total;
+      const sneak = damageRoll(rng, `${1+Math.floor((P.accuracyLevel(attacker.level)-1)/2)}d6`, attack.critical).total;
       damage += sneak;
       attacker.used.sneakAttackTurn = true;
       events.push({ type: "feature", tone: "good", text: `Sneak Attack adds ${sneak} damage.` });
@@ -521,7 +521,7 @@ function resolveTacticalAction(state,actor,action,rng,events) {
     if(!target)return invalidResult(state,events,'Choose a valid combination target.');
     spendActorResource(actor,'technique');actor.bonusUsed=true;state.combat.comboUsed=true;
     if(cid==='maren'){
-      combatHeal(state,target,rollFormula(rng,'2d6').total+state.player.level,events,'Shared Renewal');removeCondition(target,'poisoned');
+      combatHeal(state,target,rollFormula(rng,'2d6').total+P.accuracyLevel(state.player.level),events,'Shared Renewal');removeCondition(target,'poisoned');
     }else{
       const used=comp.actionUsed;resolveWeaponAttack(state,comp,target,rng,events,{advantage:true});comp.actionUsed=used;
       if(cid==='orin')for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});
@@ -532,7 +532,57 @@ function resolveTacticalAction(state,actor,action,rng,events) {
   return null;
 }
 
+// Job skills (src/data/jobs.json) are lists of small effects the engine
+// already understands, so every new skill uses tested combat paths.
+function resolveJobAction(state,actor,def,target,rng,events){
+  if(def.resource&&!spendActorResource(actor,def.resource))return invalidResult(state,events,'No uses remain.');
+  markActionCost(actor,def.cost);
+  const primary=CLASSES[actor.classId].primaryAbility,mod=abilityModifier(actor.abilities[def.ability||primary]);
+  const f=formula=>P.jobFormula(formula,actor.level).replace(/\bmod\b/g,String(mod)).replace(/\+-/g,'-');
+  const st=P.stats(state.player),round=state.combat.round;
+  const party=()=>livingActors(state,'party'),enemies=()=>livingActors(state,'enemy');
+  const pick=on=>on==='party'?party():on==='enemies'?enemies():on==='self'?[actor]:target&&target!==actor?[target]:def.target==='self'||def.target==='none'?[actor]:[];
+  const condition=(a,c)=>{if(a.hp>0)addCondition(a,{id:c.id,name:c.name||def.name,sourceId:actor.id,...(c.rounds?{expiresRound:round+c.rounds}:{})});};
+  for(const e of def.effects||[]){
+    if(e.do==='weapon'){
+      for(let n=0;n<(e.times||1)&&target?.hp>0;n++){
+        const r=resolveWeaponAttack(state,actor,target,rng,events,{advantage:Boolean(e.advantage)});
+        if(r.hit&&e.extra&&target.hp>0)applyCombatDamage(state,target,damageRoll(rng,f(e.extra),r.critical).total,actor.attack?.damageType||'slashing',events,def.name);
+        if(r.hit&&e.onHit)condition(target,e.onHit);
+      }
+    }else if(e.do==='spell'&&target?.hp>0){
+      const r=rollAttack(state,actor,target,{name:def.name,attackBonus:spellAttackBonus(actor,def.ability||primary,state)},rng,events);
+      if(r.hit){applyCombatDamage(state,target,damageRoll(rng,f(e.damage),r.critical).total+st.damage,e.type||'force',events,def.name);if(e.onHit)condition(target,e.onHit);}
+    }else if(e.do==='save'){
+      const dc=spellSaveDc(actor,primary);
+      for(const foe of e.area?enemies():pick('target').filter(a=>a.team==='enemy'&&a.hp>0)){
+        const saved=savingThrow(state,foe,e.save||'dex',dc,rng,events).success;
+        if(e.damage){const amount=rollFormula(rng,f(e.damage)).total+st.damage;const dealt=saved?(e.half?Math.floor(amount/2):0):amount;if(dealt)applyCombatDamage(state,foe,dealt,e.type||'force',events,def.name);}
+        if(!saved&&e.onFail)condition(foe,e.onFail);
+      }
+    }else if(e.do==='damage'){
+      for(const foe of pick(e.on).filter(a=>a.team==='enemy'&&a.hp>0))applyCombatDamage(state,foe,rollFormula(rng,f(e.damage)).total+st.damage,e.type||'force',events,def.name);
+    }else if(e.do==='heal'){
+      for(const a of pick(e.on).filter(a=>a.team==='party'))combatHeal(state,a,Math.max(1,rollFormula(rng,f(e.amount)).total)+st.healing,events,def.name);
+    }else if(e.do==='tempHp'){
+      for(const a of pick(e.on).filter(a=>a.team==='party'&&a.hp>0))a.temporaryHp=Math.max(a.temporaryHp||0,Math.max(1,rollFormula(rng,f(e.amount)).total));
+    }else if(e.do==='condition'){
+      for(const a of pick(e.on))condition(a,e);
+    }else if(e.do==='ward'){
+      for(const a of pick(e.on).filter(a=>a.team==='party'&&a.hp>0))addCondition(a,{id:'intercept',name:'Interception',sourceId:actor.id,expiresRound:round+1,reduction:4+Math.floor(P.accuracyLevel(actor.level)/2)});
+    }else if(e.do==='refresh'){
+      const r=actor.resources?.[e.resource];if(r)r.current=Math.min(r.max,r.current+(e.amount||1));
+    }else if(e.do==='objective'){
+      const o=state.combat.objective;
+      if(o&&!o.failed&&o.progress<o.target){o.progress=Math.min(o.target,o.progress+(e.steps||1));events.push({type:'objective',tone:'good',text:`${def.name} advances the objective: ${o.progress}/${o.target}.`});}
+    }
+  }
+  events.push({type:'feature',tone:'good',text:`${actor.name} uses ${def.name}. ${def.resource?`${actorResourceCurrent(actor,def.resource)} uses remain.`:''}`});
+  return {ok:true,kind:'combat',outcomeText:`${actor.name} uses ${def.name}.`};
+}
+
 function resolveAdvancedAction(state,actor,def,target,rng,events) {
+  if(def.kind==='job')return resolveJobAction(state,actor,def,target,rng,events);
   const kinds=['intercept','weaponControl','snare','sanctuary','rally','bastion','precisionBurst','shadow','sabotage','nova','timeWard','massHeal','banish','pack'];
   if(!kinds.includes(def.kind))return null;
   if(def.kind==='snare'&&state.combat.usedActions[`snared:${target.id}`])return invalidResult(state,events,'That enemy has already been snared in this encounter. No Technique was consumed.');
@@ -540,7 +590,7 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
   markActionCost(actor,def.cost);
   const primary=CLASSES[actor.classId].primaryAbility,mod=abilityModifier(actor.abilities[def.ability||primary]);
   const expires=state.combat.round+1,sourceId=actor.id;
-  const ward=(a)=>addCondition(a,{id:'intercept',name:'Interception',sourceId,expiresRound:expires,reduction:4+Math.floor(actor.level/2),exposes:def.kind==='intercept'&&P.ensure(state.player).choices['5']==='control'});
+  const ward=(a)=>addCondition(a,{id:'intercept',name:'Interception',sourceId,expiresRound:expires,reduction:4+Math.floor(P.accuracyLevel(actor.level)/2),exposes:def.kind==='intercept'&&P.ensure(state.player).choices['5']==='control'});
   const guard=(a)=>addCondition(a,{id:'guarded',name:def.name,sourceId,expiresRound:expires});
   const all=state.combat.actors.filter(a=>a.team==='party');let connected=false;
   switch(def.kind){
@@ -550,7 +600,7 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
       const r=rollAttack(state,actor,target,{name:def.name,attackBonus:spellAttackBonus(actor,'int',state)},rng,events);connected=r.hit;
       if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage,'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
     }
-    case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(actor.level/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
+    case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(P.accuracyLevel(actor.level)/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
     case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
     case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8);ward(a);}break;
     case 'precisionBurst':for(let n=0;n<2&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
@@ -853,10 +903,10 @@ function processCompanionTurn(state, actor, rng, events) {
   const lowest=companionLowTarget(state),threshold=actor.tactic==='aggressive'?0.22:actor.tactic==='protective'||actor.tactic==='support'?0.72:0.48;
   if(actor.aiRole==='healer'&&lowest&&actor.resources.healingWords>0&&(lowest.hp<=0||lowest.hp/lowest.maxHp<threshold)){
     actor.resources.healingWords--;actor.bonusUsed=true;
-    combatHeal(state,lowest,rollFormula(rng,actor.level>=5?'2d4':'1d4').total+abilityModifier(actor.abilities.wis)+Math.floor(actor.level/3),events,`${actor.name}'s Healing Word`);
+    combatHeal(state,lowest,rollFormula(rng,actor.level>=5?'2d4':'1d4').total+abilityModifier(actor.abilities.wis)+Math.floor(P.accuracyLevel(actor.level)/3),events,`${actor.name}'s Healing Word`);
   }
   if(actor.aiRole==='guardian'){
-    if(actor.hp/actor.maxHp<0.5&&actor.resources.secondWind>0){actor.resources.secondWind--;actor.bonusUsed=true;combatHeal(state,actor,rollFormula(rng,'1d10').total+actor.level,events,`${actor.name}'s Second Wind`);}
+    if(actor.hp/actor.maxHp<0.5&&actor.resources.secondWind>0){actor.resources.secondWind--;actor.bonusUsed=true;combatHeal(state,actor,rollFormula(rng,'1d10').total+P.accuracyLevel(actor.level),events,`${actor.name}'s Second Wind`);}
     const protect=ordered||((actor.tactic==='protective'||lowest?.hp/lowest?.maxHp<0.45)&&actor.tactic!=='aggressive'?lowest:null);
     if(protect&&protect.id!==actor.id&&protect.hp>0){addCondition(protect,{id:'guarded',name:`Guarded by ${actor.name}`,sourceId:actor.id,expiresRound:state.combat.round+1});addCondition(actor,{id:'taunting',name:'Holding the line',expiresRound:state.combat.round+1});events.push({type:'party',tone:'good',text:`${actor.name} grants ${protect.name} +2 AC and draws enemy attention.`});}
   }

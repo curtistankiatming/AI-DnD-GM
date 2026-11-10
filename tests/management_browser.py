@@ -119,11 +119,12 @@ def exercise_management(page, output):
 
 
 def exercise_advancement_fixture(page, output):
-    """Controlled level-10 sandbox save: not naturally earned progression."""
+    """Controlled level-20 sandbox save: not naturally earned progression."""
     script = """
-const E=require('./src/engine'),S=require('./src/public-preview');
+const E=require('./src/engine'),S=require('./src/public-preview'),P=require('./src/progression');
 const s=S.makeSandbox({classId:'fighter',level:10,questId:'aftermath'});
-if(E.buildView(s).progression.specializationOptions.length!==2)throw Error('Fixture changed');
+E.awardXp(s,P.XP_NEXT[19]-s.player.xp,[],'Sandbox fixture - not earned progression');
+if(E.buildView(s).progression.specializationOptions.length!==3)throw Error('Fixture changed');
 process.stdout.write(JSON.stringify(s));
 """
     fixture = json.loads(subprocess.check_output(['node','-e',script],
@@ -139,13 +140,13 @@ process.stdout.write(JSON.stringify(s));
     page.locator('#saveList [data-save-slot=sandbox-management-trial]').get_by_role('button',name='Load',exact=True).click()
     expect(page.locator('#sessionDecision')).to_be_visible()
     page.locator('#sessionDecision').get_by_role('button',name='Discard and continue',exact=True).click()
-    expect(page.locator('#playerLevel')).to_have_text('Level 10')
+    expect(page.locator('#playerLevel')).to_have_text('Level 20')
     expect(page.locator('#saveQuickBtn')).to_be_enabled()
     page.locator('#nav-prepare').click()
     choose=page.locator('#progressionPanel button[data-action]').filter(has_text='Guardian')
     before=page.evaluate('JSON.stringify(state)')
     choose.click()
-    expect(page.locator('#sessionDecisionTitle')).to_have_text('Confirm permanent advancement')
+    expect(page.locator('#sessionDecisionTitle')).to_have_text('Confirm your 2nd job branch')
     expect(page.locator('#sessionDecisionMessage')).to_contain_text('permanent')
     expect(page.locator('#sessionDecision button[value=cancel]')).to_be_focused()
     page.keyboard.press('Escape')

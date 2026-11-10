@@ -434,8 +434,8 @@ function conditionLabel(condition) {
 
 function renderPlayer() {
   const player = view.player;
-  const specialization=view.progression?.techniques.find(a=>a.id===`spec:${view.progression.specialization}`)?.name;
-  dom.playerIdentity.textContent = `${player.name} · ${player.className}${specialization ? ` · ${specialization}` : ""}`;
+  const job=view.progression?.job;
+  dom.playerIdentity.textContent = `${player.name} · ${player.className}${job?.branch ? ` · ${job.title}` : ""}`;
   dom.playerLevel.textContent = `Level ${player.level}`;
   dom.playerHp.textContent = `${player.hp} / ${player.maxHp}`;
   dom.playerAc.textContent = player.ac;

@@ -4,6 +4,7 @@
 // Later advancement tiers are data contracts, not pretend playable content.
 const { CLASSES, COMPANIONS, ITEMS, SKILLS } = require('./content');
 const { abilityModifier, proficiencyBonus, deepClone } = require('./rules');
+const JOBS = require('./data/jobs.json').classes;
 // Levels 1-100. Levels 1-10 keep the authored campaign's table; after that
 // each level needs 250 XP more than the one before. Rewards are paid as a share
 // of the current level's band (see src/xp.js), so the number of adventures per
@@ -47,10 +48,16 @@ const REWARDS = {
   7:'Party combinations, unlocked by companion personal quests; 4 Technique uses.',
   8:'Choose a second talent or improve an ability.',
   9:'Mastered technique: +2 on objective checks and one more Technique use.',
-  10:'Complete the advancement trial and select a defining specialization.'
+  10:'Complete the Oath of the Road trial to learn your class mastery skill.',
+  13:'A new class skill (passive).',
+  16:'A new class skill.',
+  20:'2nd job: choose one of three branches for your class and learn its first skill.',
+  25:'A new 2nd job skill (passive).',
+  30:'A new 2nd job skill and one more Advancement use.',
+  35:'A new 2nd job skill (passive).'
 };
-const LATE_REWARD='More health, a little more damage and healing, and stronger enemies to match. Job skills arrive in later updates.';
-const rewardText=level=>REWARDS[level]||(level===MAX_LEVEL?`The final level. ${LATE_REWARD} Renown ranks begin after this.`:LATE_REWARD);
+const LATE_REWARD='More health, a little more damage and healing, and stronger enemies to match.';
+const rewardText=level=>REWARDS[level]||(level===MAX_LEVEL?`The final level. ${LATE_REWARD} Renown ranks begin after this.`:level===40?`${LATE_REWARD} The 3rd job arrives in a later update.`:level===70?`${LATE_REWARD} The 4th job arrives in a later update.`:LATE_REWARD);
 const TALENTS = {
   precise:{id:'precise',name:'Measured Strikes',description:'+1 weapon and spell attack bonus. Does not increase save DCs.'},
   bulwark:{id:'bulwark',name:'Stalwart',description:'+1 AC and 4 maximum HP. Works with any armor.'},
@@ -98,11 +105,54 @@ const SPECIALIZATIONS = {
   ]
 };
 const ADVANCEMENTS = [
-  {level:10,name:'First advancement',status:'Playable',requirement:'Resolve the regional crisis, reach level 10, then complete the Oath of the Road trial.'},
-  {level:20,name:'2nd job',status:'Coming in a later update',requirement:'Choose one of three branches for your class after a branch trial.'},
+  {level:10,name:'Class mastery',status:'Playable',requirement:'Resolve the regional crisis, reach level 10, then complete the Oath of the Road trial to learn your class mastery skill.'},
+  {level:20,name:'2nd job',status:'Playable',requirement:'Reach level 20 after the Oath of the Road trial, then choose one of three branches for your class.'},
   {level:40,name:'3rd job',status:'Coming in a later update',requirement:'Your branch\u2019s third job, unlocked by a trial.'},
   {level:70,name:'4th job',status:'Coming in a later update',requirement:'Your branch\u2019s final job; its last skill is learnt at level 100.'}
 ];
+// The 2nd job's first skill: today's specializations for the original two
+// branches, the level-20 job skill for the new third branch.
+for(const [cls,def] of Object.entries(JOBS)){
+  const list=SPECIALIZATIONS[cls]||(SPECIALIZATIONS[cls]=[]);
+  for(const b of def.branches){
+    if(list.some(x=>x.id===b.id))continue;
+    const first=b.skills.find(x=>x.level===20);
+    list.push({...first,id:b.id,name:b.name,description:`${first.name}: ${first.description}`,skillName:first.name});
+  }
+}
+const SECOND_JOB_LEVEL=20;
+const branchOf=player=>(JOBS[player.classId]?.branches||[]).find(b=>b.id===ensure(player).specialization)||null;
+// Formulas in job skills scale with the hero's power level ({p}, {p/N}).
+function jobFormula(formula,level){
+  const p=powerLevel(level);
+  return String(formula).replace(/\{p(?:\/(\d+))?\}/g,(_,n)=>String(n?Math.max(1,Math.floor(p/Number(n))):p));
+}
+// Every job skill the hero has learnt, in order. A hero who picked a
+// specialization before it moved to level 20 keeps it.
+function learntSkills(player){
+  const job=JOBS[player.classId];if(!job)return [];
+  const p=ensure(player),out=[];
+  if(p.mastery&&player.level>=10)out.push({...job.mastery,source:'1st job'});
+  for(const s of job.firstJob)if(player.level>=s.level)out.push({...s,source:'1st job'});
+  const b=branchOf(player);
+  if(b)for(const s of b.skills)if(s.level===SECOND_JOB_LEVEL||player.level>=s.level)out.push({...s,source:b.name});
+  return out;
+}
+const passiveTotals=player=>learntSkills(player).filter(s=>s.passive).reduce((t,s)=>{for(const [k,v] of Object.entries(s.passive))t[k]=(t[k]||0)+v;return t;},{});
+// Flat bonuses stack from talents, job passives and boons, so each total has
+// a ceiling; real power comes from new skills, not +1s.
+const BONUS_CAPS=Object.freeze({attack:4,ac:4,save:4});
+function jobView(player){
+  const job=JOBS[player.classId];if(!job)return null;
+  const b=branchOf(player),p=ensure(player);
+  const title=b?(player.level>=70?b.fourth:player.level>=40?b.third:b.name):CLASSES[player.classId]?.name;
+  const describe=s=>({level:s.level,id:s.legacy||s.id,name:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description.split(':')[0]||b?.name:s.name,description:s.legacy?(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===s.legacy)?.description:s.description,passive:Boolean(s.passive)});
+  const learnt=new Set(learntSkills(player).map(s=>s.id||s.legacy));
+  const row=(s,source)=>({...describe(s),source,learnt:learnt.has(s.id||s.legacy)});
+  return {title,tier:b?(player.level>=70?4:player.level>=40?3:2):1,branch:b?{id:b.id,name:b.name,third:b.third,fourth:b.fourth,style:b.style}:null,mastery:Boolean(p.mastery),
+    skills:[row(job.mastery,'1st job'),...job.firstJob.map(s=>row(s,'1st job')),...(b?b.skills.map(s=>row(s,b.name)):[])]};
+}
+
 function ensure(player){
   player.progression ||= { choices:{}, talents:[], specialization:null };
   player.progression.choices ||= {};
@@ -155,8 +205,8 @@ function renownView(player){
 function talents(player){return ensure(player).talents;}
 function hasTalent(player,id){return talents(player).includes(id);}
 function stats(player){
-  const p=ensure(player);
-  return {
+  const p=ensure(player),j=passiveTotals(player);
+  const out={
     ac:(hasTalent(player,'bulwark')?1:0)+boon(player,'warding'),
     hp:(hasTalent(player,'bulwark')?4:0)+(hasTalent(player,'resilient')?4:0)+6*boon(player,'vigor'),
     attack:(hasTalent(player,'precise')?1:0)+boon(player,'precision'),
@@ -166,6 +216,9 @@ function stats(player){
     objective:(player.level>=9?2:0)+(p.choices['5']==='economy'?1:0)+boon(player,'purpose'),
     tool:player.level>=6?2:0
   };
+  for(const k of ['ac','hp','attack','save','healing','damage','objective'])out[k]+=j[k]||0;
+  for(const [k,cap] of Object.entries(BONUS_CAPS))out[k]=Math.min(cap,out[k]);
+  return out;
 }
 function resources(classDef,level=1,player=null){
   const result={};level=accuracyLevel(level);
@@ -177,7 +230,7 @@ function resources(classDef,level=1,player=null){
     result[id]={name:def.name,current:max,max,refresh:def.refresh||'long'};
   }
   if(level>=2){const max=2+(level>=5?1:0)+(level>=7?1:0)+(level>=9?1:0)+(player&&ensure(player).choices['5']==='economy'?1:0);result.technique={name:'Technique',current:max,max,refresh:'short'};}
-  if(player&&ensure(player).specialization) result.advancement={name:'Advancement',current:2,max:2,refresh:'long'};
+  if(player&&ensure(player).specialization){const max=2+(player.level>=30?1:0);result.advancement={name:'Advancement',current:max,max,refresh:'long'};}
   return result;
 }
 function maxHp(player){
@@ -236,6 +289,7 @@ function classActions(player){
   if(player.level>=2)result.push({...TECHNIQUES[player.classId],resource:'technique',minLevel:2});
   const spec=(SPECIALIZATIONS[player.classId]||[]).find(s=>s.id===ensure(player).specialization);
   if(spec) result.push({...spec,id:`spec:${spec.id}`,resource:'advancement',ability:cls.primaryAbility});
+  for(const s of learntSkills(player))if(s.kind==='job'&&s.level!==SECOND_JOB_LEVEL)result.push({...s,id:`job:${s.id}`,ability:cls.primaryAbility,source:s.source});
   return result;
 }
 function companionResources(id,level){
@@ -268,6 +322,11 @@ function levelCompanion(member,level){
   member.baseMaxHp=member.maxHp;
   refreshCompanion(member, level > oldLevel ? 'long' : 'none');
 }
+function branchOptions(player){
+  return (JOBS[player.classId]?.branches||[]).map(b=>{const spec=(SPECIALIZATIONS[player.classId]||[]).find(x=>x.id===b.id);
+    return {...spec,id:b.id,name:b.name,style:b.style,third:b.third,fourth:b.fourth,description:`${b.style} ${spec.description}`,
+      skills:b.skills.map(s=>s.legacy?{level:s.level,name:spec.description.split(':')[0],description:spec.description.split(': ').slice(1).join(': ')}:{level:s.level,name:s.name,description:s.description,passive:Boolean(s.passive)})};});
+}
 function view(player,world){
   const p=ensure(player);
   const previous=player.level===1?0:XP_NEXT[player.level-1];
@@ -281,8 +340,9 @@ function view(player,world){
       {level:11,through:MAX_LEVEL,description:`Levels 11 to ${MAX_LEVEL}: ${LATE_REWARD}`,reached:player.level>=11,choice:null}],
     techniques:classActions(player),talents:p.talents.map(id=>TALENTS[id]),
     specialization:p.specialization,advancements:ADVANCEMENTS,
-    specializationOptions:player.level>=10&&world?.completed?.trial&&!p.specialization?SPECIALIZATIONS[player.classId]:[],
+    specializationOptions:player.level>=SECOND_JOB_LEVEL&&world?.completed?.trial&&!p.specialization?branchOptions(player):[],
+    job:jobView(player),
     trialComplete:Boolean(world?.completed?.trial)
   };
 }
-module.exports={MAX_LEVEL,XP_NEXT,BOUNDED_LEVEL,levelBand,accuracyLevel,powerLevel,lateGrowth,hitDiceMax,rewardText,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};
+module.exports={JOBS,SECOND_JOB_LEVEL,BONUS_CAPS,passiveTotals,jobFormula,learntSkills,jobView,branchOptions,MAX_LEVEL,XP_NEXT,BOUNDED_LEVEL,levelBand,accuracyLevel,powerLevel,lateGrowth,hitDiceMax,rewardText,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};

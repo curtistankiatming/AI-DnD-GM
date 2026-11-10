@@ -114,7 +114,7 @@ for (const classId of Object.keys(CLASSES)) {
     }
     assert.equal(payload.state.player.level, 10);
     assert.ok(payload.view.world.campaignComplete);
-    assert.ok(payload.view.progression.specialization);
+    assert.ok(payload.view.progression.job.mastery, 'The level 10 trial grants class mastery.');
     assert.equal(payload.state.publicTest.mode, 'campaign');
   });
 }

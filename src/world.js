@@ -14,6 +14,7 @@ function init(state){
   w.townId=TOWNS[w.townId]?w.townId:'briarwatch';
   w.completed ||= {};w.progress ||= {};w.stock ||= {};w.meetings ||= {};w.personal ||= {};w.rumors ||= {};w.favors ||= {};w.servicesUsed ||= {};
   w.reputation={wardens:0,trade:0,wilds:0,...w.reputation};
+  if(w.completed?.trial&&state.player)P.ensure(state.player).mastery=true;
   w.unlockedTowns=Array.from(new Set(['briarwatch',...(w.unlockedTowns||[]).filter(x=>TOWNS[x])]));
   w.storage=G.inventory(w.storage||[]);
   w.onExpedition=Boolean(w.onExpedition);w.activeQuest=w.activeQuest||null;
@@ -50,7 +51,7 @@ function charge(state,gold,events){if(!Number.isInteger(gold)||gold<0||state.pla
 function reputation(state,changes){for(const [id,amount]of Object.entries(changes||{}))if(id in state.world.reputation)state.world.reputation[id]=Math.max(-10,Math.min(20,state.world.reputation[id]+Number(amount||0)));}
 function refreshStock(state){for(const id of state.world.unlockedTowns){const stock=ensureStock(state,id);for(const itemId of TOWNS[id].stock)stock[itemId]=maxStock(itemId);}}
 function completed(state,id){return Boolean(state.world.completed[id]);}
-function unlocked(state,q){return Boolean(completed(state,q.unlock)&&state.player.level>=q.level&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).specialization));}
+function unlocked(state,q){return Boolean(completed(state,q.unlock)&&state.player.level>=q.level&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
 }
@@ -69,7 +70,7 @@ function completeQuest(state,id,events,api){
   if(completed(state,id))return false;
   const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
   const progress=state.world.progress[id]||{};
-  if(q?.requiresAdvancement&&!P.ensure(state.player).specialization)return false;
+  if(q?.requiresAdvancement&&!P.ensure(state.player).mastery)return false;
   const quality=progress.setback?'costly':state.story.flags[`method:${id}`]==='peace'?'peaceful':state.story.flags[`method:${id}`]==='objective'?'objective':'force';
   const xp=id==='bell'?300:q.xp;
   const gold=id==='bell'?60:Math.floor(q.gold*(progress.setback?0.8:1));
@@ -81,6 +82,7 @@ function completeQuest(state,id,events,api){
     reputation(state,{wardens:state.story.flags.spiritFreed?3:2});
     if(state.story.flags.tovinFrightened)reputation(state,{wardens:-1});
   }
+  if(id==='trial'){const m=P.JOBS[state.player.classId]?.mastery;P.ensure(state.player).mastery=true;if(m)emit(events,`The Oath of the Road is sworn. ${state.player.name} learns the class mastery skill ${m.name}: ${m.description}`,'level','good');}
   if(q?.nextTown&&!state.world.unlockedTowns.includes(q.nextTown))state.world.unlockedTowns.push(q.nextTown);
   const destination=q?.nextTown||q?.town||'briarwatch';state.world.townId=destination;
   refreshStock(state);
@@ -102,7 +104,7 @@ function longRest(state,premium,events){
     if(premium)a.temporaryHp=4+P.accuracyLevel(state.player.level);
     else a.temporaryHp=0;
     a.used ||= {};a.used.cloakReady=true;
-    if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=a.level;}
+    if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=P.hitDiceMax(a.level);}
     else P.refreshCompanion(a,'long');
   }
   state.world.day+=1;
@@ -161,10 +163,11 @@ function handle(state,action,rng,events,api){
   }
   if(action.type==='specialize'){
     const spec=(P.SPECIALIZATIONS[state.player.classId]||[]).find(s=>s.id===action.specializationId);
-    if(state.player.level<10||!completed(state,'trial')||P.ensure(state.player).specialization||!spec)return fail(events,'Complete the level-10 trial and choose an available specialization. This choice is permanent.');
+    if(state.player.level<P.SECOND_JOB_LEVEL||!completed(state,'trial')||P.ensure(state.player).specialization||!spec)return fail(events,`Reach level ${P.SECOND_JOB_LEVEL} after the Oath of the Road trial, then choose one of your class's branches. This choice is permanent.`);
     P.ensure(state.player).specialization=spec.id;
-    state.player.resources.advancement={current:2,max:2,name:'Advancement',refresh:'long'};
-    return emit(events,`${state.player.name} advances to ${spec.name}. ${spec.description}`,'level','good');
+    state.player.resources.advancement=P.resources(CLASSES[state.player.classId],state.player.level,state.player).advancement;
+    state.player.maxHp=P.maxHp(state.player);
+    return emit(events,`${state.player.name} takes the 2nd job: ${spec.name}. ${spec.description}`,'level','good');
   }
   if(action.type==='return-town'){
     if(town(state))return fail(events,'You are already in a town.');

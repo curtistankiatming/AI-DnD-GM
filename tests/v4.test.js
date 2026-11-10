@@ -9,7 +9,7 @@ const high=()=>.999999,low=()=>0;
 function hero(cls='fighter',level=1){const s=E.createNewGame({name:'Diagnostic',classId:cls});if(level>1)E.awardXp(s,P.XP_NEXT[level-1],[],'diagnostic fixture only');return s;}
 function act(s,a,rng=high){const r=E.resolveAction(s,a,rng);assert.equal(r.result.ok,true,r.result.error);return r.state;}
 function gold(s,n=1000){s.player.gold=n;return s;}
-function ready(id='road',cls='fighter'){const q=QUESTS[id],s=gold(hero(cls,q.level));s.world.completed[q.unlock]={xp:0,gold:0};s.world.unlockedTowns=Object.keys(TOWNS);s.world.townId=q.town;s.story.nodeId=`town-${q.town}`;if(q.requiresAdvancement){s.player.progression.specialization=P.SPECIALIZATIONS[cls][0].id;s.player.resources=P.resources(CLASSES[cls],10,s.player);}W.init(s);return s;}
+function ready(id='road',cls='fighter'){const q=QUESTS[id],s=gold(hero(cls,q.level));s.world.completed[q.unlock]={xp:0,gold:0};s.world.unlockedTowns=Object.keys(TOWNS);s.world.townId=q.town;s.story.nodeId=`town-${q.town}`;if(q.requiresAdvancement)s.player.progression.mastery=true;W.init(s);return s;}
 function battle(cls='fighter',level=5,id='practice'){
  const s=hero(cls,level);E.startCombat(s,id,createSeededRng(222),[]);
  const player=s.combat.actors.find(a=>a.id==='player');s.combat.actors=[player,...s.combat.actors.filter(a=>a!==player)];s.combat.turnIndex=0;s.combat.awaitingPlayer=true;player.actionUsed=false;player.bonusUsed=false;
@@ -101,10 +101,11 @@ test('talent and ability choices are consequential, pending, and not repeatable'
  s=act(s,{type:'choose-reward',level:4,optionId:'ability:con'});assert.equal(s.player.abilities.con,16);assert.equal(s.player.maxHp,hp+4+4);
 });
 test('level cap is genuine and future advancement milestones are not falsely available',()=>{
- const s=hero();E.awardXp(s,P.XP_NEXT[P.MAX_LEVEL-1]*3,[]);assert.equal(s.player.level,P.MAX_LEVEL);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,20,40,70]);assert.ok(P.ADVANCEMENTS.slice(1).every(x=>/later update/.test(x.status)));
+ const s=hero();E.awardXp(s,P.XP_NEXT[P.MAX_LEVEL-1]*3,[]);assert.equal(s.player.level,P.MAX_LEVEL);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,20,40,70]);assert.deepEqual(P.ADVANCEMENTS.slice(0,2).map(x=>x.status),['Playable','Playable']);assert.ok(P.ADVANCEMENTS.slice(2).every(x=>/later update/.test(x.status)));
 });
-test('specialization requires a trial, gives its resource, and cannot be changed silently',()=>{
- let s=hero('fighter',10);assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'guardian'}).result.ok,false);s.world.completed.trial={};s=act(s,{type:'specialize',specializationId:'guardian'});assert.equal(s.player.resources.advancement.current,2);assert.ok(P.classActions(s.player).some(a=>a.id==='spec:guardian'));assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'duelist'}).result.ok,false);
+test('the 2nd job requires level 20 and the trial, gives its resource, and cannot be changed silently',()=>{
+ let early=hero('fighter',19);early.world.completed.trial={};assert.equal(E.resolveAction(early,{type:'specialize',specializationId:'guardian'}).result.ok,false);
+ let s=hero('fighter',20);assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'guardian'}).result.ok,false);s.world.completed.trial={};s=act(s,{type:'specialize',specializationId:'guardian'});assert.equal(s.player.resources.advancement.current,2);assert.ok(P.classActions(s.player).some(a=>a.id==='spec:guardian'));assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'duelist'}).result.ok,false);
 });
 test('paid inn, free recovery and treatment have distinct real benefits',()=>{
  let s=gold(hero('fighter',3));s.player.hp=1;s.player.conditions.push({id:'poisoned',name:'Poisoned'});s=act(s,{type:'town-service',serviceId:'inn'});assert.equal(s.player.hp,s.player.maxHp);assert.equal(s.player.temporaryHp,7);assert.ok(s.player.conditions.some(c=>c.id==='poisoned'));assert.equal(s.player.gold,987);
@@ -169,12 +170,12 @@ test('optional AI receives no hidden continuity facts or internal consequence fl
 });
 test('every class specialization resolves without undefined functions or NaN statistics',()=>{
  for(const cls of Object.keys(CLASSES))for(const spec of P.SPECIALIZATIONS[cls]){
-   let s=battle(cls,10);s.player.progression.specialization=spec.id;s.player.resources=P.resources(CLASSES[cls],10,s.player);s.combat.actors[0].resources=deepClone(s.player.resources);s.combat.actors[0].progression=deepClone(s.player.progression);
+   let s=battle(cls,20);s.player.progression.specialization=spec.id;s.player.resources=P.resources(CLASSES[cls],20,s.player);s.combat.actors[0].resources=deepClone(s.player.resources);s.combat.actors[0].progression=deepClone(s.player.progression);
    const target=spec.target==='enemy'?s.combat.actors.find(a=>a.team==='enemy').id:spec.target==='ally'?'companion:orin':'player';const r=E.resolveAction(s,{type:'combat',actionId:`spec:${spec.id}`,targetId:target},high);assert.equal(r.result.ok,true,`${cls}/${spec.id}: ${r.result.error}`);assert.equal(r.state.player.resources.advancement.current,1);assert.ok(r.view.combat.actors.every(a=>Number.isFinite(a.hp)&&Number.isFinite(a.ac)));
  }
 });
-test('post-advancement contract requires specialization and exists beyond the trial',()=>{
- let s=ready('aftermath');s.player.progression.specialization=null;assert.equal(E.buildView(s).world.quests.find(q=>q.id==='aftermath').available,false);s.player.progression.specialization='guardian';assert.equal(E.buildView(s).world.quests.find(q=>q.id==='aftermath').available,true);
+test('post-advancement contract requires class mastery and exists beyond the trial',()=>{
+ let s=ready('aftermath');s.player.progression.mastery=false;assert.equal(E.buildView(s).world.quests.find(q=>q.id==='aftermath').available,false);s.player.progression.mastery=true;assert.equal(E.buildView(s).world.quests.find(q=>q.id==='aftermath').available,true);
 });
 
 

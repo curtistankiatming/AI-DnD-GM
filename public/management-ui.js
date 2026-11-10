@@ -55,8 +55,14 @@
   clear(readyBody);for(const line of M.readiness(view))readyBody.append(el('p','readiness-line',line));
   clear(progressBody);progressBody.append(el('p','',`Level ${view.player.level} · ${view.player.xp} XP. Next: ${view.progression.nextReward}`));
   if(view.progression.pending.length||view.progression.specializationOptions.length||view.progression.renown?.pending)progressBody.append(button('Review pending choices',()=>{$id('progressionPanel').scrollIntoView({block:'start'});}));
+  const job=view.progression.job;
+  if(job){const path=el('details');path.id='jobPath';path.append(el('summary','',`Your job: ${job.title}${job.branch?` (2nd job · ${job.branch.name} branch)`:' (1st job)'}`));
+    if(job.branch)path.append(el('p','muted',`${job.branch.style} Path: ${job.branch.name} → ${job.branch.third} at level 40 → ${job.branch.fourth} at level 70.`));
+    else path.append(el('p','muted','At level 20 you choose one of three branches for your 2nd job.'));
+    for(const k of job.skills){const row=el('p','');row.append(el('strong','',`Level ${k.level} · ${k.name}${k.passive?' (passive)':''} · ${k.learnt?'Learnt':'Ahead'}: `),document.createTextNode(k.description||''));path.append(row);}
+    progressBody.append(path);}
   for(const reward of view.progression.rewards){const row=el('p','');row.append(el('strong','',`Level ${reward.through?`${reward.level} to ${reward.through}`:reward.level} · ${reward.reached?'Reached':'Ahead'}: `),document.createTextNode(reward.description));progressBody.append(row);}
-  const abilities=el('details');abilities.append(el('summary','','Your current abilities — use combat controls during initiative'));for(const a of view.progression.techniques||[])abilities.append(el('p','',`${a.name}: ${a.description}`));progressBody.append(abilities,el('p','muted','The 2nd, 3rd and 4th jobs (levels 20, 40 and 70) are future plans for later updates, not available rewards yet.'));
+  const abilities=el('details');abilities.append(el('summary','','Your current abilities — use combat controls during initiative'));for(const a of view.progression.techniques||[])abilities.append(el('p','',`${a.name}: ${a.description}`));progressBody.append(abilities,el('p','muted','The 3rd and 4th jobs (levels 40 and 70) are future plans for later updates, not available rewards yet.'));
   for(const [i,member]of view.party.entries()){const card=dom.partyCards.children[i];if(!card)continue;card.querySelector('.companion-contribution')?.remove();const text=M.contribution(member,eventHistory);if(text)card.append(el('p','companion-contribution','Most recently: '+text));}
  }
  const combatRender=renderCombat;
@@ -74,7 +80,7 @@
    return;
   }
   if(action?.type!=='specialize')return baseSend(action);if(specializing||busy||view.combat?.active)return;const option=view.progression.specializationOptions.find(s=>s.id===action.specializationId);if(!option)return baseSend(action);
-  specializing=true;const before=state;try{const choice=await askSessionDecision({title:'Confirm permanent advancement',message:`${option.name}\n\n${option.description}\n\nThis choice is permanent for this save. Cancel keeps all choices available.`,choices:[['cancel','Keep deciding'],['confirm','Choose '+option.name]]});if(choice==='confirm'&&!busy&&state===before&&view.progression.specializationOptions.some(s=>s.id===action.specializationId))return await baseSend(action);}finally{specializing=false;}
+  specializing=true;const before=state;try{const choice=await askSessionDecision({title:'Confirm your 2nd job branch',message:`${option.name}\n\n${option.description}\n\nThis choice is permanent for this save. Cancel keeps all choices available.`,choices:[['cancel','Keep deciding'],['confirm','Choose '+option.name]]});if(choice==='confirm'&&!busy&&state===before&&view.progression.specializationOptions.some(s=>s.id===action.specializationId))return await baseSend(action);}finally{specializing=false;}
  };
  const oldRender=renderGame;renderGame=function(){oldRender();managementSync();A.sync();};
  dom.clearEventsBtn?.addEventListener('click',managementSync);
