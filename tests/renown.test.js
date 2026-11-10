@@ -1,5 +1,5 @@
 'use strict';
-// Endless progression: renown ranks and capped boons after level 10.
+// Endless progression: renown ranks and capped boons after the final level.
 const test=require('node:test'),assert=require('node:assert/strict');
 const E=require('../src/engine');
 const P=require('../src/progression');
@@ -9,22 +9,22 @@ const {ENEMIES}=require('../src/content');
 const draft=require('./fixtures/director-draft');
 
 const clone=x=>JSON.parse(JSON.stringify(x));
-const CAP=P.XP_NEXT[9];
+const MAX=P.MAX_LEVEL,CAP=P.XP_NEXT[MAX-1];
 function hero(xp=CAP,{town=false}={}){
   const s=E.createNewGame({name:'Rhea',classId:'fighter'});
-  s.player.level=10;s.player.xp=xp;
+  s.player.level=MAX;s.player.xp=xp;
   if(town){s.world.completed.bell={day:1,quality:'force'};s.story.nodeId='town-briarwatch';s.world.townId='briarwatch';}
   return E.normalizeIncomingState(s);
 }
 const act=(s,action)=>E.resolveAction(s,action,()=>0.999);
 
-test('ranks come from XP after level 10, one every RANK_XP',()=>{
+test('ranks come from XP after the final level, one every RANK_XP',()=>{
   assert.equal(P.renownRank(hero(CAP).player),0);
   assert.equal(P.renownRank(hero(CAP+P.RANK_XP-1).player),0);
   assert.equal(P.renownRank(hero(CAP+P.RANK_XP).player),1);
   assert.equal(P.renownRank(hero(CAP+50*P.RANK_XP).player),50,'Ranks never run out.');
   const below=E.createNewGame({classId:'fighter'});below.player.xp=CAP*3;
-  assert.equal(P.renownRank(below.player),0,'Only a level-10 hero earns renown.');
+  assert.equal(P.renownRank(below.player),0,'Only a hero at the final level earns renown.');
 });
 
 test('earning a rank announces it and offers a boon; XP is no longer wasted',()=>{
@@ -56,20 +56,20 @@ test('edited saves cannot claim more boons than ranks or caps allow',()=>{
   for(const m of n.party)assert.equal(P.renownRank(m),0,'Companions never earn renown.');
 });
 
-test('AI adventures past level 10 scale with renown, capped, and reward a share of a rank',()=>{
-  assert.deepEqual(D.rewards(10),{xp:1200,gold:220});
+test('AI adventures at the final level scale with renown, capped, and reward a share of a rank',()=>{
+  assert.deepEqual(D.rewards(MAX),{xp:Math.round(P.RANK_XP*0.25/10)*10,gold:20+MAX*20});
   let s=hero(CAP+4*P.RANK_XP,{town:true});
   const out=act(s,{type:'director-commission',draft:draft()});assert.equal(out.result.ok,true,out.result.error);
   const q=out.state.director.quests[out.result.questId];
-  assert.equal(q.level,10);assert.equal(q.power,12);assert.equal(q.xp,1200);assert.equal(q.gold,20+12*20);
-  assert.equal(ENEMIES[q.foe].maxHp,22+12*6,'Enemies use the challenge level.');
-  assert.equal(act(out.state,{type:'depart',questId:q.id}).result.ok,true,'A level-10 hero can depart.');
-  const t=clone(out.state);t.director.quests[q.id].power=99;
-  assert.equal(E.normalizeIncomingState(t).director.quests[q.id].power,10+P.RENOWN_POWER_CAP);
+  assert.equal(q.level,MAX);assert.equal(q.power,MAX+2);assert.equal(q.xp,D.rewards(MAX).xp);assert.equal(q.gold,20+(MAX+2)*20);
+  assert.equal(ENEMIES[q.foe].maxHp,22+(P.powerLevel(MAX)+2)*6,'Renown adds to enemy health and damage.');
+  assert.equal(act(out.state,{type:'depart',questId:q.id}).result.ok,true,'A hero at the final level can depart.');
+  const t=clone(out.state);t.director.quests[q.id].power=MAX+99;
+  assert.equal(E.normalizeIncomingState(t).director.quests[q.id].power,MAX+P.RENOWN_POWER_CAP);
   const legend=act(hero(CAP+100*P.RANK_XP,{town:true}),{type:'director-commission',draft:draft()});
-  assert.equal(legend.state.director.quests[legend.result.questId].power,10+P.RENOWN_POWER_CAP,'Challenge stops growing at the cap.');
+  assert.equal(legend.state.director.quests[legend.result.questId].power,MAX+P.RENOWN_POWER_CAP,'Challenge stops growing at the cap.');
 });
 
-test('improvised XP keeps flowing past level 10',()=>{
-  assert.equal(I.xpFor(10,'moderate'),Math.round(P.RANK_XP*0.05/5)*5);
+test('improvised XP keeps flowing past the final level',()=>{
+  assert.equal(I.xpFor(MAX,'moderate'),Math.round(P.RANK_XP*0.05/5)*5);
 });

@@ -2,7 +2,7 @@
 
 A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
-**Playable scope: authored levels 1–10, a first advancement at level 10, a post-advancement expedition, then endless renown ranks with AI-directed adventures.** Level-30 and level-70 advancements are shown as future expansion milestones, not playable systems or content in this release. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+**Playable scope: authored levels 1–10, a first advancement at level 10, a post-advancement expedition, then AI-directed adventures up to level 100 and endless renown ranks after that.** The 2nd, 3rd and 4th jobs (levels 20, 40 and 70) are planned and shown as coming in later updates; they are not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
 ## Earlier reliability fixes (V4.0.1)
 
@@ -239,15 +239,57 @@ One generated adventure can wait on the board at a time; dismiss it if you would
 rather have another. It returns you to a town you already know, so it cannot
 open a locked region early. Generated adventures are stored in the save,
 re-checked against these limits whenever a save loads, and play without AI once
-written. Past level 10 an adventure is worth 30% of a renown rank (1,200 XP), and
-its challenge level rises with your renown (see below).
+written. An adventure pays 25% of your current level on completion, plus XP for
+its battle by how hard it is (see below).
 
-### Renown: progression after level 10
+### Levels 11 to 100 and how XP is earned
 
-Level 10 is the last level with new class features. After it, every 4,000 XP
-earns a **renown rank**, without end. Each rank gives one boon, chosen in the
-character development panel. Boons stack up to a limit, so they never break the
-d20 maths:
+The level cap is 100. Levels 1 to 10 follow the authored campaign's table; after
+that each level needs 250 XP more than the one before (4,250 XP for level 10 to
+11, 26,500 XP for level 99 to 100). Every reward is a share of what your current
+level needs, so each level takes about the same effort from start to finish.
+
+| Source | XP, as a share of your current level |
+| --- | --- |
+| Easy battle | 3% |
+| Normal battle | 6% |
+| Hard battle | 10% |
+| Deadly battle | 15% |
+| Battle far below your level | 0 (10 or more levels below), easy at best (5 or more) |
+| Mission (a companion's personal quest) | 12% |
+| Quest or AI adventure, on completion | 25%, plus its battle |
+| Improvised action | 2 to 8% by difficulty, capped per scene |
+
+The game rates each AI adventure battle by comparing its enemies with a standard
+fight for your level; the AI never sets XP. Resolving the crisis peacefully pays
+the same battle XP as winning the fight. The authored Briarwatch campaign (levels
+1 to 10) keeps its hand-tuned quest and battle rewards.
+
+Before you depart on an AI adventure you can choose its difficulty on the
+expedition board:
+
+| Difficulty | Challenge | Rewards |
+| --- | --- | --- |
+| Normal | The standard challenge for your level | 1x XP and gold |
+| Hard | +2 levels of enemy health and damage, +1 to AC, enemy attacks and DCs | 1.5x |
+| Heroic | +4 levels of enemy health and damage, +2 to AC, enemy attacks and DCs | 2x |
+
+The choice is fixed once you set out.
+
+Growth past level 20 is deliberately gentle so the d20 still matters: the
+proficiency bonus stops at +6, enemy AC, attacks and DCs stop at their level-20
+values, and health and damage keep growing slowly on both sides (+2 HP a level
+and +1 damage and healing every 10 levels for heroes). New power past 20 will
+come from the 2nd, 3rd and 4th jobs in later updates.
+
+Saves from when level 10 was the cap keep their XP: XP past level 10 now counts
+as levels, and boons picked then return when renown starts after level 100.
+
+### Renown: progression after level 100
+
+After level 100, every 26,750 XP earns a **renown rank**, without end. Each rank
+gives one boon, chosen in the character development panel. Boons stack up to a
+limit, so they never break the d20 maths:
 
 | Boon | Effect per pick | Limit |
 | --- | --- | --- |
@@ -260,10 +302,7 @@ d20 maths:
 | Purpose | +1 to combat-objective checks | 2 |
 
 When every boon is full (18 ranks), ranks still record your legend. AI-directed
-adventures use a challenge level of 10 plus half your renown rank, up to 16:
-their DCs, enemy health, armour and attacks follow the authored formulas for
-that level, and their gold grows with it. Improvised actions keep earning XP
-past level 10.
+adventures add half your renown rank, up to 6, to their enemy health and damage.
 
 Story narration uses the same AI settings: tick **AI narration for story
 scenes** to have the selected provider narrate resolved story choices and combat.

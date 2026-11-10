@@ -142,11 +142,11 @@ function checkLevelUp(state, events = []) {
   while (state.player.level < P.MAX_LEVEL && state.player.xp >= (XP_THRESHOLDS[state.player.level] || Infinity)) {
     const player=state.player, before=player.maxHp;
     player.level+=1; player.maxHp=P.maxHp(player); player.hp+=Math.max(0,player.maxHp-before);
-    player.hitDice.max=player.level;player.hitDice.current=Math.min(player.level,player.hitDice.current+1);
+    player.hitDice.max=P.hitDiceMax(player.level);player.hitDice.current=Math.min(player.hitDice.max,player.hitDice.current+1);
     player.resources=buildClassResources(CLASSES[player.classId],player.level,player);
     player.inspiration=Math.min(3,player.inspiration+1);
     for (const member of state.party) { P.levelCompanion(member,player.level); G.derive(member); }
-    const text=`${player.name} reached level ${player.level}: ${P.REWARDS[player.level]} The companions share the new level.`;
+    const text=`${player.name} reached level ${player.level}: ${P.rewardText(player.level)} The companions share the new level.`;
     events.push({type:'level',tone:'good',text});pushLog(state,'Progression',text,'level');
   }
 }
@@ -157,4 +157,4 @@ function invalidResult(state, events, message) {
   return { ok: false, error: message };
 }
 
-Object.assign(module.exports, { SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats });
+Object.assign(module.exports, { SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats });

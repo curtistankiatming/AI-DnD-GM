@@ -7,6 +7,7 @@ const P = require("./progression");
 const G = require("./equipment");
 const W = require("./world");
 const Director = require("./director");
+const XP = require("./xp");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
 const enterNode = (...args) => Engine.enterNode(...args);
@@ -160,7 +161,7 @@ function startCombat(state, encounterId, rng, events) {
     const q=Director.quest(state,encounter.questId);
     const prepared=Boolean(state.story.flags[`prepared:${q.id}`]);
     const approached=Boolean(state.story.flags[`approach:${q.id}`]);
-    state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor((q.power||q.level)/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
+    state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor(XP.challenge(q).accuracy/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
     if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }
@@ -574,7 +575,7 @@ function resolveClassAction(state, actor, actionDef, target, rng, events) {
   const mod = abilityModifier(actor.abilities[actionDef.ability || CLASSES[actor.classId]?.primaryAbility || "wis"]);
   if (actionDef.kind === "heal") {
     const recipient = target || actor;
-    const amount = rollFormula(rng, actionDef.formula, { level: actor.level || 1, mod }).total;
+    const amount = rollFormula(rng, actionDef.formula, { level: P.accuracyLevel(actor.level || 1), mod }).total;
     combatHeal(state, recipient, Math.max(1, amount)+P.stats(state.player).healing, events, actionDef.name);
     return { ok: true, outcomeText: `${actor.name} uses ${actionDef.name} on ${recipient.name}.` };
   }
@@ -962,6 +963,7 @@ function finishCombat(state,result,rng,events){
     if(result==='setback'){(state.world.progress[qid]||={}).setback=true;state.world.setbacks++;}
     const text=c.objective.failed?`${c.objective.failText} The remaining opposition has now been resolved.`:result==='objective'?c.objective.successText:result==='setback'?c.objective.failText:`The opposition is defeated. The party secures ${c.objective.name.toLowerCase()} before returning to the witnesses.`;
     events.push({type:'objective',tone:result==='setback'?'warning':'good',text});
+    if(!state.story.flags[`won:${encounter.id}`])W.awardBattleXp(state,qid,events,{awardXp});
     state.story.lastOutcome={kind:'combatVictory',title:name,text};
   }else{
     if(!state.story.flags[`won:${encounter.id}`]){awardXp(state,encounter.xp,events,`Victory in ${name}`);for(const loot of encounter.loot||[])addItem(state,loot.itemId,loot.quantity,events);}

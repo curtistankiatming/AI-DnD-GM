@@ -1768,6 +1768,8 @@ textarea {
 .v4-card p { line-height:1.6; font-size:.88rem; margin:.45rem 0; }
 .v4-card .btn { margin:.35rem .35rem 0 0; }
 .v4-controls { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.65rem; }
+.adventure-tier { align-items:center; }
+.adventure-tier .btn.is-selected, .adventure-tier .btn.is-selected:disabled { opacity:1; cursor:default; border-color:var(--accent, #c9a36a); box-shadow:inset 0 0 0 1px var(--accent, #c9a36a); font-weight:700; }
 .v4-option-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; }
 .v4-option-grid > button { text-align:left; white-space:normal; line-height:1.5; padding:.85rem; }
 .v4-option-grid > button > p { font-size:.82rem; font-weight:400; opacity:.86; margin:.4rem 0 0; }

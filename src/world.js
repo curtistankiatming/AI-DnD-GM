@@ -1,8 +1,9 @@
 "use strict";
-const { ITEMS, COMPANIONS, STORY_NODES, CLASSES }=require('./content');
+const { ITEMS, COMPANIONS, STORY_NODES, CLASSES, ENCOUNTERS, ENEMIES }=require('./content');
 const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS }=require('./expansion');
 const P=require('./progression');
 const Director=require('./director');
+const XP=require('./xp');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
 const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize']);
@@ -53,6 +54,17 @@ function unlocked(state,q){return Boolean(completed(state,q.unlock)&&state.playe
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
 }
+// The battle of an AI-written adventure pays by the engine's rating of it.
+// Resolving the crisis peacefully overcomes the same threat and pays the same,
+// so peaceful and combat solutions stay equal. Paid once per adventure.
+function awardBattleXp(state,id,events,api,peaceful=false){
+  const q=Director.quest(state,id);const enc=ENCOUNTERS[`quest:${id}`];
+  if(!q?.generated||!enc||state.story.flags[`battleXp:${id}`])return 0;
+  const {rating,xp}=XP.battleXp(state.player.level,enc.enemies.map(e=>ENEMIES[e]).filter(Boolean),q.tier,q.level);
+  state.story.flags[`battleXp:${id}`]=true;
+  if(xp)api.awardXp(state,xp,events,peaceful?`Overcame the threat without a fight (${rating})`:`Won a ${rating} battle`);
+  return xp;
+}
 function completeQuest(state,id,events,api){
   if(completed(state,id))return false;
   const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
@@ -72,6 +84,7 @@ function completeQuest(state,id,events,api){
   if(q?.nextTown&&!state.world.unlockedTowns.includes(q.nextTown))state.world.unlockedTowns.push(q.nextTown);
   const destination=q?.nextTown||q?.town||'briarwatch';state.world.townId=destination;
   refreshStock(state);
+  if(state.story.flags[`method:${id}`]==='peace')awardBattleXp(state,id,events,api,true);
   api.awardXp(state,xp,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
@@ -86,7 +99,7 @@ function longRest(state,premium,events){
   for(const a of G.actors(state)){
     a.hp=a.maxHp;a.deathSaves={successes:0,failures:0,stable:false};
     a.conditions=(a.conditions||[]).filter(c=>['poisoned','blessed','poisonWard','coating'].includes(c.id));
-    if(premium)a.temporaryHp=4+state.player.level;
+    if(premium)a.temporaryHp=4+P.accuracyLevel(state.player.level);
     else a.temporaryHp=0;
     a.used ||= {};a.used.cloakReady=true;
     if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=a.level;}
@@ -94,7 +107,7 @@ function longRest(state,premium,events){
   }
   state.world.day+=1;
   if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
-  return emit(events,premium?`The inn restores the party and grants ${4+state.player.level} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
+  return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
 }
 function recover(state,events,api){
   const trial=state.world.activeQuest==='trial';
@@ -279,6 +292,7 @@ function handle(state,action,rng,events,api){
     const a=state.party.find(m=>m.id===action.companionId),r=w.personal[action.companionId],def=PERSONAL[action.companionId];
     if(!a||!r?.started||!completed(state,def.quest)||r.rewarded||!['watchful','decisive'].includes(action.choice))return fail(events,'That companion reflection is not available.');
     r.rewarded=true;r.style=action.choice;a.personalStyle=action.choice;a.bond=Math.min(5,a.bond+2);G.derive(a);
+    if(api?.awardXp)api.awardXp(state,XP.missionXp(state.player.level),events,`Mission complete: ${def.name}`);
     return emit(events,`${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
   }
   if(action.type==='practice'){
@@ -305,7 +319,7 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,...o,cost:45+Math.floor(item.value/2),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!(w.activeQuest===q.id||w.progress[q.id]?.node)}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];
@@ -332,4 +346,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,activeMerchant,handle,view,completeQuest,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={init,town,activeMerchant,handle,view,completeQuest,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

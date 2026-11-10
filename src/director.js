@@ -13,6 +13,7 @@
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
 const { QUESTS, TOWNS, installQuest } = require('./expansion');
 const P = require('./progression');
+const XP = require('./xp');
 
 const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
@@ -109,7 +110,7 @@ function normalizeQuest(raw) {
   // unbounded definition. The numbers are recomputed from the level.
   if (!raw || typeof raw !== 'object' || !/^ai-\d{1,4}-[a-z0-9]{7}$/.test(raw.id || '')) return null;
   const level = Math.max(1, Math.min(P.MAX_LEVEL, Math.floor(Number(raw.level) || 1)));
-  const out = bound({ level, power: raw.power, town: raw.town, unlock: 'bell' }, raw, raw.id);
+  const out = bound({ level, power: raw.power, tier: raw.tier, town: raw.town, unlock: 'bell' }, raw, raw.id);
   return out.ok ? finalize({ ...out.quest, createdDay: Math.max(1, Math.floor(Number(raw.createdDay) || 1)), createdLevel: level }) : null;
 }
 
@@ -138,7 +139,7 @@ function install(q) {
       const node = STORY_NODES[`q-${q.id}-${phase}`];
       node.directorHash = q.hash;
       node.generated = true;
-      if (phase !== 'after') node.act = `AI-directed expedition • ${q.power ? `Renown challenge ${q.power}` : `Level ${q.level}`}`;
+      if (phase !== 'after') node.act = `AI-directed expedition • ${q.power ? `Renown challenge ${q.power}` : `Level ${q.level}`}${q.tier ? ` • ${XP.tier(q.tier).name}` : ''}`;
     }
   }
   return q;
@@ -152,11 +153,12 @@ function quest(state, id) {
 const list = state => Object.values(state?.director?.quests || {});
 const open = state => list(state).filter(q => !state.world?.completed?.[q.id]);
 
-// Past level 10 the band is one renown rank, so about three or four
-// adventures earn the next rank. Gold grows with the challenge level.
-function rewards(level, power = level) {
-  const band = level < P.MAX_LEVEL ? P.XP_NEXT[level] - (P.XP_NEXT[level - 1] || 0) : P.RANK_XP;
-  return { xp: Math.round(band * 0.3 / 10) * 10, gold: 20 + power * 20 };
+// A quest pays a share of the hero's current level (one renown rank past the
+// final level); the battle inside it pays separately by its rating. Hard and
+// Heroic adventures multiply both. Gold grows with the challenge level.
+function rewards(level, power = level, tierId = 'normal') {
+  const t = XP.tier(tierId);
+  return { xp: Math.round(XP.share(level, XP.QUEST_SHARE) * t.reward / 10) * 10, gold: Math.round((20 + power * 20) * t.reward) };
 }
 
 // The director may send the party home to any town it has already reached; it
@@ -174,6 +176,7 @@ function bound(state, draft, forcedId = null) {
   // Challenge level: the hero's level, plus renown at level 10 (capped).
   const extra = state.player ? P.renownPower(state.player) : Math.floor(Number(state.power) - level) || 0;
   const power = level < P.MAX_LEVEL ? level : level + Math.max(0, Math.min(P.RENOWN_POWER_CAP, extra));
+  const tier = XP.tier(state.tier);
   const town = TOWNS[state.town] ? state.town : TOWNS[state.world?.townId] ? state.world.townId : 'briarwatch';
   const text = (v, limit, fallback = '') => clean(v, limit) || fallback;
   const ck = (raw, label) => {
@@ -209,7 +212,7 @@ function bound(state, draft, forcedId = null) {
   }).filter(Boolean);
   if (decisions.length < 2) return fail('The new adventure needs at least two final decisions. Nothing was added.');
   const body = {
-    name, level, ...(power > level ? { power } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
+    name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
     faction: FACTIONS.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
@@ -217,7 +220,7 @@ function bound(state, draft, forcedId = null) {
     foeName: text(draft.foeName, TEXT.name, 'The Opposition'), enemyTheme: THEMES.includes(draft.enemyTheme) ? draft.enemyTheme : 'soldier',
     after: text(draft.after, TEXT.long, 'The dust settles.'),
     nextTown: destination(state, draft.destination || draft.nextTown, town),
-    ...rewards(level, power)
+    ...rewards(level, power, tier.id)
   };
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
@@ -270,6 +273,23 @@ function dismiss(state, id, events) {
   return { ok: true, kind: 'director', outcomeText: text };
 }
 
+// The player picks Normal, Hard or Heroic before departing. The adventure is
+// rebuilt from its stored text with the new challenge and rewards.
+function setTier(state, id, tierId, events) {
+  const q = state.director?.quests?.[id];
+  if (!q || state.world.completed?.[id]) return { ok: false, error: 'That adventure is not on the board.' };
+  if (!Object.hasOwn(XP.TIERS, tierId)) return { ok: false, error: 'Choose Normal, Hard or Heroic.' };
+  if (state.world.activeQuest === id || state.world.progress?.[id]?.node) return { ok: false, error: 'The difficulty is fixed once you set out.' };
+  const out = bound({ level: q.level, power: q.power, tier: tierId, town: q.town }, q, id);
+  if (!out.ok) return out;
+  const n = finalize({ ...out.quest, createdDay: q.createdDay, createdLevel: q.createdLevel });
+  state.director.quests[id] = install(n);
+  const t = XP.tier(tierId);
+  const text = `${n.name} is set to ${t.name}. ${t.description} Reward: ${n.xp} XP and ${n.gold} gold, plus XP for its battle.`;
+  events.push({ type: 'quest', tone: 'neutral', text });
+  return { ok: true, kind: 'director', questId: id, outcomeText: text };
+}
+
 function prune(state) {
   const d = state.director;
   const done = Object.values(d.quests).filter(q => state.world.completed?.[q.id]).sort((a, b) => a.createdDay - b.createdDay);
@@ -311,4 +331,4 @@ function view(state) {
   };
 }
 
-module.exports = { SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, normalize, install, quest, list, open, bound, rewards, commission, dismiss, prompt, view, availability };
+module.exports = { SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, normalize, install, quest, list, open, bound, rewards, commission, dismiss, setTier, prompt, view, availability };

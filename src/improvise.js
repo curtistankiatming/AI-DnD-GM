@@ -115,7 +115,7 @@ function bound(state, proposal, sceneId) {
   return { ok: true, proposal: p, dc: DIFFICULTIES[p.difficulty], notes, effects };
 }
 
-function harmFormula(level) { return `${Math.max(1, Math.ceil(level / 3))}d6`; }
+function harmFormula(level) { return `${Math.max(1, Math.ceil(P.powerLevel(level) / 3))}d6`; }
 
 // Called by the engine after it has rolled. `api` supplies the engine's own
 // helpers so every change goes through the normal rules code.

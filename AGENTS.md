@@ -18,10 +18,12 @@
   `tests/content-data.test.js` checks that every reference resolves.
 - Keep save schema compatibility explicit. Use an OS temporary SAVE_DIR for all
   HTTP tests; never touch real saves or include them in commits/releases.
-- Authored content is levels 1–10. Past level 10, XP earns renown ranks (every
-  4,000 XP) with capped boons, and AI-directed adventures scale their challenge
-  with renown up to a cap (`src/progression.js`). Do not replace content depth
-  with inflated XP or uncapped bonuses.
+- Authored content is levels 1–10; the cap is 100, reached through AI-directed
+  adventures. XP rewards are shares of the current level (`src/xp.js`); growth
+  past level 20 is bounded (proficiency +6, enemy AC/attacks/DCs stop at their
+  level-20 values). After 100, XP earns renown ranks with capped boons
+  (`src/progression.js`). Do not replace content depth with inflated XP or
+  uncapped bonuses.
 - Before a fix, reproduce it in a targeted regression test. Run `npm run check`,
   `npm test`, `npm run playtest` and `npm run fuzz` after changes.
 - Distinguish actual browser interaction, public-view scripted campaign policies,
