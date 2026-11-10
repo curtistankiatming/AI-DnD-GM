@@ -52,5 +52,77 @@ def exercise_story(page, output):
     expect(page.locator('#workspace-party')).to_be_visible()
     page.evaluate('window.scrollTo(0, document.documentElement.scrollHeight)')
     last = page.evaluate("(()=>{const r=document.getElementById('returnToMessage').getBoundingClientRect(),n=document.getElementById('workspaceNav').getBoundingClientRect();return r.bottom<=n.top+1;})()")
-    assert last
+    assert last, 'tabs clear of the last control on the Party screen'
     page.locator('#nav-adventure').click()
+    exercise_combat_board(page, output)
+
+
+def exercise_combat_board(page, output):
+    """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    for _ in range(5):
+        if page.evaluate('Boolean(view.combat&&view.combat.active)'):
+            break
+        page.locator('#storyChoices button[data-choice-id]:not([disabled])').last.click()
+        expect(page.locator('#actionSubmitBtn')).to_be_enabled()
+    assert page.evaluate('Boolean(view.combat&&view.combat.active)'), 'story choices reach the first fight'
+    expect(page.locator('#combatPanel')).to_be_visible()
+    actors = page.evaluate('view.combat.actors.length')
+    foes = page.evaluate("view.combat.actors.filter(a=>a.team==='enemy').length")
+    # One board: turn order, enemies and party as cards with health bars, the result beside it.
+    expect(page.locator('#combatOrder .order-token')).to_have_count(actors)
+    expect(page.locator('#combatOrder .order-token.is-current')).to_have_count(1)
+    expect(page.locator('#combatEnemies .fighter-card')).to_have_count(foes)
+    expect(page.locator('#combatParty .fighter-card')).to_have_count(actors - foes)
+    expect(page.locator('#combatPanel .fighter-bar')).to_have_count(actors)
+    expect(page.locator('#initiativeTrack')).to_be_hidden()
+    expect(page.locator('#adventureSide')).to_be_hidden()
+    expect(page.locator('#combatLog #narrationCard')).to_have_count(1)
+    # Every engine action is still offered exactly once, and Retreat is still last.
+    assert page.evaluate('view.combat.actions.length') == page.locator('#combatActions button[data-action-id]').count()
+    assert page.locator('#combatActions button[data-action-id]').last.get_attribute('data-action-id') == 'retreat'
+    # The whole fight fits a laptop screen: End Turn is in view without scrolling.
+    page.locator('#adventureScroll').evaluate('(n)=>{n.scrollTop=0}')
+    end = page.locator('#combatActions [data-action-id=end-turn]').bounding_box()
+    frame = page.locator('#adventureScroll').bounding_box()
+    assert end['y'] + end['height'] <= frame['y'] + frame['height'] + 1, (end, frame)
+    # The weapon is ready by default: each living enemy is a one-tap target showing the engine's hit chance.
+    expect(page.locator('#combatHint')).to_contain_text('Tap an enemy')
+    targets = page.evaluate("view.combat.actions.find(a=>a.id==='weapon-attack').targets.map(t=>[t.id,t.probability])")
+    expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(len(targets))
+    for target_id, chance in targets:
+        expect(page.locator(f'#combatEnemies button[data-target-id="{target_id}"] .fighter-pill')).to_have_text(f'{chance}% to hit')
+    # Arming an ally action moves the targets to the party row and sends nothing.
+    before = page.evaluate('JSON.stringify(state)')
+    page.locator('#combatActions [data-action-id=brace]').click()
+    expect(page.locator('#combatActions [data-action-id=brace]')).to_have_attribute('aria-pressed', 'true')
+    expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
+    assert page.locator('#combatParty button.fighter-card').count() > 1, 'party members are targets for Brace'
+    expect(page.locator('#targetDialog')).to_be_hidden()
+    assert page.evaluate('JSON.stringify(state)') == before, 'arming sends nothing'
+    page.screenshot(path=str(output / 'combat-1440.png'))
+    # Attack by tapping an enemy: the exact engine action is sent, with no pop-up, and the roll shows in the log.
+    page.locator('#combatActions [data-action-id=weapon-attack]').click()
+    target_id = targets[0][0]
+    page.locator(f'#combatEnemies button[data-target-id="{target_id}"]').click()
+    # The log already holds the initiative chip, so wait for the engine's answer, not for any chip.
+    page.wait_for_function('view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy')
+    expect(page.locator('#storyDid')).to_contain_text('Iron Longsword')
+    expect(page.locator('#combatLog .roll-die').first).to_be_visible()
+    expect(page.locator('#combatLog .roll-outcome').first).to_have_text(re.compile(r'^(Hit|Miss|Critical hit|Critical miss)', re.I))
+    expect(page.locator('#targetDialog')).to_be_hidden()
+    assert page.evaluate('JSON.stringify(state)') != before, 'the attack reached the engine'
+    expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
+    for width, height in [(390, 844), (320, 740)]:
+        page.set_viewport_size({'width': width, 'height': height})
+        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), width
+        over = page.evaluate("[...document.querySelectorAll('#combatPanel *')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().right>innerWidth+0.5).length")
+        assert over == 0, (width, over)
+        page.screenshot(path=str(output / f'combat-{width}.png'))
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    # Leaving the fight returns the latest result to the story column.
+    page.locator('#combatActions [data-action-id=retreat]').click()
+    page.locator('#sessionDecision button[value=confirm]').click()
+    expect(page.locator('#combatPanel')).to_be_hidden()
+    expect(page.locator('#adventureScroll > .scene-card #narrationCard')).to_have_count(1)
+    expect(page.locator('#storyProse')).to_be_visible()
