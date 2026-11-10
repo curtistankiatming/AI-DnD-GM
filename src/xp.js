@@ -10,6 +10,7 @@ const P = require('./progression');
 const BATTLE_SHARE = Object.freeze({ trivial: 0, easy: 0.03, normal: 0.06, hard: 0.10, deadly: 0.15 });
 const MISSION_SHARE = 0.12;
 const QUEST_SHARE = 0.25;
+const TRIAL_SHARE = 0.5;   // A job trial (40, 70), once.
 
 // Difficulty a player picks for an AI-written adventure before departing.
 // `power` adds levels to enemy health and damage, `accuracy` to AC, enemy
@@ -80,4 +81,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };

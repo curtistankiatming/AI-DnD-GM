@@ -2,7 +2,7 @@
 
 A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
-**Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, and endless renown ranks after level 100.** The 3rd and 4th jobs (levels 40 and 70) are planned and shown as coming in later updates; they are not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
+**Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, the 3rd job at level 40, and endless renown ranks after level 100.** The 4th job (levels 70 to 100) is planned and shown as coming in a later update; it is not playable yet. This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
 ## Earlier reliability fixes (V4.0.1)
 
@@ -138,7 +138,8 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | 16 | An active 1st-job skill |
 | 20 | **2nd job**: choose one of three branches for your class (permanent) and learn its first skill |
 | 25, 30, 35 | The branch's next three skills |
-| 40 | 3rd job (later update) |
+| 40 | **3rd job**: pass your branch's trial to take its 3rd job and learn its first skill |
+| 48, 56, 64 | The 3rd job's next three skills |
 | 70 to 100 | 4th job (later update) |
 
 | Class | Mastery (10) | 1st-job skills (13, 16) | 2nd job branches (20) |
@@ -151,11 +152,20 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | Bard | Song of Rest | Jack of All Trades, Cutting Words | Lorekeeper / Battle Cantor / Envoy |
 
 Branch skills use the Advancement resource (2 uses per long rest, 3 from level
-30). The **job tree** in the development panel (Prepare tab) shows your 1st job,
+30, 4 with the 3rd job). The **job tree** in the development panel (Prepare tab) shows your 1st job,
 all three 2nd-job branches with their skills and the 3rd and 4th jobs each one
 leads to, which skills you have learnt, and your next skill. Once you choose a
 branch, the other two are greyed out. In combat, the skill bar groups your
-actions into 1st job skills and 2nd job skills.
+actions into 1st job, 2nd job and 3rd job skills.
+
+**The 3rd job trial.** At level 40, with a 2nd job branch, any town's expedition
+board offers your branch's trial (for example, a Guardian's trial makes them a
+Bulwark Knight). With the Claude AI game master on, Claude writes the trial
+around your branch and your story; with the AI off, or if its draft can't be
+used, a written trial is used instead. A trial is always Hard, pays half a
+level of XP plus its battle, and does not take up the slot for an AI adventure.
+Passing it gives the new job title, its first skill and one more Advancement
+use per long rest; its other skills arrive at 48, 56 and 64.
 
 ### Companions and equipment
 
@@ -291,6 +301,7 @@ level needs, so each level takes about the same effort from start to finish.
 | Mission (a companion's personal quest) | 12% |
 | Quest or AI adventure, on completion | 25%, plus its battle |
 | Improvised action | 2 to 8% by difficulty, capped per scene |
+| 3rd job trial, on completion | 50%, plus its battle (always Hard) |
 
 The game rates each AI adventure battle by comparing its enemies with a standard
 fight for your level; the AI never sets XP. Resolving the crisis peacefully pays
@@ -312,7 +323,7 @@ Growth past level 20 is deliberately gentle so the d20 still matters: the
 proficiency bonus stops at +6, enemy AC, attacks and DCs stop at their level-20
 values, and health and damage keep growing slowly on both sides (+2 HP a level
 and +1 damage and healing every 10 levels for heroes). New power past 20 will
-comes from job skills: the 2nd job now, the 3rd and 4th jobs in later updates.
+comes from job skills: the 2nd and 3rd jobs now, the 4th job in a later update.
 
 Saves from when level 10 was the cap keep their XP: XP past level 10 now counts
 as levels, and boons picked then return when renown starts after level 100.

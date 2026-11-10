@@ -13,9 +13,10 @@ function invariant(s){
 function immutable(s){return JSON.stringify({gold:s.player.gold,xp:s.player.xp,inventory:s.player.inventory,stock:s.world.stock,storage:s.world.storage,node:s.story.nodeId});}
 const rounds=Number(process.env.FUZZ_CASES||240),steps=Number(process.env.FUZZ_STEPS||60),out={fixtures:0,actions:0,accepted:0,rejected:0,reloads:0,failures:[],seed:19429};const rng=createSeededRng(out.seed),pick=a=>a[Math.floor(rng()*a.length)];
 for(let run=0;run<rounds;run++){
- const cls=Object.keys(CLASSES)[run%6],level=[1,5,10,20,35][Math.floor(run/6)%5];let s=E.createNewGame({classId:cls,difficulty:pick(['story','standard','gritty'])});
+ const cls=Object.keys(CLASSES)[run%6],level=[1,5,10,20,35,50][Math.floor(run/6)%6];let s=E.createNewGame({classId:cls,difficulty:pick(['story','standard','gritty'])});
  if(level>1)E.awardXp(s,P.XP_NEXT[level-1],[],'diagnostic fixture');s.player.gold=400;
  if(level>=10)s.player.progression.mastery=true;
+ if(level>=40)s.player.progression.thirdJob=true;
  if(level>=20){s.player.progression.specialization=pick(P.SPECIALIZATIONS[cls]).id;s.player.resources=P.resources(CLASSES[cls],level,s.player);}
  if(run%2)E.startCombat(s,'practice',rng,[]);s=E.normalizeIncomingState(s);out.fixtures++;
  for(let step=0;step<steps;step++){
