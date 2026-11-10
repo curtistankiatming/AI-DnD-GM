@@ -315,3 +315,40 @@
 }
 @media(max-height:650px){ .adventure-composer { bottom:var(--bottom-tabs,0px); } }
 @media(prefers-reduced-motion:reduce){.story-workspace *{scroll-behavior:auto !important;transition:none !important;animation:none !important;}}
+
+/* Roll card: an improvised attempt with its odds, stakes and roll button in one place. */
+#chatPending.roll-card { white-space:normal; padding:14px; border:1px solid var(--accent); border-radius:10px; display:grid; gap:10px; }
+#chatPending.roll-card p { margin:0; }
+.roll-card-head { display:flex; gap:12px; align-items:baseline; justify-content:space-between; }
+.roll-card-head strong { font-size:1.08rem; min-width:0; overflow-wrap:anywhere; }
+.roll-card-odds { font-size:1.5rem; font-weight:800; font-variant-numeric:tabular-nums; }
+.roll-card-odds[data-odds=good], .roll-card-side[data-kind=win] .roll-card-label { color:#8fd6a8; }
+.roll-card-odds[data-odds=even] { color:#e6c36a; }
+.roll-card-odds[data-odds=poor], .roll-card-side[data-kind=lose] .roll-card-label { color:#ee9a88; }
+.roll-card-meter { height:8px; border-radius:99px; background:rgba(255,255,255,.1); overflow:hidden; }
+.roll-card-meter span { display:block; height:100%; border-radius:99px; background:#8fd6a8; }
+.roll-card-meter span[data-odds=even] { background:#e6c36a; }
+.roll-card-meter span[data-odds=poor] { background:#ee9a88; }
+.roll-card-stakes { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:12px; }
+.roll-card-side { min-width:0; }
+.roll-card-label { display:block; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:2px; }
+.roll-card-actions { display:flex; flex-wrap:wrap; gap:8px; }
+#chatPending.roll-card .roll-card-actions button { margin:0; min-height:44px; }
+
+/* First steps: the one-time how-to card and the example prompts under the message box. */
+.how-to-play { margin:0 0 10px; padding:12px 14px; border:1px dashed var(--accent); border-radius:10px; }
+.how-to-play h3 { margin:0 0 6px; font-size:1rem; }
+.how-to-play ol { margin:0 0 10px; padding-left:1.3em; display:grid; gap:4px; }
+.prompt-ideas { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; min-width:0; }
+.prompt-ideas.is-typing { display:none; }
+.prompt-ideas-label { font-size:.82rem; opacity:.75; }
+.prompt-idea { max-width:100%; min-height:32px; padding:4px 12px; border:1px dashed rgba(255,255,255,.28); border-radius:99px; background:transparent; color:inherit; font:inherit; font-size:.82rem; text-align:left; white-space:normal; overflow-wrap:anywhere; cursor:pointer; }
+.prompt-idea:hover, .prompt-idea:focus-visible { border-style:solid; border-color:var(--accent); }
+.how-to-link { font-size:.82rem; }
+#chatPending.roll-result { white-space:normal; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.18); }
+#chatPending.roll-result[data-outcome=success] { border-color:#8fd6a8; }
+#chatPending.roll-result[data-outcome=success] strong { color:#8fd6a8; }
+#chatPending.roll-result[data-outcome=failure] { border-color:#ee9a88; }
+#chatPending.roll-result[data-outcome=failure] strong { color:#ee9a88; }
+#chatPending.roll-result p { margin:2px 0 0; }
+#howToPlayBtn { white-space:nowrap; min-height:26px; padding:2px 4px; border:0; background:none; color:var(--muted); font-size:.72rem; font-weight:500; text-decoration:underline; cursor:pointer; }

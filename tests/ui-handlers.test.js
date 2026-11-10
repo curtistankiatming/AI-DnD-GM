@@ -53,3 +53,9 @@ test('every chat function another screen calls is still exported after chat-ui.j
   assert.ok(used.has('adventure'),'the expedition board calls adventure()');
   for(const name of used)assert.ok(exported.includes(name),`BriarwatchChat.${name} is used but not exported`);
 });
+test('first-steps.js ships in both the served page and the offline build',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8'),build=fs.readFileSync(path.join(__dirname,'../scripts/build-public.js'),'utf8');
+  assert.match(html,/<script src="\/first-steps\.js"><\/script>/);
+  assert.equal(build.split("'public/first-steps.js'").length-1,2,'listed as a build input and bundled');
+  assert.match(build,/replace\('<script src="\/first-steps\.js"><\/script>', ''\)/);
+});

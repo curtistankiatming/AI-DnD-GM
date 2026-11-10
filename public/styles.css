@@ -1810,6 +1810,7 @@ textarea {
 .chat-controls { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
 .chat-field { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0; }
 .chat-field input:not([type=checkbox]), .chat-field select { flex:1 1 220px; min-width:0; }
+.chat-field input[type=checkbox] { flex:none; width:20px; height:20px; min-height:0; padding:0; margin:0; }
 .chat-transcript { max-height:340px; overflow-y:auto; white-space:pre-wrap; }
 .chat-transcript p { border-bottom:1px solid var(--border, #444); padding:8px 0; }
 #chatPending { white-space:pre-wrap; margin:10px 0; }

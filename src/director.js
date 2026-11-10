@@ -231,7 +231,7 @@ function finalize(q, n) {
 function availability(state) {
   const w = state.world || {};
   if (state.combat?.active) return 'Finish the fight before asking for a new adventure.';
-  if (!w.completed?.bell) return 'Finish the bell investigation first; the director continues the story from there.';
+  if (!w.completed?.bell) return 'Finish the bell investigation first. After that, the AI game master can write new adventures for you.';
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
   if (open(state).length >= OPEN_LIMIT) return 'A director adventure is already waiting on the expedition board. Complete or dismiss it first.';
   return null;

@@ -15,11 +15,11 @@
     <div id="setupOverlay" class="overlay">
       <section class="setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
         <section id="resumePanel" class="resume-panel" aria-label="Continue or load a campaign">
-          <h2>Your campaigns</h2>
-          <button id="continueBtn" class="btn btn-primary" type="button" disabled>Continue (checking saves…)</button>
+          <h2 id="resumeTitle">Welcome to Briarwatch</h2>
+          <button id="continueBtn" class="btn btn-primary is-hidden" type="button" disabled>Continue</button>
           <button id="returnToGameBtn" class="btn btn-secondary is-hidden" type="button">Return to current adventure</button>
-          <p id="homeSaveStatus" class="muted" role="status">Checking saved campaigns…</p>
-          <details id="homeSaves"><summary>Load a saved campaign</summary>
+          <p id="homeSaveStatus" class="muted" role="status">Looking for saved games…</p>
+          <details id="homeSaves" class="is-hidden"><summary>Load a different save</summary>
             <button id="homeRefreshSavesBtn" class="text-button" type="button">Refresh saves</button>
             <div id="homeSaveList" class="save-list"></div>
           </details>
@@ -59,7 +59,7 @@
               <div class="section-heading-row">
                 <div>
                   <h2>2. Class</h2>
-                  <p>Each class has a distinct action economy, resources, and exploration strengths.</p>
+                  <p>Pick the way you like to play. Each class has its own abilities in and out of a fight.</p>
                 </div>
               </div>
               <div id="classCards" class="class-card-grid"></div>
@@ -69,9 +69,9 @@
               <div class="section-heading-row">
                 <div>
                   <h2>3. Ability scores</h2>
-                  <p>27-point buy. Scores before later campaign rewards are limited to 8–15.</p>
+                  <p>Optional. The recommended scores for your class are already set. To change them you have 27 points to spend, and each score can be 8 to 15.</p>
                 </div>
-                <button id="useClassPresetBtn" class="btn btn-secondary" type="button">Use class preset</button>
+                <button id="useClassPresetBtn" class="btn btn-secondary" type="button">Use recommended scores</button>
               </div>
               <div id="abilityBuilder" class="ability-builder"></div>
               <div class="point-budget">
@@ -348,5 +348,6 @@
     <script src="/adventure-ui.js"></script>
     <script src="/management-view.js"></script>
     <script src="/management-ui.js"></script>
+    <script src="/first-steps.js"></script>
   </body>
 </html>

@@ -84,13 +84,18 @@ test('Claude improvisation: preview first, roll only on confirm, then Claude nar
   const {ai,calls}=await claudeService(t,[JSON.stringify({kind:'improvise',optionId:'',reply:'Bold idea.',improvise:base}),'You haul yourself up the tower and see the tracks.']);
   const proposed=await Chat.resolveChat(fresh(),{mode:'action',text:'I climb the bell tower to get a better look'},ai,high);
   assert.equal(proposed.result.kind,'clarification');assert.equal(proposed.state.chat.pending.kind,'improvise');
-  assert.match(proposed.narration.text,/Athletics \+\d+ vs DC 13/);assert.match(proposed.narration.text,/Nothing has happened yet/);
+  // The odds and stakes travel in the view for the roll card; the text stays short.
+  const card=proposed.view.chat.pendingPreview;
+  assert.equal(card.check.name,'Athletics');assert.equal(card.check.dc,13);assert.ok(card.check.chance>0&&card.check.chance<=100);
+  assert.ok(card.success&&card.failure&&card.reward&&card.risk);
+  assert.match(proposed.narration.text,new RegExp(`About ${card.check.chance}% to succeed`));assert.match(proposed.narration.text,/Nothing has happened yet/);
   assert.equal(proposed.state.improv.log.length,0,'No roll before confirmation.');
   assert.equal(calls[0].output_config.format.schema,Chat.CLAUDE_SCHEMA);assert.equal(calls[0].system[0].text,Chat.CLAUDE_SYSTEM);
   assert.match(calls[0].messages[0].content,/"improvisation"/);
   const saved=JSON.parse(JSON.stringify(proposed.state));
   const done=await Chat.resolveChat(saved,{confirm:true},ai,high);
   assert.equal(done.result.ok,true);assert.equal(done.state.improv.log[0].success,true);
+  assert.equal(done.view.chat.pendingPreview,null,'The roll card clears once the attempt resolves.');
   assert.ok(done.events.some(e=>e.type==='roll'));assert.equal(done.narration.source,'ai-chat');
   assert.equal(calls.length,2);
 });
