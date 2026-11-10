@@ -6,9 +6,24 @@ import re
 from playwright.sync_api import expect
 
 
+# Waits are written as functions: the single-file build's security policy blocks a string condition
+# as soon as it has to be polled (it is evaluated with eval), and only lets a function through.
+CLEAR_OF_TABS = "()=>{const c=document.getElementById('adventureComposer').getBoundingClientRect(),t=document.getElementById('workspaceNav').getBoundingClientRect();return c.bottom<=t.top+1;}"
+
+
+def resize(page, width, height):
+    """Resize, then let the page's own resize handler run before anything is measured.
+
+    The story screen sets its height from a resize handler. On a busy CI runner a box read
+    straight after set_viewport_size can arrive before that handler (master run 78 failed that way).
+    """
+    page.set_viewport_size({'width': width, 'height': height})
+    page.evaluate('new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)))')
+
+
 def exercise_story(page, output):
     output.mkdir(exist_ok=True)
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Story Hero')
@@ -39,9 +54,11 @@ def exercise_story(page, output):
     page.screenshot(path=str(output / 'story-1440.png'))
     # Phone: no side panel, the party strip returns, and the tabs sit at the bottom edge.
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         expect(page.locator('#adventureSide')).to_be_hidden()
         expect(page.locator('#partySnapshot')).to_have_count(1)
+        # A real overlap never clears, so this still fails on one; it only outlasts a late resize handler.
+        page.wait_for_function(CLEAR_OF_TABS, timeout=5000)
         tabs = page.locator('#workspaceNav').bounding_box()
         composer = page.locator('#adventureComposer').bounding_box()
         assert abs(tabs['y'] + tabs['height'] - height) <= 1, (width, tabs)
@@ -58,9 +75,7 @@ def exercise_story(page, output):
     exercise_combat_board(page, output)
 
 
-def exercise_combat_board(page, output):
-    """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
-    page.set_viewport_size({'width': 1440, 'height': 900})
+def reach_fight(page):
     for _ in range(5):
         if page.evaluate('Boolean(view.combat&&view.combat.active)'):
             break
@@ -68,6 +83,39 @@ def exercise_combat_board(page, output):
         expect(page.locator('#actionSubmitBtn')).to_be_enabled()
     assert page.evaluate('Boolean(view.combat&&view.combat.active)'), 'story choices reach the first fight'
     expect(page.locator('#combatPanel')).to_be_visible()
+
+
+def fresh_campaign(page, name):
+    """Reload and begin a new campaign through the title page, replacing the rolling autosave if asked."""
+    page.reload()
+    page.locator('#titleNewBtn').click()
+    page.locator('#setupName').fill(name)
+    expect(page.locator('#startCampaignBtn')).to_be_enabled()
+    page.locator('#startCampaignBtn').click()
+    started = "(name)=>typeof state==='object'&&Boolean(state)&&state.player.name===name&&!busy"
+    page.wait_for_function("(name)=>(typeof state==='object'&&Boolean(state)&&state.player.name===name&&!busy)||Boolean(document.querySelector('#sessionDecision button[value=replace]'))", arg=name)
+    replace = page.locator('#sessionDecision button[value=replace]')
+    if replace.count():
+        replace.click()
+    page.wait_for_function(started, arg=name)
+    expect(page.locator('#workspace-adventure')).to_be_visible()
+
+
+def exercise_combat_board(page, output):
+    """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
+    resize(page, 1440, 900)
+    for attempt in range(4):
+        reach_fight(page)
+        if page.evaluate("view.combat.actions.some(a=>a.id==='retreat')"):
+            break
+        # About 1 fight in 100 the enemies act first and drop the hero before the first turn. The engine
+        # then offers only the death save and End Turn, so the board is checked as it stands and the
+        # attack and retreat steps below run on a fresh campaign. (This failed PR #31's first Windows run.)
+        assert page.evaluate('view.player.hp') <= 0, 'only a downed hero is without Retreat'
+        assert page.evaluate('view.combat.actions.length') == page.locator('#combatActions button[data-action-id]').count()
+        fresh_campaign(page, f'Story Hero {attempt + 2}')
+    else:
+        raise AssertionError('four campaigns in a row opened the first fight with the hero down')
     actors = page.evaluate('view.combat.actors.length')
     foes = page.evaluate("view.combat.actors.filter(a=>a.team==='enemy').length")
     # One board: turn order, enemies and party as cards with health bars, the result beside it.
@@ -107,7 +155,7 @@ def exercise_combat_board(page, output):
     target_id = targets[0][0]
     page.locator(f'#combatEnemies button[data-target-id="{target_id}"]').click()
     # The log already holds the initiative chip, so wait for the engine's answer, not for any chip.
-    page.wait_for_function('view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy')
+    page.wait_for_function('()=>Boolean(view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy)')
     expect(page.locator('#storyDid')).to_contain_text('Iron Longsword')
     expect(page.locator('#combatLog .roll-die').first).to_be_visible()
     expect(page.locator('#combatLog .roll-outcome').first).to_have_text(re.compile(r'^(Hit|Miss|Critical hit|Critical miss)', re.I))
@@ -115,12 +163,12 @@ def exercise_combat_board(page, output):
     assert page.evaluate('JSON.stringify(state)') != before, 'the attack reached the engine'
     expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), width
         over = page.evaluate("[...document.querySelectorAll('#combatPanel *')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().right>innerWidth+0.5).length")
         assert over == 0, (width, over)
         page.screenshot(path=str(output / f'combat-{width}.png'))
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     # Leaving the fight returns the latest result to the story column.
     page.locator('#combatActions [data-action-id=retreat]').click()
     page.locator('#sessionDecision button[value=confirm]').click()
@@ -167,7 +215,7 @@ def exercise_sheets(page, output):
     expect(page.locator('#workspace-prepare #worldPanel')).to_have_count(1)
     page.screenshot(path=str(output / 'town-1440.png'))
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         for tab in ['party', 'journal', 'prepare']:
             page.locator(f'#nav-{tab}').click()
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), (width, tab)
@@ -180,5 +228,5 @@ def exercise_sheets(page, output):
     top = page.evaluate("document.getElementById('inventoryCards').closest('section').getBoundingClientRect().top")
     assert 0 <= top < 200, top
     assert page.evaluate('JSON.stringify(state)') == before, 'looking at the sheets sends nothing'
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     page.locator('#nav-adventure').click()
