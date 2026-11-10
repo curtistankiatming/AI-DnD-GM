@@ -211,8 +211,8 @@ function normalizeIncomingState(raw) {
   state.player.resources = normalizeResourceState(state.player.resources, classDef, state.player.level, state.player);
   state.player.hitDice = {
     die: classDef.hitDie,
-    max: state.player.level,
-    current: clamp(Number(state.player?.hitDice?.current ?? state.player.level), 0, state.player.level)
+    max: P.hitDiceMax(state.player.level),
+    current: clamp(Number(state.player?.hitDice?.current ?? state.player.level), 0, P.hitDiceMax(state.player.level))
   };
   state.player.maxHp = P.maxHp(state.player);
   state.player.gold = Number.isFinite(Number(state.player.gold)) ? clamp(Math.floor(Number(state.player.gold)), 0, 10000000) : 0;
@@ -259,6 +259,12 @@ function normalizeIncomingState(raw) {
   W.init(state);
   ChatMemory.ensure(state, true);
   Improvise.normalize(state);
+  // Saves from when level 10 was the cap: XP earned past it becomes levels.
+  // Boons chosen then are put away until renown starts again after the cap.
+  if (state.player.level === 10 && state.player.xp >= Core.XP_THRESHOLDS[10]) {
+    Core.checkLevelUp(state, []);
+    pushLog(state, "Progression", `The level cap is now ${P.MAX_LEVEL}. Your experience past level 10 now counts as levels: ${state.player.name} is level ${state.player.level}. Renown ranks and boons return after level ${P.MAX_LEVEL}.`, "level");
+  }
   if (state.combat?.active) normalizeCombat(state);
   else state.combat = null;
   Journal.sync(state);
@@ -760,8 +766,8 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='story-choice') {state.pendingIntent=null;result=resolveStoryChoice(state,action.choiceId,rng,events);}
   else if(action.type==='freeform')result=resolveFreeform(state,action.text,rng,events);
   else if(action.type==='improvise')result=resolveImprovised(state,action.proposal,rng,events);
-  else if(action.type==='director-commission'||action.type==='director-dismiss'){
-    const r=action.type==='director-commission'?Director.commission(state,action.draft,events):Director.dismiss(state,String(action.questId||''),events);
+  else if(action.type==='director-commission'||action.type==='director-dismiss'||action.type==='adventure-tier'){
+    const r=action.type==='director-commission'?Director.commission(state,action.draft,events):action.type==='adventure-tier'?Director.setTier(state,String(action.questId||''),String(action.tier||''),events):Director.dismiss(state,String(action.questId||''),events);
     result=r.ok?r:invalidResult(state,events,r.error);
   }
   else if(action.type==='equip')result=equipItem(state,action.itemId,events,action.actorId||'player');

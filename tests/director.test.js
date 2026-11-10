@@ -8,6 +8,8 @@ const {QUESTS}=require('../src/expansion');
 const {createLocalAI}=require('../src/local-ai');
 const {createClaudeProvider}=require('../src/claude-ai');
 const draft=require('./fixtures/director-draft');
+const XP=require('../src/xp');
+const {ENCOUNTERS,ENEMIES}=require('../src/content');
 
 const high=()=>0.999;
 const clone=x=>JSON.parse(JSON.stringify(x));
@@ -73,7 +75,10 @@ test('a generated adventure plays start to finish through the normal engine',()=
   const done=act(clone(s),{type:'story-choice',choiceId:'d1'});s=done.state;
   assert.equal(done.result.ok,true);assert.equal(s.story.nodeId,'town-briarwatch');
   assert.equal(s.world.completed[id].quality,'peaceful');
-  assert.equal(s.player.xp-xp,q.xp);assert.equal(s.player.gold-gold,q.gold);
+  // A peaceful resolution pays the quest and the same battle XP as winning the fight.
+  const battle=XP.battleXp(2,ENCOUNTERS[`quest:${id}`].enemies.map(e=>ENEMIES[e]),q.tier);
+  assert.ok(battle.xp>0);assert.ok(done.events.some(e=>/without a fight/.test(e.text)));
+  assert.equal(s.player.xp-xp,q.xp+battle.xp);assert.equal(s.player.gold-gold,q.gold);
   assert.equal(s.world.reputation.wardens-rep.wardens,2);assert.equal(s.world.reputation.trade-rep.trade,1);
   assert.ok(s.journal.facts.some(f=>f.id===`decision:${id}:d1`));
   assert.ok(s.journal.completed.some(c=>c.title==='The Salt Choir'));

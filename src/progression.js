@@ -4,13 +4,29 @@
 // Later advancement tiers are data contracts, not pretend playable content.
 const { CLASSES, COMPANIONS, ITEMS, SKILLS } = require('./content');
 const { abilityModifier, proficiencyBonus, deepClone } = require('./rules');
-const MAX_LEVEL = 10;
+// Levels 1-100. Levels 1-10 keep the authored campaign's table; after that
+// each level needs 250 XP more than the one before. Rewards are paid as a share
+// of the current level's band (see src/xp.js), so the number of adventures per
+// level stays about the same all the way up.
+const MAX_LEVEL = 100;
 const XP_NEXT = {1:300,2:1100,3:2300,4:3900,5:5900,6:8400,7:11400,8:14900,9:18900};
-// Endless progression after level 10: every RANK_XP earns a renown rank and one
+const levelBand = level => level < 10 ? XP_NEXT[level] - (XP_NEXT[level - 1] || 0) : 4000 + 250 * (level - 9);
+for (let l = 10; l < MAX_LEVEL; l++) XP_NEXT[l] = XP_NEXT[l - 1] + levelBand(l);
+// Growth past level 20 is deliberately gentle (bounded accuracy): proficiency
+// stops at +6, AC, attack and DCs stop at their level-20 values, and health and
+// damage keep growing slowly on both sides. Power past 20 comes from job skills.
+const BOUNDED_LEVEL = 20;
+const accuracyLevel = level => Math.min(BOUNDED_LEVEL, Math.max(1, Math.floor(Number(level) || 1)));
+// Level used for enemy health and damage: full speed to 20, then a quarter.
+const powerLevel = level => { const l = Math.max(1, Number(level) || 1); return l <= BOUNDED_LEVEL ? Math.floor(l) : BOUNDED_LEVEL + Math.floor((l - BOUNDED_LEVEL) / 4); };
+// Player damage and healing growth past 20: +1 for every 10 levels.
+const lateGrowth = level => Math.max(0, Math.floor(((Number(level) || 1) - BOUNDED_LEVEL) / 10));
+const hitDiceMax = level => accuracyLevel(level);
+// Endless progression after the final level: every RANK_XP earns a renown rank and one
 // boon. Each boon has a stack cap so ranks never break the d20 maths; once every
 // boon is full, ranks still record the legend. AI-directed adventures scale
 // their enemies and DCs with renown up to RENOWN_POWER_CAP extra levels.
-const RANK_XP = 4000;
+const RANK_XP = levelBand(MAX_LEVEL);
 const RENOWN_POWER_CAP = 6;
 const BOONS = Object.freeze({
   vigor:{id:'vigor',name:'Vigor',description:'+6 maximum HP.',cap:5},
@@ -33,6 +49,8 @@ const REWARDS = {
   9:'Mastered technique: +2 on objective checks and one more Technique use.',
   10:'Complete the advancement trial and select a defining specialization.'
 };
+const LATE_REWARD='More health, a little more damage and healing, and stronger enemies to match. Job skills arrive in later updates.';
+const rewardText=level=>REWARDS[level]||(level===MAX_LEVEL?`The final level. ${LATE_REWARD} Renown ranks begin after this.`:LATE_REWARD);
 const TALENTS = {
   precise:{id:'precise',name:'Measured Strikes',description:'+1 weapon and spell attack bonus. Does not increase save DCs.'},
   bulwark:{id:'bulwark',name:'Stalwart',description:'+1 AC and 4 maximum HP. Works with any armor.'},
@@ -81,8 +99,9 @@ const SPECIALIZATIONS = {
 };
 const ADVANCEMENTS = [
   {level:10,name:'First advancement',status:'Playable',requirement:'Resolve the regional crisis, reach level 10, then complete the Oath of the Road trial.'},
-  {level:30,name:'Second advancement',status:'Future expansion',requirement:'Advanced path: new resource interactions and combinations. No level-30 campaign ships in V4.'},
-  {level:70,name:'Third advancement',status:'Future expansion',requirement:'Legendary identity: faction-scale consequences and party leadership. No level-70 campaign ships in V4.'}
+  {level:20,name:'2nd job',status:'Coming in a later update',requirement:'Choose one of three branches for your class after a branch trial.'},
+  {level:40,name:'3rd job',status:'Coming in a later update',requirement:'Your branch\u2019s third job, unlocked by a trial.'},
+  {level:70,name:'4th job',status:'Coming in a later update',requirement:'Your branch\u2019s final job; its last skill is learnt at level 100.'}
 ];
 function ensure(player){
   player.progression ||= { choices:{}, talents:[], specialization:null };
@@ -142,14 +161,14 @@ function stats(player){
     hp:(hasTalent(player,'bulwark')?4:0)+(hasTalent(player,'resilient')?4:0)+6*boon(player,'vigor'),
     attack:(hasTalent(player,'precise')?1:0)+boon(player,'precision'),
     save:(hasTalent(player,'resilient')?1:0)+boon(player,'resolve'),
-    healing:(hasTalent(player,'medic')?3:0)+2*boon(player,'mending'),
-    damage:(p.choices['5']==='force'?2:0)+boon(player,'might'),
+    healing:(hasTalent(player,'medic')?3:0)+2*boon(player,'mending')+lateGrowth(player.level),
+    damage:(p.choices['5']==='force'?2:0)+boon(player,'might')+lateGrowth(player.level),
     objective:(player.level>=9?2:0)+(p.choices['5']==='economy'?1:0)+boon(player,'purpose'),
     tool:player.level>=6?2:0
   };
 }
 function resources(classDef,level=1,player=null){
-  const result={};
+  const result={};level=accuracyLevel(level);
   for(const [id,def] of Object.entries(classDef.resources||{})){
     let max=Number(def.max||0);
     if(id==='spellSlots1') max+=Math.floor(level/2);
@@ -164,7 +183,8 @@ function resources(classDef,level=1,player=null){
 function maxHp(player){
   const cls=CLASSES[player.classId]||CLASSES.fighter;
   const con=abilityModifier(player.abilities.con);
-  return cls.hitDie+con+(player.level-1)*Math.max(1,Math.floor(cls.hitDie/2)+1+con)+stats(player).hp;
+  const full=Math.min(player.level,BOUNDED_LEVEL),late=Math.max(0,player.level-BOUNDED_LEVEL);
+  return cls.hitDie+con+(full-1)*Math.max(1,Math.floor(cls.hitDie/2)+1+con)+late*2+stats(player).hp;
 }
 function abilityOptions(player){
   return ['str','dex','con','int','wis','cha'].filter(id=>player.abilities[id]<20).map(id=>{
@@ -219,6 +239,7 @@ function classActions(player){
   return result;
 }
 function companionResources(id,level){
+  level=accuracyLevel(level);
   if(id==='orin')return {secondWind:1+Math.floor(level/5)};
   if(id==='maren')return {healingWords:2+Math.floor(level/3),guidingBolt:1+Math.floor(level/5)};
   return {trickShot:1+Math.floor(level/4)};
@@ -242,7 +263,7 @@ function levelCompanion(member,level){
   const oldMax=member.maxHp;
   const oldLevel=member.level||1;
   member.level=level;
-  member.maxHp=base.maxHp+(level-1)*(member.id==='orin'?7:6);
+  member.maxHp=base.maxHp+(Math.min(level,BOUNDED_LEVEL)-1)*(member.id==='orin'?7:6)+Math.max(0,level-BOUNDED_LEVEL)*2;
   member.hp=Math.min(member.maxHp,member.hp+Math.max(0,member.maxHp-oldMax));
   member.baseMaxHp=member.maxHp;
   refreshCompanion(member, level > oldLevel ? 'long' : 'none');
@@ -253,14 +274,15 @@ function view(player,world){
   const next=XP_NEXT[player.level]||null;
   return {
     maxLevel:MAX_LEVEL,previousXp:previous,nextXp:next,bankedXp:0,
-    nextReward:next?REWARDS[player.level+1]:`Renown rank ${renownRank(player)+1}: one more boon. Every ${RANK_XP} XP after level 10 earns a rank.`,
+    nextReward:next?rewardText(player.level+1):`Renown rank ${renownRank(player)+1}: one more boon. Every ${RANK_XP} XP after level ${MAX_LEVEL} earns a rank.`,
     renown:renownView(player),
     pending:[3,4,5,6,8].filter(l=>player.level>=l&&!p.choices[l]).map(level=>({level,description:REWARDS[level],options:options(player,level)})),
-    rewards:Object.entries(REWARDS).map(([level,description])=>({level:Number(level),description,reached:player.level>=Number(level),choice:p.choices[level]||null})),
+    rewards:[...Object.entries(REWARDS).map(([level,description])=>({level:Number(level),description,reached:player.level>=Number(level),choice:p.choices[level]||null})),
+      {level:11,through:MAX_LEVEL,description:`Levels 11 to ${MAX_LEVEL}: ${LATE_REWARD}`,reached:player.level>=11,choice:null}],
     techniques:classActions(player),talents:p.talents.map(id=>TALENTS[id]),
     specialization:p.specialization,advancements:ADVANCEMENTS,
     specializationOptions:player.level>=10&&world?.completed?.trial&&!p.specialization?SPECIALIZATIONS[player.classId]:[],
     trialComplete:Boolean(world?.completed?.trial)
   };
 }
-module.exports={MAX_LEVEL,XP_NEXT,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};
+module.exports={MAX_LEVEL,XP_NEXT,BOUNDED_LEVEL,levelBand,accuracyLevel,powerLevel,lateGrowth,hitDiceMax,rewardText,RANK_XP,RENOWN_POWER_CAP,BOONS,renownRank,renownPower,pendingBoons,chooseBoon,renownView,REWARDS,TALENTS,REFINEMENTS,TECHNIQUES,SPECIALIZATIONS,ADVANCEMENTS,ensure,stats,resources,maxHp,options,applyChoice,classActions,companionResources,levelCompanion,refreshCompanion,view};

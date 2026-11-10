@@ -19,7 +19,7 @@ function battle(cls='fighter',level=5,id='practice'){
 function hitPoints(s){return [s.player,...s.party].map(a=>[a.hp,a.maxHp]);}
 function kitUses(s){return (s.player.inventory.find(i=>i.itemId==='healers-kit')||{quantity:0,charges:0});}
 
-test('V4 catalog provides three real towns and ten authored regional expeditions',()=>{assert.equal(Object.keys(TOWNS).length,3);assert.equal(Object.keys(QUESTS).length,10);assert.equal(P.MAX_LEVEL,10);for(const q of Object.values(QUESTS)){assert.ok(q.opening&&q.crisis&&q.objective.target>0&&q.decisions.length);}});
+test('V4 catalog provides three real towns and ten authored regional expeditions',()=>{assert.equal(Object.keys(TOWNS).length,3);assert.equal(Object.keys(QUESTS).length,10);assert.equal(P.MAX_LEVEL,100);for(const q of Object.values(QUESTS)){assert.ok(q.opening&&q.crisis&&q.objective.target>0&&q.decisions.length);}});
 test('town buy/sell conserves stock and gold; selling assigned equipment is rejected',()=>{
  let s=gold(hero(),100);const original=s.world.stock.briarwatch['healing-potion'];s=act(s,{type:'buy',itemId:'healing-potion',quantity:2});assert.equal(s.player.gold,70);assert.equal(s.world.stock.briarwatch['healing-potion'],original-2);
  s=act(s,{type:'sell',itemId:'healing-potion',quantity:1});assert.equal(s.player.gold,74);const r=E.resolveAction(s,{type:'sell',itemId:'iron-longsword',quantity:1});assert.equal(r.result.ok,false);assert.equal(r.state.player.gold,74);
@@ -101,7 +101,7 @@ test('talent and ability choices are consequential, pending, and not repeatable'
  s=act(s,{type:'choose-reward',level:4,optionId:'ability:con'});assert.equal(s.player.abilities.con,16);assert.equal(s.player.maxHp,hp+4+4);
 });
 test('level cap is genuine and future advancement milestones are not falsely available',()=>{
- const s=hero();E.awardXp(s,1000000,[]);assert.equal(s.player.level,10);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,30,70]);assert.ok(P.ADVANCEMENTS.slice(1).every(x=>x.status==='Future expansion'));
+ const s=hero();E.awardXp(s,P.XP_NEXT[P.MAX_LEVEL-1]*3,[]);assert.equal(s.player.level,P.MAX_LEVEL);assert.equal(E.buildView(s).progression.specializationOptions.length,0);assert.deepEqual(P.ADVANCEMENTS.map(x=>x.level),[10,20,40,70]);assert.ok(P.ADVANCEMENTS.slice(1).every(x=>/later update/.test(x.status)));
 });
 test('specialization requires a trial, gives its resource, and cannot be changed silently',()=>{
  let s=hero('fighter',10);assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'guardian'}).result.ok,false);s.world.completed.trial={};s=act(s,{type:'specialize',specializationId:'guardian'});assert.equal(s.player.resources.advancement.current,2);assert.ok(P.classActions(s.player).some(a=>a.id==='spec:guardian'));assert.equal(E.resolveAction(s,{type:'specialize',specializationId:'duelist'}).result.ok,false);

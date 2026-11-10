@@ -15,7 +15,8 @@ function abilityModifier(score) {
 }
 
 function proficiencyBonus(level) {
-  return 2 + Math.floor((Math.max(1, Number(level || 1)) - 1) / 4);
+  // Stops at +6 (level 17) so 100 levels never outgrow the d20.
+  return Math.min(6, 2 + Math.floor((Math.max(1, Number(level || 1)) - 1) / 4));
 }
 
 function createSeededRng(seed = Date.now()) {
