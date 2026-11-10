@@ -6,7 +6,9 @@ import re
 from playwright.sync_api import expect
 
 
-CLEAR_OF_TABS = "(()=>{const c=document.getElementById('adventureComposer').getBoundingClientRect(),t=document.getElementById('workspaceNav').getBoundingClientRect();return c.bottom<=t.top+1;})()"
+# Waits are written as functions: the single-file build's security policy blocks a string condition
+# as soon as it has to be polled (it is evaluated with eval), and only lets a function through.
+CLEAR_OF_TABS = "()=>{const c=document.getElementById('adventureComposer').getBoundingClientRect(),t=document.getElementById('workspaceNav').getBoundingClientRect();return c.bottom<=t.top+1;}"
 
 
 def resize(page, width, height):
@@ -73,9 +75,7 @@ def exercise_story(page, output):
     exercise_combat_board(page, output)
 
 
-def exercise_combat_board(page, output):
-    """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
-    resize(page, 1440, 900)
+def reach_fight(page):
     for _ in range(5):
         if page.evaluate('Boolean(view.combat&&view.combat.active)'):
             break
@@ -83,6 +83,39 @@ def exercise_combat_board(page, output):
         expect(page.locator('#actionSubmitBtn')).to_be_enabled()
     assert page.evaluate('Boolean(view.combat&&view.combat.active)'), 'story choices reach the first fight'
     expect(page.locator('#combatPanel')).to_be_visible()
+
+
+def fresh_campaign(page, name):
+    """Reload and begin a new campaign through the title page, replacing the rolling autosave if asked."""
+    page.reload()
+    page.locator('#titleNewBtn').click()
+    page.locator('#setupName').fill(name)
+    expect(page.locator('#startCampaignBtn')).to_be_enabled()
+    page.locator('#startCampaignBtn').click()
+    started = "(name)=>typeof state==='object'&&Boolean(state)&&state.player.name===name&&!busy"
+    page.wait_for_function("(name)=>(typeof state==='object'&&Boolean(state)&&state.player.name===name&&!busy)||Boolean(document.querySelector('#sessionDecision button[value=replace]'))", arg=name)
+    replace = page.locator('#sessionDecision button[value=replace]')
+    if replace.count():
+        replace.click()
+    page.wait_for_function(started, arg=name)
+    expect(page.locator('#workspace-adventure')).to_be_visible()
+
+
+def exercise_combat_board(page, output):
+    """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
+    resize(page, 1440, 900)
+    for attempt in range(4):
+        reach_fight(page)
+        if page.evaluate("view.combat.actions.some(a=>a.id==='retreat')"):
+            break
+        # About 1 fight in 100 the enemies act first and drop the hero before the first turn. The engine
+        # then offers only the death save and End Turn, so the board is checked as it stands and the
+        # attack and retreat steps below run on a fresh campaign. (This failed PR #31's first Windows run.)
+        assert page.evaluate('view.player.hp') <= 0, 'only a downed hero is without Retreat'
+        assert page.evaluate('view.combat.actions.length') == page.locator('#combatActions button[data-action-id]').count()
+        fresh_campaign(page, f'Story Hero {attempt + 2}')
+    else:
+        raise AssertionError('four campaigns in a row opened the first fight with the hero down')
     actors = page.evaluate('view.combat.actors.length')
     foes = page.evaluate("view.combat.actors.filter(a=>a.team==='enemy').length")
     # One board: turn order, enemies and party as cards with health bars, the result beside it.
@@ -122,7 +155,7 @@ def exercise_combat_board(page, output):
     target_id = targets[0][0]
     page.locator(f'#combatEnemies button[data-target-id="{target_id}"]').click()
     # The log already holds the initiative chip, so wait for the engine's answer, not for any chip.
-    page.wait_for_function('view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy')
+    page.wait_for_function('()=>Boolean(view.combat&&view.combat.economy&&view.combat.economy.actionUsed&&!busy)')
     expect(page.locator('#storyDid')).to_contain_text('Iron Longsword')
     expect(page.locator('#combatLog .roll-die').first).to_be_visible()
     expect(page.locator('#combatLog .roll-outcome').first).to_have_text(re.compile(r'^(Hit|Miss|Critical hit|Critical miss)', re.I))
