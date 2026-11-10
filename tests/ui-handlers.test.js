@@ -77,6 +77,14 @@ test('combat-board.js ships in both the served page and the offline build, after
   assert.ok(html.indexOf('/management-ui.js')<html.indexOf('/combat-board.js'));
   assert.ok(build.indexOf("read('public/management-ui.js')")<build.indexOf("read('public/combat-board.js')"));
 });
+test('sheets.js ships in both the served page and the offline build, after the scripts it wraps',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8'),build=fs.readFileSync(path.join(__dirname,'../scripts/build-public.js'),'utf8');
+  assert.ok(html.includes('<script src="/sheets.js"></script>'));
+  assert.equal(build.split("'public/sheets.js'").length-1,2,'listed as a build input and bundled');
+  assert.ok(build.includes(`replace('<script src="/sheets.js"></script>', '')`));
+  assert.ok(html.indexOf('/combat-board.js')<html.indexOf('/sheets.js'));
+  assert.ok(build.indexOf("read('public/combat-board.js')")<build.indexOf("read('public/sheets.js')"));
+});
 test('quick start keeps name, class and Begin outside the optional Customise section',()=>{
   const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8');
   const start=html.indexOf('<details id="setupCustomise"'),end=html.indexOf('</details>',start);

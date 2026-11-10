@@ -126,3 +126,58 @@ def exercise_combat_board(page, output):
     expect(page.locator('#combatPanel')).to_be_hidden()
     expect(page.locator('#adventureScroll > .scene-card #narrationCard')).to_have_count(1)
     expect(page.locator('#storyProse')).to_be_visible()
+    exercise_sheets(page, output)
+
+
+def exercise_sheets(page, output):
+    """Party sheet, journal and town (redesign step 4). Presentation only: nothing here sends an action."""
+    before = page.evaluate('JSON.stringify(state)')
+    # Party: every carried item is still one card; the jump links are a phone aid only.
+    page.locator('#nav-party').click()
+    expect(page.locator('#inventoryCards .inventory-card')).to_have_count(page.evaluate('view.inventory.length'))
+    expect(page.locator('#partyJump')).to_be_hidden()
+    waiting = page.evaluate("(view.progression.pending.length||0)+(view.progression.specializationOptions.length?1:0)+((view.progression.renown&&view.progression.renown.pending)||0)")
+    if waiting:
+        expect(page.locator('#partyPending')).to_be_visible()
+    else:
+        expect(page.locator('#partyPending')).to_be_hidden()
+    page.screenshot(path=str(output / 'party-1440.png'))
+    # Journal: the status reads as a label but the record text is unchanged; empty sections fold under "All".
+    page.locator('#nav-journal').click()
+    expect(page.locator('#workspace-journal')).to_have_attribute('data-filter', 'all')
+    titles = page.locator('#journalRecords .journal-record > strong').all_text_contents()
+    assert all(re.search(r' \[[^\]]+\]$', t) for t in titles), titles
+    assert page.locator('#journalRecords .journal-status').count() == len(titles)
+    empty = page.locator('#journalRecords .journal-section.is-empty')
+    assert empty.count() == page.evaluate("['leads','promises','rumors','relationships','facts','completed','notes'].filter(g=>!(view.journal[g]||[]).length).length")
+    if empty.count():
+        expect(empty.first).to_be_hidden()
+        expect(page.locator('#journalEmpties')).to_contain_text('Nothing yet under')
+    page.locator('.journal-filters [data-filter=notes]').click()
+    expect(page.locator('#workspace-journal')).to_have_attribute('data-filter', 'notes')
+    expect(page.locator('[data-journal-group=notes]')).to_be_visible()
+    expect(page.locator('#journalEmpties')).to_be_hidden()
+    page.locator('.journal-filters [data-filter=all]').click()
+    page.screenshot(path=str(output / 'journal-1440.png'))
+    # Town: the page title comes first, then any waiting choice, then the rest.
+    page.locator('#nav-prepare').click()
+    order = page.evaluate("[...document.getElementById('workspace-prepare').children].slice(0,3).map(n=>n.id||n.className)")
+    assert order[0] == 'workspace-title' and order[2] == 'progressionPanel', order
+    expect(page.locator('#workspace-prepare #worldPanel')).to_have_count(1)
+    page.screenshot(path=str(output / 'town-1440.png'))
+    for width, height in [(390, 844), (320, 740)]:
+        page.set_viewport_size({'width': width, 'height': height})
+        for tab in ['party', 'journal', 'prepare']:
+            page.locator(f'#nav-{tab}').click()
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), (width, tab)
+            over = page.evaluate("(id)=>[...document.querySelectorAll('#'+id+' *')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().right>innerWidth+0.5).length", f'workspace-{tab}')
+            assert over == 0, (width, tab, over)
+            page.screenshot(path=str(output / f'{tab}-{width}.png'))
+    # On a phone the jump links take you to the pack without a long scroll.
+    page.locator('#nav-party').click()
+    page.locator('#partyJump button', has_text='Pack').click()
+    top = page.evaluate("document.getElementById('inventoryCards').closest('section').getBoundingClientRect().top")
+    assert 0 <= top < 200, top
+    assert page.evaluate('JSON.stringify(state)') == before, 'looking at the sheets sends nothing'
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.locator('#nav-adventure').click()
