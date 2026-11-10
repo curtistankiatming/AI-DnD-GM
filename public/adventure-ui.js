@@ -11,7 +11,7 @@
  const button=(text,fn,readOnly=true)=>{const b=el('button','btn btn-secondary',text);b.type='button';if(readOnly)b.dataset.readOnly='true';b.addEventListener('click',fn);return b;};
  document.body.classList.add('story-workspace');
  const main=dom.gameLayout,sourceColumn=main.querySelector('.story-column'),left=main.querySelector('.left-rail'),right=main.querySelector('.right-rail');
- let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false,pendingDid='',shownDid='';
+ let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false,pendingDid='',shownDid='',foes=[];
  const panes={},tabs={};
  const nav=el('nav','workspace-nav');nav.id='workspaceNav';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Game sections');
  for(const [id,label]of [['adventure','Adventure'],['party','Party'],['journal','Journal'],['prepare','Prepare'],['settings','Settings']]){
@@ -49,7 +49,10 @@
  const sign=n=>{const v=Number(n||0);return (v<0?'− ':'+ ')+Math.abs(v);};
  const tidy=t=>String(t||'').replace(/\.$/,'').replace(/\bd20 /g,'').replace(/ vs DC /g,' against ').replace(/ vs AC /g,' against armour ').replace(/ vs /g,' against ');
  function rollChip(e){
-  const c=el('div','roll-chip'),r=e.roll||{};c.dataset.tone=e.tone||'neutral';
+  const c=el('div','roll-chip'),r=e.roll||{};
+  // The engine marks any hit as good. An enemy's hit on the party is bad news for the player.
+  const foe=typeof r.hit==='boolean'&&foes.some(n=>e.text.startsWith(n+' '));
+  c.dataset.tone=foe?(r.hit?'bad':'good'):(e.tone||'neutral');
   let body=tidy(e.text),outcome='';
   const m=body.match(/^(.*?)(?::| —) ([A-Za-z][A-Za-z ]{1,28})$/);if(m){body=m[1];outcome=m[2];}
   if(r.checkName&&Number.isFinite(r.natural)&&Number.isFinite(r.total)&&Number.isFinite(r.dc)){
@@ -173,8 +176,10 @@
  backing.addEventListener('change',()=>selectMode(backing.value));
  scroll.addEventListener('scroll',()=>{previousTop=scroll.scrollTop;follow=U.nearEnd(scroll);},{passive:true});
  // A choice, combat action or confirmation the player clicked: its result should scroll into view.
- scroll.addEventListener('click',event=>{const b=event.target.closest('button');if(!b)return;ownAction=true;const named=b.closest('[data-choice-id],[data-action-id]');pendingDid=named?(named.querySelector('strong')?.textContent||'').trim():'';},true);
- function jumpToLatest(){latest.scrollIntoView({block:'start',behavior:'instant'});unread.hidden=true;latest.focus({preventScroll:true});}
+ scroll.addEventListener('click',event=>{const b=event.target.closest('button');if(!b)return;ownAction=true;const named=b.closest('[data-choice-id],[data-action-id]');pendingDid=named?(named.dataset.did||named.querySelector('strong')?.textContent||'').trim():'';},true);
+ // In a fight the latest result lives on the combat board, so the board is what scrolls into view.
+ const anchor=()=>latest.closest('#combatPanel')||latest;
+ function jumpToLatest(){anchor().scrollIntoView({block:'start',behavior:'instant'});unread.hidden=true;latest.focus({preventScroll:true});}
  function filterJournal(){
   for(const b of journalFilters.children)b.setAttribute('aria-pressed',String(b.dataset.filter===filter));
   for(const group of journal.querySelectorAll('[data-journal-group]'))group.hidden=!U.showGroup(filter,group.dataset.journalGroup);
@@ -221,13 +226,14 @@
   }
   const signature=JSON.stringify([identity,dom.narrationText.textContent,rows,view.chat?.pending]);
   if(signature!==lastSignature){shownDid=lastSignature&&ownAction?pendingDid:'';pendingDid='';}
+  if(view.combat?.active)foes=view.combat.actors.filter(x=>x.team==='enemy').map(x=>x.name);
   renderStory();renderSide();
   if(signature!==lastSignature){
    const first=!lastSignature;lastSignature=signature;
    if(!first){announcement.textContent='New response available in Adventure.';if(active!=='adventure'||!follow)unread.hidden=false;}
    if(first)scroll.scrollTop=0;
-   else if(ownAction&&active==='adventure'){ownAction=false;scroll.scrollTop+=latest.getBoundingClientRect().top-scroll.getBoundingClientRect().top-8;unread.hidden=true;}
-   else if(follow&&active==='adventure'){const box=latest.getBoundingClientRect(),frame=scroll.getBoundingClientRect();if(box.bottom>frame.bottom)scroll.scrollTop+=box.bottom-frame.bottom;if(box.top<frame.top)scroll.scrollTop+=box.top-frame.top;unread.hidden=true;}
+   else if(ownAction&&active==='adventure'){ownAction=false;scroll.scrollTop+=anchor().getBoundingClientRect().top-scroll.getBoundingClientRect().top-8;unread.hidden=true;}
+   else if(follow&&active==='adventure'){const box=anchor().getBoundingClientRect(),frame=scroll.getBoundingClientRect();if(box.bottom>frame.bottom)scroll.scrollTop+=box.bottom-frame.bottom;if(box.top<frame.top)scroll.scrollTop+=box.top-frame.top;unread.hidden=true;}
    else scroll.scrollTop=previousTop;
   }
  }
