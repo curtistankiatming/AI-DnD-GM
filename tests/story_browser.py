@@ -6,9 +6,22 @@ import re
 from playwright.sync_api import expect
 
 
+CLEAR_OF_TABS = "(()=>{const c=document.getElementById('adventureComposer').getBoundingClientRect(),t=document.getElementById('workspaceNav').getBoundingClientRect();return c.bottom<=t.top+1;})()"
+
+
+def resize(page, width, height):
+    """Resize, then let the page's own resize handler run before anything is measured.
+
+    The story screen sets its height from a resize handler. On a busy CI runner a box read
+    straight after set_viewport_size can arrive before that handler (master run 78 failed that way).
+    """
+    page.set_viewport_size({'width': width, 'height': height})
+    page.evaluate('new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)))')
+
+
 def exercise_story(page, output):
     output.mkdir(exist_ok=True)
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Story Hero')
@@ -39,9 +52,11 @@ def exercise_story(page, output):
     page.screenshot(path=str(output / 'story-1440.png'))
     # Phone: no side panel, the party strip returns, and the tabs sit at the bottom edge.
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         expect(page.locator('#adventureSide')).to_be_hidden()
         expect(page.locator('#partySnapshot')).to_have_count(1)
+        # A real overlap never clears, so this still fails on one; it only outlasts a late resize handler.
+        page.wait_for_function(CLEAR_OF_TABS, timeout=5000)
         tabs = page.locator('#workspaceNav').bounding_box()
         composer = page.locator('#adventureComposer').bounding_box()
         assert abs(tabs['y'] + tabs['height'] - height) <= 1, (width, tabs)
@@ -60,7 +75,7 @@ def exercise_story(page, output):
 
 def exercise_combat_board(page, output):
     """Combat board (redesign step 3). Reaches the first fight through visible story choices."""
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     for _ in range(5):
         if page.evaluate('Boolean(view.combat&&view.combat.active)'):
             break
@@ -115,12 +130,12 @@ def exercise_combat_board(page, output):
     assert page.evaluate('JSON.stringify(state)') != before, 'the attack reached the engine'
     expect(page.locator('#combatEnemies button.fighter-card')).to_have_count(0)
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), width
         over = page.evaluate("[...document.querySelectorAll('#combatPanel *')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().right>innerWidth+0.5).length")
         assert over == 0, (width, over)
         page.screenshot(path=str(output / f'combat-{width}.png'))
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     # Leaving the fight returns the latest result to the story column.
     page.locator('#combatActions [data-action-id=retreat]').click()
     page.locator('#sessionDecision button[value=confirm]').click()
@@ -167,7 +182,7 @@ def exercise_sheets(page, output):
     expect(page.locator('#workspace-prepare #worldPanel')).to_have_count(1)
     page.screenshot(path=str(output / 'town-1440.png'))
     for width, height in [(390, 844), (320, 740)]:
-        page.set_viewport_size({'width': width, 'height': height})
+        resize(page, width, height)
         for tab in ['party', 'journal', 'prepare']:
             page.locator(f'#nav-{tab}').click()
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), (width, tab)
@@ -180,5 +195,5 @@ def exercise_sheets(page, output):
     top = page.evaluate("document.getElementById('inventoryCards').closest('section').getBoundingClientRect().top")
     assert 0 <= top < 200, top
     assert page.evaluate('JSON.stringify(state)') == before, 'looking at the sheets sends nothing'
-    page.set_viewport_size({'width': 1440, 'height': 900})
+    resize(page, 1440, 900)
     page.locator('#nav-adventure').click()
