@@ -61,6 +61,7 @@ def instructions(page, text):
 def exercise_workspace(page, output, offline):
     output.mkdir(exist_ok=True)
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
+    page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Workspace Hero')
     page.locator('#startCampaignBtn').click()
     expect(page.locator('#workspace-adventure')).to_be_visible()

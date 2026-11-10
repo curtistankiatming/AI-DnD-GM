@@ -886,7 +886,7 @@ function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
   $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue";
   $("#homeSaveStatus").textContent = continueSave ? `Continue opens your latest save, “${continueSave.slot}”.`
     : saves.length ? "Your saves could not be opened automatically. Pick one below, or start a new adventure."
-    : "A story game where you choose what your hero does and the dice decide how it goes. Create your hero below, then press Begin adventure.";
+    : "A story game where you choose what your hero does and the dice decide how it goes.";
   for (const list of [dom.saveList, $("#homeSaveList")]) {
     clear(list);
     if (!saves.length) list.append(createElement("p", "empty-state", "No save files yet."));
@@ -936,7 +936,9 @@ function wireEvents() {
     renderSetup();
   });
   dom.startCampaignBtn.addEventListener("click", startCampaign);
+  $("#titleNewBtn").addEventListener("click", () => { showSetupForm(); dom.setupName.focus(); });
   dom.newGameBtn.addEventListener("click", () => {
+    showSetupForm();
     if (busy) return;
     // Opening setup is not abandoning a campaign. Begin/Load guards the actual replacement.
     dom.setupOverlay.classList.remove("is-hidden");
@@ -982,6 +984,11 @@ function wireEvents() {
   });
 }
 
+// The first thing a player sees is a title page; the hero form follows "New adventure".
+function showSetupForm() {
+  dom.setupOverlay.querySelector(".setup-card").classList.remove("title-mode");
+}
+
 async function initialize() {
   wireEvents();
   setBusy(true);
@@ -998,6 +1005,7 @@ async function initialize() {
     renderNarratorBadge();
     await refreshSaves();
   } catch (error) {
+    showSetupForm(); // The error is shown on the form.
     dom.setupError.textContent = `The local server could not be reached: ${error.message}`;
   } finally {
     setBusy(false);

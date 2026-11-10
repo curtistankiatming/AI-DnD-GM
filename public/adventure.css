@@ -479,6 +479,25 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 .prompt-ideas.is-typing { display:none; }
 .prompt-ideas-label { font-size:.82rem; opacity:.75; }
 /* Step C: quick start, game master choice, "What's next?" board. */
+/* Title page: the first thing a new player sees. The hero form follows "New adventure". */
+.setup-card.title-mode { max-width:720px; text-align:center; }
+.setup-card.title-mode .setup-layout, .setup-card.title-mode .campaign-chip { display:none; }
+.setup-card.title-mode .setup-heading { display:block; border-bottom:0; margin-bottom:8px; padding:clamp(12px,5vh,48px) 0 0; }
+.setup-card.title-mode .setup-heading h1 { font-size:clamp(2.2rem,7vw,3.6rem); line-height:1.1; margin:.2em 0 .35em; }
+.setup-card.title-mode .setup-heading .lede { margin-inline:auto; max-width:34em; }
+.setup-card.title-mode .resume-panel { border:0; padding:0; margin:0 auto clamp(8px,4vh,32px); max-width:420px; display:grid; gap:10px; }
+.setup-card.title-mode .resume-panel h2 { display:none; }
+.setup-card.title-mode .resume-panel > .btn { width:100%; min-height:52px; font-size:1.05rem; }
+.setup-card.title-mode .resume-panel details { text-align:left; }
+.setup-card:not(.title-mode) #titleNewBtn { display:none; }
+/* The heading takes focus only by script when the page opens; it is not a control. */
+#setupTitle:focus { outline:none; }
+#continueBtn:not(.is-hidden) ~ #titleNewBtn { background:transparent; color:var(--text); border:1px solid var(--border); box-shadow:none; }
+.ai-advanced { margin:12px 0; padding:8px 12px; border:1px solid var(--border-soft); border-radius:var(--radius-small); }
+.ai-advanced > summary { cursor:pointer; font-weight:600; min-height:32px; display:flex; align-items:center; }
+.ai-advanced > summary::before { content:"▸"; margin-right:8px; }
+.ai-advanced[open] > summary::before { content:"▾"; }
+.ai-advanced > summary::-webkit-details-marker { display:none; }
 .name-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
 .name-row label { flex:1 1 220px; display:grid; gap:6px; min-width:0; }
 .name-row label > span { font-size:.82rem; color:var(--muted); }

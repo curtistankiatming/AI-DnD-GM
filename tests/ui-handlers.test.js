@@ -12,7 +12,7 @@ function setup(){
     dom:new Proxy({},{get:(_t,k)=>node(k)}),document:{body:{classList:{toggle(){}}},listeners:{},addEventListener(t,cb){this.listeners[t]=cb;}},
     window:{BriarwatchSession:UI},$:node,$$:()=>[],setup:{},setBusy(){},pointBuySpent:()=>27,renderSetup(){},renderSetupSummary(){},toast(){},renderGame(){},
     sessionUI:{changed(){},status:()=>({}),quickSave:async()=>{},replace:async loader=>{const p=await loader();ctx.state=p.state;return true;}},
-    api:async()=>({response:{ok:true},payload:{state:{player:{name:'New'}},view:{}}}),startCampaign(){},refreshSaves(){},closeTargetDialog(){},clear:n=>n.children=[],createElement:(tag,cls,text)=>({tag,cls,text}),showActionFeedback:m=>ctx.feedback=m};
+    api:async()=>({response:{ok:true},payload:{state:{player:{name:'New'}},view:{}}}),startCampaign(){},refreshSaves(){},showSetupForm(){},closeTargetDialog(){},clear:n=>n.children=[],createElement:(tag,cls,text)=>({tag,cls,text}),showActionFeedback:m=>ctx.feedback=m};
   vm.createContext(ctx);return {ctx,node};
 }
 test('new setup preserves active state until replacement succeeds',()=>{const {ctx,node}=setup();const before=ctx.state;vm.runInContext(fn('wireEvents')+'\nwireEvents();',ctx);node('newGameBtn').listeners.click();assert.equal(ctx.state,before);});
@@ -93,4 +93,23 @@ test('quick start keeps name, class and Begin outside the optional Customise sec
   for(const id of ['setupBackground','setupDifficulty','abilityBuilder','useClassPresetBtn'])assert.ok(inside.includes(`id="${id}"`),id+' is optional');
   for(const id of ['setupName','classCards','startCampaignBtn','gmChoice','surpriseNameBtn'])assert.ok(html.includes(`id="${id}"`)&&!inside.includes(`id="${id}"`),id+' is always visible');
   assert.doesNotMatch(html.slice(start,start+60),/\sopen/,'Customise starts closed');
+});
+test('the title page comes first and the hero form follows New adventure',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8'),css=fs.readFileSync(path.join(__dirname,'../public/adventure.css'),'utf8');
+  assert.match(html,/<section class="setup-card title-mode"/,'a fresh page opens on the title');
+  const title=html.indexOf('id="setupTitle"'),resume=html.indexOf('id="resumePanel"'),form=html.indexOf('class="setup-layout"');
+  assert.ok(title>0&&title<resume&&resume<form,'title, then continue or new, then the form');
+  const panel=html.slice(resume,form);
+  for(const id of ['continueBtn','titleNewBtn','homeSaves'])assert.ok(panel.includes(`id="${id}"`),id+' is on the title page');
+  assert.match(css,/\.setup-card\.title-mode \.setup-layout[^{]*\{ display:none; \}/);
+  assert.match(css,/\.setup-card:not\(\.title-mode\) #titleNewBtn \{ display:none; \}/);
+  // Every way into the form leaves title mode, including the in-game button and a failed start.
+  assert.equal(source.split('showSetupForm()').length-1,4,'defined once and called from New adventure, New campaign and the load error');
+});
+test('AI tuning controls sit under Advanced settings, which opens itself for a local model',()=>{
+  const chat=fs.readFileSync(path.join(__dirname,'../public/chat-ui.js'),'utf8');
+  const line=chat.split('\n').find(l=>l.includes('advClaude.append('))+chat.split('\n').find(l=>l.includes('advLocal.append('))+chat.split('\n').find(l=>l.includes('adv.append(advClaude'));
+  for(const name of ['claudeModel','effort','profile','format','roles','budget','tokens','uncapped','timeout'])assert.ok(line.includes(name+'.closest('),name+' is advanced');
+  for(const name of ['enabled','provider','narration','base','model'])assert.ok(!line.includes(name+'.closest('),name+' stays in view');
+  assert.match(chat,/if\(local\)adv\.open=true/);
 });
