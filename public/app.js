@@ -387,7 +387,7 @@ async function startCampaign() {
     if (!response.ok) throw new Error(payload.error || "Campaign creation failed.");
     return payload;
   }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline ? "autosave" : null});
-  if (ok) toast("Campaign started. Quick Save has its own new destination.", "good");
+  if (ok) toast("Your adventure begins.", "good");
 }
 
 async function sendAction(action) {
@@ -876,8 +876,14 @@ function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
   dom.saveBtn.dataset.disabled = String(!state);
   $("#continueBtn").dataset.disabled = String(!continueSave);
   $("#continueBtn").disabled = busy || !continueSave;
-  $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue (no saved campaign)";
-  $("#homeSaveStatus").textContent = continueSave ? `Continue opens “${continueSave.slot}”. Load below to choose another checkpoint.` : "No readable save found here. Begin a new campaign below.";
+  // A first-time player has nothing to continue: show a welcome instead of a dead button.
+  $("#continueBtn").classList.toggle("is-hidden", !continueSave);
+  $("#homeSaves").classList.toggle("is-hidden", !saves.length);
+  $("#resumeTitle").textContent = saves.length ? "Welcome back" : "Welcome to Briarwatch";
+  $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue";
+  $("#homeSaveStatus").textContent = continueSave ? `Continue opens your latest save, “${continueSave.slot}”.`
+    : saves.length ? "Your saves could not be opened automatically. Pick one below, or start a new adventure."
+    : "A story game where you choose what your hero does and the dice decide how it goes. Create your hero below, then press Begin campaign.";
   for (const list of [dom.saveList, $("#homeSaveList")]) {
     clear(list);
     if (!saves.length) list.append(createElement("p", "empty-state", "No save files yet."));

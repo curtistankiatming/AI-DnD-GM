@@ -170,7 +170,7 @@ function ruleAnswer(state){
 async function commissionAdventure(state,hint,provider,rng){
   const blocked=Director.availability(state);if(blocked)return rejected(state,blocked);
   let cfg=null;try{cfg=provider&&await provider.config();}catch(e){return rejected(state,e.message);}
-  if(!cfg?.enabled||cfg.provider!=='claude')return rejected(state,'The story director needs the Claude API provider. Turn it on under AI settings; authored expeditions remain available.');
+  if(!cfg?.enabled||cfg.provider!=='claude')return rejected(state,'New adventures are written by the Claude AI game master. Turn it on under Settings, then AI settings. The expeditions already on the board stay available.');
   let out;
   try{out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{hint,journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions}),schema:Director.SCHEMA,purpose:'director'});}
   catch(e){return rejected(state,e.message);}
@@ -245,7 +245,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   if(!exact&&inferred?.optionId)proposed={kind:'action',optionId:inferred.optionId,reply:''};
   else if(exact&&mode==='action')proposed={kind:'action',optionId:exact.id,reply:''};
   else if(!cfg?.enabled){
-    return payload(state,mode==='question'?(Road.answer(state,text)||ruleAnswer(state)):'AI is off. Use a visible approach or its exact label, or enable the Claude API or a local model under AI settings. Campaign instructions and the courier scenario work offline; unfamiliar free-form actions will not be guessed.');
+    return payload(state,mode==='question'?(Road.answer(state,text)||ruleAnswer(state)):'The AI game master is off, so the game can only follow the listed choices. Pick one of them, or turn on the AI game master under Settings, then AI settings, to try anything you type.');
   }else{
     if(mode==='action'&&state.combat?.active)return rejected(state,'Use combat buttons and explicit targets during initiative. Dialogue, questions and campaign preferences do not spend combat actions.');
     try{

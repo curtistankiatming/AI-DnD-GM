@@ -62,7 +62,7 @@ npm run playtest
 npm run fuzz
 ```
 
-No `npm install` is required for normal gameplay because no third-party packages are used.
+Offline play needs no `npm install`. Claude AI play needs `npm install` once; `run-local.bat` does this for you on first run.
 
 ## Start on Windows (ZIP installation)
 
@@ -72,7 +72,7 @@ No `npm install` is required for normal gameplay because no third-party packages
 4. Double-click `run-local.bat` and keep its console open while playing.
 5. Open `http://localhost:4173`; use Ctrl+C in the console to stop the server.
 
-No `npm install` is required. Verify `/api/health` reports `4.1.0-alpha.3` and check
+`run-local.bat` installs the Claude library on first run; offline play works without it. Verify `/api/health` reports `4.1.0-alpha.3` and check
 the release commit; the interface's generic "AI Dungeon Master V4" title does not
 identify a patch. If a port is occupied, stop the other server or set a different
 `PORT` before launching. The actual user's interactive Windows launcher remains
