@@ -59,3 +59,22 @@ test('first-steps.js ships in both the served page and the offline build',()=>{
   assert.equal(build.split("'public/first-steps.js'").length-1,2,'listed as a build input and bundled');
   assert.match(build,/replace\('<script src="\/first-steps\.js"><\/script>', ''\)/);
 });
+test('step C scripts ship in both the served page and the offline build',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8'),build=fs.readFileSync(path.join(__dirname,'../scripts/build-public.js'),'utf8');
+  for(const name of ['gm-setup.js','whats-next.js']){
+    assert.ok(html.includes(`<script src="/${name}"></script>`),name+' is loaded by the page');
+    assert.equal(build.split(`'public/${name}'`).length-1,2,name+' is a build input and is bundled');
+    assert.ok(build.includes(`replace('<script src="/${name}"></script>', '')`),name+' tag is removed from the single file');
+  }
+  // The key box must exist before the script that fills it, and the wish box needs the chat export.
+  assert.ok(html.indexOf('/chat-ui.js')<html.indexOf('/gm-setup.js')&&html.indexOf('/gm-setup.js')<html.indexOf('/first-steps.js'));
+});
+test('quick start keeps name, class and Begin outside the optional Customise section',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../public/index.html'),'utf8');
+  const start=html.indexOf('<details id="setupCustomise"'),end=html.indexOf('</details>',start);
+  assert.ok(start>0&&end>start);
+  const inside=html.slice(start,end);
+  for(const id of ['setupBackground','setupDifficulty','abilityBuilder','useClassPresetBtn'])assert.ok(inside.includes(`id="${id}"`),id+' is optional');
+  for(const id of ['setupName','classCards','startCampaignBtn','gmChoice','surpriseNameBtn'])assert.ok(html.includes(`id="${id}"`)&&!inside.includes(`id="${id}"`),id+' is always visible');
+  assert.doesNotMatch(html.slice(start,start+60),/\sopen/,'Customise starts closed');
+});

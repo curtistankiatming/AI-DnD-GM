@@ -100,6 +100,16 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
       : completeLocal(c, request, signal));
   }
 
+  // A tiny request that proves the provider answers. It never touches a game.
+  async function test(raw) {
+    const c = Profiles.normalize({ ...(raw || await config()), enabled: true });
+    const request = { system: 'You are a connection check for a tabletop game. Answer with one short word.', prompt: 'Reply with the word READY.', schema: null, purpose: 'test' };
+    const out = await exclusive(Math.min(c.timeoutMs, 45000), signal => c.provider === 'claude'
+      ? claudeProvider.complete({ ...c, effort: 'low', replyTokens: 1024 }, request, signal)
+      : completeLocal(c, request, signal));
+    return { ok: true, model: out.model, elapsedMs: out.elapsedMs };
+  }
+
   // Narration is optional presentation; it runs only when the player enabled it.
   async function narrationEnabled() {
     try { const c = await config(); return c.enabled && c.narration && (c.provider !== 'claude' || claudeProvider.configured()); }
@@ -108,6 +118,6 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
 
   function status() { return { busy: Boolean(active), claudeKeyConfigured: claudeProvider.configured() }; }
 
-  return { config, save, models, complete, cancel, narrationEnabled, status, manifest: Profiles.manifest };
+  return { config, save, models, complete, test, cancel, narrationEnabled, status, manifest: Profiles.manifest };
 }
 module.exports = { createLocalAI };

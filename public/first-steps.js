@@ -22,7 +22,7 @@
   steps.append(
     el('li', '', 'Read the story, then pick one of the choices under "What do you do?". The percentage is your chance of success.'),
     typed,
-    el('li', '', 'Party, Journal and Prepare at the top show your hero, what you have learned and the shop. Looking never costs a turn.'));
+    el('li', '', 'The Party, Journal and Prepare tabs show your hero, what you have learned and the shop. Looking never costs a turn.'));
   const done = btn('Got it', 'btn btn-primary btn-small', () => { remember(); card.hidden = true; reopen.hidden = false; });
   card.append(title, steps, done);
   const anchor = document.getElementById('adventureApproaches');
@@ -45,6 +45,7 @@
   let aiOn = false;
   function use(mode, text) { A.selectMode(mode); input.value = text; input.dispatchEvent(new Event('input', { bubbles: true })); input.focus(); }
   function openAISettings() {
+    if (window.BriarwatchGM) { window.BriarwatchGM.openSetup(); return; }
     A.navigate('settings');
     const panel = document.getElementById('localAISettings');
     if (panel) { panel.open = true; panel.scrollIntoView({ block: 'start' }); panel.querySelector('input,select,button')?.focus(); }
@@ -69,8 +70,8 @@
     try { const { payload } = await api('/api/ai/settings'); aiOn = Boolean(payload?.config?.enabled); } catch { aiOn = false; }
     draw();
   }
-  // Saving AI settings is the only way the answer changes during a session.
-  document.addEventListener('click', event => { if (event.target.closest('#localAISettings button')) setTimeout(refresh, 600); });
+  // The game master setup announces every change, from the first screen or from Settings.
+  document.addEventListener('briarwatch:ai', event => { aiOn = Boolean(event.detail?.on); draw(); });
   // Hide the examples while the player is typing; the box is also cleared by code after sending.
   const typing = () => ideas.classList.toggle('is-typing', Boolean(input.value.trim()));
   input.addEventListener('input', typing); input.addEventListener('focus', typing); input.addEventListener('blur', typing);

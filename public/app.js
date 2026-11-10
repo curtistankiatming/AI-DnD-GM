@@ -886,7 +886,7 @@ function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
   $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue";
   $("#homeSaveStatus").textContent = continueSave ? `Continue opens your latest save, “${continueSave.slot}”.`
     : saves.length ? "Your saves could not be opened automatically. Pick one below, or start a new adventure."
-    : "A story game where you choose what your hero does and the dice decide how it goes. Create your hero below, then press Begin campaign.";
+    : "A story game where you choose what your hero does and the dice decide how it goes. Create your hero below, then press Begin adventure.";
   for (const list of [dom.saveList, $("#homeSaveList")]) {
     clear(list);
     if (!saves.length) list.append(createElement("p", "empty-state", "No save files yet."));
@@ -917,6 +917,12 @@ function setActiveTab(tab) {
 
 function wireEvents() {
   dom.setupName.addEventListener("input", renderSetupSummary);
+  $("#surpriseNameBtn").addEventListener("click", () => {
+    const names = ["Aster", "Bryn", "Corin", "Dara", "Elowen", "Finn", "Garrick", "Hale", "Isolde", "Joss", "Kestrel", "Liora", "Marek", "Nyx", "Oriel", "Perrin", "Quill", "Rowan", "Sable", "Tamsin"];
+    const others = names.filter((name) => name !== dom.setupName.value);
+    dom.setupName.value = others[Math.floor(Math.random() * others.length)];
+    renderSetupSummary();
+  });
   dom.setupBackground.addEventListener("change", () => {
     setup.backgroundId = dom.setupBackground.value;
     renderSetup();

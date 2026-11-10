@@ -238,7 +238,7 @@ function availability(state) {
   if (state.combat?.active) return 'Finish the fight before asking for a new adventure.';
   if (!w.completed?.bell) return 'Finish the bell investigation first. After that, the AI game master can write new adventures for you.';
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
-  if (open(state).length >= OPEN_LIMIT) return 'A director adventure is already waiting on the expedition board. Complete or dismiss it first.';
+  if (open(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
   return null;
 }
 
@@ -265,7 +265,7 @@ function dismiss(state, id, events) {
   if (!q || state.world.completed?.[id]) return { ok: false, error: 'That generated adventure is not on the board.' };
   if (state.world.activeQuest === id || state.world.progress?.[id]?.node) return { ok: false, error: 'You have already started that adventure. Finish it instead.' };
   delete state.director.quests[id];
-  const text = `${q.name} is removed from the board. Ask the director for another adventure when you are ready.`;
+  const text = `${q.name} is removed from the board. Ask the game master for another adventure when you are ready.`;
   events.push({ type: 'quest', tone: 'neutral', text });
   return { ok: true, kind: 'director', outcomeText: text };
 }

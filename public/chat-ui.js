@@ -136,7 +136,7 @@
   const claudeBox=createElement('div','chat-provider');claudeBox.id='claudeSettings';ai.append(claudeBox);target=claudeBox;
   const claudeModel=select('Claude model','claudeModel',[['claude-opus-5-5','Claude Opus 5.5 · best storytelling'],['claude-sonnet-5-5','Claude Sonnet 5.5 · faster, cheaper'],['claude-haiku-5-5','Claude Haiku 5.5 · fastest, cheapest']]);
   const effort=select('Thinking effort','claudeEffort',[['low','Low · quickest replies'],['medium','Medium'],['high','High · slowest, most careful']]);
-  const keyStatus=createElement('p','muted');keyStatus.id='claudeKeyStatus';claudeBox.append(keyStatus);
+  const keyPanel=createElement('div','gm-key');keyPanel.id='claudeKeyPanel';claudeBox.append(keyPanel);
   const localBox=createElement('div','chat-provider');localBox.id='localModelSettings';ai.append(localBox);target=localBox;
   const base=field('Local API address','localAIBase');base.value='http://127.0.0.1:1234/v1';
   const model=field('Exact model ID','localAIModel');const dl=createElement('datalist');dl.id='installedLocalModels';model.setAttribute('list',dl.id);localBox.append(dl);
@@ -159,9 +159,11 @@
   localBox.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved. Go to Adventure and type what you want to do.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   panel.append(ai);showProvider();
-  api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
-    keyStatus.textContent=payload.claudeKeyConfigured?'Claude key found. Tick “Turn on the AI game master” and save.':'No Claude key yet. To add one: 1) get a key from console.anthropic.com, 2) in the game folder, copy the file “.env.example” and name the copy “.env”, 3) open it and paste your key after ANTHROPIC_API_KEY=, 4) close the game window and start it again.';
+  const load=()=>api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
     base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;
     if(c.provider==='local'){budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;}
     tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;showProvider();}).catch(e=>{info.textContent=e.message;});
+  load();
+  // The key box turns the AI game master on by itself; show that in this form.
+  document.addEventListener('briarwatch:ai-saved',load);
 })();
