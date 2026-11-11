@@ -43,6 +43,7 @@ def select_save(page, slot):
 def exercise_safety(page, output, offline):
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     expect(page.locator('#resumePanel')).to_be_visible()
+    page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Safety Hero A')
     page.locator('#startCampaignBtn').click()
     expect(page.locator('#playerIdentity')).to_contain_text('Safety Hero A')

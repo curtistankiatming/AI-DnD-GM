@@ -37,6 +37,7 @@ class Quiet(SimpleHTTPRequestHandler):
 
 def exercise(page, output: Path, offline: bool) -> None:
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
+    page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Browser Test Hero')
     page.locator('#startCampaignBtn').click()
     expect(page.locator('#gameLayout')).to_be_visible()
