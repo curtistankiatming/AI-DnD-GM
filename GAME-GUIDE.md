@@ -162,7 +162,9 @@ actions into 1st, 2nd, 3rd and 4th job skills.
 
 A weapon skill never makes fewer strikes than the Attack action: a fighter's
 one-strike skill adds two plain follow-up strikes. Outside the hero's final
-ultimate, no skill moves a battle objective more than two steps.
+ultimate, no skill moves a battle objective more than two steps. The original
+specialization skills (first written for level 10) multiply their dice and
+amounts with level: twice from level 20 and three times from level 80.
 
 **The 3rd job trial.** At level 40, with a 2nd job branch, any town's expedition
 board offers your branch's trial (for example, a Guardian's trial makes them a

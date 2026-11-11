@@ -86,6 +86,7 @@ const TECHNIQUES = {
   ranger:{id:'pinning-shot',name:'Pinning Shot',kind:'weaponControl',cost:'action',target:'enemy',description:'Make a weapon attack; on hit, pin the target, imposing disadvantage on its next attack. Hunter’s Mark applies.'},
   bard:{id:'rallying-verse',name:'Rallying Verse',kind:'rally',cost:'action',target:'none',description:'Every conscious party member gains 3 + your Charisma modifier temporary HP, and the next party attack gains advantage.'}
 };
+const SCALING_SPEC_KINDS = Object.freeze(['bastion','shadow','rally','sabotage','nova','timeWard','massHeal','banish']);
 const SPECIALIZATIONS = {
   fighter:[
     {id:'guardian',name:'Guardian',kind:'bastion',cost:'bonus',target:'none',description:'Aegis Line: all allies gain 8 temporary HP and an interception ward for one round. Two uses per long rest.'},
@@ -326,7 +327,11 @@ function classActions(player){
   }
   if(player.level>=2)result.push({...TECHNIQUES[player.classId],resource:'technique',minLevel:2});
   const spec=(SPECIALIZATIONS[player.classId]||[]).find(s=>s.id===ensure(player).specialization);
-  if(spec) result.push({...spec,id:`spec:${spec.id}`,resource:'advancement',ability:cls.primaryAbility});
+  if(spec){
+    // Original (level 10) skills scale with level; see specScale in combat.js.
+    const n=Math.max(1,Math.floor((powerLevel(player.level)+10)/15)),scales=SCALING_SPEC_KINDS.includes(spec.kind);
+    result.push({...spec,id:`spec:${spec.id}`,resource:'advancement',ability:cls.primaryAbility,...(scales&&n>1?{description:`${spec.description} At your level its dice and amounts are multiplied by ${n}.`}:{})});
+  }
   for(const s of learntSkills(player))if(s.kind==='job'&&s.level!==SECOND_JOB_LEVEL)result.push({...s,id:`job:${s.id}`,ability:cls.primaryAbility,source:s.source});
   return result;
 }
