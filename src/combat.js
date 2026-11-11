@@ -130,6 +130,8 @@ function encounterScale(state, encounter) {
 
 // Weapon attacks per Attack action: fighters and rangers gain a second at
 // level 5; fighters a third with the 2nd job (balance pass, job step 6).
+// Multiplier for the original (level 10) specialization skills.
+function specScale(actor){return Math.max(1,Math.floor((P.powerLevel(actor?.level||1)+10)/15));}
 function attacksPerAction(actor){
   if(actor?.kind!=='player')return 1;
   return 1+(actor.level>=5&&['fighter','ranger'].includes(actor.classId)?1:0)+(actor.level>=P.SECOND_JOB_LEVEL&&actor.classId==='fighter'?1:0);
@@ -603,6 +605,9 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
   const ward=(a)=>addCondition(a,{id:'intercept',name:'Interception',sourceId,expiresRound:expires,reduction:4+Math.floor(P.accuracyLevel(actor.level)/2),exposes:def.kind==='intercept'&&P.ensure(state.player).choices['5']==='control'});
   const guard=(a)=>addCondition(a,{id:'guarded',name:def.name,sourceId,expiresRound:expires});
   const all=state.combat.actors.filter(a=>a.team==='party');let connected=false;
+  // The original specialization skills were written for level 10; their dice and
+  // flat amounts multiply with level (x2 from 20, x3 from 80).
+  const n=specScale(actor),dice=f=>f.replace(/(\d+)d(\d+)/g,(_,c,d)=>`${Number(c)*n}d${d}`);
   switch(def.kind){
     case 'intercept':ward(target);break;
     case 'weaponControl':{const r=resolveWeaponAttack(state,actor,target,rng,events);connected=r.hit;if(r.hit&&target.hp>0)addCondition(target,{id:'mocked',name:'Off balance: next attack disadvantaged'});break;}
@@ -611,15 +616,15 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
       if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage,'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
     }
     case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(P.accuracyLevel(actor.level)/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
-    case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
-    case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8);ward(a);}break;
+    case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3*n+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
+    case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8*n);ward(a);}break;
     case 'precisionBurst':for(let n=0;n<Math.max(2,attacksPerAction(actor))&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
-    case 'shadow':actor.temporaryHp=Math.max(actor.temporaryHp||0,8);addCondition(actor,{id:'hidden',name:'Hidden'});addCondition(actor,{id:'shadowStrike',name:'Shadow strike: next hit +2d6'});break;
-    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,'3d6').total,actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
-    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,'4d6').total;applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
-    case 'timeWard':combatHeal(state,target,10+P.stats(state.player).healing,events,def.name);guard(target);if(actor.resources.technique)actor.resources.technique.current=Math.min(actor.resources.technique.max,actor.resources.technique.current+1);break;
-    case 'massHeal':for(const a of all){combatHeal(state,a,rollFormula(rng,'2d6').total+mod+P.stats(state.player).healing,events,def.name);removeCondition(a,'poisoned');}break;
-    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,target.tags?.includes('undead')?'6d6':'4d6').total,'radiant',events,def.name);break;
+    case 'shadow':actor.temporaryHp=Math.max(actor.temporaryHp||0,8*n);addCondition(actor,{id:'hidden',name:'Hidden'});addCondition(actor,{id:'shadowStrike',name:'Shadow strike: next hit +2d6'});break;
+    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,dice('3d6')).total,actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
+    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,dice('4d6')).total;applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
+    case 'timeWard':combatHeal(state,target,10*n+P.stats(state.player).healing,events,def.name);guard(target);if(actor.resources.technique)actor.resources.technique.current=Math.min(actor.resources.technique.max,actor.resources.technique.current+1);break;
+    case 'massHeal':for(const a of all){combatHeal(state,a,rollFormula(rng,dice('2d6')).total+mod+P.stats(state.player).healing,events,def.name);removeCondition(a,'poisoned');}break;
+    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,dice(target.tags?.includes('undead')?'6d6':'4d6')).total,'radiant',events,def.name);break;
     case 'pack':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,6);addCondition(a,{id:'packReady',name:'Pack Instinct: next attack advantaged'});}break;
   }
   if(connected&&P.ensure(state.player).choices['5']==='control'&&target.hp>0)addCondition(target,{id:'guiding',name:'Exposed by Technique'});

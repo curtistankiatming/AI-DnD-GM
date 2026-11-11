@@ -1017,7 +1017,7 @@
         {
          "do": "save",
          "save": "dex",
-         "damage": "{p/4}d6",
+         "damage": "{p/5}d6",
          "type": "piercing",
          "half": true,
          "area": true,
@@ -1050,7 +1050,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/3}d6",
+         "damage": "{p/4}d6",
          "type": "fire",
          "on": "enemies"
         },
@@ -1085,7 +1085,7 @@
         {
          "do": "save",
          "save": "dex",
-         "damage": "{p/3}d6",
+         "damage": "{p/4}d6",
          "type": "fire",
          "half": true,
          "area": true,
@@ -1552,7 +1552,7 @@
         {
          "do": "save",
          "save": "con",
-         "damage": "{p/4}d8",
+         "damage": "{p/5}d8",
          "type": "thunder",
          "half": true,
          "area": true,
@@ -1588,7 +1588,7 @@
         {
          "do": "save",
          "save": "dex",
-         "damage": "{p/2}d8",
+         "damage": "{p/3}d8",
          "type": "fire",
          "half": true,
          "area": true
@@ -1757,19 +1757,19 @@
        "resource": "advancement",
        "effects": [
         {
-         "do": "condition",
-         "id": "stunned",
-         "name": "Frozen in time: loses next action",
-         "on": "enemies"
-        },
-        {
-         "do": "damage",
+         "do": "save",
+         "save": "wis",
          "damage": "{p/4}d8",
          "type": "force",
-         "on": "enemies"
+         "half": true,
+         "area": true,
+         "onFail": {
+          "id": "stunned",
+          "name": "Frozen in time: loses next action"
+         }
         }
        ],
-       "description": "Freeze time around your enemies: every enemy loses its next action and takes force damage."
+       "description": "Freeze time around your enemies: every enemy makes a Wisdom save; on a failure it takes force damage and loses its next action, on a success half damage."
       },
       {
        "level": 64,
@@ -1890,7 +1890,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "{p/3}d6",
+         "damage": "{p/2}d6",
          "type": "force",
          "on": "target"
         },
@@ -2124,7 +2124,7 @@
     "effects": [
      {
       "do": "heal",
-      "amount": "1d8+mod+{p/4}",
+      "amount": "1d8+mod+{p/6}",
       "on": "target"
      },
      {
@@ -2135,7 +2135,7 @@
       "rounds": 1
      }
     ],
-    "description": "Heal an ally for 1d8 + Wisdom + a quarter of your level and give them +2 AC until your next turn."
+    "description": "Heal an ally for 1d8 + Wisdom + a sixth of your level and give them +2 AC until your next turn."
    },
    "firstJob": [
     {
@@ -2186,9 +2186,9 @@
        "id": "healers-grace",
        "name": "Healer's Grace",
        "passive": {
-        "healing": 3
+        "healing": 2
        },
-       "description": "+3 to healing you give."
+       "description": "+2 to healing you give."
       },
       {
        "level": 30,
@@ -2253,9 +2253,9 @@
        "id": "blessed-hands",
        "name": "Blessed Hands",
        "passive": {
-        "healing": 3
+        "healing": 2
        },
-       "description": "+3 to healing you give."
+       "description": "+2 to healing you give."
       },
       {
        "level": 56,
@@ -2321,9 +2321,9 @@
        "id": "saints-grace",
        "name": "Saint's Grace",
        "passive": {
-        "healing": 4
+        "healing": 2
        },
-       "description": "+4 to healing you give."
+       "description": "+2 to healing you give."
       },
       {
        "level": 90,
@@ -2604,7 +2604,7 @@
        "effects": [
         {
          "do": "damage",
-         "damage": "1d8+{p/4}+mod",
+         "damage": "1d8+{p/6}+mod",
          "type": "radiant",
          "on": "target"
         },
@@ -2622,9 +2622,9 @@
        "id": "templars-mail",
        "name": "Templar's Mail",
        "passive": {
-        "ac": 1
+        "save": 1
        },
-       "description": "+1 Armor Class."
+       "description": "+1 to saving throws."
       },
       {
        "level": 30,
@@ -2654,10 +2654,10 @@
        "id": "hallowed-champion",
        "name": "Hallowed Champion",
        "passive": {
-        "attack": 1,
-        "damage": 1
+        "damage": 1,
+        "healing": 1
        },
-       "description": "+1 to attack rolls and +1 damage."
+       "description": "+1 damage and +1 to healing you give."
       }
      ],
      "thirdSkills": [
@@ -2720,10 +2720,10 @@
        "id": "champions-might",
        "name": "Champion's Might",
        "passive": {
-        "damage": 2,
+        "damage": 1,
         "hp": 8
        },
-       "description": "+2 damage and +8 maximum HP."
+       "description": "+1 damage and +8 maximum HP."
       }
      ],
      "fourthSkills": [
@@ -2754,10 +2754,10 @@
        "id": "champions-faith",
        "name": "Champion's Faith",
        "passive": {
-        "hp": 16,
+        "hp": 8,
         "damage": 1
        },
-       "description": "+16 maximum HP and +1 damage."
+       "description": "+8 maximum HP and +1 damage."
       },
       {
        "level": 90,
@@ -3305,6 +3305,12 @@
        "resource": "advancement",
        "effects": [
         {
+         "do": "damage",
+         "damage": "{p/4}d6",
+         "type": "piercing",
+         "on": "enemies"
+        },
+        {
          "do": "condition",
          "id": "guiding",
          "name": "Caught in the open",
@@ -3317,7 +3323,7 @@
          "on": "self"
         }
        ],
-       "description": "You lead the enemy into open ground: the next attack against every enemy has advantage, and you become Hidden."
+       "description": "You lead the enemy into open ground and a volley hits every enemy without a roll; the next attack against every enemy has advantage, and you become Hidden."
       },
       {
        "level": 35,
@@ -3354,9 +3360,15 @@
          "do": "tempHp",
          "amount": "{p/3}",
          "on": "party"
+        },
+        {
+         "do": "damage",
+         "damage": "{p/5}d6",
+         "type": "piercing",
+         "on": "enemies"
         }
        ],
-       "description": "You find a way no one else saw: the combat objective advances one step, you become Hidden, and every ally gains temporary HP equal to a third of your level."
+       "description": "You find a way no one else saw: the combat objective advances one step, you become Hidden, every enemy takes piercing damage without a roll, and every ally gains temporary HP equal to a third of your level."
       },
       {
        "level": 48,
@@ -3383,7 +3395,11 @@
          "onFail": {
           "id": "stunned",
           "name": "Lost: loses next action"
-         }
+         },
+         "area": true,
+         "damage": "{p/3}d6",
+         "type": "bludgeoning",
+         "half": true
         },
         {
          "do": "condition",
@@ -3392,7 +3408,7 @@
          "on": "enemies"
         }
        ],
-       "description": "Every enemy makes a Wisdom save or loses its next action, and the next attack against each enemy has advantage."
+       "description": "Every enemy makes a Wisdom save: on a failure it takes damage and loses its next action, on a success half damage; the next attack against each enemy has advantage."
       },
       {
        "level": 64,
@@ -3583,7 +3599,7 @@
         {
          "do": "save",
          "save": "int",
-         "damage": "{p/3}d8",
+         "damage": "{p/2}d8",
          "type": "psychic",
          "half": true,
          "onFail": {
@@ -3686,7 +3702,7 @@
         {
          "do": "save",
          "save": "int",
-         "damage": "{p/2}d6",
+         "damage": "{p/3}d6",
          "type": "psychic",
          "half": true,
          "area": true,
