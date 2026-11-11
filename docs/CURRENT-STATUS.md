@@ -1,6 +1,30 @@
 # Current development and release status
 
-Status snapshot: **13 September 2026**, checked against GitHub. This page records
+## Snapshot: 11 November 2026
+
+Checked against GitHub on 11 November 2026.
+
+| Item | State |
+| --- | --- |
+| Game version | 4.1.0-alpha.3 (releases are told apart by commit) |
+| Default branch | `master` (`main` is an old September snapshot and is not used) |
+| Latest merged pull request | #33, balance follow-up, merge commit `fd46629` |
+| Merged since the September baseline | #8 to #33; see the [changelog](../CHANGELOG.md) |
+| Open pull requests | None, apart from this documentation update |
+| Tests on `master` | Unit, campaign, state and Windows browser checks passed on `fd46629`; the two Linux browser jobs stopped while installing the browser and were re-run |
+
+What the game has now: the Claude AI game master (narration, improvised actions,
+new adventures), a title page and in-game key setup, the redesigned play screens,
+job advancement to level 100 with renown after it, and two balance passes. The
+[README](../README.md) and [game guide](../GAME-GUIDE.md) describe them.
+
+Still not done: a full play session with a real Claude API key; voice narration
+(a future goal); the Act, Say and Ask buttons, the "Prepare" tab name and the
+phone combat board's height were left as they are after the redesign.
+
+The September record below is kept as history.
+
+Earlier snapshot: **13 September 2026**, checked against GitHub. This page records
 the post-PR #5 baseline below; dated validation reports remain historical evidence.
 Curtis approved the housekeeping validations and requested a further check on
 13 September. [PR #6](https://github.com/curtistankiatming/AI-DnD-GM/pull/6) records
