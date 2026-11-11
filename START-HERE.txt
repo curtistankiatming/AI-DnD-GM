@@ -9,20 +9,20 @@ THE QUICK WAY TO PLAY (Windows, full source)
 2. Extract the source ZIP to its own new folder.
 3. Double-click run-local.bat. The first run installs one small library, then
    the game opens in your browser at http://localhost:4173.
-4. Create your hero and press "Begin campaign".
+4. Press "New adventure" on the title page, give your hero a name and pick a
+   class.
 On other systems, run "npm install" once and then "npm start".
 
 PLAY WITH THE CLAUDE AI GAME MASTER (optional, recommended)
 With Claude on, you can type anything you want to try, Claude narrates the
 story, and after the first story it can write new adventures for you. The game
 still rolls the dice and tracks items, gold and experience.
-1. Get an API key from console.anthropic.com. Usage is billed to your
-   Anthropic account.
-2. In the game folder, copy the file ".env.example" and name the copy ".env".
-3. Open ".env" and paste your key after ANTHROPIC_API_KEY=
-4. Close the game window and start run-local.bat again.
-5. In the game, open Settings, then "AI settings". Tick "Turn on the AI game
-   master" and press "Save AI settings".
+1. Get an API key from console.anthropic.com, under API keys. Usage is billed
+   to your Anthropic account.
+2. When you create your hero, choose "Claude AI game master", paste the key
+   into the box and press "Save key and test". That is all.
+   (Already playing? Open Settings, then "AI settings", and use the same box.)
+The key stays on this computer in a private file and is never put in a save.
 Without a key the game works fully offline with its written story and choices.
 A local model server can be used instead of Claude; see GAME-GUIDE.md.
 EVALUATE-MODEL.bat offers a guided three-prompt test for a local model.
@@ -39,8 +39,11 @@ browsers. Do not overwrite old files or publish saves or credentials. Keep the
 local server and any model private; neither is a secure public service.
 
 WHAT IS IN THE GAME
-The main campaign runs from level 1 to 10 with a first advancement and a
-follow-on mission. Lantern Road is an optional journey in Briarwatch with
-lasting consequences. The journal remembers confirmed facts, promises and
-leads. With Claude on, the AI game master can add new expeditions after the
-bell investigation. Levels 30 and 70 are not implemented.
+The written campaign runs from level 1 to 10 and ends with the Oath of the
+Road trial. Heroes then grow to level 100 through jobs: a 2nd job at level 20
+(three branches per class), a 3rd job at 40 and a 4th job at 70, each unlocked
+by a trial, with an ultimate skill at 100. After that, renown ranks continue
+without end. Lantern Road is an optional journey in Briarwatch with lasting
+consequences. The journal remembers confirmed facts, promises and leads. With
+Claude on, the AI game master writes new adventures after the bell
+investigation; you choose Normal, Hard or Heroic before each one.

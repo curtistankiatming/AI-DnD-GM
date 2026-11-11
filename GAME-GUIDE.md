@@ -1,6 +1,6 @@
 # Briarwatch — Game guide for 4.1.0-alpha.3
 
-A local, single-player, story-led d20 adventure. PR #4 (chat, Lantern Road and journal) and PR #5 (shared evaluator v1) are merged. See [Current status](docs/CURRENT-STATUS.md) for dated release and validation evidence. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
+A local, single-player, story-led d20 adventure with an optional Claude AI game master. See the [changelog](CHANGELOG.md) for recent changes and [Current status](docs/CURRENT-STATUS.md) for the dated state of the repository. This is the V4 continuation of Story Engine V3 / The Bell Beneath Briarwatch, not the separate Bellfire Echoes build.
 
 **Playable scope: authored levels 1–10, a class mastery trial at level 10, a post-advancement expedition, AI-directed adventures up to level 100, the 2nd job at level 20, the 3rd job at level 40, the 4th job at level 70 with an ultimate at level 100, and endless renown ranks once the 4th job is learnt at level 100.** This is a custom D&D-style RPG, not a complete official Dungeons & Dragons rules implementation.
 
@@ -234,12 +234,17 @@ and are excluded from regular model prompts.
 AI is optional and off by default. Two providers are available under
 **Settings → AI settings**:
 
-- **Claude API (recommended).** Copy `.env.example` to `.env` beside
-  `package.json`, put your key after `ANTHROPIC_API_KEY=`, restart the game, then
-  enable AI and pick a Claude model (Opus 5.5 by default; Sonnet 5.5 and Haiku 5.5
-  are faster and cheaper). Each chat turn is one API request and is billed to
-  your Anthropic account. `run-local.bat` installs the Claude library on first run;
-  from a terminal, run `npm install` once.
+- **Claude API (recommended).** When you create a hero, choose **Claude AI game
+  master**, paste your API key (from console.anthropic.com) and press **Save key
+  and test**. The same key box is in **Settings → AI settings**. The game writes
+  the key to the git-ignored `.env` beside `package.json` (never to a save),
+  turns the AI game master on and checks the key with one tiny request. Editing
+  `.env` by hand (`ANTHROPIC_API_KEY=`) still works; restart the game afterwards.
+  The model (Opus 5.5 by default; Sonnet 5.5 and Haiku 5.5 are faster and
+  cheaper), thinking effort and wait limit are under **Advanced settings**. Each
+  chat turn is one API request and is billed to your Anthropic account.
+  `run-local.bat` installs the Claude library on first run; from a terminal, run
+  `npm install` once.
 - **Local model server.** Start Bionic or another compatible local server, choose
   **Local model server**, then list and explicitly select the installed
 model ID. The usual address is `http://127.0.0.1:1234/v1`. Compact/Balanced/Expanded
