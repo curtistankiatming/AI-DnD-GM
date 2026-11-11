@@ -4,6 +4,7 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const E=require('../src/engine');
 const P=require('../src/progression');
 const D=require('../src/director');
+const XP=require('../src/xp');
 const I=require('../src/improvise');
 const {ENEMIES}=require('../src/content');
 const draft=require('./fixtures/director-draft');
@@ -65,7 +66,7 @@ test('AI adventures at the final level scale with renown, capped, and reward a s
   const out=act(s,{type:'director-commission',draft:draft()});assert.equal(out.result.ok,true,out.result.error);
   const q=out.state.director.quests[out.result.questId];
   assert.equal(q.level,MAX);assert.equal(q.power,MAX+2);assert.equal(q.xp,D.rewards(MAX).xp);assert.equal(q.gold,20+(MAX+2)*20);
-  assert.equal(ENEMIES[q.foe].maxHp,22+(P.powerLevel(MAX)+2)*6,'Renown adds to enemy health and damage.');
+  assert.equal(ENEMIES[q.foe].maxHp,Math.round((22+(P.powerLevel(MAX)+2)*6)*XP.vigor(MAX)),'Renown adds to enemy health and damage.');
   assert.equal(act(out.state,{type:'depart',questId:q.id}).result.ok,true,'A hero at the final level can depart.');
   const t=clone(out.state);t.director.quests[q.id].power=MAX+99;
   assert.equal(E.normalizeIncomingState(t).director.quests[q.id].power,MAX+P.RENOWN_POWER_CAP);

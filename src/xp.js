@@ -36,14 +36,22 @@ function challenge(q) {
   const level = Math.max(1, Math.floor(Number(q?.level) || 1));
   const renown = Math.max(0, Math.floor(Number(q?.power) || level) - level);
   const t = tier(q?.tier);
-  return { accuracy: P.accuracyLevel(level) + t.accuracy, power: P.powerLevel(level) + renown + t.power };
+  return { accuracy: P.accuracyLevel(level) + t.accuracy, power: P.powerLevel(level) + renown + t.power, vigor: vigor(level) };
+}
+
+// Extra enemy health for the 4th job's levels: none up to 70, rising to +25%
+// at 100 so 4th job skills and ultimates do not make battles trivial.
+const VIGOR_LEVEL = 70, VIGOR_MAX = 0.25;
+function vigor(level) {
+  const l = Math.min(P.MAX_LEVEL, Math.max(1, Math.floor(Number(level) || 1)));
+  return 1 + VIGOR_MAX * Math.max(0, l - VIGOR_LEVEL) / (P.MAX_LEVEL - VIGOR_LEVEL);
 }
 
 // The boss and retainer of an adventure's deciding battle.
-function foeStats({ accuracy: a, power: p }) {
+function foeStats({ accuracy: a, power: p, vigor: v = 1 }) {
   return {
-    main: { maxHp: 22 + p * 6, ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3)}` },
-    retainer: { maxHp: 10 + p * 4, ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3)}` }
+    main: { maxHp: Math.round((22 + p * 6) * v), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3)}` },
+    retainer: { maxHp: Math.round((10 + p * 4) * v), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3)}` }
   };
 }
 
@@ -61,7 +69,7 @@ const threat = def => Math.max(1, Number(def?.maxHp) || 1) * averageDamage(def?.
 // level rates "hard"; a battle far below the hero's level rates "trivial".
 function reference(level) {
   const l = Math.max(1, Math.floor(Number(level) || 1));
-  const f = foeStats({ accuracy: P.accuracyLevel(l), power: P.powerLevel(l) });
+  const f = foeStats({ accuracy: P.accuracyLevel(l), power: P.powerLevel(l), vigor: vigor(l) });
   return threat(f.main) + 2 * threat(f.retainer);
 }
 // A battle written for a level well below the hero's is capped as well:
@@ -81,4 +89,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };

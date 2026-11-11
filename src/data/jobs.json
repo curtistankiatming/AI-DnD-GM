@@ -590,10 +590,10 @@
        "id": "field-marshal",
        "name": "Field Marshal",
        "passive": {
-        "damage": 2,
+        "damage": 3,
         "healing": 2
        },
-       "description": "+2 damage and +2 to healing you give."
+       "description": "+3 damage and +2 to healing you give."
       }
      ],
      "fourthSkills": [
@@ -633,9 +633,9 @@
        "passive": {
         "hp": 12,
         "healing": 2,
-        "damage": 1
+        "damage": 2
        },
-       "description": "+12 maximum HP, +2 to healing you give and +1 damage."
+       "description": "+12 maximum HP, +2 to healing you give and +2 damage."
       },
       {
        "level": 90,
@@ -1761,9 +1761,15 @@
          "id": "stunned",
          "name": "Frozen in time: loses next action",
          "on": "enemies"
+        },
+        {
+         "do": "damage",
+         "damage": "{p/4}d8",
+         "type": "force",
+         "on": "enemies"
         }
        ],
-       "description": "Freeze time around your enemies: every enemy loses its next action."
+       "description": "Freeze time around your enemies: every enemy loses its next action and takes force damage."
       },
       {
        "level": 64,

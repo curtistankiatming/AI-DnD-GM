@@ -136,7 +136,7 @@ attack, Armor Class and saving throw bonuses from all sources together stop at +
 | 10 | Class mastery skill, from the Oath of the Road trial |
 | 13 | A passive 1st-job skill |
 | 16 | An active 1st-job skill |
-| 20 | **2nd job**: choose one of three branches for your class (permanent) and learn its first skill |
+| 20 | **2nd job**: choose one of three branches for your class (permanent) and learn its first skill. Fighters also gain a third strike with each Attack |
 | 25, 30, 35 | The branch's next three skills |
 | 40 | **3rd job**: pass your branch's trial to take its 3rd job and learn its first skill |
 | 48, 56, 64 | The 3rd job's next three skills |
@@ -159,6 +159,10 @@ all three 2nd-job branches with their skills and the 3rd and 4th jobs each one
 leads to, which skills you have learnt, and your next skill. Once you choose a
 branch, the other two are greyed out. In combat, the skill bar groups your
 actions into 1st, 2nd, 3rd and 4th job skills.
+
+A weapon skill never makes fewer strikes than the Attack action: a fighter's
+one-strike skill adds two plain follow-up strikes. Outside the hero's final
+ultimate, no skill moves a battle objective more than two steps.
 
 **The 3rd job trial.** At level 40, with a 2nd job branch, any town's expedition
 board offers your branch's trial (for example, a Guardian's trial makes them a
@@ -334,7 +338,9 @@ Growth past level 20 is deliberately gentle so the d20 still matters: the
 proficiency bonus stops at +6, enemy AC, attacks and DCs stop at their level-20
 values, and health and damage keep growing slowly on both sides (+2 HP a level
 and +1 damage and healing every 10 levels for heroes). New power past 20
-comes from job skills: the 2nd, 3rd and 4th jobs.
+comes from job skills: the 2nd, 3rd and 4th jobs. From level 70, AI adventure enemies also gain
+extra health, rising to +25% at level 100, so the 4th job and its ultimate
+do not make battles trivial.
 
 Saves from when level 10 was the cap keep their XP: XP past level 10 now counts
 as levels, and boons picked then return when renown starts after level 100.

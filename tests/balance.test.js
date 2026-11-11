@@ -49,3 +49,13 @@ test('only an ultimate moves a combat objective more than two steps', () => {
     for (const e of k.effects || []) if (e.do === 'objective' && !k.ultimate) assert.ok((e.steps || 1) <= 2, `${b.id}/${k.id}`);
   }
 });
+
+test('enemies gain extra health from level 70, up to +25% at 100', () => {
+  const XP = require('../src/xp');
+  assert.equal(XP.vigor(20), 1); assert.equal(XP.vigor(70), 1);
+  assert.equal(XP.vigor(85), 1.125); assert.equal(XP.vigor(100), 1.25); assert.equal(XP.vigor(140), 1.25);
+  const at = level => XP.foeStats(XP.challenge({ level })).main.maxHp;
+  assert.equal(at(100), Math.round((22 + P.powerLevel(100) * 6) * 1.25));
+  assert.equal(at(60), 22 + P.powerLevel(60) * 6, 'No change before level 70.');
+  assert.equal(XP.rate(100, Object.values(XP.foeStats(XP.challenge({ level: 100 }))).flatMap((d, i) => i ? [d, d] : [d])), 'hard', 'The standard battle still rates hard.');
+});

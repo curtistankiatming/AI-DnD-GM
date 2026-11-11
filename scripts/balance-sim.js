@@ -22,6 +22,7 @@ const SEEDS = Number(arg('seeds', 12));
 const LEVELS = String(arg('levels', '20,30,40,50,60,70,80,90,100')).split(',').map(Number);
 const TIERS = String(arg('tiers', 'normal,hard,heroic')).split(',');
 const CLASS_IDS = String(arg('classes', Object.keys(CLASSES).join(','))).split(',');
+const POLICY = arg('policy', 'oldest');
 const MAX_STEPS = 400;
 const THEMES = ['wild', 'undead', 'storm', 'construct', 'soldier', 'caster'];
 
@@ -49,10 +50,14 @@ function choose(v, useJobs, memo) {
   const aim = k => k.targetKind === 'enemy' ? target?.id : k.targetKind === 'ally' ? weakest.id : k.targetKind === 'self' ? 'player' : undefined;
   if (!c.order && ok('order:focus') && target) return { actionId: 'order:focus', targetId: target.id };
   const job = cost => !useJobs ? [] : c.actions.filter(a => !a.disabled && a.cost === cost && (a.id.startsWith('job:') || a.id.startsWith('spec:')) && !memo.used.has(`${c.round}:${a.id}`));
-  // Healing and protection only when someone is hurt; ultimates first.
-  const rank = a => (/^Ultimate/.test(a.description || '') ? 0 : 1);
+  // Healing and protection only when someone is hurt. Ultimates first, then
+  // skills in the order learnt (--policy newest: most recently learnt first).
+  const order = c.actions.map(a => a.id), newest = POLICY === 'newest';
+  const rank = a => (/^Ultimate/.test(a.description || '') ? -1000 : newest ? -order.indexOf(a.id) : order.indexOf(a.id));
   const useful = a => !/heal|mend|restore|tempHp|ward|cover|shield|protect/i.test(`${a.id} ${a.description || ''}`) || weakest.hp / weakest.maxHp < 0.6 || a.targetKind === 'enemy';
   if (!c.economy.bonusUsed) {
+    // Class bonus actions a player would use anyway.
+    if (target && ok('hunters-mark') && !memo[`mark:${target.id}`]) { memo[`mark:${target.id}`] = true; return { actionId: 'hunters-mark', targetId: target.id }; }
     const k = job('bonus').filter(useful).sort((a, b) => rank(a) - rank(b))[0];
     if (k) { memo.used.add(`${c.round}:${k.id}`); return { actionId: k.id, targetId: aim(k) }; }
     if (me.hp / me.maxHp < 0.5 && ok('second-wind')) return { actionId: 'second-wind', targetId: 'player' };
