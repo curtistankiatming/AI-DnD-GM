@@ -9,6 +9,7 @@
     "test": "node scripts/verify.js test",
     "playtest": "node tests/campaign-playtest.js",
     "fuzz": "node tests/fuzz.js",
+    "balance": "node scripts/balance-sim.js",
     "check": "node scripts/verify.js check",
     "validate": "npm run check && npm test && npm run playtest && npm run fuzz",
     "build:public": "node scripts/build-public.js",

@@ -55,7 +55,7 @@ function installQuest(q){
   // Challenge drives DCs and enemy strength (src/xp.js): accuracy sets AC,
   // attacks and DCs; power sets health and damage. Renown and the chosen
   // difficulty tier of an AI adventure add to them.
-  const {accuracy:A,power:L}=XP.challenge(q);
+  const challenge=XP.challenge(q),{accuracy:A,power:L}=challenge;
   const prefix=`q-${q.id}`;
   const evidence=`${q.id}-evidence`;
   clue(evidence,`${q.name}: established lead`,q.clue);
@@ -79,7 +79,7 @@ function installQuest(q){
   STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',opening:q.after,safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:'This decision is permanent. The objective reward is the same for every approach.',result:{text:d.text,setFlags:{[d.flag]:true},completeQuest:q.id,reputation:d.rep,nextNode:`town-${q.nextTown||q.town}`}}))};
   const level=L;
   const type=q.enemyTheme;
-  const f=XP.foeStats({accuracy:A,power:L});
+  const f=XP.foeStats(challenge);
   ENEMIES[q.foe]={id:q.foe,name:q.foeName,maxHp:f.main.maxHp,ac:f.main.ac,level,abilities:{str:14,dex:12,con:14,int:13,wis:13,cha:14},attack:{name:type==='wild'?'Briar Lash':type==='undead'?'Remembered Toll':'Ward Strike',bonus:f.main.attackBonus,damage:f.main.damage,damageType:type==='undead'?'necrotic':type==='storm'?'lightning':'slashing'},aiRole:level>=8?'boss':'leader',tags:type==='undead'?['undead']:[],resistances:type==='undead'?['slashing','piercing','bludgeoning']:[],xp:0};
   const minion=`${q.foe}-retainer`;
   ENEMIES[minion]={id:minion,name:type==='undead'?'Bound Record Keeper':type==='wild'?'Ashbound Reedling':'Bound Retainer',maxHp:f.retainer.maxHp,ac:f.retainer.ac,level,abilities:{str:12,dex:12,con:12,int:9,wis:11,cha:9},attack:{name:'Guarding Strike',bonus:f.retainer.attackBonus,damage:f.retainer.damage,damageType:'bludgeoning'},aiRole:'soldier',tags:type==='undead'?['undead']:[],xp:0};

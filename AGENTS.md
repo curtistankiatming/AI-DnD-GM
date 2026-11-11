@@ -33,6 +33,10 @@
   the engine sets the level, challenge (Hard, or Heroic for the legendary trial)
   and 50% XP. Do not replace content depth with inflated XP or
   uncapped bonuses.
+- Job balance: `npm run balance` (`scripts/balance-sim.js`) simulates the
+  standard AI-adventure battle for every class, branch, level milestone and tier
+  with seeded dice; it is slow and not part of CI. Re-run it after changing
+  job data or combat maths, and record results in a new dated report under docs/.
 - Before a fix, reproduce it in a targeted regression test. Run `npm run check`,
   `npm test`, `npm run playtest` and `npm run fuzz` after changes.
 - Distinguish actual browser interaction, public-view scripted campaign policies,
