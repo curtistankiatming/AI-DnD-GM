@@ -86,6 +86,26 @@ function installQuest(q){
   ENCOUNTERS[`quest:${q.id}`]={id:`quest:${q.id}`,name:q.name,enemies:[q.foe,minion,minion],storyScale:0.82,standardScale:1,grittyScale:1.18,xp:0,loot:[],intro:q.crisis,questId:q.id,objective:q.objective,victoryNode:`${prefix}-after`,defeatNode:'defeat'};
 }
 for(const q of Object.values(QUESTS))installQuest(q);
+// Conversation scenes (src/data/scenes.json): companions talk with each other
+// after an expedition. Each beat is a story node whose lines are kept as
+// structured dialogue; choices change approval only. A scene whose cast is
+// not all in the party is skipped (engine enterNode follows skipTo).
+const SCENES=require('./data/scenes.json');
+const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
+const sceneLine=l=>l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text};
+function installScene(scene){
+  const q=QUESTS[scene.after];if(!q)throw new Error(`Scene ${scene.id} follows unknown expedition ${scene.after}`);
+  const home=`town-${q.nextTown||q.town}`,nodeId=key=>`scene-${scene.id}-${key}`;
+  for(const [key,raw]of Object.entries(scene.nodes)){
+    const base=raw.sameAs?scene.nodes[raw.sameAs]:raw;
+    const dialogue=base.lines.map(sceneLine);
+    STORY_NODES[nodeId(key)]={id:nodeId(key),act:scene.act,title:base.title,location:scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
+      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{result:{...(c.lines?{dialogue:c.lines.map(sceneLine)}:{}),...(c.approval?{approval:c.approval}:{}),nextNode:c.next?nodeId(c.next):home}}))};
+  }
+  for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
+}
+function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
+for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
 for(const town of Object.values(TOWNS))STORY_NODES[`town-${town.id}`]={id:`town-${town.id}`,act:'Downtime & preparation',title:town.name,location:town.subtitle,objective:'Recover, develop the party, choose an expedition and prepare for known threats.',opening:town.description,safeRest:true,townId:town.id,choices:[]};
 
 // Continue the original story rather than reset the party or fake a level grant.
@@ -106,4 +126,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,UPGRADE_BASES,installQuest};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,UPGRADE_BASES,installQuest,dialogueText};

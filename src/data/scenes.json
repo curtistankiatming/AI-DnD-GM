@@ -1,0 +1,123 @@
+{
+  "_note": "Conversation scenes. Each plays after the expedition named in 'after', when every companion in 'cast' is in the party; otherwise the party goes straight to town. Lines are {\"say\": companion id or name, \"text\"} or {\"narrate\"}. A choice's 'next' names another node of the same scene; no 'next' returns to town. 'sameAs' copies another node's lines. Choices change companion approval only, never XP or loot.",
+  "bridge-camp": {
+    "id": "bridge-camp",
+    "after": "bridge",
+    "cast": ["orin", "maren", "nessa"],
+    "act": "Camp",
+    "location": "The refugee camp below Ashford",
+    "start": "night",
+    "nodes": {
+      "night": {
+        "title": "The Night after the Bridge",
+        "objective": "Sit with your companions after the bridge.",
+        "lines": [
+          { "narrate": "The refugee camp below Ashford has gone quiet. Someone has lent your party a cooking pot, and Maren has used it. She hands you the first bowl." },
+          { "say": "nessa", "text": "What is this." },
+          { "say": "maren", "text": "Stew." },
+          { "say": "nessa", "text": "It's grey, Maren." },
+          { "say": "maren", "text": "It has nourishment. Colours are a luxury of the well-provisioned." },
+          { "narrate": "Nessa tips her bowl toward the dog that has followed the carts all the way from the bridge. The dog sniffs it, considers, and lies down facing the other way." },
+          { "say": "nessa", "text": "Biscuit agrees with me." },
+          { "say": "maren", "text": "You named the dog." },
+          { "say": "nessa", "text": "He named himself. I just guessed right." },
+          { "narrate": "Orin hasn't touched his bowl. He is scrubbing the lid of the borrowed pot, slowly and carefully, and the lid is already clean." },
+          { "say": "maren", "text": "Orin. That's the third time you've cleaned that." },
+          { "say": "orin", "text": "Fourth. You weren't watching for the first one." },
+          { "narrate": "The child from the last cart is asleep against a wheel twenty paces away, still wearing the blanket Orin gave her." },
+          { "say": "orin", "text": "She asked me if soldiers always leave first. On the bridge. I didn't have an answer." }
+        ],
+        "choices": [
+          {
+            "id": "didnt-leave",
+            "label": "“You didn't leave. That's your answer.”",
+            "lines": [
+              { "narrate": "Orin is quiet for a long moment. Then he sets down the lid and picks up his bowl." },
+              { "say": "nessa", "text": "Nice thing to say. Doesn't make it true for her." },
+              { "say": "orin", "text": "It's true enough for tonight." }
+            ],
+            "approval": { "orin": 1 },
+            "next": "late"
+          },
+          {
+            "id": "tell-truth",
+            "label": "“Tell her the truth tomorrow. All of it.”",
+            "lines": [
+              { "narrate": "Maren nods before Orin does." },
+              { "say": "orin", "text": "All of it is a long story." },
+              { "say": "maren", "text": "Then start with the short part." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "late-truth"
+          },
+          {
+            "id": "sometimes",
+            "label": "“Sometimes they do.”",
+            "lines": [
+              { "narrate": "Nobody speaks. Maren looks at you as if you had kicked something. Then Orin nods, once, as if you have finally said something true." },
+              { "say": "orin", "text": "Yes. Sometimes they do." },
+              { "say": "maren", "text": "That is not what a frightened child needs to hear." },
+              { "say": "orin", "text": "It's what I needed to hear." }
+            ],
+            "approval": { "orin": 1, "maren": -1 },
+            "next": "late"
+          },
+          {
+            "id": "sit",
+            "label": "Say nothing and sit beside him",
+            "lines": [
+              { "narrate": "You sit. The fire pops. After a while Nessa gets up without a word and slides her bowl across to Orin. Biscuit follows the bowl." },
+              { "say": "nessa", "text": "He's yours now. The dog, not the stew. Well. Both." }
+            ],
+            "approval": { "nessa": 1 },
+            "next": "late"
+          }
+        ]
+      },
+      "late": {
+        "title": "The Night after the Bridge",
+        "objective": "Let the night end.",
+        "lines": [
+          { "narrate": "Later, when the fire is low, Orin eats the stew. All of it. Maren watches him do it and says nothing." },
+          { "say": "orin", "text": "It's terrible." },
+          { "say": "maren", "text": "It's nourishing." }
+        ],
+        "choices": [
+          { "id": "sleep", "label": "Get some sleep" }
+        ]
+      },
+      "late-truth": {
+        "sameAs": "late",
+        "choices": [
+          { "id": "sleep", "label": "Get some sleep", "next": "breakfast" }
+        ]
+      },
+      "breakfast": {
+        "title": "Morning in the Camp",
+        "objective": "See what Orin does with the truth.",
+        "lines": [
+          { "narrate": "Morning comes grey and cold. The child from the last cart is called Wenna, it turns out, and she finds Orin before he can find her." },
+          { "say": "Wenna", "text": "You're the one who gave me the blanket." },
+          { "say": "orin", "text": "I am." },
+          { "say": "Wenna", "text": "Do I have to give it back?" },
+          { "say": "orin", "text": "No." },
+          { "narrate": "She nods, satisfied, and waits. Orin crouches so his eyes are level with hers. It takes him a long time to get all the way down." },
+          { "say": "orin", "text": "You asked me if soldiers always leave first. Sometimes they do. I did, once. A long time ago, at a place a lot like that bridge." },
+          { "say": "Wenna", "text": "Did the people get across?" },
+          { "say": "orin", "text": "Not all of them." },
+          { "narrate": "Wenna considers this with great seriousness." },
+          { "say": "Wenna", "text": "You didn't leave this time." },
+          { "say": "orin", "text": "No." },
+          { "say": "Wenna", "text": "Then you're getting better at it." },
+          { "narrate": "She goes back to her mother with the blanket trailing in the mud. Orin stays crouched there until Maren offers him a hand up, and for once he takes it." },
+          { "say": "maren", "text": "That was badly done." },
+          { "say": "orin", "text": "I know." },
+          { "say": "maren", "text": "It was also the truest thing I have heard you say in a year." }
+        ],
+        "choices": [
+          { "id": "return", "label": "Head back into Ashford" }
+        ]
+      }
+    }
+  }
+}

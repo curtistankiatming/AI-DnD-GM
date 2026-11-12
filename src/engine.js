@@ -10,6 +10,7 @@ const Road = require("./road-story");
 const Journal = require("./journal");
 const Improvise = require("./improvise");
 const Director = require("./director");
+const { dialogueText } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
@@ -305,9 +306,12 @@ function currentNode(state) {
   return STORY_NODES[state.story.nodeId] || STORY_NODES[CAMPAIGN.startNode];
 }
 
-function enterNode(state, nodeId, events = []) {
+// lead: dialogue lines spoken just before this node (a scene choice's reply).
+function enterNode(state, nodeId, events = [], lead = null) {
   const node = STORY_NODES[nodeId];
   if (!node) return false;
+  // A conversation scene needs its whole cast; otherwise go where it would end.
+  if (node.cast && node.skipTo && !node.cast.every((id) => state.party.some((member) => member.id === id))) return enterNode(state, node.skipTo, events);
   const firstVisit = !state.story.visitedNodes.includes(nodeId);
   state.story.nodeId = nodeId;
   if (state.world && node.questId) { state.world.activeQuest = node.questId; state.world.onExpedition = true; (state.world.progress[node.questId] ||= {}).node = nodeId; }
@@ -321,12 +325,14 @@ function enterNode(state, nodeId, events = []) {
       awardXp(state, 120, events, "Planning the confrontation beneath Briarwatch");
     }
   }
+  const dialogue = node.dialogue ? [...(Array.isArray(lead) ? lead : []), ...node.dialogue] : null;
   state.story.lastOutcome = {
     kind: "node",
     title: node.title,
-    text: node.opening,
+    text: dialogue ? dialogueText(dialogue) : node.opening,
     location: node.location,
-    act: node.act
+    act: node.act,
+    ...(dialogue ? { dialogue } : {})
   };
   recordHistory(state, `Entered ${node.title}.`, { kind: "node" });
   events.push({ type: "story", tone: "neutral", text: `${node.act}: ${node.title}` });
@@ -512,7 +518,7 @@ function applyOutcome(state, outcome = {}, rng, events) {
     events.push({ type: "story", tone: "neutral", text: outcome.text });
     pushLog(state, "GM", outcome.text, "story");
   }
-  if (outcome.nextNode) enterNode(state, outcome.nextNode, events);
+  if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
   if (outcome.combat) startCombat(state, outcome.combat, rng, events);
 }
 
@@ -552,7 +558,7 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   // Revisiting a hub or travel transition remains legal, but it cannot be
   // exploited for unlimited XP. Only the first resolution of a choice grants
   // progression credit.
-  if (firstResolution && !node.questId && !node.townId && !node.defeat) awardXp(state, success ? 14 : 7, events, choice.label);
+  if (firstResolution && !node.questId && !node.townId && !node.defeat && !node.scene) awardXp(state, success ? 14 : 7, events, choice.label);
   applyOutcome(state, outcome || {}, rng, events);
   return { ok: true, kind: "story", success, outcomeText: outcome?.text || "" };
 }
