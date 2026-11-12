@@ -229,6 +229,10 @@
 .adventure-scroll .narration-heading { min-height:0; margin:0; }
 .adventure-scroll #narrationSource:not(:empty) { display:block; margin:0 0 6px; font-size:.78rem; }
 .story-prose { margin:0; max-width:62ch; font-family:var(--font-display); font-size:1.24rem; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--text); }
+.story-dialogue { white-space:normal; }
+.story-line { display:block; margin:0 0 .55em; }
+.story-narration { font-style:italic; }
+.story-speaker { font-family:var(--font-ui, inherit); font-size:.82em; letter-spacing:.02em; margin-right:.15em; }
 .story-did { margin:2px 0 12px; padding-left:14px; border-left:2px solid var(--accent); font-family:var(--font-display); font-style:italic; font-size:1.12rem; color:var(--muted); overflow-wrap:anywhere; }
 .story-chips { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin:0 0 14px; }
 .roll-chip { display:inline-flex; align-items:center; gap:10px; max-width:100%; padding:6px 12px; border:1px solid var(--border); border-radius:8px; background:var(--panel); font-size:.95rem; font-variant-numeric:tabular-nums; }

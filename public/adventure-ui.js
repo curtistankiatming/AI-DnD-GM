@@ -78,7 +78,15 @@
   chips.replaceChildren(...rolls,...(notes.length?[row]:[]));chips.hidden=!events.length;
   // When the narration already says every chip aloud, the chips are a visual duplicate only.
   if(covered)chips.setAttribute('aria-hidden','true');else chips.removeAttribute('aria-hidden');
-  prose.textContent=text;prose.hidden=!text;
+  // A conversation scene keeps its lines apart: who speaks, then what they say.
+  // Anything else this turn produced (the choice that led here) comes first.
+  const lo=view.scene?.lastOutcome,flat=t=>String(t||'').replace(/\s+/g,' ').trim();
+  if(Array.isArray(lo?.dialogue)&&lo.dialogue.length&&flat(text).startsWith(flat(lo.text))){
+   const heading=flat(`${view.scene.act}: ${view.scene.title}`),rest=flat(text).slice(flat(lo.text).length).replace(heading,'').trim();
+   prose.replaceChildren(...(rest?[el('span','story-line',rest)]:[]),...lo.dialogue.map(l=>{const p=el('span',l.narration?'story-line story-narration':'story-line story-speech');
+    if(l.narration)p.textContent=l.narration;else{const who=el('strong','story-speaker',l.speaker);if(l.speakerId)who.dataset.speaker=l.speakerId;p.append(who,' ',String(l.text||''));}return p;}));
+   prose.classList.add('story-dialogue');prose.hidden=false;
+  }else{prose.classList.remove('story-dialogue');prose.textContent=text;prose.hidden=!text;}
   did.replaceChildren();if(shownDid)did.append(el('span','workspace-sr-only','You chose: '),shownDid);did.hidden=!shownDid;
  }
  // Party, resources and purse beside the story on a wide screen.
