@@ -8,6 +8,11 @@
 - Direction (Nov 2026): Claude API is the primary AI provider; the goal is an
   open-ended AI GM. Offline/browser play must keep working without AI. The only
   runtime dependency is `@anthropic-ai/sdk`, loaded lazily by `src/claude-ai.js`.
+- The written story comes first (`src/book.js`, `docs/AI-STORYTELLER.md`).
+  While a written chapter is unfinished, the director writes only small side
+  quests, chat steers detours back to the book, and AI-given XP (improvised,
+  side quest and its battle) is capped at the chapter's level. A save that
+  finished the books (flag `books:finished`) stays an AI story for good.
 - Claude-authored content (improvised actions in `src/improvise.js`, generated
   adventures in `src/director.js`) supplies story and choices only. Every number
   (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved

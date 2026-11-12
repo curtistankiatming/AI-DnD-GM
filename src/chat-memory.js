@@ -2,6 +2,7 @@
 // Campaign-owned data only. Provider settings, tokens and endpoints never enter saves.
 const RoadState = require('./road-state');
 const Improvise = require('./improvise');
+const Book = require('./book');
 const MAX_INSTRUCTIONS = 2000;
 const MAX_MESSAGE = 1600;
 function text(value, limit) { return typeof value === 'string' ? value.slice(0, limit) : ''; }
@@ -25,6 +26,7 @@ function ensure(state, force = false) {
     history: history.slice(-40).filter(x => x && ['player','guide','rules'].includes(x.role))
       .map(x => ({ role:x.role, text:text(x.text, MAX_MESSAGE), turn:Number(x.turn)||0 })),
     pending: pendingFrom(old.pending),
+    detour: Book.normalizeDetour(old.detour),
     courier: old.courier && typeof old.courier === 'object' ? {
       active:Boolean(old.courier.active), resolved:Boolean(old.courier.resolved),
       clue:Boolean(old.courier.clue), rapport:Boolean(old.courier.rapport), distraction:Boolean(old.courier.distraction),

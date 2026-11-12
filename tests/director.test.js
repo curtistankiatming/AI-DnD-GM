@@ -13,10 +13,13 @@ const {ENCOUNTERS,ENEMIES}=require('../src/content');
 
 const high=()=>0.999;
 const clone=x=>JSON.parse(JSON.stringify(x));
-// A party back in Briarwatch after the opening chapter.
-function inTown(level=1){
+// A party back in Briarwatch after the opening chapter. These tests cover full
+// AI adventures, which are written once the books are finished, so the save is
+// marked as past the written story; tests/book.test.js covers side quests.
+function inTown(level=1,{book=false}={}){
   const s=E.createNewGame({name:'Rhea',classId:'fighter'});
   s.world.completed.bell={day:1,quality:'force',method:'force',xp:300,gold:60};
+  if(!book)s.story.flags['books:finished']=true;
   s.story.nodeId='town-briarwatch';s.world.townId='briarwatch';
   if(level>1){s.player.level=level;s.player.xp=1100;}
   return E.normalizeIncomingState(s);

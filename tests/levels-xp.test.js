@@ -15,6 +15,7 @@ function inTown(level, xp = level > 1 ? P.XP_NEXT[level - 1] : 0) {
   const s = E.createNewGame({ name: 'Rhea', classId: 'fighter' });
   s.player.level = level; s.player.xp = xp;
   s.world.completed.bell = { day: 1, quality: 'force' }; s.story.nodeId = 'town-briarwatch'; s.world.townId = 'briarwatch';
+  s.story.flags['books:finished'] = true; // Past the written story: full AI adventures, no chapter cap.
   return E.normalizeIncomingState(s);
 }
 const foes = id => ENCOUNTERS[`quest:${id}`].enemies.map(e => ENEMIES[e]);

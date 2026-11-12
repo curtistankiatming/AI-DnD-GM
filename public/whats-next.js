@@ -23,14 +23,15 @@
     try { await window.BriarwatchChat.send(('/adventure ' + wish).trim()); }
     finally {
       writing = false;
-      if ((view?.world?.director?.open || []).length > before) { wish = ''; toast('A new adventure is on your board.', 'good'); }
+      if ((view?.world?.director?.open || []).length > before) { wish = ''; toast(view?.world?.director?.sideQuests ? 'A new side quest is on your board.' : 'A new adventure is on your board.', 'good'); }
       draw();
     }
   }
   function wishCard(w) {
     const d = w.director, gm = window.BriarwatchGM?.status() || { on: false, known: false };
     const card = el('div', 'whats-next-wish'); card.id = 'wishCard';
-    card.append(el('h4', '', 'Ask for a new adventure'));
+    const side = Boolean(d?.sideQuests);
+    card.append(el('h4', '', side ? 'Ask for a side quest' : 'Ask for a new adventure'));
     if (offline) { card.append(el('p', 'muted', 'New adventures written by the AI game master need the installed game with Claude turned on. This browser edition makes no AI requests.')); return card; }
     if (!w.bellComplete) {
       card.dataset.locked = 'true';
@@ -49,11 +50,11 @@
       return card;
     }
     if (!d?.canCommission) { card.append(el('p', 'muted', d?.reason || 'A new adventure is not available right now.')); return card; }
-    card.append(el('p', '', 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
+    card.append(el('p', '', side ? 'The written story comes first. Claude writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
     const label = el('label', 'whats-next-field', 'Your wish (optional)'), input = el('input');
     input.id = 'wishInput'; input.type = 'text'; input.maxLength = 200; input.placeholder = 'something in the marshes, or a rival from my past'; input.value = wish; input.disabled = busy;
     input.addEventListener('input', () => { wish = input.value; });
-    const go = el('button', 'btn btn-primary btn-small', 'Write me a new adventure'); go.type = 'button'; go.id = 'wishBtn'; go.disabled = busy;
+    const go = el('button', 'btn btn-primary btn-small', side ? 'Write me a side quest' : 'Write me a new adventure'); go.type = 'button'; go.id = 'wishBtn'; go.disabled = busy;
     go.addEventListener('click', () => void ask(input));
     input.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); go.click(); } });
     label.append(input);

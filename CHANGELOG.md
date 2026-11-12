@@ -4,6 +4,15 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## 12 November 2026 — the written story comes first
+
+- **AI storyteller rules, step 1**: while a written chapter exists, the AI game
+  master writes small side quests instead of full adventures, steers long
+  detours back to the book, and can only give XP up to the chapter's level.
+  Once the written story is finished, the save becomes the hero's own story with
+  full AI adventures. Chat now allows unusual actions (being rude to an NPC) and
+  remembers them in the journal. Design: [docs/AI-STORYTELLER.md](docs/AI-STORYTELLER.md).
+
 ## 11 November 2026 — balance passes
 
 - **Balance pass** (#32): fighters strike three times with each Attack from

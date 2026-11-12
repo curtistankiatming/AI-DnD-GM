@@ -3,6 +3,7 @@ const { ITEMS, COMPANIONS, STORY_NODES, CLASSES, ENCOUNTERS, ENEMIES }=require('
 const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS }=require('./expansion');
 const P=require('./progression');
 const Director=require('./director');
+const Book=require('./book');
 const XP=require('./xp');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
@@ -63,8 +64,11 @@ function rewardPersonal(state,id,events){
 function awardBattleXp(state,id,events,api,peaceful=false){
   const q=Director.quest(state,id);const enc=ENCOUNTERS[`quest:${id}`];
   if(!q?.generated||!enc||state.story.flags[`battleXp:${id}`])return 0;
-  const {rating,xp}=XP.battleXp(state.player.level,enc.enemies.map(e=>ENEMIES[e]).filter(Boolean),q.tier,q.level);
+  const {rating,xp:full}=XP.battleXp(state.player.level,enc.enemies.map(e=>ENEMIES[e]).filter(Boolean),q.tier,q.level);
+  // AI-written XP never takes the hero past the written chapter (src/book.js).
+  const xp=Book.capXp(state,full);
   state.story.flags[`battleXp:${id}`]=true;
+  if(xp<full)emit(events,'Battle XP is capped: you are at the level this chapter of the story is written for. The story itself levels you from here.','reward');
   if(xp)api.awardXp(state,xp,events,peaceful?`Overcame the threat without a fight (${rating})`:`Won a ${rating} battle`);
   return xp;
 }
@@ -92,7 +96,10 @@ function completeQuest(state,id,events,api){
   const destination=q?.nextTown||q?.town||'briarwatch';state.world.townId=destination;
   refreshStock(state);
   if(state.story.flags[`method:${id}`]==='peace')awardBattleXp(state,id,events,api,true);
-  api.awardXp(state,xp,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
+  const gain=q?.generated?Book.capXp(state,xp):xp;state.world.completed[id].xp=gain;
+  if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. The story itself levels you from here.','reward');
+  api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
+  Book.finished(state);
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
