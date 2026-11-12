@@ -92,20 +92,27 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // not all in the party is skipped (engine enterNode follows skipTo).
 const SCENES=require('./data/scenes.json');
 const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const sceneLine=l=>l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text};
+const storyLine=l=>l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text};
 function installScene(scene){
   const q=QUESTS[scene.after];if(!q)throw new Error(`Scene ${scene.id} follows unknown expedition ${scene.after}`);
   const home=`town-${q.nextTown||q.town}`,nodeId=key=>`scene-${scene.id}-${key}`;
   for(const [key,raw]of Object.entries(scene.nodes)){
     const base=raw.sameAs?scene.nodes[raw.sameAs]:raw;
-    const dialogue=base.lines.map(sceneLine);
+    const dialogue=base.lines.map(storyLine);
     STORY_NODES[nodeId(key)]={id:nodeId(key),act:scene.act,title:base.title,location:scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
-      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{result:{...(c.lines?{dialogue:c.lines.map(sceneLine)}:{}),...(c.approval?{approval:c.approval}:{}),nextNode:c.next?nodeId(c.next):home}}))};
+      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),nextNode:c.next?nodeId(c.next):home}}))};
   }
   for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
+// Any written story node or choice outcome may use "lines" (the same format as
+// scenes) instead of plain text. They compile to structured dialogue plus the
+// same text, so offline narration, saves and the AI narrator are unchanged.
+for(const node of Object.values(STORY_NODES)){
+  if(Array.isArray(node.lines)){node.dialogue=node.lines.map(storyLine);node.opening=dialogueText(node.dialogue);}
+  for(const c of node.choices||[])for(const key of ['success','failure','result']){const o=c[key];if(o&&Array.isArray(o.lines)){o.dialogue=o.lines.map(storyLine);o.text=dialogueText(o.dialogue);}}
+}
 for(const town of Object.values(TOWNS))STORY_NODES[`town-${town.id}`]={id:`town-${town.id}`,act:'Downtime & preparation',title:town.name,location:town.subtitle,objective:'Recover, develop the party, choose an expedition and prepare for known threats.',opening:town.description,safeRest:true,townId:town.id,choices:[]};
 
 // Continue the original story rather than reset the party or fake a level grant.

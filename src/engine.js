@@ -285,7 +285,10 @@ function addClue(state, clueId, events = []) {
 
 function recruitCompanion(state, id, events = []) {
   if (!COMPANIONS[id] || findCompanion(state, id)) return false;
-  state.party.push(createCompanion(id));
+  const member = createCompanion(id);
+  state.party.push(member);
+  // Every way in brings the companion's own kit, at the party's level.
+  if (state.world) { G.initCompanion(state, member); P.levelCompanion(member, state.player.level); }
   events.push({ type: "party", tone: "good", text: `${COMPANIONS[id].name} joined the party.` });
   pushLog(state, "Party", `${COMPANIONS[id].name} joined the party.`, "party");
   return true;
@@ -325,11 +328,17 @@ function enterNode(state, nodeId, events = [], lead = null) {
       awardXp(state, 120, events, "Planning the confrontation beneath Briarwatch");
     }
   }
-  const dialogue = node.dialogue ? [...(Array.isArray(lead) ? lead : []), ...node.dialogue] : null;
+  // Written lines stay structured: what was just said (lead), then this node's
+  // own lines, or its opening as narration.
+  // A node may have a short "revisit" line for coming back to it.
+  const spoken = Array.isArray(lead) ? lead : [];
+  const opening = !firstVisit && node.revisit ? node.revisit : node.opening;
+  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : node.dialogue || [{ narration: opening }];
+  const dialogue = node.dialogue || spoken.length ? [...spoken, ...own] : null;
   state.story.lastOutcome = {
     kind: "node",
     title: node.title,
-    text: dialogue ? dialogueText(dialogue) : node.opening,
+    text: dialogue ? dialogueText(dialogue) : opening,
     location: node.location,
     act: node.act,
     ...(dialogue ? { dialogue } : {})
@@ -348,6 +357,9 @@ function requirementStatus(state, requires = {}) {
   }
   if (requires.flagsAll && !requires.flagsAll.every((flag) => Boolean(flags[flag]))) {
     return { met: false, reason: "Required prior consequence has not been established." };
+  }
+  if (requires.flagsNone && requires.flagsNone.some((flag) => Boolean(flags[flag]))) {
+    return { met: false, reason: "An earlier decision closed this off." };
   }
   if (requires.flagsAny && !requires.flagsAny.some((flag) => Boolean(flags[flag]))) {
     return { met: false, reason: "Requires information or access from an earlier decision." };
@@ -514,8 +526,9 @@ function applyOutcome(state, outcome = {}, rng, events) {
     if (companion) applyDamageToEntity(companion, rollFormula(rng, outcome.companionDamage.formula).total, events, "the rescue");
   }
   if (outcome.text) {
-    state.story.lastOutcome = { kind: "choice", title: currentNode(state).title, text: outcome.text };
-    events.push({ type: "story", tone: "neutral", text: outcome.text });
+    state.story.lastOutcome = { kind: "choice", title: currentNode(state).title, text: outcome.text, ...(outcome.dialogue ? { dialogue: outcome.dialogue } : {}) };
+    // Spoken lines that lead into the next node are told there, once.
+    if (!(outcome.dialogue && outcome.nextNode)) events.push({ type: "story", tone: "neutral", text: outcome.text });
     pushLog(state, "GM", outcome.text, "story");
   }
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);

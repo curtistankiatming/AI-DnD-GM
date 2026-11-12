@@ -21,6 +21,11 @@ def resize(page, width, height):
     page.evaluate('new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)))')
 
 
+def words(text):
+    """The words of a text, ignoring case, punctuation and line breaks."""
+    return ' '.join(re.findall(r"[a-z0-9']+", text.lower().replace('\u2019', "'")))
+
+
 def exercise_story(page, output):
     output.mkdir(exist_ok=True)
     resize(page, 1440, 900)
@@ -35,7 +40,9 @@ def exercise_story(page, output):
     expect(page.locator('#partySnapshot')).to_be_hidden()
     expect(page.locator('#storyProse')).to_be_visible()
     expect(page.locator('#storyChips')).to_be_hidden()
-    assert page.locator('#storyProse').inner_text() == page.locator('#narrationText').inner_text()
+    # Spoken lines show the speaker apart ("Orin" then the line, not "Orin: ..."), so compare the words.
+    assert words(page.locator('#storyProse').inner_text()) == words(page.locator('#narrationText').inner_text())
+    expect(page.locator('#storyProse .story-speaker').first).to_be_visible()
     # A choice with a roll: the roll becomes a chip and leaves the visible prose.
     choice = page.locator('#storyChoices button[data-choice-id]:not([disabled])').filter(has=page.locator('.odds-badge')).first
     label = choice.locator('strong').inner_text()
@@ -47,7 +54,7 @@ def exercise_story(page, output):
     full = page.locator('#narrationText').inner_text()
     shown = page.locator('#storyProse').inner_text()
     assert ' rolled ' in full and ' rolled ' not in shown, (full, shown)
-    assert shown and shown in full
+    assert shown and words(shown) in words(full), (full, shown)
     # Presentation only: the saved narration is still the full text.
     assert page.evaluate('state.lastNarration') == full
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')

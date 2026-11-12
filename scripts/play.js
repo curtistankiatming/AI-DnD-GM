@@ -64,7 +64,7 @@ function printScene(state, view, after) {
     line("-- What happened --");
     const outcome = s.lastOutcome;
     if (outcome?.dialogue?.length) {
-      const rest = after.replace(/\s+/g, " ").replace(outcome.text.replace(/\s+/g, " "), "").trim();
+      const rest = after.replace(/\s+/g, " ").replace(outcome.text.replace(/\s+/g, " "), "").replace(`${view.scene.act}: ${view.scene.title}`, "").trim();
       if (rest) wrap(rest);
       printDialogue(outcome.dialogue);
     } else wrap(after);
