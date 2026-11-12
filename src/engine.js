@@ -325,11 +325,17 @@ function enterNode(state, nodeId, events = [], lead = null) {
       awardXp(state, 120, events, "Planning the confrontation beneath Briarwatch");
     }
   }
-  const dialogue = node.dialogue ? [...(Array.isArray(lead) ? lead : []), ...node.dialogue] : null;
+  // Written lines stay structured: what was just said (lead), then this node's
+  // own lines, or its opening as narration.
+  // A node may have a short "revisit" line for coming back to it.
+  const spoken = Array.isArray(lead) ? lead : [];
+  const opening = !firstVisit && node.revisit ? node.revisit : node.opening;
+  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : node.dialogue || [{ narration: opening }];
+  const dialogue = node.dialogue || spoken.length ? [...spoken, ...own] : null;
   state.story.lastOutcome = {
     kind: "node",
     title: node.title,
-    text: dialogue ? dialogueText(dialogue) : node.opening,
+    text: dialogue ? dialogueText(dialogue) : opening,
     location: node.location,
     act: node.act,
     ...(dialogue ? { dialogue } : {})
@@ -514,8 +520,9 @@ function applyOutcome(state, outcome = {}, rng, events) {
     if (companion) applyDamageToEntity(companion, rollFormula(rng, outcome.companionDamage.formula).total, events, "the rescue");
   }
   if (outcome.text) {
-    state.story.lastOutcome = { kind: "choice", title: currentNode(state).title, text: outcome.text };
-    events.push({ type: "story", tone: "neutral", text: outcome.text });
+    state.story.lastOutcome = { kind: "choice", title: currentNode(state).title, text: outcome.text, ...(outcome.dialogue ? { dialogue: outcome.dialogue } : {}) };
+    // Spoken lines that lead into the next node are told there, once.
+    if (!(outcome.dialogue && outcome.nextNode)) events.push({ type: "story", tone: "neutral", text: outcome.text });
     pushLog(state, "GM", outcome.text, "story");
   }
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);

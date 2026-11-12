@@ -6,7 +6,38 @@
     "location": "Briarwatch Village Square",
     "safeRest": true,
     "objective": "Learn why the ward-bell fell silent, then follow the missing bell-keeper into the Briarwood.",
-    "opening": "Rain beads on a bell rope cut cleanly at shoulder height. Briarwatch's ward-bell hangs above the square, mute for the first time in living memory. Reeve Aveline watches shuttered windows while your companions study the gathered villagers.",
+    "lines": [
+      {
+        "narrate": "Rain beads on a bell rope cut cleanly at shoulder height. Above the square, Briarwatch's ward-bell hangs mute for the first time in living memory. Without it, nothing rings back the Gloam: the cold mist from the old places that takes the warmth out of a house, and then the names out of the people in it."
+      },
+      {
+        "narrate": "Reeve Aveline stands under the inn's awning with a wax tablet, ticking off shuttered windows."
+      },
+      {
+        "say": "Aveline",
+        "text": "Forty-one households. Thirty-eight have answered their door. The other three are the Pellows, who never answer, and two I am trying not to think about."
+      },
+      {
+        "say": "orin",
+        "text": "When did you last sleep?"
+      },
+      {
+        "say": "Aveline",
+        "text": "Before this. Ask me something useful, Stoneward."
+      },
+      {
+        "say": "maren",
+        "text": "The fog on the north road. Was it there yesterday?"
+      },
+      {
+        "say": "Aveline",
+        "text": "No. And you knew that, Sister. You were looking straight at it when you asked."
+      },
+      {
+        "narrate": "Across the square, the forge is the only lit doorway. Smith Dera has propped it open, as if to tell the whole village that somebody here is still working."
+      }
+    ],
+    "revisit": "Back in the square the rain has not let up. The bell still hangs silent, Aveline is still counting doors, and the forge is still the only lit doorway.",
     "choices": [
       {
         "id": "inspect-rope",
@@ -27,7 +58,19 @@
           ]
         },
         "success": {
-          "text": "Under the rain-dark fibres you find a thumbprint of black wax stamped with a thorn around a broken bell.",
+          "lines": [
+            {
+              "narrate": "Under the rain-dark fibres you find a thumbprint of black wax, stamped with a thorn wound around a broken bell."
+            },
+            {
+              "say": "orin",
+              "text": "That's a seal, not a thief's mark. Somebody wanted it found, or didn't care if it was."
+            },
+            {
+              "say": "maren",
+              "text": "Or never thought anyone would look this closely."
+            }
+          ],
           "clues": [
             "black-wax"
           ],
@@ -39,7 +82,23 @@
           ]
         },
         "failure": {
-          "text": "The rain has ruined most traces. Maren nevertheless notices that the rope was cut after the bell stopped, not before.",
+          "lines": [
+            {
+              "narrate": "The rain has ruined most of the traces. Maren takes the rope's end from you and turns it to the light."
+            },
+            {
+              "say": "maren",
+              "text": "Look at the fray. The bell stopped first. Somebody cut the rope afterwards."
+            },
+            {
+              "say": "orin",
+              "text": "So the cut didn't silence it."
+            },
+            {
+              "say": "maren",
+              "text": "No. The cut was so nobody could ring it again."
+            }
+          ],
           "setFlags": {
             "ropeTimingKnown": true
           }
@@ -61,7 +120,24 @@
           "dc": 11
         },
         "success": {
-          "text": "Aveline admits Warden Sable met bell-keeper Tovin in secret. Their argument ended with Sable riding north before dawn.",
+          "lines": [
+            {
+              "say": "Aveline",
+              "text": "Warden Sable came to see Tovin two nights ago. In the bell tower, after dark, which is not where anyone discusses the weather."
+            },
+            {
+              "say": "Aveline",
+              "text": "They argued. I heard Tovin say \"not like this\". Sable rode north before dawn, and nobody has seen him since."
+            },
+            {
+              "say": "orin",
+              "text": "You told the village it was a broken clapper."
+            },
+            {
+              "say": "Aveline",
+              "text": "I told the village to go to bed. It was the only order I was sure they'd follow."
+            }
+          ],
           "clues": [
             "sable-dispute"
           ],
@@ -70,11 +146,35 @@
           }
         },
         "failure": {
-          "text": "Aveline gives only the official account, but Orin catches her glance toward the infirmary whenever Sable's name is spoken.",
+          "lines": [
+            {
+              "narrate": "Aveline gives the account she has given all morning: a broken clapper, a smith sent for, nothing to fear."
+            },
+            {
+              "narrate": "Each time Sable's name comes up, her eyes go to the infirmary window."
+            },
+            {
+              "say": "orin",
+              "text": "Whatever she isn't saying, Tovin knows it."
+            }
+          ],
           "setFlags": {
             "infirmaryHint": true
           }
         }
+      },
+      {
+        "id": "visit-dera",
+        "label": "Stop at Dera's forge",
+        "description": "The smith has been working with her door open all morning. She notices things.",
+        "keywords": [
+          "visit dera",
+          "forge",
+          "smith",
+          "dera"
+        ],
+        "once": true,
+        "nextNode": "dera-forge"
       },
       {
         "id": "visit-tovin",
@@ -102,6 +202,127 @@
       }
     ]
   },
+  "dera-forge": {
+    "id": "dera-forge",
+    "act": "Act I — A Village Holding Its Breath",
+    "title": "The Only Lit Doorway",
+    "location": "Dera's Forge",
+    "safeRest": true,
+    "sideStory": true,
+    "scene": "dera-forge",
+    "objective": "Hear what the smith saw while the rest of the village stayed indoors.",
+    "lines": [
+      {
+        "narrate": "The forge is warm enough to steam the rain off your cloak. Dera is filing the edge of a hinge that does not need filing."
+      },
+      {
+        "say": "Dera",
+        "text": "If you've come about the bell, you pay like everyone else. What are they saying at the inn?"
+      },
+      {
+        "say": "orin",
+        "text": "That it's a broken clapper."
+      },
+      {
+        "say": "Dera",
+        "text": "It isn't. I made that clapper. I would know."
+      },
+      {
+        "say": "Dera",
+        "text": "Here's what I have. Last week Tovin brought me a lantern to mend. Black glass, no wick, cold as a well bucket. He said Warden Sable gave it to him and he wanted to know what it was for. I couldn't tell him."
+      },
+      {
+        "say": "maren",
+        "text": "Do you still have it?"
+      },
+      {
+        "say": "Dera",
+        "text": "He came back for it the day before he went into the wood. Took it north with him."
+      }
+    ],
+    "onEnter": {
+      "setFlags": {
+        "blackLanternKnown": true
+      }
+    },
+    "choices": [
+      {
+        "id": "pay-gossip",
+        "label": "Pay her in gossip",
+        "description": "Tell Dera something she doesn't already know, if you can.",
+        "keywords": [
+          "gossip",
+          "pay dera",
+          "trade"
+        ],
+        "result": {
+          "lines": [
+            {
+              "narrate": "You tell her the Pellows have not answered their door all morning."
+            },
+            {
+              "say": "Dera",
+              "text": "The Pellows never answer their door. That's not gossip, that's weather."
+            },
+            {
+              "say": "Dera",
+              "text": "Fine. One thing more, because you mended my roof in spring and only fell off it once. The fog on the north road doesn't move with the wind. I've watched it all morning. It moves toward us."
+            }
+          ],
+          "nextNode": "briarwatch-square"
+        }
+      },
+      {
+        "id": "keep-lit",
+        "label": "Ask her to keep the forge lit tonight",
+        "description": "A lit doorway might matter more than she lets on.",
+        "keywords": [
+          "keep lit",
+          "forge lit",
+          "stay open"
+        ],
+        "result": {
+          "lines": [
+            {
+              "say": "Dera",
+              "text": "I was going to anyway. Somebody should look like they aren't afraid."
+            },
+            {
+              "say": "orin",
+              "text": "Are you?"
+            },
+            {
+              "say": "Dera",
+              "text": "Ask me when you're back."
+            }
+          ],
+          "approval": {
+            "orin": 1
+          },
+          "nextNode": "briarwatch-square"
+        }
+      },
+      {
+        "id": "leave-forge",
+        "label": "Thank her and go back to the square",
+        "description": "Leave her to her hinge.",
+        "keywords": [
+          "leave forge",
+          "back",
+          "square"
+        ],
+        "result": {
+          "lines": [
+            {
+              "say": "Dera",
+              "text": "Bring the bell-keeper back in one piece. I'm not making a second clapper for nobody to ring."
+            }
+          ],
+          "nextNode": "briarwatch-square"
+        }
+      }
+    ]
+  },
   "tovin-infirmary": {
     "id": "tovin-infirmary",
     "act": "Act I — A Village Holding Its Breath",
@@ -109,7 +330,30 @@
     "location": "Briarwatch Infirmary",
     "safeRest": true,
     "objective": "Learn what Tovin encountered without breaking what remains of his composure.",
-    "opening": "Tovin lies beneath wool blankets, fingers closed around an invisible rope. Each time thunder rolls, he whispers a line that almost becomes a prayer. Maren kneels at a respectful distance; Orin quietly closes the door.",
+    "lines": [
+      {
+        "narrate": "Tovin lies under three wool blankets, one hand closed around a rope that isn't there. Each time thunder rolls he whispers a line that nearly becomes a prayer."
+      },
+      {
+        "narrate": "Maren kneels a little way from the bed, close enough to be seen and not so close she crowds him. Orin shuts the door and stands with his back to it."
+      },
+      {
+        "say": "Tovin",
+        "text": "Is it ringing? I keep hearing it ring."
+      },
+      {
+        "say": "maren",
+        "text": "It isn't, Tovin. Do you know where you are?"
+      },
+      {
+        "say": "Tovin",
+        "text": "Infirmary. Third bed. The one with the short leg."
+      },
+      {
+        "narrate": "He tries to smile. It goes wrong halfway."
+      }
+    ],
+    "revisit": "Tovin has turned onto his side. Maren checks his bandage without waking him.",
     "choices": [
       {
         "id": "calm-tovin",
@@ -126,7 +370,23 @@
           "dc": 11
         },
         "success": {
-          "text": "Tovin repeats the cult's whispered verse: ‘Name the grief, then ring it home.’ He says the words made the roots open beneath an old shrine.",
+          "lines": [
+            {
+              "narrate": "You sit, and wait, and let the rain do the talking for a while."
+            },
+            {
+              "say": "Tovin",
+              "text": "They had a verse. Sable's people. \"Name the grief, then ring it home.\" They said it at the old shrine and the roots opened like a door."
+            },
+            {
+              "say": "Tovin",
+              "text": "I said it too. I don't know why I said it."
+            },
+            {
+              "say": "maren",
+              "text": "Because you were frightened and they were sure. That isn't the same as agreeing with them."
+            }
+          ],
           "clues": [
             "hushed-verse"
           ],
@@ -138,7 +398,18 @@
           }
         },
         "failure": {
-          "text": "Tovin cannot finish the verse, but he scratches the shape of a shrine arch into the bedside dust.",
+          "lines": [
+            {
+              "narrate": "Tovin gets as far as \"name the grief\" and stops, breathing hard."
+            },
+            {
+              "narrate": "Instead he draws in the dust on the bedside table with one finger: an arch, two pillars, a broken stone laid across the top."
+            },
+            {
+              "say": "orin",
+              "text": "The old shrine on the north road."
+            }
+          ],
           "setFlags": {
             "oldShrineKnown": true
           }
@@ -159,7 +430,15 @@
           "dc": 12
         },
         "success": {
-          "text": "The wound contains ritual ash and tiny barbs cut in repeating threes. It came from a consecrated briar hook, not a beast.",
+          "lines": [
+            {
+              "narrate": "Under the bandage the wound is clean-edged and packed with grey ash. The barbs that made it were cut in repeating threes."
+            },
+            {
+              "say": "maren",
+              "text": "Not teeth. A briar hook, the kind we bless at harvest. Somebody blessed this one for something else."
+            }
+          ],
           "clues": [
             "thorn-wound"
           ],
@@ -168,7 +447,18 @@
           }
         },
         "failure": {
-          "text": "You clean and bind the wound but cannot identify the implement. Tovin's breathing steadies enough to point north.",
+          "lines": [
+            {
+              "narrate": "You clean the wound and bind it fresh, but you cannot tell what made it."
+            },
+            {
+              "say": "Tovin",
+              "text": "North. It was north."
+            },
+            {
+              "narrate": "His breathing steadies, and for a moment he looks like the man who rang the bell every evening at six."
+            }
+          ],
           "setFlags": {
             "tovinStabilized": true
           }
@@ -189,7 +479,22 @@
           "dc": 10
         },
         "success": {
-          "text": "Tovin blurts out the hidden verse and the old shrine's location, then turns his face to the wall.",
+          "lines": [
+            {
+              "narrate": "You lean over the bed and ask again, harder."
+            },
+            {
+              "say": "Tovin",
+              "text": "\"Name the grief, then ring it home.\" The shrine's on the north road past the split oak. Please. Please stop."
+            },
+            {
+              "narrate": "He turns his face to the wall."
+            },
+            {
+              "say": "maren",
+              "text": "We have it. That's enough."
+            }
+          ],
           "clues": [
             "hushed-verse"
           ],
@@ -203,7 +508,18 @@
           }
         },
         "failure": {
-          "text": "Tovin collapses into panic. Maren ends the questioning and spends several minutes bringing him back to the room.",
+          "lines": [
+            {
+              "narrate": "Tovin's breath goes ragged and he tries to climb out of the bed."
+            },
+            {
+              "say": "maren",
+              "text": "Out. Both of you. Now."
+            },
+            {
+              "narrate": "It is several minutes before she lets you back in, and she does not look at you when she does."
+            }
+          ],
           "damage": {
             "target": "player",
             "formula": "0"
@@ -455,7 +771,39 @@
     "location": "Mist Hollow",
     "safeRest": false,
     "objective": "Free the trapped scout before the briar wolves close in.",
-    "opening": "A young scout hangs upside down above a carpet of thorn roots, one boot caught in a wire snare. She presses a finger to her lips and points to two low shapes pacing beyond the fog.",
+    "lines": [
+      {
+        "narrate": "A young scout hangs upside down above a carpet of thorn roots, one boot caught in a wire snare, her hair brushing the briars. Beyond the fog two low shapes pace and stop, pace and stop."
+      },
+      {
+        "say": "Nessa",
+        "text": "Don't. Don't come closer, that's a trigger line, the whole hollow's strung with them."
+      },
+      {
+        "say": "orin",
+        "text": "We'll get you down."
+      },
+      {
+        "say": "Nessa",
+        "text": "I know you'll get me down, I'm asking you to get me down quietly, which is a different..."
+      },
+      {
+        "say": "orin",
+        "text": "Then we wait for the wolves to move off."
+      },
+      {
+        "say": "Nessa",
+        "text": "I have been waiting. I have been waiting for an hour. All of my blood is in my head."
+      },
+      {
+        "say": "maren",
+        "text": "What's your name?"
+      },
+      {
+        "say": "Nessa",
+        "text": "Nessa. Nessa Reed. Can we do names after?"
+      }
+    ],
     "choices": [
       {
         "id": "quiet-release",
@@ -474,7 +822,22 @@
           ]
         },
         "success": {
-          "text": "The wire slackens without a chime. Nessa drops into Orin's waiting arms and leads the party through a gap in the wolves' patrol.",
+          "lines": [
+            {
+              "narrate": "The wire slackens without a sound. Nessa drops, and Orin catches her before anyone has to ask."
+            },
+            {
+              "say": "Nessa",
+              "text": "Put me down."
+            },
+            {
+              "say": "orin",
+              "text": "You'll fall over."
+            },
+            {
+              "narrate": "She sits down hard in the bracken, swears, and is on her feet again before he can help. Then she leads you through a gap in the wolves' patrol, limping, without once looking back to see if you're following."
+            }
+          ],
           "recruit": "nessa",
           "setFlags": {
             "nessaRescuedQuietly": true
@@ -486,7 +849,18 @@
           }
         },
         "failure": {
-          "text": "The catch gives with a bright metallic snap. Nessa lands safely, but the briar wolves charge before anyone can withdraw.",
+          "lines": [
+            {
+              "narrate": "The catch gives with a bright metallic snap. Nessa lands on her shoulder among the roots."
+            },
+            {
+              "say": "Nessa",
+              "text": "That was the loud way."
+            },
+            {
+              "narrate": "Beyond the fog, the wolves stop pacing."
+            }
+          ],
           "recruit": "nessa",
           "combat": "snare-rescue"
         }
@@ -505,7 +879,23 @@
         },
         "autoSuccess": true,
         "result": {
-          "text": "Orin steps into the clearing and hammers his shield. Nessa drops free behind him; the wolves answer his challenge.",
+          "lines": [
+            {
+              "say": "orin",
+              "text": "Cut her down. I'll be the noisy one."
+            },
+            {
+              "narrate": "He walks into the open and hammers his shield three times. Both wolves turn toward the sound."
+            },
+            {
+              "say": "Nessa",
+              "text": "Is he always like this?"
+            },
+            {
+              "say": "maren",
+              "text": "Yes."
+            }
+          ],
           "recruit": "nessa",
           "setFlags": {
             "orinStartsGuarding": true
@@ -531,7 +921,15 @@
           "dc": 11
         },
         "success": {
-          "text": "You tear the anchor loose and pull Nessa clear before the wolves cross the clearing.",
+          "lines": [
+            {
+              "narrate": "You tear the anchor out of the ground and drag Nessa clear before the wolves cross the clearing."
+            },
+            {
+              "say": "Nessa",
+              "text": "That's one way to do it."
+            }
+          ],
           "recruit": "nessa",
           "setFlags": {
             "playerStartsGuarding": true
@@ -539,7 +937,11 @@
           "combat": "snare-rescue"
         },
         "failure": {
-          "text": "The thorn-root holds. Nessa cuts herself free as the pack reaches you, taking a hard fall in the process.",
+          "lines": [
+            {
+              "narrate": "The thorn-root holds. Nessa pulls a knife from her boot, saws through her own snare and drops hard, just as the pack reaches you."
+            }
+          ],
           "recruit": "nessa",
           "companionDamage": {
             "id": "nessa",
@@ -557,7 +959,35 @@
     "location": "Mist Hollow",
     "safeRest": true,
     "objective": "Hear Nessa's report and choose the route to the hidden gate.",
-    "opening": "Nessa binds her ankle and sketches the hollow from memory. She followed Warden Sable to a root-gate below the ridge. He carried a black seal and spoke to something that answered from underground.",
+    "lines": [
+      {
+        "narrate": "Nessa binds her ankle with a strip of her own sleeve and draws the hollow in the mud from memory."
+      },
+      {
+        "say": "Nessa",
+        "text": "I followed Warden Sable. Three nights. There's a root-gate under the ridge, here. He had a black seal and he talked to the ground."
+      },
+      {
+        "say": "Nessa",
+        "text": "And the ground answered."
+      },
+      {
+        "say": "orin",
+        "text": "You followed a warden into the Briarwood alone."
+      },
+      {
+        "say": "Nessa",
+        "text": "Somebody had to. You weren't here."
+      },
+      {
+        "say": "maren",
+        "text": "Who taught you to track like that?"
+      },
+      {
+        "say": "Nessa",
+        "text": "Somebody who isn't here either."
+      }
+    ],
     "onEnter": {
       "clues": [
         "sable-dispute"
@@ -579,7 +1009,16 @@
           "dc": 10
         },
         "success": {
-          "text": "Nessa describes grief rather than hunger in the sound. Maren concludes the spirit is being forced through an altered rite.",
+          "lines": [
+            {
+              "say": "Nessa",
+              "text": "It didn't sound hungry. It sounded like somebody crying who doesn't want you to hear."
+            },
+            {
+              "say": "maren",
+              "text": "Then it isn't a monster. It's a spirit, and someone is forcing it through a rite that was never meant for it."
+            }
+          ],
           "clues": [
             "wraith-bound"
           ],
@@ -589,7 +1028,12 @@
           }
         },
         "failure": {
-          "text": "The memory is too tangled with fear to read cleanly, but Nessa is certain Sable commanded the cultists.",
+          "lines": [
+            {
+              "say": "Nessa",
+              "text": "I don't know. I don't want to think about the sound. I know it was Sable giving the orders, though. I'd know his voice anywhere now."
+            }
+          ],
           "setFlags": {
             "nessaSawSable": true
           }
