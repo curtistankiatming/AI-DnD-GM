@@ -2124,7 +2124,7 @@
     "effects": [
      {
       "do": "heal",
-      "amount": "1d8+mod+{p/6}",
+      "amount": "2d8+mod+{p/2}",
       "on": "target"
      },
      {
@@ -2135,7 +2135,7 @@
       "rounds": 1
      }
     ],
-    "description": "Heal an ally for 1d8 + Wisdom + a sixth of your level and give them +2 AC until your next turn."
+    "description": "Heal an ally or yourself for 2d8 + Wisdom + half your level and give them +2 AC until your next turn."
    },
    "firstJob": [
     {

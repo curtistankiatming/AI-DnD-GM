@@ -70,6 +70,7 @@ function printScene(state, view, after) {
     } else wrap(after);
   } else if (s.lastOutcome?.dialogue?.length) printDialogue(s.lastOutcome.dialogue);
   else wrap(s.lastOutcome?.text || s.opening);
+  if (view.scene.endingSummary?.length) { line(""); line("-- How it ended --"); for (const l of view.scene.endingSummary) wrap(`  ${l}`); }
   line("");
   if (view.combat?.active) return printCombat(view);
   const choices = s.choices || [];
@@ -107,6 +108,7 @@ function printTown(view) {
     for (const s of w.services) line(`  service ${s.id}: ${s.name}, ${s.cost} gold${s.disabled ? " (unavailable)" : ""}  -> do '{"type":"town-service","serviceId":"${s.id}"}'`);
     line(`Travel: ${w.towns.map((t) => t.id + (t.current ? " (here)" : "")).join(", ")}  -> do '{"type":"travel-town","townId":"<id>"}'`);
   }
+  if (w.town && w.activeQuest) line(`${w.pendingBattle ? "Resume the interrupted fight" : `Resume your expedition (${w.activeQuest})`}  -> do '{"type":"resume"}'`);
   line("-- Expedition board --");
   for (const q of w.quests) line(`  ${q.id}: ${q.name}, level ${q.level}, from ${q.townName}${q.canDepart ? `  -> do '{"type":"depart","questId":"${q.id}"}'` : " (not available here yet)"}\n     ${q.brief}`);
   if (!w.quests.length) line("  Nothing posted.");
