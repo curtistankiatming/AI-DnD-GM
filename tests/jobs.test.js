@@ -145,3 +145,16 @@ test('the combat skill bar puts 2nd job skills in their own group', () => {
   assert.equal(groups['job:crushing-blow'], 'abilities');
   assert.equal(M.actionGroup('spec:warlord'), 'abilities', 'Without a job view it falls back to class abilities.');
 });
+
+// Codex cleric review (12 November 2026): the mastery offered the caster as a
+// target, spent its use and gave no ward; its heal was weaker than Sanctuary.
+test('Divine Aegis on yourself wards you, and out-heals Sanctuary on average', () => {
+  const s = battle('cleric', 10), player = s.combat.actors.find(a => a.id === 'player');
+  const offered = E.buildView(s).combat.actions.find(a => a.id === 'job:divine-aegis');
+  assert.ok(offered.targets.some(t => (t.id || t) === 'player'), 'the caster is offered');
+  const r = E.resolveAction(s, { type: 'combat', actionId: 'job:divine-aegis', targetId: 'player' }, () => 0.5);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.ok(r.state.combat.actors.find(a => a.id === 'player').conditions.some(c => c.id === 'guarded'), 'the ward lands on the caster');
+  const avg = f => P.jobFormula(f, 10).replace(/(\d+)d(\d+)/g, (_, n, d) => String(n * (Number(d) + 1) / 2)).split('+').filter(x => x !== 'mod').reduce((a, b) => a + Number(b), 0);
+  assert.ok(avg(JOBS.cleric.mastery.effects[0].amount) > 3.5 + Math.floor(P.accuracyLevel(10) / 2), 'more than Sanctuary at level 10');
+});

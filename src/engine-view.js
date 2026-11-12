@@ -162,6 +162,7 @@ function endingSummary(state) {
   if (flags.spiritFreed) lines.push("Aster Vey was freed from Sable's binding and returned to the ward by choice.");
   else if (flags.ritualWeakened) lines.push("The altered ritual was broken, though the ward-spirit's recovery will take time.");
   else lines.push("The ritual was stopped by force before it could spread beyond Briarwatch.");
+  lines.push(flags.cultDefects ? "Warden Sable, abandoned by his own followers, was taken alive and sent in chains to Highpass to answer for the binding." : "Warden Sable was taken alive when he fell, and sent in chains to Highpass to answer for the binding.");
   if (flags.lysaSpared) lines.push("Lysa survived to testify about the cult.");
   if (flags.tovinFrightened) lines.push("Tovin gave vital information, but remembers the party's coercion.");
   if (findCompanion(state, "nessa")) lines.push("Nessa returned to Briarwatch as a proven member of the party.");

@@ -723,9 +723,9 @@
     "xp": 0,
     "gold": 0,
     "region": "The guild’s echo court",
-    "threat": "A supervised trial of judgment and technique. Failure has no gold penalty and can be retried; your specialization cannot be lost to one bad roll.",
+    "threat": "A supervised trial of judgment and technique. Failure has no gold penalty and can be retried; your class mastery cannot be lost to one bad roll.",
     "faction": "wardens",
-    "brief": "Show how you use your strength when victory and protection compete. Complete this trial to choose your level-10 specialization.",
+    "brief": "Show how you use your strength when victory and protection compete. Complete this trial to earn your class mastery. Your next branch, your second job, is chosen at level 20.",
     "opening": "The trainers create an echo of the road you have traveled. Your companions stand beside you; behind a fragile gate, voices ask whether your next step will leave them behind.",
     "clue": "The trial’s gate responds to commitment, not brute force. A deliberate choice of responsibility can resolve the echo without defeating it.",
     "investigate": {
@@ -781,12 +781,12 @@
     "foe": "oath-echo",
     "foeName": "Echo of the Unchosen Road",
     "enemyTheme": "trial",
-    "after": "You have reached the first threshold. Choose a specialization in the Progression panel; its defining ability will be available immediately. A relief-convoy expedition lets you use it on the road; the practice arena remains available for safe experiments.",
+    "after": "You have reached the first threshold. Your class mastery is learned and ready to use; the Progression panel shows it. Your second job is chosen at level 20. A relief-convoy expedition lets you use it on the road; the practice arena remains available for safe experiments.",
     "decisions": [
       {
         "id": "accept",
         "label": "Complete the trial and choose your path",
-        "text": "The guild records your first advancement trial. No trainer chooses your specialization for you.",
+        "text": "The guild records your first advancement trial. Your class mastery is yours from today.",
         "rep": {
           "wardens": 1
         },
@@ -806,7 +806,7 @@
     "region": "The returning caravan road",
     "threat": "An isolated command engine is holding a relief caravan. Ward Oil can affect its guards; a climbing kit offers access to the emergency channel.",
     "faction": "trade",
-    "brief": "Take your new specialization onto the road. A surviving command engine has mistaken a relief convoy for an invading army; the first free towns need its medicine.",
+    "brief": "Take your new mastery onto the road. A surviving command engine has mistaken a relief convoy for an invading army; the first free towns need its medicine.",
     "opening": "Children have painted the convoy’s crates with the symbols of their towns. Ahead, a gate of pale metal repeats an obsolete evacuation order. The driver has stopped arguing and started counting the sick.",
     "clue": "The engine still accepts the old roadwardens’ responsibility oath. Its own emergency channel can release the gate without restoring the network’s central command.",
     "investigate": {
@@ -863,7 +863,7 @@
     "foe": "last-command",
     "foeName": "The Last Command Engine",
     "enemyTheme": "construct",
-    "after": "The convoy reaches the first settlement before dusk. Your specialization has faced something more demanding than a title ceremony: people depending on the way you choose to act.",
+    "after": "The convoy reaches the first settlement before dusk. Your mastery has faced something more demanding than a title ceremony: people depending on the way you choose to act.",
     "decisions": [
       {
         "id": "keepers",

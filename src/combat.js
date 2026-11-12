@@ -549,7 +549,7 @@ function resolveJobAction(state,actor,def,target,rng,events){
   const f=formula=>P.jobFormula(formula,actor.level).replace(/\bmod\b/g,String(mod)).replace(/\+-/g,'-');
   const st=P.stats(state.player),round=state.combat.round;
   const party=()=>livingActors(state,'party'),enemies=()=>livingActors(state,'enemy');
-  const pick=on=>on==='party'?party():on==='enemies'?enemies():on==='self'?[actor]:target&&target!==actor?[target]:def.target==='self'||def.target==='none'?[actor]:[];
+  const pick=on=>on==='party'?party():on==='enemies'?enemies():on==='self'?[actor]:target?[target]:def.target==='self'||def.target==='none'?[actor]:[];
   const condition=(a,c)=>{if(a.hp>0)addCondition(a,{id:c.id,name:c.name||def.name,sourceId:actor.id,...(c.rounds?{expiresRound:round+c.rounds}:{})});};
   for(const e of def.effects||[]){
     if(e.do==='weapon'){

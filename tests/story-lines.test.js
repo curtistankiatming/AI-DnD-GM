@@ -86,3 +86,19 @@ test('setting out on an expedition shows where the party arrives', () => {
   assert.equal(r.result.outcomeText, STORY_NODES['q-road-start'].opening);
   assert.equal(r.state.story.lastOutcome.text, STORY_NODES['q-road-start'].opening);
 });
+
+test('a choice that starts a fight keeps what it led to ahead of the fight', () => {
+  let s = E.createNewGame({ name: 'Snap', classId: 'fighter' });
+  s.story.nodeId = 'mist-hollow';
+  s = E.resolveAction(s, { type: 'story-choice', choiceId: 'quiet-release' }, () => 0.01).state;
+  assert.ok(s.combat?.active, 'the failed release starts the fight');
+  assert.match(s.story.lastOutcome.dialogue[0].narration, /^The catch gives/);
+  assert.equal(s.story.lastOutcome.dialogue[1].speaker, 'Nessa');
+  assert.match(s.story.lastOutcome.text, /That was the loud way/);
+});
+
+test('the bell ending always says what became of Sable', () => {
+  const s = E.createNewGame({ name: 'End', classId: 'fighter' });
+  s.story.nodeId = 'ending';
+  assert.ok(E.buildView(s).scene.endingSummary.some(l => /Sable/.test(l)));
+});

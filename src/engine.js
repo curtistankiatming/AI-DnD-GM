@@ -532,7 +532,12 @@ function applyOutcome(state, outcome = {}, rng, events) {
     pushLog(state, "GM", outcome.text, "story");
   }
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
-  if (outcome.combat) startCombat(state, outcome.combat, rng, events);
+  if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
+    // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.
+    const fight = state.story.lastOutcome;
+    const dialogue = [...(outcome.dialogue || [{ narration: outcome.text }]), { narration: fight.text }];
+    state.story.lastOutcome = { ...fight, text: dialogueText(dialogue), ...(outcome.dialogue ? { dialogue } : {}) };
+  }
 }
 
 function resolveDynamicFinalCombat(state) {
