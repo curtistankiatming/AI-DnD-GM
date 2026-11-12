@@ -70,10 +70,10 @@ function renderExpansion(){
     if(d?.trial&&!d.trial.questId){const t=d.trial,c=v4Card(`${t.label} — become a ${t.title}`,t.canRequest?`You have reached level ${t.level} as a ${t.from}. ${t.style} Pass this trial to take your ${t.job} job. With the Claude AI game master on, the trial is written for your story; otherwise a written trial is used. The trial is always ${t.tier} and pays half a level of XP.`:t.reason);
       c.dataset.trial=t.kind;const b=createElement('button','btn btn-primary btn-small','Begin your trial');b.type='button';b.id='trialBtn';b.disabled=busy||!t.canRequest;
       b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.trial();});c.appendChild(b);expeditions.appendChild(c);}
-    if(d&&w.bellComplete){const c=v4Card('Ask the GM for a new adventure',d.canCommission?'Claude writes the next expedition from your choices so far. The game sets its level, difficulty and rewards. Optional: type a wish in the message box first, such as “something in the marshes” or “a rival from my past”. Needs the Claude API provider.':d.reason);
+    if(d&&w.bellComplete){const side=Boolean(d.sideQuests),ask=side?'Ask the GM for a side quest':'Ask the GM for a new adventure';const c=v4Card(ask,d.canCommission?side?'While the written story is still running, Claude writes a small side quest tied to your current chapter. It can help you catch up to the chapter\'s level, never past it. Optional: type a wish in the message box first. Needs the Claude API provider.':'Claude writes the next expedition from your choices so far. The game sets its level, difficulty and rewards. Optional: type a wish in the message box first, such as “something in the marshes” or “a rival from my past”. Needs the Claude API provider.':d.reason);
       c.dataset.director='true';
       if(d.arc)c.appendChild(createElement('p','muted',`Story so far: ${d.arc}`));
-      const b=createElement('button','btn btn-primary btn-small','Ask the GM for a new adventure');b.type='button';b.id='directorBtn';b.dataset.disabled=String(!d.canCommission);b.disabled=busy||!d.canCommission;
+      const b=createElement('button','btn btn-primary btn-small',ask);b.type='button';b.id='directorBtn';b.dataset.disabled=String(!d.canCommission);b.disabled=busy||!d.canCommission;
       b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.adventure();});c.appendChild(b);
       for(const q of d.open)if(!q.started)c.appendChild(v4Button(`Dismiss “${q.name}”`,{type:'director-dismiss',questId:q.id}));
       expeditions.appendChild(c);}

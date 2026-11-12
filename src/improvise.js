@@ -6,6 +6,7 @@
 // than a level-appropriate reward or risk.
 const { SKILLS, ABILITIES } = require('./content');
 const P = require('./progression');
+const Book = require('./book');
 
 const DIFFICULTIES = Object.freeze({ trivial: null, easy: 10, moderate: 13, hard: 16, 'very-hard': 19 });
 const REWARDS = Object.freeze(['none', 'insight', 'coin', 'xp', 'inspiration']);
@@ -32,9 +33,10 @@ const PROPOSAL_SCHEMA = Object.freeze({
     success: { type: 'string', description: 'What becomes true if the attempt succeeds. Concrete, local, no new items.' },
     failure: { type: 'string', description: 'What goes wrong if it fails.' },
     reward: { type: 'string', enum: [...REWARDS] },
-    risk: { type: 'string', enum: [...RISKS] }
+    risk: { type: 'string', enum: [...RISKS] },
+    remembered: { type: 'boolean', description: 'True when the people present will remember this, whatever the roll: an insult, a kindness, a scene in public.' }
   },
-  required: ['intent', 'skill', 'ability', 'difficulty', 'success', 'failure', 'reward', 'risk']
+  required: ['intent', 'skill', 'ability', 'difficulty', 'success', 'failure', 'reward', 'risk', 'remembered']
 });
 
 function validate(raw) {
@@ -42,7 +44,7 @@ function validate(raw) {
   const p = {
     intent: clean(raw.intent, TEXT.intent), skill: raw.skill || '', ability: raw.ability || '', difficulty: raw.difficulty,
     success: clean(raw.success, TEXT.outcome), failure: clean(raw.failure, TEXT.outcome),
-    reward: raw.reward || 'none', risk: raw.risk || 'none'
+    reward: raw.reward || 'none', risk: raw.risk || 'none', remembered: raw.remembered === true
   };
   if (p.intent.length < 3) return { ok: false, error: 'Describe what the hero attempts. Nothing was applied.' };
   if (!Object.hasOwn(DIFFICULTIES, p.difficulty)) return { ok: false, error: 'The improvised action had no valid difficulty. Nothing was applied.' };
@@ -69,7 +71,7 @@ function normalize(state) {
   }
   const log = (Array.isArray(raw.log) ? raw.log : []).slice(-MAX_LOG).filter(e => e && typeof e === 'object').map(e => ({
     turn: Math.max(0, Math.floor(Number(e.turn) || 0)), scene: clean(e.scene, 120), intent: clean(e.intent, TEXT.intent),
-    success: Boolean(e.success), text: clean(e.text, TEXT.outcome), reward: REWARDS.includes(e.reward) ? e.reward : 'none'
+    success: Boolean(e.success), text: clean(e.text, TEXT.outcome), reward: REWARDS.includes(e.reward) ? e.reward : 'none', ...(e.remembered === true ? { remembered: true } : {})
   }));
   state.improv = { version: 1, scenes, log };
   return state.improv;
@@ -105,15 +107,19 @@ function bound(state, proposal, sceneId) {
   if (p.reward === 'xp' && !XP_SHARE[p.difficulty]) { p.reward = 'insight'; notes.push('Only moderate or harder attempts earn XP.'); }
   if (p.reward === 'xp' && s.xpGranted) { p.reward = 'insight'; notes.push('This scene has already granted improvised XP.'); }
   if (p.reward === 'xp' && !xpFor(level, p.difficulty)) { p.reward = 'insight'; notes.push('You are at the level cap.'); }
+  if (p.reward === 'xp' && !xpGain(state, p.difficulty)) { p.reward = 'insight'; notes.push('You are at the level this chapter of the story is written for. The story itself levels you from here.'); }
   if (p.reward === 'inspiration' && state.player.inspiration >= 3) { p.reward = 'insight'; notes.push('Inspiration is already full.'); }
   if (!['none', 'insight'].includes(p.reward) && s.rewards >= MAX_REWARDS_PER_SCENE) { p.reward = 'insight'; notes.push('This scene has no more material rewards to give.'); }
   if (p.risk === 'cost' && !state.player.gold) p.risk = 'setback';
   const effects = {
-    reward: { none: 'nothing beyond the story', insight: 'a recorded discovery', coin: `${level}d4 gold`, xp: `${xpFor(level, p.difficulty)} XP`, inspiration: '1 Inspiration' }[p.reward],
+    reward: { none: 'nothing beyond the story', insight: 'a recorded discovery', coin: `${level}d4 gold`, xp: `${xpGain(state, p.difficulty)} XP`, inspiration: '1 Inspiration' }[p.reward],
     risk: { none: 'nothing beyond the story', setback: 'a story setback', harm: `${harmFormula(level)} damage to the hero`, cost: `up to ${level * 3} gold` }[p.risk]
   };
   return { ok: true, proposal: p, dc: DIFFICULTIES[p.difficulty], notes, effects };
 }
+
+// Improvised XP never takes the hero past the written chapter (src/book.js).
+function xpGain(state, difficulty) { return Book.capXp(state, xpFor(state.player.level, difficulty)); }
 
 function harmFormula(level) { return `${Math.max(1, Math.ceil(P.powerLevel(level) / 3))}d6`; }
 
@@ -127,24 +133,26 @@ function apply(state, plan, success, sceneId, rng, events, api) {
   events.push({ type: 'story', tone: success ? 'good' : 'bad', text });
   if (success) {
     if (p.reward === 'coin') { const gold = api.rollFormula(rng, `${level}d4`).total; state.player.gold += gold; events.push({ type: 'item', tone: 'good', text: `Gained ${gold} gold.` }); }
-    if (p.reward === 'xp') { api.awardXp(state, xpFor(level, p.difficulty), events, 'Improvised success'); s.xpGranted = true; }
+    if (p.reward === 'xp') { api.awardXp(state, xpGain(state, p.difficulty), events, 'Improvised success'); s.xpGranted = true; }
     if (p.reward === 'inspiration') { state.player.inspiration = Math.min(3, state.player.inspiration + 1); events.push({ type: 'resource', tone: 'good', text: 'Gained 1 Inspiration.' }); }
     if (!['none', 'insight'].includes(p.reward)) s.rewards += 1;
   } else {
     if (p.risk === 'harm') api.applyDamage(state.player, api.rollFormula(rng, harmFormula(level)).total, events, 'a failed attempt');
     if (p.risk === 'cost') { const lost = Math.min(state.player.gold, level * 3); state.player.gold -= lost; if (lost) events.push({ type: 'item', tone: 'bad', text: `Lost ${lost} gold.` }); }
   }
-  improv.log.push({ turn: state.turnCount, scene: sceneId, intent: p.intent, success, text, reward: success ? p.reward : 'none' });
+  improv.log.push({ turn: state.turnCount, scene: sceneId, intent: p.intent, success, text, reward: success ? p.reward : 'none', ...(p.remembered ? { remembered: true } : {}) });
   improv.log = improv.log.slice(-MAX_LOG);
   return text;
 }
 
-// Successful insights become journal facts so later turns (and Claude) remember them.
+// Successful insights, and anything the people present will remember (an
+// insult, a kindness), become journal facts so later turns (and Claude)
+// remember them.
 function journalFacts(state) {
   const log = Array.isArray(state.improv?.log) ? state.improv.log : [];
-  return log.filter(e => e.success && e.reward === 'insight').slice(-20).map((e, i) => ({
+  return log.filter(e => e.success && e.reward === 'insight' || e.remembered === true).slice(-20).map((e, i) => ({
     id: `improv:${e.turn}:${i}`, title: clean(e.intent, 80), text: clean(e.text, TEXT.outcome),
-    status: 'established', source: 'Improvised action confirmed by a roll'
+    status: 'established', source: e.remembered === true && !(e.success && e.reward === 'insight') ? 'Improvised action the people present will remember' : 'Improvised action confirmed by a roll'
   }));
 }
 
@@ -158,4 +166,4 @@ function summary(state, sceneId) {
   };
 }
 
-module.exports = { PROPOSAL_SCHEMA, DIFFICULTIES, REWARDS, RISKS, MAX_ATTEMPTS_PER_SCENE, MAX_REWARDS_PER_SCENE, validate, normalize, bound, apply, journalFacts, summary, xpFor, harmFormula };
+module.exports = { PROPOSAL_SCHEMA, DIFFICULTIES, REWARDS, RISKS, MAX_ATTEMPTS_PER_SCENE, MAX_REWARDS_PER_SCENE, validate, normalize, bound, apply, journalFacts, summary, xpFor, xpGain, harmFormula };

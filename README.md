@@ -57,14 +57,21 @@ the thinking effort and the wait limit sit under **Advanced settings**. Copying
 
 **The AI game master (Claude).**
 - *Narration:* Claude writes the story scenes and replies in your campaign's voice.
-- *Improvised actions:* type anything sensible ("climb the bell tower to look over
-  the square"). Claude proposes a skill check, difficulty, stakes and reward; the
-  engine caps them, shows you the odds, and rolls only after you confirm.
-- *New adventures:* after the bell chapter, the **What's next?** board lets you
-  leave on an expedition or type a wish and ask the game master for a new
-  adventure (`/adventure` plus a wish works too). Claude continues the story arc
-  from your choices, reputation and journal. The engine sets the level, enemies,
-  XP and gold. Generated adventures are saved and still load without AI.
+- *Improvised actions:* type anything the buttons don't offer ("climb the bell
+  tower to look over the square", or even "spit on the bartender"). Claude
+  proposes a skill check, difficulty, stakes and reward; the engine caps them,
+  shows you the odds, and rolls only after you confirm. People remember what you
+  did to them.
+- *The written story comes first:* while a written chapter exists for your hero,
+  Claude plays along with detours but gently steers back to the book, and never
+  changes its path. See [docs/AI-STORYTELLER.md](docs/AI-STORYTELLER.md).
+- *Side quests, then new adventures:* after the bell chapter, the **What's
+  next?** board lets you ask the game master for a small side quest tied to your
+  chapter (`/adventure` plus a wish works too). Side quests can help you catch up
+  to the chapter's level, never past it. Once the written story is finished,
+  Claude writes full adventures that continue your own story from your choices,
+  reputation and journal. The engine sets the level, enemies, XP and gold.
+  Generated adventures are saved and still load without AI.
 - *Difficulty:* choose Normal, Hard or Heroic before an AI adventure; harder pays
   more XP.
 

@@ -10,6 +10,7 @@ const Road = require("./road-story");
 const Journal = require("./journal");
 const Improvise = require("./improvise");
 const Director = require("./director");
+const Book = require("./book");
 const { dialogueText } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
@@ -260,6 +261,8 @@ function normalizeIncomingState(raw) {
   W.init(state);
   ChatMemory.ensure(state, true);
   Improvise.normalize(state);
+  // A save that already finished the written story stays the hero's own AI story.
+  Book.finished(state);
   // Saves from when level 10 was the cap: XP earned past it becomes levels.
   // Boons chosen then are put away until renown starts again after the cap.
   if (state.player.level === 10 && state.player.xp >= Core.XP_THRESHOLDS[10]) {

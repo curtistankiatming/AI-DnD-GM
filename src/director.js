@@ -14,6 +14,7 @@ const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./co
 const { QUESTS, TOWNS, installQuest } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
+const Book = require('./book');
 
 const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
@@ -102,7 +103,8 @@ const SYSTEM = [
   'Continue the campaign: build on what the party chose, the people they met, their reputation and any open threads in the arc. Change direction when the story invites it; introduce new places, rivals and mysteries. Do not repeat a completed adventure.',
   'The game engine sets every number: level, difficulty, enemy strength, XP, gold and reputation sizes. Do not write numbers, prices, item rewards or level changes in any text. Do not promise items. Name skills only through the skill fields.',
   'Each failure must still move the story forward. Offer a real non-violent resolution and a fight-side objective. Decisions are permanent and should be morally interesting, not good-versus-evil.',
-  'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.'
+  'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
+  'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.'
 ].join('\n');
 
 function normalizeQuest(raw) {
@@ -110,7 +112,7 @@ function normalizeQuest(raw) {
   // unbounded definition. The numbers are recomputed from the level.
   if (!raw || typeof raw !== 'object' || !/^ai-\d{1,4}-[a-z0-9]{7}$/.test(raw.id || '')) return null;
   const level = Math.max(1, Math.min(P.MAX_LEVEL, Math.floor(Number(raw.level) || 1)));
-  const out = bound({ level, power: raw.power, tier: raw.tier, trial: raw.trial, town: raw.town, unlock: 'bell' }, raw, raw.id);
+  const out = bound({ level, power: raw.power, tier: raw.tier, trial: raw.trial, side: raw.side === true, town: raw.town, unlock: 'bell' }, raw, raw.id);
   return out.ok ? finalize({ ...out.quest, createdDay: Math.max(1, Math.floor(Number(raw.createdDay) || 1)), createdLevel: level }) : null;
 }
 
@@ -157,8 +159,9 @@ const openAdventures = state => open(state).filter(q => !q.trial);
 // A quest pays a share of the hero's current level (one renown rank past the
 // final level); the battle inside it pays separately by its rating. Hard and
 // Heroic adventures multiply both. Gold grows with the challenge level.
-function rewards(level, power = level, tierId = 'normal', trial = null) {
+function rewards(level, power = level, tierId = 'normal', trial = null, side = false) {
   const t = XP.tier(tierId);
+  if (side) return { xp: Math.round(XP.share(level, XP.MISSION_SHARE) * t.reward / 10) * 10, gold: Math.round((10 + power * 10) * t.reward) };
   if (trial) return { xp: XP.share(level, XP.TRIAL_SHARE), gold: Math.round((20 + power * 20) * t.reward) };
   return { xp: Math.round(XP.share(level, XP.QUEST_SHARE) * t.reward / 10) * 10, gold: Math.round((20 + power * 20) * t.reward) };
 }
@@ -185,6 +188,8 @@ function bound(state, draft, forcedId = null) {
   const extra = state.player ? P.renownPower(state.player) : Math.floor(Number(state.power) - level) || 0;
   const power = level < P.MAX_LEVEL ? level : level + Math.max(0, Math.min(P.RENOWN_POWER_CAP, extra));
   const trial = Object.hasOwn(TRIALS, state.trial) ? state.trial : null;
+  // A side quest: what the AI may write while a book is still running (src/book.js).
+  const side = !trial && state.side === true;
   const tier = XP.tier(trial ? TRIALS[trial].tier : state.tier);
   const town = TOWNS[state.town] ? state.town : TOWNS[state.world?.townId] ? state.world.townId : 'briarwatch';
   const text = (v, limit, fallback = '') => clean(v, limit) || fallback;
@@ -221,7 +226,7 @@ function bound(state, draft, forcedId = null) {
   }).filter(Boolean);
   if (decisions.length < 2) return fail('The new adventure needs at least two final decisions. Nothing was added.');
   const body = {
-    name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), ...(trial ? { trial } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
+    name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), ...(trial ? { trial } : {}), ...(side ? { side: true } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
     faction: FACTIONS.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
@@ -229,7 +234,7 @@ function bound(state, draft, forcedId = null) {
     foeName: text(draft.foeName, TEXT.name, 'The Opposition'), enemyTheme: THEMES.includes(draft.enemyTheme) ? draft.enemyTheme : 'soldier',
     after: text(draft.after, TEXT.long, 'The dust settles.'),
     nextTown: destination(state, draft.destination || draft.nextTown, town),
-    ...rewards(level, power, tier.id, trial)
+    ...rewards(level, power, tier.id, trial, side)
   };
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
@@ -325,7 +330,8 @@ function commission(state, draft, events) {
   const blocked = availability(state);
   if (blocked) return { ok: false, error: blocked };
   const d = normalize(state);
-  const out = bound(state, draft);
+  const side = Book.running(state);
+  const out = bound({ ...state, side }, draft);
   if (!out.ok) return out;
   const q = finalize({ ...out.quest, createdDay: state.world.day, createdLevel: out.quest.level }, d.count + 1);
   if (quest(state, q.id)) return { ok: false, error: 'That adventure is already on the board.' };
@@ -333,7 +339,11 @@ function commission(state, draft, events) {
   d.quests[q.id] = install(q);
   if (out.arc) d.arc = out.arc;
   prune(state);
-  const text = `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
+  const room = Book.xpRoom(state);
+  const capNote = side && room < q.xp ? ` ${room ? `Only ${room} XP of it counts` : 'It pays no XP'}: you are at the level this chapter of the story is written for, and the story itself levels you from here.` : '';
+  const text = side
+    ? `New side quest on the expedition board: ${q.name} (level ${q.level}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.${capNote}`
+    : `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
   events.push({ type: 'quest', tone: 'good', text });
   return { ok: true, kind: 'director', questId: q.id, outcomeText: text };
 }
@@ -356,7 +366,7 @@ function setTier(state, id, tierId, events) {
   if (q.trial) return { ok: false, error: `A ${TRIALS[q.trial].label.toLowerCase()} is always ${XP.tier(TRIALS[q.trial].tier).name}.` };
   if (!Object.hasOwn(XP.TIERS, tierId)) return { ok: false, error: 'Choose Normal, Hard or Heroic.' };
   if (state.world.activeQuest === id || state.world.progress?.[id]?.node) return { ok: false, error: 'The difficulty is fixed once you set out.' };
-  const out = bound({ level: q.level, power: q.power, tier: tierId, town: q.town }, q, id);
+  const out = bound({ level: q.level, power: q.power, tier: tierId, side: q.side === true, town: q.town }, q, id);
   if (!out.ok) return out;
   const n = finalize({ ...out.quest, createdDay: q.createdDay, createdLevel: q.createdLevel });
   state.director.quests[id] = install(n);
@@ -393,6 +403,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.map(id => TOWNS[id].name),
     reputation: w.reputation,
     completedAdventures: completed.slice(-15),
+    book: Book.facts(state),
     upcomingAuthoredAdventures: Object.values(QUESTS).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
     journal
@@ -414,8 +425,8 @@ function trialView(state) {
 function view(state) {
   const blocked = availability(state);
   return {
-    canCommission: !blocked, reason: blocked, arc: state.director?.arc || '',
-    open: openAdventures(state).map(q => ({ id: q.id, name: q.name, started: Boolean(state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node) })),
+    canCommission: !blocked, reason: blocked, arc: state.director?.arc || '', sideQuests: Book.running(state),
+    open: openAdventures(state).map(q => ({ id: q.id, name: q.name, side: q.side === true, started: Boolean(state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node) })),
     trial: trialView(state),
     generated: list(state).length
   };
