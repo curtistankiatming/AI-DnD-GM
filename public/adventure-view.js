@@ -10,7 +10,7 @@
   question:{id:'question',label:'Ask',readOnly:true,placeholder:'Ask the game master a question',help:'Ask: a question about the world or the rules. Asking never changes the game.'}
  };
  const SECTIONS=['adventure','party','journal','prepare','settings'];
- const FILTERS={all:null,leads:['leads'],evidence:['facts','rumors'],promises:['promises'],people:['relationships'],notes:['notes'],completed:['completed']};
+ const FILTERS={all:null,leads:['leads'],evidence:['facts','rumors'],promises:['promises'],people:['relationships'],notes:['notes'],completed:['completed','chronicle']};
  function mode(id){return {...(Object.hasOwn(MODES,id)?MODES[id]:MODES.action)};}
  function section(id){return SECTIONS.includes(id)?id:id==='inventory'?'party':id==='saves'?'settings':'adventure';}
  function nextIndex(key,i,n){return key==='Home'?0:key==='End'?n-1:key==='ArrowRight'?(i+1)%n:key==='ArrowLeft'?(i+n-1)%n:null;}

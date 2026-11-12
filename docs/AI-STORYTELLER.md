@@ -2,7 +2,7 @@
 
 Approved by Curtis on 12 November 2026. The master copy is the Claude Doc
 "What the AI storyteller can do"; this file is the copy for people working in
-the repository. Step 1 (below) is built in `src/book.js`.
+the repository. Step 1 is built in `src/book.js`, step 2 in `src/chronicle.js`.
 
 ## Two modes
 
@@ -57,13 +57,26 @@ scene instead of taking a written choice, and climbs a ladder:
 
 Taking one of the written choices resets the count. Questions don't count.
 
-## Beyond the books (step 3, not built yet)
+## Beyond the books
 
-The AI writes full adventures in multi-chapter arcs, starting from where the
-books left the world. It keeps a **chronicle** in the save (each chapter's
-telling and choice, the cast it invented, places and open threads), reads it
-before writing each chapter, and never prunes it (old chapters are condensed).
-Players read it in the Journal; exporting it as a book comes later.
+The AI writes full adventures (step 3 will grow these into multi-chapter arcs),
+starting from where the books left the world.
+
+**The chronicle** (step 2, built). Every AI adventure the hero finishes,
+including side quests and job trials, becomes a chapter in the save: what it
+was about, how it ended, and the choice the player made. The AI also names the
+people (with status and attitude toward the hero), places and loose ends in
+each adventure, and which open threads it resolves. Returning people are
+matched by name and updated.
+
+- The AI reads the chronicle before writing the next adventure: the condensed
+  past, the last 8 chapters, the people, places and open threads.
+- The Journal shows "Your story so far" (chapters), the people met (under
+  Relationships) and open threads (under Leads). It works offline.
+- Chapters are never thrown away: past 30, the oldest become one line each in
+  an "earlier chapters" summary. Saves from before the chronicle are rebuilt
+  from the AI adventures they still hold.
+- Exporting the chronicle as a book comes later.
 
 ## Rules in both modes
 
@@ -76,5 +89,5 @@ Players read it in the Journal; exporting it as a book comes later.
 
 1. **On-book rules** (done): side quests while a book runs, the chapter level
    cap, steering, unusual actions remembered.
-2. **Chronicle**: the hero's own story recorded in the save and the Journal.
+2. **Chronicle** (done): the hero's own story recorded in the save and the Journal.
 3. **Chapter writer**: full adventures in arcs beyond the books.

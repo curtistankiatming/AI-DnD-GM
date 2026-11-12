@@ -11,6 +11,7 @@ const Journal = require("./journal");
 const Improvise = require("./improvise");
 const Director = require("./director");
 const Book = require("./book");
+const Chronicle = require("./chronicle");
 const { dialogueText } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
@@ -131,6 +132,7 @@ function createNewGame(setup = {}) {
   ChatMemory.ensure(state, true);
   Improvise.normalize(state);
   Director.normalize(state);
+  Chronicle.normalize(state);
   const events = [];
   enterNode(state, CAMPAIGN.startNode, events);
   pushLog(state, "GM", STORY_NODES[CAMPAIGN.startNode].opening, "story");
@@ -263,6 +265,8 @@ function normalizeIncomingState(raw) {
   Improvise.normalize(state);
   // A save that already finished the written story stays the hero's own AI story.
   Book.finished(state);
+  // The hero's own story; saves from before it are rebuilt from their stored AI adventures.
+  Chronicle.normalize(state, Director.list(state));
   // Saves from when level 10 was the cap: XP earned past it becomes levels.
   // Boons chosen then are put away until renown starts again after the cap.
   if (state.player.level === 10 && state.player.xp >= Core.XP_THRESHOLDS[10]) {
@@ -505,6 +509,8 @@ function applyOutcome(state, outcome = {}, rng, events) {
   if (outcome.completeQuest) W.completeQuest(state, outcome.completeQuest, events, extensionApi());
   if (outcome.reputation) W.reputation(state, outcome.reputation);
   if (outcome.setFlags) Object.assign(state.story.flags, outcome.setFlags);
+  // A finished AI adventure becomes a chapter once its final decision is recorded.
+  if (outcome.completeQuest) Chronicle.record(state, Director.quest(state, outcome.completeQuest));
   if (outcome.clues) for (const clueId of outcome.clues) addClue(state, clueId, events);
   if (outcome.items) for (const entry of outcome.items) addItem(state, entry.itemId, entry.quantity, events);
   if (outcome.approval) applyApproval(state, outcome.approval, events);

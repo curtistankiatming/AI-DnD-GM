@@ -13,6 +13,11 @@
   quests, chat steers detours back to the book, and AI-given XP (improvised,
   side quest and its battle) is capped at the chapter's level. A save that
   finished the books (flag `books:finished`) stays an AI story for good.
+- The chronicle (`src/chronicle.js`, `state.chronicle`) records each finished
+  AI adventure as a chapter (choice, cast, places, threads) once its final
+  decision flag is set (`applyOutcome` in `src/engine.js`). It is story text
+  only, bounded and re-cleaned on load, condensed past 30 chapters, and read by
+  the director prompt and the Journal.
 - Claude-authored content (improvised actions in `src/improvise.js`, generated
   adventures in `src/director.js`) supplies story and choices only. Every number
   (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved
