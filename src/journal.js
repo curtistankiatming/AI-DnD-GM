@@ -7,6 +7,7 @@ const {PERSONAL}=require('./expansion');
 const RoadState=require('./road-state');
 const Improvise=require('./improvise');
 const Director=require('./director');
+const Chronicle=require('./chronicle');
 const MAX_NOTES=12,MAX_NOTE_LENGTH=400;
 const safeText=(value,limit)=>typeof value==='string'?value.slice(0,limit):'';
 function normalizeNotes(raw){
@@ -22,7 +23,7 @@ function normalizeNotes(raw){
   return out;
 }
 function sync(state){
-  const j={version:1,facts:[],rumors:[],promises:[],relationships:[],leads:[],completed:[],notes:normalizeNotes(state.journal?.notes)};
+  const j={version:1,chronicle:[],facts:[],rumors:[],promises:[],relationships:[],leads:[],completed:[],notes:normalizeNotes(state.journal?.notes)};
   const node=STORY_NODES[state.story?.nodeId];
   j.current={scene:node?.title||'Current adventure',objective:node?.objective||'Consult the available approaches.',combat:Boolean(state.combat?.active)};
   for(const id of [...new Set(state.story?.clues||[])]){
@@ -84,6 +85,9 @@ function sync(state){
   const activeDef=Director.quest(state,active);
   if(activeDef&&!state.world?.completed?.[active])j.leads.push({id:'quest:'+active,title:activeDef.name,status:state.world.onExpedition?'active':'paused',text:activeDef.brief});
   for(const q of Director.open(state))if(q.id!==active)j.leads.push({id:'quest:'+q.id,title:q.name,status:'offered',text:q.brief,source:'Expedition board (AI-directed)'});
+  // The hero's own story (src/chronicle.js): chapters, the people met and open threads.
+  const story=Chronicle.journal(state);
+  j.chronicle.push(...story.chronicle);j.relationships.push(...story.relationships);j.leads.push(...story.leads);
   state.journal=j;return j;
 }
 function addNote(state,value){
@@ -119,7 +123,7 @@ function answer(state,input){
   return entries.length?entries.map(x=>`${x.title} [${x.status}${x.value!==undefined?', '+x.value:''}]: ${x.text}`).join('\n'):'No confirmed record or heard report about that has been discovered. The journal does not invent an answer.';
 }
 function forPrompt(state,maxChars=1200){
-  const j=sync(state),groups=['promises','rumors','leads','relationships','facts','completed'];
+  const j=sync(state),groups=['promises','rumors','leads','relationships','facts','completed','chronicle'];
   const candidates=groups.flatMap(group=>j[group].map(e=>({kind:group,id:e.id,status:e.status,text:e.text,...(e.value!==undefined?{value:e.value}:{})})));
   const selected=[];const out={authority:'Confirmed engine records. Rumors retain their status; omitted records are not absent. Player notes are excluded.',records:selected,omittedRecords:candidates.length};
   for(const candidate of candidates){selected.push(candidate);out.omittedRecords=candidates.length-selected.length;if(JSON.stringify(out).length>maxChars){selected.pop();out.omittedRecords=candidates.length-selected.length;}}

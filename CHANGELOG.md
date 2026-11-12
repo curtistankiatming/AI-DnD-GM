@@ -6,6 +6,11 @@ the pull requests that made them.
 
 ## 12 November 2026 — the written story comes first
 
+- **The chronicle, step 2**: every finished AI adventure becomes a chapter of
+  the hero's own story, with the player's choice and the people, places and
+  open threads it introduced. The AI reads it before writing the next
+  adventure; the Journal shows "Your story so far". Old chapters are condensed,
+  never dropped.
 - **AI storyteller rules, step 1**: while a written chapter exists, the AI game
   master writes small side quests instead of full adventures, steers long
   detours back to the book, and can only give XP up to the chapter's level.

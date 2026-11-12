@@ -88,7 +88,7 @@
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
     const j=view.journal||{};clear(journalRecords);
     if(j.current)journalRecords.append(createElement('p','',`Current: ${j.current.scene}. ${j.current.objective}`));
-    const headings={leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes'};
+    const headings={...((j.chronicle||[]).length?{chronicle:'Your story so far'}:{}),leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes'};
     let total=0;
     for(const [group,title]of Object.entries(headings)){
       const entries=j[group]||[];total+=entries.length;

@@ -15,6 +15,7 @@ const { QUESTS, TOWNS, installQuest } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
 const Book = require('./book');
+const Chronicle = require('./chronicle');
 
 const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
@@ -93,9 +94,26 @@ const SCHEMA = Object.freeze({
       }
     },
     destination: { type: 'string', enum: Object.keys(TOWNS), description: 'The town the party returns to afterwards.' },
-    arc: { type: 'string', description: 'The updated running throughline of the whole campaign after this adventure is offered: open threads, recurring people, where the story is heading. Under 120 words.' }
+    arc: { type: 'string', description: 'The updated running throughline of the whole campaign after this adventure is offered: open threads, recurring people, where the story is heading. Under 120 words.' },
+    cast: {
+      type: 'array', description: 'Up to five named people in this adventure, new or returning from the chronicle (same spelling), with who they are now.',
+      items: {
+        type: 'object', additionalProperties: false,
+        properties: {
+          name: { type: 'string' }, role: { type: 'string', description: 'Who they are, in a short phrase.' }, wants: { type: 'string' },
+          status: { type: 'string', enum: [...Chronicle.STATUS] }, attitude: { type: 'string', enum: [...Chronicle.ATTITUDE], description: 'Toward the hero.' }
+        },
+        required: ['name', 'role', 'wants', 'status', 'attitude']
+      }
+    },
+    places: {
+      type: 'array', description: 'Up to three named places in this adventure, new or returning.',
+      items: { type: 'object', additionalProperties: false, properties: { name: { type: 'string' }, note: { type: 'string', description: 'One short line.' } }, required: ['name', 'note'] }
+    },
+    threadsOpened: { type: 'array', items: { type: 'string' }, description: 'Up to three loose ends this adventure leaves for later, one sentence each.' },
+    threadsClosed: { type: 'array', items: { type: 'string' }, description: 'Open threads from chronicle.openThreads that this adventure resolves, copied exactly. Usually empty.' }
   },
-  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc']
+  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed']
 });
 
 const SYSTEM = [
@@ -104,7 +122,8 @@ const SYSTEM = [
   'The game engine sets every number: level, difficulty, enemy strength, XP, gold and reputation sizes. Do not write numbers, prices, item rewards or level changes in any text. Do not promise items. Name skills only through the skill fields.',
   'Each failure must still move the story forward. Offer a real non-violent resolution and a fight-side objective. Decisions are permanent and should be morally interesting, not good-versus-evil.',
   'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
-  'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.'
+  'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
+  'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.'
 ].join('\n');
 
 function normalizeQuest(raw) {
@@ -236,6 +255,13 @@ function bound(state, draft, forcedId = null) {
     nextTown: destination(state, draft.destination || draft.nextTown, town),
     ...rewards(level, power, tier.id, trial, side)
   };
+  // Story memory for the chronicle (src/chronicle.js): text only, bounded.
+  const list = (v, n) => (Array.isArray(v) ? v : []).slice(0, n);
+  const cast = list(draft.cast, 5).map(c => ({ name: text(c?.name, TEXT.name), role: text(c?.role, TEXT.short), wants: text(c?.wants, TEXT.short), status: Chronicle.STATUS.includes(c?.status) ? c.status : 'alive', attitude: Chronicle.ATTITUDE.includes(c?.attitude) ? c.attitude : 'neutral' })).filter(c => c.name.length >= 2);
+  const places = list(draft.places, 3).map(p => ({ name: text(p?.name, TEXT.name), note: text(p?.note, TEXT.short) })).filter(p => p.name.length >= 2);
+  const opened = list(draft.threadsOpened ?? draft.threads?.opened, 3).map(t => text(t, TEXT.short)).filter(t => t.length >= 3);
+  const closed = list(draft.threadsClosed ?? draft.threads?.closed, 5).map(t => text(t, TEXT.short)).filter(t => t.length >= 3);
+  Object.assign(body, cast.length ? { cast } : {}, places.length ? { places } : {}, opened.length || closed.length ? { threads: { opened, closed } } : {});
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
   const q = { ...body, id, hash: digest, generated: true, decisions };
@@ -404,6 +430,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     reputation: w.reputation,
     completedAdventures: completed.slice(-15),
     book: Book.facts(state),
+    chronicle: Chronicle.forPrompt(state),
     upcomingAuthoredAdventures: Object.values(QUESTS).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
     journal

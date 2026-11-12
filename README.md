@@ -72,6 +72,9 @@ the thinking effort and the wait limit sit under **Advanced settings**. Copying
   Claude writes full adventures that continue your own story from your choices,
   reputation and journal. The engine sets the level, enemies, XP and gold.
   Generated adventures are saved and still load without AI.
+- *Your story so far:* every AI adventure you finish becomes a chapter in the
+  Journal, with your choice and the people and loose ends it left. The game
+  master reads it before writing the next one, so the story stays consistent.
 - *Difficulty:* choose Normal, Hard or Heroic before an AI adventure; harder pays
   more XP.
 
