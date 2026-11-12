@@ -6,6 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "play": "node scripts/play.js",
     "test": "node scripts/verify.js test",
     "playtest": "node tests/campaign-playtest.js",
     "fuzz": "node tests/fuzz.js",
