@@ -43,3 +43,8 @@
   controlled fixtures and simulations. Fixtures must not be called natural play.
 - Do not overwrite historical reports with new claims. New reports must identify
   the tested source, runtime, commands, counts and limitations.
+- Playing and reviewing the written story (Codex, Claude or a person): follow
+  `docs/AGENT-PLAYTEST.md`. Play with `node scripts/play.js` (no AI, no server),
+  judge the writing against `docs/STORY-BIBLE.md`, and write the report to
+  `docs/reviews/`. A playtest review never needs an API key and never changes
+  game code or story data unless asked.
