@@ -52,3 +52,37 @@ test("Dera's forge is a once-only talk that pays no XP and returns to a short re
   assert.ok(s.story.flags.blackLanternKnown);
   assert.equal(E.resolveAction(s, { type: 'story-choice', choiceId: 'visit-dera' }, rng).result.ok, false, 'the forge visit happens once');
 });
+
+// Fixes from the Codex reviews of 12 November 2026 (docs/reviews/).
+test('Nessa brings her own kit when rescued in the hollow, as she does from the guild', () => {
+  let s = E.createNewGame({ name: 'Kit', classId: 'fighter' });
+  s.story.nodeId = 'mist-hollow';
+  s = choose(s, 'quiet-release');
+  const nessa = s.party.find((m) => m.id === 'nessa');
+  assert.equal(nessa.equipment.mainHand, 'shortbow');
+  assert.equal(nessa.equipment.armor, 'studded-leather');
+  const loaded = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+  assert.equal(loaded.party.find((m) => m.id === 'nessa').equipment.mainHand, 'shortbow', 'and keeps it after loading');
+});
+
+test('Lysa leaves once: mercy and threats are alternatives', () => {
+  let s = E.createNewGame({ name: 'Lysa', classId: 'fighter' });
+  s.story.nodeId = 'ambush-aftermath';
+  s = choose(s, 'offer-mercy');
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'threaten-lookout' }, rng);
+  assert.equal(r.result.ok, false);
+  const shown = E.buildView(s).scene.choices.find((c) => c.id === 'threaten-lookout');
+  assert.equal(shown, undefined, 'threats are no longer offered');
+});
+
+test('setting out on an expedition shows where the party arrives', () => {
+  const W = require('../src/world');
+  let s = E.createNewGame({ name: 'Road', classId: 'fighter' });
+  s.world.completed.bell = { xp: 0, gold: 0 }; s.story.nodeId = 'town-briarwatch'; W.init(s);
+  E.awardXp(s, 400, [], 'diagnostic fixture only');
+  const r = E.resolveAction(s, { type: 'depart', questId: 'road' }, rng);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.equal(r.state.story.nodeId, 'q-road-start');
+  assert.equal(r.result.outcomeText, STORY_NODES['q-road-start'].opening);
+  assert.equal(r.state.story.lastOutcome.text, STORY_NODES['q-road-start'].opening);
+});

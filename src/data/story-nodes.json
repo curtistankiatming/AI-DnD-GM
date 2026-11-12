@@ -5,7 +5,7 @@
     "title": "The Silent Bell",
     "location": "Briarwatch Village Square",
     "safeRest": true,
-    "objective": "Learn why the ward-bell fell silent, then follow the missing bell-keeper into the Briarwood.",
+    "objective": "Learn why the ward-bell fell silent, then follow Tovin's trail into the Briarwood.",
     "lines": [
       {
         "narrate": "Rain beads on a bell rope cut cleanly at shoulder height. Above the square, Briarwatch's ward-bell hangs mute for the first time in living memory. Without it, nothing rings back the Gloam: the cold mist from the old places that takes the warmth out of a house, and then the names out of the people in it."
@@ -1114,7 +1114,8 @@
           ],
           "setFlags": {
             "lysaSpared": true,
-            "safeGateSign": true
+            "safeGateSign": true,
+            "lysaGone": true
           },
           "approval": {
             "maren": 2,
@@ -1122,14 +1123,21 @@
           }
         },
         "failure": {
-          "text": "Lysa refuses names but accepts treatment. Before leaving, she warns that the bell ‘remembers who betrayed it.’",
+          "text": "Lysa refuses to give names, but she lets Maren treat her. Before she limps into the fern she looks back once: ‘The bell remembers who betrayed it.’",
           "setFlags": {
-            "lysaSpared": true
+            "lysaSpared": true,
+            "lysaGone": true
           },
           "approval": {
             "maren": 1
           }
-        }
+        },
+        "requires": {
+          "flagsNone": [
+            "lysaGone"
+          ]
+        },
+        "lockedText": "Lysa has already gone."
       },
       {
         "id": "threaten-lookout",
@@ -1149,22 +1157,30 @@
           "text": "Lysa gives the route and Sable's hand-sign, then crawls away when released.",
           "setFlags": {
             "rootGateKnown": true,
-            "sableHandSign": true
+            "sableHandSign": true,
+            "lysaGone": true
           },
           "approval": {
             "maren": -1
           }
         },
         "failure": {
-          "text": "She calls your bluff. Orin takes the map from the fallen satchel and ends the exchange.",
+          "text": "She calls your bluff and spits in the fern. Orin takes the map from the fallen satchel, and Lysa is gone into the trees before anyone thinks to stop her.",
           "setFlags": {
-            "rootGateKnown": true
+            "rootGateKnown": true,
+            "lysaGone": true
           },
           "approval": {
             "orin": -1,
             "maren": -1
           }
-        }
+        },
+        "requires": {
+          "flagsNone": [
+            "lysaGone"
+          ]
+        },
+        "lockedText": "Lysa has already gone."
       },
       {
         "id": "follow-map",
@@ -1203,7 +1219,7 @@
         },
         "autoSuccess": true,
         "result": {
-          "text": "The rope holds. One by one the party crosses while Orin anchors the line and Nessa watches the dark shaft.",
+          "text": "The rope holds. One by one the party crosses while Orin anchors the line and you watch the dark shaft.",
           "setFlags": {
             "crossedDry": true
           },

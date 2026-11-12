@@ -285,7 +285,10 @@ function addClue(state, clueId, events = []) {
 
 function recruitCompanion(state, id, events = []) {
   if (!COMPANIONS[id] || findCompanion(state, id)) return false;
-  state.party.push(createCompanion(id));
+  const member = createCompanion(id);
+  state.party.push(member);
+  // Every way in brings the companion's own kit, at the party's level.
+  if (state.world) { G.initCompanion(state, member); P.levelCompanion(member, state.player.level); }
   events.push({ type: "party", tone: "good", text: `${COMPANIONS[id].name} joined the party.` });
   pushLog(state, "Party", `${COMPANIONS[id].name} joined the party.`, "party");
   return true;
@@ -354,6 +357,9 @@ function requirementStatus(state, requires = {}) {
   }
   if (requires.flagsAll && !requires.flagsAll.every((flag) => Boolean(flags[flag]))) {
     return { met: false, reason: "Required prior consequence has not been established." };
+  }
+  if (requires.flagsNone && requires.flagsNone.some((flag) => Boolean(flags[flag]))) {
+    return { met: false, reason: "An earlier decision closed this off." };
   }
   if (requires.flagsAny && !requires.flagsAny.some((flag) => Boolean(flags[flag]))) {
     return { met: false, reason: "Requires information or access from an earlier decision." };

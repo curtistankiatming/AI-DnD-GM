@@ -45,6 +45,8 @@ function price(state,id,kind='town'){
   return Math.max(1,Math.ceil(value*(m?.merchant?1.12:1)*(1-discount)));
 }
 function sellPrice(id){return Math.max(1,Math.floor((ITEMS[id]?.value||0)*0.3));}
+// Setting out shows where the party arrives (the node's opening), not a rules note.
+function arrive(state,events,note){events.push({type:'world',tone:'neutral',text:note});return {ok:true,kind:'story',outcomeText:state.story.lastOutcome?.text||note};}
 function emit(events,text,type='world',tone='neutral'){events.push({type,tone,text});return {ok:true,kind:type,outcomeText:text};}
 function fail(events,text){events.push({type:'warning',tone:'warning',text});return {ok:false,error:text};}
 function charge(state,gold,events){if(!Number.isInteger(gold)||gold<0||state.player.gold<gold){fail(events,'Not enough gold. No items or resources were changed.');return false;}state.player.gold-=gold;return true;}
@@ -130,7 +132,7 @@ function depart(state,id,rng,events,api){
   if(id==='bell'){
     if(completed(state,'bell'))return fail(events,'The bell chapter is already complete.');
     state.world.onExpedition=true;state.world.activeQuest='bell';
-    api.enterNode(state,state.world.resumeNode||'briarwatch-square',events);return emit(events,'Return to the bell investigation. Your earlier discoveries and decisions remain.');
+    api.enterNode(state,state.world.resumeNode||'briarwatch-square',events);return arrive(state,events,'You return to the bell investigation.');
   }
   const q=Director.quest(state,id);
   if(!q||!unlocked(state,q)||completed(state,id))return fail(events,'That expedition is not currently available. Complete the prior contract and meet its level requirement.');
@@ -145,7 +147,7 @@ function depart(state,id,rng,events,api){
     state.world.meetings[id]={merchantId,stock,bargained:false,discount:0,bartered:false};
   }
   api.enterNode(state,state.world.progress[id].node||`q-${id}-start`,events);
-  return emit(events,`The party departs for ${q.name}. Returning to town will preserve resolved checks, merchant stock and consequences.`);
+  return arrive(state,events,`The party sets out for ${q.name}.`);
 }
 function handle(state,action,rng,events,api){
   if(!TOWN_ACTIONS.has(action.type))return null;
