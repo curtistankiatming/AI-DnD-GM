@@ -220,7 +220,7 @@ function journal(state) {
   const out = { chronicle: [], relationships: [], leads: [] };
   if (!c) return out;
   if (c.earlier) out.chronicle.push({ id: 'chronicle:earlier', title: 'Earlier chapters', status: 'condensed', text: c.earlier });
-  for (const a of c.arcs || []) out.chronicle.push({ id: `arc-done:${a.n}`, title: `Story arc ${a.n}: ${a.title}`, status: 'arc complete', text: [a.premise, a.ending ? `How it ended: ${a.ending}.` : ''].filter(Boolean).join(' '), source: a.chapters.length ? `Chapters ${a.chapters[0]} to ${a.chapters.at(-1)}` : '' });
+  for (const a of c.arcs || []) out.chronicle.push({ id: `arc-done:${a.n}`, title: `Story arc ${a.n}: ${a.title}`, status: 'arc complete', text: [a.premise, a.ending ? `How it ended: ${/[.!?]$/.test(a.ending) ? a.ending : a.ending + '.'}` : ''].filter(Boolean).join(' '), source: a.chapters.length ? `Chapters ${a.chapters[0]} to ${a.chapters.at(-1)}` : '' });
   for (const ch of c.chapters) {
     const parts = [ch.brief, ch.outcome ? `It was ${ch.outcome}.` : '', ch.choice ? `You chose: ${ch.choice}. ${ch.consequence}` : ''].filter(Boolean);
     out.chronicle.push({ id: `chronicle:${ch.n}`, title: `Chapter ${ch.n}: ${ch.title}`, status: ch.kind, text: parts.join(' '), source: `${ch.arc ? `${ch.arc}, part ${ch.part} of ${ch.parts}. ` : ''}Day ${ch.day}, level ${ch.level}${ch.region ? `, ${ch.region}` : ''}` });

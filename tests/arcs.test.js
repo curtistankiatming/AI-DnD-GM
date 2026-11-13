@@ -97,6 +97,7 @@ test('the Journal shows the arc in progress and each finished arc',()=>{
   const done=j.chronicle.find(c=>c.id==='arc-done:1');
   assert.equal(done.title,'Story arc 1: The Drowned Debt');assert.equal(done.status,'arc complete');
   assert.match(done.text,/How it ended/);
+  assert.doesNotMatch(done.text,/\.\.$/,'An ending that already ends a sentence gets no second full stop.');
   assert.equal(j.leads.some(l=>/^Story arc:/.test(l.title)),false);
 });
 
