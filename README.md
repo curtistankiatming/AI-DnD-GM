@@ -75,6 +75,9 @@ the thinking effort and the wait limit sit under **Advanced settings**. Copying
 - *Your story so far:* every AI adventure you finish becomes a chapter in the
   Journal, with your choice and the people and loose ends it left. The game
   master reads it before writing the next one, so the story stays consistent.
+- *Story arcs:* after the written story, the game master's adventures come in
+  four-chapter arcs (an opening, rising stakes, a turn and a finale), so your
+  own story builds like a book rather than a list of errands.
 - *Difficulty:* choose Normal, Hard or Heroic before an AI adventure; harder pays
   more XP.
 
