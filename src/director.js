@@ -111,9 +111,18 @@ const SCHEMA = Object.freeze({
       items: { type: 'object', additionalProperties: false, properties: { name: { type: 'string' }, note: { type: 'string', description: 'One short line.' } }, required: ['name', 'note'] }
     },
     threadsOpened: { type: 'array', items: { type: 'string' }, description: 'Up to three loose ends this adventure leaves for later, one sentence each.' },
-    threadsClosed: { type: 'array', items: { type: 'string' }, description: 'Open threads from chronicle.openThreads that this adventure resolves, copied exactly. Usually empty.' }
+    threadsClosed: { type: 'array', items: { type: 'string' }, description: 'Open threads from chronicle.openThreads that this adventure resolves, copied exactly. Usually empty.' },
+    storyArc: {
+      type: 'object', additionalProperties: false, description: 'This adventure\'s place in the story arc described by storyArc in the request. Leave title and premise empty for a side quest or trial.',
+      properties: {
+        title: { type: 'string', description: 'The arc\'s title. Only used when storyArc.status is new; otherwise repeat the given title.' },
+        premise: { type: 'string', description: 'The big question the arc answers, one sentence. Only used when storyArc.status is new.' },
+        nextHook: { type: 'string', description: 'One sentence that leads into the next chapter of the arc. Empty for a finale.' }
+      },
+      required: ['title', 'premise', 'nextHook']
+    }
   },
-  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed']
+  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed', 'storyArc']
 });
 
 const SYSTEM = [
@@ -123,7 +132,8 @@ const SYSTEM = [
   'Each failure must still move the story forward. Offer a real non-violent resolution and a fight-side objective. Decisions are permanent and should be morally interesting, not good-versus-evil.',
   'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
   'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
-  'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.'
+  'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.',
+  'Beyond the books, every adventure is one chapter of a story arc (storyArc in the request). The game sets which chapter and beat it is; follow storyArc.guidance for that beat, continue from storyArc.lastHook and the earlier chapters of the arc, and fill the storyArc field. Each chapter is still a complete adventure with its own crisis and decisions.'
 ].join('\n');
 
 function normalizeQuest(raw) {
@@ -262,6 +272,9 @@ function bound(state, draft, forcedId = null) {
   const opened = list(draft.threadsOpened ?? draft.threads?.opened, 3).map(t => text(t, TEXT.short)).filter(t => t.length >= 3);
   const closed = list(draft.threadsClosed ?? draft.threads?.closed, 5).map(t => text(t, TEXT.short)).filter(t => t.length >= 3);
   Object.assign(body, cast.length ? { cast } : {}, places.length ? { places } : {}, opened.length || closed.length ? { threads: { opened, closed } } : {});
+  // The engine's arc tag (set at commission) or the stored one, re-checked.
+  const storyArc = !side && !trial ? Chronicle.arcTag(state.arcTag || draft.storyArc) : null;
+  if (storyArc) body.storyArc = storyArc;
   const digest = hash(JSON.stringify(body) + JSON.stringify(decisions));
   const id = forcedId || null;
   const q = { ...body, id, hash: digest, generated: true, decisions };
@@ -357,7 +370,11 @@ function commission(state, draft, events) {
   if (blocked) return { ok: false, error: blocked };
   const d = normalize(state);
   const side = Book.running(state);
-  const out = bound({ ...state, side }, draft);
+  // Validate first, so a bad draft never opens or renames an arc.
+  const check = bound({ ...state, side }, draft);
+  if (!check.ok) return check;
+  const arcTag = side ? null : Chronicle.arcSlot(state, draft.storyArc);
+  const out = bound({ ...state, side, arcTag }, draft);
   if (!out.ok) return out;
   const q = finalize({ ...out.quest, createdDay: state.world.day, createdLevel: out.quest.level }, d.count + 1);
   if (quest(state, q.id)) return { ok: false, error: 'That adventure is already on the board.' };
@@ -369,7 +386,7 @@ function commission(state, draft, events) {
   const capNote = side && room < q.xp ? ` ${room ? `Only ${room} XP of it counts` : 'It pays no XP'}: you are at the level this chapter of the story is written for, and the story itself levels you from here.` : '';
   const text = side
     ? `New side quest on the expedition board: ${q.name} (level ${q.level}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.${capNote}`
-    : `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
+    : `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}).${q.storyArc ? ` Story arc: ${q.storyArc.title}, part ${q.storyArc.chapter} of ${q.storyArc.of}.` : ''} ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;
   events.push({ type: 'quest', tone: 'good', text });
   return { ok: true, kind: 'director', questId: q.id, outcomeText: text };
 }
@@ -431,6 +448,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     completedAdventures: completed.slice(-15),
     book: Book.facts(state),
     chronicle: Chronicle.forPrompt(state),
+    ...(!trial && !Book.running(state) ? { storyArc: Chronicle.arcBrief(state) } : {}),
     upcomingAuthoredAdventures: Object.values(QUESTS).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
     journal

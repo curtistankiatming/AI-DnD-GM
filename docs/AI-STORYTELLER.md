@@ -2,7 +2,8 @@
 
 Approved by Curtis on 12 November 2026. The master copy is the Claude Doc
 "What the AI storyteller can do"; this file is the copy for people working in
-the repository. Step 1 is built in `src/book.js`, step 2 in `src/chronicle.js`.
+the repository. Step 1 is built in `src/book.js`; steps 2 and 3 in
+`src/chronicle.js`.
 
 ## Two modes
 
@@ -59,8 +60,24 @@ Taking one of the written choices resets the count. Questions don't count.
 
 ## Beyond the books
 
-The AI writes full adventures (step 3 will grow these into multi-chapter arcs),
-starting from where the books left the world.
+The AI writes full adventures, starting from where the books left the world.
+
+**Story arcs** (step 3, built). Every AI adventure beyond the books is one
+chapter of a story arc of four chapters. The game keeps the count and tells
+the AI which beat it is writing:
+
+| Chapter | Beat | What the AI writes |
+| --- | --- | --- |
+| 1 | Opening | Names the arc and its big question; introduces its central person, place or threat; ends on a hook. |
+| 2 | Rising | Raises the stakes and reveals something new; ends on a hook. |
+| 3 | Turn | A reversal, betrayal or hard truth that sets up the finale. |
+| 4 | Finale | Answers the arc's question; the final choice decides how it ends. |
+
+Each chapter is still a complete adventure with its own crisis and choices,
+and pays like any adventure (no extra XP). The AI can name an arc only before
+its first chapter is finished. Side quests during the books and job trials
+are not arc chapters; a trial stands on its own. The Journal shows the arc in
+progress under Leads and each finished arc in "Your story so far".
 
 **The chronicle** (step 2, built). Every AI adventure the hero finishes,
 including side quests and job trials, becomes a chapter in the save: what it
@@ -90,4 +107,4 @@ matched by name and updated.
 1. **On-book rules** (done): side quests while a book runs, the chapter level
    cap, steering, unusual actions remembered.
 2. **Chronicle** (done): the hero's own story recorded in the save and the Journal.
-3. **Chapter writer**: full adventures in arcs beyond the books.
+3. **Story arcs** (done): full adventures in four-chapter arcs beyond the books.

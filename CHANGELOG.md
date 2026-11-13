@@ -6,6 +6,10 @@ the pull requests that made them.
 
 ## 12 November 2026 — the written story comes first
 
+- **Story arcs, step 3**: beyond the books, AI adventures come in four-chapter
+  arcs (opening, rising, turn, finale). The game paces them; the AI names each
+  arc and writes its chapters. The Journal shows the arc in progress and each
+  finished arc.
 - **The chronicle, step 2**: every finished AI adventure becomes a chapter of
   the hero's own story, with the player's choice and the people, places and
   open threads it introduced. The AI reads it before writing the next

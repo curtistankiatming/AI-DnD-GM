@@ -18,6 +18,11 @@
   decision flag is set (`applyOutcome` in `src/engine.js`). It is story text
   only, bounded and re-cleaned on load, condensed past 30 chapters, and read by
   the director prompt and the Journal.
+- Story arcs (`chronicle.arc` / `arcs`): beyond the books each non-trial AI
+  adventure carries a `storyArc` tag from `Chronicle.arcSlot` (chapter, length,
+  beat set by the engine; Claude may name an arc only before its first chapter
+  is finished). `Chronicle.record` advances and closes arcs. Arcs never change
+  rewards.
 - Claude-authored content (improvised actions in `src/improvise.js`, generated
   adventures in `src/director.js`) supplies story and choices only. Every number
   (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved

@@ -32,7 +32,7 @@ function play(s,d=story(),choice='d1'){
 
 test('a new game has an empty chronicle that survives a save and reload',()=>{
   const s=E.createNewGame({classId:'fighter'});
-  assert.deepEqual(s.chronicle,{version:1,count:0,earlier:'',chapters:[],cast:[],places:[],threads:[]});
+  assert.deepEqual(s.chronicle,{version:1,count:0,earlier:'',chapters:[],cast:[],places:[],threads:[],arc:null,arcs:[],arcCount:0});
   assert.deepEqual(E.normalizeIncomingState(clone(s)).chronicle,s.chronicle);
   assert.equal(C.forPrompt(s),null,'Nothing to tell the AI yet.');
 });
