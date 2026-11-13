@@ -134,8 +134,13 @@ function recover(state,events,api){
   api.enterNode(state,`town-${state.world.townId}`,events);
   return emit(events,`The party returns to ${TOWNS[state.world.townId].name}. Rescue cost ${cost} gold; no XP or equipment lost. Recover, then resume the interrupted encounter from the expedition board.`,'rest','warning');
 }
+function resumeBattle(state,rng,events,api){
+  const battle=state.world.pendingBattle;state.world.pendingBattle=null;state.world.onExpedition=true;return api.startCombat(state,battle,rng,events)?emit(events,'The party returns to the interrupted encounter. Earlier preparation and setbacks are preserved.'):fail(events,'The interrupted encounter is unavailable.');}
 function depart(state,id,rng,events,api){
   const t=town(state);if(!t)return fail(events,'Depart from a town or resume at a safe hub.');
+  // Continuing the expedition a rescue interrupted restarts its fight; entering
+  // the node alone would leave only resolved choices and no way forward.
+  if(state.world.activeQuest===id&&state.world.pendingBattle)return resumeBattle(state,rng,events,api);
   if(id==='bell'){
     if(completed(state,'bell'))return fail(events,'The bell chapter is already complete.');
     state.world.onExpedition=true;state.world.activeQuest='bell';
@@ -194,7 +199,7 @@ function handle(state,action,rng,events,api){
   if(action.type==='depart')return depart(state,action.questId,rng,events,api);
   if(action.type==='resume'){
     if(!town(state))return fail(events,'Resume an expedition from a town.');
-    if(w.pendingBattle){const id=w.pendingBattle;w.pendingBattle=null;w.onExpedition=true;return api.startCombat(state,id,rng,events)?emit(events,'The party returns to the interrupted encounter. Earlier preparation and setbacks are preserved.'):fail(events,'The interrupted encounter is unavailable.');}
+    if(w.pendingBattle)return resumeBattle(state,rng,events,api);
     if(w.activeQuest==='bell'&&w.resumeNode){w.onExpedition=true;api.enterNode(state,w.resumeNode,events);return emit(events,'The bell investigation resumes where you left it.');}
     return depart(state,w.activeQuest,rng,events,api);
   }

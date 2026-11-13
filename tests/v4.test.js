@@ -158,6 +158,14 @@ test('missing an objective deadline records a consequence, not free automatic vi
 test('retreat preserves XP and gear, charges rescue, and exposes a route to resume',()=>{
  let s=gold(battle('fighter',5,'quest:bridge'));s.world.activeQuest='bridge';s.world.progress.bridge={};const xp=s.player.xp,inv=deepClone(s.player.inventory);s=act(s,{type:'combat',actionId:'retreat'});assert.equal(s.combat,null);assert.equal(s.player.gold,750);assert.equal(s.player.xp,xp);assert.deepEqual(s.player.inventory,inv);assert.equal(s.world.pendingBattle,'quest:bridge');s=act(s,{type:'town-service',serviceId:'civic-rest'});s=act(s,{type:'resume'});assert.equal(s.combat.encounterId,'quest:bridge');
 });
+test('departing for the interrupted expedition again restarts its fight instead of stranding the party',()=>{
+ // The town board labels this "Continue"; it used to enter the node without the fight, leaving only resolved choices.
+ let s=gold(ready());s=act(s,{type:'depart',questId:'road'});s=act(s,{type:'story-choice',choiceId:'advance'});s=act(s,{type:'story-choice',choiceId:'direct'});s=act(s,{type:'story-choice',choiceId:'confront'});
+ const fight=s.combat?.encounterId;assert.ok(fight,'The road reaches its fight.');
+ s=act(s,{type:'combat',actionId:'retreat'});assert.equal(s.combat,null);assert.equal(s.world.pendingBattle,fight);
+ assert.equal(E.buildView(s).world.quests.find(q=>q.id==='road')?.canDepart,true,'The board offers Continue for this expedition.');
+ s=act(s,{type:'depart',questId:'road'});assert.equal(s.combat?.encounterId,fight);assert.equal(s.world.pendingBattle,null);
+});
 test('practice restores the exact pre-practice inventory, HP and resources without rewards',()=>{
  let s=hero('wizard',5);s.player.hp=12;const before=deepClone(s.player),party=deepClone(s.party);s=act(s,{type:'practice'},createSeededRng(20));s=act(s,{type:'combat',actionId:'retreat'});assert.equal(s.player.hp,before.hp);assert.deepEqual(s.player.resources,before.resources);assert.deepEqual(s.player.inventory,before.inventory);assert.equal(s.player.xp,before.xp);assert.deepEqual(hitPoints(s),[[before.hp,before.maxHp],...party.map(a=>[a.hp,a.maxHp])]);
 });
