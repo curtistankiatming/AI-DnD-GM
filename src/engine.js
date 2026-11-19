@@ -511,6 +511,13 @@ function applyOutcome(state, written = {}, rng, events) {
   const booksOpen = !state.story.flags[Book.FINISHED];
   if (outcome.completeQuest) W.completeQuest(state, outcome.completeQuest, events, extensionApi());
   if (outcome.reputation) W.reputation(state, outcome.reputation);
+  // A written choice may cost (or give) gold; the purse never goes below zero.
+  if (Number.isFinite(outcome.gold) && outcome.gold) {
+    const before = state.player.gold;
+    state.player.gold = Math.max(0, before + outcome.gold);
+    const change = state.player.gold - before;
+    if (change) events.push({ type: "loot", tone: change > 0 ? "good" : "neutral", text: change > 0 ? `Received ${change} gold.` : `Paid ${-change} gold.` });
+  }
   if (outcome.setFlags) Object.assign(state.story.flags, outcome.setFlags);
   // A finished AI adventure becomes a chapter once its final decision is recorded.
   if (outcome.completeQuest) Chronicle.record(state, Director.quest(state, outcome.completeQuest));
