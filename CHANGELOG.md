@@ -4,6 +4,60 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, chapters 7 to 10 and the epilogue
+
+- **Cinder Fold** (level 16 to 17): the first forge. Nessa's mentor Wren has
+  read every letter Nessa never sent. Down in the deep galleries, the nine
+  first wards have been holding the Gloam alone for nine hundred years. Aster
+  Vey asks for a seat on the council for the wards.
+- **The Vote** (17 to 18, Briarwatch): Sable's warning from his cell, Pim's
+  four-colour chart, a paid crowd at the town meeting, and the council's vote
+  coming down to Brannagh, who wants a fence.
+- **The Mother Bell** (18 to 19, Cinder Fold): the night before, Orin asks for
+  Maren's stew. Elske rings the first bell over every ward in the land,
+  lawfully or not, depending on the vote. It works, and silences every other
+  voice. Someone else holds the door.
+- **The Second Oath** (19 to 20): Elske's charge lists what you decided
+  alone, choice by choice. Persuade her or stop her at the rope, decide her
+  fate, swear who your oath answers to, then come home to Dera's forge.
+- The written story now ends at level 20; after it, the AI storyteller takes
+  over as before.
+
+## Book Two, chapters 4 to 6
+
+- **The Harbour Bell** (level 13 to 14, Merrowgate): Iona's itemised invoice,
+  Guildmaster Pell Haverick, an auction where every rule makes someone richer,
+  and Iona kidnapped to stop the council bidding. Get her to the hall before
+  the hammer falls; Elske makes her offer of a Warden of the Chorus in public.
+  Hal helps differently depending on which contract she took.
+- **The Last Name on the List** (14 to 15): Maren's last lost keeper, Anwen
+  Holt, is alive and runs a hospice for the mist-touched that Elske pays for.
+  Hold it through a night of the Gloam; find out who skimped on the lower
+  town's lamps; play cards with two people cheating the same way.
+- **Hollin's Reach** (15 to 16): the town that burned while its council
+  argued. Sit in the remembered council and try to get it to ring the bell.
+  Elske voted to wait. Whether you tell her is up to you. Cinder Fold opens.
+
+## 19 November 2026 — Book Two, chapters 1 to 3
+
+The written story continues past level 10. Book Two, **The Council of Small
+Voices**, follows the story bible ([docs/STORY-BIBLE.md](docs/STORY-BIBLE.md)).
+
+- **The Chair Problem** (level 10 to 11, Highpass): the first council of the
+  free wards, the seating chart, Provost Elske Marrow, Brannagh of Fenmere and
+  her goat, and a Gloam tide at the gate that only the delegates together can
+  ring back. Who pays for Fenmere is your call.
+- **Fenmere Under the Gloam** (11 to 12): the lower village is lost because help
+  came late. Save the rest with the village's ward-song; then help the baker's
+  ward close up.
+- **The Long Road South** (12 to 13, Briarwatch to Merrowgate): Dera, Tovin's
+  keen apprentice Pim, and the "bandits" at Kell's Bridge, who are Lieutenant
+  Hal's unpaid beacon crews. Orin's story. Merrowgate opens as a new town.
+- Camp scenes after each chapter; conversations before setting out; Book One's
+  ending now leads into Book Two. Each chapter pays about one level.
+- Saves that finished Book One without any AI adventure carry on into Book Two.
+  After chapter 3 the game says "to be continued" until the next chapters land.
+
 ## 19 November 2026 — fixes from the level 11 playtest
 
 Fixes for [docs/reviews/codex-2026-11-19.md](docs/reviews/codex-2026-11-19.md).

@@ -143,17 +143,23 @@ test('finishing the last written chapter says the written story is complete and 
   let s = ready('aftermath');
   s.story.nodeId = 'q-aftermath-after'; s.world.activeQuest = 'aftermath'; s.world.onExpedition = true;
   const r = act(s, { type: 'story-choice', choiceId: 'patrol' });
-  assert.equal(r.state.story.flags[Book.FINISHED], true);
-  assert.ok(r.events.some((e) => e.text === Book.ENDING));
+  // Book One now hands over to Book Two, not to the AI storyteller.
+  assert.equal(r.state.story.flags[Book.FINISHED], undefined);
+  assert.ok(r.events.some((e) => e.text === Book.bookEnd('aftermath')));
+  assert.match(Book.bookEnd('aftermath'), /Book 1, The Bell Beneath Briarwatch, is complete\. Book 2, The Council of Small Voices, begins\. Its first chapter, The Chair Problem, is on the expedition board in Highpass Watch\./);
   assert.doesNotMatch(JSON.stringify(QUESTS.aftermath.decisions), /This season/);
   const text = deterministicFallback(r.state, r.view, { type: 'story-choice' }, r.events);
-  assert.match(text, /The written story is complete/);
-  assert.equal(r.view.world.director.sideQuests, false);
+  assert.match(text, /Book 2, The Council of Small Voices, begins/);
+  assert.equal(r.view.world.director.sideQuests, true);
+  assert.equal(r.view.world.book.chapter, 'The Chair Problem');
 });
 
 test('commissioning an adventure reports the new adventure, not the previous message', () => {
   let s = ready('aftermath');
-  s.world.completed.aftermath = { xp: 0, gold: 0 }; Book.finished(s);
+  for (const q of Book.CHAPTERS) s.world.completed[q.id] = { xp: 0, gold: 0 };
+  const past = Book.LAST_LEVEL + (Book.WRITING ? 2 : 1);
+  s.player.level = past; s.player.xp = P.XP_NEXT[past - 1];
+  assert.equal(Book.finished(s), true);
   s = act(s, { type: 'town-service', serviceId: 'civic-rest' }).state;
   const r = act(s, { type: 'director-commission', draft: draft() });
   const text = deterministicFallback(r.state, r.view, { type: 'director-commission' }, r.events);
@@ -162,7 +168,7 @@ test('commissioning an adventure reports the new adventure, not the previous mes
 });
 
 test('every conditional written line uses a known condition', () => {
-  const known = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'party', 'absent', 'class']);
+  const known = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'party', 'absent', 'class', 'item', 'notItem']);
   const lines = [];
   for (const node of Object.values(STORY_NODES)) {
     lines.push(...(node.dialogue || []));

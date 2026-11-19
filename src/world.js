@@ -362,7 +362,7 @@ function view(state){
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
     quests:questCards,preparation:prep,director:Director.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
-    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),regionalCrisisResolved:completed(state,'beacon'),
+    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:Book.CHAPTERS.every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
     canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa'),
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,

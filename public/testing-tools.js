@@ -25,7 +25,7 @@
   function makePanel(parent, setupPanel) {
     const panel = el('section'); panel.className = 'preview-notice';
     panel.append(el('strong', `PUBLIC PLAYTEST · ${client.build.version} · ${client.build.sourceSha256.slice(0, 12)}`));
-    panel.append(el('p', 'Unfinished game · Levels 1–10 · Deterministic narration · Runs in your browser, with no AI account or shared server.'));
+    panel.append(el('p', 'Unfinished game · Written story to level 20 · Deterministic narration · Runs in your browser, with no AI account or shared server.'));
     const status = el('p', 'Normal campaign. Browser saves belong to this browser profile, not an online account. Export a backup before updating.');
     status.className = 'preview-status'; notes.push(status); panel.append(status);
     const tools = el('div'); tools.className = 'preview-tools';

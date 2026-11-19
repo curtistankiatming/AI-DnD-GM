@@ -77,8 +77,9 @@ future commit. Simulated responses do not certify any actual model.
 Live Qwen/Gemma/smaller-model quality, latency, sustained sessions and the user's
 Windows launchers still need testing. Broader improvised actions/adaptive story
 creation, final balance and content variety, local-server restart coverage, and
-click-to-play hosting remain work. Playable content ends at level 10 after the
-first advancement and follow-on expedition; levels 30/70 remain future plans.
+click-to-play hosting remain work. The written campaign runs to level 20 (Book One to
+level 10, Book Two to 20, ending with the 2nd job); past that, adventures are
+AI-written.
 Public browser play is model-free. Local AI is optional, loopback-only and has no
 automatic paid fallback. This is not an unrestricted AI world or full official D&D.
 

@@ -107,5 +107,86 @@
       "ward-staff"
     ],
     "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command."
+  },
+  "merrowgate": {
+    "id": "merrowgate",
+    "name": "Merrowgate",
+    "subtitle": "The Harbour of Lanterns",
+    "description": "A harbour city of steep streets and stone quays, lit at night by the lantern guilds' lamps, which everyone pays for. Gulls, rope-sellers, and a ward-bell in a tower on the harbour mole that has not rung in public since anyone can remember.",
+    "faction": "trade",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "smoke-bomb",
+      "herb-bundle",
+      "ward-fragment",
+      "storm-grounder",
+      "climbing-kit",
+      "silk-rope",
+      "lantern",
+      "ward-coating",
+      "dueling-blade",
+      "resonant-blade",
+      "warbow",
+      "ward-staff",
+      "field-plate",
+      "sentinel-charm",
+      "scholars-lens"
+    ],
+    "rumor": "The harbour bell is to be sold. The lantern guilds say it is the only sensible thing; a bell that big should belong to people who can afford to ring it."
+  },
+  "cinderfold": {
+    "id": "cinderfold",
+    "name": "Cinder Fold",
+    "subtitle": "The First Forge",
+    "description": "A mining town built in steps up the side of a mountain, over the old forge where the first ward-bells were cast. The ground is warm underfoot. Everything is a little sooty, including the cats, and the council has been given the old casting hall, which is enormous and has no chairs at all.",
+    "faction": "wardens",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "smoke-bomb",
+      "herb-bundle",
+      "ward-fragment",
+      "storm-grounder",
+      "climbing-kit",
+      "silk-rope",
+      "lantern",
+      "ward-coating",
+      "greatsword",
+      "resonant-blade",
+      "warbow",
+      "ward-staff",
+      "field-plate",
+      "sentinel-charm",
+      "scholars-lens",
+      "wayfarer-boots"
+    ],
+    "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
   }
 }

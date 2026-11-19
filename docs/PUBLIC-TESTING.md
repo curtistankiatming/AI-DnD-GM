@@ -24,7 +24,8 @@ are explicit: XP, supplies, 400 gold and prerequisite flags. Choose pending clas
 rewards, prepare in town and use the expedition board. A scenario enforces its
 minimum level. Sandbox outcomes are not evidence of naturally earned progression.
 
-Playable content ends at level 10, first advancement and its follow-on expedition.
+The written campaign runs to level 20: Book One to level 10 (first advancement and
+its follow-on expedition), then Book Two to level 20 and the 2nd job.
 Courier at the Ferry and Lantern Road supplement the main campaign. Level-30/70
 advancements and unlimited generated worlds remain future work.
 

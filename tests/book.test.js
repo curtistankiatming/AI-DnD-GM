@@ -30,27 +30,56 @@ function hero({level=1,xp=level>1?P.XP_NEXT[level-1]:0,done=['bell']}={}){
   return E.normalizeIncomingState(s);
 }
 
+// Every written chapter done, and the hero past the last one's level: the
+// books are over even while a book is still being written.
+const ALL=['bell',...B.CHAPTERS.map(q=>q.id)];
+const PAST=B.LAST_LEVEL+(B.WRITING?2:1);
+const afterBooks=()=>hero({level:PAST,done:ALL});
+
 test('the chapter follows the written story, and the books end after the last one',()=>{
   const start=E.createNewGame({classId:'fighter'});
   assert.equal(B.running(start),true);assert.equal(B.chapter(start).id,'bell');assert.equal(B.levelCap(start),1);
   assert.equal(B.chapter(hero()).id,'road');assert.equal(B.levelCap(hero()),QUESTS.road.level);
   assert.equal(B.chapter(hero({done:['bell','road']})).id,'marsh');
-  const all=hero({level:10,done:['bell',...Object.keys(QUESTS)]});
-  assert.equal(B.running(all),false);assert.equal(B.chapter(all),null);assert.equal(B.xpRoom(all),Infinity);
-  assert.equal(all.story.flags[B.FINISHED],true,'The save is marked as the hero\'s own story.');
+  // Book One ends with the road after the trial; Book Two starts at the council.
+  const bookOne=['bell',...B.CHAPTERS.filter(q=>!q.book||q.book===1).map(q=>q.id)];
+  const two=hero({level:10,done:bookOne});
+  assert.equal(B.running(two),true);assert.equal(B.chapter(two).id,'chairs');assert.equal(B.chapter(two).book,'The Council of Small Voices');
+  const all=hero({level:B.LAST_LEVEL,done:ALL});
+  if(B.WRITING){
+    // While Book Two is still being written, the hero waits for its next chapter.
+    assert.equal(B.running(all),true);assert.equal(B.chapter(all).waiting,true);assert.equal(B.levelCap(all),B.LAST_LEVEL+1);
+    assert.equal(all.story.flags[B.FINISHED],undefined);
+  }else{
+    assert.equal(B.running(all),false);assert.equal(B.chapter(all),null);assert.equal(B.xpRoom(all),Infinity);
+    assert.equal(all.story.flags[B.FINISHED],true,'The save is marked as the hero\'s own story.');
+  }
+  const past=afterBooks();
+  assert.equal(B.running(past),false);assert.equal(B.chapter(past),null);assert.equal(past.story.flags[B.FINISHED],true);
 });
 
 test('a finished save stays the hero\'s own story when more books are written later',()=>{
-  const s=hero({level:10,done:['bell',...Object.keys(QUESTS)]});
-  delete s.world.completed.aftermath;// As if a new written chapter appeared.
+  const s=afterBooks();
+  delete s.world.completed[B.CHAPTERS.at(-1).id];// As if a new written chapter appeared.
   assert.equal(B.running(s),false);
   assert.equal(B.running(E.normalizeIncomingState(clone(s))),false);
 });
 
+test('a save that finished Book One before Book Two existed carries on into Book Two, unless the AI already took over',()=>{
+  const bookOne=['bell',...B.CHAPTERS.filter(q=>!q.book||q.book===1).map(q=>q.id)];
+  const s=hero({level:10,done:bookOne});s.story.flags[B.FINISHED]=true;// Marked under the old rule.
+  assert.equal(B.running(s),true);assert.equal(B.chapter(s).id,'chairs');assert.equal(s.story.flags[B.FINISHED],undefined);
+  const ai=hero({level:10,done:bookOne});ai.story.flags[B.FINISHED]=true;
+  ai.director={quests:{'ai-1-aaaaaaa':{id:'ai-1-aaaaaaa',generated:true,name:'The Salt Choir'}}};
+  assert.equal(B.aiStory(ai),true);assert.equal(B.running(ai),false,'An AI story stays an AI story.');
+  const side=hero({level:10,done:bookOne});side.story.flags[B.FINISHED]=true;
+  side.director={quests:{'ai-1-aaaaaaa':{id:'ai-1-aaaaaaa',generated:true,side:true,name:'A small favour'}}};
+  assert.equal(B.running(side),true,'A side quest during the books is not an AI story.');
+});
+
 test('a hero already above the last written chapter is on their own story',()=>{
-  const lastLevel=Math.max(...Object.values(QUESTS).map(q=>q.level));
-  assert.equal(B.running(hero({level:lastLevel+1})),false);
-  assert.equal(B.running(hero({level:lastLevel})),true);
+  assert.equal(B.running(hero({level:PAST})),false);
+  assert.equal(B.running(hero({level:PAST-1})),true);
 });
 
 test('improvised XP can bring the hero up to the chapter, never past it',()=>{
@@ -86,12 +115,12 @@ test('while a book runs, the AI writes a small side quest that pays like a missi
 });
 
 test('after the books, the AI writes full adventures again',()=>{
-  const s=hero({level:10,done:['bell',...Object.keys(QUESTS)]});
+  const s=afterBooks();
   s.story.nodeId='town-highpass';s.world.townId='highpass';
   const out=act(s,{type:'director-commission',draft:draft()});
   assert.equal(out.result.ok,true,out.result.error);
   const q=out.state.director.quests[out.result.questId];
-  assert.equal(q.side,undefined);assert.deepEqual({xp:q.xp,gold:q.gold},D.rewards(10));
+  assert.equal(q.side,undefined);assert.deepEqual({xp:q.xp,gold:q.gold},D.rewards(PAST));
   assert.match(out.result.outcomeText,/New adventure/);
 });
 
@@ -142,8 +171,7 @@ test('steering climbs a ladder as the detour in one scene grows, and resets on a
   assert.equal(B.detour(chat,'another-scene'),0,'A new scene starts fresh.');
   assert.deepEqual(B.normalizeDetour({node:'x',turns:999}),{node:'x',turns:50});
   assert.equal(B.normalizeDetour('junk'),null);
-  const after=hero({level:10,done:['bell',...Object.keys(QUESTS)]});
-  assert.equal(B.facts(after).running,false);
+  assert.equal(B.facts(afterBooks()).running,false);
 });
 
 test('the director is told about the book',()=>{

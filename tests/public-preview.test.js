@@ -102,7 +102,7 @@ test('all class/scenario fixtures render without claiming natural progression', 
 
 for (const classId of Object.keys(CLASSES)) {
   test(`offline transport completes ${classId} campaign to level 10 with ordinary policy actions`, async () => {
-    const client = createClient(storage(), {}, createSeededRng(301)), memory = {};
+    const client = createClient(storage(), {}, createSeededRng(301)), memory = { bookOneOnly: true };
     let payload = (await call(client, '/api/session/new', { classId, difficulty: 'standard' })).payload;
     for (let step = 0; step < 900; step++) {
       const action = chooseAction(payload.view, memory, 'prepared');

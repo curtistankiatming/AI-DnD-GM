@@ -115,10 +115,12 @@ function printTown(view) {
   const d = w.director;
   const written = w.quests.filter((q) => !q.generated);
   if (d && w.bellComplete && !d.sideQuests && !written.length) {
-    line("  The written story is complete: every chapter of Book One is finished.");
+    line("  The written story is complete: both books are finished.");
     line("  From here the AI storyteller writes new adventures from your choices (in the browser game: \"Ask the GM for a new adventure\", with the Claude AI game master on).");
     line("  The terminal has no AI. To test the handoff with the bundled sample adventure (a fixture, not real AI writing): node scripts/play.js commission-sample");
-  } else if (!w.quests.length) line("  Nothing posted.");
+  } else if (w.book?.waiting && !written.length) line(`  To be continued: the next chapters of ${w.book.title} are still being written.`);
+  else if (!w.quests.length) line("  Nothing posted.");
+  if (w.book && !w.book.waiting) line(`  Story: ${w.book.title}, chapter "${w.book.chapter}" (level ${w.book.level}).`);
   if (w.canRecruit) line(`Nessa can be recruited  -> do '{"type":"recruit"}'`);
   for (const pq of w.personal || []) if (!pq.started || pq.canResolve) line(`Companion story: ${pq.name}  -> do '{"type":"${pq.canResolve ? "resolve-personal" : "personal"}","companionId":"${pq.companionId}"${pq.canResolve ? ',"choice":"watchful"' : ""}}'${pq.canResolve ? ' (or "decisive")' : ""}`);
   for (const r of view.progression.pending || []) {
