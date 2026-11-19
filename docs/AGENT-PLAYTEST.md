@@ -40,7 +40,7 @@ node scripts/play.js jump q-bridge-after --level 4 --with nessa --save .playtest
 ```
 
 Book One ends with the relief convoy at level 10; Book Two, The Council of
-Small Voices, starts on the Highpass board and runs to level 20 (chapters 1 to 3
+Small Voices, starts on the Highpass board and runs to level 20 (chapters 1 to 6
 are written so far). After the written story ends, further adventures are
 written by the AI storyteller. To test that handoff without an AI, run
 `node scripts/play.js commission-sample`: it adds the bundled sample adventure

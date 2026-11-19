@@ -301,5 +301,166 @@
         ]
       }
     }
+  },
+  "harbour-camp": {
+    "id": "harbour-camp",
+    "after": "harbour",
+    "cast": ["orin", "maren"],
+    "act": "Camp",
+    "location": "The inn on the Merrowgate quays, after midnight",
+    "start": "invoice",
+    "nodes": {
+      "invoice": {
+        "title": "Settling Up",
+        "objective": "Sit with the party after the sale.",
+        "lines": [
+          { "narrate": "Long after midnight, Iona finds your party in the inn's back room. She has changed her coat, and her wrists are bandaged, and she has her invoice book." },
+          { "say": "Iona", "text": "I've been thinking about my invoice." },
+          { "say": "orin", "text": "We were going to pay it." },
+          { "say": "Iona", "text": "No, you weren't, and I didn't expect you to. That's not the point. The point is, I've added a line." },
+          { "narrate": "She tears out the page and puts it on the table. Under the beer and the cart, in the same neat hand, there is a new entry." },
+          { "say": "maren", "text": "'To retrieval of the quartermaster from the lantern-works, at the hero's expense: one evening. Credit.' And then the total." },
+          { "say": "Iona", "text": "We're square, as of tonight. I'd like it noted that I don't do that often." },
+          { "say": "maren", "text": "What are you going to do about Elske's proposal?" },
+          { "say": "Iona", "text": "Vote for it, probably. I was tied to a chair for a day because five towns couldn't decide who held the purse. Somebody should be able to say 'stop' faster than that." },
+          { "narrate": "She goes. Orin looks at the invoice for a while, then folds it and puts it in his pack." }
+        ],
+        "choices": [
+          {
+            "id": "orin",
+            "label": "“You're keeping that?”",
+            "lines": [
+              { "say": "orin", "text": "It's the only thank-you letter I've ever had that adds up." },
+              { "say": "maren", "text": "Orin Stoneward. That was very nearly a joke." },
+              { "say": "orin", "text": "It was a joke." }
+            ],
+            "approval": { "orin": 1 }
+          },
+          {
+            "id": "elske",
+            "label": "“What did you make of Elske tonight?”",
+            "lines": [
+              { "say": "maren", "text": "She asked for power in front of the whole city and told them how to take it away from her. I've never seen anyone do that." },
+              { "say": "orin", "text": "Corvane would have liked to have been asked, too. Once." },
+              { "say": "maren", "text": "That's not fair." },
+              { "say": "orin", "text": "No. It's what I'm afraid of. Fair's got nothing to do with it." }
+            ],
+            "approval": { "maren": 1 }
+          }
+        ]
+      }
+    }
+  },
+  "keeper-cards": {
+    "id": "keeper-cards",
+    "after": "keeper",
+    "cast": ["maren"],
+    "act": "Aftermath",
+    "location": "The Sallows hospice, the next evening",
+    "start": "cards",
+    "nodes": {
+      "cards": {
+        "title": "Bring Cards",
+        "objective": "Play a hand at the hospice.",
+        "lines": [
+          { "narrate": "The next evening, the lamps in the Sallows are lit along the whole street, and the hospice door is open, because it can be. Anwen has set up a card table in the long room. The patients who are well enough have pulled their beds round to watch." },
+          { "say": "Anwen", "text": "Three-handed Lowmere. Vale knows the rules. You'll pick them up. Or you won't, and that's also fine, because we're playing for buttons." },
+          { "narrate": "It takes about four hands to understand that Maren and Anwen are cheating. It takes another four to understand they are cheating in exactly the same way, and that each of them knows it, and that the game they are actually playing is about who will be the first to say so." },
+          { "narrate": "A patient in the end bed, who used to deal cards on the ferries, has worked it out too. He catches your eye and very slowly shakes his head: don't." },
+          { "narrate": "The patients are crying with laughter. An old fisherman who has not been able to remember his wife's name for a month says it, out loud, by accident, and stops laughing, and then starts again." },
+          { "say": "maren", "text": "You taught me that one." },
+          { "say": "Anwen", "text": "I taught you all of them, Vale. That's why you're losing." }
+        ],
+        "choices": [
+          {
+            "id": "call",
+            "label": "Call it: “You're both cheating.”",
+            "lines": [
+              { "narrate": "Both of them turn on you at once, with exactly the same expression of injured innocence. The fisherman falls off his bed." },
+              { "say": "Anwen", "text": "Vale, your friend has no manners." },
+              { "say": "maren", "text": "None. It's one of the things I like about them." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "list"
+          },
+          {
+            "id": "lose",
+            "label": "Lose gracefully and keep watching",
+            "lines": [
+              { "narrate": "You lose every button you have. It is the best evening anyone in the long room has had in a year." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "list"
+          }
+        ]
+      },
+      "list": {
+        "title": "The Last Name",
+        "objective": "Let Maren finish her list.",
+        "lines": [
+          { "narrate": "Afterwards, on the tide steps, Maren takes out her list. Every name has something written beside it now, except one. She looks at Anwen's name for a long time with the pencil in her hand." },
+          { "say": "maren", "text": "I don't know what to write. Found isn't right. She was never lost. She was busy." }
+        ],
+        "choices": [
+          {
+            "id": "chose",
+            "label": "“Write that she chose.”",
+            "lines": [
+              { "narrate": "Maren writes it. Chose. Then she folds the list, very carefully, and for the first time since you have known her she does not put it back in her pocket. She drops it into the harbour and watches it go." },
+              { "say": "maren", "text": "Six years. That's enough lists." }
+            ],
+            "approval": { "maren": 1 }
+          },
+          {
+            "id": "nothing",
+            "label": "“Leave it blank. It's not finished.”",
+            "lines": [
+              { "narrate": "Maren nods slowly and puts the list back in her pocket, with the one empty space." },
+              { "say": "maren", "text": "No. You're right. It isn't." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "hollin-camp": {
+    "id": "hollin-camp",
+    "after": "hollin",
+    "cast": ["orin", "maren"],
+    "act": "Camp",
+    "location": "The inn at Cinder Fold",
+    "start": "night",
+    "nodes": {
+      "night": {
+        "title": "After Hollin's Reach",
+        "objective": "Sit with your companions after the burned town.",
+        "lines": [
+          { "narrate": "Nobody can sleep. The inn at Cinder Fold is warm all through, because the whole mountain is warm, and somehow that makes it worse." },
+          { "narrate": "Nobody has made supper. Maren sits with her hands in her lap, which you have never seen her do; there is always something in them. Orin is at the window, looking at the forge-glow on the mountain, which is the wrong colour to be a fire and still looks like one." },
+          { "say": "maren", "text": "Eleven years she's carried that room. On her own." },
+          { "say": "orin", "text": "Not on her own. She built a machine to carry it for her." },
+          { "say": "orin", "text": "In the memory. When you stood up. Were you sure?" }
+        ],
+        "choices": [
+          {
+            "id": "sure",
+            "label": "“Yes.”",
+            "lines": [
+              { "say": "orin", "text": "Good. Somebody should be, at the vote. I'm not." }
+            ],
+            "approval": { "orin": 1 }
+          },
+          {
+            "id": "unsure",
+            "label": "“No. I just knew how it ended.”",
+            "lines": [
+              { "say": "orin", "text": "That's what Elske wants. Someone who knows how it ends." },
+              { "say": "maren", "text": "Nobody does. That's the whole trouble." }
+            ],
+            "approval": { "orin": 1, "maren": 1 }
+          }
+        ]
+      }
+    }
   }
 }

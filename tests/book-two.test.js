@@ -18,7 +18,7 @@ function ready(id, { cls = 'fighter', nessa = true, flags = {} } = {}) {
   let s = hero(cls, q.level); s.player.gold = 1000; s.player.progression.mastery = true;
   s.world.completed.bell = { xp: 0, gold: 0 };
   for (const other of Object.values(QUESTS)) { if (other.id === id) break; s.world.completed[other.id] = { xp: 0, gold: 0 }; }
-  s.world.unlockedTowns = ['briarwatch', 'ashford', 'highpass']; s.world.townId = q.town; s.story.nodeId = `town-${q.town}`;
+  s.world.unlockedTowns = ['briarwatch', 'ashford', 'highpass', ...(q.town === 'briarwatch' || q.town === 'highpass' ? [] : [q.town])]; s.world.townId = q.town; s.story.nodeId = `town-${q.town}`;
   Object.assign(s.story.flags, flags); W.init(s);
   if (nessa) s = act(s, { type: 'recruit' }).state;
   return s;
@@ -116,18 +116,38 @@ test('the south road ends in Merrowgate, and Hal\'s company goes where you sent 
 });
 
 test('while Book Two is still being written, its last written chapter says "to be continued"', { skip: !Book.WRITING }, () => {
-  let s = ready('southroad');
-  s.story.nodeId = 'q-southroad-after'; s.world.activeQuest = 'southroad'; s.world.onExpedition = true;
-  const r = act(s, { type: 'story-choice', choiceId: 'council' });
+  const last = Book.CHAPTERS.at(-1);
+  let s = ready(last.id);
+  s.story.nodeId = `q-${last.id}-after`; s.world.activeQuest = last.id; s.world.onExpedition = true;
+  const r = act(s, { type: 'story-choice', choiceId: last.decisions[0].id });
   assert.ok(r.events.some((e) => /^To be continued\./.test(e.text)));
   assert.equal(r.state.story.flags[Book.FINISHED], undefined, 'The save does not become an AI story.');
   assert.equal(r.view.world.book.waiting, true);
-  // The AI may still write small side quests, capped below the next chapter.
+  // Through the camp scene to town; the AI may still write small side quests, capped below the next chapter.
   let t = r.state;
-  t = act(t, { type: 'story-choice', choiceId: 'leave' }).state;
+  for (let i = 0; i < 5 && !E.buildView(t).world.town; i++) t = act(t, { type: 'story-choice', choiceId: E.buildView(t).scene.choices[0].id }).state;
   const made = act(t, { type: 'director-commission', draft: draft() });
   assert.equal(made.state.director.quests[made.result.questId].side, true);
   assert.equal(Book.levelCap(made.state), Book.LAST_LEVEL + 1);
+});
+
+test("chapters 4 to 6: Merrowgate, Maren's keeper and Hollin's Reach, then on to Cinder Fold", () => {
+  assert.deepEqual(['harbour', 'keeper', 'hollin'].map((id) => [QUESTS[id].unlock, QUESTS[id].town, QUESTS[id].nextTown || QUESTS[id].town]), [
+    ['southroad', 'merrowgate', 'merrowgate'], ['harbour', 'merrowgate', 'merrowgate'], ['keeper', 'merrowgate', 'cinderfold']
+  ]);
+  assert.ok(TOWNS.cinderfold);
+  // Hal's tip depends on where you sent her company on the south road.
+  const guild = act(ready('harbour', { flags: { south_hal_guild: true } }), { type: 'depart', questId: 'harbour' }).state;
+  const ids = (st) => E.buildView(st).scene.choices.map((c) => c.id);
+  assert.ok(ids(guild).includes('talk-hal-guild'));
+  const council = act(ready('harbour', { flags: { south_hal_council: true } }), { type: 'depart', questId: 'harbour' }).state;
+  const locked = E.buildView(council).scene.choices.find((c) => c.id === 'talk-hal-guild');
+  assert.ok(!locked || locked.locked, 'The guild-coat scene only plays if Hal took the guild contract.');
+  // Elske makes her offer in public at the harbour sale.
+  assert.match(STORY_NODES['q-harbour-after'].opening, /Warden of the Chorus/);
+  assert.match(STORY_NODES['q-harbour-after'].opening, /two-thirds/);
+  // Hollin's Reach has no lighter moment: no Book Two chapter's crisis is played for laughs, and this one says who voted to wait.
+  assert.match(STORY_NODES['q-hollin-start'].choices.find((c) => c.id === 'investigate').success.text, /Elske votes to wait/);
 });
 
 test('the written chapters are never confused with an AI story', () => {

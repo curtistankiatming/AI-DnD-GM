@@ -4,6 +4,21 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, chapters 4 to 6
+
+- **The Harbour Bell** (level 13 to 14, Merrowgate): Iona's itemised invoice,
+  Guildmaster Pell Haverick, an auction where every rule makes someone richer,
+  and Iona kidnapped to stop the council bidding. Get her to the hall before
+  the hammer falls; Elske makes her offer of a Warden of the Chorus in public.
+  Hal helps differently depending on which contract she took.
+- **The Last Name on the List** (14 to 15): Maren's last lost keeper, Anwen
+  Holt, is alive and runs a hospice for the mist-touched that Elske pays for.
+  Hold it through a night of the Gloam; find out who skimped on the lower
+  town's lamps; play cards with two people cheating the same way.
+- **Hollin's Reach** (15 to 16): the town that burned while its council
+  argued. Sit in the remembered council and try to get it to ring the bell.
+  Elske voted to wait. Whether you tell her is up to you. Cinder Fold opens.
+
 ## 19 November 2026 — Book Two, chapters 1 to 3
 
 The written story continues past level 10. Book Two, **The Council of Small

@@ -175,8 +175,9 @@ expedition fields Book One uses, a chapter may have:
 - Decisions with `approval` or `requires`, and text written as lines.
 
 A camp scene for a chapter goes in `src/data/scenes.json` with `"after"` set to
-the chapter's id. Chapters written so far: 1 to 3 (The Chair Problem, Fenmere
-Under the Gloam, The Long Road South). Until chapter 10 lands, `src/book.js`
+the chapter's id. Chapters written so far: 1 to 6 (The Chair Problem, Fenmere
+Under the Gloam, The Long Road South, The Harbour Bell, The Last Name on the
+List, Hollin's Reach). Until chapter 10 lands, `src/book.js`
 marks Book Two as still being written.
 
 ## How scenes are written
