@@ -10,6 +10,7 @@ const Director = require("./director");
 const XP = require("./xp");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
+const Expansion = require("./expansion");
 const enterNode = (...args) => Engine.enterNode(...args);
 const extensionApi = (...args) => Engine.extensionApi(...args);
 
@@ -137,8 +138,11 @@ function attacksPerAction(actor){
   return 1+(actor.level>=5&&['fighter','ranger'].includes(actor.classId)?1:0)+(actor.level>=P.SECOND_JOB_LEVEL&&actor.classId==='fighter'?1:0);
 }
 function startCombat(state, encounterId, rng, events) {
-  const encounter = ENCOUNTERS[encounterId];
-  if (!encounter) return false;
+  const written = ENCOUNTERS[encounterId];
+  if (!written) return false;
+  // A written crisis tells only the lines that apply to this save, as the
+  // story screen before the fight does.
+  const encounter = written.introLines ? { ...written, intro: Expansion.dialogueText(Expansion.liveLines(state, written.introLines)) } : written;
   if(!encounter.practice && state.story.flags[`won:${encounter.id}`]){enterNode(state,encounter.victoryNode,events);return true;}
   state.world.combatOrigin=state.story.nodeId;
   if(!encounter.questId&&!encounter.practice)state.world.activeQuest="bell";

@@ -363,7 +363,9 @@
         "title": "Bring Cards",
         "objective": "Play a hand at the hospice.",
         "lines": [
-          { "narrate": "The next evening, the lamps in the Sallows are lit along the whole street, and the hospice door is open, because it can be. Anwen has set up a card table in the long room. The patients who are well enough have pulled their beds round to watch." },
+          { "narrate": "The next evening, the lamps in the Sallows are lit along the whole street, and the hospice door is open, because it can be.", "when": { "notFlag": "keeper_kept_receipts" } },
+          { "narrate": "The next evening, six new lamps are lit along the hospice street. Past the corner, the rest of the Sallows is as dark as it was. The hospice door is open, because it can be.", "when": { "flag": "keeper_kept_receipts" } },
+          { "narrate": "Anwen has set up a card table in the long room. The patients who are well enough have pulled their beds round to watch." },
           { "say": "Anwen", "text": "Three-handed Lowmere. Vale knows the rules. You'll pick them up. Or you won't, and that's also fine, because we're playing for buttons." },
           { "narrate": "It takes about four hands to understand that Maren and Anwen are cheating. It takes another four to understand they are cheating in exactly the same way, and that each of them knows it, and that the game they are actually playing is about who will be the first to say so." },
           { "narrate": "A patient in the end bed, who used to deal cards on the ferries, has worked it out too. He catches your eye and very slowly shakes his head: don't." },

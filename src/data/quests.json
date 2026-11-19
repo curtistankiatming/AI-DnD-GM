@@ -3006,9 +3006,11 @@
             "text": "So does the lower town's lamps, unfixed, for another month."
           },
           {
-            "narrate": "You pay the lamp-man to fix the worst six out of the party's own reward. It is not enough, and everyone knows it."
+            "narrate": "You count sixty gold out of the party's reward into the lamp-man's hand: enough for the six worst lamps, the ones on the hospice street. The rest of the Sallows will stay dark until the vote. It is not enough, and everyone knows it."
           }
         ],
+        "description": "This decision is permanent. Paying for the worst lamps costs the party 60 gold.",
+        "gold": -60,
         "rep": {
           "wardens": 2
         },
@@ -4270,13 +4272,21 @@
       {
         "narrate": "Orin is sitting with his back to the iron doors. He did not hold them. Hal did, with her company, who came up the mountain behind Haverick's men without being asked.",
         "when": {
-          "flag": "south_hal_council"
+          "flag": "south_hal_council",
+          "notFlag": "mother_recalled"
         }
       },
       {
         "narrate": "Orin is sitting with his back to the iron doors. He did not hold them, at the end. Hal did. She came up the mountain in her guild coat, and when she saw who Haverick's men were fighting, she took it off and turned round.",
         "when": {
-          "flag": "south_hal_guild"
+          "flag": "south_hal_guild",
+          "notFlag": "mother_recalled"
+        }
+      },
+      {
+        "narrate": "Orin is sitting with his back to the iron doors. He held them the first time, in the night. The second time, he did not have to.",
+        "when": {
+          "flag": "mother_recalled"
         }
       },
       {
@@ -4295,7 +4305,16 @@
         "narrate": "Pell Haverick is found the next morning, at the bottom of the mountain, in a coach with a great deal of money and no driver. The miners hand him to the council. The council, for once, agrees on something immediately."
       },
       {
-        "narrate": "Elske Marrow sits on the casting floor under the Mother Bell, alone, with ink on two fingers and her hands in her lap. The council's delegates are coming up the mountain road. Somebody will have to decide what to do with her. Before that, somebody has to decide what the Mother Bell is for."
+        "narrate": "Elske Marrow sits on the casting floor under the Mother Bell, alone, with ink on two fingers and her hands in her lap. The council's delegates are coming up the mountain road. Somebody will have to decide what to do with her. Before that, somebody has to decide what the Mother Bell is for.",
+        "when": {
+          "notFlag": "mother_recalled"
+        }
+      },
+      {
+        "narrate": "Elske Marrow sits on the casting floor under the Mother Bell, alone, with ink on two fingers and her hands in her lap. The delegates are still in the hall, stiff from the coaches, arguing in low voices about where the hearing should sit. Somebody will have to decide what to do with her. Before that, somebody has to decide what the Mother Bell is for.",
+        "when": {
+          "flag": "mother_recalled"
+        }
       }
     ],
     "decisions": [
@@ -4540,7 +4559,7 @@
       },
       {
         "say": "Iona",
-        "text": "The charter says a Warden who acts without the council can be removed. It doesn't say what happens after. We didn't think we'd need that page.",
+        "text": "She was never Warden. We said no. The charter gives nobody the power she used, so it says nothing about what to do with someone who used it anyway. We didn't think we'd need that page.",
         "when": {
           "flag": "vote_elske_lost"
         }
@@ -4576,7 +4595,16 @@
         "text": "She means it. Of course she means it."
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside."
+        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside.",
+        "when": {
+          "notFlag": "mother_silenced"
+        }
+      },
+      {
+        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She is standing by the signal-house door, and half the council is looking at it with her. Somebody, in the end, has to answer her: with words, or with the key.",
+        "when": {
+          "flag": "mother_silenced"
+        }
       }
     ],
     "peaceful": {
@@ -4608,14 +4636,23 @@
           "text": "You can't promise it won't happen again. Nobody can. So someone must hold the rope."
         },
         {
-          "narrate": "She takes the rope. The Mother Bell stirs over your heads. You have to reach her before she rings it."
+          "narrate": "She takes the rope. The Mother Bell stirs over your heads. You have to reach her before she rings it.",
+          "when": {
+            "notFlag": "mother_silenced"
+          }
+        },
+        {
+          "narrate": "She does not ask for the key. Two of the miners have a forge hammer, and the Mother Bell does not need a rope if someone is willing to climb the beam and strike it. Elske starts up the ladder. You have to reach her before she gets there.",
+          "when": {
+            "flag": "mother_silenced"
+          }
         }
       ]
     },
     "objective": {
       "name": "Keep the Mother Bell from one voice",
-      "label": "Reach the bell-rope before it rings alone",
-      "description": "Three successful actions get you to the rope and keep the Mother Bell from being rung by one person again.",
+      "label": "Reach Elske before the bell is rung alone",
+      "description": "Three successful actions get you to Elske and keep the Mother Bell from being rung by one person again.",
       "skill": "athletics",
       "alt": [
         "persuasion",
@@ -4624,11 +4661,11 @@
       ],
       "target": 3,
       "deadline": 6,
-      "failText": "The bell sounds one stroke under one voice before you reach her. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it.",
-      "successText": "Your hand closes over hers on the rope. She lets go."
+      "failText": "Before you reach her, the Mother Bell sounds one stroke under one voice. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it.",
+      "successText": "You reach her first. Your hand closes over hers. She lets go."
     },
     "foe": "elske-marrow",
-    "foeName": "Elske Marrow, Warden of the Chorus",
+    "foeName": "Elske Marrow",
     "enemyTheme": "boss",
     "attackName": "The Single Note",
     "retainerName": "Echo of the Single Voice",

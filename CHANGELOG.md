@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, fixes from the second Codex playtest
+
+- Starting a fight now tells only the version of events this hero lived
+  through. Before, the Mother Bell and the hearing fights read out every
+  version of the vote at once, and Elske kept the Warden's title even when
+  the council had refused it.
+- If you locked the bell-rope away, the hearing is now about the key and a
+  forge hammer, not a rope still hanging from the bell.
+- After the recall, the delegates are already in the hall instead of still
+  on the road.
+- Keeping the hospice receipts now costs the party 60 gold for six lamps,
+  and the rest of the Sallows stays dark.
+- Written choices can now cost or give gold.
+
 ## Book Two, chapters 7 to 10 and the epilogue
 
 - **Cinder Fold** (level 16 to 17): the first forge. Nessa's mentor Wren has

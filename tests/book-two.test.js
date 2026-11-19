@@ -249,3 +249,42 @@ test('pledging your fee for Fenmere says the council pays it back', () => {
   assert.match(party.label, /Pledge your contract fee/);
   assert.match(party.description, /repays your pledge/);
 });
+
+// Second Codex review of Book Two (docs/reviews/codex-bard-book-two-rerun-2026-11-19.md).
+const atCrisis = (id, flags) => { const s = ready(id, { flags }); s.story.nodeId = `q-${id}-crisis`; s.world.activeQuest = id; s.world.onExpedition = true; return s; };
+test('starting a fight tells only the version of the vote this hero lived through', () => {
+  const lost = act(atCrisis('motherbell', { vote_elske_lost: true }), { type: 'story-choice', choiceId: 'objective' }).state;
+  assert.ok(lost.combat?.active);
+  assert.match(lost.combat.intro, /without the council's leave/);
+  assert.doesNotMatch(lost.combat.intro, /lawfully, as Warden|can be recalled/);
+  const hearing = act(atCrisis('oath', { vote_elske_lost: true }), { type: 'story-choice', choiceId: 'objective' }).state;
+  assert.match(hearing.combat.intro, /She was never Warden/);
+  assert.doesNotMatch(hearing.combat.intro, /lawful Warden|We recalled her/);
+  assert.equal(ENEMIES['elske-marrow'].name, 'Elske Marrow', 'Her title is not in the enemy list on routes that never granted it.');
+});
+
+test('if the bell-rope was locked away, the hearing is about the key, not a hanging rope', () => {
+  const opening = (flags) => E.buildView(atCrisis('oath', flags)).scene.opening;
+  const silenced = opening({ vote_elske_lost: true, mother_silenced: true });
+  assert.match(silenced, /only key is in your pocket/);
+  assert.doesNotMatch(silenced, /standing between her and the bell-rope/);
+  assert.match(opening({ vote_elske_lost: true, mother_chorus: true }), /standing between her and the bell-rope/);
+  assert.doesNotMatch(QUESTS.oath.objective.label, /rope/);
+});
+
+test('after the recall the delegates are already in the hall', () => {
+  const r = act(atCrisis('motherbell', { vote_elske_won: true }), { type: 'story-choice', choiceId: 'recall' });
+  const after = E.buildView(r.state).scene.opening;
+  assert.match(after, /delegates are still in the hall/);
+  assert.doesNotMatch(after, /coming up the mountain road|came up the mountain/);
+});
+
+test('keeping the receipts costs 60 gold, and the rest of the Sallows stays dark', () => {
+  let s = ready('keeper'); s.story.nodeId = 'q-keeper-after'; s.world.activeQuest = 'keeper'; s.world.onExpedition = true;
+  const keep = E.buildView(s).scene.choices.find((c) => c.id === 'keep');
+  assert.match(keep.description, /60 gold/);
+  const before = s.player.gold;
+  s = act(s, { type: 'story-choice', choiceId: 'keep' }).state;
+  assert.equal(s.player.gold, before + QUESTS.keeper.gold - 60);
+  assert.match(E.buildView(s).scene.opening, /six new lamps.*rest of the Sallows is as dark/s);
+});
