@@ -82,7 +82,8 @@
         },
         "flag": "road_escort"
       }
-    ]
+    ],
+    "approach": "The causeway runs straight at the tollhouse, in full view of its shutters. Underneath it, the old drainage arches lead toward the drivers’ yard: low, wet and out of sight."
   },
   "marsh": {
     "id": "marsh",
@@ -172,7 +173,8 @@
         },
         "flag": "marsh_engineers"
       }
-    ]
+    ],
+    "approach": "A trench of yellow vapor runs under the reeds to the intake. The causeway above it is dry and open, and both banks are watching it."
   },
   "bridge": {
     "id": "bridge",
@@ -260,7 +262,8 @@
         },
         "flag": "bridge_tribunal"
       }
-    ]
+    ],
+    "approach": "The maintenance anchors hang under the span, slick with river spray. On the deck above, the queue of carts waits in plain sight of Hal’s line."
   },
   "archive": {
     "id": "archive",
@@ -311,7 +314,7 @@
         "performance",
         "persuasion"
       ],
-      "success": "The archivist stops sorting. It asks Maren to deliver the letters, then opens the diagram cabinet and lets the party pass.",
+      "success": "The archivist stops sorting. It gathers the last letters from the one dry drawer and holds them out, not to you, but to Maren. Then it opens the diagram cabinet and lets the party pass.",
       "failure": "The unfinished names catch in the ward. The archivist turns hostile, but the cabinet remains close enough to reach."
     },
     "objective": {
@@ -331,7 +334,29 @@
     "foe": "archive-keeper",
     "foeName": "The Unfinished Archivist",
     "enemyTheme": "undead",
-    "after": "The diagram could be published for everyone who tends a ward, or kept under council protection while the sabotage is investigated.",
+    "after": [
+      {
+        "narrate": "The diagram is safe in its oilcloth. Maren has the keepers’ letters, a damp bundle tied with archive string, and she has stopped at the one on top."
+      },
+      {
+        "say": "maren",
+        "text": "Brother Edric Moss. He kept the well-ward at Fenmere. To his sister Hesper, at the dyers’ yard in Highpass."
+      },
+      {
+        "say": "orin",
+        "text": "You knew him."
+      },
+      {
+        "say": "maren",
+        "text": "He owed me two candles and an apology. He would have paid the candles."
+      },
+      {
+        "narrate": "She puts the letter inside her coat, next to her list."
+      },
+      {
+        "narrate": "The diagram could be published for everyone who tends a ward, or kept under council protection while the sabotage is investigated."
+      }
+    ],
     "decisions": [
       {
         "id": "publish",
@@ -353,7 +378,8 @@
         },
         "flag": "archive_guarded"
       }
-    ]
+    ],
+    "approach": "The flooded stacks run in long aisles toward the record chamber. Some shelves still hold their seals, and one wrong step brings a whole wall of them down. The main stair is clear, loud, and in full view."
   },
   "signal": {
     "id": "signal",
@@ -421,7 +447,62 @@
     "foe": "storm-sentinel",
     "foeName": "Stormbound Sentinel",
     "enemyTheme": "storm",
-    "after": "Nessa receives her mentor’s last reliable map. Highpass asks which travelers should receive the first safe signal windows.",
+    "after": [
+      {
+        "narrate": "Highpass’s medics carry the keeper down on a door. Her leg is wrong below the knee, and she gives instructions about the beacon the whole way."
+      },
+      {
+        "say": "Wren",
+        "text": "You tied your scarf to the wrong arm. Nobody could see it from the road.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "nessa",
+        "text": "I didn’t tie it. You did. I came because I saw it."
+      },
+      {
+        "say": "Wren",
+        "text": "Then I tied it to the wrong arm.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "She pushes a folded map into Nessa’s hands: every safe line through the pass, redrawn after each storm for twenty years.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "Wren",
+        "text": "Reliable as of this morning. After that, it’s yours to keep honest.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "nessa",
+        "text": "I’ll bring it back to you."
+      },
+      {
+        "say": "Wren",
+        "text": "Bring it back better.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "Before the medics take her down, the keeper, Wren, presses a folded map on you: every safe line through the pass, redrawn after each storm for twenty years. “Give it to someone who’ll keep it honest.”",
+        "when": {
+          "absent": "nessa"
+        }
+      },
+      {
+        "narrate": "Highpass asks which travelers should receive the first safe signal windows."
+      }
+    ],
     "decisions": [
       {
         "id": "refugees",
@@ -443,7 +524,8 @@
         },
         "flag": "signal_supply"
       }
-    ]
+    ],
+    "approach": "The charged rings turn above the climb, throwing sparks onto the rock. The tower’s front stair is open and lit, and every sentinel on the platform can see it."
   },
   "summit": {
     "id": "summit",
@@ -533,7 +615,8 @@
         },
         "flag": "keystone_council"
       }
-    ]
+    ],
+    "approach": "A cracked footbridge leads round to a neutral ledge above the three camps. The main path runs straight through all of them, past every banner."
   },
   "breach": {
     "id": "breach",
@@ -623,7 +706,8 @@
         },
         "flag": "district_oversight"
       }
-    ]
+    ],
+    "approach": "The service courtyards run behind the bakery and the school, where the routines are loudest. The main street is empty, clicking, and watched by the relay sentinels."
   },
   "beacon": {
     "id": "beacon",
@@ -662,7 +746,34 @@
       "success": "You ground the nearest rings and reach the cradle before the command finishes tuning them.",
       "failure": "A peal throws the party against the stone. The cradle remains reachable, but the bound echoes gather around it."
     },
-    "crisis": "The Single Voice offers perfect safety at the cost of every keeper’s choice. The promise sounds less convincing now that you have seen whom such safety leaves behind.",
+    "crisis": [
+      {
+        "narrate": "The rings close into one note, and the note finds words. The voice is a man’s: tired, patient, and very reasonable."
+      },
+      {
+        "say": "Corvane",
+        "text": "High Warden Corvane, Central Command. You have walked a long way to break the only thing that has ever kept the Gloam out of a nursery."
+      },
+      {
+        "say": "Corvane",
+        "text": "I have watched councils. I watched one argue about whose turn it was to ring the bell while the mist came over the wall. The vote was still open when the last house went quiet. The design you are standing in was drawn by someone who saw that. She wanted a voice that could answer before the arguing finished. So do I."
+      },
+      {
+        "say": "orin",
+        "text": "And who does the voice answer to?"
+      },
+      {
+        "say": "Corvane",
+        "text": "Nobody needs to. That is the point, Stoneward."
+      },
+      {
+        "say": "maren",
+        "text": "He believes it. Every word."
+      },
+      {
+        "narrate": "The Single Voice offers perfect safety at the cost of every keeper’s choice. It sounds less convincing now that you have seen whom such safety leaves behind."
+      }
+    ],
     "peaceful": {
       "label": "Ask the independent keepers to answer together",
       "skill": "persuasion",
@@ -712,7 +823,8 @@
         },
         "flag": "ending_charter"
       }
-    ]
+    ],
+    "approach": "The rings hum between you and the keystone cradle, close enough to feel in your teeth. The pilgrims’ stair goes straight up the middle, where the command will hear every step."
   },
   "trial": {
     "id": "trial",
@@ -735,8 +847,120 @@
         "history",
         "religion"
       ],
-      "success": "Each companion names a decision they remember. Together you identify the moment the trial is asking you to change.",
-      "failure": "You disagree about the past, but the disagreement clarifies the question. There is no single approved answer."
+      "success": [
+        {
+          "narrate": "The trainers dim the echo and leave you the bench by the gate. Nobody hurries you."
+        },
+        {
+          "say": "orin",
+          "text": "At Ashford you let the bridge crews work off what they owed instead of hanging it on them. I wanted a tribunal. I was wrong, and the bridge got mended in half the time.",
+          "when": {
+            "flag": "bridge_amnesty"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "At Ashford you kept Hal’s orders and called a tribunal. Slow. But every carter on that bridge watched it happen, and none of them had to take our word for anything.",
+          "when": {
+            "flag": "bridge_tribunal"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "You gave the diagram to every keeper who asked. Some of them will use it badly. All of them can use it.",
+          "when": {
+            "flag": "archive_open"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "You put the diagram where it could be watched, with a name beside every copy. I wrote the names down too. Habit.",
+          "when": {
+            "flag": "archive_guarded"
+          }
+        },
+        {
+          "say": "nessa",
+          "text": "Highpass. You sent the refugee carts through first, and the supply train sat in the snow a whole day. I counted the people on those carts. Forty-two.",
+          "when": {
+            "flag": "signal_refugees"
+          }
+        },
+        {
+          "say": "nessa",
+          "text": "Highpass. You sent the supply trains first. I was angry for a week. Then the pass had food all winter, and I stopped being angry and started being annoyed that you were right.",
+          "when": {
+            "flag": "signal_supply"
+          }
+        },
+        {
+          "narrate": "Each of them is holding a different day of the road. Between them, the trial’s question gets smaller and sharper: not what you can do, but who you do it for."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The trainers leave you the bench by the gate. It goes badly."
+        },
+        {
+          "say": "orin",
+          "text": "The Quiet District. Double consent. If a ward has to ask twice before it saves someone, someone drowns while it’s asking.",
+          "when": {
+            "flag": "district_consent"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "And if it never has to ask, you get a street full of bakers kneading empty boards.",
+          "when": {
+            "flag": "district_consent"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "That’s not fair.",
+          "when": {
+            "flag": "district_consent"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "It isn’t meant to be fair. It’s meant to be true.",
+          "when": {
+            "flag": "district_consent"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "The oversight council. Named votes, a fixed expiry. I like it. I like anything with an expiry.",
+          "when": {
+            "flag": "district_oversight"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "You like it because it sounds like a duty roster. Councils lie in ways a roster can’t.",
+          "when": {
+            "flag": "district_oversight"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "Name one.",
+          "when": {
+            "flag": "district_oversight"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "Every council I have ever sat on.",
+          "when": {
+            "flag": "district_oversight"
+          }
+        },
+        {
+          "narrate": "Nobody wins. But by the end you know what each of them is afraid you might become, and that is its own kind of answer."
+        }
+      ]
     },
     "route": {
       "label": "Demonstrate your class technique on the approach",
@@ -781,18 +1005,105 @@
     "foe": "oath-echo",
     "foeName": "Echo of the Unchosen Road",
     "enemyTheme": "trial",
-    "after": "You have reached the first threshold. Your class mastery is learned and ready to use; the Progression panel shows it. Your second job is chosen at level 20. A relief-convoy expedition lets you use it on the road; the practice arena remains available for safe experiments.",
+    "after": [
+      {
+        "narrate": "The echo is gone. The gate is still standing, and so are the people behind it. The trainers wait with the guild’s book open. The Oath of the Road is one sentence long, and they will not say it for you."
+      },
+      {
+        "say": "orin",
+        "text": "They want it out loud. I said mine to a sergeant with a head cold. Don’t overthink it."
+      },
+      {
+        "say": "maren",
+        "text": "Overthink it a little. Then mean it."
+      },
+      {
+        "say": "nessa",
+        "text": "Or say it fast, before you can change your mind. That’s what I’d do."
+      },
+      {
+        "say": "maren",
+        "text": "That is what you’d do."
+      }
+    ],
     "decisions": [
       {
         "id": "accept",
-        "label": "Complete the trial and choose your path",
-        "text": "The guild records your first advancement trial. Your class mastery is yours from today.",
+        "label": "Swear the Oath of the Road: for the people who cannot hold the road themselves",
+        "description": "Speak your oath. The guild records it, and the road remembers it. Every oath earns the same class mastery.",
+        "text": [
+          {
+            "narrate": "“I will hold the road for the people who cannot hold it themselves, and I will not leave them behind to win.”"
+          },
+          {
+            "say": "orin",
+            "text": "Good."
+          },
+          {
+            "narrate": "The guild writes it down. Your second job is chosen at level 20. A relief convoy is stuck on the Highpass road and needs you now; the practice arena stays open for safe experiments."
+          }
+        ],
         "rep": {
           "wardens": 1
         },
-        "flag": "trial_earned"
+        "flag": "trial_earned",
+        "setFlags": {
+          "oath:people": true
+        }
+      },
+      {
+        "id": "companions",
+        "label": "Swear the Oath of the Road: for the ones who walk it with you",
+        "description": "Speak your oath. The guild records it, and the road remembers it. Every oath earns the same class mastery.",
+        "text": [
+          {
+            "narrate": "“I will walk the road with the people beside me, and I will not ask them to go where I will not.”"
+          },
+          {
+            "say": "nessa",
+            "text": "You already don’t. You just never said it."
+          },
+          {
+            "narrate": "The guild writes it down. Your second job is chosen at level 20. A relief convoy is stuck on the Highpass road and needs you now; the practice arena stays open for safe experiments."
+          }
+        ],
+        "rep": {
+          "wardens": 1
+        },
+        "flag": "trial_earned",
+        "setFlags": {
+          "oath:companions": true
+        }
+      },
+      {
+        "id": "towns",
+        "label": "Swear the Oath of the Road: for the towns, even when they cannot agree",
+        "description": "Speak your oath. The guild records it, and the road remembers it. Every oath earns the same class mastery.",
+        "text": [
+          {
+            "narrate": "“I will keep the road open for every town on it, and I will not choose which of them is worth saving.”"
+          },
+          {
+            "say": "maren",
+            "text": "Even Fenmere?"
+          },
+          {
+            "narrate": "“Especially Fenmere.”"
+          },
+          {
+            "narrate": "The guild writes it down. Your second job is chosen at level 20. A relief convoy is stuck on the Highpass road and needs you now; the practice arena stays open for safe experiments."
+          }
+        ],
+        "rep": {
+          "wardens": 1
+        },
+        "flag": "trial_earned",
+        "setFlags": {
+          "oath:towns": true
+        }
       }
-    ]
+    ],
+    "approach": "The trainers have laid out the echo’s road: a course built to show your technique, and beside it a plain path straight to the gate. Either is allowed. Both are watched."
   },
   "aftermath": {
     "id": "aftermath",
@@ -841,13 +1152,38 @@
         "religion",
         "performance"
       ],
-      "success": "The engine accepts a responsible keeper in place of a distant master. It opens the gate and records the convoy’s destination, not its obedience.",
+      "success": [
+        {
+          "narrate": "The engine asks for a keeper who will answer for the people beyond its gate. You have already sworn to something like that, out loud, in front of witnesses."
+        },
+        {
+          "narrate": "You give it the words you gave the guild: the people who cannot hold the road themselves.",
+          "when": {
+            "flag": "oath:people"
+          }
+        },
+        {
+          "narrate": "You give it the words you gave the guild: the ones who walk the road with you, and the convoy is walking it now.",
+          "when": {
+            "flag": "oath:companions"
+          }
+        },
+        {
+          "narrate": "You give it the words you gave the guild: every town on the road, even the ones that cannot agree.",
+          "when": {
+            "flag": "oath:towns"
+          }
+        },
+        {
+          "narrate": "The engine accepts a responsible keeper in place of a distant master. It opens the gate and records the convoy’s destination, not its obedience."
+        }
+      ],
       "failure": "The damaged engine refuses the oath. You must make room for the convoy before its guards enforce the old order."
     },
     "objective": {
       "name": "Open the relief convoy’s route",
       "label": "Release an emergency road channel",
-      "description": "Four successful actions open the gate. Your advancement abilities are available, including objective-focused alternatives for Saboteurs and Lorekeepers.",
+      "description": "Four successful actions open the gate. Your new class mastery is among your combat actions: use it to buy whoever works the channel the time they need.",
       "skill": "athletics",
       "alt": [
         "arcana",
@@ -868,7 +1204,7 @@
       {
         "id": "keepers",
         "label": "Leave local keepers in charge of the road",
-        "text": "The convoy appoints a keeper from each town. Your party leaves a working agreement rather than another command. This season’s adventure is complete.",
+        "text": "The convoy appoints a keeper from each town. Your party leaves a working agreement rather than another command.",
         "rep": {
           "trade": 3,
           "wilds": 2
@@ -878,12 +1214,57 @@
       {
         "id": "patrol",
         "label": "Found a voluntary road patrol with the companions",
-        "text": "Your companions help volunteers agree on duties they can refuse or revise. The road belongs to those who keep it open. This season’s adventure is complete.",
+        "text": "Your companions help volunteers agree on duties they can refuse or revise. The road belongs to those who keep it open.",
         "rep": {
           "wardens": 3,
           "trade": 2
         },
         "flag": "epilogue_patrol"
+      }
+    ],
+    "approach": [
+      {
+        "narrate": "The emergency channel sits in a gallery above the gate, reached by a service ladder the guards have half pulled up. Below, the driver has laid the sick out in the shade of the crates, in order of who can wait least."
+      },
+      {
+        "say": "Oda",
+        "text": "Whatever you’re going to do, do it before the shade moves."
+      },
+      {
+        "narrate": "Battle Surge is fresh in your arms. One breath of it would carry you up that ladder through a guard’s swing, and make your next blow land true.",
+        "when": {
+          "class": "fighter"
+        }
+      },
+      {
+        "narrate": "Vanishing Step would put you in the gallery’s shadows before the guards had finished turning round.",
+        "when": {
+          "class": "rogue"
+        }
+      },
+      {
+        "narrate": "An Arcane Barrier over whoever climbs first would let them take a guard’s blow and keep working.",
+        "when": {
+          "class": "wizard"
+        }
+      },
+      {
+        "narrate": "Divine Aegis can keep whoever holds the channel on their feet while the guards try to drag them off it.",
+        "when": {
+          "class": "cleric"
+        }
+      },
+      {
+        "narrate": "From the top of a crate, one Volley would reach every guard on the gallery at once.",
+        "when": {
+          "class": "ranger"
+        }
+      },
+      {
+        "narrate": "Song of Rest will not open a gate, but it will keep the whole party standing while you do.",
+        "when": {
+          "class": "bard"
+        }
       }
     ]
   }

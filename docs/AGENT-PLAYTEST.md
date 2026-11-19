@@ -39,6 +39,11 @@ node scripts/play.js read scene-bridge-camp-night     # every line, choice and o
 node scripts/play.js jump q-bridge-after --level 4 --with nessa --save .playtest/bridge.json
 ```
 
+After the written story ends (the relief convoy), further adventures are
+written by the AI storyteller. To test that handoff without an AI, run
+`node scripts/play.js commission-sample`: it adds the bundled sample adventure
+through the normal game action and marks the save as a fixture.
+
 `jump` makes a **review fixture**: a fresh hero placed at that scene. It is not a
 real playthrough (earlier choices and items are missing), so say so in your
 report whenever you used it.

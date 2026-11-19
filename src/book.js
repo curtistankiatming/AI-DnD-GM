@@ -44,6 +44,8 @@ function finished(state) {
   return true;
 }
 const running = state => !finished(state);
+// Told once, when the last written chapter is finished.
+const ENDING = 'The written story is complete: you have finished every chapter of Book One. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.';
 
 // The written chapter the hero is on now: the bell, then each authored
 // expedition in order. Null once the books are finished.
@@ -110,4 +112,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { FINISHED, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { FINISHED, ENDING, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

@@ -67,6 +67,7 @@ function renderExpansion(){
       c.appendChild(v4Button(q.returning?'Continue expedition':'Depart',{type:'depart',questId:q.id},!q.canDepart,`Departure point: ${q.townName}. Level ${q.level} required.`));
       if(!q.canDepart)c.appendChild(createElement('p','muted',`Departure point: ${q.townName}; required level ${q.level}.${q.id==='aftermath'?' Complete the Oath of the Road trial first.':''}`));expeditions.appendChild(c);}
     const d=w.director;
+    if(d&&w.bellComplete&&!d.sideQuests)expeditions.appendChild(createElement('p','books-finished','The written story is complete: you have finished every chapter of Book One. From here the AI storyteller writes your adventures from the choices you made. Without the Claude AI game master, your written campaign ends here, and your hero, party and choices stay saved.'));
     if(d?.trial&&!d.trial.questId){const t=d.trial,c=v4Card(`${t.label} — become a ${t.title}`,t.canRequest?`You have reached level ${t.level} as a ${t.from}. ${t.style} Pass this trial to take your ${t.job} job. With the Claude AI game master on, the trial is written for your story; otherwise a written trial is used. The trial is always ${t.tier} and pays half a level of XP.`:t.reason);
       c.dataset.trial=t.kind;const b=createElement('button','btn btn-primary btn-small','Begin your trial');b.type='button';b.id='trialBtn';b.disabled=busy||!t.canRequest;
       b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.trial();});c.appendChild(b);expeditions.appendChild(c);}

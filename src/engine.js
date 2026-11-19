@@ -12,7 +12,7 @@ const Improvise = require("./improvise");
 const Director = require("./director");
 const Book = require("./book");
 const Chronicle = require("./chronicle");
-const { dialogueText } = require("./expansion");
+const { dialogueText, liveLines } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
@@ -340,7 +340,7 @@ function enterNode(state, nodeId, events = [], lead = null) {
   // A node may have a short "revisit" line for coming back to it.
   const spoken = Array.isArray(lead) ? lead : [];
   const opening = !firstVisit && node.revisit ? node.revisit : node.opening;
-  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : node.dialogue || [{ narration: opening }];
+  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : liveLines(state, node.dialogue) || [{ narration: opening }];
   const dialogue = node.dialogue || spoken.length ? [...spoken, ...own] : null;
   state.story.lastOutcome = {
     kind: "node",
@@ -504,8 +504,11 @@ function healEntity(entity, amount, events, source = "Healing") {
   return applied;
 }
 
-function applyOutcome(state, outcome = {}, rng, events) {
+function applyOutcome(state, written = {}, rng, events) {
+  const dialogue = written.dialogue && liveLines(state, written.dialogue);
+  const outcome = dialogue ? { ...written, dialogue, text: written.text !== undefined ? dialogueText(dialogue) : undefined } : written;
   if (outcome.recover) { W.recover(state, events, extensionApi()); return; }
+  const booksOpen = !state.story.flags[Book.FINISHED];
   if (outcome.completeQuest) W.completeQuest(state, outcome.completeQuest, events, extensionApi());
   if (outcome.reputation) W.reputation(state, outcome.reputation);
   if (outcome.setFlags) Object.assign(state.story.flags, outcome.setFlags);
@@ -540,12 +543,14 @@ function applyOutcome(state, outcome = {}, rng, events) {
     if (!(outcome.dialogue && outcome.nextNode)) events.push({ type: "story", tone: "neutral", text: outcome.text });
     pushLog(state, "GM", outcome.text, "story");
   }
+  // Finishing the last written chapter says so, after the choice that finished it.
+  if (booksOpen && state.story.flags[Book.FINISHED]) events.push({ type: "story", tone: "good", text: Book.ENDING });
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
   if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
     // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.
     const fight = state.story.lastOutcome;
-    const dialogue = [...(outcome.dialogue || [{ narration: outcome.text }]), { narration: fight.text }];
-    state.story.lastOutcome = { ...fight, text: dialogueText(dialogue), ...(outcome.dialogue ? { dialogue } : {}) };
+    const told = [...(outcome.dialogue || [{ narration: outcome.text }]), { narration: fight.text }];
+    state.story.lastOutcome = { ...fight, text: dialogueText(told), ...(outcome.dialogue ? { dialogue: told } : {}) };
   }
 }
 
@@ -821,7 +826,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   if(action.type==='road'&&result.ok&&result.outcomeText)state.story.lastOutcome={kind:'road',title:Road.TITLE,text:result.outcomeText};
   G.normalizeEquipment(state);
   if(state.player.hp<=0&&!state.combat?.active&&!currentNode(state).defeat){state.player.hp=1;events.push({type:'warning',tone:'warning',text:'Outside combat, the party prevents a lethal collapse; the hero remains at 1 HP.'});}
-  if(result.ok&&result.outcomeText&&['world','item','equipment','rest','party','level','dialogue','clarification'].includes(result.kind))state.story.lastOutcome={kind:result.kind,title:currentNode(state).title,text:result.outcomeText};
+  if(result.ok&&result.outcomeText&&['world','item','equipment','rest','party','level','dialogue','clarification','director'].includes(result.kind))state.story.lastOutcome={kind:result.kind,title:currentNode(state).title,text:result.outcomeText};
   if(currentNode(state).questId)(state.world.progress[currentNode(state).questId]||={}).node=state.story.nodeId;
   if(result.ok&&result.outcomeText&&action.type!=='chat-instructions')ChatMemory.append(state,'rules',result.outcomeText);
   const eventText=events.map(e=>e.text).filter(Boolean).join(' ');if(eventText)pushLog(state,'Rules',eventText,'mechanics');

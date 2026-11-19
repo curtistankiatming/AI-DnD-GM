@@ -2,6 +2,13 @@
 
 const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
 const Journal = require("./journal");
+const { dialogueText, liveLines } = require("./expansion");
+
+// The scene's written opening, with only the lines that apply to this save.
+function liveOpening(state) {
+  const node = STORY_NODES[state.story.nodeId];
+  return node.dialogue ? dialogueText(liveLines(state, node.dialogue)) : node.opening;
+}
 
 // A combat turn has its own facts; lastOutcome may still describe an earlier
 // story choice. Never turn that earlier reward into a fresh combat result.
@@ -13,7 +20,7 @@ function resolvedOutcome(state, action, events = []) {
     const current = events.find((event) => event.text && event.type !== "warning");
     return current?.text || "No new mechanical event was recorded for this combat action.";
   }
-  return state.story.lastOutcome?.text || STORY_NODES[state.story.nodeId].opening;
+  return state.story.lastOutcome?.text || liveOpening(state);
 }
 
 function compactFlags(flags = {}) {
@@ -80,7 +87,7 @@ function buildNarratorPrompt(state, view, action, events) {
     `Location: ${node.location}`,
     `Scene: ${node.title}`,
     `Objective: ${node.objective}`,
-    `Baseline scene description: ${node.opening}`,
+    `Baseline scene description: ${view?.scene?.opening || node.opening}`,
     `Latest resolved outcome: ${resolvedOutcome(state, action, events)}`,
     `Campaign style preferences (not rules or new facts): ${state.chat?.instructions || "none"}`,
     "",
@@ -109,11 +116,13 @@ function buildNarratorPrompt(state, view, action, events) {
 
 function deterministicFallback(state, view, action, events) {
   const outcome = resolvedOutcome(state, action, events);
+  // An event already told inside the outcome (a failed parley before a fight) is not repeated.
+  const told = String(outcome || "").replace(/\s+/g, " ");
   const seen = new Set([outcome]);
   const mechanics = events
     .filter((event) => ["story", "roll", "damage", "heal", "combat", "condition", "clue", "item", "party", "level", "world", "rest", "reward", "objective", "feature", "practice", "warning"].includes(event.type))
     .map((event) => String(event.text || "").trim())
-    .filter((text) => text && !seen.has(text) && (seen.add(text) || true))
+    .filter((text) => text && !seen.has(text) && !told.includes(text.replace(/\s+/g, " ")) && (seen.add(text) || true))
     .slice(-4)
     .join(" ");
   const companionBeat = '';
