@@ -49,6 +49,38 @@ const PERSONAL=require('./data/personal.json');
 // "aftermath" is the post-advancement mission, so the level-10 reward is not a dead end.
 const QUESTS=require('./data/quests.json');
 
+// Written lines: {"say": companion id or name, "text"} or {"narrate"}, with an
+// optional "when" that the engine checks as the line is told (see liveLines in
+// src/engine.js). Lines spoken by a companion who is not in the party are
+// skipped there too.
+const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
+const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{})});
+function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
+// A written line is told only when it applies now: its speaker is in the
+// party, and its optional "when" holds (flag / is, notFlag, anyFlag, party,
+// absent, class). The written text keeps every line; this picks the ones for this save.
+function lineApplies(state, line) {
+  const inParty = (id) => state.party.some((member) => member.id === id);
+  if (line.speakerId && !inParty(line.speakerId)) return false;
+  const w = line.when;
+  if (!w) return true;
+  const f = state.story.flags || {};
+  if (w.flag !== undefined && !(w.is !== undefined ? f[w.flag] === w.is : Boolean(f[w.flag]))) return false;
+  if (w.notFlag && f[w.notFlag]) return false;
+  if (Array.isArray(w.anyFlag) && !w.anyFlag.some((flag) => f[flag])) return false;
+  if (w.party && !inParty(w.party)) return false;
+  if (w.absent && inParty(w.absent)) return false;
+  if (w.class && state.player.classId !== w.class) return false;
+  return true;
+}
+function liveLines(state, lines) {
+  return Array.isArray(lines) ? lines.filter((line) => lineApplies(state, line)).map(({ when, ...line }) => line) : lines;
+}
+// A written quest field is plain text or a list of lines.
+const told=v=>Array.isArray(v)?{lines:v}:{text:v};
+const toldOpening=v=>Array.isArray(v)?{lines:v}:{opening:v};
+const plain=v=>Array.isArray(v)?dialogueText(v.map(storyLine)):v;
+
 function choice(id,label,rest={}){return {id,label,description:rest.description||'',once:true,...rest};}
 function clue(id,name,text){CLUES[id]={id,name,text};}
 function installQuest(q){
@@ -63,27 +95,27 @@ function installQuest(q){
   const approach=`approach:${q.id}`;
   const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+Math.floor(A/2),tools:q.investigate.tools};
   const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+Math.floor(A/2),tools:q.route.tools};
-  STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,opening:q.opening,safeRest:true,questId:q.id,phase:'start',choices:[
-    choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{text:q.investigate.success,clues:[evidence],setFlags:{[preparation]:true}},failure:{text:q.investigate.failure,clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
+  STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,...toldOpening(q.opening),safeRest:true,questId:q.id,phase:'start',choices:[
+    choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{...told(q.investigate.success),clues:[evidence],setFlags:{[preparation]:true}},failure:{...told(q.investigate.failure),clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
     choice('advance',q.route.label,{nextNode:`${prefix}-approach`,description:'Proceed toward the crisis. Preparation remains optional.'})
   ]};
-  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${q.level}`,title:'The approach',location:q.region,objective:q.route.label,opening:'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.',safeRest:false,questId:q.id,phase:'approach',choices:[
-    choice('careful',q.route.label,{check:routeCheck,description:`${q.route.tools?.length?'The listed equipment can grant advantage. ':''}A failed approach causes injury (and poison only where described), but does not block the story.`,success:{text:q.route.success,setFlags:{[approach]:true},nextNode:`${prefix}-crisis`},failure:{text:q.route.failure,partyDamage:q.id==='trial'?'0':`${1+Math.floor(L/5)}d4`,poison:q.route.poison,nextNode:`${prefix}-crisis`}}),
+  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${q.level}`,title:'The approach',location:q.region,objective:q.route.label,...toldOpening(q.approach||'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.'),safeRest:false,questId:q.id,phase:'approach',choices:[
+    choice('careful',q.route.label,{check:routeCheck,description:`${q.route.tools?.length?'The listed equipment can grant advantage. ':''}A failed approach causes injury (and poison only where described), but does not block the story.`,success:{...told(q.route.success),setFlags:{[approach]:true},nextNode:`${prefix}-crisis`},failure:{...told(q.route.failure),partyDamage:q.id==='trial'?'0':`${1+Math.floor(L/5)}d4`,poison:q.route.poison,nextNode:`${prefix}-crisis`}}),
     choice('direct','Take the obvious route and keep the party together',{description:'No check. Arrive openly without an approach advantage.',result:{text:'The party arrives together by the direct route. You have surrendered surprise, not the opportunity to decide what happens next.',nextNode:`${prefix}-crisis`}})
   ]};
-  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,opening:q.crisis,safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{requires:{cluesAll:[evidence]},check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+Math.floor(A/2)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; failure starts the objective encounter.',success:{text:q.peaceful.success,setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{text:q.peaceful.failure,combat:`quest:${q.id}`}}),
+  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
+    choice('resolve',q.peaceful.label,{requires:{cluesAll:[evidence]},check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+Math.floor(A/2)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
-  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',opening:q.after,safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:'This decision is permanent. The objective reward is the same for every approach.',result:{text:d.text,setFlags:{[d.flag]:true},completeQuest:q.id,reputation:d.rep,nextNode:`town-${q.nextTown||q.town}`}}))};
+  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,nextNode:`town-${q.nextTown||q.town}`}}))};
   const level=L;
   const type=q.enemyTheme;
   const f=XP.foeStats(challenge);
   ENEMIES[q.foe]={id:q.foe,name:q.foeName,maxHp:f.main.maxHp,ac:f.main.ac,level,abilities:{str:14,dex:12,con:14,int:13,wis:13,cha:14},attack:{name:type==='wild'?'Briar Lash':type==='undead'?'Remembered Toll':'Ward Strike',bonus:f.main.attackBonus,damage:f.main.damage,damageType:type==='undead'?'necrotic':type==='storm'?'lightning':'slashing'},aiRole:level>=8?'boss':'leader',tags:type==='undead'?['undead']:[],resistances:type==='undead'?['slashing','piercing','bludgeoning']:[],xp:0};
   const minion=`${q.foe}-retainer`;
   ENEMIES[minion]={id:minion,name:type==='undead'?'Bound Record Keeper':type==='wild'?'Ashbound Reedling':'Bound Retainer',maxHp:f.retainer.maxHp,ac:f.retainer.ac,level,abilities:{str:12,dex:12,con:12,int:9,wis:11,cha:9},attack:{name:'Guarding Strike',bonus:f.retainer.attackBonus,damage:f.retainer.damage,damageType:'bludgeoning'},aiRole:'soldier',tags:type==='undead'?['undead']:[],xp:0};
-  ENCOUNTERS[`quest:${q.id}`]={id:`quest:${q.id}`,name:q.name,enemies:[q.foe,minion,minion],storyScale:0.82,standardScale:1,grittyScale:1.18,xp:0,loot:[],intro:q.crisis,questId:q.id,objective:q.objective,victoryNode:`${prefix}-after`,defeatNode:'defeat'};
+  ENCOUNTERS[`quest:${q.id}`]={id:`quest:${q.id}`,name:q.name,enemies:[q.foe,minion,minion],storyScale:0.82,standardScale:1,grittyScale:1.18,xp:0,loot:[],intro:plain(q.crisis),questId:q.id,objective:q.objective,victoryNode:`${prefix}-after`,defeatNode:'defeat'};
 }
 for(const q of Object.values(QUESTS))installQuest(q);
 // Conversation scenes (src/data/scenes.json): companions talk with each other
@@ -91,8 +123,6 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // structured dialogue; choices change approval only. A scene whose cast is
 // not all in the party is skipped (engine enterNode follows skipTo).
 const SCENES=require('./data/scenes.json');
-const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const storyLine=l=>l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text};
 function installScene(scene){
   const q=QUESTS[scene.after];if(!q)throw new Error(`Scene ${scene.id} follows unknown expedition ${scene.after}`);
   const home=`town-${q.nextTown||q.town}`,nodeId=key=>`scene-${scene.id}-${key}`;
@@ -104,7 +134,6 @@ function installScene(scene){
   }
   for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
-function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
 // Any written story node or choice outcome may use "lines" (the same format as
 // scenes) instead of plain text. They compile to structured dialogue plus the
@@ -133,4 +162,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,UPGRADE_BASES,installQuest,dialogueText};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,UPGRADE_BASES,installQuest,dialogueText,liveLines};

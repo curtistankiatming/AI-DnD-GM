@@ -11,6 +11,7 @@ const Road = require("./road-story");
 const Journal = require("./journal");
 const { titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
+const { dialogueText, liveLines } = require("./expansion");
 const currentNode = (...args) => Engine.currentNode(...args);
 const requirementStatus = (...args) => Engine.requirementStatus(...args);
 const completedChoice = (...args) => Engine.completedChoice(...args);
@@ -187,7 +188,8 @@ function buildView(state) {
       title: node.title,
       location: node.location,
       objective: node.objective,
-      opening: node.opening,
+      // Only the written lines that apply to this save (see liveLines).
+      opening: node.dialogue ? dialogueText(liveLines(state, node.dialogue)) : node.opening,
       safeRest: node.safeRest,
       ending: Boolean(node.ending),
       defeat: Boolean(node.defeat),

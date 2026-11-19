@@ -14,6 +14,7 @@
 //   node scripts/play.js read <node-id>      (every line and outcome of one scene, no dice)
 //   node scripts/play.js scenes              (list every story scene)
 //   node scripts/play.js jump <node-id> --level 4 --with nessa   (review fixture, not real play)
+//   node scripts/play.js commission-sample   (after the written story: add the bundled sample AI adventure; fixture)
 //
 // The game lives in one JSON file (default .playtest/game.json; --save to
 // change it). Dice are seeded, so the same commands give the same results.
@@ -49,7 +50,7 @@ const line = (text = "") => console.log(text);
 const wrap = (text, indent = "") => String(text || "").split("\n").forEach((t) => line(indent + t));
 
 function printDialogue(dialogue) {
-  for (const l of dialogue) wrap(l.narration ? `  ${l.narration}` : `  ${l.speaker.toUpperCase()}: ${l.text}`);
+  for (const l of dialogue) wrap((l.narration ? `  ${l.narration}` : `  ${l.speaker.toUpperCase()}: ${l.text}`) + (l.when ? `  [only if ${JSON.stringify(l.when)}]` : ""));
 }
 
 function printScene(state, view, after) {
@@ -111,7 +112,13 @@ function printTown(view) {
   if (w.town && w.activeQuest) line(`${w.pendingBattle ? "Resume the interrupted fight" : `Resume your expedition (${w.activeQuest})`}  -> do '{"type":"resume"}'`);
   line("-- Expedition board --");
   for (const q of w.quests) line(`  ${q.id}: ${q.name}, level ${q.level}, from ${q.townName}${q.canDepart ? `  -> do '{"type":"depart","questId":"${q.id}"}'` : " (not available here yet)"}\n     ${q.brief}`);
-  if (!w.quests.length) line("  Nothing posted.");
+  const d = w.director;
+  const written = w.quests.filter((q) => !q.generated);
+  if (d && w.bellComplete && !d.sideQuests && !written.length) {
+    line("  The written story is complete: every chapter of Book One is finished.");
+    line("  From here the AI storyteller writes new adventures from your choices (in the browser game: \"Ask the GM for a new adventure\", with the Claude AI game master on).");
+    line("  The terminal has no AI. To test the handoff with the bundled sample adventure (a fixture, not real AI writing): node scripts/play.js commission-sample");
+  } else if (!w.quests.length) line("  Nothing posted.");
   if (w.canRecruit) line(`Nessa can be recruited  -> do '{"type":"recruit"}'`);
   for (const pq of w.personal || []) if (!pq.started || pq.canResolve) line(`Companion story: ${pq.name}  -> do '{"type":"${pq.canResolve ? "resolve-personal" : "personal"}","companionId":"${pq.companionId}"${pq.canResolve ? ',"choice":"watchful"' : ""}}'${pq.canResolve ? ' (or "decisive")' : ""}`);
   for (const r of view.progression.pending || []) {
@@ -147,7 +154,7 @@ function nodeText(id) {
       line(`  ${key}:`);
       if (o.dialogue) printDialogue(o.dialogue.map((l) => ({ ...l, narration: l.narration && `  ${l.narration}`, speaker: l.speaker && `  ${l.speaker}` })));
       else if (o.text) wrap(o.text, "    ");
-      const effects = Object.entries(o).filter(([k]) => !["text", "dialogue"].includes(k)).map(([k, v]) => `${k}=${typeof v === "object" ? JSON.stringify(v) : v}`);
+      const effects = Object.entries(o).filter(([k]) => !["text", "dialogue", "lines"].includes(k)).map(([k, v]) => `${k}=${typeof v === "object" ? JSON.stringify(v) : v}`);
       if (effects.length) line(`    (${effects.join("; ")})`);
     }
     if (c.nextNode) line(`  -> ${c.nextNode}`);
@@ -195,6 +202,13 @@ if (command === "new") {
   file.policy = memory; save(file); line(""); printScene(file.state, E.buildView(file.state));
 } else if (command === "town") {
   const file = load(); printTown(E.buildView(file.state));
+} else if (command === "commission-sample") {
+  // A review fixture: commissions the bundled sample adventure through the
+  // normal game action, as if the AI storyteller had written it.
+  const file = load(); const draft = require("../tests/fixtures/director-draft.js")();
+  const r = act(file, { type: "director-commission", draft }); file.fixture = true; save(file);
+  if (r.ok) line("Commissioned the bundled sample adventure (a fixture, not real AI writing). The save is now marked fixture=true.\n");
+  printScene(file.state, r.view, r.ok ? r.after : null);
 } else if (command === "read") {
   if (!args[0]) fail("Say which node, e.g. read briarwatch-square."); nodeText(args[0]);
 } else if (command === "scenes") {
@@ -222,5 +236,5 @@ if (command === "new") {
   line(`Review fixture: a level ${state.player.level} ${classId} placed at ${nodeId}. This is not natural play.\n`);
   printScene(state, E.buildView(state));
 } else {
-  fail(`Unknown command "${command}". Commands: new, look, choose, fight, do, auto, town, read, scenes, jump.`);
+  fail(`Unknown command "${command}". Commands: new, look, choose, fight, do, auto, town, read, scenes, jump, commission-sample.`);
 }

@@ -135,7 +135,10 @@ function recover(state,events,api){
   return emit(events,`The party returns to ${TOWNS[state.world.townId].name}. Rescue cost ${cost} gold; no XP or equipment lost. Recover, then resume the interrupted encounter from the expedition board.`,'rest','warning');
 }
 function resumeBattle(state,rng,events,api){
-  const battle=state.world.pendingBattle;state.world.pendingBattle=null;state.world.onExpedition=true;return api.startCombat(state,battle,rng,events)?emit(events,'The party returns to the interrupted encounter. Earlier preparation and setbacks are preserved.'):fail(events,'The interrupted encounter is unavailable.');}
+  const battle=state.world.pendingBattle;state.world.pendingBattle=null;
+  // Go back to the scene the fight belongs to, so the screen shows where it is.
+  const at=state.world.progress?.[state.world.activeQuest]?.node;if(at&&STORY_NODES[at]&&!STORY_NODES[at].townId)api.enterNode(state,at,events);
+  state.world.onExpedition=true;return api.startCombat(state,battle,rng,events)?emit(events,'The party returns to the interrupted encounter. Earlier preparation and setbacks are preserved.'):fail(events,'The interrupted encounter is unavailable.');}
 function depart(state,id,rng,events,api){
   const t=town(state);if(!t)return fail(events,'Depart from a town or resume at a safe hub.');
   // Continuing the expedition a rescue interrupted restarts its fight; entering
@@ -313,7 +316,7 @@ function handle(state,action,rng,events,api){
     if(!a||!r?.started||!completed(state,def.quest)||r.rewarded||!['watchful','decisive'].includes(action.choice))return fail(events,'That companion reflection is not available.');
     r.rewarded=true;r.style=action.choice;a.personalStyle=action.choice;a.bond=Math.min(5,a.bond+2);G.derive(a);
     if(api?.awardXp)api.awardXp(state,XP.missionXp(state.player.level),events,`Mission complete: ${def.name}`);
-    return emit(events,`${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
+    return emit(events,`${def.resolution?`${def.resolution} `:''}${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
   }
   if(action.type==='practice'){
     if(w.practiceSnapshot)return fail(events,'A practice session is already active.');

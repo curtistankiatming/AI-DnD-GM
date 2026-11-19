@@ -4,6 +4,36 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## 19 November 2026 — fixes from the level 11 playtest
+
+Fixes for [docs/reviews/codex-2026-11-19.md](docs/reviews/codex-2026-11-19.md).
+
+- **End of the written story**: finishing the relief convoy now says plainly
+  that Book One is complete and that further adventures come from the AI
+  storyteller (or that the written campaign ends here without it). The board
+  says so too, in the browser and the terminal. A commissioned adventure is
+  reported straight away instead of repeating the previous message.
+- **Oath of the Road**: companions name decisions this hero actually made
+  (or argue about one, if the talk goes badly), and the hero swears one of
+  three oaths. Mastery is announced when it is granted. The relief convoy
+  remembers which oath you swore.
+- **Personal moments**: Maren carries Brother Edric Moss's letter out of the
+  archive and delivers it to his sister when her story resolves; Nessa has a
+  scene with her mentor Wren at the signal tower; Orin's story ends at the
+  bridge rail with Hal; High Warden Corvane speaks for the Single Voice at the
+  beacon.
+- **Approaches**: every expedition describes its own route instead of the
+  generic "careful approach or a direct crossing". The relief convoy describes
+  the hero's own class mastery and no longer advertises level 20 abilities.
+- **Display**: a failed parley that starts a fight is told once, and continuing
+  an interrupted fight from town shows the fight's scene, not the town.
+- **Written lines can depend on the save**: a line may carry `"when"` (a flag,
+  a companion in or out of the party, or the hero's class). Lines spoken by a
+  companion who is not in the party are skipped. Expedition text fields in
+  `quests.json` accept lines as well as plain text.
+- `node scripts/play.js commission-sample` adds the bundled sample AI adventure
+  after the written story, for terminal reviews (marked as a fixture).
+
 ## 12 November 2026 — the written story comes first
 
 - **Story arcs, step 3**: beyond the books, AI adventures come in four-chapter
