@@ -1204,7 +1204,14 @@
       {
         "id": "keepers",
         "label": "Leave local keepers in charge of the road",
-        "text": "The convoy appoints a keeper from each town. Your party leaves a working agreement rather than another command.",
+        "text": [
+          {
+            "narrate": "The convoy appoints a keeper from each town. Your party leaves a working agreement rather than another command."
+          },
+          {
+            "narrate": "On the road home a rider in Highpass colours meets the convoy. The towns are sending delegates to Highpass, and the first council of the free wards sits at the end of the week. Captain Sorrel wants your party there. She did not say why, which from Sorrel means she expects trouble."
+          }
+        ],
         "rep": {
           "trade": 3,
           "wilds": 2
@@ -1214,7 +1221,14 @@
       {
         "id": "patrol",
         "label": "Found a voluntary road patrol with the companions",
-        "text": "Your companions help volunteers agree on duties they can refuse or revise. The road belongs to those who keep it open.",
+        "text": [
+          {
+            "narrate": "Your companions help volunteers agree on duties they can refuse or revise. The road belongs to those who keep it open."
+          },
+          {
+            "narrate": "On the road home a rider in Highpass colours meets the convoy. The towns are sending delegates to Highpass, and the first council of the free wards sits at the end of the week. Captain Sorrel wants your party there. She did not say why, which from Sorrel means she expects trouble."
+          }
+        ],
         "rep": {
           "wardens": 3,
           "trade": 2
@@ -1265,6 +1279,1049 @@
         "when": {
           "class": "bard"
         }
+      }
+    ]
+  },
+  "chairs": {
+    "id": "chairs",
+    "book": 2,
+    "name": "The Chair Problem",
+    "level": 10,
+    "town": "highpass",
+    "unlock": "aftermath",
+    "xp": 4450,
+    "gold": 320,
+    "region": "The officers' mess at Highpass Watch",
+    "threat": "A council that cannot agree on its seating, and a Gloam front climbing the lower pass toward the refugee camp. Highpass's ward will only ring at full strength if the delegates agree to share its charge.",
+    "faction": "wardens",
+    "brief": "The first council of the free wards sits at Highpass. Fenmere has sent for help. Get the towns to agree on anything before the mist does it for them.",
+    "opening": [
+      {
+        "narrate": "The first council of the free wards meets in the officers' mess at Highpass, because it is the only room in the fort with enough chairs. It does not have enough chairs."
+      },
+      {
+        "say": "Sorrel",
+        "text": "Six delegates. Five good chairs. One that rocks. I did the sum twice."
+      },
+      {
+        "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. A white-haired woman in a mud-stiff cloak has come up from Fenmere with a brown goat on a rope. Nobody has asked about the goat."
+      },
+      {
+        "narrate": "And there is the delegate from Merrowgate: Provost Elske Marrow, grey-eyed, ink on two fingers, with a guild clerk at her elbow who writes down everything, including the weather."
+      },
+      {
+        "say": "Iona",
+        "text": "Ashford will not sit below Merrowgate. Not on the first day. It sets a precedent."
+      },
+      {
+        "say": "Aveline",
+        "text": "Below? It's a table, Iona. It doesn't have a below."
+      },
+      {
+        "say": "Iona",
+        "text": "It has a head, Reeve. Heads have a below."
+      },
+      {
+        "narrate": "Sorrel, who has had the morning she was expecting, points at Orin."
+      },
+      {
+        "say": "Sorrel",
+        "text": "Stoneward. You're sergeant at arms. Keep order."
+      },
+      {
+        "say": "orin",
+        "text": "Understood."
+      },
+      {
+        "narrate": "Orin takes the job the way he takes every job. Within the hour he has collected two belt knives, a letter-opener and the bread knife, which he returns to the cook with an apology and a receipt. He stops at the goat."
+      },
+      {
+        "say": "orin",
+        "text": "Madam. Does she bite?"
+      },
+      {
+        "say": "Brannagh",
+        "text": "Only Ashford."
+      },
+      {
+        "narrate": "At midday Elske Marrow takes the seating chart off the wall, turns it over and draws a circle. Order of arrival. Merrowgate, which arrived first, she puts last. It takes her five minutes, and nobody can find anything wrong with it, which annoys Iona more than the head of the table did."
+      },
+      {
+        "say": "Elske",
+        "text": "There. Now that the furniture is settled, Fenmere's delegate has something to say. She has been waiting since breakfast."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Since the day before yesterday. Fenmere sent for help three days ago. The mist is in our lower fields. This is the meeting I sent for."
+      },
+      {
+        "narrate": "The council spends the afternoon on who should pay for it."
+      },
+      {
+        "say": "maren",
+        "text": "Every one of them means what they say. That is the trouble."
+      },
+      {
+        "say": "nessa",
+        "text": "Can't we just go? Fenmere's two days east. We could be halfway."
+      },
+      {
+        "say": "orin",
+        "text": "Without supplies or a road warrant. We'd arrive as six more mouths."
+      }
+    ],
+    "talks": [
+      {
+        "id": "elske",
+        "label": "Ask Provost Marrow why she gave Merrowgate the last seat",
+        "lines": [
+          {
+            "narrate": "Elske is on the wall walk, looking down at the refugee camp in the lower pass. She does not turn around."
+          },
+          {
+            "say": "Elske",
+            "text": "Because the last seat speaks last, and by then everyone is tired of talking. People mistake that for modesty."
+          },
+          {
+            "say": "Elske",
+            "text": "You broke the Single Voice. Good. Corvane turned it into a fist. It was meant to be a hand."
+          },
+          {
+            "narrate": "She says it the way people say the name of a house they used to live in."
+          },
+          {
+            "say": "maren",
+            "text": "You knew its design."
+          },
+          {
+            "say": "Elske",
+            "text": "I drew it, Sister. A long time ago, for a town that no longer exists. I'll tell you about it when there is time, and there is never time. That is rather my point."
+          },
+          {
+            "say": "maren",
+            "text": "She's telling the truth. All of it, as far as I can hear.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "setFlags": {
+          "b2:met_elske": true
+        }
+      },
+      {
+        "id": "brannagh",
+        "label": "Sit with Brannagh of Fenmere and her goat",
+        "lines": [
+          {
+            "narrate": "Brannagh has taken the rocking chair without complaint and is eating an apple in very small, very deliberate bites. The goat is eating the core of the last one."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Sit down. You make the room look busy."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Fenmere has two halves. The upper village on the rise, the lower village by the water. The mist came into the lower fields four days ago. Our keeper says the ward will hold the lower village a week. Our keeper is an optimist. I've told her so."
+          },
+          {
+            "say": "nessa",
+            "text": "What's the goat's name?",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "She's with me."
+          },
+          {
+            "narrate": "That appears to be all the answer there is going to be."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Get them to say yes to something before dark. Anything. Once a council has said yes once, it gets the taste for it."
+          }
+        ],
+        "setFlags": {
+          "b2:heard_fenmere": true
+        }
+      },
+      {
+        "id": "aveline",
+        "label": "Ask Aveline how she is holding up",
+        "lines": [
+          {
+            "say": "Aveline",
+            "text": "Fine. Busy. I have the Briarwatch grain figures, the Briarwatch roof figures and a letter from Tovin asking whether his apprentice may ring the practice bell at night. The answer is no. I've written it three times."
+          },
+          {
+            "say": "orin",
+            "text": "When did you last sleep?"
+          },
+          {
+            "say": "Aveline",
+            "text": "I slept on the cart."
+          },
+          {
+            "say": "orin",
+            "text": "You did the grain figures on the cart. I watched you."
+          },
+          {
+            "narrate": "Aveline looks at her satchel as if it has betrayed her."
+          },
+          {
+            "say": "Aveline",
+            "text": "When this council has agreed on one thing, Stoneward, I will sleep for a week. Help me get it there."
+          }
+        ],
+        "approval": {
+          "orin": 1
+        }
+      }
+    ],
+    "clue": "Every delegate is waiting for someone else to pay first, because whoever pays for Fenmere today pays for every town tomorrow. Highpass's own ward can only ring at full strength with all five towns' consent: the charter you left at the beacon, or the custom of the independent keepers, makes it so.",
+    "investigate": {
+      "label": "Find out what is really stopping the vote",
+      "skill": "insight",
+      "alt": [
+        "persuasion",
+        "history"
+      ],
+      "success": [
+        {
+          "narrate": "By late afternoon you can name the knot. Ashford will pay if Merrowgate pays. Merrowgate will pay if the money is a loan. Highpass will pay in soldiers, not coin, and has no soldiers to spare. Nobody is lying. Everybody is afraid of being the first."
+        },
+        {
+          "say": "Iona",
+          "text": "Off the record? If I say yes today, my guild makes me pay for every washed-out bridge from here to the sea. I'll say yes. I need someone else to say it first."
+        }
+      ],
+      "failure": "The arguments go round so many times you lose the thread, but you notice who is watching whom. Each delegate is waiting for someone else to commit first."
+    },
+    "route": {
+      "label": "Take the cliff path down to the lower gate",
+      "skill": "athletics",
+      "alt": [
+        "survival",
+        "perception"
+      ],
+      "tools": [
+        "lantern"
+      ],
+      "success": "You go down the cliff path instead of the switchbacks and reach the lower gate while the mist is still in the trees. The wardens on the gate have time to hear what you need from them.",
+      "failure": "The switchbacks are jammed with people coming up and carts going down. You get to the lower gate bruised and late, as the first cold touches the palisade."
+    },
+    "approach": [
+      {
+        "narrate": "The bell in the watchtower starts to ring the alarm just before sunset. Not the ward. The ordinary alarm, a hand-bell, swung by somebody who has run out of better ideas."
+      },
+      {
+        "say": "Sorrel",
+        "text": "Mist in the lower pass. It followed the Fenmere rider up the valley. The camp's below the line of the ward."
+      },
+      {
+        "narrate": "The ward itself hangs in Highpass's gate arch, and it is answering the mist in a thin, uncertain voice. Since the beacon, no single keeper may ring it to full strength alone."
+      },
+      {
+        "say": "Iona",
+        "text": "Don't look at me like that. I'm coming."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "The Gloam comes up the lower pass like a tide coming in over flat sand: quietly, faster than it looks. Where it touches the palisade the wood greys and goes soft, and the frost on it forms in the shapes of things that were there earlier: a cart, a fire, a child's hopscotch squares. Shapes come out of it with it. Not quite people. What the mist has taken, walking."
+      },
+      {
+        "say": "orin",
+        "text": "Wall's no good against that. The ward is."
+      },
+      {
+        "narrate": "Up in the gate arch the Highpass ward is ringing at a third of its strength. To ring it fully, the delegates who followed you down must say together that they consent. Elske is already beside the bell-rope. Iona is at the back, and Brannagh is between them with the goat."
+      },
+      {
+        "say": "Elske",
+        "text": "This is what I meant. Five people must agree before a bell may ring. Tell them quickly."
+      }
+    ],
+    "peaceful": {
+      "label": "Get the five delegates to consent, here and now",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "performance"
+      ],
+      "success": [
+        {
+          "say": "Brannagh",
+          "text": "Fenmere consents. I'd like it noted Fenmere consented first."
+        },
+        {
+          "say": "Iona",
+          "text": "Ashford consents. Note that too."
+        },
+        {
+          "narrate": "Aveline, Sorrel and Elske say it together. The ward catches the five voices and rings with all of them, and the note goes down the pass like a wave pushing back the tide. The shapes in the mist come apart into frost, and the frost melts."
+        },
+        {
+          "say": "Elske",
+          "text": "Agreed in under a minute. When the alternative is dying, councils are wonderfully efficient."
+        }
+      ],
+      "failure": [
+        {
+          "say": "Iona",
+          "text": "I can't commit Ashford on a bell-rope. I need it in writing."
+        },
+        {
+          "say": "Brannagh",
+          "text": "Then write fast."
+        },
+        {
+          "narrate": "The ward rings at half strength. It is not enough. The shapes come over the palisade, and you have to hold the gate while the delegates find their words."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the lower gate until the ward rings",
+      "label": "Hold the gate and give the delegates time",
+      "description": "Four successful actions hold the gate long enough for the five delegates to consent and the ward to ring at full strength.",
+      "skill": "athletics",
+      "alt": [
+        "persuasion",
+        "religion",
+        "arcana"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The mist reaches the first tents before the ward rings. The people escape uphill; their tents, their bedding and some of what they remembered do not.",
+      "successText": "Five voices answer together. The ward rings at full strength and the pass clears from the top down."
+    },
+    "foe": "gloam-tide",
+    "foeName": "The Gloam Tide",
+    "enemyTheme": "gloam",
+    "attackName": "Cold Forgetting",
+    "retainerName": "Mist-Taken Shape",
+    "after": [
+      {
+        "narrate": "Afterwards the council goes back up to the mess, where the chairs are exactly as they were. Somebody has found a sixth one."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Well. We agreed on something."
+      },
+      {
+        "say": "Aveline",
+        "text": "We did. Can we agree on another thing before I fall over?"
+      },
+      {
+        "narrate": "Elske Marrow stays standing."
+      },
+      {
+        "say": "Elske",
+        "text": "Fenmere's help leaves at first light. It should have left three days ago. I'll say it once and then I'll stop: a council that needs a mist at the door to agree on anything will always agree one day late. When the council sits again, Merrowgate will make a proposal. I'd like you all to read it before you hate it."
+      },
+      {
+        "say": "maren",
+        "text": "She means that too.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "narrate": "Then the room argues, for the last time today, about who pays for Fenmere."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "shared",
+        "label": "Back Brannagh: each town pays by what it has to lose",
+        "text": [
+          {
+            "say": "Brannagh",
+            "text": "Big towns lose more, big towns pay more. My goat could work that out."
+          },
+          {
+            "narrate": "Iona does the sum, scowls, and signs. The council has its first agreement on paper. It took eleven hours and a mist."
+          }
+        ],
+        "rep": {
+          "wardens": 2,
+          "wilds": 2
+        },
+        "flag": "b2_cost_shared"
+      },
+      {
+        "id": "loan",
+        "label": "Take Merrowgate's offer: the lantern guilds lend the money",
+        "text": [
+          {
+            "narrate": "Elske's clerk produces the loan papers before anyone has finished asking for them. They are generous, well drafted and signed in advance by Guildmaster Pell Haverick of the Merrowgate lantern guilds, who is not in the room."
+          },
+          {
+            "say": "orin",
+            "text": "Who's Haverick?"
+          },
+          {
+            "say": "Elske",
+            "text": "The man who pays for my lamps. He likes to be useful."
+          }
+        ],
+        "rep": {
+          "trade": 3
+        },
+        "flag": "b2_cost_loan"
+      },
+      {
+        "id": "party",
+        "label": "Pay Fenmere's first week out of your party's own purse",
+        "description": "This decision is permanent. Your purse stays as it is; the story remembers who paid.",
+        "text": [
+          {
+            "narrate": "You put your contract fee on the table. It is not enough for a week, but it is enough for a day, and the room goes very quiet."
+          },
+          {
+            "say": "Iona",
+            "text": "That's not how councils work."
+          },
+          {
+            "say": "Brannagh",
+            "text": "It is now. Ashford, you're embarrassed. Pay the rest."
+          },
+          {
+            "narrate": "Iona pays the rest. Later she sends you a receipt for your share, very correctly made out, with a note on the back that just says: noted."
+          }
+        ],
+        "rep": {
+          "wilds": 3,
+          "wardens": 1
+        },
+        "approval": {
+          "orin": 1
+        },
+        "flag": "b2_cost_party"
+      }
+    ]
+  },
+  "fenmere": {
+    "id": "fenmere",
+    "book": 2,
+    "name": "Fenmere Under the Gloam",
+    "level": 11,
+    "town": "highpass",
+    "unlock": "chairs",
+    "nextTown": "briarwatch",
+    "xp": 4700,
+    "gold": 340,
+    "region": "Fenmere, two days east of Highpass",
+    "threat": "The Gloam has taken Fenmere's lower village and is climbing toward the upper village on the rise. Floodwater runs ahead of it. Bring light; a rope helps on the causeway.",
+    "faction": "wilds",
+    "brief": "The council's help reaches Fenmere a day late. The lower village is gone. Get its people up the rise and keep the upper village from going the same way.",
+    "opening": [
+      {
+        "narrate": "You come over the last fell at noon and see Fenmere the way the crows see it. The upper village sits on its rise, chimneys smoking. Below it, where Brannagh said the lower village would be, there is a white field, perfectly flat, perfectly still. The roofs are under it. There is no sound at all."
+      },
+      {
+        "say": "Brannagh",
+        "text": "That's the lower village."
+      },
+      {
+        "narrate": "She says it the way she would say the name of a neighbour. Then she starts down the hill, and you have to hurry to keep up with a woman of seventy and her goat."
+      },
+      {
+        "narrate": "On the rise, the people of the lower village are sitting on their bundles in the churchyard: three hundred of them, give or take. They got out. They got out with what they could carry, two nights ago, while the council was arguing about chairs. Some of them are already looking at the white field as if they can't quite remember what was under it."
+      },
+      {
+        "say": "maren",
+        "text": "That's the Gloam's work. It takes the warmth first, then the memory."
+      },
+      {
+        "say": "orin",
+        "text": "How long since the ward went quiet?"
+      },
+      {
+        "say": "Ilka",
+        "text": "Since this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine."
+      }
+    ],
+    "talks": [
+      {
+        "id": "brannagh",
+        "label": "Go with Brannagh to look at the lower village",
+        "lines": [
+          {
+            "narrate": "Brannagh stands at the edge of the white and looks at a place about a hundred yards in, where a weathervane sticks up out of the mist at a slant."
+          },
+          {
+            "say": "Brannagh",
+            "text": "That's my roof. Forty years. I re-thatched it in spring. Paid a man from Ashford, and he did it badly, and I made him do it again."
+          },
+          {
+            "narrate": "She does not cry. She does not do anything. After a while the goat leans against her leg and she puts a hand on its head."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Three days. If help had come in three days, the ward would have held. Ilka would still have her verse. Write that down somewhere, would you? Somebody should."
+          }
+        ],
+        "setFlags": {
+          "b2:fenmere_roof": true
+        }
+      },
+      {
+        "id": "taken",
+        "label": "Ask the lower-village families what the mist has taken from them",
+        "lines": [
+          {
+            "narrate": "A man knows his daughter's face but not her name. He keeps starting to say it. A woman remembers her house in every detail except which door was hers. A boy of about eight has forgotten he was afraid of the dark, and keeps walking toward the white field to see what's in it."
+          },
+          {
+            "say": "maren",
+            "text": "It will come back to most of them, if the mist goes back down. Not all. Not all of it."
+          },
+          {
+            "say": "nessa",
+            "text": "I've got him.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Nessa has the boy by the back of his collar. She sits him down beside Biscuit and tells him the dog's whole history, most of it invented, and he stays.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ]
+      }
+    ],
+    "clue": "Fenmere's ward is a song in four verses. Ilka has lost the third, but the villagers each remember a piece of it: the lower village sang it at weddings. Rung with the whole song, the ward can push the Gloam back off the rise, though not out of the lower village.",
+    "investigate": {
+      "label": "Help Ilka find the third verse among the villagers",
+      "skill": "investigation",
+      "alt": [
+        "religion",
+        "history",
+        "performance"
+      ],
+      "success": "An old woman remembers the first line. A fisherman remembers the tune and not the words. A girl of twelve, who was at her cousin's wedding in the spring, sings the whole thing through without stopping and then bursts into tears because she doesn't know why it's sad. Ilka writes it on her arm in charcoal.",
+      "failure": "Between them, the villagers put back most of the verse. A line in the middle stays missing. Ilka will have to fill it with something true and hope the ward accepts it."
+    },
+    "route": {
+      "label": "Get the last families up the causeway before the water rises",
+      "skill": "athletics",
+      "alt": [
+        "medicine",
+        "survival"
+      ],
+      "tools": [
+        "silk-rope",
+        "climbing-kit"
+      ],
+      "success": "You rope the causeway and bring the last carts up in a line, the sick riding, the rest walking. The water comes up behind the last cart and stops, as if disappointed.",
+      "failure": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on Orin's back."
+    },
+    "approach": [
+      {
+        "narrate": "The Gloam always sends water ahead of itself. The fen drains are backing up, and the causeway between the lower fields and the rise is already ankle-deep. Two families are still down there, at the miller's house, because the miller will not leave his mill."
+      },
+      {
+        "say": "orin",
+        "text": "We go now or we don't go."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "At dusk the white field begins to climb the rise. It does not hurry. It takes the hedge at the bottom of the churchyard, and the hedge goes grey, and then it is a hedge-shaped piece of frost."
+      },
+      {
+        "narrate": "Things walk out of the mist: the shapes of what it took. A cart-horse made of cold. A woman who might have been someone's mother, carrying a basket of nothing. They do not attack, exactly. They come toward warmth, and wherever they touch, the warmth goes out."
+      },
+      {
+        "say": "Ilka",
+        "text": "I can ring it. I have the verse. I need someone between me and them until I've sung all four."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Then sing, girl. You've got a sergeant at arms."
+      },
+      {
+        "narrate": "Orin is already moving, shield up, to stand between the keeper and the white.",
+        "when": {
+          "party": "orin"
+        }
+      }
+    ],
+    "peaceful": {
+      "label": "Have the whole village sing the ward with Ilka",
+      "skill": "performance",
+      "alt": [
+        "religion",
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. By the third, the girl from the wedding is leading it and nobody is ashamed to follow a child."
+        },
+        {
+          "narrate": "The ward takes the song and rings it out, and the white field stops at the churchyard wall. Then, slowly, it goes back down the hill, a yard at a time, like a dog that has been told no."
+        },
+        {
+          "narrate": "It does not go back off the lower village. That is gone."
+        }
+      ],
+      "failure": "The song starts strong and falters at the missing line. The ward rings, but thinly, and the shapes keep coming. You will have to hold them back while Ilka finds the words."
+    },
+    "objective": {
+      "name": "Ring Fenmere's ward through all four verses",
+      "label": "Keep the shapes off the keeper as she sings",
+      "description": "Four successful actions see Ilka through the four verses of the ward-song.",
+      "skill": "religion",
+      "alt": [
+        "performance",
+        "athletics",
+        "medicine"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The mist takes the churchyard wall and the bottom row of houses on the rise before the song is finished. Their families are safe. Their houses are not.",
+      "successText": "The fourth verse rings out. The white field stops at the churchyard wall and begins to go back down the hill."
+    },
+    "foe": "gloam-taker",
+    "foeName": "What the Gloam Took",
+    "enemyTheme": "gloam",
+    "attackName": "Cold Forgetting",
+    "retainerName": "Mist-Taken Shape",
+    "after": [
+      {
+        "narrate": "By morning the upper village is safe and the lower village is a white field with a weathervane sticking out of it. People begin, slowly, to remember. The man remembers his daughter's name and says it about forty times in a row. The boy remembers he is afraid of the dark, and is delighted."
+      },
+      {
+        "narrate": "Brannagh sits on the churchyard wall with her goat and looks at the white field."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Well. Now we have to decide what to do with three hundred people and no lower village. And I'll have to do it on my own, because the council is two days away and it'll take them a week."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "above",
+        "label": "Help them build again on the rise, above the old waterline",
+        "text": [
+          {
+            "say": "Brannagh",
+            "text": "Sensible. Dull. Right. We'll build on the rise."
+          },
+          {
+            "narrate": "You spend two days helping mark out the new plots. Brannagh insists on the worst one for herself, the one that floods, because she says it will remind her of home."
+          }
+        ],
+        "rep": {
+          "wilds": 3
+        },
+        "approval": {
+          "maren": 1
+        },
+        "flag": "fen_build_above"
+      },
+      {
+        "id": "promise",
+        "label": "Promise Brannagh the lower village will be taken back one day",
+        "text": [
+          {
+            "say": "Brannagh",
+            "text": "Don't promise me things. I'm seventy."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Promise them."
+          },
+          {
+            "narrate": "She nods at the churchyard, where the families of the lower village are sorting what they carried out. You promise them. Orin watches you do it, and says nothing, and you know exactly what he thinks of promises."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 1
+        },
+        "approval": {
+          "nessa": 1,
+          "orin": -1
+        },
+        "flag": "fen_promise"
+      }
+    ]
+  },
+  "southroad": {
+    "id": "southroad",
+    "book": 2,
+    "name": "The Long Road South",
+    "level": 12,
+    "town": "briarwatch",
+    "unlock": "fenmere",
+    "nextTown": "merrowgate",
+    "xp": 5000,
+    "gold": 360,
+    "region": "The south road from Briarwatch to Merrowgate",
+    "threat": "Armed men are holding the south road and taking a toll in food. They are disciplined, they are hungry, and their sergeant does not want to be talked out of anything.",
+    "faction": "trade",
+    "brief": "The council will sit next at Merrowgate, where Provost Marrow will make her proposal. The south road is held by 'bandits'. Get the party, and Briarwatch's delegate, through to the harbour city.",
+    "opening": [
+      {
+        "narrate": "Briarwatch is the same, and it isn't. The bell rings the hours. The square has been swept. There are new houses on the Ashford road, built by people who arrived with nothing after the beacon and decided this was as good a place as any."
+      },
+      {
+        "narrate": "Smith Dera has your gear on the bench before you have finished saying hello."
+      },
+      {
+        "say": "Dera",
+        "text": "Fenmere. I heard. Everybody's heard. Is it true the old woman has a goat?"
+      },
+      {
+        "say": "orin",
+        "text": "Yes."
+      },
+      {
+        "say": "Dera",
+        "text": "What's the goat for?"
+      },
+      {
+        "say": "orin",
+        "text": "Nobody knows."
+      },
+      {
+        "say": "Dera",
+        "text": "That's worth a free strap. Go on."
+      },
+      {
+        "narrate": "Tovin is at the bell tower with his apprentice, Pim, who is fourteen and has read every book on bell-keeping in Briarwatch, both of them, several times."
+      },
+      {
+        "say": "Pim",
+        "text": "Is it true the Gloam took the lower village in Fenmere because the council was late? Because I've been thinking, if the bell had been rung every hour, on the hour, the whole time—"
+      },
+      {
+        "say": "Tovin",
+        "text": "Pim. Breathe."
+      },
+      {
+        "say": "Pim",
+        "text": "Sorry. I just think about it a lot."
+      },
+      {
+        "say": "Tovin",
+        "text": "So do I. That's why I'm teaching you to breathe first."
+      },
+      {
+        "narrate": "Aveline is coming with you to Merrowgate. She has packed one bag of clothes and three bags of papers. Then, at the guildhouse, the news that matters: the south road has been closed for a fortnight. A band of armed men holds the old checkpoint at Kell's Bridge and takes a toll in food. Carts that pay go through. Carts that don't, don't."
+      }
+    ],
+    "talks": [
+      {
+        "id": "orin",
+        "label": "Ask Orin why he's gone quiet since he heard about the checkpoint",
+        "lines": [
+          {
+            "narrate": "Orin is checking the buckles on his shield, which he checked an hour ago."
+          },
+          {
+            "say": "orin",
+            "text": "Kell's Bridge was a beacon station. Under the Single Voice. Soldiers crewed it, rang the echo-stones when Central Command told them to."
+          },
+          {
+            "say": "orin",
+            "text": "When you broke the Single Voice, nobody told the crews. Nobody paid them, either. Some of them had been out there two years."
+          },
+          {
+            "say": "orin",
+            "text": "I knew a few of them. Hal took a commission with Central Command after the bridge. She wrote to me. I didn't write back."
+          },
+          {
+            "say": "orin",
+            "text": "If it's them, I want to be the one at the front."
+          }
+        ],
+        "approval": {
+          "orin": 1
+        }
+      },
+      {
+        "id": "aveline",
+        "label": "Help Aveline carry her papers",
+        "lines": [
+          {
+            "say": "Aveline",
+            "text": "Careful with that one. That's Briarwatch's position on Provost Marrow's proposal."
+          },
+          {
+            "say": "maren",
+            "text": "You haven't read her proposal. Nobody has."
+          },
+          {
+            "say": "Aveline",
+            "text": "That's why it's three bags. One for if it's good, one for if it's bad, one for if it's good and I still don't trust her."
+          },
+          {
+            "say": "maren",
+            "text": "Which one do you expect to use?"
+          },
+          {
+            "say": "Aveline",
+            "text": "Ask me when I've slept."
+          }
+        ]
+      }
+    ],
+    "clue": "The 'bandits' at Kell's Bridge are the crew of the old Single Voice beacon station, and others like them, led by Lieutenant Hal. They have not been paid since the beacon fell. A guild agent from Merrowgate has offered them work, on terms that would make them Merrowgate's army.",
+    "investigate": {
+      "label": "Talk to the carters who were turned back at Kell's Bridge",
+      "skill": "investigation",
+      "alt": [
+        "insight",
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "The carters were turned back politely. That's the first odd thing. The second is that the bandits took food but not money, and the third is that they gave receipts."
+        },
+        {
+          "say": "orin",
+          "text": "Receipts. That's Hal. She'd requisition a meal from her own mother and give her a receipt."
+        },
+        {
+          "narrate": "One of the carters adds that a man in a fine coat from Merrowgate went through the checkpoint two days ago, toll-free, and was invited in for supper."
+        }
+      ],
+      "failure": "The carters are angry and not much use, but one of them kept the receipt the bandits gave him for a sack of oats. It is signed with a lieutenant's mark you have seen before, on Orin's letters."
+    },
+    "route": {
+      "label": "Talk your way past the outer checkpoint",
+      "skill": "deception",
+      "alt": [
+        "persuasion",
+        "stealth"
+      ],
+      "success": [
+        {
+          "narrate": "The plan is that you are traders. The plan lasts until the old soldier on the outer post looks at Orin."
+        },
+        {
+          "say": "Old soldier",
+          "text": "Traders, are you? What are you trading?"
+        },
+        {
+          "say": "orin",
+          "text": "We're not traders."
+        },
+        {
+          "narrate": "There is a short, terrible silence. Then Orin, who cannot leave a thing alone once he has seen it, points at the gate."
+        },
+        {
+          "say": "orin",
+          "text": "Your hinge is on the wrong side. Any cart that hits it swings it into your own men. Who hung it?"
+        },
+        {
+          "say": "Old soldier",
+          "text": "I did."
+        },
+        {
+          "say": "orin",
+          "text": "It's wrong."
+        },
+        {
+          "narrate": "The old soldier looks at the hinge. Then at Orin. Then at the hinge again, and you watch him recognise something that has nothing to do with gates."
+        },
+        {
+          "say": "Old soldier",
+          "text": "Third Company?"
+        },
+        {
+          "say": "orin",
+          "text": "Second."
+        },
+        {
+          "say": "Old soldier",
+          "text": "Go on, then. Before you fix it. The lieutenant's at the bridge."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The plan is that you are traders. Orin says, very clearly, that you are not traders. It does not go well after that. Somebody blows a whistle, and you arrive at the bridge with a dozen armed soldiers walking beside you, carefully not quite pointing anything at you."
+        }
+      ]
+    },
+    "approach": [
+      {
+        "narrate": "The road drops toward Kell's Bridge through a cutting. The old beacon station stands on the far bank: a squat tower with an iron frame on top, where the echo-stones used to hang. Somebody has planted cabbages around its base."
+      },
+      {
+        "narrate": "A wooden checkpoint closes the near end of the road. One soldier on it, old, with a crossbow he isn't holding properly because his hands are cold."
+      },
+      {
+        "say": "nessa",
+        "text": "We could go round. Through the gully.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "We go through the front."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "Lieutenant Hal meets you on the bridge. She is thinner than when you saw her last, at the Ashford span, and her coat has been mended in three colours. Behind her are perhaps forty soldiers, some with families, all of them watching Orin."
+      },
+      {
+        "say": "Hal",
+        "text": "Stoneward."
+      },
+      {
+        "say": "orin",
+        "text": "Hal."
+      },
+      {
+        "say": "Hal",
+        "text": "You broke the Voice. Good. It needed breaking. And then you all went home, and nobody came out here to tell us it was finished. We heard from a carter. We've been eating the station's seed corn since the spring."
+      },
+      {
+        "narrate": "At her shoulder is a man in a very good coat: a Merrowgate guild agent, with a contract in a leather case."
+      },
+      {
+        "say": "Guild agent",
+        "text": "Guildmaster Haverick offers the lieutenant's company a contract as harbour wardens. Pay, quarters, a pension. That offer closes at sundown. I'm sure the Briarwatch delegation wouldn't want to stand in the way of honest work."
+      },
+      {
+        "narrate": "But not all of Hal's soldiers are waiting for sundown. A sergeant called Brask, a big man with a burn up one side of his face, has his people drawn up across the end of the bridge."
+      },
+      {
+        "say": "Brask",
+        "text": "We don't need the guild and we don't need the council. We've got the road. Whoever wants it can pay us for it."
+      }
+    ],
+    "peaceful": {
+      "label": "Make the soldiers an honest offer, and let Orin say it",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "intimidation"
+      ],
+      "success": [
+        {
+          "narrate": "You make the offer. Then you step back and let Orin say the rest, because he can only say what's true."
+        },
+        {
+          "say": "orin",
+          "text": "I don't know if the council will pay you. I think it will. It took them eleven hours to agree on a chair. But I'll be there when they decide, and I'll stand up and say what you did out here, and I won't lie about any of it. That's all I've got."
+        },
+        {
+          "narrate": "It turns out that is a great deal. Brask's line breaks up man by man, and the last to go is Brask himself, who says something short and rude to Orin and then shakes his hand."
+        },
+        {
+          "say": "Hal",
+          "text": "You haven't changed, Stoneward. Still can't lie to save your life."
+        },
+        {
+          "say": "orin",
+          "text": "It's saved mine a few times."
+        }
+      ],
+      "failure": [
+        {
+          "say": "Brask",
+          "text": "Speeches. We've had speeches."
+        },
+        {
+          "narrate": "Brask's people come off the end of the bridge. Hal shouts at them to stand down; half of them do. The other half do not."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the bridge without a massacre",
+      "label": "Push the sergeant's line back without killing anyone",
+      "description": "Three successful actions break Brask's line so Hal can take her company back without a slaughter.",
+      "skill": "athletics",
+      "alt": [
+        "intimidation",
+        "persuasion"
+      ],
+      "target": 3,
+      "deadline": 6,
+      "failText": "The fight spreads to the station. People are hurt on both sides, and some of Hal's soldiers will remember who hurt them.",
+      "successText": "Brask's line breaks. Hal walks into the middle of what is left of it and starts giving orders, and people start obeying them."
+    },
+    "foe": "sergeant-brask",
+    "foeName": "Sergeant Brask",
+    "enemyTheme": "soldier",
+    "attackName": "Old Company Drill",
+    "retainerName": "Beacon Crew Veteran",
+    "after": [
+      {
+        "narrate": "By evening the bridge is quiet, and the cabbages have survived. Hal's company eats supper with you in the yard of the beacon station. Aveline sits with Hal for an hour with her bags of papers open and comes back with an expression you have not seen on her before; it might be hope, or it might be lack of sleep."
+      },
+      {
+        "narrate": "The guild agent is waiting by his horse with his contract. Sundown has come and gone, and he has not left."
+      },
+      {
+        "say": "Hal",
+        "text": "So. Council or guild. You brought us the offer, so you can tell me straight. Which would you take?"
+      }
+    ],
+    "decisions": [
+      {
+        "id": "council",
+        "label": "Ask Hal's company to keep the roads for the council",
+        "text": [
+          {
+            "say": "Hal",
+            "text": "Road wardens for the council, then. Assuming the council pays."
+          },
+          {
+            "say": "Aveline",
+            "text": "Briarwatch will put it in writing. I have a bag for it."
+          },
+          {
+            "narrate": "The guild agent rides off toward Merrowgate. Hal watches him go."
+          },
+          {
+            "say": "Hal",
+            "text": "He'll be back with a better offer. They always are."
+          }
+        ],
+        "rep": {
+          "wardens": 3,
+          "trade": 1
+        },
+        "approval": {
+          "orin": 2
+        },
+        "flag": "south_hal_council"
+      },
+      {
+        "id": "guild",
+        "label": "Tell Hal to take the guild's contract; her people need paying now",
+        "text": [
+          {
+            "say": "Hal",
+            "text": "Honest. I'll take it, then. Pension's real money. The council's money is a promise."
+          },
+          {
+            "narrate": "She signs. The guild agent shakes her hand with real warmth. Orin says nothing until you are back on the road south, and then only one thing."
+          },
+          {
+            "say": "orin",
+            "text": "She'll be Merrowgate's soldiers now. Remember that when the vote comes."
+          }
+        ],
+        "rep": {
+          "trade": 3
+        },
+        "approval": {
+          "orin": -1
+        },
+        "flag": "south_hal_guild"
       }
     ]
   }

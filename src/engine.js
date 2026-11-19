@@ -545,6 +545,7 @@ function applyOutcome(state, written = {}, rng, events) {
   }
   // Finishing the last written chapter says so, after the choice that finished it.
   if (booksOpen && state.story.flags[Book.FINISHED]) events.push({ type: "story", tone: "good", text: Book.ENDING });
+  else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest) });
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
   if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
     // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.

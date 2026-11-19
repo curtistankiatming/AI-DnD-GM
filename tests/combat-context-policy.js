@@ -3,7 +3,7 @@ const path=require('node:path'),fs=require('node:fs');const ROOT=path.resolve(__
 const E=require(ROOT+'/src/engine'),Chat=require(ROOT+'/src/chat-runtime'),P=require(ROOT+'/src/model-profiles'),R=require(ROOT+'/src/rules'),{chooseAction}=require(ROOT+'/tests/player-policy');
 const stats={},failures=[];let states=0;
 for(const id of ['fighter','wizard','rogue','cleric','ranger','bard']){
- let s=E.createNewGame({classId:id}),memory={},rng=R.createSeededRng(301);
+ let s=E.createNewGame({classId:id}),memory={bookOneOnly:true},rng=R.createSeededRng(301);
  for(let i=0;i<900;i++){
   const view=E.buildView(s),act=chooseAction(view,memory,'prepared');if(!act)break;if(act.error)throw new Error(act.error);
   if(view.combat?.active){states++;for(const profile of Object.keys(P.PROFILES)){

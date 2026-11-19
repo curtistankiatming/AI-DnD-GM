@@ -119,5 +119,187 @@
         ]
       }
     }
+  },
+  "chairs-camp": {
+    "id": "chairs-camp",
+    "after": "chairs",
+    "cast": ["orin", "maren", "nessa"],
+    "act": "Camp",
+    "location": "The wall walk at Highpass, after the council",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "Sergeant at Arms",
+        "objective": "Sit with your companions before Fenmere.",
+        "lines": [
+          { "narrate": "Long after midnight the wall walk is empty except for your party. Highpass's ward is still humming, softly, like a kettle that has nearly boiled. Somewhere below, three hundred refugees are asleep in tents that are still there." },
+          { "narrate": "Orin has the confiscated knives laid out on the parapet in a row, labelled. He is writing a list." },
+          { "say": "nessa", "text": "You're giving them back." },
+          { "say": "orin", "text": "In the morning. With the list." },
+          { "say": "nessa", "text": "Nobody asked you to make a list." },
+          { "say": "orin", "text": "Sorrel said keep order." },
+          { "say": "maren", "text": "She didn't mean the knives, Orin." },
+          { "say": "orin", "text": "I know what she meant. The knives I could do something about." },
+          { "narrate": "Nessa has a letter in her lap she hasn't been writing. She has been holding the pen for some time." },
+          { "say": "maren", "text": "Who's that one to?" },
+          { "say": "nessa", "text": "Nobody. Wren. Nobody. It's not finished." },
+          { "say": "maren", "text": "None of them are ever finished." },
+          { "say": "nessa", "text": "That's how you know they're good." }
+        ],
+        "choices": [
+          {
+            "id": "send",
+            "label": "“Send it, Nessa. This one, at least.”",
+            "lines": [
+              { "say": "nessa", "text": "And say what? 'Dear Wren, the council argued about chairs, there's a goat'?" },
+              { "say": "orin", "text": "She'd want to know about the goat." },
+              { "narrate": "Nessa looks at him as if he has said something unexpectedly wise, and then folds the letter and puts it in her pocket, the one for later. Not the other one." }
+            ],
+            "approval": { "nessa": 1 },
+            "next": "end"
+          },
+          {
+            "id": "elske",
+            "label": "“What did you all make of Provost Marrow?”",
+            "lines": [
+              { "say": "maren", "text": "She doesn't lie. I listened all day. She doesn't even shade the truth, which is rarer." },
+              { "say": "orin", "text": "Corvane didn't lie either." },
+              { "say": "maren", "text": "No. That's what worries me." },
+              { "say": "nessa", "text": "I liked her. She did the chairs in five minutes." },
+              { "say": "orin", "text": "So would I, if I'd drawn the room." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "end"
+          }
+        ]
+      },
+      "end": {
+        "title": "Before Fenmere",
+        "objective": "Rest before the road east.",
+        "lines": [
+          { "narrate": "Below, the camp's last fire goes out. Orin finishes his list, reads it through once, and adds the bread knife at the bottom, with a note: returned." }
+        ],
+        "choices": [
+          { "id": "sleep", "label": "Get some sleep before Fenmere" }
+        ]
+      }
+    }
+  },
+  "fenmere-bakery": {
+    "id": "fenmere-bakery",
+    "after": "fenmere",
+    "cast": ["maren"],
+    "act": "Aftermath",
+    "location": "Fenmere, the edge of the white field",
+    "start": "shop",
+    "nodes": {
+      "shop": {
+        "title": "The Baker's Ward",
+        "objective": "Help the last of the lower village close up.",
+        "lines": [
+          { "narrate": "On the morning you are due to leave, Ilka comes to find you. There is one house at the very edge of the white field, half in and half out of the mist, where the frost has stopped at the doorstep. It is the bakery. The baker, Tam Orrey, went back for his starter dough on the first night, and did not come back up." },
+          { "narrate": "The door opens on a warm room. The ovens are lit. There are loaves on the racks, golden and perfect, and when you touch one it isn't there. In the back, the oven fire turns to look at you." },
+          { "say": "The baker's ward", "text": "We open at six." },
+          { "say": "Ilka", "text": "It's his ward. Bakers keep a little one in the oven, to keep the bread from going mouldy and the shop from going cold. It's been holding the Gloam back off this one shop for four days." },
+          { "say": "The baker's ward", "text": "Tam's gone for flour. We open at six. You can wait." },
+          { "say": "maren", "text": "It doesn't know." },
+          { "say": "The baker's ward", "text": "He's often late. He talks. Customers like it. We open at six." }
+        ],
+        "choices": [
+          {
+            "id": "tell",
+            "label": "Tell the ward, gently, that Tam is not coming back",
+            "lines": [
+              { "narrate": "The fire listens. It is a long time before it says anything." },
+              { "say": "The baker's ward", "text": "He went for the starter. It was his grandmother's. I told him not to." },
+              { "say": "maren", "text": "Wards don't say no to their keepers. You couldn't have stopped him." },
+              { "say": "The baker's ward", "text": "I could have kept the door shut." },
+              { "narrate": "Maren sits down on a flour sack and stays with it, the way she stays with people. In the end the fire says it would like to close up properly, and asks you to turn the sign on the door. You turn it. CLOSED. The frost comes in over the doorstep very slowly, as if it has been asked to wipe its feet." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "after"
+          },
+          {
+            "id": "brannagh",
+            "label": "Fetch Brannagh: she knew Tam",
+            "lines": [
+              { "narrate": "Brannagh comes down with the goat. She looks at the warm shop and the loaves that aren't there." },
+              { "say": "Brannagh", "text": "Ward. It's Brannagh. Tam's dead. You knew that, I expect." },
+              { "say": "The baker's ward", "text": "...yes." },
+              { "say": "Brannagh", "text": "Then stop baking. You're making the whole village hungry and there's nothing to eat." },
+              { "narrate": "The fire makes a sound which in a person would be a laugh, and then something else. Brannagh turns the sign herself. On the way out she takes one of the loaves that isn't there, and holds it all the way up the hill." }
+            ],
+            "approval": { "maren": 1 },
+            "next": "after"
+          },
+          {
+            "id": "wait",
+            "label": "Let it keep the shop until six, as it wants",
+            "lines": [
+              { "narrate": "You wait. Nobody says anything. At six the ward opens the door, and the frost takes the doorstep, and the counter, and the oven, very quietly, and the warm room goes white. It does not seem to mind. It is open." },
+              { "say": "maren", "text": "That was kind. I'm not sure it was right." }
+            ],
+            "approval": { "maren": -1 },
+            "next": "after"
+          }
+        ]
+      },
+      "after": {
+        "title": "Leaving Fenmere",
+        "objective": "Take the road west to Briarwatch.",
+        "lines": [
+          { "narrate": "On the road west, Maren takes out her list of lost keepers. She looks at it for a while. Then she writes a new name at the bottom, in small careful letters: Tam Orrey, baker, Fenmere. And beside it, already: closed up." }
+        ],
+        "choices": [
+          { "id": "road", "label": "Go home to Briarwatch" }
+        ]
+      }
+    }
+  },
+  "southroad-camp": {
+    "id": "southroad-camp",
+    "after": "southroad",
+    "cast": ["orin"],
+    "act": "Camp",
+    "location": "The beacon station at Kell's Bridge",
+    "start": "fire",
+    "nodes": {
+      "fire": {
+        "title": "Old Company",
+        "objective": "Sit up with Orin and Hal.",
+        "lines": [
+          { "narrate": "Late, with the soldiers asleep in the station, Orin and Hal sit by the cabbage-patch fire. They are not talking. You sit down with them anyway, and after a while they forget you are there." },
+          { "say": "Hal", "text": "You didn't answer my letter." },
+          { "say": "orin", "text": "You asked me to sign on with you. Central Command. Steady pay." },
+          { "say": "Hal", "text": "I did." },
+          { "say": "orin", "text": "I couldn't say yes. And I couldn't write that I'd think about it, because I wasn't going to. So I didn't write." },
+          { "say": "Hal", "text": "You could have written that it was a bad idea." },
+          { "say": "orin", "text": "It was a bad idea." },
+          { "say": "Hal", "text": "I know that now. Took me two years and a cabbage patch." },
+          { "narrate": "Hal laughs, a short tired bark of a laugh, and puts another stick on the fire. Orin doesn't laugh. He is looking at the beacon frame on top of the tower, where the echo-stones used to hang." },
+          { "say": "orin", "text": "Forty of you out here. Nobody came. I should have come." }
+        ],
+        "choices": [
+          {
+            "id": "tell-her",
+            "label": "“Say the rest of it, Orin.”",
+            "lines": [
+              { "say": "orin", "text": "I left you out here. Not on purpose. That's no excuse." },
+              { "say": "Hal", "text": "Stoneward. You came. Late, with a council and a goat-woman's money. But you came." },
+              { "narrate": "Hal goes off to check on the sentries, who don't need checking on. Orin stays by the fire and, for the first time since Briarwatch, looks like a man who is sitting down rather than waiting to stand up." }
+            ],
+            "approval": { "orin": 1 }
+          },
+          {
+            "id": "leave",
+            "label": "Leave them to it",
+            "lines": [
+              { "narrate": "You get up and go. Behind you, after a while, you hear them start talking: about the Ashford span, about people you never met, about a quartermaster in the Second Company who used to steal everyone's boots. Then, eventually, laughing." }
+            ],
+            "approval": { "orin": 1 }
+          }
+        ]
+      }
+    }
   }
 }

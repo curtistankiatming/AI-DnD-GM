@@ -156,8 +156,28 @@ of independent wards or a charter (independent) and the quiet district choice
 **Side stories:** two short jobs per hub, grounded in the main story, and one
 companion camp scene per level.
 
-**XP, levels 11 to 20:** a chapter pays about 30% of a level, a side job about
-12%, battles the usual share by difficulty. No XP is inflated.
+**XP, levels 11 to 20:** a chapter pays about one level (105% of the level it
+is written for), as Book One's chapters do, so the free story reaches level 20
+at the end of Book Two without grinding. A side job pays about 12%. Written
+chapters' battles pay no extra XP, as in Book One. (Changed on 19 November 2026
+from "30% of a level", which would have needed grinding between chapters.)
+
+## How Book Two is built
+
+Each chapter is an authored expedition in `src/data/quests.json` with
+`"book": 2`, in story order (each `unlock`s the one before). On top of the
+expedition fields Book One uses, a chapter may have:
+
+- `talks`: conversations on the chapter's opening scene, had once each, with
+  `lines` and optional `approval`, `setFlags` or `requires`. They cost nothing
+  and pay nothing.
+- `attackName` and `retainerName`: what the chapter's enemies are called.
+- Decisions with `approval` or `requires`, and text written as lines.
+
+A camp scene for a chapter goes in `src/data/scenes.json` with `"after"` set to
+the chapter's id. Chapters written so far: 1 to 3 (The Chair Problem, Fenmere
+Under the Gloam, The Long Road South). Until chapter 10 lands, `src/book.js`
+marks Book Two as still being written.
 
 ## How scenes are written
 

@@ -51,7 +51,7 @@ test('a combat question with a mock reply does not consume a turn or an ability'
 
 test('Compact retains current combat facts in the final Bard encounter after a full journal',()=>{
   const {chooseAction}=require('./player-policy');
-  let s=E.createNewGame({classId:'bard'}),memory={},rng=R.createSeededRng(301),checked=0;
+  let s=E.createNewGame({classId:'bard'}),memory={bookOneOnly:true},rng=R.createSeededRng(301),checked=0;
   const cfg=Profiles.normalize({profile:'compact'});
   for(let i=0;i<900;i++){
     const v=E.buildView(s),a=chooseAction(v,memory,'prepared');

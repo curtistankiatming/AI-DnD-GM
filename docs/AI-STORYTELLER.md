@@ -15,8 +15,15 @@ The AI asks one question each time it acts: is there a written chapter (a
 - **Beyond the books.** After the last written chapter, the AI is the author.
   It continues the hero's own story and writes it down.
 
+The books are Book One (levels 1 to 10) and Book Two (levels 10 to 20). While
+Book Two is still being written, a hero who reaches its last written chapter
+waits at a "to be continued": the AI can write small side quests, capped one
+level above that chapter, and the save stays on the books.
+
 A save that has finished the books stays the hero's own story, even if more
-books are written later. Books and AI stories are kept separate, each in its own
+books are written later. The one exception: a save that finished Book One
+before Book Two existed, and has had no full AI adventure since, carries on into
+Book Two. Books and AI stories are kept separate, each in its own
 save. A hero already above the last written chapter's level (possible in saves
 from before these rules) counts as beyond the books.
 

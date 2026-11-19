@@ -19,7 +19,7 @@ function battle(cls='fighter',level=5,id='practice'){
 function hitPoints(s){return [s.player,...s.party].map(a=>[a.hp,a.maxHp]);}
 function kitUses(s){return (s.player.inventory.find(i=>i.itemId==='healers-kit')||{quantity:0,charges:0});}
 
-test('V4 catalog provides three real towns and ten authored regional expeditions',()=>{assert.equal(Object.keys(TOWNS).length,3);assert.equal(Object.keys(QUESTS).length,10);assert.equal(P.MAX_LEVEL,100);for(const q of Object.values(QUESTS)){assert.ok(q.opening&&q.crisis&&q.objective.target>0&&q.decisions.length);}});
+test('V4 catalog provides the real towns and the ten authored expeditions of Book One',()=>{assert.ok(['briarwatch','ashford','highpass','merrowgate'].every(id=>TOWNS[id]));assert.equal(Object.values(QUESTS).filter(q=>!q.book||q.book===1).length,10);assert.equal(P.MAX_LEVEL,100);for(const q of Object.values(QUESTS)){assert.ok(q.opening&&q.crisis&&q.objective.target>0&&q.decisions.length);}});
 test('town buy/sell conserves stock and gold; selling assigned equipment is rejected',()=>{
  let s=gold(hero(),100);const original=s.world.stock.briarwatch['healing-potion'];s=act(s,{type:'buy',itemId:'healing-potion',quantity:2});assert.equal(s.player.gold,70);assert.equal(s.world.stock.briarwatch['healing-potion'],original-2);
  s=act(s,{type:'sell',itemId:'healing-potion',quantity:1});assert.equal(s.player.gold,74);const r=E.resolveAction(s,{type:'sell',itemId:'iron-longsword',quantity:1});assert.equal(r.result.ok,false);assert.equal(r.state.player.gold,74);

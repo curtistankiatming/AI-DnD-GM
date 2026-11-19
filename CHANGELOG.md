@@ -4,6 +4,26 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## 19 November 2026 — Book Two, chapters 1 to 3
+
+The written story continues past level 10. Book Two, **The Council of Small
+Voices**, follows the story bible ([docs/STORY-BIBLE.md](docs/STORY-BIBLE.md)).
+
+- **The Chair Problem** (level 10 to 11, Highpass): the first council of the
+  free wards, the seating chart, Provost Elske Marrow, Brannagh of Fenmere and
+  her goat, and a Gloam tide at the gate that only the delegates together can
+  ring back. Who pays for Fenmere is your call.
+- **Fenmere Under the Gloam** (11 to 12): the lower village is lost because help
+  came late. Save the rest with the village's ward-song; then help the baker's
+  ward close up.
+- **The Long Road South** (12 to 13, Briarwatch to Merrowgate): Dera, Tovin's
+  keen apprentice Pim, and the "bandits" at Kell's Bridge, who are Lieutenant
+  Hal's unpaid beacon crews. Orin's story. Merrowgate opens as a new town.
+- Camp scenes after each chapter; conversations before setting out; Book One's
+  ending now leads into Book Two. Each chapter pays about one level.
+- Saves that finished Book One without any AI adventure carry on into Book Two.
+  After chapter 3 the game says "to be continued" until the next chapters land.
+
 ## 19 November 2026 — fixes from the level 11 playtest
 
 Fixes for [docs/reviews/codex-2026-11-19.md](docs/reviews/codex-2026-11-19.md).
