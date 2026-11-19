@@ -544,9 +544,18 @@ function applyOutcome(state, written = {}, rng, events) {
     pushLog(state, "GM", outcome.text, "story");
   }
   // Finishing the last written chapter says so, after the choice that finished it.
-  if (booksOpen && state.story.flags[Book.FINISHED]) events.push({ type: "story", tone: "good", text: Book.ENDING });
+  // The last chapter's epilogue scene plays first; the hand-over to the AI
+  // storyteller is told when the hero is back in town.
+  if (booksOpen && state.story.flags[Book.FINISHED]) {
+    if (outcome.nextNode && STORY_NODES[outcome.nextNode]?.scene) state.story.flags["books:ending-due"] = true;
+    else events.push({ type: "story", tone: "good", text: Book.ENDING });
+  }
   else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest) });
   if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
+  if (state.story.flags["books:ending-due"] && STORY_NODES[state.story.nodeId]?.townId) {
+    delete state.story.flags["books:ending-due"];
+    events.push({ type: "story", tone: "good", text: Book.ENDING });
+  }
   if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
     // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.
     const fight = state.story.lastOutcome;

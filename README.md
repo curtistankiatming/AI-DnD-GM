@@ -82,8 +82,10 @@ the thinking effort and the wait limit sit under **Advanced settings**. Copying
   more XP.
 
 **Progression to level 100.**
-- Levels 1 to 10 follow the written Briarwatch campaign. The level 10 Oath of the
-  Road trial teaches your class mastery skill.
+- Levels 1 to 20 follow the written Briarwatch campaign: Book One, The Bell
+  Beneath Briarwatch (levels 1 to 10), and Book Two, The Council of Small Voices
+  (levels 10 to 20). The level 10 Oath of the Road trial teaches your class
+  mastery skill. After the books, the AI storyteller continues your story.
 - **2nd job at level 20:** pick one of three branches for your class (permanent).
 - **3rd job at level 40**, unlocked by a trial written by the game master.
 - **4th job at level 70**, unlocked by a legendary trial, with an ultimate skill

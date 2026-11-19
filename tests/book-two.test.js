@@ -184,18 +184,19 @@ test('the Mother Bell is told the way the vote went', () => {
 test("Elske's charge names what this hero decided alone, and nothing they didn't", () => {
   const charge = (flags) => E.buildView(act(ready('oath', { flags }), { type: 'depart', questId: 'oath' }).state).scene.opening;
   const a = charge({ b2_cost_party: true, fen_promise: true, harbour_keepers: true });
-  assert.match(a, /out of your own purse/); assert.match(a, /promised three hundred people/); assert.match(a, /gave away a harbour/);
+  assert.match(a, /put your own fee on the table/); assert.match(a, /promised three hundred people/); assert.match(a, /gave away a harbour/);
   assert.doesNotMatch(a, /Merrowgate's loan|named Haverick|lamp receipts/);
   const b = charge({ b2_cost_loan: true, keeper_kept_receipts: true, wards_seat: true });
-  assert.match(b, /Merrowgate's loan/); assert.match(b, /lamp receipts/); assert.match(b, /Aster Vey's chime/);
-  assert.doesNotMatch(b, /own purse|gave away a harbour/);
+  assert.match(b, /Merrowgate's loan/); assert.match(b, /lamp receipts/); assert.match(b, /carries Aster Vey's voice/);
+  assert.doesNotMatch(b, /own fee|gave away a harbour/);
 });
 
 test('the last chapter ends the books, then the epilogue records the Second Oath', () => {
   let s = ready('oath');
   s.story.nodeId = 'q-oath-after'; s.world.activeQuest = 'oath'; s.world.onExpedition = true;
   const r = act(s, { type: 'story-choice', choiceId: 'seat' });
-  assert.ok(r.events.some((e) => e.text === Book.ENDING));
+  // The hand-over to the AI waits until the epilogue is over (Codex review, finding 5).
+  assert.ok(!r.events.some((e) => e.text === Book.ENDING));
   assert.equal(r.state.story.flags[Book.FINISHED], true);
   assert.equal(r.state.story.flags.elske_seat, true);
   assert.equal(r.state.story.nodeId, 'scene-oath-epilogue-oath');
@@ -204,8 +205,47 @@ test('the last chapter ends the books, then the epilogue records the Second Oath
   assert.equal(s.story.nodeId, 'scene-oath-epilogue-forge');
   s = act(s, { type: 'story-choice', choiceId: 'nessa-post' }).state;
   assert.equal(s.story.flags.nessa_keeper, 'later');
-  s = act(s, { type: 'story-choice', choiceId: 'home' }).state;
+  const home = act(s, { type: 'story-choice', choiceId: 'home' });
+  assert.ok(home.events.some((e) => e.text === Book.ENDING), 'Told once the hero is home.');
+  s = home.state;
   assert.equal(s.story.nodeId, 'town-briarwatch');
+  assert.equal(s.story.flags['books:ending-due'], undefined);
   assert.equal(E.buildView(s).world.booksComplete, true);
   assert.equal(E.buildView(s).world.director.sideQuests, false, 'After the books, the AI writes full adventures.');
+});
+
+// Fixes from docs/reviews/codex-bard-book-two-2026-11-19.md.
+test('Aster Vey reaches the hero whether or not they carried the silver chime out of the vault', () => {
+  const opening = (chime) => { let s = ready('cinderfold'); if (chime) s.player.inventory.push({ itemId: 'silver-chime', quantity: 1 }); s = act(s, { type: 'depart', questId: 'cinderfold' }).state; return E.buildView(s).scene.opening; };
+  const withChime = opening(true), without = opening(false);
+  assert.match(withChime, /the silver chime you carried out of the bell-vault/); assert.doesNotMatch(withChime, /niche by the hearth/);
+  assert.match(without, /little bronze bell in the niche by the hearth/); assert.doesNotMatch(without, /silver chime you carried/);
+  assert.match(without, /Wren takes the little bell/);
+  for (const text of [withChime, without]) assert.match(text, /^Aster Vey: Your council argues/m);
+});
+
+test('a lawful Warden can be recalled at the Mother Bell, at a cost, and the hearing remembers it', () => {
+  const crisis = (flag) => { const s = ready('motherbell', { flags: { [flag]: true } }); s.story.nodeId = 'q-motherbell-crisis'; s.world.activeQuest = 'motherbell'; s.world.onExpedition = true; return s; };
+  assert.ok(!E.buildView(crisis('vote_elske_lost')).scene.choices.some((c) => c.id === 'recall'), 'No recall without a lawful Warden.');
+  const s = crisis('vote_elske_won');
+  assert.ok(E.buildView(s).scene.choices.some((c) => c.id === 'recall'));
+  const r = act(s, { type: 'story-choice', choiceId: 'recall' });
+  assert.equal(r.state.story.flags.mother_recalled, true);
+  assert.equal(r.state.story.nodeId, 'q-motherbell-after');
+  assert.match(told(r.state), /lost the third verse again/);
+  const hearing = E.buildView(act(ready('oath', { flags: { vote_elske_won: true, mother_recalled: true } }), { type: 'depart', questId: 'oath' }).state).scene.opening;
+  assert.match(hearing, /waited for the council to recall me/);
+  const crisisText = (flags) => { const t = ready('oath', { flags }); t.story.nodeId = 'q-oath-start'; return act(t, { type: 'story-choice', choiceId: 'advance' }).state; };
+  const lawful = act(crisisText({ vote_elske_won: true }), { type: 'story-choice', choiceId: 'direct' }).state;
+  assert.match(E.buildView(lawful).scene.opening, /used the power exactly as written/);
+});
+
+test('the lamp-man brings the receipts before you decide what to do with them', () => {
+  assert.match(STORY_NODES['q-keeper-after'].opening, /Lamp-man: Every receipt I've signed/);
+});
+
+test('pledging your fee for Fenmere says the council pays it back', () => {
+  const party = QUESTS.chairs.decisions.find((d) => d.id === 'party');
+  assert.match(party.label, /Pledge your contract fee/);
+  assert.match(party.description, /repays your pledge/);
 });

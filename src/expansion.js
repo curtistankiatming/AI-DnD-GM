@@ -58,7 +58,7 @@ const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.
 function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
 // party, and its optional "when" holds (flag / is, notFlag, anyFlag, party,
-// absent, class). The written text keeps every line; this picks the ones for this save.
+// absent, class, item, notItem). The written text keeps every line; this picks the ones for this save.
 function lineApplies(state, line) {
   const inParty = (id) => state.party.some((member) => member.id === id);
   if (line.speakerId && !inParty(line.speakerId)) return false;
@@ -71,6 +71,9 @@ function lineApplies(state, line) {
   if (w.party && !inParty(w.party)) return false;
   if (w.absent && inParty(w.absent)) return false;
   if (w.class && state.player.classId !== w.class) return false;
+  const carried = (id) => (state.player.inventory || []).some((entry) => entry.itemId === id);
+  if (w.item && !carried(w.item)) return false;
+  if (w.notItem && carried(w.notItem)) return false;
   return true;
 }
 function liveLines(state, lines) {
@@ -109,6 +112,9 @@ function installQuest(q){
   ]};
   STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
     choice('resolve',q.peaceful.label,{requires:{cluesAll:[evidence]},check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+Math.floor(A/2)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
+    // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
+    // and approval, then on to the chapter's ending, like a peaceful success.
+    ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};

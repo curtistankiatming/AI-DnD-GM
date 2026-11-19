@@ -1678,11 +1678,11 @@
       },
       {
         "id": "party",
-        "label": "Pay Fenmere's first week out of your party's own purse",
-        "description": "This decision is permanent. Your purse stays as it is; the story remembers who paid.",
+        "label": "Pledge your contract fee to start Fenmere's relief tonight",
+        "description": "This decision is permanent. The council repays your pledge from the relief fund once it is agreed, so your reward is unchanged; the story remembers who paid first.",
         "text": [
           {
-            "narrate": "You put your contract fee on the table. It is not enough for a week, but it is enough for a day, and the room goes very quiet."
+            "narrate": "You put your contract fee on the table, as a pledge, so the first carts can leave tonight. It is not enough for a week, but it is enough for a day, and the room goes very quiet."
           },
           {
             "say": "Iona",
@@ -1693,7 +1693,7 @@
             "text": "It is now. Ashford, you're embarrassed. Pay the rest."
           },
           {
-            "narrate": "Iona pays the rest. Later she sends you a receipt for your share, very correctly made out, with a note on the back that just says: noted."
+            "narrate": "Iona pays the rest. Later the relief fund pays back your pledge to the penny, and Iona sends you a receipt for it, very correctly made out, with a note on the back that just says: noted."
           }
         ],
         "rep": {
@@ -1809,7 +1809,7 @@
         "performance"
       ],
       "success": "An old woman remembers the first line. A fisherman remembers the tune and not the words. A girl of twelve, who was at her cousin's wedding in the spring, sings the whole thing through without stopping and then bursts into tears because she doesn't know why it's sad. Ilka writes it on her arm in charcoal.",
-      "failure": "Between them, the villagers put back most of the verse. A line in the middle stays missing. Ilka will have to fill it with something true and hope the ward accepts it."
+      "failure": "Between them, the villagers put back most of the verse. A girl of twelve, who heard it at her cousin's wedding in the spring, gets further than anyone, then stops at a line in the middle and cannot find it again. Ilka will have to fill it with something true and hope the ward accepts it."
     },
     "route": {
       "label": "Get the last families up the causeway before the water rises",
@@ -1865,7 +1865,7 @@
       ],
       "success": [
         {
-          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. By the third, the girl from the wedding is leading it and nobody is ashamed to follow a child."
+          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. By the third, the twelve-year-old who knew it from her cousin's wedding is leading it, and nobody is ashamed to follow a child."
         },
         {
           "narrate": "The ward takes the song and rings it out, and the white field stops at the churchyard wall. Then, slowly, it goes back down the hill, a yard at a time, like a dog that has been told no."
@@ -2312,7 +2312,7 @@
             "text": "Honest. I'll take it, then. Pension's real money. The council's money is a promise."
           },
           {
-            "narrate": "She signs. The guild agent shakes her hand with real warmth. Orin says nothing until you are back on the road south, and then only one thing."
+            "narrate": "She signs. The guild agent shakes her hand with real warmth. Orin says nothing all evening, until the yard has gone quiet, and then only one thing."
           },
           {
             "say": "orin",
@@ -2950,7 +2950,14 @@
         "text": "She means all of it. The Warden, the year, the recall. She means to give it back."
       },
       {
-        "narrate": "Then you have to decide what to do with the receipts from the lamp-man, signed by Haverick's office, for half a pane of ward-glass on every lamp in the lower town."
+        "narrate": "At noon the lamp-man comes down the tide steps with a bundle wrapped in oilcloth. His sister's boy was in the end bed last night."
+      },
+      {
+        "say": "Lamp-man",
+        "text": "Every receipt I've signed for the Sallows lamps. Stamped by the Lantern Hall, countersigned by Guildmaster Haverick's office, for half a pane of ward-glass on every lamp in the lower town. You held that door. Take them. I'll say it to anyone who asks."
+      },
+      {
+        "narrate": "So now you have to decide what to do with them."
       }
     ],
     "decisions": [
@@ -3349,7 +3356,44 @@
       },
       {
         "say": "Wren",
-        "text": "They were very good letters. Come in. Wipe your feet. Not you, dog. You're fine as you are."
+        "text": "They were very good letters. Come in. Wipe your feet. Not you, dog. You're fine as you are.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "That night, at the inn, the silver chime you carried out of the bell-vault under Briarwatch rings on its own in your pack, once, very softly. Then a voice you have not heard since the vault speaks out of the forge-warm air, as if from the next room.",
+        "when": {
+          "item": "silver-chime"
+        }
+      },
+      {
+        "narrate": "That night, at the inn, the little bronze bell in the niche by the hearth rings on its own. Every house in Cinder Fold keeps one; nobody can remember why. Then a voice you last heard in the bell-vault under Briarwatch, the voice of the spirit that was bound in the bell there, speaks out of it, as if from the next room.",
+        "when": {
+          "notItem": "silver-chime"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Aster Vey. You freed me, under Briarwatch, and you never heard me say thank you. Thank you. I came through the stone to find you. All the bells are joined, down here, if you go deep enough."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "You are over the first forge. All of us were made here. The oldest ones are under your feet. They are cold. They are frightened. They are ringing because nobody has asked them anything for nine hundred years."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Your council argues over who may ring a bell. Has anyone asked the bells? We are not tools. I was a keeper once, before I was a bell. When the council sits, I would like a seat. Not for me. For all of us."
+      },
+      {
+        "narrate": "In the morning, Wren takes the little bell out of its niche and puts it in your hand. 'She's in that one now, by the sound of it. Keep her with you. Don't drop her.'",
+        "when": {
+          "notItem": "silver-chime"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "A ward on the council. Aveline will need a fourth bag."
       }
     ],
     "talks": [
@@ -3399,30 +3443,6 @@
         },
         "approval": {
           "nessa": 1
-        }
-      },
-      {
-        "id": "aster",
-        "label": "Answer the silver chime in your pack",
-        "lines": [
-          {
-            "narrate": "At the inn, the silver chime you carried out of the bell-vault under Briarwatch rings on its own, once, very softly. Then a voice you have not heard since the vault speaks out of the forge-warm air, as if from the next room."
-          },
-          {
-            "say": "Aster Vey",
-            "text": "You are under the first forge. All of us were made here. I can hear the oldest ones from Briarwatch, through the stone. They are cold. They are frightened. They are ringing because nobody has asked them anything for nine hundred years."
-          },
-          {
-            "say": "Aster Vey",
-            "text": "Your council argues over who may ring a bell. Has anyone asked the bells? We are not tools. I was a keeper once, before I was a bell. When the council sits, I would like a seat. Not for me. For all of us."
-          },
-          {
-            "say": "maren",
-            "text": "A ward on the council. Aveline will need a fourth bag."
-          }
-        ],
-        "setFlags": {
-          "b2:aster_asked": true
         }
       }
     ],
@@ -4094,7 +4114,7 @@
         "narrate": "Then, one by one, the other bells stop."
       },
       {
-        "narrate": "You feel it before you hear it. The first wards under the forge go quiet. Somewhere far away, Fenmere's ward-song falters in the middle of the third verse. Merrowgate's harbour bell stops in mid-stroke. In Briarwatch, the bell in the tower, Aster Vey's bell, goes silent; the chime in your pack goes cold. Every ward in the land has been made to agree, and so none of them is saying anything at all."
+        "narrate": "You feel it before you hear it. The first wards under the forge go quiet. Somewhere far away, Fenmere's ward-song falters in the middle of the third verse. Merrowgate's harbour bell stops in mid-stroke. In Briarwatch, the bell in the tower, Aster Vey's bell, goes silent; the little bell in your pack goes cold. Every ward in the land has been made to agree, and so none of them is saying anything at all."
       },
       {
         "say": "Aster Vey",
@@ -4148,7 +4168,7 @@
           "narrate": "You do not argue with her. You tell her what the founders wrote: one voice to command, many voices to answer. You remind her of a churchyard in Fenmere and a long room in the Sallows and a hall in Hollin's Reach where seven people finally looked at the window."
         },
         {
-          "narrate": "Then you put your hands on the rope beside hers. One by one, your companions do the same. Wren limps in from the gallery and takes a turn. Aster Vey's voice comes up out of the cold chime in your pack."
+          "narrate": "Then you put your hands on the rope beside hers. One by one, your companions do the same. Wren limps in from the gallery and takes a turn. Aster Vey's voice comes up out of the cold little bell in your pack."
         },
         {
           "narrate": "Elske looks at all the hands on the rope for a long time. Then she lets go of hers."
@@ -4167,6 +4187,62 @@
         }
       ]
     },
+    "crisisChoices": [
+      {
+        "id": "recall",
+        "label": "Hold the hall and send for the council to recall her",
+        "description": "Lawful, and slow. The delegates are a day behind you. Every ward in the land stays silent until they arrive.",
+        "requires": {
+          "flagsAll": [
+            "vote_elske_won"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You do not touch the rope. You send Nessa down the mountain road at a run to find the delegates, and you hold the casting hall while you wait. Elske does not stop you. She keeps ringing.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "You do not touch the rope. You send a miner's boy down the mountain road at a run to find the delegates, and you hold the casting hall while you wait. Elske does not stop you. She keeps ringing.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "narrate": "Haverick's men try the doors twice in the night. The second time, Hal's company comes up the road behind them with the delegates' coaches, and that is the end of that."
+          },
+          {
+            "narrate": "The council sits on the casting floor at dawn, under the bell, with its ears ringing. It takes them an hour. It is the fastest hour in the council's history, and the longest in Fenmere's: all night, with its ward silenced, Ilka has been singing the ward-song alone in the churchyard, and by morning she has lost the third verse again."
+          },
+          {
+            "say": "Iona",
+            "text": "On the recall of the Warden of the Chorus. Ashford: yes."
+          },
+          {
+            "narrate": "Four towns of five. Merrowgate votes no. Elske, who is Merrowgate, says it herself, steadily, without letting go of the rope."
+          },
+          {
+            "say": "Aveline",
+            "text": "Four of five. The Warden is recalled."
+          },
+          {
+            "narrate": "Elske Marrow takes her hands off the rope. The Mother Bell goes on swinging for a long time, slower and slower, and as it stills, one by one, the other bells come back: the first wards under the forge, and Merrowgate's harbour, and far off, very faint, Briarwatch."
+          },
+          {
+            "say": "Elske",
+            "text": "That's what the recall was for. I wrote it. I didn't think I'd be the one it was used on. I hoped I would be."
+          }
+        ],
+        "setFlags": {
+          "mother_recalled": true
+        },
+        "approval": {
+          "orin": 1
+        }
+      }
+    ],
     "objective": {
       "name": "Hold the doors and free the bell",
       "label": "Hold the casting hall doors while the bell is freed",
@@ -4287,7 +4363,7 @@
     "brief": "The council sits at Cinder Fold to decide what to do with Elske Marrow. She has asked to speak first. Answer her, and decide who your oath answers to.",
     "opening": [
       {
-        "narrate": "The council sits in the casting hall, under the Mother Bell, on the floor, because there are still no chairs. All five delegates, and Brannagh's goat, and, at Aveline's insistence, a ward: Aster Vey's chime, set on a stool at the end of the circle.",
+        "narrate": "The council sits in the casting hall, under the Mother Bell, on the floor, because there are still no chairs. All five delegates, and Brannagh's goat, and, at Aveline's insistence, a ward: the little bell that carries Aster Vey's voice, set on a stool at the end of the circle.",
         "when": {
           "flag": "wards_seat"
         }
@@ -4314,7 +4390,7 @@
       },
       {
         "say": "Elske",
-        "text": "At Highpass you paid for Fenmere out of your own purse, and the council followed you because it was embarrassed.",
+        "text": "At Highpass you put your own fee on the table for Fenmere before the council had agreed to anything, and the council followed you because it was embarrassed.",
         "when": {
           "flag": "b2_cost_party"
         }
@@ -4367,6 +4443,13 @@
       {
         "say": "Elske",
         "text": "And at Briarwatch, an old woman looked at you before she voted, and you told her which way, and everybody saw it."
+      },
+      {
+        "say": "Elske",
+        "text": "To be fair to you: at the bell, when you could have stopped me by hand, you waited for the council to recall me instead. It cost Fenmere its song for a day. I noticed.",
+        "when": {
+          "flag": "mother_recalled"
+        }
       },
       {
         "say": "Elske",
@@ -4457,7 +4540,25 @@
       },
       {
         "say": "Iona",
-        "text": "The charter says a Warden who acts without the council can be removed. It doesn't say what happens after. We didn't think we'd need that page."
+        "text": "The charter says a Warden who acts without the council can be removed. It doesn't say what happens after. We didn't think we'd need that page.",
+        "when": {
+          "flag": "vote_elske_lost"
+        }
+      },
+      {
+        "say": "Iona",
+        "text": "She was the lawful Warden. She did exactly what the charter let her do, and it silenced every ward in the land. The charter says how to recall a Warden. It doesn't say what to do with one who used the power exactly as written. We didn't think we'd need that page.",
+        "when": {
+          "flag": "vote_elske_won",
+          "notFlag": "mother_recalled"
+        }
+      },
+      {
+        "say": "Iona",
+        "text": "We recalled her, lawfully, two-thirds and the paperwork. She let go of the rope when the vote was read. The charter doesn't say what happens to a Warden after that. We didn't think we'd need that page.",
+        "when": {
+          "flag": "mother_recalled"
+        }
       },
       {
         "say": "Brannagh",
