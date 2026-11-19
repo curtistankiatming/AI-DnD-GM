@@ -409,7 +409,8 @@
               { "narrate": "Maren writes it. Chose. Then she folds the list, very carefully, and for the first time since you have known her she does not put it back in her pocket. She drops it into the harbour and watches it go." },
               { "say": "maren", "text": "Six years. That's enough lists." }
             ],
-            "approval": { "maren": 1 }
+            "approval": { "maren": 1 },
+            "setFlags": { "keeper-list-done": true }
           },
           {
             "id": "nothing",
@@ -459,6 +460,203 @@
             ],
             "approval": { "orin": 1, "maren": 1 }
           }
+        ]
+      }
+    }
+  },
+  "cinderfold-camp": {
+    "id": "cinderfold-camp",
+    "after": "cinderfold",
+    "cast": ["nessa"],
+    "act": "Camp",
+    "location": "The peak stairs above Cinder Fold",
+    "start": "stairs",
+    "nodes": {
+      "stairs": {
+        "title": "The Peak Stairs",
+        "objective": "Climb to the forge-signal with Nessa and Wren.",
+        "lines": [
+          { "narrate": "The forge-signal is a beacon on the peak, four hundred steps above the town. Wren insists on climbing them, for the last time, she says, with her stick and her bad leg and Nessa's arm, which she pretends she is not leaning on." },
+          { "say": "Wren", "text": "Slow down." },
+          { "say": "nessa", "text": "I am going slow." },
+          { "say": "Wren", "text": "You're going slow for you. Go slow for me." },
+          { "narrate": "Halfway up Wren stops to breathe, and Nessa stops with her, and they stand side by side looking down at the town. They have exactly the same way of standing. Both of them notice at the same moment, and both of them shift their weight to the other foot to stop doing it, and then they've done that the same way too." },
+          { "say": "Wren", "text": "Oh, for pity's sake." },
+          { "say": "nessa", "text": "That's what you sound like when you're cross." },
+          { "say": "Wren", "text": "That's what you sound like when you're cross, girl. I had it first." },
+          { "narrate": "At the top, Wren shows Nessa how the beacon is laid, and how it is lit, and where the oil is kept, and which of the stairs are loose. She does not say why. Nessa does not ask." }
+        ],
+        "choices": [
+          {
+            "id": "light",
+            "label": "Hand Nessa the taper",
+            "lines": [
+              { "narrate": "Nessa lights the beacon. It goes up all at once, a column of orange, and every chimney in Cinder Fold below answers it with a puff of smoke, as if the town were breathing out." },
+              { "say": "Wren", "text": "Not bad. Bit fast." },
+              { "say": "nessa", "text": "It's meant to be fast." },
+              { "say": "Wren", "text": "I know. I've just never seen it from this side." }
+            ],
+            "approval": { "nessa": 1 }
+          },
+          {
+            "id": "wren",
+            "label": "Let Wren light it, one last time",
+            "lines": [
+              { "narrate": "Wren lights the beacon, slowly, with great care, the way she has done it every night for a year. Nessa watches her hands the whole time, the way you watch someone do a thing you are about to have to do yourself." },
+              { "say": "nessa", "text": "You're slow." },
+              { "say": "Wren", "text": "I'm thorough. You'll get there." }
+            ],
+            "approval": { "nessa": 1 }
+          }
+        ]
+      }
+    }
+  },
+  "vote-camp": {
+    "id": "vote-camp",
+    "after": "vote",
+    "cast": ["orin", "maren"],
+    "act": "Camp",
+    "location": "Dera's forge, the night after the vote",
+    "start": "forge",
+    "nodes": {
+      "forge": {
+        "title": "Midwinter at the Forge",
+        "objective": "Sit with your companions after the vote.",
+        "lines": [
+          { "narrate": "Dera's forge, after midnight. Dera has gone to bed, leaving the fire banked and a jug on the anvil with a note: DON'T TOUCH THE TONGS." },
+          { "narrate": "Brannagh's goat is asleep by the fire in its blanket. Nobody knows where Brannagh is. Nobody is going to wake the goat to ask." },
+          { "say": "maren", "text": "Did we do the right thing?" },
+          { "say": "orin", "text": "We did a thing. Ask me in a year.", "when": { "flag": "vote_elske_won" } },
+          { "say": "orin", "text": "We did a thing. Ask me when the mist comes back.", "when": { "flag": "vote_elske_lost" } },
+          { "say": "maren", "text": "That's not an answer." },
+          { "say": "orin", "text": "It's the only honest one I've got." }
+        ],
+        "choices": [
+          {
+            "id": "right",
+            "label": "“It was the right thing.”",
+            "lines": [
+              { "say": "maren", "text": "You sound very sure." },
+              { "say": "orin", "text": "Somebody should be. It isn't going to be me." }
+            ],
+            "approval": { "orin": 1 }
+          },
+          {
+            "id": "dontknow",
+            "label": "“I don't know. I don't think anyone does.”",
+            "lines": [
+              { "say": "maren", "text": "No. I think that might be the right answer, actually." },
+              { "narrate": "Maren reaches over and, very carefully, without touching the tongs, takes the jug." }
+            ],
+            "approval": { "maren": 1 }
+          }
+        ]
+      }
+    }
+  },
+  "oath-epilogue": {
+    "id": "oath-epilogue",
+    "after": "oath",
+    "cast": [],
+    "act": "Epilogue",
+    "location": "Cinder Fold, then home to Briarwatch",
+    "start": "oath",
+    "nodes": {
+      "oath": {
+        "title": "The Second Oath",
+        "objective": "Swear who your oath answers to.",
+        "lines": [
+          { "narrate": "Before the council rises, Aveline asks you to swear it, for the record: who does the hero of the free wards answer to? There is no right answer in the charter. There is no page for it. She dips her pen and waits." },
+          { "narrate": "You remember the oath you swore on the road at level ten, to the people who cannot hold the road themselves.", "when": { "flag": "oath:people" } },
+          { "narrate": "You remember the oath you swore on the road at level ten, to the ones who walk it with you.", "when": { "flag": "oath:companions" } },
+          { "narrate": "You remember the oath you swore on the road at level ten, to every town on the road, even the ones that cannot agree.", "when": { "flag": "oath:towns" } }
+        ],
+        "choices": [
+          {
+            "id": "council",
+            "label": "“To the council. It can recall me, like anyone.”",
+            "lines": [
+              { "narrate": "Aveline writes it down. Then, after a moment, she adds a line, and reads it out: 'Recallable by two-thirds.' The council votes on it. It is the fastest vote anyone has ever seen." },
+              { "say": "Brannagh", "text": "I'd like it noted that we can be quick when we feel like it." }
+            ],
+            "setFlags": { "second_oath": "council" },
+            "next": "forge"
+          },
+          {
+            "id": "town",
+            "label": "“To Briarwatch. It took me in.”",
+            "lines": [
+              { "narrate": "Aveline stops writing, and looks at you, and for a moment the tiredness goes out of her face entirely." },
+              { "say": "Aveline", "text": "Briarwatch will hold you to it. Briarwatch holds everyone to everything. Ask Tovin." }
+            ],
+            "setFlags": { "second_oath": "town" },
+            "next": "forge"
+          },
+          {
+            "id": "companions",
+            "label": "“To the people I walk with.”",
+            "lines": [
+              { "narrate": "Aveline writes down three names, and then, after a glance at the fire, a fourth: Biscuit.", "when": { "party": "nessa" } },
+              { "narrate": "Aveline writes down their names, one after another, with great care.", "when": { "absent": "nessa" } },
+              { "say": "orin", "text": "We'll hold you to it." },
+              { "say": "maren", "text": "Constantly." }
+            ],
+            "setFlags": { "second_oath": "companions" },
+            "next": "forge"
+          },
+          {
+            "id": "none",
+            "label": "“To no one. To what's right, as best I can see it.”",
+            "lines": [
+              { "narrate": "Aveline writes it down without a word. Elske, across the circle, closes her eyes for a moment." },
+              { "say": "Elske", "text": "That's what I said, at your age. Be better at it than I was." }
+            ],
+            "setFlags": { "second_oath": "none" },
+            "next": "forge"
+          }
+        ]
+      },
+      "forge": {
+        "title": "Dera's Forge",
+        "objective": "The written story ends here.",
+        "lines": [
+          { "narrate": "In the spring, your party comes home to Briarwatch, and Dera has your gear on the bench before you have finished saying hello." },
+          { "say": "Dera", "text": "You broke it. Again. What was it this time?" },
+          { "say": "orin", "text": "A council." },
+          { "say": "Dera", "text": "That'll do it." },
+          { "narrate": "Tovin rings the hours. Pim rings them with him, exactly on time, every time, and has been told to breathe so often that he now does it without being asked. Aveline sleeps, people say, for a week." },
+          { "narrate": "Brannagh has her fence. The goat ignores it entirely." },
+          { "narrate": "Maren's list is gone; she let it go in Merrowgate harbour. She has started a new one. It is the names of the people in the Sallows long room, and beside each one is something true about them.", "when": { "flag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Maren still has her list, with one empty space on it. She has stopped looking at it every night. She is waiting, she says, for the right word to turn up.", "when": { "notFlag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Orin has the quartermaster's invoice in his pack. Sometimes, when he thinks nobody is looking, he reads it.", "when": { "party": "orin" } }
+        ],
+        "choices": [
+          {
+            "id": "nessa-post",
+            "label": "Ask Nessa what she has decided about Wren's post",
+            "requires": { "companion": "nessa" },
+            "lines": [
+              { "narrate": "Nessa has been carrying a letter since Cinder Fold. She takes it out now, and for once she does not put it back in the pocket for later." },
+              { "say": "nessa", "text": "It's to Wren. It says yes. Well. It says 'yes, but not yet, I've got a council to keep an eye on, and you're not dead, so you can manage another winter.' It's a long yes." },
+              { "say": "nessa", "text": "I'm going to send it. Actually send it. Will you walk to the carters with me?" },
+              { "narrate": "You walk to the carters with her. She hands it over herself, and watches the cart all the way out of sight, and then turns round and asks what's for supper." }
+            ],
+            "setFlags": { "nessa_keeper": "later" },
+            "next": "end"
+          },
+          { "id": "fire", "label": "Sit by Dera's fire a while", "next": "end" }
+        ]
+      },
+      "end": {
+        "title": "Briarwatch",
+        "objective": "Your written story is complete. Choose your 2nd job when you reach level 20.",
+        "lines": [
+          { "narrate": "The bell sounds once across the wet roofs of Briarwatch, as it did at the end of the first story: not an alarm. An answer. And from far off, too faint to be sure of, other bells answer it, each in its own voice." },
+          { "narrate": "This is the end of the written story of Briarwatch. The roads go on." }
+        ],
+        "choices": [
+          { "id": "home", "label": "Go out into Briarwatch" }
         ]
       }
     }

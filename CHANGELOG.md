@@ -4,6 +4,25 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, chapters 7 to 10 and the epilogue
+
+- **Cinder Fold** (level 16 to 17): the first forge. Nessa's mentor Wren has
+  read every letter Nessa never sent. Down in the deep galleries, the nine
+  first wards have been holding the Gloam alone for nine hundred years. Aster
+  Vey asks for a seat on the council for the wards.
+- **The Vote** (17 to 18, Briarwatch): Sable's warning from his cell, Pim's
+  four-colour chart, a paid crowd at the town meeting, and the council's vote
+  coming down to Brannagh, who wants a fence.
+- **The Mother Bell** (18 to 19, Cinder Fold): the night before, Orin asks for
+  Maren's stew. Elske rings the first bell over every ward in the land,
+  lawfully or not, depending on the vote. It works, and silences every other
+  voice. Someone else holds the door.
+- **The Second Oath** (19 to 20): Elske's charge lists what you decided
+  alone, choice by choice. Persuade her or stop her at the rope, decide her
+  fate, swear who your oath answers to, then come home to Dera's forge.
+- The written story now ends at level 20; after it, the AI storyteller takes
+  over as before.
+
 ## Book Two, chapters 4 to 6
 
 - **The Harbour Bell** (level 13 to 14, Merrowgate): Iona's itemised invoice,

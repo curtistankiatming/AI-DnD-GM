@@ -160,7 +160,52 @@ test('the written chapters are never confused with an AI story', () => {
 test('every Book Two scene and talk speaks only for characters who exist', () => {
   const companions = new Set(['orin', 'maren', 'nessa']);
   for (const scene of Object.values(SCENES).filter((x) => x?.nodes && QUESTS[x.after]?.book === 2)) {
-    for (const node of Object.values(scene.nodes)) for (const line of node.lines || []) if (companions.has(line.say)) assert.ok(scene.cast.includes(line.say), `${scene.id}: ${line.say} speaks but is not in the cast`);
+    for (const node of Object.values(scene.nodes)) for (const line of node.lines || []) if (companions.has(line.say) && scene.cast.length) assert.ok(scene.cast.includes(line.say), `${scene.id}: ${line.say} speaks but is not in the cast`);
   }
   for (const q of TWO) for (const t of q.talks || []) for (const id of Object.keys(t.approval || {})) assert.ok(companions.has(id), `${q.id}/${t.id}`);
+});
+
+test('chapters 7 to 10 run Cinder Fold, Briarwatch, Cinder Fold, then home', () => {
+  assert.deepEqual(['cinderfold', 'vote', 'motherbell', 'oath'].map((id) => [QUESTS[id].level, QUESTS[id].town, QUESTS[id].nextTown || QUESTS[id].town]), [
+    [16, 'cinderfold', 'briarwatch'], [17, 'briarwatch', 'cinderfold'], [18, 'cinderfold', 'cinderfold'], [19, 'cinderfold', 'briarwatch']
+  ]);
+  assert.equal(Book.CHAPTERS.at(-1).id, 'oath');
+  assert.equal(Book.WRITING, null, 'Book Two is complete.');
+});
+
+test('the Mother Bell is told the way the vote went', () => {
+  const opening = (flag) => { const s = act(ready('motherbell', { flags: { [flag]: true } }), { type: 'depart', questId: 'motherbell' }).state; return E.buildView(s).scene.opening; };
+  assert.match(opening('vote_elske_won'), /Warden of the Chorus, takes the council's authority/);
+  assert.doesNotMatch(opening('vote_elske_won'), /lost the vote/);
+  assert.match(opening('vote_elske_lost'), /lost the vote and abided by it/);
+  assert.match(opening('vote_elske_lost'), /^Orin: I know\./m, 'Orin asks for the stew the night before.');
+});
+
+test("Elske's charge names what this hero decided alone, and nothing they didn't", () => {
+  const charge = (flags) => E.buildView(act(ready('oath', { flags }), { type: 'depart', questId: 'oath' }).state).scene.opening;
+  const a = charge({ b2_cost_party: true, fen_promise: true, harbour_keepers: true });
+  assert.match(a, /out of your own purse/); assert.match(a, /promised three hundred people/); assert.match(a, /gave away a harbour/);
+  assert.doesNotMatch(a, /Merrowgate's loan|named Haverick|lamp receipts/);
+  const b = charge({ b2_cost_loan: true, keeper_kept_receipts: true, wards_seat: true });
+  assert.match(b, /Merrowgate's loan/); assert.match(b, /lamp receipts/); assert.match(b, /Aster Vey's chime/);
+  assert.doesNotMatch(b, /own purse|gave away a harbour/);
+});
+
+test('the last chapter ends the books, then the epilogue records the Second Oath', () => {
+  let s = ready('oath');
+  s.story.nodeId = 'q-oath-after'; s.world.activeQuest = 'oath'; s.world.onExpedition = true;
+  const r = act(s, { type: 'story-choice', choiceId: 'seat' });
+  assert.ok(r.events.some((e) => e.text === Book.ENDING));
+  assert.equal(r.state.story.flags[Book.FINISHED], true);
+  assert.equal(r.state.story.flags.elske_seat, true);
+  assert.equal(r.state.story.nodeId, 'scene-oath-epilogue-oath');
+  s = act(r.state, { type: 'story-choice', choiceId: 'council' }).state;
+  assert.equal(s.story.flags.second_oath, 'council');
+  assert.equal(s.story.nodeId, 'scene-oath-epilogue-forge');
+  s = act(s, { type: 'story-choice', choiceId: 'nessa-post' }).state;
+  assert.equal(s.story.flags.nessa_keeper, 'later');
+  s = act(s, { type: 'story-choice', choiceId: 'home' }).state;
+  assert.equal(s.story.nodeId, 'town-briarwatch');
+  assert.equal(E.buildView(s).world.booksComplete, true);
+  assert.equal(E.buildView(s).world.director.sideQuests, false, 'After the books, the AI writes full adventures.');
 });

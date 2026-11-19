@@ -25,7 +25,7 @@ const LAST_LEVEL = Math.max(1, ...CHAPTERS.map(q => Number(q.level) || 1));
 // becoming an AI story. Remove the mark when the book's last chapter lands.
 const BOOKS = Object.freeze([
   { n: 1, title: 'The Bell Beneath Briarwatch' },
-  { n: 2, title: 'The Council of Small Voices', writing: true }
+  { n: 2, title: 'The Council of Small Voices' }
 ].map(b => ({ ...b, last: CHAPTERS.filter(q => (q.book || 1) === b.n).at(-1)?.id || null })).filter(b => b.last));
 const WRITING = BOOKS.find(b => b.writing) || null;
 const bookOf = id => BOOKS.find(b => b.n === ((QUESTS[id]?.book) || 1)) || BOOKS[0];
