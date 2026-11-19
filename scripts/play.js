@@ -53,7 +53,8 @@ function printDialogue(dialogue) {
   for (const l of dialogue) wrap((l.narration ? `  ${l.narration}` : `  ${l.speaker.toUpperCase()}: ${l.text}`) + (l.when ? `  [only if ${JSON.stringify(l.when)}]` : ""));
 }
 
-function printScene(state, view, after) {
+// midFight: a fight already under way does not retell how it started.
+function printScene(state, view, after, midFight = false) {
   const s = view.scene;
   line(`== ${s.act} · ${s.title} · ${s.location || ""}`);
   if (s.objective) line(`Goal: ${s.objective}`);
@@ -69,7 +70,8 @@ function printScene(state, view, after) {
       if (rest) wrap(rest);
       printDialogue(outcome.dialogue);
     } else wrap(after);
-  } else if (s.lastOutcome?.dialogue?.length) printDialogue(s.lastOutcome.dialogue);
+  } else if (midFight && view.combat?.active && s.lastOutcome?.kind === "combatStart") line(`(The fight goes on: ${s.lastOutcome.title}. Run "look" to read how it started.)`);
+  else if (s.lastOutcome?.dialogue?.length) printDialogue(s.lastOutcome.dialogue);
   else wrap(s.lastOutcome?.text || s.opening);
   if (view.scene.endingSummary?.length) { line(""); line("-- How it ended --"); for (const l of view.scene.endingSummary) wrap(`  ${l}`); }
   line("");
@@ -185,13 +187,14 @@ if (command === "new") {
   const file = load(); const [actionId, targetId] = args; if (!actionId) fail("Say which combat action, e.g. fight weapon-attack <enemy id>.");
   const r = act(file, { type: "combat", actionId, ...(targetId ? { targetId } : {}) }); save(file);
   if (r.ok) for (const e of r.events) if (e.text) line(`  · ${e.text}`);
-  line(""); printScene(file.state, r.view, null);
+  line(""); printScene(file.state, r.view, null, true);
 } else if (command === "do") {
   const file = load(); let action; try { action = JSON.parse(args.join(" ")); } catch { fail("do takes one JSON action, e.g. do '{\"type\":\"return-town\"}'"); }
   const r = act(file, action); save(file);
   printScene(file.state, r.view, r.ok ? r.after : null);
 } else if (command === "auto") {
   const file = load(); const steps = Number(args[0] || 10); const memory = file.policy || {};
+  const wasFighting = Boolean(file.state.combat?.active);
   for (let i = 0; i < steps; i++) {
     const before = E.buildView(file.state);
     if (before.scene.ending && !before.world?.town) break;
@@ -201,7 +204,7 @@ if (command === "new") {
     line(`[auto] ${JSON.stringify(action)}${r.ok ? "" : " (refused)"}`);
     if (!r.ok) break;
   }
-  file.policy = memory; save(file); line(""); printScene(file.state, E.buildView(file.state));
+  file.policy = memory; save(file); line(""); printScene(file.state, E.buildView(file.state), null, wasFighting);
 } else if (command === "town") {
   const file = load(); printTown(E.buildView(file.state));
 } else if (command === "commission-sample") {
