@@ -125,3 +125,28 @@ test('every companion has a leave, stay and return scene, and every chapter that
   assert.deepEqual(QUESTS.cinderfold.needs, ['nessa']);
   for (const id of ['motherbell', 'oath']) assert.deepEqual(QUESTS[id].needs.sort(), ['maren', 'nessa', 'orin']);
 });
+
+test('while Nessa is away she cannot be recruited again, and nobody can sell or wear the kit she took with her', () => {
+  let s = ready('harbour');
+  s.world.approvalWindow = { nessa: -2 };
+  s = atEnd(s, 'harbour');
+  s = throughScenes(act(s, { type: 'story-choice', choiceId: QUESTS.harbour.decisions[0].id }).state);
+  assert.equal(s.story.nodeId, 'away-nessa-leave');
+  s = act(s, { type: 'story-choice', choiceId: 'keep' }).state;
+  assert.ok(!inParty(s, 'nessa'));
+  const view = E.buildView(s);
+  assert.equal(view.world.canRecruit, false, 'She has not left the company, only the party.');
+  assert.equal(E.resolveAction(s, { type: 'recruit' }, high).result.ok, false);
+  const gear = Object.values(s.world.away.nessa.member.equipment).filter(Boolean);
+  assert.ok(gear.length);
+  for (const itemId of gear) assert.ok(!view.world.sellable.some((e) => e.itemId === itemId && e.loose > 0), `${itemId} is still hers`);
+});
+
+test('lines that answer an away companion are told another way', () => {
+  const { liveLines } = require('../src/expansion');
+  let s = ready('vote');
+  s.party = s.party.filter((m) => m.id !== 'orin');
+  const sable = STORY_NODES['q-vote-start'].choices.find((c) => c.id === 'talk-sable').result.dialogue;
+  const told = liveLines(s, sable).map((l) => l.narration || `${l.speaker}: ${l.text}`).join('\n');
+  assert.match(told, /You ask whether he thinks she should lose\.\nSable: I think she'll win/);
+});

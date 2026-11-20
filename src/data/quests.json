@@ -1929,7 +1929,20 @@
         "climbing-kit"
       ],
       "success": "You rope the causeway and bring the last carts up in a line, the sick riding, the rest walking. The water comes up behind the last cart and stops, as if disappointed.",
-      "failure": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on Orin's back."
+      "failure": [
+        {
+          "narrate": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on Orin's back.",
+          "when": {
+            "party": "orin"
+          }
+        },
+        {
+          "narrate": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on your back.",
+          "when": {
+            "absent": "orin"
+          }
+        }
+      ]
     },
     "approach": [
       {
@@ -2641,6 +2654,12 @@
             }
           },
           {
+            "narrate": "You heard that she testified at the hearing. You say so.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
             "say": "Lysa",
             "text": "I testified. And afterwards nobody would hire a woman who'd been in the cult, except the people who don't ask where anyone has been. The guild doesn't ask. It pays on time, which is more than Sable ever did."
           },
@@ -2762,7 +2781,17 @@
         },
         {
           "say": "orin",
-          "text": "Everyone else bidding."
+          "text": "Everyone else bidding.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "Everyone else bidding would like her gone.",
+          "when": {
+            "absent": "nessa"
+          }
         }
       ],
       "failure": "The rules are eleven pages of very small print, and you lose the thread twice. But you find rule nine, and that is the one that matters: no delegate at the hammer, no bid."
@@ -3370,6 +3399,12 @@
             }
           },
           {
+            "narrate": "You ask whether anyone has tried.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
             "say": "Carter",
             "text": "Some. Mostly people from here. Looking for someone."
           }
@@ -3416,6 +3451,12 @@
         {
           "say": "maren",
           "text": "That's her. That's Elske."
+        },
+        {
+          "narrate": "You know the voice. It is Elske Marrow's, eleven years younger.",
+          "when": {
+            "absent": "maren"
+          }
         },
         {
           "narrate": "You listen to the vote. Five to two for waiting. Elske votes to wait."
@@ -3544,7 +3585,7 @@
         "say": "orin",
         "text": "Yes.",
         "when": {
-          "party": "nessa"
+          "party": "maren"
         }
       },
       {
@@ -4013,6 +4054,12 @@
           {
             "say": "orin",
             "text": "And you think she should lose."
+          },
+          {
+            "narrate": "You ask whether he thinks she should lose.",
+            "when": {
+              "absent": "orin"
+            }
           },
           {
             "say": "Sable",

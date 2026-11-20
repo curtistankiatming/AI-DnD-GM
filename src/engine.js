@@ -292,7 +292,8 @@ function addClue(state, clueId, events = []) {
 }
 
 function recruitCompanion(state, id, events = []) {
-  if (!COMPANIONS[id] || findCompanion(state, id)) return false;
+  // Someone away for a chapter (src/away.js) is still in the company, just not here.
+  if (!COMPANIONS[id] || findCompanion(state, id) || state.world?.away?.[id]) return false;
   const member = createCompanion(id);
   state.party.push(member);
   // Every way in brings the companion's own kit, at the party's level.

@@ -336,7 +336,7 @@ function handle(state,action,rng,events,api){
     return emit(events,`${store?'Stored':'Retrieved'} one ${item.name}. Charges are preserved; town storage is shared across discovered settlements.`,'item');
   }
   if(action.type==='recruit'){
-    if(state.party.some(m=>m.id==='nessa')||state.player.level<3)return fail(events,'No recruit is currently available.');
+    if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3)return fail(events,'No recruit is currently available.');
     api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
     return emit(events,'Nessa Reed joins through the roadwardens’ guild. She brings her equipment and shares the party’s level; no recruitment fee is required.','party','good');
   }
@@ -403,7 +403,7 @@ function view(state){
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
     bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:Book.CHAPTERS.every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
-    canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa'),
+    canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'

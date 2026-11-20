@@ -90,7 +90,7 @@
           },
           {
             "id": "share",
-            "label": "Suggest she shares with Brannagh of Fenmere, who has a room and a goat",
+            "label": "Suggest she shares with the delegate from Fenmere, who has a room and a goat",
             "check": {
               "skill": "persuasion",
               "alt": [
@@ -100,7 +100,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You put it to them both at once, which is the only way it could have worked. Brannagh looks Iona up and down."
+                  "narrate": "You put it to them both at once, which is the only way it could have worked. The delegate from Fenmere is a white-haired woman called Brannagh, with a brown goat on a rope. She looks Iona up and down."
                 },
                 {
                   "say": "Brannagh",
@@ -383,6 +383,9 @@
               {
                 "say": "Tib",
                 "text": "Did you find anything?"
+              },
+              {
+                "narrate": "You tell him you will keep looking. It is not a lie, quite."
               },
               {
                 "say": "orin",
@@ -1249,7 +1252,16 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You do what Brannagh did at Highpass. You stop asking who should pay, and ask who uses the water. Then you count buckets."
+                  "narrate": "You do what Brannagh did at Highpass. You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "when": {
+                    "flag": "b2_cost_shared"
+                  }
+                },
+                {
+                  "narrate": "You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "when": {
+                    "notFlag": "b2_cost_shared"
+                  }
                 },
                 {
                   "narrate": "It takes an hour in the snow, with Gilliam's grandson keeping the tally on a slate. The new houses use more, because there are more of them. The old farms use more per house, because of the cattle. At the end of it the sum comes out almost exactly half and half, which annoys Gilliam very much, because now he has nothing to be annoyed about."

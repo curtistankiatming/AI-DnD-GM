@@ -22,6 +22,12 @@ the pull requests that made them.
   South Road, the Harbour Bell, the Last Name on the List, Hollin's Reach,
   the Vote). A camp scene skipped because someone is missing no longer drops
   the lines of the choice before it.
+- Review fixes: while a companion is away their kit stays theirs (it can't
+  be sold or worn by someone else), and Nessa can't be recruited a second
+  time while she is out on the roads. Seven more lines that answered or
+  carried an away companion now read right without them, one side job no
+  longer assumes you backed Brannagh at the Chair Problem, and the Highpass
+  room job no longer names Brannagh before you have met her.
 
 ## Story self-review: lines that assumed a choice you didn't make
 
