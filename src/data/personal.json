@@ -15,7 +15,13 @@
     "prompt": "Maren carries a list of vanished shrine keepers. “The archive may have their last letters. Even if we cannot save them, their families deserve the truth.”",
     "goal": "Resolve the drowned archive after talking to Maren; bring its findings to the living.",
     "reward": "At level 7, Shared Resolve becomes available: Maren and the hero heal together and clear a harmful condition.",
-    "resolution": "At the dyers’ yard in Highpass, Hesper Moss reads her brother’s letter standing up, blue to the elbows. Then she reads it again, sitting down. Maren stays until the second reading is finished, and a little longer. On the walk back she finds Edric’s name on her list and writes one word beside it: delivered."
+    "resolution": "At the dyers’ yard in Highpass, Hesper Moss reads her brother’s letter standing up, blue to the elbows. Then she reads it again, sitting down. Maren stays until the second reading is finished, and a little longer. On the walk back she finds Edric’s name on her list and writes one word beside it: delivered.",
+    "resolutionIf": [
+      {
+        "flag": "keeper-list-done",
+        "text": "At the dyers’ yard in Highpass, Hesper Moss reads her brother’s letter standing up, blue to the elbows. Then she reads it again, sitting down. Maren stays until the second reading is finished, and a little longer. The old list is gone, so on the walk back she writes Edric’s name on a scrap of paper instead, and one word beside it: delivered. She folds the scrap into her coat anyway."
+      }
+    ]
   },
   "nessa": {
     "id": "nessa",

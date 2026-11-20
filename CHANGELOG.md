@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Fixes from the fifth Codex playtest (a fresh bard, level 1 to 21)
+
+- At the tollhouse, a hero who skipped the investigation is no longer
+  offered the captain's duplicate receipts. They question the drivers in
+  front of the guards instead. The marsh and the signal tower also word
+  their peaceful option for a hero without the lead. Peaceful options can
+  now have a separate label for when the lead is missing (`labelNoLead`).
+- If Maren's archive reflection is turned in after she has let go of her old
+  list, the story no longer brings the list back.
+- If you spared Lysa in the Briarwood, she is now working for the guild on
+  the Merrowgate quay in The Harbour Bell. She can tell you where Iona is
+  being held, and afterwards she leaves the guild.
+- The bundled sample AI adventure now names the guild it asks you to accuse.
+
 ## Book Two, fixes from the fourth Codex playtest
 
 - If you skip looking into things, a peaceful ending no longer credits you

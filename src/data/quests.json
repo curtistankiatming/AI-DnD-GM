@@ -36,15 +36,42 @@
       "success": "You cross beneath the sentries. The prisoners pass you a complete set of duplicate receipts.",
       "failure": "A loose stone gives you away. You reach the tollhouse, but the captain pulls his guards inward."
     },
-    "crisis": "Captain Venn offers to release the wagons if you leave the documents. The drivers watch his hands; one rests on a signal cord leading toward their locked yard.",
+    "crisis": [
+      {
+        "narrate": "Captain Venn offers to release the wagons if you leave the documents. The drivers watch his hands; one rests on a signal cord leading toward their locked yard.",
+        "when": {
+          "clue": "road-evidence"
+        }
+      },
+      {
+        "narrate": "Captain Venn offers to release the wagons if you turn round now and forget you ever saw his yard. The drivers watch his hands; one rests on a signal cord leading toward their locked yard.",
+        "when": {
+          "notClue": "road-evidence"
+        }
+      }
+    ],
     "peaceful": {
       "label": "Use the duplicate receipts to make the guards stand down",
       "skill": "persuasion",
       "alt": [
         "intimidation"
       ],
-      "success": "The guards read what they have been paid to enforce. One cuts the yard lock; the captain surrenders his keys without a fight.",
-      "failure": "Venn calls the receipts stolen and signals the yard guard. His hesitation gives you a chance to reach the lock before the drivers are moved."
+      "success": [
+        {
+          "narrate": "The guards read what they have been paid to enforce. One cuts the yard lock; the captain surrenders his keys without a fight.",
+          "when": {
+            "clue": "road-evidence"
+          }
+        },
+        {
+          "narrate": "You don't have the captain's papers, so you ask the drivers instead, loudly, in front of his guards: how long they have been held, what has been taken off their carts, and who signed for it. The guards have families on this road too. By the third answer one of them cuts the yard lock, and the captain surrenders his keys without a fight.",
+          "when": {
+            "notClue": "road-evidence"
+          }
+        }
+      ],
+      "failure": "Venn calls the receipts stolen and signals the yard guard. His hesitation gives you a chance to reach the lock before the drivers are moved.",
+      "labelNoLead": "Ask the drivers, in front of the guards, what they are being held for"
     },
     "objective": {
       "name": "Release the wagon drivers",
@@ -133,7 +160,8 @@
         "medicine"
       ],
       "success": "Both groups carry their vulnerable neighbors to high ground. With no one left in its threatened boundary, the guardian accepts the keeper’s recall.",
-      "failure": "The warning gets some people moving, but the keeper cannot calm the guardian. You must open the safe valves while it rages."
+      "failure": "The warning gets some people moving, but the keeper cannot calm the guardian. You must open the safe valves while it rages.",
+      "labelNoLead": "Get both banks to look at the water together and organize a controlled release"
     },
     "objective": {
       "name": "Vent the poisoned intake",
@@ -428,7 +456,8 @@
         "survival"
       ],
       "success": "The sentinel accepts the local keeper’s authority. It braces the arm while you pull the keeper clear and restore the beacon.",
-      "failure": "The sentinel recognizes only part of the code. It hesitates long enough for you to reach the manual releases."
+      "failure": "The sentinel recognizes only part of the code. It hesitates long enough for you to reach the manual releases.",
+      "labelNoLead": "Help the trapped keeper send her own recall signal"
     },
     "objective": {
       "name": "Restore the beacon and free the keeper",
@@ -2454,6 +2483,52 @@
         ]
       },
       {
+        "id": "lysa",
+        "label": "Speak to the guild clerk with the limp on the north quay",
+        "requires": {
+          "flagsAll": [
+            "lysaSpared"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "On the north quay a woman in a Lantern Guild coat is checking carters' passes against a list. You know the limp before you know the face. It is Lysa, the lookout from the Briarwood, who told you the truth about Sable and then walked away into the fern."
+          },
+          {
+            "say": "Lysa",
+            "text": "Don't. I'm working."
+          },
+          {
+            "say": "maren",
+            "text": "You testified. At the hearing. I heard about it.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "Lysa",
+            "text": "I testified. And afterwards nobody would hire a woman who'd been in the cult, except the people who don't ask where anyone has been. The guild doesn't ask. It pays on time, which is more than Sable ever did."
+          },
+          {
+            "narrate": "She looks at her list for a long moment, and then, without looking up, at the old glass store at the end of the quay."
+          },
+          {
+            "say": "Lysa",
+            "text": "They brought someone in through the back of the lantern-works last night. A small woman, complaining about breakfast. I didn't see it. I'm only telling you because you let me live, and it turns out I'd like to have been worth it."
+          },
+          {
+            "say": "Lysa",
+            "text": "The bell remembers who betrayed it. So do I. Go on, before somebody sees me talking to you."
+          }
+        ],
+        "approval": {
+          "maren": 1
+        },
+        "setFlags": {
+          "b2:lysa_turned": true
+        }
+      },
+      {
         "id": "hal-guild",
         "label": "Find Hal among the harbour wardens",
         "requires": {
@@ -2641,6 +2716,12 @@
     "attackName": "Weighted Cosh",
     "retainerName": "Lantern Guild Bravo",
     "after": [
+      {
+        "narrate": "On the north quay, a Lantern Guild coat is folded over a bollard, with a pass-list weighted down on top of it by a stone. Nobody in the guild seems to know where the clerk who wore it has gone. You have an idea she is somewhere she chose.",
+        "when": {
+          "flag": "b2:lysa_turned"
+        }
+      },
       {
         "narrate": "The auction hall goes quiet when Iona comes in. She sits down in the council's chair, straightens her cuffs, and raises her card."
       },

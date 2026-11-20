@@ -316,7 +316,9 @@ function handle(state,action,rng,events,api){
     if(!a||!r?.started||!completed(state,def.quest)||r.rewarded||!['watchful','decisive'].includes(action.choice))return fail(events,'That companion reflection is not available.');
     r.rewarded=true;r.style=action.choice;a.personalStyle=action.choice;a.bond=Math.min(5,a.bond+2);G.derive(a);
     if(api?.awardXp)api.awardXp(state,XP.missionXp(state.player.level),events,`Mission complete: ${def.name}`);
-    return emit(events,`${def.resolution?`${def.resolution} `:''}${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
+    // A personal resolution may be told differently once the story has moved on (resolutionIf: [{flag, text}]).
+    const told=(def.resolutionIf||[]).find(r=>state.story.flags[r.flag])?.text||def.resolution;
+    return emit(events,`${told?`${told} `:''}${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
   }
   if(action.type==='practice'){
     if(w.practiceSnapshot)return fail(events,'A practice session is already active.');

@@ -46,7 +46,8 @@ function storyChoicesView(state) {
     const probability = plan ? successProbability(plan.dc, plan.bonus, mode) : null;
     return {
       id: choice.id,
-      label: choice.label,
+      // A peaceful resolution tried without its lead is worded for what the hero actually has.
+      label: choice.labelNoLead && choice.check?.lead && !state.story.clues.includes(choice.check.lead) ? choice.labelNoLead : choice.label,
       description: choice.description,
       locked: !requirement.met,
       lockedReason: choice.lockedText || requirement.reason,
