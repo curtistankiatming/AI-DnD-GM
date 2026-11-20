@@ -30,7 +30,8 @@ function consume(entries,id){
 }
 function actors(state){return [state.player,...state.party];}
 function actor(state,id='player'){return actors(state).find(x=>x.id===id)||null;}
-function allocated(state,id){return actors(state).reduce((n,a)=>n+Object.values(a.equipment||{}).filter(v=>v===id).length,0);}
+// A companion away for a chapter (src/away.js) still has their kit on, so it can't be sold or worn meanwhile.
+function allocated(state,id){return [...actors(state),...Object.values(state.world?.away||{}).map(a=>a?.member).filter(Boolean)].reduce((n,a)=>n+Object.values(a.equipment||{}).filter(v=>v===id).length,0);}
 function available(state,id){return Math.max(0,(state.player.inventory.find(e=>e.itemId===id)?.quantity||0)-allocated(state,id));}
 function removeLoose(state,id,qty=1){
   if(!Number.isInteger(qty)||qty<1||available(state,id)<qty)return false;

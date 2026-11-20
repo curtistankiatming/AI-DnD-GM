@@ -123,6 +123,11 @@ function printTown(view) {
   } else if (w.book?.waiting && !written.length) line(`  To be continued: the next chapters of ${w.book.title} are still being written.`);
   else if (!w.quests.length) line("  Nothing posted.");
   if (w.book && !w.book.waiting) line(`  Story: ${w.book.title}, chapter "${w.book.chapter}" (level ${w.book.level}).`);
+  if (w.sideJobs?.length) {
+    line("-- Side jobs (optional) --");
+    for (const j of w.sideJobs) line(`  ${j.id}: ${j.name}, ${j.townName}, ${j.reward.gold} gold${j.started ? " (half done)" : ""}${j.canStart ? `  -> do '{"type":"side-job","jobId":"${j.id}"}'` : " (take it in its own town)"}\n     ${j.brief}`);
+  }
+  for (const a of w.away || []) line(`${a.name} is away. Back once "${a.untilName}" is done.`);
   if (w.canRecruit) line(`Nessa can be recruited  -> do '{"type":"recruit"}'`);
   for (const pq of w.personal || []) if (!pq.started || pq.canResolve) line(`Companion story: ${pq.name}  -> do '{"type":"${pq.canResolve ? "resolve-personal" : "personal"}","companionId":"${pq.companionId}"${pq.canResolve ? ',"choice":"watchful"' : ""}}'${pq.canResolve ? ' (or "decisive")' : ""}`);
   for (const r of view.progression.pending || []) {

@@ -11,6 +11,7 @@ const Journal = require("./journal");
 const Improvise = require("./improvise");
 const Director = require("./director");
 const Book = require("./book");
+const Away = require("./away");
 const Chronicle = require("./chronicle");
 const { dialogueText, liveLines } = require("./expansion");
 Road.register(STORY_NODES);
@@ -291,7 +292,8 @@ function addClue(state, clueId, events = []) {
 }
 
 function recruitCompanion(state, id, events = []) {
-  if (!COMPANIONS[id] || findCompanion(state, id)) return false;
+  // Someone away for a chapter (src/away.js) is still in the company, just not here.
+  if (!COMPANIONS[id] || findCompanion(state, id) || state.world?.away?.[id]) return false;
   const member = createCompanion(id);
   state.party.push(member);
   // Every way in brings the companion's own kit, at the party's level.
@@ -307,6 +309,8 @@ function applyApproval(state, changes = {}, events = []) {
     if (!member) continue;
     const delta = Number(deltaRaw || 0);
     member.bond = clamp(Number(member.bond || 0) + delta, -5, 5);
+    // The chapter's count is of what happened, not of the capped bond.
+    Away.count(state, id, delta);
     const direction = delta > 0 ? "approved" : delta < 0 ? "disapproved" : "was unaffected";
     if (delta) events.push({ type: "party", tone: delta > 0 ? "good" : "warning", text: `${member.name} ${direction} (${delta > 0 ? "+" : ""}${delta} bond).` });
   }
@@ -320,8 +324,15 @@ function currentNode(state) {
 function enterNode(state, nodeId, events = [], lead = null) {
   const node = STORY_NODES[nodeId];
   if (!node) return false;
+  // Walking into town after a chapter: a companion may come back, or walk out, first.
+  if (node.townId && state.world) {
+    const away = Away.pending(state, events);
+    if (away && STORY_NODES[away]) return enterNode(state, away, events, lead);
+  }
+  // A side job left half done picks up where it was.
+  if (node.sideJob && state.world) state.world.jobProgress[node.sideJob] = nodeId;
   // A conversation scene needs its whole cast; otherwise go where it would end.
-  if (node.cast && node.skipTo && !node.cast.every((id) => state.party.some((member) => member.id === id))) return enterNode(state, node.skipTo, events);
+  if (node.cast && node.skipTo && !node.cast.every((id) => state.party.some((member) => member.id === id))) return enterNode(state, node.skipTo, events, lead);
   const firstVisit = !state.story.visitedNodes.includes(nodeId);
   state.story.nodeId = nodeId;
   if (state.world && node.questId) { state.world.activeQuest = node.questId; state.world.onExpedition = true; (state.world.progress[node.questId] ||= {}).node = nodeId; }
@@ -379,6 +390,9 @@ function requirementStatus(state, requires = {}) {
   }
   if (requires.item && !hasItem(state, requires.item)) {
     return { met: false, reason: `Requires ${ITEMS[requires.item]?.name || titleCase(requires.item)}.` };
+  }
+  if (requires.gold && state.player.gold < Number(requires.gold)) {
+    return { met: false, reason: `Requires ${requires.gold} gold.` };
   }
   if (requires.companion && !findCompanion(state, requires.companion)) {
     return { met: false, reason: `Requires ${COMPANIONS[requires.companion]?.name || "a specific companion"}.` };
@@ -520,6 +534,9 @@ function applyOutcome(state, written = {}, rng, events) {
     if (change) events.push({ type: "loot", tone: change > 0 ? "good" : "neutral", text: change > 0 ? `Received ${change} gold.` : `Paid ${-change} gold.` });
   }
   if (outcome.setFlags) Object.assign(state.story.flags, outcome.setFlags);
+  // A companion walking out or coming back (src/away.js), before any approval.
+  if (outcome.away) Away.apply(state, outcome.away, events);
+  if (outcome.completeJob) W.completeJob(state, outcome.completeJob, events, extensionApi(), outcome.jobReward);
   // A finished AI adventure becomes a chapter once its final decision is recorded.
   if (outcome.completeQuest) Chronicle.record(state, Director.quest(state, outcome.completeQuest));
   if (outcome.clues) for (const clueId of outcome.clues) addClue(state, clueId, events);
@@ -559,7 +576,9 @@ function applyOutcome(state, written = {}, rng, events) {
     else events.push({ type: "story", tone: "good", text: Book.ENDING });
   }
   else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest) });
-  if (outcome.nextNode) enterNode(state, outcome.nextNode, events, outcome.dialogue);
+  // toTown: back to whichever town the party is in (nextNode names one only for checks).
+  const next = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
+  if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:ending-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     delete state.story.flags["books:ending-due"];
     events.push({ type: "story", tone: "good", text: Book.ENDING });
@@ -584,6 +603,7 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   const choice = node.choices.find((candidate) => candidate.id === normalizeId(choiceId));
   if (!choice) return invalidResult(state, events, "That choice is not available in the current scene.");
   if(node.questId&&state.world.completed[node.questId])return invalidResult(state,events,"That expedition has already been resolved. Its decisions and rewards are final.");
+  if(node.sideJob&&state.world.jobs?.[node.sideJob])return invalidResult(state,events,"That side job is already done.");
   const firstResolution = !completedChoice(state, node.id, choice.id);
   if (choice.once && !firstResolution) {
     return invalidResult(state, events, "That approach has already been resolved.");
@@ -609,7 +629,7 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   // Revisiting a hub or travel transition remains legal, but it cannot be
   // exploited for unlimited XP. Only the first resolution of a choice grants
   // progression credit.
-  if (firstResolution && !node.questId && !node.townId && !node.defeat && !node.scene) awardXp(state, success ? 14 : 7, events, choice.label);
+  if (firstResolution && !node.questId && !node.townId && !node.defeat && !node.scene && !node.sideStory) awardXp(state, success ? 14 : 7, events, choice.label);
   // Written lines are told only where they apply to this save (see liveLines), here as on screen.
   const outcomeText = outcome?.dialogue ? dialogueText(liveLines(state, outcome.dialogue)) : outcome?.text || "";
   applyOutcome(state, outcome || {}, rng, events);

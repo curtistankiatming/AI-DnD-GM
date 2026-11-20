@@ -1327,6 +1327,11 @@
   "chairs": {
     "id": "chairs",
     "book": 2,
+    "needs": [
+      "orin",
+      "maren",
+      "nessa"
+    ],
     "name": "The Chair Problem",
     "level": 10,
     "town": "highpass",
@@ -1384,6 +1389,12 @@
       {
         "say": "Brannagh",
         "text": "Only Ashford."
+      },
+      {
+        "narrate": "Across the room, Iona does not look up from her papers. She and the goat have shared a room for two nights now, and neither of them has forgiven the other.",
+        "when": {
+          "flag": "job:room-shared"
+        }
       },
       {
         "narrate": "At midday Elske Marrow takes the seating chart off the wall, turns it over and draws a circle. Order of arrival. Merrowgate, which arrived first, she puts last. It takes her five minutes, and nobody can find anything wrong with it, which annoys Iona more than the head of the table did."
@@ -1756,7 +1767,10 @@
         "rep": {
           "trade": 3
         },
-        "flag": "b2_cost_loan"
+        "flag": "b2_cost_loan",
+        "approval": {
+          "orin": -1
+        }
       },
       {
         "id": "party",
@@ -1827,7 +1841,17 @@
       },
       {
         "say": "Ilka",
-        "text": "Since this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine."
+        "text": "Since this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Ilka",
+        "text": "The ward went quiet this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "when": {
+          "absent": "orin"
+        }
       }
     ],
     "talks": [
@@ -1905,7 +1929,20 @@
         "climbing-kit"
       ],
       "success": "You rope the causeway and bring the last carts up in a line, the sick riding, the rest walking. The water comes up behind the last cart and stops, as if disappointed.",
-      "failure": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on Orin's back."
+      "failure": [
+        {
+          "narrate": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on Orin's back.",
+          "when": {
+            "party": "orin"
+          }
+        },
+        {
+          "narrate": "The causeway goes under while the last cart is on it. You get everyone off, but you are soaked and frozen and someone's grandfather has to be carried the last hundred yards on your back.",
+          "when": {
+            "absent": "orin"
+          }
+        }
+      ]
     },
     "approach": [
       {
@@ -1939,7 +1976,17 @@
       },
       {
         "say": "Brannagh",
-        "text": "Then sing, girl. You've got a sergeant at arms."
+        "text": "Then sing, girl. You've got a sergeant at arms.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Brannagh",
+        "text": "Then sing, girl. We'll stand in front. Nothing touches you while there's a hero and an old woman in the way.",
+        "when": {
+          "absent": "orin"
+        }
       },
       {
         "narrate": "Orin is already moving, shield up, to stand between the keeper and the white.",
@@ -2043,7 +2090,13 @@
             "text": "Promise them."
           },
           {
-            "narrate": "She nods at the churchyard, where the families of the lower village are sorting what they carried out. You promise them. Orin watches you do it, and says nothing, and you know exactly what he thinks of promises."
+            "narrate": "She nods at the churchyard, where the families of the lower village are sorting what they carried out. You promise them."
+          },
+          {
+            "narrate": "Orin watches you do it, and says nothing, and you know exactly what he thinks of promises.",
+            "when": {
+              "party": "orin"
+            }
           }
         ],
         "rep": {
@@ -2061,6 +2114,9 @@
   "southroad": {
     "id": "southroad",
     "book": 2,
+    "needs": [
+      "orin"
+    ],
     "name": "The Long Road South",
     "level": 12,
     "town": "briarwatch",
@@ -2164,12 +2220,26 @@
             "text": "You haven't read her proposal. Nobody has."
           },
           {
+            "say": "orin",
+            "text": "Has anybody read her proposal?",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
             "say": "Aveline",
             "text": "That's why it's three bags. One for if it's good, one for if it's bad, one for if it's good and I still don't trust her."
           },
           {
             "say": "maren",
             "text": "Which one do you expect to use?"
+          },
+          {
+            "say": "orin",
+            "text": "Which one are you expecting to use?",
+            "when": {
+              "absent": "maren"
+            }
           },
           {
             "say": "Aveline",
@@ -2367,6 +2437,12 @@
         "narrate": "By evening the bridge is quiet, and the cabbages have survived. Hal's company eats supper with you in the yard of the beacon station. Aveline sits with Hal for an hour with her bags of papers open and comes back with an expression you have not seen on her before; it might be hope, or it might be lack of sleep."
       },
       {
+        "narrate": "One of Hal's corporals asks whether you are the ones who found Ada Rusk at Highpass. She crewed the echo-stones on this bridge, the first winter. He would like her told that the cabbages came up.",
+        "when": {
+          "flag": "job:letters-reunited"
+        }
+      },
+      {
         "narrate": "The guild agent is waiting by his horse with his contract. Sundown has come and gone, and he has not left."
       },
       {
@@ -2400,7 +2476,8 @@
           "trade": 1
         },
         "approval": {
-          "orin": 2
+          "orin": 2,
+          "nessa": -1
         },
         "flag": "south_hal_council"
       },
@@ -2455,12 +2532,24 @@
         "text": "'To repairs, Ashford span, following the hero's intervention: ninety-one crowns. To one cart, mislaid by the hero's party: four crowns. To refreshment of the hero's party at the quartermaster's expense, the night after: two crowns, eleven pence.' She's itemised the beer."
       },
       {
+        "narrate": "It is itemised. To repairs, Ashford span, following the hero's intervention: ninety-one crowns. To one cart, mislaid by the hero's party: four crowns. To refreshment of the hero's party at the quartermaster's expense, the night after: two crowns, eleven pence. She has itemised the beer.",
+        "when": {
+          "absent": "maren"
+        }
+      },
+      {
         "say": "orin",
         "text": "We did drink the beer."
       },
       {
         "say": "maren",
         "text": "Underneath she's written: 'Payment not expected. Recorded for the council's information. Settle at the harbour sale, where we will talk about something more important. I.'"
+      },
+      {
+        "narrate": "Underneath she has written: 'Payment not expected. Recorded for the council's information. Settle at the harbour sale, where we will talk about something more important. I.'",
+        "when": {
+          "absent": "maren"
+        }
       },
       {
         "narrate": "The something more important is posted on every door in the city. The harbour ward, the great bell in the tower on the mole that has kept the Gloam off the water for two hundred years, is to be sold at public auction tomorrow night by the Lantern Guilds of Merrowgate, its lawful owners. Bidding opens at ten thousand crowns."
@@ -2496,6 +2585,12 @@
           {
             "say": "orin",
             "text": "Where's the quartermaster from Ashford?"
+          },
+          {
+            "narrate": "You ask him where the quartermaster from Ashford is.",
+            "when": {
+              "absent": "orin"
+            }
           },
           {
             "say": "Haverick",
@@ -2559,6 +2654,12 @@
             }
           },
           {
+            "narrate": "You heard that she testified at the hearing. You say so.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
             "say": "Lysa",
             "text": "I testified. And afterwards nobody would hire a woman who'd been in the cult, except the people who don't ask where anyone has been. The guild doesn't ask. It pays on time, which is more than Sable ever did."
           },
@@ -2602,6 +2703,12 @@
             "text": "Thank you."
           },
           {
+            "narrate": "You thank her.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
             "say": "Hal",
             "text": "Don't. The pension's real. So's this. I'll work out which matters more later."
           }
@@ -2629,6 +2736,12 @@
           {
             "say": "orin",
             "text": "North gate. North quay's that way."
+          },
+          {
+            "narrate": "The north gate opens onto the north quay.",
+            "when": {
+              "absent": "orin"
+            }
           },
           {
             "say": "Hal",
@@ -2668,7 +2781,17 @@
         },
         {
           "say": "orin",
-          "text": "Everyone else bidding."
+          "text": "Everyone else bidding.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "Everyone else bidding would like her gone.",
+          "when": {
+            "absent": "nessa"
+          }
         }
       ],
       "failure": "The rules are eleven pages of very small print, and you lose the thread twice. But you find rule nine, and that is the one that matters: no delegate at the hammer, no bid."
@@ -2807,7 +2930,7 @@
         "say": "orin",
         "text": "That's what bothers me.",
         "when": {
-          "party": "orin"
+          "party": "maren"
         }
       },
       {
@@ -2831,7 +2954,10 @@
           "wardens": 3,
           "trade": 1
         },
-        "flag": "harbour_council"
+        "flag": "harbour_council",
+        "approval": {
+          "nessa": -1
+        }
       },
       {
         "id": "keepers",
@@ -2880,6 +3006,9 @@
   "keeper": {
     "id": "keeper",
     "book": 2,
+    "needs": [
+      "maren"
+    ],
     "name": "The Last Name on the List",
     "level": 14,
     "town": "merrowgate",
@@ -3159,7 +3288,8 @@
           "wardens": 1
         },
         "approval": {
-          "maren": 1
+          "maren": 1,
+          "orin": -1
         },
         "flag": "keeper_told_elske"
       },
@@ -3176,7 +3306,17 @@
           },
           {
             "say": "maren",
-            "text": "So does the lower town's lamps, unfixed, for another month."
+            "text": "So does the lower town's lamps, unfixed, for another month.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Evidence keeps, I suppose. So do the lower town's lamps, unfixed, for another month.",
+            "when": {
+              "absent": "orin"
+            }
           },
           {
             "narrate": "You count sixty gold out of the party's reward into the lamp-man's hand: enough for the six worst lamps, the ones on the hospice street. The rest of the Sallows will stay dark until the vote. It is not enough, and everyone knows it."
@@ -3188,7 +3328,8 @@
           "wardens": 2
         },
         "approval": {
-          "orin": 1
+          "orin": 1,
+          "maren": -1
         },
         "flag": "keeper_kept_receipts"
       }
@@ -3228,7 +3369,10 @@
       },
       {
         "say": "Elske",
-        "text": "Don't, Stoneward. Whatever it is. Not here."
+        "text": "Don't, Stoneward. Whatever it is. Not here.",
+        "when": {
+          "party": "orin"
+        }
       },
       {
         "narrate": "She goes. The council's coach goes round by the pass with her, because it is a long way round and Aveline says the papers will not survive a ghost. Your party goes down into the town."
@@ -3252,6 +3396,12 @@
             "text": "Has anyone tried?",
             "when": {
               "party": "nessa"
+            }
+          },
+          {
+            "narrate": "You ask whether anyone has tried.",
+            "when": {
+              "absent": "nessa"
             }
           },
           {
@@ -3279,6 +3429,9 @@
         ],
         "approval": {
           "orin": 1
+        },
+        "requires": {
+          "companion": "orin"
         }
       }
     ],
@@ -3298,6 +3451,12 @@
         {
           "say": "maren",
           "text": "That's her. That's Elske."
+        },
+        {
+          "narrate": "You know the voice. It is Elske Marrow's, eleven years younger.",
+          "when": {
+            "absent": "maren"
+          }
         },
         {
           "narrate": "You listen to the vote. Five to two for waiting. Elske votes to wait."
@@ -3419,12 +3578,15 @@
         "say": "nessa",
         "text": "That makes it worse, doesn't it?",
         "when": {
-          "party": "nessa"
+          "party": "maren"
         }
       },
       {
         "say": "orin",
-        "text": "Yes."
+        "text": "Yes.",
+        "when": {
+          "party": "maren"
+        }
       },
       {
         "narrate": "Elske Marrow is waiting at the inn in Cinder Fold when you arrive two days later. She looks at your faces and knows where you have been, and does not ask. Whether you tell her is up to you."
@@ -3454,7 +3616,8 @@
           "wardens": 2
         },
         "approval": {
-          "maren": 1
+          "maren": 1,
+          "orin": -1
         },
         "flag": "hollin_told"
       },
@@ -3471,7 +3634,17 @@
           },
           {
             "say": "maren",
-            "text": "It was. I hope it doesn't turn out to be a mistake."
+            "text": "It was. I hope it doesn't turn out to be a mistake.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "That was decent. I hope it doesn't turn out to be a mistake.",
+            "when": {
+              "absent": "orin"
+            }
           }
         ],
         "rep": {
@@ -3487,6 +3660,9 @@
   "cinderfold": {
     "id": "cinderfold",
     "book": 2,
+    "needs": [
+      "nessa"
+    ],
     "name": "Cinder Fold",
     "level": 16,
     "town": "cinderfold",
@@ -3807,7 +3983,8 @@
           "wardens": 1
         },
         "approval": {
-          "orin": 1
+          "orin": 1,
+          "maren": -1
         },
         "flag": "wards_wait"
       }
@@ -3877,6 +4054,12 @@
           {
             "say": "orin",
             "text": "And you think she should lose."
+          },
+          {
+            "narrate": "You ask whether he thinks she should lose.",
+            "when": {
+              "absent": "orin"
+            }
           },
           {
             "say": "Sable",
@@ -4117,7 +4300,7 @@
             "say": "orin",
             "text": "I know. That's the part I'm going to watch.",
             "when": {
-              "party": "orin"
+              "party": "maren"
             }
           }
         ],
@@ -4161,6 +4344,11 @@
   "motherbell": {
     "id": "motherbell",
     "book": 2,
+    "needs": [
+      "orin",
+      "maren",
+      "nessa"
+    ],
     "name": "The Mother Bell",
     "level": 18,
     "town": "cinderfold",
@@ -4606,6 +4794,11 @@
   "oath": {
     "id": "oath",
     "book": 2,
+    "needs": [
+      "orin",
+      "maren",
+      "nessa"
+    ],
     "name": "The Second Oath",
     "level": 19,
     "town": "cinderfold",

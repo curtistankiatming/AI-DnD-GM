@@ -1,0 +1,1559 @@
+{
+  "_note": "Written side jobs: short, optional town stories (see src/side-jobs.js and docs/STORY-BIBLE.md). Each job is offered in one town while 'from' is done and 'until' is not. A choice either moves to another node ('next') or finishes the job; finishing pays the job's gold ('reward' overrides it) and XP of about 12% of its level, never past the current chapter's level. Lines and approval work as in scenes.json. A companion line is skipped when they are not in the party, so any other line that answers a companion needs a 'when' too. The main story never assumes a job was done; a later line may mention one with when.flag 'job:<id>'.",
+  "room": {
+    "id": "room",
+    "name": "A Room for Ashford",
+    "town": "highpass",
+    "level": 10,
+    "from": "aftermath",
+    "until": "chairs",
+    "gold": 40,
+    "giver": "Captain Sorrel's adjutant",
+    "brief": "Highpass has three hundred refugees, eleven spare beds and five council delegates. The Ashford delegate has been given a room with a family in it.",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "The north room",
+        "lines": [
+          {
+            "narrate": "Captain Sorrel's adjutant finds you in the yard. He is a young man called Penn with a list, a pencil behind each ear and the look of someone who has been asked to solve the same problem by four different people."
+          },
+          {
+            "say": "Penn",
+            "text": "The Ashford delegate. Quartermaster Iona. She's been given the north room. The north room has a family in it. Could you, possibly, be in the north room, so that I don't have to?"
+          },
+          {
+            "narrate": "The north room is a store-room with a stove. The Farrows have lived in it since the spring: a carter, his wife, and his grandmother, who has the only bed and is sitting up in it in three shawls. They came up the pass after the beacon with a handcart and nothing on it."
+          },
+          {
+            "narrate": "Iona is standing in the doorway with a sheet of paper. It is the room's lease. Nobody gave it to her. She found it."
+          },
+          {
+            "say": "Iona",
+            "text": "'Reserved for officers and accredited visitors of the Watch.' I'm accredited. I have the seal. I'd like that noted before anybody calls me heartless."
+          },
+          {
+            "say": "Old Mother Farrow",
+            "text": "Is that the one from Ashford? Tell her the stove smokes if she shuts the flue."
+          },
+          {
+            "say": "Iona",
+            "text": "I'm not going to shut the flue. I'm going to sleep somewhere I can read. I've been sleeping in a coach."
+          },
+          {
+            "say": "maren",
+            "text": "Upright, Quartermaster?"
+          },
+          {
+            "say": "Iona",
+            "text": "Upright. With the Briarwatch delegate's bags on my feet. All three of them.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "There's a cot in the guardroom. I've slept in it. You wouldn't."
+          }
+        ],
+        "choices": [
+          {
+            "id": "give",
+            "label": "Give Iona your own room at the inn, and sleep in the stables",
+            "lines": [
+              {
+                "narrate": "Iona looks at the key you hold out as if it might be a trick. Then she takes it, turns it over, and makes a note."
+              },
+              {
+                "say": "Iona",
+                "text": "The inn rate is forty a week. I'll pay it to you, not to the inn. Don't argue; it's simpler for the books."
+              },
+              {
+                "narrate": "She pays it. The Farrows keep the north room. You sleep in the remount stables, in good straw, with a horse breathing on you."
+              },
+              {
+                "say": "orin",
+                "text": "Good straw. I've had worse. I've had worse rooms."
+              },
+              {
+                "say": "nessa",
+                "text": "This one's called Turnip. I asked the groom. He's called Turnip because he ate a turnip. That's the whole story, apparently."
+              },
+              {
+                "narrate": "In the morning there is a receipt pinned to the stable door, for forty gold, very correctly made out, with a note underneath: Received with thanks. Do not make a habit of it."
+              }
+            ],
+            "approval": {
+              "orin": 1,
+              "maren": 1
+            }
+          },
+          {
+            "id": "share",
+            "label": "Suggest she shares with the delegate from Fenmere, who has a room and a goat",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You put it to them both at once, which is the only way it could have worked. The delegate from Fenmere is a white-haired woman called Brannagh, with a brown goat on a rope. She looks Iona up and down."
+                },
+                {
+                  "say": "Brannagh",
+                  "text": "I snore. She doesn't."
+                },
+                {
+                  "say": "Iona",
+                  "text": "Then I'll sleep next to the goat."
+                },
+                {
+                  "narrate": "They come down to breakfast together the next morning, which nobody expected, and are not speaking, which everybody did. Halfway through the porridge Iona pushes the Fenmere grain figures across the table with two mistakes circled, and Brannagh says they're not mistakes, they're Fenmere, and they argue about it until the bell. It is the friendliest thing anyone has seen at Highpass in a month."
+                },
+                {
+                  "say": "maren",
+                  "text": "They like each other."
+                },
+                {
+                  "say": "orin",
+                  "text": "They'll never say so.",
+                  "when": {
+                    "party": "maren"
+                  }
+                },
+                {
+                  "say": "maren",
+                  "text": "No. That's how you can tell.",
+                  "when": {
+                    "party": "orin"
+                  }
+                }
+              ],
+              "setFlags": {
+                "job:room-shared": true
+              },
+              "approval": {
+                "maren": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Iona",
+                  "text": "Share with livestock. On the first night of the first council. No."
+                },
+                {
+                  "say": "Brannagh",
+                  "text": "She means me. The goat's flattered."
+                },
+                {
+                  "narrate": "In the end Iona takes the guardroom cot, and complains about it to every delegate who will listen, and to several who won't. But she does not take the north room, and in the morning she sends the Farrows a sack of Ashford flour with no note at all. Penn crosses something off his list with enormous relief and pays you for your trouble."
+                }
+              ]
+            }
+          },
+          {
+            "id": "move",
+            "label": "Iona has the lease. Find the family somewhere else",
+            "lines": [
+              {
+                "narrate": "The Farrows pack in a quarter of an hour. They have done it before. The carter and his wife carry the grandmother out between them in her chair, past Iona, who holds the door and does not look at anyone."
+              },
+              {
+                "say": "Old Mother Farrow",
+                "text": "Mind the flue."
+              },
+              {
+                "say": "maren",
+                "text": "There are forty people in that tent already."
+              },
+              {
+                "say": "orin",
+                "text": "Forty-three.",
+                "when": {
+                  "party": "maren"
+                }
+              },
+              {
+                "narrate": "Penn pays you, and crosses the north room off his list, and does not look at anyone either."
+              },
+              {
+                "narrate": "In the morning the Farrows are back in the north room. Nobody saw them move. The stove is lit, the flue is open, and pinned to the door, in a very neat hand, is a note: Flue. Noted. Iona slept in her coach."
+              }
+            ],
+            "setFlags": {
+              "job:room-moved": true
+            },
+            "approval": {
+              "orin": -1,
+              "maren": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "letters": {
+    "id": "letters",
+    "name": "The Letter Wall",
+    "town": "highpass",
+    "level": 10,
+    "from": "aftermath",
+    "until": "fenmere",
+    "gold": 30,
+    "giver": "A boy at the refugee camp",
+    "brief": "Every day a boy in the Highpass camp pins the same note to the wall of names, asking after his mother. Somebody in the camp knows where she is.",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "The wall of names",
+        "lines": [
+          {
+            "narrate": "Inside the gate of Highpass there is a stretch of wall that has become, without anybody deciding it, the place where the camp asks after its missing. It is covered in paper: names, descriptions, the last place someone was seen. Most of the notes are old. Some have answers pencilled underneath. A few say only: found."
+          },
+          {
+            "narrate": "A boy of about ten is pinning up a new note over an old one. It is the same note. He has written it out again because the rain got at the first."
+          },
+          {
+            "say": "Tib",
+            "text": "Ada Rusk. That's my mum. She went to crew the echo-stones at Kell's Bridge for Central Command, two winters back. They stopped paying, after the beacon. The other crews came back. She didn't."
+          },
+          {
+            "say": "Tib",
+            "text": "Somebody's been taking my notes down. Every night. I put them up, and in the morning they're folded up on the step. I think somebody's reading them."
+          },
+          {
+            "say": "maren",
+            "text": "Who sweeps this step, Tib?"
+          },
+          {
+            "say": "Tib",
+            "text": "The latrine crew. The woman with the cough. Why?",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Whoever folds the notes must be up before anybody else. Tib says the only people up that early are the latrine crew, who sweep the step on their way to the pits.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
+            "narrate": "The latrine crew works the pits behind the stables at dusk, three of them, with their faces wrapped against the smell. One of them, a thin woman with a cough, stops working when you come round the corner, and then makes herself start again."
+          },
+          {
+            "say": "The woman",
+            "text": "Ada Rusk? Never heard of her. Lot of people come through here."
+          },
+          {
+            "say": "maren",
+            "text": "That isn't true. You know her very well."
+          },
+          {
+            "narrate": "You tell her about the notes that come down every night, folded so the rain won't get them. She stops pretending.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
+            "narrate": "The woman leans on her shovel. She does not look at you. She looks at the wall of names, which you can just see over the stable roof."
+          },
+          {
+            "say": "Ada",
+            "text": "I rang the echo-stones. Two years. Every time Command said ring, I rang, and every time I rang, somebody's ward went quiet and somebody's village came up this pass with a handcart. Half this camp is here because of crews like mine. He's ten. He thinks I'm a soldier."
+          },
+          {
+            "say": "Ada",
+            "text": "I read his notes every night. Then I fold them up so the rain won't get them. That's all I'm fit for."
+          }
+        ],
+        "choices": [
+          {
+            "id": "talk",
+            "label": "Persuade Ada to go to him herself",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You do not tell her she did nothing wrong. She would not believe it, and it is not quite true. You tell her that the people in this camp are not waiting for crews like hers to be sorry. They are waiting to find out who is still alive. So is he."
+                },
+                {
+                  "narrate": "Ada puts the shovel down and wipes her hands on her coat for a long time. Then she walks round the stable to the wall of names, and stands behind her son while he is pinning up the note, and says his name."
+                },
+                {
+                  "narrate": "Tib does not turn round straight away. When he does, he takes the note back off the wall, folds it very carefully, and gives it to her."
+                },
+                {
+                  "say": "Tib",
+                  "text": "You've got loads of these, I expect."
+                },
+                {
+                  "say": "Ada",
+                  "text": "Forty-one."
+                },
+                {
+                  "say": "maren",
+                  "text": "Leave the wall a gap, Tib. Somebody will need it."
+                }
+              ],
+              "setFlags": {
+                "job:letters-reunited": true
+              },
+              "approval": {
+                "maren": 1,
+                "orin": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Ada",
+                  "text": "Not yet. I can't. Not with this on my hands."
+                },
+                {
+                  "narrate": "She writes something on the back of one of his old notes, with a stub of pencil from her pocket, and gives it to you. Then she goes back to the pit."
+                },
+                {
+                  "narrate": "In the morning, under Tib's note, there is an answer pencilled in a hand he knows: Alive. Working. Ashamed. Coming. Not yet. He reads it nine times, and then he goes round the stables to look."
+                }
+              ],
+              "setFlags": {
+                "job:letters-note": true
+              },
+              "approval": {
+                "maren": 1
+              }
+            }
+          },
+          {
+            "id": "bring",
+            "label": "Fetch Tib round the stables and let them face each other",
+            "lines": [
+              {
+                "narrate": "You fetch him. It is not gentle and it is not graceful. Ada drops the shovel, and Tib stops at the corner of the stable and does not come any closer, and for a long moment nobody knows what to do with their hands."
+              },
+              {
+                "say": "Tib",
+                "text": "You smell awful."
+              },
+              {
+                "say": "Ada",
+                "text": "I know."
+              },
+              {
+                "narrate": "Then he runs at her, the way children do, hard enough to knock her over, and she lets him."
+              },
+              {
+                "say": "orin",
+                "text": "Nobody gets left out on that bridge. Not even by themselves."
+              },
+              {
+                "say": "maren",
+                "text": "She wasn't ready. She'll manage. But she wasn't ready, and that was hers to choose."
+              }
+            ],
+            "setFlags": {
+              "job:letters-reunited": true
+            },
+            "approval": {
+              "orin": 1,
+              "maren": -1
+            }
+          },
+          {
+            "id": "keep",
+            "label": "Keep her secret. It's hers to tell",
+            "lines": [
+              {
+                "say": "Ada",
+                "text": "Thank you."
+              },
+              {
+                "narrate": "You leave her at the pit. On the way back past the wall of names, Tib is pinning up the note again, very straight, with four pins, so the wind will not get it."
+              },
+              {
+                "say": "Tib",
+                "text": "Did you find anything?"
+              },
+              {
+                "narrate": "You tell him you will keep looking. It is not a lie, quite."
+              },
+              {
+                "say": "orin",
+                "text": "He'll be pinning that up next winter. And the one after."
+              },
+              {
+                "say": "maren",
+                "text": "Perhaps. Or perhaps she'll come round the stable when she can bear to. It isn't ours to hurry.",
+                "when": {
+                  "party": "orin"
+                }
+              }
+            ],
+            "setFlags": {
+              "job:letters-kept": true
+            },
+            "reward": 15,
+            "approval": {
+              "orin": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "nightbell": {
+    "id": "nightbell",
+    "name": "Pim's Night Bell",
+    "town": "briarwatch",
+    "level": 12,
+    "from": "fenmere",
+    "until": "southroad",
+    "gold": 35,
+    "giver": "Tovin, the bell-keeper",
+    "brief": "Tovin's apprentice, Pim, has been sneaking out every night and falling asleep over his lessons. Tovin would like to know where he goes, without asking him.",
+    "start": "tovin",
+    "nodes": {
+      "tovin": {
+        "title": "The bell tower, after dark",
+        "lines": [
+          {
+            "say": "Tovin",
+            "text": "He's out every night. He thinks I don't know. He comes back at dawn with frost on him and falls asleep over the chime tables. Yesterday he fell asleep standing up. Against the bell."
+          },
+          {
+            "say": "Tovin",
+            "text": "I could ask him. But he's fourteen. If I ask him, he'll tell me the truth, and then I'll have to do something about it."
+          },
+          {
+            "narrate": "At midnight you follow Pim out of the village by the Ashford road, past the new houses, to the old chapel on the hill that lost its roof in the beacon winter. The chapel still has its practice bell, a little thing the size of a bucket, hung from a beam that is mostly hope."
+          },
+          {
+            "narrate": "Pim has a lantern, a stool, a book on bell-keeping he has read eleven times, and a sheet of paper with every hour of the night written down it. Half of them are ticked. At one o'clock exactly he stands on the stool and rings the bell once, carefully, and ticks the hour."
+          },
+          {
+            "say": "Pim",
+            "text": "Oh. Oh, no. Did Tovin send you? He did. Don't tell him. I'm not doing anything wrong. I'm ringing the hours."
+          },
+          {
+            "say": "Pim",
+            "text": "Fenmere's keeper stopped ringing in the morning, and then she couldn't remember the third verse, and then the lower village was gone. If somebody had rung it every hour, on the hour, the whole time, it would have held. I worked it out. So I'm ringing this one. In case."
+          },
+          {
+            "say": "nessa",
+            "text": "Every night? On your own? Since when?"
+          },
+          {
+            "say": "Pim",
+            "text": "Since we heard. Eleven nights. I'm very tired.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Pim. Does this bell ward anything?"
+          },
+          {
+            "say": "Pim",
+            "text": "No. It's a practice bell. That's not the point. The point is somebody's awake.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "rota",
+            "label": "Help Pim put it to Aveline properly: a night rota, with volunteers",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "history",
+                "investigation"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You spend the next morning helping Pim turn his idea into something a reeve can say yes to. It takes three drafts. The first is eleven pages long and has a chart. The second has a shorter chart. The third says: Briarwatch should keep a night watch on the bell tower, by rota, so that somebody is always awake. Names of volunteers below."
+                },
+                {
+                  "narrate": "By noon there are twenty-two names below. Dera's is first. Tovin's is second, in very small letters."
+                },
+                {
+                  "narrate": "Aveline reads it standing in the square, in her travelling coat, with her three bags of papers at her feet."
+                },
+                {
+                  "say": "Aveline",
+                  "text": "I've written to Tovin four times to say no to night ringing. Four times. I had a form for it."
+                },
+                {
+                  "say": "Pim",
+                  "text": "This isn't ringing. It's watching. Ringing's optional. I put that in the third draft."
+                },
+                {
+                  "say": "Aveline",
+                  "text": "So you did."
+                },
+                {
+                  "narrate": "She signs it on the back of her saddle. Then she writes something else, and gives it to Pim folded, and tells him not to read it until she has gone. It says: Go to bed."
+                },
+                {
+                  "say": "Tovin",
+                  "text": "He's asleep. In a bed. Lying down. I could weep."
+                }
+              ],
+              "setFlags": {
+                "job:nightbell-rota": true
+              },
+              "approval": {
+                "nessa": 1,
+                "orin": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Aveline",
+                  "text": "A rota. For a bell that doesn't ward anything. Pim, I have the council of the free wards in two weeks and three bags I haven't read."
+                },
+                {
+                  "say": "Pim",
+                  "text": "It's not about the bell. It's about somebody being awake."
+                },
+                {
+                  "narrate": "Aveline looks at him, and you watch the reeve of Briarwatch remember being fourteen and certain."
+                },
+                {
+                  "say": "Aveline",
+                  "text": "One night a week. Saturday. With Tovin. And you sleep on Sunday, all of it. That's the offer, and I'm getting on this cart."
+                },
+                {
+                  "narrate": "It is not what he asked for. Pim takes it as if he had been given the keys to the tower."
+                }
+              ],
+              "setFlags": {
+                "job:nightbell-saturday": true
+              }
+            }
+          },
+          {
+            "id": "ring",
+            "label": "Take the next hour yourself, and send Pim to bed",
+            "lines": [
+              {
+                "say": "Pim",
+                "text": "You'll do it properly? Exactly on the hour? Not a bit before?"
+              },
+              {
+                "narrate": "You promise. He goes, looking back twice. You sit on the stool in the roofless chapel with the stars out and ring the practice bell at two o'clock, exactly, and tick the hour on his sheet."
+              },
+              {
+                "say": "nessa",
+                "text": "I used to do this. Not bells. Sit up on the signal tower at Highpass with Wren's lamp, waiting for somebody to need it. Nobody ever did. I sat up anyway."
+              },
+              {
+                "say": "orin",
+                "text": "Three o'clock's mine."
+              },
+              {
+                "narrate": "Somebody takes every hour until dawn. In the morning you give Pim back his sheet with every hour ticked, and tell Tovin where he goes, and Tovin says he knew, and goes up the hill that night with a second stool."
+              }
+            ],
+            "setFlags": {
+              "job:nightbell-rung": true
+            },
+            "approval": {
+              "nessa": 1
+            }
+          },
+          {
+            "id": "tell",
+            "label": "Tell Tovin where he goes, and leave it to him",
+            "lines": [
+              {
+                "narrate": "You tell Tovin. He listens with his hands round a cup of tea that has gone cold."
+              },
+              {
+                "say": "Tovin",
+                "text": "The practice bell. On the hill. Every night."
+              },
+              {
+                "say": "Tovin",
+                "text": "He's right, you know. Not about the hours. About somebody being awake. I sat in that infirmary after the vault for a month and nobody was awake but me."
+              },
+              {
+                "narrate": "Pim is confined to the tower for a week, and does his chime tables, and does not speak to you when you pass. Tovin pays you for your trouble, and sits up on the hill himself for the next three nights, ringing the hours. He doesn't tell Pim. Pim finds out anyway."
+              },
+              {
+                "say": "nessa",
+                "text": "He trusted us not to tell. Fourteen-year-olds remember that."
+              }
+            ],
+            "setFlags": {
+              "job:nightbell-told": true
+            },
+            "approval": {
+              "nessa": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "afterdark": {
+    "id": "afterdark",
+    "name": "After Dark",
+    "town": "merrowgate",
+    "level": 13,
+    "from": "southroad",
+    "until": "keeper",
+    "gold": 45,
+    "giver": "The fishwives of the north quay",
+    "brief": "A Merrowgate fishwife has been arrested for complaining about the price of lamp-oil after dark, which the city's ordinance forbids. Her friends would like her back by the morning tide.",
+    "start": "quay",
+    "nodes": {
+      "quay": {
+        "title": "The watch-house on the north quay",
+        "lines": [
+          {
+            "narrate": "Merrowgate has an ordinance, passed eighty years ago at the request of the lantern guilds, which makes it a crime to complain about the price of lamp-oil after dark. Nobody remembers why it says after dark. The guilds have never asked anybody to remember."
+          },
+          {
+            "narrate": "Mag Tolly sells fish on the north quay. Tonight she said, at some volume, to a lamp-man refilling the lamp over her stall, what she thought of the price of the oil, the lamp-man, the lamp-man's mother and the Lantern Hall, in that order. Then the watch took her."
+          },
+          {
+            "narrate": "Her friends find you at the inn: four fishwives in oilskins, smelling powerfully of the day's catch."
+          },
+          {
+            "say": "A fishwife",
+            "text": "She's in the watch-house till the night magistrate sits. That's dawn. The tide's at dawn. If she's not on the boat, her boy takes it out alone, and he's thirteen and he can't read the sky yet. We'd go in ourselves, but they know us."
+          },
+          {
+            "narrate": "The watch-house is a stone room under the quay with one lamp, one bored watchman and a grille. Mag is behind the grille, sitting on a bench with her arms folded, still talking."
+          },
+          {
+            "say": "Mag",
+            "text": "Nine pence a pint. Nine pence. For oil. It was four when my mother was on the quay. I'll say it again in front of the magistrate, I'll say it in front of the Guildmaster, I'll say it to the bloody harbour bell."
+          },
+          {
+            "say": "The watchman",
+            "text": "Please don't. She's been saying it for three hours. The fine's fifteen gold, if anybody wants to pay it. Nobody ever does. They come up before the magistrate at dawn and she fines them anyway."
+          }
+        ],
+        "choices": [
+          {
+            "id": "argue",
+            "label": "Read the ordinance, and argue it in front of the night magistrate",
+            "check": {
+              "skill": "investigation",
+              "alt": [
+                "persuasion",
+                "history"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "The night magistrate sits at four in the morning, in a nightcap, in no mood. You have spent the night with the ordinance, which is a single long sentence with a great many commas."
+                },
+                {
+                  "narrate": "You point out that it forbids complaint after dark. You point out that the complaint was made directly under a lamp that had just been refilled and lit, by the lantern guilds' own man, for the express purpose of ending the dark on that part of the quay. You ask the magistrate whether the guilds are saying their lamps do not work."
+                },
+                {
+                  "say": "The magistrate",
+                  "text": "Are you saying the Lantern Hall's lamps don't light the street?"
+                },
+                {
+                  "say": "Mag",
+                  "text": "Not at nine pence, they don't."
+                },
+                {
+                  "narrate": "There is a silence in which a great many people in the court do sums. Then the magistrate dismisses the charge, because it was not, in law, dark. By noon every fishwife on the north quay is complaining about the price of oil directly under a lit lamp, and the watch has been told, quietly, not to hear them."
+                },
+                {
+                  "say": "maren",
+                  "text": "That was beautiful. I may frame the ordinance."
+                },
+                {
+                  "say": "orin",
+                  "text": "Every word of that was true. That's the best kind."
+                }
+              ],
+              "setFlags": {
+                "job:afterdark-argued": true
+              },
+              "approval": {
+                "maren": 1,
+                "orin": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You make the argument. The magistrate, who was asleep twenty minutes ago and would like to be again, does not follow it past the third comma."
+                },
+                {
+                  "say": "The magistrate",
+                  "text": "Fifteen gold. Next."
+                },
+                {
+                  "narrate": "You pay it, because the tide will not wait for an appeal. Mag is on the boat at dawn with her boy, still talking. The fishwives pay you back, and more, in coin that smells of herring."
+                },
+                {
+                  "say": "Mag",
+                  "text": "You were right, mind. Everybody heard you. That's worth fifteen gold. I'll say so. After dark."
+                }
+              ],
+              "gold": -15,
+              "setFlags": {
+                "job:afterdark-paid": true
+              }
+            }
+          },
+          {
+            "id": "pay",
+            "label": "Pay the fifteen-gold fine and get her to the tide",
+            "lines": [
+              {
+                "narrate": "You pay. The watchman is so pleased to see Mag go that he walks her to the door himself."
+              },
+              {
+                "say": "Mag",
+                "text": "I didn't ask you to do that. I'll pay you back. Not tonight. Tonight I'd have to complain about something to make it worth the walk."
+              },
+              {
+                "narrate": "She is on the boat at dawn, and her boy does not have to take it out alone. The fishwives pay you back by the end of the week, in coin that smells of herring, with a little over for the trouble."
+              }
+            ],
+            "gold": -15,
+            "setFlags": {
+              "job:afterdark-paid": true
+            }
+          },
+          {
+            "id": "roof",
+            "label": "Get her out through the coal-hole before the magistrate sits",
+            "lines": [
+              {
+                "narrate": "The watch-house has a coal-hole. Most of Merrowgate's do. It is a tight fit, and Mag has opinions about it, which she shares on the way through."
+              },
+              {
+                "say": "nessa",
+                "text": "Mind your elbow, mind the— that's my face, that's fine, keep going."
+              },
+              {
+                "say": "orin",
+                "text": "When they ask me, I'll tell them what happened."
+              },
+              {
+                "say": "nessa",
+                "text": "Then don't be here when they ask.",
+                "when": {
+                  "party": "orin"
+                }
+              },
+              {
+                "narrate": "Mag is on the boat at dawn. By the next evening the watch has her name on a list, and so have you, and Mag is telling the whole quay about it as though it were a medal. The fishwives pay you double."
+              }
+            ],
+            "setFlags": {
+              "job:afterdark-escaped": true
+            },
+            "reward": 60,
+            "approval": {
+              "nessa": 1,
+              "orin": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "boat": {
+    "id": "boat",
+    "name": "The Name on the Boat",
+    "town": "merrowgate",
+    "level": 14,
+    "from": "keeper",
+    "until": "hollin",
+    "gold": 30,
+    "giver": "Davy Crane, from the Sallows hospice",
+    "brief": "The old fisherman at the Sallows hospice remembered his wife's name at the card table. He wants it painted on his boat before he forgets it again. The boat is in the harbour pound.",
+    "start": "hospice",
+    "nodes": {
+      "hospice": {
+        "title": "The long room",
+        "lines": [
+          {
+            "narrate": "Davy Crane is the old fisherman from the long room at the Sallows, the one who said his wife's name by accident during cards and then could not stop laughing. Anwen says he has said it about two hundred times since. He is frightened of the day he won't."
+          },
+          {
+            "say": "Davy",
+            "text": "Lenora. Lenora Crane. Forty-one years. I couldn't find it for a month, it was like putting your hand in your pocket for a key that isn't there."
+          },
+          {
+            "say": "Davy",
+            "text": "My boat's got no name on her. Never had. Lenora said names were bad luck on a boat, the sea reads them. Well, the sea can read hers. I want it painted on the bow, big, so if I lose it again I can go down the steps and look."
+          },
+          {
+            "say": "Anwen",
+            "text": "His boat's in the harbour pound. Eight months of mooring fees, while he was in here, being looked after for free. Thirty gold, the pound wants. I asked."
+          },
+          {
+            "say": "maren",
+            "text": "Davy. What colour paint?"
+          },
+          {
+            "say": "Davy",
+            "text": "Yellow. She hated yellow. She'd laugh.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "pilots",
+            "label": "Ask the fishers' and pilots' guild, who own the harbour bell now",
+            "requires": {
+              "flagsAll": [
+                "harbour_keepers"
+              ]
+            },
+            "lines": [
+              {
+                "narrate": "The fishers' and pilots' guild meets in a net-loft over the fish market, and since the night of the auction it has owned the harbour bell, which it bought for one crown from an old woman with a goat. It has not got used to owning anything."
+              },
+              {
+                "narrate": "The guild's master, a pilot with one ear, hears you out, then sends a boy to the pound with a note. The note says: The harbour does not charge Davy Crane for the harbour. It is signed by the whole guild, one name under another, down to the bottom of the page."
+              },
+              {
+                "say": "The pilot",
+                "text": "We own the bell. Somebody told me that means we're responsible for things now. I didn't like the sound of it. This one I don't mind."
+              }
+            ],
+            "next": "paint"
+          },
+          {
+            "id": "pay",
+            "label": "Pay the pound the thirty gold",
+            "lines": [
+              {
+                "narrate": "The harbour pound is run by a clerk who has never been to sea and is proud of it. He counts your thirty gold twice and writes a receipt that releases one boat, unnamed, to its owner."
+              },
+              {
+                "say": "The clerk",
+                "text": "Unnamed. That's unlucky, you know."
+              }
+            ],
+            "gold": -30,
+            "next": "paint"
+          },
+          {
+            "id": "talk",
+            "label": "Talk the harbourmaster into waiving the fees",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "deception"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "The harbourmaster is a tired woman with a ledger, and her father was a fisherman, and by the time you have told her about Lenora Crane and the yellow paint she has closed the ledger and is looking out of the window at the boats."
+                },
+                {
+                  "say": "The harbourmaster",
+                  "text": "Eight months, written off. Storm damage. Nobody checks. Don't tell me which boat."
+                }
+              ],
+              "next": "paint"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "The harbourmaster",
+                  "text": "If I waive his, I waive everybody's, and the Lantern Hall reads my books. Thirty gold."
+                },
+                {
+                  "narrate": "You pay it in the end. She does knock off the cost of the yellow paint, which she says she did not hear you mention."
+                }
+              ],
+              "gold": -30,
+              "next": "paint"
+            }
+          }
+        ]
+      },
+      "paint": {
+        "title": "The pound slip",
+        "lines": [
+          {
+            "narrate": "The boat is a small blue fishing smack with a patched sail and no name. You bring Davy down the tide steps in Anwen's borrowed wheelbarrow, wrapped in two blankets, swearing cheerfully at every step."
+          },
+          {
+            "narrate": "Painting a name on a boat is harder than it looks. The bow curves. The letters want to slide downhill. Davy directs, from the wheelbarrow, with great authority and no consistency."
+          },
+          {
+            "say": "nessa",
+            "text": "Is that an N? It's an N. It's mostly an N. Biscuit, don't— no. That's a paw-print. That's in the name now."
+          },
+          {
+            "say": "Davy",
+            "text": "Leave it. She'd have liked the dog.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "The R is backwards."
+          },
+          {
+            "say": "Davy",
+            "text": "So was she, some mornings. Leave it.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "By evening it is done: LENORA, in yellow, a foot high, slightly downhill. Davy sits in the wheelbarrow and reads it out loud, and then again, and then a third time, quieter."
+          }
+        ],
+        "choices": [
+          {
+            "id": "sail",
+            "label": "Take him out past the mole, so he can see it from the water",
+            "lines": [
+              {
+                "narrate": "You take the boat out at dusk, past the harbour bell on the mole, with Davy at the tiller because he will not have it any other way. The Gloam is off the water tonight. The lamps are coming on all round the bay, like seats in a theatre filling up."
+              },
+              {
+                "say": "Davy",
+                "text": "She'd have said I steer like a drunk."
+              },
+              {
+                "say": "maren",
+                "text": "You do, Davy."
+              },
+              {
+                "say": "Davy",
+                "text": "Forty-one years she said it. Lenora. Lenora Crane.",
+                "when": {
+                  "party": "maren"
+                }
+              },
+              {
+                "narrate": "Back at the hospice, Anwen says he slept the night through for the first time since the spring. In the morning he asks the boy in the next bed to walk him down the tide steps, and stands on the slip, and reads his wife's name off the bow, and laughs."
+              }
+            ],
+            "setFlags": {
+              "job:boat-named": true
+            },
+            "approval": {
+              "maren": 1,
+              "nessa": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "minersvote": {
+    "id": "minersvote",
+    "name": "Fourteen Votes and a Tie",
+    "town": "cinderfold",
+    "level": 16,
+    "from": "hollin",
+    "until": "cinderfold",
+    "gold": 50,
+    "giver": "The Cinder Fold miners' committee",
+    "brief": "The deep galleries have gone cold, and the miners' committee must decide whether to open them to anybody at all. They have voted fourteen times. It is a tie every time.",
+    "start": "hall",
+    "nodes": {
+      "hall": {
+        "title": "The miners' hall",
+        "lines": [
+          {
+            "narrate": "Cinder Fold's miners govern themselves by committee, as they have done for four hundred years. Fourteen members, one vote each, nothing decided without a majority. It is a very good system. It has been stuck for nine days."
+          },
+          {
+            "narrate": "The question is whether the deep galleries are opened to anybody at all, now they have gone cold. Seven say yes: the forge is going out, and the town lives on the forge, and somebody has to go down and find out why. Seven say no: something down there is ringing, and nobody has ever heard it before."
+          },
+          {
+            "say": "Chairwoman Ottilie Brand",
+            "text": "Fourteenth vote. Seven and seven. Thank you, everybody. Fifteenth vote after dinner."
+          },
+          {
+            "narrate": "The chairwoman is a broad grey woman with a voice like a dropped shovel. The member opposite her, who has voted against her fourteen times, has exactly the same face. He is her twin brother. He has voted against her, the miners say, since they were eleven."
+          },
+          {
+            "say": "Osric Brand",
+            "text": "It's not personal. She's wrong."
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "It has been personal since the business with the pony, and you know it."
+          },
+          {
+            "say": "nessa",
+            "text": "Nine days. The forge is going out. Somebody just go down and look."
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "Somebody can't. That's the rule. Nobody goes down a gallery the committee hasn't opened. We lost eleven men in the Long Seam because somebody just went down and looked.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Is there a fifteenth member?"
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "Old Harrow. He's in bed with his chest. He hasn't voted in a year. He says he's retired. We say there's no such thing.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "There is, it turns out, a fifteenth seat at the table. It has a coat on the back of it and a year of dust on the coat."
+          }
+        ],
+        "choices": [
+          {
+            "id": "harrow",
+            "label": "Find old Harrow, the fifteenth member, and ask him to vote",
+            "check": {
+              "skill": "insight",
+              "alt": [
+                "persuasion",
+                "medicine"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "Old Harrow lives at the top of the town, in a house so warm that the windows run. He is ninety, propped on four pillows, and very glad of visitors, because it means he can refuse something."
+                },
+                {
+                  "say": "Harrow",
+                  "text": "I'm retired."
+                },
+                {
+                  "narrate": "You do not argue. You ask him about the galleries instead: what they were like when he was a boy, what the old miners said about the bells in the niches, whether he ever heard one ring on its own. He talks for an hour. At the end of it he has stopped being retired without either of you noticing."
+                },
+                {
+                  "say": "Harrow",
+                  "text": "My grandfather said the little bells answer each other when something's wrong down deep. Said you don't go down when they're ringing. You go down and ask them why. Nobody listened to him either. Pass me my coat."
+                },
+                {
+                  "narrate": "They carry him down to the hall in his chair. He votes to open the galleries, on the condition that whoever goes down asks the bells first, and Ottilie and Osric both write it into the minutes, in the same words, and glare at each other for doing it."
+                }
+              ],
+              "setFlags": {
+                "job:minersvote-harrow": true
+              },
+              "approval": {
+                "maren": 1,
+                "orin": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Harrow",
+                  "text": "I'm retired. Go away. Shut the door, you're letting the cold in, and there isn't any."
+                },
+                {
+                  "narrate": "You go back down the hill with nothing. But the next morning, before the fifteenth vote, a boy runs into the hall with a note from Harrow, written in a shaky hand: Yes. Ask the bells first. Don't come up again, I'm busy."
+                },
+                {
+                  "say": "Ottilie Brand",
+                  "text": "Eight to seven. Thank you, everybody. The galleries are open. Whoever goes down asks the bells first. Somebody write that on the door."
+                }
+              ],
+              "setFlags": {
+                "job:minersvote-harrow": true
+              }
+            }
+          },
+          {
+            "id": "twins",
+            "label": "Get the Brand twins to settle the business with the pony",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "performance"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "It takes an evening and most of a bottle of something the miners make from potatoes. The business with the pony turns out to have happened fifty-four years ago and to have been nobody's fault, or rather everybody's, the pony's included."
+                },
+                {
+                  "say": "Osric Brand",
+                  "text": "I let it out. Not you. I let it out."
+                },
+                {
+                  "say": "Ottilie Brand",
+                  "text": "I know you did. I've always known. I told Father it was me so he'd stop looking at you like that."
+                },
+                {
+                  "narrate": "There is a long pause in which two people of sixty-five are eleven again. Then Osric votes to open the galleries on the fifteenth vote, and Ottilie, out of what she says is pure habit, very nearly votes no."
+                },
+                {
+                  "say": "orin",
+                  "text": "Fifty-four years. Over a pony."
+                },
+                {
+                  "say": "maren",
+                  "text": "It was never about the pony, Orin.",
+                  "when": {
+                    "party": "orin"
+                  }
+                }
+              ],
+              "setFlags": {
+                "job:minersvote-twins": true
+              },
+              "approval": {
+                "maren": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Osric Brand",
+                  "text": "The pony is not the committee's business."
+                },
+                {
+                  "say": "Ottilie Brand",
+                  "text": "For once, he's right."
+                },
+                {
+                  "narrate": "They are united, briefly, against you, which is the most the committee has agreed on in nine days. The fifteenth vote is seven and seven. The sixteenth is eight and six, because one of the no votes has gone home to bed in protest, and the galleries are opened after all."
+                }
+              ]
+            }
+          },
+          {
+            "id": "decide",
+            "label": "Tell them the forge can't wait: open the galleries now, and you'll answer for it",
+            "lines": [
+              {
+                "narrate": "The hall goes quiet. Ottilie Brand looks at you for a long moment."
+              },
+              {
+                "say": "Ottilie Brand",
+                "text": "That's the Long Seam talking. That's exactly what they said."
+              },
+              {
+                "narrate": "But you have just come over the hill from Hollin's Reach, and it shows, and in a room that has been stuck for nine days somebody who sounds certain is very hard to vote against. The fifteenth vote is eight to six, to open the galleries. Nobody thanks you. Ottilie writes in the minutes, in a large plain hand: Opened at the visitors' insistence. Noted."
+              },
+              {
+                "say": "nessa",
+                "text": "Somebody had to."
+              },
+              {
+                "say": "maren",
+                "text": "Somebody always says that. That's what she was telling you.",
+                "when": {
+                  "party": "nessa"
+                }
+              },
+              {
+                "say": "orin",
+                "text": "We should have given them the day. It's their mountain."
+              }
+            ],
+            "setFlags": {
+              "job:minersvote-decided": true
+            },
+            "approval": {
+              "nessa": 1,
+              "maren": -1,
+              "orin": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "well": {
+    "id": "well",
+    "name": "The Midwinter Well",
+    "town": "briarwatch",
+    "level": 17,
+    "from": "cinderfold",
+    "until": "vote",
+    "gold": 50,
+    "giver": "Smith Dera",
+    "brief": "The well on the Ashford road has frozen solid, and the old village and the new houses cannot agree who should pay for a new one. Dera would like it settled before somebody throws something.",
+    "start": "well",
+    "nodes": {
+      "well": {
+        "title": "The well on the Ashford road",
+        "lines": [
+          {
+            "say": "Dera",
+            "text": "Ashford road well's frozen to the bottom. First time in sixty winters. The new houses use it. So do the Tanners and the Gilliams, who've been on that road since before the bell. Now they need a new one sunk, deeper, and nobody will say who pays."
+          },
+          {
+            "say": "Dera",
+            "text": "Old Briarwatch says the new houses should, they're the ones who need it. The new houses say they pay the bell-tax same as everyone, and they've been carrying water from the square for a week in this. I've got one apprentice with a frostbitten ear and a forge full of people arguing. Go and settle it. Please. Before I start charging rent."
+          },
+          {
+            "narrate": "The well-head is a ring of grey stone with a lid of ice. Around it stand perhaps thirty people with buckets, in two groups that have arranged themselves, without anybody saying so, on either side of the road."
+          },
+          {
+            "narrate": "On one side is old Gilliam, who has a farm and opinions and has had both since before Aveline was reeve. On the other is the widow from the Ashford road, Bryony Lark, whose village burned in the summer, and who came to Briarwatch with two children and a goat-cart, and has built a house with her own hands since."
+          },
+          {
+            "say": "Gilliam",
+            "text": "Nobody's saying they can't have water. We're saying the village shouldn't pay to dig a well for people who've been here five minutes."
+          },
+          {
+            "say": "Bryony Lark",
+            "text": "Seven months. I've paid the bell-tax for seven months. Your well, Gilliam, that you didn't dig, was dug by people who'd been here five minutes, a hundred years ago."
+          },
+          {
+            "say": "orin",
+            "text": "Same argument as the council. Smaller table."
+          }
+        ],
+        "choices": [
+          {
+            "id": "share",
+            "label": "Get both sides to agree to share the cost, by the bucket",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "history"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You do what Brannagh did at Highpass. You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "when": {
+                    "flag": "b2_cost_shared"
+                  }
+                },
+                {
+                  "narrate": "You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "when": {
+                    "notFlag": "b2_cost_shared"
+                  }
+                },
+                {
+                  "narrate": "It takes an hour in the snow, with Gilliam's grandson keeping the tally on a slate. The new houses use more, because there are more of them. The old farms use more per house, because of the cattle. At the end of it the sum comes out almost exactly half and half, which annoys Gilliam very much, because now he has nothing to be annoyed about."
+                },
+                {
+                  "say": "Gilliam",
+                  "text": "Half. Fine. Half. But I'm choosing where it's dug."
+                },
+                {
+                  "say": "Bryony Lark",
+                  "text": "You can choose where it's dug if I choose who digs it."
+                },
+                {
+                  "say": "Gilliam",
+                  "text": "...who were you going to choose?"
+                },
+                {
+                  "say": "Bryony Lark",
+                  "text": "You. You've got the biggest shovel in the village. Everyone knows."
+                },
+                {
+                  "narrate": "Gilliam, it turns out, does have the biggest shovel in the village, and is a little proud of it. The new well is sunk by the end of the week, by both sides of the road, in shifts, with Gilliam directing and Bryony Lark's children getting in the way."
+                }
+              ],
+              "setFlags": {
+                "job:well-shared": true
+              },
+              "approval": {
+                "orin": 1,
+                "maren": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Gilliam",
+                  "text": "Buckets. You want me to count buckets."
+                },
+                {
+                  "narrate": "It goes badly. Somebody says something about where people come from, and somebody else says something about where people can go. In the end Aveline comes out of the inn in her council coat, settles it in four minutes by reeve's order, half and half, and goes back in without a word to anyone, and both sides are united for the rest of the evening in being annoyed with Aveline."
+                },
+                {
+                  "say": "Dera",
+                  "text": "That counts. It's settled. They hate her instead of each other. That's what she's for."
+                }
+              ],
+              "setFlags": {
+                "job:well-ordered": true
+              }
+            }
+          },
+          {
+            "id": "dig",
+            "label": "Pick up a pick and start digging. Argue later",
+            "lines": [
+              {
+                "narrate": "You break the ice on the old well-head and go down the rope with a pick. It is very cold, and very dark, and the argument goes on over your head for about a quarter of an hour."
+              },
+              {
+                "narrate": "Then somebody from the new houses climbs down after you with a lantern, and somebody from the old farms climbs down after him because he won't be outdone, and by dark there are six people at the bottom of the well and a chain of buckets going up the rope, and nobody up top has said anything about money for an hour."
+              },
+              {
+                "say": "orin",
+                "text": "Good. Hold that. No, the other end."
+              },
+              {
+                "say": "nessa",
+                "text": "There's water. Is that water? It's water. Biscuit, out, it's not for you."
+              },
+              {
+                "narrate": "You strike water deep enough not to freeze just before midnight. The question of who pays is never settled. Nobody seems to mind. Dera pays you, out of the forge's takings, because she says the argument was costing her more than you are."
+              }
+            ],
+            "setFlags": {
+              "job:well-dug": true
+            },
+            "approval": {
+              "orin": 1,
+              "nessa": 1
+            }
+          },
+          {
+            "id": "pay",
+            "label": "Pay for the new well yourself and end it",
+            "lines": [
+              {
+                "narrate": "You put sixty gold on the well-head. It is enough for the well-diggers from Ashford and their tackle. The argument stops at once, the way an argument stops when somebody has stepped over it."
+              },
+              {
+                "say": "Gilliam",
+                "text": "Well. That's very generous. That's... very generous."
+              },
+              {
+                "say": "Bryony Lark",
+                "text": "Thank you. I don't like it. But thank you."
+              },
+              {
+                "say": "maren",
+                "text": "It's the same thing Elske wants. Somebody who can just make it stop."
+              },
+              {
+                "say": "orin",
+                "text": "Next winter, when it freezes again? They'll still not know how to talk to each other. They'll just know who to ask."
+              }
+            ],
+            "gold": -60,
+            "setFlags": {
+              "job:well-paid": true
+            },
+            "approval": {
+              "orin": -1,
+              "maren": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "coach": {
+    "id": "coach",
+    "name": "The Driver's Wages",
+    "town": "cinderfold",
+    "level": 19,
+    "from": "motherbell",
+    "until": "oath",
+    "gold": 40,
+    "giver": "A coach driver at the miners' gate",
+    "brief": "Pell Haverick's coach was found at the bottom of the mountain with a great deal of money in it and no driver. The driver has come back. He would like his wages.",
+    "start": "gate",
+    "nodes": {
+      "gate": {
+        "title": "The miners' gate",
+        "lines": [
+          {
+            "narrate": "Pell Haverick's coach stands in the yard behind the miners' gate, where the miners left it, with a tarpaulin over it and two miners sitting on the tarpaulin. Inside, under the seats, there are four iron boxes of guild money. The council has not yet decided whose it is. The council has been asked to decide a number of things this week."
+          },
+          {
+            "narrate": "The driver is a small, wet man in a guild livery coat with the badges cut off. His name is Willem Asker. He walked down the mountain the night of the Mother Bell, when he saw what was happening in the casting hall, and kept walking, and has walked all the way back up again."
+          },
+          {
+            "say": "Willem",
+            "text": "Four months. He owes me four months. Forty-four gold, and two for the horse's shoes, which I paid out of my own pocket at Hollin's Reach, and I've got the receipt."
+          },
+          {
+            "say": "Willem",
+            "text": "I don't want any of his money. I want mine. It's in there. That box, the left one. I watched him put it in."
+          },
+          {
+            "say": "A miner",
+            "text": "Nothing comes out of that coach till the council says. We've been told."
+          },
+          {
+            "say": "nessa",
+            "text": "It's forty gold. In a coach full of— he's standing right there, he's soaking wet."
+          },
+          {
+            "say": "orin",
+            "text": "It's evidence. All of it. Down to the last coin."
+          }
+        ],
+        "choices": [
+          {
+            "id": "iona",
+            "label": "Take Willem to Quartermaster Iona, who keeps the council's books",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "investigation",
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "Iona is in the casting hall with a writing desk across her knees, cataloguing Pell Haverick. She listens to Willem without interrupting, which is rare, and then holds out her hand for the receipt for the horse's shoes, which is rarer."
+                },
+                {
+                  "say": "Iona",
+                  "text": "Hollin's Reach. Two gold. Properly made out. Witnessed. You'd be amazed how few people get receipts."
+                },
+                {
+                  "say": "Willem",
+                  "text": "My mother said always get a receipt."
+                },
+                {
+                  "say": "Iona",
+                  "text": "Your mother was a remarkable woman."
+                },
+                {
+                  "narrate": "She pays him from the council's purse, forty-six gold, against Haverick's account, and writes it in the ledger, and writes Willem Asker a receipt for his receipt. Then she pays you a finder's fee, because, she says, the council should get into the habit of paying people who bring it its problems."
+                },
+                {
+                  "say": "Iona",
+                  "text": "Noted."
+                }
+              ],
+              "setFlags": {
+                "job:coach-iona": true
+              },
+              "approval": {
+                "orin": 1,
+                "maren": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Iona",
+                  "text": "Claims against Haverick's estate go on the list. The list is long. The council hears it in the spring."
+                },
+                {
+                  "say": "Willem",
+                  "text": "The spring."
+                },
+                {
+                  "narrate": "Iona looks at him for a moment longer than she needs to. Then she takes two gold out of her own purse, puts them on top of his receipt, and writes in the ledger: Horse's shoes, paid, in advance of the estate. Q.I."
+                },
+                {
+                  "say": "Iona",
+                  "text": "The rest in spring. I'll find you. I find everybody."
+                }
+              ],
+              "setFlags": {
+                "job:coach-listed": true
+              }
+            }
+          },
+          {
+            "id": "own",
+            "label": "Pay him the forty-six gold out of your own purse",
+            "lines": [
+              {
+                "say": "Willem",
+                "text": "I can't take that. That's not his money, that's yours."
+              },
+              {
+                "narrate": "He takes it, in the end, because it is raining and he has walked a long way. He shakes your hand with both of his, and then goes over to the miners on the coach and tells them the receipt for the horse's shoes is theirs to keep, for the council, as evidence."
+              },
+              {
+                "say": "maren",
+                "text": "He'll tell people about this for the rest of his life."
+              },
+              {
+                "say": "orin",
+                "text": "Good. Better that than the other story.",
+                "when": {
+                  "party": "maren"
+                }
+              }
+            ],
+            "gold": -46,
+            "setFlags": {
+              "job:coach-paid": true
+            },
+            "approval": {
+              "maren": 1
+            }
+          },
+          {
+            "id": "box",
+            "label": "Open the left box and count out what he's owed",
+            "lines": [
+              {
+                "narrate": "The miners on the tarpaulin look at each other, and then at you, and then they get off. Nobody stops you. That is the trouble with having stopped the Mother Bell: people have got used to you deciding things."
+              },
+              {
+                "narrate": "You count out forty-six gold from Pell Haverick's left-hand box, exactly, and close the lid. Willem takes it with both hands."
+              },
+              {
+                "say": "nessa",
+                "text": "There. Done. Was that so hard?"
+              },
+              {
+                "say": "orin",
+                "text": "Write it down. Every coin. The council will ask, and when they do, we tell them."
+              },
+              {
+                "say": "maren",
+                "text": "Elske would have done exactly the same, you know. For exactly the same reasons."
+              }
+            ],
+            "setFlags": {
+              "job:coach-box": true
+            },
+            "approval": {
+              "nessa": 1,
+              "orin": -1,
+              "maren": -1
+            }
+          }
+        ]
+      }
+    }
+  }
+}

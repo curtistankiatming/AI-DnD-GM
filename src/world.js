@@ -1,13 +1,14 @@
 "use strict";
 const { ITEMS, COMPANIONS, STORY_NODES, CLASSES, ENCOUNTERS, ENEMIES }=require('./content');
-const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS }=require('./expansion');
+const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS, SIDE_JOBS }=require('./expansion');
+const Away=require('./away');
 const P=require('./progression');
 const Director=require('./director');
 const Book=require('./book');
 const XP=require('./xp');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
-const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize']);
+const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job']);
 function init(state){
   const w=state.world ||= {};
   w.day=Number.isInteger(w.day)&&w.day>0?w.day:1;
@@ -20,6 +21,8 @@ function init(state){
   w.storage=G.inventory(w.storage||[]);
   w.onExpedition=Boolean(w.onExpedition);w.activeQuest=w.activeQuest||null;
   w.setbacks=Number(w.setbacks||0);
+  w.jobs=w.jobs&&typeof w.jobs==='object'?w.jobs:{};w.jobProgress=w.jobProgress&&typeof w.jobProgress==='object'?w.jobProgress:{};
+  Away.ensure(state);
   for(const id of w.unlockedTowns)ensureStock(state,id);
   for(const member of state.party){G.initCompanion(state,member);P.levelCompanion(member,state.player.level);G.derive(member);}
   P.ensure(state.player);
@@ -103,6 +106,30 @@ function completeQuest(state,id,events,api){
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
+  // A written chapter settles each companion's approval for it (src/away.js).
+  if(QUESTS[id]&&!q.generated)Away.chapterDone(state,id);
+  return true;
+}
+// Side jobs (src/data/side-jobs.json): offered in their town while their
+// chapter window is open. A job pays about 12% of a level, never past the
+// level the next chapter will take the hero to (Book.capJobXp), so the story
+// still reaches level 20 at the Second Oath.
+const JOB_SHARE=0.12;
+function jobOpen(state,job){return Boolean(job&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
+function jobXp(job){const L=Math.max(2,job.level);return Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));}
+function completeJob(state,id,events,api,reward){
+  const job=SIDE_JOBS[id],w=state.world;if(!job||w.jobs[id])return false;
+  const gold=Math.max(0,Number.isFinite(reward)?reward:job.gold||0);
+  w.jobs[id]={day:w.day,gold};delete w.jobProgress[id];w.day+=1;
+  state.story.flags[`job:${id}`]=true;
+  if(gold)state.player.gold+=gold;
+  // The written chapters leave only a little XP to spare before level 20 must
+  // wait for the Second Oath; it is shared out over the jobs still to come, so
+  // every job pays some and the first ones taken do not use it all.
+  const left=Object.values(SIDE_JOBS).filter(j=>!w.jobs[j.id]&&!(j.until&&completed(state,j.until))).length+1;
+  const full=jobXp(job),xp=Math.min(full,Math.floor(Book.jobRoom(state)/left));
+  if(xp)api.awardXp(state,xp,events,`Side job: ${job.name}`);
+  emit(events,`Side job done: ${job.name}.${gold?` Paid ${gold} gold.`:''}${xp<full?' XP is capped: the written chapters still to come will level you, so the job pays its gold and only a little XP.':''}`,'reward','good');
   return true;
 }
 function longRest(state,premium,events){
@@ -249,6 +276,14 @@ function handle(state,action,rng,events,api){
   }
   // The remaining services require a real settlement, not a remotely opened menu.
   const t=town(state);if(!t)return fail(events,'That service is available in a town, not on an expedition.');
+  if(action.type==='side-job'){
+    const job=SIDE_JOBS[String(action.jobId||'')];
+    if(!job||!jobOpen(state,job))return fail(events,w.jobs[action.jobId]?'That job is already done.':'That job is not on offer now.');
+    if(t.id!==job.town)return fail(events,`Travel to ${TOWNS[job.town].name} to take this job.`);
+    const node=w.jobProgress[job.id]&&STORY_NODES[w.jobProgress[job.id]]?w.jobProgress[job.id]:`job-${job.id}-${job.start}`;
+    api.enterNode(state,node,events);
+    return arrive(state,events,`Side job: ${job.name}.`);
+  }
   if(action.type==='town-service'){
     if(action.serviceId==='civic-rest')return longRest(state,false,events);
     if(action.serviceId==='inn')return longRest(state,true,events);
@@ -301,7 +336,7 @@ function handle(state,action,rng,events,api){
     return emit(events,`${store?'Stored':'Retrieved'} one ${item.name}. Charges are preserved; town storage is shared across discovered settlements.`,'item');
   }
   if(action.type==='recruit'){
-    if(state.party.some(m=>m.id==='nessa')||state.player.level<3)return fail(events,'No recruit is currently available.');
+    if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3)return fail(events,'No recruit is currently available.');
     api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
     return emit(events,'Nessa Reed joins through the roadwardens’ guild. She brings her equipment and shares the party’s level; no recruitment fee is required.','party','good');
   }
@@ -363,12 +398,15 @@ function view(state){
     storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:ITEMS[e.itemId].purpose})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
     quests:questCards,preparation:prep,director:Director.view(state),
+    sideJobs:Object.values(SIDE_JOBS).filter(j=>jobOpen(state,j)).map(j=>({id:j.id,name:j.name,brief:j.brief,giver:j.giver,town:j.town,townName:TOWNS[j.town].name,level:j.level,reward:{gold:j.gold,xp:jobXp(j)},started:Boolean(w.jobProgress[j.id]),canStart:Boolean(t&&t.id===j.town&&!state.combat?.active)})),
+    jobsDone:Object.keys(w.jobs).filter(id=>SIDE_JOBS[id]).map(id=>({id,name:SIDE_JOBS[id].name})),
+    away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
     bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:Book.CHAPTERS.every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
-    canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa'),
+    canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,activeMerchant,handle,view,completeQuest,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={init,town,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

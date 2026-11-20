@@ -130,3 +130,14 @@ test('static build is self-contained, blocks networking, and embeds source ident
   assert.match(fs.readFileSync(path.join(out, 'SHA256SUMS.txt'), 'utf8'), /briarwatch-playtest\.html/);
   assert.equal(fs.readFileSync(path.join(out, 'index.html'), 'utf8'), fs.readFileSync(path.join(out, 'briarwatch-playtest.html'), 'utf8'));
 });
+
+test('the browser build bundles every module its sources require', () => {
+  const { SOURCES } = require('../scripts/build-public');
+  for (const id of SOURCES) {
+    const text = fs.readFileSync(path.join(__dirname, '..', 'src', `${id}.js`), 'utf8');
+    for (const [, dep] of text.matchAll(/require\('\.\/([^']+)'\)/g)) {
+      if (dep.startsWith('data/')) continue;
+      assert.ok(SOURCES.includes(dep), `src/${id}.js needs ./${dep}, which the browser build leaves out`);
+    }
+  }
+});
