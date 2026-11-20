@@ -4,6 +4,22 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Story self-review: lines that assumed a choice you didn't make
+
+- Without Nessa in the party, the Highpass signal log is read with the
+  station's codebook, and Wren at Cinder Fold greets you rather than her.
+- Aster Vey only thanks you for freeing her if you broke Sable's rite.
+- After a fight at the council chairs, nobody claims the council agreed.
+- At the South Road camp, Hal names whoever actually paid for Fenmere
+  (shared cost, the guild loan, or your own fee).
+- After Hollin's Reach, Orin asks about the way you actually ended the
+  memory (speaking up, climbing the tower, or fighting through).
+- Brannagh talks about getting the lower village back if the council
+  promised it. On the recall night, a Hal who joined the guild takes off
+  her guild coat instead of riding up with her company.
+- Orin's Ashford reflection, if turned in after Book Two, is told as a
+  memory from months before.
+
 ## Fixes from the fifth Codex playtest (a fresh bard, level 1 to 21)
 
 - At the tollhouse, a hero who skipped the investigation is no longer

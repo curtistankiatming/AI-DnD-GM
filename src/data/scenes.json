@@ -285,7 +285,9 @@
             "label": "“Say the rest of it, Orin.”",
             "lines": [
               { "say": "orin", "text": "I left you out here. Not on purpose. That's no excuse." },
-              { "say": "Hal", "text": "Stoneward. You came. Late, with a council and a goat-woman's money. But you came." },
+              { "say": "Hal", "text": "Stoneward. You came. Late, with a council and a goat-woman's money. But you came.", "when": { "flag": "b2_cost_shared" } },
+              { "say": "Hal", "text": "Stoneward. You came. Late, with a council and a lamp-seller's loan. But you came.", "when": { "flag": "b2_cost_loan" } },
+              { "say": "Hal", "text": "Stoneward. You came. Late, and with your friend's own fee in the first cart, I hear. But you came.", "when": { "flag": "b2_cost_party" } },
               { "narrate": "Hal goes off to check on the sentries, who don't need checking on. Orin stays by the fire and, for the first time since Briarwatch, looks like a man who is sitting down rather than waiting to stand up." }
             ],
             "approval": { "orin": 1 }
@@ -442,7 +444,9 @@
           { "narrate": "Nobody has made supper. Maren sits with her hands in her lap, which you have never seen her do; there is always something in them. Orin is at the window, looking at the forge-glow on the mountain, which is the wrong colour to be a fire and still looks like one." },
           { "say": "maren", "text": "Eleven years she's carried that room. On her own." },
           { "say": "orin", "text": "Not on her own. She built a machine to carry it for her." },
-          { "say": "orin", "text": "In the memory. When you stood up. Were you sure?" }
+          { "say": "orin", "text": "In the memory. When you stood up. Were you sure?", "when": { "flag": "method:hollin", "is": "peace" } },
+          { "say": "orin", "text": "In the memory. When you went up that tower into the fire. Were you sure?", "when": { "flag": "method:hollin", "is": "objective" } },
+          { "say": "orin", "text": "In the memory. When it all went to fire and you kept going anyway. Were you sure?", "when": { "flag": "method:hollin", "is": "force" } }
         ],
         "choices": [
           {
