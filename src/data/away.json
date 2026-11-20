@@ -1,0 +1,191 @@
+{
+  "_note": "Companions walking out (see src/away.js and docs/STORY-BIBLE.md). In Book Two, a companion whose approval falls by 2 or more over one chapter (counting its side jobs and camp scene) leaves after it for the next chapter ('leave'), and comes back when that chapter is done ('back'). If the next chapter needs them (quests.json 'needs'), they stay and say so instead ('stay'); the flag away:stay-<id> holds that chapter's id for the lines. Every choice here ends at the town the party is in. Lines spoken by a companion who is not in the party are skipped, so a line answering one needs a 'when'.",
+  "orin": {
+    "leave": {
+      "title": "Orin, at the gate",
+      "lines": [
+        {"narrate": "Orin is waiting by the gate in the morning with his pack on. That is how you know, before he says anything. He has tied it for a long march, with the knot he says is the only one worth using."},
+        {"say": "orin", "text": "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it."},
+        {"say": "orin", "text": "You've been making choices I'd have argued with. I didn't argue. I stood behind you and held the door, the way I do. That's on me, not you. But I can't keep standing behind things I'd have said no to. That's how I ended up leaving people on a road once."},
+        {"say": "orin", "text": "I'm not leaving. I'm going away to think. It's different. I'll be back when the next thing's done."},
+        {"say": "maren", "text": "Orin Stoneward. Are you sulking?"},
+        {"say": "orin", "text": "I'm walking. Sulking's sitting down.", "when": {"party": "maren"}},
+        {"say": "nessa", "text": "You're going now? Who's going to carry the—"},
+        {"say": "orin", "text": "You are. Lift with your knees.", "when": {"party": "nessa"}}
+      ],
+      "choices": [
+        {"id": "let", "label": "Let him go", "lines": [
+          {"say": "orin", "text": "I'll find you. It's not hard. Follow the arguing."},
+          {"narrate": "He goes out through the gate and does not look back. At the bend in the road he stops to re-tie a strap that did not need it. Then he is gone."}
+        ]},
+        {"id": "ask", "label": "Ask him to stay", "lines": [
+          {"say": "orin", "text": "No. Ask me again after. If you still want to."},
+          {"narrate": "He goes out through the gate and does not look back. At the bend in the road he stops to re-tie a strap that did not need it. Then he is gone."}
+        ]}
+      ]
+    },
+    "stay": {
+      "title": "Orin, before breakfast",
+      "lines": [
+        {"narrate": "Orin finds you before breakfast. He has his pack with him, and he has tied it for a long march."},
+        {"say": "orin", "text": "I was going to walk for a while. I've been standing behind choices I'd have argued with, and I don't like what that makes me."},
+        {"say": "orin", "text": "But it's Kell's Bridge next. If it's who I think it is on that bridge, I'm the one at the front. So I'm staying. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "southroad"}},
+        {"say": "orin", "text": "But it's the Mother Bell next, and there'll be a door to hold. I don't walk away from doors. After, we talk. If there's an after.", "when": {"flag": "away:stay-orin", "is": "motherbell"}},
+        {"say": "orin", "text": "But they're deciding about Elske next, and I'll stand in that hall whatever I think of you this week. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "oath"}},
+        {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}
+      ],
+      "choices": [
+        {"id": "after", "label": "“After, then.”", "lines": [
+          {"say": "orin", "text": "After."}
+        ]}
+      ]
+    },
+    "back": {
+      "title": "Orin comes back",
+      "lines": [
+        {"narrate": "Orin comes back the way he left: on foot, with his pack, at an hour nobody expected. He is browner than he was, and there is a new graze across his knuckles that he says came from a crate."},
+        {"say": "orin", "text": "Loaded carts for a fortnight. Nobody asked me what I thought about anything. It was very restful for about three days."},
+        {"say": "orin", "text": "Then a carter asked me which road was safer. I told him, and he took the other one anyway, and I was angry all afternoon. Not because he was wrong. Because he never asked me why."},
+        {"say": "orin", "text": "So. I'm asking. Why?"}
+      ],
+      "choices": [
+        {"id": "explain", "label": "Tell him why you chose what you did", "lines": [
+          {"narrate": "You tell him. All of it, the reasons you had and the ones you made up afterwards. He listens the way he listens to a plan: all the way through, without interrupting, looking for the weak joint."},
+          {"say": "orin", "text": "I'd still have argued."},
+          {"say": "orin", "text": "But I'd have been arguing with a reason. Not a whim. I can do that. That's most of what I'm for."}
+        ], "approval": {"orin": 1}},
+        {"id": "wrong", "label": "Tell him he was right, and you were wrong", "lines": [
+          {"say": "orin", "text": "Not all of it."},
+          {"say": "orin", "text": "Some. Enough to walk. Not enough to stay gone."},
+          {"narrate": "He holds out his hand. You shake it. He has a grip like a door being shut, firmly, on a draught."}
+        ], "approval": {"orin": 1}},
+        {"id": "again", "label": "Tell him you'd do it all again", "lines": [
+          {"say": "orin", "text": "I know. That's why I came back."},
+          {"say": "orin", "text": "Somebody has to say the uncomfortable thing when you do. Might as well be someone who can't lie about it."}
+        ]}
+      ]
+    }
+  },
+  "maren": {
+    "leave": {
+      "title": "Maren, after supper",
+      "lines": [
+        {"narrate": "Maren finds you after supper, when the others have gone up. She has her shrine-satchel over her shoulder and her list in her hand, and she sits down across the table from you as if for cards."},
+        {"say": "maren", "text": "I'm going to go and sit with someone who doesn't need anything decided, for a while. There's always a shrine. There's always someone in it who would like company and no advice."},
+        {"say": "maren", "text": "I hear what people mean, you know. Not only what they say. Lately I keep hearing you mean well, and then do things I can't stand beside. I don't think you're lying to me. I think you may be lying to yourself, a little. I can't hear that from this close."},
+        {"say": "maren", "text": "I'll come back. I always come back. I just need to be somewhere quiet enough to hear myself think."},
+        {"say": "nessa", "text": "You're going? Who's going to— Maren. Who's going to fuss?"},
+        {"say": "maren", "text": "You'll have to do it yourself, Nessa. You'll be appalling at it.", "when": {"party": "nessa"}},
+        {"say": "orin", "text": "Take the good blanket."},
+        {"say": "maren", "text": "I already have it, Orin. I always have it.", "when": {"party": "orin"}}
+      ],
+      "choices": [
+        {"id": "let", "label": "Let her go", "lines": [
+          {"say": "maren", "text": "Thank you. That was the right answer."},
+          {"narrate": "She leaves before morning. On the table there is the stew-pot, scoured clean, and a note in her small careful hand: Back soon. Don't use this."}
+        ]},
+        {"id": "ask", "label": "Ask her what you should have done", "lines": [
+          {"say": "maren", "text": "That isn't how it works. If I tell you, you'll do it for me, and then I'm back where I started, only worse, because I'll have been right."},
+          {"narrate": "She leaves before morning. On the table there is the stew-pot, scoured clean, and a note in her small careful hand: Back soon. Don't use this."}
+        ]}
+      ]
+    },
+    "stay": {
+      "title": "Maren, after supper",
+      "lines": [
+        {"narrate": "Maren finds you after supper with her satchel packed. She sits down across the table from you, and then, after a while, she takes the satchel off her shoulder and puts it on the floor."},
+        {"say": "maren", "text": "I was going to go and sit in a shrine somewhere for a while. I keep hearing you mean well and do things I can't stand beside."},
+        {"say": "maren", "text": "But Anwen's note is in my pocket, and I've carried her name for six years. I'm not going anywhere tonight. After the Sallows, we'll talk.", "when": {"flag": "away:stay-maren", "is": "keeper"}},
+        {"say": "maren", "text": "But Elske is riding for the Mother Bell, and somebody who can hear her should be in that hall. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "motherbell"}},
+        {"say": "maren", "text": "But they're deciding what to do with Elske, and I want to hear what she says. And what you say. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "oath"}}
+      ],
+      "choices": [
+        {"id": "after", "label": "“After, then.”", "lines": [
+          {"say": "maren", "text": "After. I'll hold you to it. I keep lists, you know."}
+        ]}
+      ]
+    },
+    "back": {
+      "title": "Maren comes back",
+      "lines": [
+        {"narrate": "Maren comes back on a market day, with a basket of eggs somebody gave her and a bandage on her hand that she says she gave to somebody else first."},
+        {"say": "maren", "text": "I sat in a shrine and listened to people. Nobody asked me to fix anything. A woman told me about her husband's feet for an hour. It was the most restful hour of my life."},
+        {"say": "maren", "text": "I've decided I'm not your conscience. I'm your friend. They aren't the same thing, and I'd been doing the wrong one."},
+        {"say": "maren", "text": "So, as your friend. Don't tell me why. Tell me how it felt."}
+      ],
+      "choices": [
+        {"id": "honest", "label": "Tell her honestly how it felt", "lines": [
+          {"narrate": "It takes longer than you expect. She does not interrupt once."},
+          {"say": "maren", "text": "Thank you. You meant all of that. I could hear it. That's enough to go on with."}
+        ], "approval": {"maren": 1}},
+        {"id": "fine", "label": "Say it was fine", "lines": [
+          {"say": "maren", "text": "That isn't true."},
+          {"say": "maren", "text": "But you'd like it to be, and I can work with that. I've worked with worse. I've worked with Orin."}
+        ]},
+        {"id": "missed", "label": "Tell her you missed her", "lines": [
+          {"say": "maren", "text": "I know. I could hear it from the door."},
+          {"narrate": "She puts the eggs on the table and takes the stew-pot down from the shelf, and nobody, for once, says a word against it."}
+        ], "approval": {"maren": 1}}
+      ]
+    }
+  },
+  "nessa": {
+    "leave": {
+      "title": "Nessa's letter",
+      "lines": [
+        {"narrate": "Nessa does not say goodbye. In the morning her bedroll is gone, and so is Biscuit, and there is a letter on your pack in her handwriting, which runs uphill."},
+        {"narrate": "It is finished. That is how you know she means it."},
+        {"narrate": "'Gone out on the roads for a bit. Don't come after me, I'm faster than you. You keep making people wait. I know you've got reasons. You've always got reasons. But I've been the one hanging upside down in a snare while people talked about the best way to cut me down, and I'm not doing that to anybody else. I need to be somewhere for a while where if someone needs help I can just go. Back after the next thing. Took Biscuit. He agreed. N.'"},
+        {"narrate": "'P.S. This one I'm leaving where you'll find it. So you know.'"},
+        {"say": "maren", "text": "She finished one."},
+        {"say": "orin", "text": "She'll be back. She left the good rope.", "when": {"party": "maren"}}
+      ],
+      "choices": [
+        {"id": "keep", "label": "Fold the letter and keep it", "lines": [
+          {"narrate": "You fold it along the creases she made and put it somewhere safe. It is the first letter Nessa Reed has ever sent anyone."}
+        ]},
+        {"id": "gate", "label": "Go to the gate anyway", "lines": [
+          {"narrate": "The road is empty for a mile in both directions. Whoever taught Nessa to leave without being seen did a very good job of it. You stand there long enough to feel foolish, and then a little longer."}
+        ]}
+      ]
+    },
+    "stay": {
+      "title": "Nessa, on the step",
+      "lines": [
+        {"narrate": "Nessa is sitting on the step with a letter in her lap that she has, for once, finished."},
+        {"say": "nessa", "text": "I was going to go. Out on the roads for a bit. You keep making people wait, and I keep being the one who— never mind. I wrote it down. It's a very good letter."},
+        {"say": "nessa", "text": "But Wren's at Cinder Fold. Wren. So I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "cinderfold"}},
+        {"say": "nessa", "text": "But it's the Mother Bell. Everyone's going to be there. I'm not missing that to sulk on a road.", "when": {"flag": "away:stay-nessa", "is": "motherbell"}},
+        {"say": "nessa", "text": "But they're deciding about Elske, and I want to see your face when you answer her.", "when": {"flag": "away:stay-nessa", "is": "oath"}},
+        {"narrate": "She folds the letter and puts it in her pocket. The one for later."}
+      ],
+      "choices": [
+        {"id": "later", "label": "“Later, then.”", "lines": [
+          {"say": "nessa", "text": "Later. Don't read it. I'll know."}
+        ]}
+      ]
+    },
+    "back": {
+      "title": "Nessa comes back",
+      "lines": [
+        {"narrate": "Nessa comes back over a wall rather than through a gate, because that is how she does everything, with Biscuit behind her and a fresh scratch on her cheek and a great deal to say."},
+        {"say": "nessa", "text": "I found a carter in a ditch. And a lost goat, not Brannagh's, a different goat. And two kids who'd run off from a farm. And I took them all back, not in that order. Nobody made me wait for anything. It was brilliant."},
+        {"say": "nessa", "text": "And then I kept turning round to tell someone about it, and there wasn't anyone. Which was stupid. So."},
+        {"say": "nessa", "text": "Did you read my letter? Don't answer that."}
+      ],
+      "choices": [
+        {"id": "read", "label": "“I read it. You were right about some of it.”", "lines": [
+          {"say": "nessa", "text": "Some of it. I'll take some. Some's loads."}
+        ], "approval": {"nessa": 1}},
+        {"id": "dog", "label": "Ask Biscuit how he got on", "lines": [
+          {"say": "nessa", "text": "He says it was very boring without you, and the goat was rude to him, and he would like a crust."},
+          {"narrate": "Biscuit, consulted, does not disagree."}
+        ], "approval": {"nessa": 1}},
+        {"id": "wait", "label": "“Next time, wait for me.”", "lines": [
+          {"say": "nessa", "text": "Ha. Good one. No."},
+          {"say": "nessa", "text": "...Maybe. If you're quick."}
+        ]}
+      ]
+    }
+  }
+}

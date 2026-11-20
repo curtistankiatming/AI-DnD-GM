@@ -4,6 +4,25 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Side jobs in every Book Two town, and companions who walk out
+
+- Eight short side jobs, two in each Book Two town (Highpass, Briarwatch,
+  Merrowgate, Cinder Fold), each offered while one stretch of the story is
+  open. They are on the town page and in `scripts/play.js town`. Each is a
+  small situation with two or three ways through, some with a roll, and the
+  companions react. They pay gold and a little XP, never so much that a later
+  chapter would carry the hero two levels: level 20 still comes with the
+  Second Oath. A job left half done picks up where it was.
+- In Book Two, a companion whose approval falls by 2 or more over one chapter
+  walks out after it, misses the next chapter and comes back when it is done,
+  each with a written scene. They never leave just before their own chapter
+  or the last two; they stay and say so. Some Book Two choices now cost the
+  approval of the companion they cut against.
+- Scenes a companion can now miss read right without them (Fenmere, the
+  South Road, the Harbour Bell, the Last Name on the List, Hollin's Reach,
+  the Vote). A camp scene skipped because someone is missing no longer drops
+  the lines of the choice before it.
+
 ## Story self-review: lines that assumed a choice you didn't make
 
 - Without Nessa in the party, the Highpass signal log is read with the

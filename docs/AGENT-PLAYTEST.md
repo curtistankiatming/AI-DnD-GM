@@ -46,6 +46,15 @@ written by the AI storyteller. To test that handoff without an AI, run
 `node scripts/play.js commission-sample`: it adds the bundled sample adventure
 through the normal game action and marks the save as a fixture.
 
+In Book Two each town also offers two optional **side jobs** for a stretch of
+the story; `town` lists them with the command to take one. A companion who ends
+a Book Two chapter 2 or more approval down **walks out** for the next chapter
+and comes back after it (unless the next chapter is their own, or one of the
+last two). To review a job or a walk-out scene without playing to it:
+`read job-letters-wall`, `read away-maren-leave`. Worth checking in a review:
+whether the story ever assumes a job you didn't take, and whether scenes read
+right while a companion is away.
+
 `jump` makes a **review fixture**: a fresh hero placed at that scene. It is not a
 real playthrough (earlier choices and items are missing), so say so in your
 report whenever you used it.

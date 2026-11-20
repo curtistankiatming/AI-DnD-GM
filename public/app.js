@@ -531,6 +531,16 @@ function renderParty() {
     card.append(head, createElement("p", "party-summary", member.summary), hpLine, meter, conditionRow, controls);
     dom.partyCards.appendChild(card);
   }
+  // A companion who walked out for a chapter (src/away.js).
+  for (const away of view.world?.away || []) {
+    const card = createElement("article", "party-card is-away");
+    const head = createElement("div", "party-card-head");
+    const identity = createElement("div");
+    identity.append(createElement("strong", "", away.name), createElement("span", "", away.role));
+    head.append(identity, createElement("span", "bond-badge", "Away"));
+    card.append(head, createElement("p", "party-summary", `Left the party for a while. Back once ${away.untilName} is done.`));
+    dom.partyCards.appendChild(card);
+  }
 }
 
 function checkSummary(check) {

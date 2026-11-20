@@ -149,6 +149,31 @@ function installScene(scene){
   for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
+// Side jobs (src/data/side-jobs.json): short optional stories taken from a
+// town. Each node is a story node; a choice either moves on ("next") or
+// finishes the job, which pays it (src/world.js completeJob) and goes back to
+// the job's town. Checks use a DC by the job's level. A choice that costs gold
+// needs that much in the purse.
+const SIDE_JOBS=Object.fromEntries(Object.entries(require('./data/side-jobs.json')).filter(([,j])=>j&&j.nodes));
+function installJob(job){
+  const town=TOWNS[job.town];if(!town)throw new Error(`Side job ${job.id} is in unknown town ${job.town}`);
+  for(const id of [job.from,job.until])if(id&&!QUESTS[id])throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
+  const nodeId=key=>`job-${job.id}-${key}`;
+  const dc=10+Math.floor(XP.challenge({level:job.level}).accuracy/2);
+  const ends=o=>({lines:o.lines,...(o.approval?{approval:o.approval}:{}),...(o.setFlags?{setFlags:o.setFlags}:{}),...(Number.isFinite(o.gold)?{gold:o.gold}:{}),
+    ...(o.next?{nextNode:nodeId(o.next)}:{completeJob:job.id,...(Number.isFinite(o.reward)?{jobReward:o.reward}:{}),nextNode:`town-${job.town}`})});
+  for(const [key,raw]of Object.entries(job.nodes)){
+    STORY_NODES[nodeId(key)]={id:nodeId(key),act:`Side job • ${town.name}`,title:raw.title,location:town.name,objective:job.brief,lines:raw.lines,safeRest:true,sideStory:true,sideJob:job.id,
+      choices:raw.choices.map(c=>{
+        const cost=!c.check&&Number.isFinite(c.gold)&&c.gold<0?-c.gold:0;
+        const requires=cost||c.requires?{...(c.requires||{}),...(cost?{gold:cost}:{})}:null;
+        const base={description:c.description||'',once:false,...(requires?{requires}:{})};
+        return c.check?choice(c.id,c.label,{...base,check:{skill:c.check.skill,alternateSkills:c.check.alt||[],dc},success:ends(c.success),failure:ends(c.failure)}):choice(c.id,c.label,{...base,result:ends(c)});
+      })};
+    if(!STORY_NODES[nodeId(job.start)])throw new Error(`Side job ${job.id} has no start node ${job.start}`);
+  }
+}
+for(const job of Object.values(SIDE_JOBS))installJob(job);
 // Any written story node or choice outcome may use "lines" (the same format as
 // scenes) instead of plain text. They compile to structured dialogue plus the
 // same text, so offline narration, saves and the AI narrator are unchanged.
@@ -176,4 +201,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,UPGRADE_BASES,installQuest,dialogueText,liveLines};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines};

@@ -108,6 +108,22 @@ function xpRoom(state) {
   return Math.max(0, ceiling - Math.max(0, Number(state.player?.xp) || 0));
 }
 const capXp = (state, amount) => Math.max(0, Math.min(Math.floor(Number(amount) || 0), xpRoom(state)));
+// Written side jobs are stricter: after each chapter still to come, with its
+// own reward, the hero must be no further than the level after that chapter,
+// never two levels on. So the story keeps its pace and level 20 still comes
+// with the Second Oath, however many jobs were done.
+function jobRoom(state) {
+  if (!chapter(state)) return Infinity;
+  const xp = Math.max(0, Number(state.player?.xp) || 0);
+  let paid = 0, room = xp + xpRoom(state);
+  for (const q of CHAPTERS) {
+    if (done(state, q.id)) continue;
+    paid += Math.max(0, Number(q.xp) || 0);
+    room = Math.min(room, (P.XP_NEXT[(Number(q.level) || 1) + 1] || Infinity) - 1 - paid);
+  }
+  return Math.max(0, room - xp);
+}
+const capJobXp = (state, amount) => Math.max(0, Math.min(Math.floor(Number(amount) || 0), jobRoom(state)));
 const behind = state => { const cap = levelCap(state); return cap !== null && (state.player?.level || 1) < cap; };
 
 // Turns the player has spent in this scene talking or improvising rather than
@@ -151,4 +167,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { FINISHED, ENDING, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { FINISHED, ENDING, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

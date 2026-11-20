@@ -68,6 +68,23 @@ other most in a fight. Approval of the hero unlocks extra conversation scenes.
 companion walks out for one chapter and can be won back. A permanent parting is
 possible only in the epilogue.
 
+How it works (built 20 November 2026; Curtis chose the rule): by Book Two every
+companion is usually at the top of the approval scale, so "too low" means a bad
+chapter, not a low total. In Book Two, a companion whose approval falls by 2 or
+more over one chapter (counting its side jobs and camp scene, on balance) walks
+out after it with a scene in their own voice: Orin goes to load the relief
+carts, Maren goes to sit in a shrine, Nessa leaves a letter she actually
+finished and takes Biscuit. They miss the next chapter and come back when it is
+done, with a scene where what the hero says matters. A companion never leaves
+just before their own chapter (Orin before the Long Road South, Maren before the
+Last Name on the List, Nessa before Cinder Fold) or before the last two
+chapters; they stay and say why. Some Book Two choices that cut against what a
+companion cares about now cost approval: Orin minds people left behind,
+promises nobody can keep and unaccountable money; Maren minds hidden truths,
+cruelty and choices taken from people; Nessa minds people made to wait while
+others suffer. Every scene they can miss is written to read right without
+them.
+
 **The hero** is a newcomer Briarwatch took in. What they want is up to the
 player, but the story keeps asking: who are you doing this for? Their answer
 becomes the Second Oath at level 20.
@@ -156,9 +173,29 @@ of independent wards or a charter (independent) and the quiet district choice
 **Side stories:** two short jobs per hub, grounded in the main story, and one
 companion camp scene per level.
 
+The side jobs (built 20 November 2026, `src/data/side-jobs.json`), each offered
+in its town while one stretch of the story is open:
+
+| Town | Job | When | What it is |
+| --- | --- | --- | --- |
+| Highpass | A Room for Ashford | before the Chair Problem | Iona has the lease to a store-room a refugee family lives in. |
+| Highpass | The Letter Wall | until Fenmere | A boy pins up a note for his mother, who crewed the echo-stones and is too ashamed to be found. |
+| Briarwatch | Pim's Night Bell | until the Long Road South | Pim is ringing the practice bell every hour of the night, in case. |
+| Merrowgate | After Dark | until the Last Name on the List | A fishwife is jailed for complaining about the oil price after dark. |
+| Merrowgate | The Name on the Boat | until Hollin's Reach | The old fisherman from the hospice wants his wife's name painted on his boat. |
+| Cinder Fold | Fourteen Votes and a Tie | until Cinder Fold | The miners' committee has tied fourteen times on opening the cold galleries. |
+| Briarwatch | The Midwinter Well | until the Vote | Old Briarwatch and the new houses argue over who pays for a new well. |
+| Cinder Fold | The Driver's Wages | until the Second Oath | Haverick's coach driver wants four months' wages out of a coach full of evidence. |
+
+The main story never assumes a job was done; two chapters mention one if it
+was (the shared room at the Chair Problem, Ada Rusk at Kell's Bridge).
+
 **XP, levels 11 to 20:** a chapter pays about one level (105% of the level it
 is written for), as Book One's chapters do, so the free story reaches level 20
-at the end of Book Two without grinding. A side job pays about 12%. Written
+at the end of Book Two without grinding. A side job pays gold, and XP of up to
+12% of a level; in practice the chapters leave only about 1,000 XP to spare
+before level 20 must wait for the Second Oath, so that spare XP is shared over
+the jobs (about 130 each) and the rest of a job's reward is gold. Written
 chapters' battles pay no extra XP, as in Book One. (Changed on 19 November 2026
 from "30% of a level", which would have needed grinding between chapters.)
 

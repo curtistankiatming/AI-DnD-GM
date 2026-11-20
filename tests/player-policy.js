@@ -66,6 +66,8 @@ function chooseAction(v,m={},style='prepared'){
       const upgrade=w.upgrades.find(u=>u.actorId==='player'&&hero.gold>=u.cost+65&&!m[`upgrade:${u.itemId}`]);if(upgrade){m[`upgrade:${upgrade.itemId}`]=true;return done('upgrade',{itemId:upgrade.itemId,actorId:'player'});}
     }
     if(w.pendingBattle||w.activeQuest&&w.activeQuest!=='bell')return done('resume');
+    // A diligent player takes the optional side jobs offered where they are.
+    if(style==='prepared'){const job=(w.sideJobs||[]).find(j=>j.canStart);if(job)return done('side-job',{jobId:job.id});}
     const q=w.quests.find(q=>q.available);
     if(q){if(w.town.id!==q.town)return done('travel-town',{townId:q.town});
       if(style!=='direct'&&!q.briefed&&hero.gold>=5)return done('rumor',{questId:q.id});

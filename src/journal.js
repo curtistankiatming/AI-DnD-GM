@@ -58,6 +58,9 @@ function sync(state){
   if(courier?.rapport)j.facts.push({id:'courier-witness',title:'The ferryman’s testimony',status:'verified',text:'The ferryman agreed to testify that the courier already paid.',source:'Confirmed witness agreement; not an invented confession'});
   if(courier?.resolved)j.completed.push({id:'courier',title:'Ferry courier released',status:'completed',text:'The courier was helped. Its objective reward has already been recorded.'});
   else if(courier)j.leads.push({id:'courier',title:'The detained ferry courier',status:courier.active?'active':'paused',text:'Continue or resume the courier scenario in Briarwatch; its confirmed discoveries persist.'});
+  // A companion away for a chapter (src/away.js) keeps their place in the journal.
+  for(const [id,a] of Object.entries(state.world?.away||{})){const m=a?.member;if(!m)continue;
+    j.relationships.push({id:'companion:'+id,title:safeText(m.name,60),value:Number(m.bond)||0,status:'away',text:'Left the party for a while after a chapter of choices they could not stand behind. Back once the next chapter is done.',source:'Companion walked out'});}
   for(const member of state.party||[]){
     const bond=Number.isFinite(Number(member.bond))?Number(member.bond):0;
     const personal=state.world?.personal?.[member.id],def=PERSONAL[member.id];
