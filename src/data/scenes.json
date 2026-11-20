@@ -656,10 +656,11 @@
       },
       "end": {
         "title": "Briarwatch",
-        "objective": "Your written story is complete. Choose your 2nd job when you reach level 20.",
+        "objective": "Book Two is complete. Choose your 2nd job when you reach level 20.",
         "lines": [
           { "narrate": "The bell sounds once across the wet roofs of Briarwatch, as it did at the end of the first story: not an alarm. An answer. And from far off, too faint to be sure of, other bells answer it, each in its own voice." },
-          { "narrate": "This is the end of the written story of Briarwatch. The roads go on." }
+          { "narrate": "This is the end of the written story of Briarwatch. The roads go on.", "when": { "notAccess": 3 } },
+          { "narrate": "This is the end of Book Two, The Council of Small Voices. The roads go on, and somewhere down them, the old bells are waiting.", "when": { "access": 3 } }
         ],
         "choices": [
           { "id": "home", "label": "Go out into Briarwatch" }

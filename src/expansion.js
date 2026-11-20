@@ -58,7 +58,7 @@ const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.
 function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
 // party, and its optional "when" holds (flag / is, notFlag, anyFlag, party,
-// absent, class, item, notItem, clue, notClue). The written text keeps every line; this picks the ones for this save.
+// absent, class, item, notItem, clue, notClue, access, notAccess). The written text keeps every line; this picks the ones for this save.
 function lineApplies(state, line) {
   const inParty = (id) => state.party.some((member) => member.id === id);
   if (line.speakerId && !inParty(line.speakerId)) return false;
@@ -78,6 +78,10 @@ function lineApplies(state, line) {
   const found = (id) => (state.story.clues || []).includes(id);
   if (w.clue && !found(w.clue)) return false;
   if (w.notClue && found(w.notClue)) return false;
+  // access / notAccess: whether this session may play book N (paid books on
+  // the hosted game). Required here, not at the top: book.js requires this file.
+  if (w.access !== undefined && !require('./book').reads(state, w.access)) return false;
+  if (w.notAccess !== undefined && require('./book').reads(state, w.notAccess)) return false;
   return true;
 }
 function liveLines(state, lines) {

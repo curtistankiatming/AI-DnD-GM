@@ -57,7 +57,7 @@ function charge(state,gold,events){if(!Number.isInteger(gold)||gold<0||state.pla
 function reputation(state,changes){for(const [id,amount]of Object.entries(changes||{}))if(id in state.world.reputation)state.world.reputation[id]=Math.max(-10,Math.min(20,state.world.reputation[id]+Number(amount||0)));}
 function refreshStock(state){for(const id of state.world.unlockedTowns){const stock=ensureStock(state,id);for(const itemId of TOWNS[id].stock)stock[itemId]=maxStock(itemId);}}
 function completed(state,id){return Boolean(state.world.completed[id]);}
-function unlocked(state,q){return Boolean(completed(state,q.unlock)&&state.player.level>=q.level&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
+function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=q.level&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
 }
@@ -402,7 +402,7 @@ function view(state){
     jobsDone:Object.keys(w.jobs).filter(id=>SIDE_JOBS[id]).map(id=>({id,name:SIDE_JOBS[id].name})),
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
-    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:Book.CHAPTERS.every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
+    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
     canRecruit:state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,

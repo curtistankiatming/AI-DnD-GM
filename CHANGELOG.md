@@ -4,6 +4,18 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Paid books on the hosted game (groundwork for Book Three)
+
+- The game now knows which books a session may play. The open-source game
+  plays every book free. The hosted game will open Book Three onward to paid
+  accounts only; the server decides this each request, and a save cannot
+  change it.
+- A free hosted save that finishes Book Two is told where the story goes on
+  and carries straight into Book Three on an upgrade. A save inside a paid
+  book whose account lapses is kept untouched and waits.
+- Book Three, The Names in the Bronze (levels 20 to 30), is on the shelf but
+  hidden until its chapters are written.
+
 ## Side jobs in every Book Two town, and companions who walk out
 
 - Eight short side jobs, two in each Book Two town (Highpass, Briarwatch,
