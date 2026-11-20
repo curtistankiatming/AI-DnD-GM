@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, fixes from the fourth Codex playtest
+
+- If you skip looking into things, a peaceful ending no longer credits you
+  with what you would have found. Briarwatch's vote speech, Ilka's missing
+  verse at Fenmere, and the founders' notes at the Mother Bell each have a
+  version for heroes without the lead. Written lines can now depend on
+  whether a clue was found (`clue` / `notClue`).
+- With the bell-rope locked away, Elske stands down at the foot of the
+  ladder, not beside a rope that is no longer there.
+- The text a story choice passes on (to chat narration) now leaves out
+  lines that don't apply to the save, as the story screen already did.
+- Terminal game: `auto` shows how a fight ended, and `look` during a fight
+  also shows how it started.
+
 ## Book Two, fixes from the third Codex playtest
 
 - At the hearing, if you locked the bell-rope away, the scene now shows the

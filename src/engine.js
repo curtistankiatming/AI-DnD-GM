@@ -610,8 +610,10 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   // exploited for unlimited XP. Only the first resolution of a choice grants
   // progression credit.
   if (firstResolution && !node.questId && !node.townId && !node.defeat && !node.scene) awardXp(state, success ? 14 : 7, events, choice.label);
+  // Written lines are told only where they apply to this save (see liveLines), here as on screen.
+  const outcomeText = outcome?.dialogue ? dialogueText(liveLines(state, outcome.dialogue)) : outcome?.text || "";
   applyOutcome(state, outcome || {}, rng, events);
-  return { ok: true, kind: "story", success, outcomeText: outcome?.text || "" };
+  return { ok: true, kind: "story", success, outcomeText };
 }
 
 function prepareInspiration(state, events) {

@@ -58,7 +58,7 @@ const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.
 function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
 // party, and its optional "when" holds (flag / is, notFlag, anyFlag, party,
-// absent, class, item, notItem). The written text keeps every line; this picks the ones for this save.
+// absent, class, item, notItem, clue, notClue). The written text keeps every line; this picks the ones for this save.
 function lineApplies(state, line) {
   const inParty = (id) => state.party.some((member) => member.id === id);
   if (line.speakerId && !inParty(line.speakerId)) return false;
@@ -74,6 +74,10 @@ function lineApplies(state, line) {
   const carried = (id) => (state.player.inventory || []).some((entry) => entry.itemId === id);
   if (w.item && !carried(w.item)) return false;
   if (w.notItem && carried(w.notItem)) return false;
+  // clue / notClue: whether the hero found a lead (a clue id), so a scene never credits work they skipped.
+  const found = (id) => (state.story.clues || []).includes(id);
+  if (w.clue && !found(w.clue)) return false;
+  if (w.notClue && found(w.notClue)) return false;
   return true;
 }
 function liveLines(state, lines) {

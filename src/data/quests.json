@@ -1843,7 +1843,17 @@
       },
       {
         "say": "Ilka",
-        "text": "I can ring it. I have the verse. I need someone between me and them until I've sung all four."
+        "text": "I can ring it. I have the verse. I need someone between me and them until I've sung all four.",
+        "when": {
+          "clue": "fenmere-evidence"
+        }
+      },
+      {
+        "say": "Ilka",
+        "text": "I can ring it. Three verses of it. The third's gone, and I've asked everyone I could find. I'll sing what I have, and I need someone between me and them while I try.",
+        "when": {
+          "notClue": "fenmere-evidence"
+        }
       },
       {
         "say": "Brannagh",
@@ -1865,7 +1875,16 @@
       ],
       "success": [
         {
-          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. By the third, the twelve-year-old who knew it from her cousin's wedding is leading it, and nobody is ashamed to follow a child."
+          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. By the third, the twelve-year-old who knew it from her cousin's wedding is leading it, and nobody is ashamed to follow a child.",
+          "when": {
+            "clue": "fenmere-evidence"
+          }
+        },
+        {
+          "narrate": "You get them on their feet: three hundred people who have lost their homes, standing in a churchyard in the dark. Ilka starts the first verse alone. By the second the fishermen have it. At the third she stops, and in the silence a girl of twelve at the back, who was at her cousin's wedding in the spring, starts singing it, very quietly. Nobody knew she knew it. By the end of the line the whole churchyard has it, and nobody is ashamed to follow a child.",
+          "when": {
+            "notClue": "fenmere-evidence"
+          }
         },
         {
           "narrate": "The ward takes the song and rings it out, and the white field stops at the churchyard wall. Then, slowly, it goes back down the hill, a yard at a time, like a dog that has been told no."
@@ -3829,7 +3848,16 @@
       ],
       "success": [
         {
-          "narrate": "You climb the bell-tower steps beside Aveline and tell Briarwatch exactly who the carters are and who paid them. Then you ask the carters, loud enough for everyone, how much a vote costs in the Lantern Hall these days."
+          "narrate": "You climb the bell-tower steps beside Aveline and tell Briarwatch exactly who the carters are and who paid them. Then you ask the carters, loud enough for everyone, how much a vote costs in the Lantern Hall these days.",
+          "when": {
+            "clue": "vote-evidence"
+          }
+        },
+        {
+          "narrate": "You climb the bell-tower steps beside Aveline. You don't know who the carters are. You don't need to. You ask Briarwatch to look at them: twelve strangers with no cargo, shouting nothing at a meeting that isn't theirs, on the one night Briarwatch gets to decide something. Then you ask the carters, loud enough for everyone, who is paying for their drinks. Somebody near the front sees the mark stitched on a purse and says it out loud: the Lantern Hall.",
+          "when": {
+            "notClue": "vote-evidence"
+          }
         },
         {
           "narrate": "It turns out that nothing breaks up a paid crowd like being looked at by an unpaid one. The carters leave by the Ashford road. Briarwatch watches them go, and then turns round, and gets on with it."
@@ -4188,7 +4216,19 @@
       ],
       "success": [
         {
-          "narrate": "You do not argue with her. You tell her what the founders wrote: one voice to command, many voices to answer. You remind her of a churchyard in Fenmere and a long room in the Sallows and a hall in Hollin's Reach where seven people finally looked at the window."
+          "narrate": "You do not argue with her. You tell her what the founders wrote: one voice to command, many voices to answer.",
+          "when": {
+            "clue": "motherbell-evidence"
+          }
+        },
+        {
+          "narrate": "You do not argue with her. You never found what the founders wrote about this bell, and you do not need to: you have heard what it did to every other ward in the land.",
+          "when": {
+            "notClue": "motherbell-evidence"
+          }
+        },
+        {
+          "narrate": "You remind her of a churchyard in Fenmere and a long room in the Sallows and a hall in Hollin's Reach where seven people finally looked at the window."
         },
         {
           "narrate": "Then you put your hands on the rope beside hers. One by one, your companions do the same. Wren limps in from the gallery and takes a turn. Aster Vey's voice comes up out of the cold little bell in your pack."
@@ -4641,7 +4681,19 @@
           "narrate": "You tell Elske the one thing nobody has said to her in eleven years. That the room in Hollin's Reach was not her fault. That seven people had the numbers wrong, not one. That the answer to a slow council is not a fast person but a council that has learned to look at the window. And that you would like her in this one, looking at it with them."
         },
         {
-          "narrate": "Elske stands by the rope for a long time. Then she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
+          "narrate": "Elske stands by the rope for a long time.",
+          "when": {
+            "notFlag": "mother_silenced"
+          }
+        },
+        {
+          "narrate": "Elske stands at the foot of the ladder for a long time, looking up at the beam, and at the hammer in the miner's hands.",
+          "when": {
+            "flag": "mother_silenced"
+          }
+        },
+        {
+          "narrate": "Then she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
         },
         {
           "say": "Elske",

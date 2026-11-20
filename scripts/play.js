@@ -174,7 +174,10 @@ if (command === "new") {
   line(`New game saved to ${savePath}. Class: ${classId}.\n`);
   printScene(state, E.buildView(state));
 } else if (command === "look") {
-  const file = load(); printScene(file.state, E.buildView(file.state));
+  const file = load();
+  // Mid-fight, "look" also tells how the fight started (the crisis it came from).
+  if (file.state.combat?.active && file.state.combat.intro) { line("-- How this fight started --"); wrap(file.state.combat.intro); line(""); }
+  printScene(file.state, E.buildView(file.state));
 } else if (command === "choose") {
   const file = load(); const choices = E.buildView(file.state).scene.choices || [];
   const pick = args[0]; if (!pick) fail("Say which choice: a number or an id.");
@@ -202,6 +205,8 @@ if (command === "new") {
     if (!action) break;
     const r = act(file, action);
     line(`[auto] ${JSON.stringify(action)}${r.ok ? "" : " (refused)"}`);
+    // The step that ends a fight shows what it achieved (the written objective result).
+    if (r.ok && before.combat?.active && !file.state.combat?.active) for (const e of r.events) if (e.text) line(`  · ${e.text}`);
     if (!r.ok) break;
   }
   file.policy = memory; save(file); line(""); printScene(file.state, E.buildView(file.state), null, wasFighting);
