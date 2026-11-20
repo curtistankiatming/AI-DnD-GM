@@ -400,3 +400,87 @@ test('the bundled sample adventure names the guild it asks you to accuse', () =>
   assert.match(sample.investigate.success, /Brinewright Guild/);
   assert.match(sample.decisions[0].text, /Brinewright Guild/);
 });
+
+// Self-review: lines that assumed a choice, a companion or a result the player may not have had.
+const { liveLines } = require('../src/expansion');
+const RAWQ = require('../src/data/quests.json'), RAWS = require('../src/data/scenes.json');
+const rawQuest = (id) => Object.values(RAWQ).find((q) => q.id === id);
+const rawScene = (id) => Object.values(RAWS).find((s) => s.id === id);
+const heard = (s, lines) => liveLines(s, lines).map((l) => l.text || l.narrate).join('\n');
+
+test('Wren only talks to Nessa at Cinder Fold when Nessa is there', () => {
+  const opening = rawQuest('cinderfold').opening;
+  const without = heard(ready('cinderfold', { nessa: false }), opening), withNessa = heard(ready('cinderfold'), opening);
+  assert.match(without, /pulled me out from under the signal arm/);
+  assert.doesNotMatch(without, /^Reed\.$/m);
+  assert.match(withNessa, /^Reed\.$/m);
+  assert.doesNotMatch(withNessa, /pulled me out from under the signal arm/);
+});
+
+test('Aster Vey only thanks you for freeing her if you did', () => {
+  const found = [];
+  for (const q of Object.values(RAWQ)) JSON.stringify(q, (k, v) => { if (Array.isArray(v) && v.some((l) => l && /Aster Vey|You freed me/.test(l.text || ''))) found.push(v); return v; });
+  assert.ok(found.length);
+  const freed = found.map((l) => heard(ready('cinderfold', { flags: { spiritFreed: true } }), l)).join('\n');
+  const notFreed = found.map((l) => heard(ready('cinderfold'), l)).join('\n');
+  assert.match(freed, /You freed me/);
+  assert.doesNotMatch(notFreed, /You freed me/);
+  assert.match(notFreed, /before it could finish me/);
+});
+
+test("the Highpass log is read without Nessa when she isn't with you", () => {
+  const success = rawQuest('signal').investigate.success;
+  assert.match(heard(ready('signal', { nessa: false }), success), /codebook/);
+  assert.doesNotMatch(heard(ready('signal', { nessa: false }), success), /Nessa recognizes/);
+  assert.match(heard(ready('signal'), success), /Nessa recognizes/);
+});
+
+test('the council does not say it agreed after you fought your way through the chairs', () => {
+  const after = rawQuest('chairs').after;
+  const said = (m) => heard(ready('chairs', { flags: { 'method:chairs': m } }), after);
+  assert.match(said('peace'), /We agreed on something/);
+  assert.match(said('force'), /We didn't agree on anything/);
+  assert.doesNotMatch(said('force'), /We agreed on something/);
+});
+
+test('Hal names whoever actually paid for Fenmere', () => {
+  const camp = rawScene('southroad-camp');
+  const lines = JSON.parse(JSON.stringify(camp)).nodes;
+  const say = Object.values(lines).flatMap((n) => (n.choices || []).flatMap((c) => c.lines));
+  const hal = (flag) => heard(ready('southroad', { flags: { [flag]: true } }), say).split('\n').filter((t) => /^Stoneward\. You came/.test(t));
+  assert.match(hal('b2_cost_shared').join(), /goat-woman/);
+  assert.match(hal('b2_cost_loan').join(), /loan/);
+  assert.match(hal('b2_cost_party').join(), /own fee/);
+  for (const f of ['b2_cost_shared', 'b2_cost_loan', 'b2_cost_party']) assert.equal(hal(f).length, 1);
+});
+
+test('Orin asks about the way you actually ended Hollin\'s memory', () => {
+  const lines = Object.values(rawScene('hollin-camp').nodes)[0].lines;
+  const asks = (m) => heard(ready('hollin', { flags: { 'method:hollin': m } }), lines).split('\n').filter((t) => /Were you sure/.test(t));
+  assert.match(asks('peace').join(), /stood up/);
+  assert.match(asks('objective').join(), /tower/);
+  assert.match(asks('force').join(), /kept going/);
+  for (const m of ['peace', 'objective', 'force']) assert.equal(asks(m).length, 1);
+});
+
+test("Orin's Ashford story is told as a memory once Hal has made her choice", () => {
+  const PERSONAL = require('../src/data/personal.json');
+  for (const flag of ['south_hal_council', 'south_hal_guild']) assert.match(PERSONAL.orin.resolutionIf.find((r) => r.flag === flag).text, /Months after/);
+});
+
+test("Brannagh doesn't call the rise home after the council promised the lower village back", () => {
+  const found = [];
+  for (const q of Object.values(RAWQ)) JSON.stringify(q, (k, v) => { if (Array.isArray(v) && v.some((l) => l && l.say === 'Brannagh' && /rise/.test(l.text || ''))) found.push(v); return v; });
+  const promised = found.map((l) => heard(ready('vote', { flags: { fen_promise: true } }), l)).join('\n');
+  assert.match(promised, /like they promised/);
+});
+
+test('Hal takes her guild coat off on the recall night if she joined the guild', () => {
+  const found = [];
+  for (const q of Object.values(RAWQ)) JSON.stringify(q, (k, v) => { if (Array.isArray(v) && v.some((l) => l && /Hal/.test(l.text || l.narrate || '') && /coat|company comes up the road/.test(l.text || l.narrate || ''))) found.push(v); return v; });
+  const guild = found.map((l) => heard(ready('motherbell', { flags: { south_hal_guild: true } }), l)).join('\n');
+  const council = found.map((l) => heard(ready('motherbell', { flags: { south_hal_council: true } }), l)).join('\n');
+  assert.match(guild, /coat/);
+  assert.doesNotMatch(guild, /Hal's company comes up the road/);
+  assert.match(council, /Hal's company comes up the road/);
+});

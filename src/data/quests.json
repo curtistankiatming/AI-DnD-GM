@@ -430,7 +430,20 @@
         "arcana",
         "investigation"
       ],
-      "success": "Nessa recognizes her mentor’s shorthand. The last message names the keystone’s carrier and an unguarded path to the summit.",
+      "success": [
+        {
+          "narrate": "Nessa recognizes her mentor’s shorthand. The last message names the keystone’s carrier and an unguarded path to the summit.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "narrate": "The log is in a keeper’s private shorthand, and it takes you most of an hour with the station’s codebook. The last message names the keystone’s carrier and an unguarded path to the summit.",
+          "when": {
+            "absent": "nessa"
+          }
+        }
+      ],
       "failure": "The sequence is broken, but you identify the distress cadence. Someone tried to keep the tower independent."
     },
     "route": {
@@ -1641,11 +1654,51 @@
       },
       {
         "say": "Brannagh",
-        "text": "Well. We agreed on something."
+        "text": "Well. We agreed on something.",
+        "when": {
+          "flag": "method:chairs",
+          "is": "peace"
+        }
+      },
+      {
+        "say": "Brannagh",
+        "text": "Well. We agreed on something.",
+        "when": {
+          "flag": "method:chairs",
+          "is": "objective"
+        }
       },
       {
         "say": "Aveline",
-        "text": "We did. Can we agree on another thing before I fall over?"
+        "text": "We did. Can we agree on another thing before I fall over?",
+        "when": {
+          "flag": "method:chairs",
+          "is": "peace"
+        }
+      },
+      {
+        "say": "Aveline",
+        "text": "We did. Can we agree on another thing before I fall over?",
+        "when": {
+          "flag": "method:chairs",
+          "is": "objective"
+        }
+      },
+      {
+        "say": "Brannagh",
+        "text": "Well. We didn't agree on anything, and we're all still alive. I'd like that noted.",
+        "when": {
+          "flag": "method:chairs",
+          "is": "force"
+        }
+      },
+      {
+        "say": "Aveline",
+        "text": "Then let's agree on one thing before I fall over.",
+        "when": {
+          "flag": "method:chairs",
+          "is": "force"
+        }
       },
       {
         "narrate": "Elske Marrow stays standing."
@@ -3457,7 +3510,17 @@
       },
       {
         "say": "Wren",
-        "text": "Reed."
+        "text": "Reed.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "Wren",
+        "text": "You. The one who pulled me out from under the signal arm at Highpass. I'm Wren, if nobody told you. I've moved house. Mind the step.",
+        "when": {
+          "absent": "nessa"
+        }
       },
       {
         "say": "nessa",
@@ -3468,7 +3531,10 @@
       },
       {
         "say": "Wren",
-        "text": "I know. I've been getting them from the Highpass carters for a year. You leave them in your coat when it goes to the wash, girl. Every laundress between here and the coast has read them."
+        "text": "I know. I've been getting them from the Highpass carters for a year. You leave them in your coat when it goes to the wash, girl. Every laundress between here and the coast has read them.",
+        "when": {
+          "party": "nessa"
+        }
       },
       {
         "narrate": "Nessa goes a colour you have never seen her go.",
@@ -3497,7 +3563,17 @@
       },
       {
         "say": "Aster Vey",
-        "text": "Aster Vey. You freed me, under Briarwatch, and you never heard me say thank you. Thank you. I came through the stone to find you. All the bells are joined, down here, if you go deep enough."
+        "text": "Aster Vey. You freed me, under Briarwatch, and you never heard me say thank you. Thank you. I came through the stone to find you. All the bells are joined, down here, if you go deep enough.",
+        "when": {
+          "flag": "spiritFreed"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Aster Vey. That was my name, before Sable put me in his bell. You broke his rite under Briarwatch before it could finish me, and it has taken me all this time to remember who I was. I came through the stone to find you. All the bells are joined, down here, if you go deep enough.",
+        "when": {
+          "notFlag": "spiritFreed"
+        }
       },
       {
         "say": "Aster Vey",
@@ -4011,7 +4087,17 @@
           },
           {
             "say": "Brannagh",
-            "text": "Round the new village on the rise. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence."
+            "text": "Round the new village on the rise. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "when": {
+              "notFlag": "fen_promise"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "when": {
+              "flag": "fen_promise"
+            }
           },
           {
             "narrate": "Four towns of five. Elske Marrow is the Warden of the Chorus, from tonight, for one year. She stands up slowly, as if the chair is heavier than it was."
@@ -4355,7 +4441,16 @@
             }
           },
           {
-            "narrate": "Haverick's men try the doors twice in the night. The second time, Hal's company comes up the road behind them with the delegates' coaches, and that is the end of that."
+            "narrate": "Haverick's men try the doors twice in the night. The second time, Hal's company comes up the road behind them with the delegates' coaches, and that is the end of that.",
+            "when": {
+              "notFlag": "south_hal_guild"
+            }
+          },
+          {
+            "narrate": "Haverick's men try the doors twice in the night. The second time, the delegates' coaches come up the road with Hal riding guard in her guild coat. She sees whose men are at the doors, takes the coat off, and that is the end of that.",
+            "when": {
+              "flag": "south_hal_guild"
+            }
           },
           {
             "narrate": "The council sits on the casting floor at dawn, under the bell, with its ears ringing. It takes them an hour. It is the fastest hour in the council's history, and the longest in Fenmere's: all night, with its ward silenced, Ilka has been singing the ward-song alone in the churchyard, and by morning she has lost the third verse again."

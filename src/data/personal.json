@@ -6,7 +6,17 @@
     "prompt": "Orin recognizes a refugee’s old company badge. “We left civilians behind once. Not again. Help me secure a route for them before we charge the gate.”",
     "goal": "Resolve the Ashford bridge crisis after talking to Orin. The rescue can succeed by force or a negotiated crossing.",
     "reward": "At level 7, Shield-and-Strike becomes available: protect the whole party and grant Orin an immediate attack.",
-    "resolution": "Lieutenant Hal finds Orin at the bridge rail after the last cart is across. She doesn’t salute. She shakes his hand, which from Hal is a speech. Orin stays at the rail a while afterwards, watching carts nobody had to leave behind."
+    "resolution": "Lieutenant Hal finds Orin at the bridge rail after the last cart is across. She doesn’t salute. She shakes his hand, which from Hal is a speech. Orin stays at the rail a while afterwards, watching carts nobody had to leave behind.",
+    "resolutionIf": [
+      {
+        "flag": "south_hal_council",
+        "text": "Months after the Ashford span, Orin finally tells you about it, on a night when nobody asked: how Hal found him at the bridge rail after the last cart was across, and shook his hand instead of saluting, which from Hal is a speech. “She did it again at Kell’s Bridge,” he says. “I’m starting to think she means it.”"
+      },
+      {
+        "flag": "south_hal_guild",
+        "text": "Months after the Ashford span, Orin finally tells you about it, on a night when nobody asked: how Hal found him at the bridge rail after the last cart was across, and shook his hand instead of saluting, which from Hal is a speech. “She did it again at Kell’s Bridge,” he says. “I’m starting to think she means it.”"
+      }
+    ]
   },
   "maren": {
     "id": "maren",
