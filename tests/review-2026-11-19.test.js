@@ -168,7 +168,7 @@ test('commissioning an adventure reports the new adventure, not the previous mes
 });
 
 test('every conditional written line uses a known condition', () => {
-  const known = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'party', 'absent', 'class', 'item', 'notItem']);
+  const known = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'party', 'absent', 'class', 'item', 'notItem', 'clue', 'notClue']);
   const lines = [];
   for (const node of Object.values(STORY_NODES)) {
     lines.push(...(node.dialogue || []));

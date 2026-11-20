@@ -332,3 +332,33 @@ test("the lamp-man thanks you for what you actually did at the hospice", () => {
   assert.match(text, /because you stayed and talked/);
   assert.doesNotMatch(text, /You held that door/);
 });
+
+// Fourth Codex review of Book Two (docs/reviews/codex-bard-book-two-fourth-run-2026-11-20.md).
+test('a peaceful ending never credits a lead the hero skipped', () => {
+  const peace = (id, flags, clue) => {
+    // A sure roll: these tests are about which words are told, not the odds.
+    const s = atCrisis(id, { ...flags, [`prepared:${id}`]: true, [`approach:${id}`]: true }); s.player.inspirationPrepared = true; s.player.abilities.cha = 30;
+    if (clue) s.story.clues.push(`${id}-evidence`);
+    const r = act(s, { type: 'story-choice', choiceId: 'resolve' });
+    return { before: E.buildView(s).scene.opening, after: r.state.story.lastOutcome.text, said: r.result.outcomeText };
+  };
+  const vote = (clue) => peace('vote', {}, clue).after;
+  assert.match(vote(true), /exactly who the carters are/);
+  assert.doesNotMatch(vote(false), /exactly who the carters are/);
+  assert.match(vote(false), /You don't know who the carters are/);
+  assert.doesNotMatch(peace('vote', {}, false).said, /exactly who the carters are/, 'The text sent on to chat narration is filtered too.');
+  const fen = (clue) => peace('fenmere', {}, clue);
+  assert.match(fen(true).before, /I have the verse/);
+  assert.doesNotMatch(fen(false).before, /I have the verse/);
+  assert.match(fen(false).after, /Nobody knew she knew it/);
+  const bell = (clue) => peace('motherbell', { vote_elske_lost: true }, clue).after;
+  assert.match(bell(true), /You tell her what the founders wrote/);
+  assert.match(bell(false), /never found what the founders wrote/);
+});
+
+test('talking Elske down with the rope locked away keeps her at the ladder', () => {
+  const s = atCrisis('oath', { vote_elske_lost: true, mother_silenced: true, 'prepared:oath': true, 'approach:oath': true }); s.player.inspirationPrepared = true; s.player.abilities.cha = 30;
+  const text = act(s, { type: 'story-choice', choiceId: 'resolve' }).state.story.lastOutcome.text;
+  assert.match(text, /foot of the ladder/);
+  assert.doesNotMatch(text, /stands by the rope/);
+});
