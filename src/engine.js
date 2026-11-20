@@ -452,6 +452,7 @@ function checkPlan(state, choice) {
   let dc=Number(check.dc||10);
   const quest=currentNode(state).questId;
   if(quest && state.story.flags[`prepared:${quest}`]){dc-=2;reasons.push('Established evidence lowers DC by 2');}
+  if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
   if(quest==='beacon'){const n=['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length;dc-=Math.min(3,n);if(n)reasons.push(`Independent allies lower DC by ${Math.min(3,n)}`);}
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
@@ -566,7 +567,8 @@ function applyOutcome(state, written = {}, rng, events) {
   if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
     // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.
     const fight = state.story.lastOutcome;
-    const told = [...(outcome.dialogue || [{ narration: outcome.text }]), { narration: fight.text }];
+    // The crisis was on screen a moment ago, so it is not told again here.
+    const told = outcome.dialogue || [{ narration: outcome.text }];
     state.story.lastOutcome = { ...fight, text: dialogueText(told), ...(outcome.dialogue ? { dialogue: told } : {}) };
   }
 }

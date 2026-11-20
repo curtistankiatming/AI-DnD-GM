@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Two, fixes from the third Codex playtest
+
+- At the hearing, if you locked the bell-rope away, the scene now shows the
+  forge hammer and the ladder before any fight. If your speech fails, the
+  fight starts with Elske climbing, and the scene before it isn't repeated.
+- Every expedition now offers the peaceful resolution even if you skipped
+  looking into things first. Without a lead the roll is 2 harder.
+- A failed speech at the hearing, or a bad afternoon knocking on doors before
+  the vote, no longer injures the party.
+- After a peaceful rescue at the hospice, the lamp-man thanks you for staying
+  and talking, not for holding a door.
+- The terminal game no longer reprints the whole crisis after every combat
+  action.
+
 ## Book Two, fixes from the second Codex playtest
 
 - Starting a fight now tells only the version of events this hero lived

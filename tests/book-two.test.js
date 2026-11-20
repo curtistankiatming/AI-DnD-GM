@@ -288,3 +288,47 @@ test('keeping the receipts costs 60 gold, and the rest of the Sallows stays dark
   assert.equal(s.player.gold, before + QUESTS.keeper.gold - 60);
   assert.match(E.buildView(s).scene.opening, /six new lamps.*rest of the Sallows is as dark/s);
 });
+
+// Third Codex review of Book Two (docs/reviews/codex-bard-book-two-third-run-2026-11-19.md).
+test('with the rope locked away, the hearing shows how Elske could still ring the bell', () => {
+  const s = atCrisis('oath', { vote_elske_lost: true, mother_silenced: true });
+  assert.match(E.buildView(s).scene.opening, /forge hammer.*ladder/s);
+  const failed = act(s, { type: 'story-choice', choiceId: 'resolve' }, () => 0).state;
+  assert.ok(failed.combat?.active);
+  assert.match(failed.story.lastOutcome.text, /starts up the ladder/);
+  assert.doesNotMatch(failed.story.lastOutcome.text, /only key is in your pocket/, 'The fight starts at the climb, without retelling the scene before it.');
+});
+
+test('the hearing always lets you try to persuade Elske; skipping the reflection only makes it harder', () => {
+  let s = ready('oath', { flags: { vote_elske_lost: true } });
+  s = act(s, { type: 'depart', questId: 'oath' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'advance' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'direct' }).state;
+  const resolve = E.buildView(s).scene.choices.find((c) => c.id === 'resolve');
+  assert.ok(resolve && !resolve.disabled && !resolve.locked, 'Persuasion is offered without the reflection.');
+  const dc = (state) => act(state, { type: 'story-choice', choiceId: 'resolve' }).events.find((e) => e.roll).roll.dc;
+  const withLead = structuredClone(s); withLead.story.clues.push('oath-evidence');
+  assert.equal(dc(s), dc(withLead) + 2);
+});
+
+test('a fumbled speech or a bad afternoon of door-knocking hurts nobody', () => {
+  for (const id of ['oath', 'vote']) {
+    assert.equal(QUESTS[id].route.safe, true, id);
+    let s = ready(id, { flags: { vote_elske_lost: true } });
+    s = act(s, { type: 'depart', questId: id }).state;
+    s = act(s, { type: 'story-choice', choiceId: 'advance' }).state;
+    const hp = [s.player.hp, ...s.party.map((m) => m.hp)];
+    s = act(s, { type: 'story-choice', choiceId: 'careful' }, () => 0).state;
+    assert.deepEqual([s.player.hp, ...s.party.map((m) => m.hp)], hp, id);
+    assert.equal(s.story.nodeId, `q-${id}-crisis`);
+  }
+});
+
+test("the lamp-man thanks you for what you actually did at the hospice", () => {
+  const s = atCrisis('keeper', {});
+  s.story.clues.push('keeper-evidence');
+  const after = act(s, { type: 'story-choice', choiceId: 'resolve' }).state;
+  const text = E.buildView(after).scene.opening;
+  assert.match(text, /because you stayed and talked/);
+  assert.doesNotMatch(text, /You held that door/);
+});

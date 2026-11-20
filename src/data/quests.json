@@ -2954,7 +2954,27 @@
       },
       {
         "say": "Lamp-man",
-        "text": "Every receipt I've signed for the Sallows lamps. Stamped by the Lantern Hall, countersigned by Guildmaster Haverick's office, for half a pane of ward-glass on every lamp in the lower town. You held that door. Take them. I'll say it to anyone who asks."
+        "text": "Every receipt I've signed for the Sallows lamps. Stamped by the Lantern Hall, countersigned by Guildmaster Haverick's office, for half a pane of ward-glass on every lamp in the lower town. You held that door. Take them. I'll say it to anyone who asks.",
+        "when": {
+          "flag": "method:keeper",
+          "is": "objective"
+        }
+      },
+      {
+        "say": "Lamp-man",
+        "text": "Every receipt I've signed for the Sallows lamps. Stamped by the Lantern Hall, countersigned by Guildmaster Haverick's office, for half a pane of ward-glass on every lamp in the lower town. You came for them. Take them. I'll say it to anyone who asks.",
+        "when": {
+          "flag": "method:keeper",
+          "is": "force"
+        }
+      },
+      {
+        "say": "Lamp-man",
+        "text": "Every receipt I've signed for the Sallows lamps. Stamped by the Lantern Hall, countersigned by Guildmaster Haverick's office, for half a pane of ward-glass on every lamp in the lower town. My nephew still knows his own name tonight, because you stayed and talked. Take them. I'll say it to anyone who asks.",
+        "when": {
+          "flag": "method:keeper",
+          "is": "peace"
+        }
       },
       {
         "narrate": "So now you have to decide what to do with them."
@@ -3766,6 +3786,7 @@
     },
     "route": {
       "label": "Get the square ready before the meeting",
+      "safe": true,
       "skill": "persuasion",
       "alt": [
         "insight",
@@ -4536,6 +4557,7 @@
     },
     "route": {
       "label": "Stand up in the circle and answer her",
+      "safe": true,
       "skill": "persuasion",
       "alt": [
         "insight",
@@ -4601,7 +4623,7 @@
         }
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She is standing by the signal-house door, and half the council is looking at it with her. Somebody, in the end, has to answer her: with words, or with the key.",
+        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She does not need it. Two of the miners have brought a forge hammer up from the floor, and the ladder to the great beam stands open, and Elske is standing at the foot of it. Somebody, in the end, has to answer her: with words, or by getting to that ladder first.",
         "when": {
           "flag": "mother_silenced"
         }
@@ -4642,7 +4664,7 @@
           }
         },
         {
-          "narrate": "She does not ask for the key. Two of the miners have a forge hammer, and the Mother Bell does not need a rope if someone is willing to climb the beam and strike it. Elske starts up the ladder. You have to reach her before she gets there.",
+          "narrate": "She takes the forge hammer from the miners and starts up the ladder to the beam. The Mother Bell does not need a rope if someone is willing to climb up and strike it. You have to reach her before she gets there.",
           "when": {
             "flag": "mother_silenced"
           }
