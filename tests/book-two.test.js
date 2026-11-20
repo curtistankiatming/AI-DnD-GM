@@ -251,7 +251,7 @@ test('pledging your fee for Fenmere says the council pays it back', () => {
 });
 
 // Second Codex review of Book Two (docs/reviews/codex-bard-book-two-rerun-2026-11-19.md).
-const atCrisis = (id, flags) => { const s = ready(id, { flags }); s.story.nodeId = `q-${id}-crisis`; s.world.activeQuest = id; s.world.onExpedition = true; return s; };
+const atCrisis = (id, flags, nessa = true) => { const s = ready(id, { flags, nessa }); s.story.nodeId = `q-${id}-crisis`; s.world.activeQuest = id; s.world.onExpedition = true; return s; };
 test('starting a fight tells only the version of the vote this hero lived through', () => {
   const lost = act(atCrisis('motherbell', { vote_elske_lost: true }), { type: 'story-choice', choiceId: 'objective' }).state;
   assert.ok(lost.combat?.active);
@@ -361,4 +361,42 @@ test('talking Elske down with the rope locked away keeps her at the ladder', () 
   const text = act(s, { type: 'story-choice', choiceId: 'resolve' }).state.story.lastOutcome.text;
   assert.match(text, /foot of the ladder/);
   assert.doesNotMatch(text, /stands by the rope/);
+});
+
+// Fifth Codex review: a fresh bard from level 1 to 21 (docs/reviews/codex-bard-level1-21-2026-11-20.md).
+test('the tollhouse never hands an unprepared hero receipts they did not find', () => {
+  const view = (clue) => { const s = atCrisis('road', {}, false); if (clue) s.story.clues.push('road-evidence'); return E.buildView(s).scene; };
+  const lead = view(true), none = view(false);
+  assert.match(lead.choices.find((c) => c.id === 'resolve').label, /duplicate receipts/);
+  assert.match(none.choices.find((c) => c.id === 'resolve').label, /Ask the drivers/);
+  assert.match(lead.opening, /leave the documents/);
+  assert.doesNotMatch(none.opening, /documents/);
+  const s = atCrisis('road', { 'prepared:road': true, 'approach:road': true }, false); s.player.inspirationPrepared = true; s.player.abilities.cha = 30;
+  const text = act(s, { type: 'story-choice', choiceId: 'resolve' }).state.story.lastOutcome.text;
+  assert.match(text, /You don't have the captain's papers/);
+  assert.doesNotMatch(text, /read what they have been paid/);
+});
+
+test("Maren's late reflection doesn't bring back the list she let go", () => {
+  const PERSONAL = require('../src/data/personal.json');
+  assert.match(PERSONAL.maren.resolution, /on her list/);
+  const late = PERSONAL.maren.resolutionIf.find((r) => r.flag === 'keeper-list-done').text;
+  assert.doesNotMatch(late, /on her list/);
+  assert.match(late, /old list is gone/);
+});
+
+test('if you spared Lysa, she is on the Merrowgate quay', () => {
+  const talks = (flags) => { const s = act(ready('harbour', { flags }), { type: 'depart', questId: 'harbour' }).state; return { s, ids: E.buildView(s).scene.choices.map((c) => c.id) }; };
+  assert.ok(!talks({}).ids.includes('talk-lysa'));
+  const { s, ids } = talks({ lysaSpared: true });
+  assert.ok(ids.includes('talk-lysa'));
+  const r = act(s, { type: 'story-choice', choiceId: 'talk-lysa' });
+  assert.match(told(r.state), /Lysa: The bell remembers who betrayed it/);
+  assert.equal(r.state.story.flags['b2:lysa_turned'], true);
+});
+
+test('the bundled sample adventure names the guild it asks you to accuse', () => {
+  const sample = draft();
+  assert.match(sample.investigate.success, /Brinewright Guild/);
+  assert.match(sample.decisions[0].text, /Brinewright Guild/);
 });
