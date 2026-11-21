@@ -21,25 +21,40 @@ const P = require('./progression');
 const FINISHED = 'books:finished';
 // The written chapters in story order. Book One is the bell and the roads to
 // level 10; Book Two (book: 2 in quests.json) runs from level 10 to 20; Book
-// Three (book: 3) from 20 to 30. Written side jobs are optional and never hold
+// Three (book: 3) from 20 to 40, in two parts. Written side jobs are optional and never hold
 // up the story.
 const ALL = Object.values(QUESTS).filter(q => !q.sideJob);
 const bookNo = q => Number(q?.book) || 1;
 
-// Every book on the shelf, written or not. A book still being written
-// ("writing") keeps the books open after its last written chapter: the hero
-// waits at a "to be continued". A book not yet released ("ready: false") is
-// not shown to players at all until its last chapter lands; tests and agent
-// playtests see it with BRIARWATCH_PREVIEW_BOOKS=1. A paid book is free in
-// the open-source game and needs a paid account on the hosted game
-// (docs/AI-STORYTELLER.md, "Paid books").
-const SHELF = Object.freeze([
+// Every book on the shelf, written or not. A book may come out in parts
+// ("parts": how many it has, "out": how many are released; each chapter in
+// quests.json says its "part", 1 by default). Only released parts are played.
+// A book with a part still to come is "writing": the hero waits at a "to be
+// continued" after its last released chapter. A book with no part out is not
+// shown to players at all. Tests and agent playtests see every written part
+// with BRIARWATCH_PREVIEW_BOOKS=1. A paid book is free in the open-source game
+// and needs a paid account on the hosted game (docs/AI-STORYTELLER.md,
+// "Paid books").
+const PREVIEW = /^(1|true|yes|on)$/i.test(String((typeof process !== 'undefined' && process.env && process.env.BRIARWATCH_PREVIEW_BOOKS) || ''));
+const partNo = q => Number(q?.part) || 1;
+const DEFS = [
   { n: 1, title: 'The Bell Beneath Briarwatch' },
   { n: 2, title: 'The Council of Small Voices' },
-  { n: 3, title: 'The Names in the Bronze', paid: true, ready: false }
-].map(b => Object.freeze({ ...b, last: ALL.filter(q => bookNo(q) === b.n).at(-1)?.id || null })));
-const PREVIEW = /^(1|true|yes|on)$/i.test(String((typeof process !== 'undefined' && process.env && process.env.BRIARWATCH_PREVIEW_BOOKS) || ''));
-const released = b => Boolean(b.last) && (b.ready !== false || PREVIEW);
+  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0 }
+];
+function buildShelf(defs, chapters, preview = false) {
+  return Object.freeze(defs.map(b => {
+    const open = !b.parts ? Infinity : preview ? b.parts : Math.max(0, Math.min(b.parts, Number(b.out) || 0));
+    const last = chapters.filter(q => bookNo(q) === b.n && partNo(q) <= open).at(-1)?.id || null;
+    const writing = Boolean(b.parts) && open > 0 && open < b.parts;
+    return Object.freeze({ ...b, open, last, writing });
+  }));
+}
+const SHELF = buildShelf(DEFS, ALL, PREVIEW);
+const released = b => Boolean(b.last);
+const shelfOf = n => SHELF.find(b => b.n === n);
+// Whether a chapter is in a released part of its book.
+const partOpen = q => partNo(q) <= (shelfOf(bookNo(q))?.open ?? Infinity);
 
 // How far into the books this session may read: the highest book number. The
 // server sets it per session (never from a save: a symbol cannot be written
@@ -59,7 +74,7 @@ const allows = (state, n) => n <= limit(state);
 
 // The books, and their chapters, this save can play now.
 const books = state => SHELF.filter(b => released(b) && allows(state, b.n));
-const chapters = state => { const open = new Set(books(state).map(b => b.n)); return ALL.filter(q => open.has(bookNo(q))); };
+const chapters = state => { const open = new Set(books(state).map(b => b.n)); return ALL.filter(q => open.has(bookNo(q)) && partOpen(q)); };
 const lastLevel = state => Math.max(1, ...chapters(state).map(q => Number(q.level) || 1));
 const writing = state => books(state).find(b => b.writing) || null;
 // The next released book this session may not open (a paid book on a free
@@ -101,7 +116,7 @@ const unwritten = state => !done(state, 'bell') || chapters(state).some(q => !do
 function locked(state) {
   const b = lockedBook(state);
   const begun = q => done(state, q.id) || state?.world?.activeQuest === q.id;
-  return Boolean(b && ALL.some(q => bookNo(q) === b.n && begun(q)));
+  return Boolean(b && ALL.some(q => bookNo(q) === b.n && partOpen(q) && begun(q)));
 }
 function finished(state) {
   if (locked(state)) return false;
@@ -236,4 +251,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { buildShelf, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

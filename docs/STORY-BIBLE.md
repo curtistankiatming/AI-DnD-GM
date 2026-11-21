@@ -199,15 +199,26 @@ the jobs (about 130 each) and the rest of a job's reward is gold. Written
 chapters' battles pay no extra XP, as in Book One. (Changed on 19 November 2026
 from "30% of a level", which would have needed grinding between chapters.)
 
-### Book Three: The Names in the Bronze (levels 20 to 30, being written)
+### Book Three: The Names in the Bronze (levels 20 to 40, being written)
 
-Book Three follows the Second Oath. Its question is consent: the oldest wards
-were made from keepers who gave their voices, and a High Warden means to do it
-again, openly, with volunteers. It is written in the same way as Book Two
-(`"book": 3` in `src/data/quests.json`), adds the towns of Saltwick and Vell,
-and stays hidden from players until all ten chapters are written. On the
-hosted game it needs a paid account; in the open-source game it is free like
-the others (docs/AI-STORYTELLER.md, "Paid books").
+Book Three follows the Second Oath. Its question is consent: may anyone let a
+person pay for safety with themselves, if that person says yes? High Warden
+Corvane means to save Vell, the Commandery's seat, by casting willing
+volunteers into bells with Sable's altered rite. The book's answer, reached at
+the bottom of a stair under Vell, is that the many should pay a little each so
+that nobody pays alone, and that this answer has its own price.
+
+It has twenty chapters, one per level, in two parts: **Part One, The Bronze**
+(levels 20 to 30, chapters 1 to 10) and **Part Two, The Stair** (30 to 40,
+chapters 11 to 20). It ends at the 3rd job trial at level 40, as Book Two ends
+at the 2nd job. Each chapter pays 100% of its level's XP (105% would compound
+past level 40). New towns: Saltwick and Vell. It is written like Book Two
+(`"book": 3`, and `"part": 2` for Part Two chapters, in
+`src/data/quests.json`). Each part stays hidden from players until all of its
+chapters are written; then `out` in `src/book.js` releases it. With only Part
+One out, heroes wait at "to be continued" at level 30. On the hosted game it
+needs a paid account; in the open-source game it is free like the others
+(docs/AI-STORYTELLER.md, "Paid books").
 
 ## How Book Two is built
 
@@ -226,8 +237,9 @@ the chapter's id. All ten chapters are written. A chapter may also give the no-r
 its own words with `direct` (`label`, `text`). Scene choices may set story
 flags with `setFlags` (the Second Oath is chosen in the epilogue scene and
 recorded as `second_oath`). If a future book is added before it is finished,
-mark it `writing: true` in `src/book.js` so heroes wait at "to be continued"
-instead of passing to the AI storyteller.
+give it `parts` and release them one at a time with `out` in `src/book.js`,
+so heroes wait at "to be continued" between parts instead of passing to the AI
+storyteller.
 
 ## How scenes are written
 

@@ -35,6 +35,7 @@ test('Book Three is on the shelf as a paid book, hidden until its chapters are w
   const three = Book.SHELF.find((b) => b.n === 3);
   assert.equal(three.title, 'The Names in the Bronze');
   assert.equal(three.paid, true);
+  assert.equal(three.last, null);
   assert.deepEqual(Book.BOOKS.map((b) => b.n), [1, 2]);
   assert.equal(Book.CHAPTERS.at(-1).id, 'oath');
   assert.equal(Book.LAST_LEVEL, 19);
@@ -119,4 +120,24 @@ test('written lines can depend on which books this session may read', () => {
   const s = ready('oath');
   assert.deepEqual(liveLines(s, lines3).map((l) => l.narrate), ['a', 'b'], 'Book Three is not out yet; Book Two is open.');
   assert.deepEqual(liveLines(Book.grant(s, 1), lines3).map((l) => l.narrate), ['a']);
+});
+
+test('a book can come out in parts: only released parts play, and the hero waits between them', () => {
+  const ch = [{ id: 'a', book: 3, part: 1 }, { id: 'b', book: 3, part: 1 }, { id: 'c', book: 3, part: 2 }];
+  const def = (out) => Book.buildShelf([{ n: 3, title: 'T', parts: 2, out }], ch)[0];
+  assert.deepEqual([def(0).last, def(0).writing], [null, false], 'Nothing out: hidden.');
+  assert.deepEqual([def(1).last, def(1).writing], ['b', true], 'Part One out: to be continued after it.');
+  assert.deepEqual([def(2).last, def(2).writing], ['c', false], 'Both out: the whole book.');
+  const preview = Book.buildShelf([{ n: 3, title: 'T', parts: 2, out: 0 }], ch, true)[0];
+  assert.equal(preview.last, 'c', 'Tests and playtests see every written part.');
+  const three = Book.SHELF.find((b) => b.n === 3);
+  assert.equal(three.parts, 2);
+  assert.equal(three.out, 0, 'Book Three stays hidden until Part One is finished.');
+});
+
+test('each Book Three chapter pays exactly one level, so chapter N ends at level 20 + N', () => {
+  const P = require('../src/progression');
+  for (const q of Object.values(QUESTS).filter((x) => x.book === 3 && !x.sideJob)) {
+    assert.equal(q.xp, P.levelBand(q.level), `${q.id}: 105% would compound past level 40`);
+  }
 });
