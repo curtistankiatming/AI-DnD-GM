@@ -1480,7 +1480,7 @@
           }
         },
         {
-          "narrate": "Maren starts it, because somebody has to: a hymn from the shrine at home, sung badly and much too loud. Orin takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb.",
+          "narrate": "Maren starts it, because somebody has to: a hymn from the shrine at home, sung badly. Orin takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb.",
           "when": {
             "absent": "nessa"
           }
@@ -1603,7 +1603,7 @@
         "narrate": "The first beacon stands above the cloud line, on a stair cut into the mountain before anyone now alive was born. Its bronze rings are open to the sky, and something is singing in them."
       },
       {
-        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh: one word, and you know it is her. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
+        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh, who never said a word to you in Fenmere, saying one now. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
       },
       {
         "say": "orin",
