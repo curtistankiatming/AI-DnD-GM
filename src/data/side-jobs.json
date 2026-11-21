@@ -1792,7 +1792,7 @@
     "town": "highpass",
     "level": 21,
     "from": "b3-letter",
-    "until": "b3-witness",
+    "until": "b3-home",
     "gold": 70,
     "giver": "Warden Sable, by way of Captain Sorrel",
     "brief": "Sable wants his borrowed books returned to the Ashford archive, every one with his notes in the margins. Captain Sorrel wants them out of her prison. Read the notes first.",
@@ -2235,14 +2235,32 @@
             "say": "Mags Peller",
             "text": "I know you will. That's what I'm worried about. Take Davin. He knows the road.",
             "when": {
-              "party": "orin"
+              "party": "orin",
+              "notFlag": "b3_saltwick_moved"
             }
           },
           {
             "say": "Mags Peller",
             "text": "Take Davin. He knows the road.",
             "when": {
-              "absent": "orin"
+              "absent": "orin",
+              "notFlag": "b3_saltwick_moved"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I know you will. That's what I'm worried about. Take Davin. He came back with me to keep the lamps. He knows the road.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_saltwick_moved"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Take Davin. He came back with me to keep the lamps. He knows the road.",
+            "when": {
+              "absent": "orin",
+              "flag": "b3_saltwick_moved"
             }
           }
         ],
@@ -2411,7 +2429,7 @@
     "town": "vell",
     "level": 24,
     "from": "b3-saltwick",
-    "until": "b3-witness",
+    "until": "b3-greatbell",
     "gold": 90,
     "giver": "Clerk-Major Fennick",
     "brief": "Iona has sent Fennick the list of the refugees at Highpass. One name on it may match a name in his census of the lost. Fennick has never struck a name out of the box. He would like to be sure before he does.",
@@ -2422,6 +2440,16 @@
         "lines": [
           {
             "narrate": "Fennick's office is a cupboard off the census hall, with the wooden box on the desk and the lid open. He has a letter beside it, in Iona's sharp hand, and a list: every refugee who came over the pass to Highpass, by name, age and town. Three lines on the list are underlined in his pencil."
+          },
+          {
+            "narrate": "Since the first casting there has been a second, smaller tray on the desk beside the box, with fifty cards in it. Fennick has written its label himself, in his neat hand: \"Not lost. Cast.\"",
+            "when": {
+              "anyFlag": [
+                "b3_council_take",
+                "b3_council_help",
+                "b3_council_refuse"
+              ]
+            }
           },
           {
             "say": "Fennick",
@@ -2603,7 +2631,7 @@
     "town": "vell",
     "level": 25,
     "from": "b3-vell",
-    "until": "b3-witness",
+    "until": "b3-greatbell",
     "gold": 95,
     "giver": "Jory Carr, twelve",
     "brief": "Ysolde Carr's brothers, Jory and Wil, have walked up to the casting wall with a piece of chalk to put their own names on it in her place. Talk them out of it, or find them work that feeds them.",
@@ -2614,6 +2642,16 @@
         "lines": [
           {
             "narrate": "The drill-guard at the foot of the casting wall have stopped two boys with a piece of chalk. The older one is twelve, thin, with his sister's quick plain face and a coat with a button newly sewn on, and he is furious. The younger one is nine, and holding the older one's sleeve, and has a bit of chalk dust on his nose."
+          },
+          {
+            "narrate": "It is not the first time. Since the first fifty went down the stair, Jory has come to the wall every morning with a piece of chalk, and every morning the drill-guard have taken it off him and sent him home.",
+            "when": {
+              "anyFlag": [
+                "b3_council_take",
+                "b3_council_help",
+                "b3_council_refuse"
+              ]
+            }
           },
           {
             "say": "Jory",

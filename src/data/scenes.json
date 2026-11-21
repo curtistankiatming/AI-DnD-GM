@@ -1146,5 +1146,273 @@
         ]
       }
     }
+  },
+  "home-aster": {
+    "id": "home-aster",
+    "after": "b3-home",
+    "cast": [],
+    "act": "Briarwatch",
+    "location": "Briarwatch, after the council's vote",
+    "start": "tower",
+    "nodes": {
+      "tower": {
+        "title": "The First Bell She Chose",
+        "objective": "Aster Vey has something to ask.",
+        "lines": [
+          { "narrate": "That night Pim comes to the forge to find you, without his coat, and says that Aster is asking for you. Only you. Before anyone else. Tovin is sitting at the foot of the tower stair with the rope across his knees, and he does not come up.", "when": { "flag": "b3_asked_aster" } },
+          { "narrate": "At the top of the stair the great bell is warm under your hand.", "when": { "flag": "b3_asked_aster" } },
+          { "say": "Aster Vey", "text": "You asked me first, in the spring. Before you answered Corvane. You came up here and asked what I wanted. Nobody had ever done that. So I'm asking you first. As a friend. Before I ask anyone who votes.", "when": { "flag": "b3_asked_aster" } },
+          { "narrate": "It is Aster Vey who asks the council, at the end of the session, after the vote. Tovin carries the hand-bell into the reeve's hall and sets it on the long table in front of Aveline, and sits down at the back, and does not look at anyone. You hear it with everyone else.", "when": { "notFlag": "b3_asked_aster" } },
+          { "say": "Aster Vey", "text": "Vell had a great bell once, before Central Command melted it for the stones. Corvane is going to cast it again. He means to put four hundred people in it." },
+          { "say": "Aster Vey", "text": "I want to go. Not now. If it comes to it. If Vell needs its heart held, and the only way is someone in the bronze, I want it to be me. I know what it is. I'm the only one of all of them who does. Every one of those four hundred will say yes to a door. I'd be saying yes to a room I've lived in." },
+          { "say": "Aster Vey", "text": "If I go, Briarwatch's bell is empty. You need to know that before you answer. The Gloam will come to the edge of the Briarwood every winter. The village will have to keep a watch. Tovin knows. Tovin's known for a week." },
+          { "say": "Pim", "text": "You can't. You live here. Tovin, tell her she lives here." },
+          { "say": "Tovin", "text": "I told you on the stair, Pim. She was made to live here. This would be the first bell she ever chose." },
+          { "narrate": "Tovin's hands are shaking on the rope. His voice is not.", "when": { "flag": "b3_asked_aster" } },
+          { "narrate": "Tovin's hands are shaking in his lap. His voice is not.", "when": { "notFlag": "b3_asked_aster" } },
+          { "narrate": "Tomorrow she will put it to the wards' seat on the council, and you already know what will happen there, because the wards have talked about nothing else for a week: they will split, half and half, Cinder Fold's hearth bells for and Fenmere's little bells against. It will come back to you. It was always going to.", "when": { "flag": "b3_asked_aster", "anyFlag": ["wards_seat"] } },
+          { "narrate": "The wards' seat votes on it, there and then: the hand-bells and hearth bells of every town that sent one. They split, half and half, Cinder Fold's for and Fenmere's against, and Aveline looks down the table at you, because there is nobody else left to ask.", "when": { "notFlag": "b3_asked_aster", "anyFlag": ["wards_seat"] } },
+          { "narrate": "The wards have no seat on the council to put it to. It is yours to answer, here, tonight.", "when": { "flag": "b3_asked_aster", "notFlag": "wards_seat" } },
+          { "narrate": "The wards have no seat on the council to ask. Aveline says that it is not the council's to say, then, and looks down the long table at you, because it was you who carried her to Vell and back.", "when": { "noneFlag": ["wards_seat", "b3_asked_aster"] } },
+          { "say": "Aster Vey", "text": "So. Tell me. May I go, if it comes to it? Or do you want me to stay?" }
+        ],
+        "choices": [
+          {
+            "id": "go",
+            "label": "“If it comes to it, you may go. It's yours to choose.”",
+            "lines": [
+              { "say": "Aster Vey", "text": "Thank you. You don't know what that is, to be told it's mine." },
+              { "narrate": "Pim goes out without a word, very fast, and across the square. Tovin does not go after him. He sits very still, with his hands together." },
+              { "say": "Tovin", "text": "He'll be back. He always is. He'll want to know the hours for Vell, so he can ring them here, and I'll have to look them up for him." },
+              { "say": "Aster Vey", "text": "Ring them gently." }
+            ],
+            "setFlags": { "b3_aster_may_go": true }
+          },
+          {
+            "id": "stay",
+            "label": "“Stay. Briarwatch needs its bell, and I need you here.”",
+            "lines": [
+              { "narrate": "The bell is quiet for a long time." },
+              { "say": "Aster Vey", "text": "All right. I'll stay. You asked, and I'll stay. I want you to know that I wanted to go. I want somebody to know that." },
+              { "say": "Pim", "text": "You're staying? You're staying." },
+              { "say": "Tovin", "text": "Pim. Let her be sad about it. She's allowed. She'll come with you to Vell all the same, to see it, and then she'll come home." },
+              { "narrate": "Pim sits down beside Tovin, close, and does not say anything else." }
+            ],
+            "setFlags": { "b3_aster_stays": true }
+          }
+        ]
+      }
+    }
+  },
+  "home-camp": {
+    "id": "home-camp",
+    "after": "home-aster",
+    "cast": ["nessa"],
+    "act": "Camp",
+    "location": "The square at Briarwatch, the last evening before Vell",
+    "start": "hours",
+    "nodes": {
+      "hours": {
+        "title": "The Hours",
+        "objective": "The last evening at home before going back over the pass.",
+        "lines": [
+          { "narrate": "At dusk on the last evening Tovin rings the hours. Everybody in the square stops to hear it: the farmers loading their carts, the river-meadow people coming up the mill lane with their baskets, Aveline on the reeve's hall step with a letter in her hand. Nobody says anything until he has finished. Then for a little while nobody says anything after that, either." },
+          { "narrate": "Inside the bell, Aster Vey rings with him. It sounds, tonight, like somebody saying goodbye to a room before a journey.", "when": { "flag": "b3_aster_may_go" } },
+          { "narrate": "Inside the bell, Aster Vey rings with him, exactly on the hour, the way she has every evening since the bell came back.", "when": { "notFlag": "b3_aster_may_go" } },
+          { "narrate": "Later, by the well, there is a boy from the river meadow sitting on the step with Brannagh's goat. He is about eight, from Cask, and he has it on its rope, and is feeding it the ends of a cabbage one leaf at a time, very seriously. Brannagh is on the bench by the forge, watching him. She does not get up." },
+          { "say": "nessa", "text": "She's let him have the goat. She doesn't let anyone have the goat. She brought it to the Vote. She brought it to a council of war." },
+          { "narrate": "Biscuit goes over and sits down beside the boy and the goat, the way he does with anyone small who is being serious about something. The boy puts a hand on his head without looking at him." },
+          { "say": "nessa", "text": "Biscuit says he's a good minder. Biscuit says the goat thinks so too. Don't look at me like that, Biscuit's got opinions, he's allowed." },
+          { "say": "Brannagh", "text": "There's nobody left in my lower village to mind her. Nobody's minded her for two years but me. He asked. Nobody else ever asked." },
+          { "say": "nessa", "text": "I'm going to write to Ysolde. About the goat. I'm going to tell her there's a boy from Cask minding a goat in Briarwatch and nobody's making him do it. I don't know why. I think I want her to know there are places where that happens." }
+        ],
+        "choices": [
+          {
+            "id": "write",
+            "label": "“Write it. Send it this time.”",
+            "lines": [
+              { "say": "nessa", "text": "This time. Yes. All right. I always say that. This time I mean it." },
+              { "narrate": "She writes it on her knee by the well, by the last of the light, and seals it with candle-wax from the forge, and gives it to the Vell courier herself before she can change her mind." }
+            ],
+            "approval": { "nessa": 1 }
+          },
+          {
+            "id": "sit",
+            "label": "Sit on the step with the boy and the goat for a while",
+            "lines": [
+              { "narrate": "You sit down on the well step. The boy moves up to make room, and goes on feeding the goat. Nessa sits down on your other side with Biscuit. Nobody says anything for a long time, and it is the easiest silence you have had since the spring." },
+              { "say": "nessa", "text": "I'll write it tomorrow. Tomorrow. Probably." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "vault-camp": {
+    "id": "vault-camp",
+    "after": "b3-vault",
+    "cast": [],
+    "act": "Camp",
+    "location": "The drill-yard at Vell, at dawn, above the vault",
+    "start": "dawn",
+    "nodes": {
+      "dawn": {
+        "title": "One Thing Each",
+        "objective": "Dawn, above the iron vault.",
+        "lines": [
+          { "narrate": "Nobody goes to bed. You sit on the iron rim of the vault door at dawn, with the stair going down into the dark below your boots, and the drill-yard empty, and the river wall grey in the first light." },
+          { "narrate": "Down in the vault the bells are cold. When you put your ear to the stair you hear nothing at all.", "when": { "flag": "b3_vault_closed" } },
+          { "narrate": "Down in the vault the floor is bare, where the bells stood. Out along the river wall, very faint, you can hear iron bells ringing out of time.", "when": { "flag": "b3_vault_held" } },
+          { "narrate": "Nobody makes a joke. Nobody tries. After a long time, somebody says one thing they will remember, and then everybody does, one each, round the rim of the door." },
+          { "say": "orin", "text": "The plates. A number and a date on every one of them, riveted on. Somebody stood there with a hammer thirty-one times. I'll remember that somebody did that, and went home for supper." },
+          { "say": "orin", "text": "And the two who said no. They kept saying it, the whole time he was reading. I'll remember that I heard them and I let it happen.", "when": { "flag": "b3_vault_held" } },
+          { "say": "maren", "text": "The girl from Lindmoor. Hanne. Fourteen. She carried the keeper's water. She asked Aster to hold her hand, and Aster said she was. I'll remember that Aster said she was.", "when": { "flag": "b3_vault_closed" } },
+          { "say": "maren", "text": "One of the ones who didn't answer, when Aster asked. I don't know her name. She's on the river wall now. I'll remember that I don't know what she wanted.", "when": { "notFlag": "b3_vault_closed" } },
+          { "say": "nessa", "text": "The one who was singing. The evening hymn, flat, over and over, all the time we were down there. I've got it in my head and I'm not going to let it go. Somebody should have it." },
+          { "say": "Aster Vey", "text": "The boy at the end. Number Thirty-One, from Osgood's Cross. He asked me whether he'd done something wrong. I said no. I said he'd been in the wrong room. He said that was what they told him, too." },
+          { "narrate": "Then it is your turn." }
+        ],
+        "choices": [
+          {
+            "id": "register",
+            "label": "“The register. The same word on every page: 'present'.”",
+            "requires": { "flagsAny": ["prepared:b3-vault", "partial:b3-vault"] },
+            "lines": [
+              { "narrate": "You say it. People taken for standing in a room. Nobody answers. The sun comes up over the river wall, and Oswin Pike comes across the yard with the tin box under his good arm, and sits down on the rim of the door with you, and does not open it." }
+            ]
+          },
+          {
+            "id": "corvane",
+            "label": "“Corvane, in front of the last bell, with nothing to say.”",
+            "lines": [
+              { "narrate": "You say it. Across the drill-yard, Corvane is on the wall walk above the casting wall, with his ledger, where he reads the lost at dusk. He is not reading. He is standing there with it closed, looking at the river." }
+            ]
+          },
+          {
+            "id": "quiet",
+            "label": "Say nothing, and listen to the morning",
+            "lines": [
+              { "narrate": "You do not say anything. Nobody asks you to. The drill-yard fills slowly with ordinary sounds: a cart, a dog, a woman calling a child in for breakfast. Somebody in the volunteers' barracks is singing the evening hymn at the wrong end of the day, flat, very quietly." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b3-partone-end": {
+    "id": "b3-partone-end",
+    "after": "b3-paid",
+    "cast": [],
+    "act": "The end of Part One",
+    "location": "Highpass, then Dera's forge at Briarwatch",
+    "start": "corvane",
+    "nodes": {
+      "corvane": {
+        "title": "The Keeper of the Names",
+        "objective": "Decide what becomes of High Warden Corvane.",
+        "lines": [
+          { "narrate": "Highpass, the morning after, at the top of the pass. Hesk is in a cell two doors down from Sable's, and has asked for nothing but a pencil. Corvane is in the guardroom with Captain Sorrel, sitting very straight on a hard chair, with his ledger on his knees." },
+          { "say": "Sorrel", "text": "Him I can hold. He broke no law of ours till he walked over the pass with three hundred pikes. This one I don't know what to do with. He's cast fifty living people into bronze. He did it in the open, and they asked, and the council never made a law against it, because nobody imagined we'd need one." },
+          { "narrate": "Iona, beside her, says that the council has had a grim summer since the vote, and will not be gentle with anyone from Vell, and that she would like that recorded before anyone decides anything.", "when": { "flag": "b3_council_refuse" } },
+          { "say": "Sorrel", "text": "You brought him. You decide, and I'll write it down." },
+          { "say": "Corvane", "text": "I've no objection to being decided about. I've decided about a great many people. I'd like to keep the ledger, if it's allowed. If it isn't, I'd like someone to promise to read it." }
+        ],
+        "choices": [
+          {
+            "id": "judged",
+            "label": "Send him to the council's judgement",
+            "lines": [
+              { "narrate": "You tell Sorrel: the council should judge him. In the open, in Aveline's hall, with the doors open so the square can hear, the way he did everything." },
+              { "say": "Corvane", "text": "Thank you. That's fair. I'd like a table, and a lamp to read by, if they're going to take a while. They usually do." },
+              { "narrate": "Sorrel gives him the cell across from Sable's, because it has the best light. Sable, through the bars, asks him whether he is comfortable, and Corvane says that he is not, and Sable says good." }
+            ],
+            "setFlags": { "b3_corvane_judged": true },
+            "next": "forge"
+          },
+          {
+            "id": "vell",
+            "label": "Leave him to his own people",
+            "lines": [
+              { "narrate": "You tell Sorrel: he is Vell's, not the free wards'. Let Vell's people decide what he is owed." },
+              { "narrate": "His own people are in the camps below Highpass and on the road down to the free wards, eighteen thousand of them, with nowhere to go. He goes down the mountain to them that afternoon with Roke beside him and the ledger under his arm, to be wherever they are.", "when": { "flag": "b3_bell_evacuate" } },
+              { "narrate": "He goes back down the Iron Road to Vell that afternoon with Roke beside him and the ledger under his arm, to stand in the drill-yard and let his city decide what he is.", "when": { "notFlag": "b3_bell_evacuate" } },
+              { "say": "Corvane", "text": "They might hang me. They might not. Either way it will be theirs. That's what I wanted for them. I find I want it for myself as well." }
+            ],
+            "setFlags": { "b3_corvane_vell": true },
+            "next": "forge"
+          },
+          {
+            "id": "keeper",
+            "label": "Let him keep the ledger, as keeper of the names",
+            "lines": [
+              { "narrate": "You tell Sorrel: let him keep the ledger. Somebody has to read the names. Nobody else ever has." },
+              { "narrate": "He will keep Fennick's box as well, and the names of a city that is now a list. Fennick has said that he can have it on one condition: that he reads the first page aloud, every night, first.", "when": { "flag": "b3_bell_evacuate" } },
+              { "narrate": "He will go back to Vell and stand on the wall walk at dusk and read the lost, as he has every night for a year, and the cast as well, now, every one of them, by name. And the first page. He says he will read the first page aloud from now on.", "when": { "notFlag": "b3_bell_evacuate" } },
+              { "say": "Corvane", "text": "Keeper of the names. That's a better title than High Warden. I'd have liked to have it first." }
+            ],
+            "setFlags": { "b3_corvane_keeper": true },
+            "next": "forge"
+          }
+        ]
+      },
+      "forge": {
+        "title": "Dera's Forge",
+        "objective": "Home, at the end of the summer.",
+        "lines": [
+          { "narrate": "Briarwatch, at the end of the summer. You walk into the forge and Dera has your gear on the bench before you have finished saying hello. All of it. She has been waiting with the fire up since somebody saw you on the Briarwood road." },
+          { "say": "Dera", "text": "Sit down. Don't talk yet. Let me look at it first and then you can tell me how you did it, and I'll tell you whether you were lying." },
+          { "narrate": "She turns your gear over on the bench, piece by piece, the way she has since the bell, reading it like a letter." },
+          { "say": "Dera", "text": "You stood in a doorway at Vell, they tell me, and eight people behind you came out of it alive. Bulwark Stand, the old guild books call that. Every one of them behind your shield at once. This buckle's taken the weight of it. I'll put a new one on.", "when": { "spec": "guardian" } },
+          { "say": "Dera", "text": "There's a nick on the flat of your blade where you took somebody's sword out of his hand at the last echo-stone. Disarming Flourish, that is. My father could do it. Hold still, I'll dress the edge.", "when": { "spec": "duelist" } },
+          { "say": "Dera", "text": "Roke says three hundred men put their pikes down at stone one, and that when you said \"now\" at the end, all your people moved at once. Coordinated Assault, the drill-books call it. I call it a miracle, with pikes.", "when": { "spec": "warlord" } },
+          { "say": "Dera", "text": "Somebody marked a man for you at the echo-stone, they say, and he never saw where it came from. Death Mark. I don't want to know. I'll sharpen it. I don't want to know.", "when": { "spec": "shadow" } },
+          { "say": "Dera", "text": "There's soot in every seam of this coat. Smoke and Snares, is it, now? Half a column of drill-guard coughing in a field and their pikes tied in knots. Iona will want to know who pays for the pikes.", "when": { "spec": "saboteur" } },
+          { "say": "Dera", "text": "Roke says you turned one of Hesk's own sergeants round at the echo-stone with three sentences and he fought his own side for a minute before he noticed. Turncoat Gambit. I've known merchants who'd sell their mothers for that.", "when": { "spec": "grifter" } },
+          { "say": "Dera", "text": "Your staff's scorched at the tip in a fork. Like lightning. Chain Lightning, they say, and it went down a whole line of pikes at once. Don't point it at my anvil.", "when": { "spec": "evoker" } },
+          { "say": "Dera", "text": "They say you reached back a heartbeat at the echo-stone and gave Maren's breath back to her before she'd lost it. Stolen Second. I've no idea what that does to a clock. I'd keep away from mine.", "when": { "spec": "chronist" } },
+          { "say": "Dera", "text": "Pim says you called a guardian up out of the ground at Vell, and it stood over all of you like a wall. Summon Guardian. He's told the whole village. He's drawn it on the tower stair in chalk.", "when": { "spec": "binder" } },
+          { "say": "Dera", "text": "There's a shine on your hands that doesn't wash off. Shield of Faith, the shrine-sisters call it: everyone near you standing a little straighter and harder to hurt. They say it like it's a thing you'd want to be careful with.", "when": { "spec": "lifewarden" } },
+          { "say": "Dera", "text": "Somebody at stone one said you judged a man without lifting a hand, and he went white and dropped his blade. Judgment. I've had customers I'd have liked to try that on.", "when": { "spec": "exorcist" } },
+          { "say": "Dera", "text": "They say you called down a crusade at the last echo-stone, and everyone on your side healed and went forward at once. Crusade. It's a big word for a forge. I'll just mend the mail.", "when": { "spec": "battlepriest" } },
+          { "say": "Dera", "text": "Every dog in the lane has followed you up from the square, and there were wolves on the Iron Road that went through Hesk's camp like a flood when you called. Stampede. Keep them out of my hens.", "when": { "spec": "beastwarden" } },
+          { "say": "Dera", "text": "There's an arrow-mark on stone one, Roke says, dead in the middle of the plate, from a hundred paces in the dark. Heartseeker. I've fletched you a dozen new ones. Don't waste them on posts.", "when": { "spec": "deadeye" } },
+          { "say": "Dera", "text": "You led three hundred men round the Hollins bend into open ground, they tell me, and they never knew where they were till the arrows landed. Ambush Ground. I'd have liked to see Hesk's face.", "when": { "spec": "pathfinder" } },
+          { "say": "Dera", "text": "They say you said a word at the echo-stone and a man forgot what he was about to do. Word of Unmaking. Don't say it in here. I've got enough I've forgotten.", "when": { "spec": "lorekeeper" } },
+          { "say": "Dera", "text": "Roke says you sang at stone one and every one of your people went in together, braver than they meant to be. War Anthem. Sing it at the harvest. Nobody here can keep a tune.", "when": { "spec": "battlecantor" } },
+          { "say": "Dera", "text": "They say you stood between two lines of pikes at the echo-stone and made them a bargain, and both sides took it. Grand Bargain. Aveline wants you on the council. I said you'd run.", "when": { "spec": "envoy" } },
+          { "say": "Dera", "text": "You've learned something new on that road. I can see it in how you carry yourself, the way I can see a weld. I don't know what it is. Neither do you yet, I think.", "when": { "spec": "none" } },
+          { "say": "Dera", "text": "Now. Gossip. All of it. That's the price. It always was." },
+          { "say": "orin", "text": "Mags said she'd think about it. She hasn't sent word. I'm not going to Saltwick till she does. It isn't mine to decide when she's finished thinking." },
+          { "say": "nessa", "text": "I'm writing to Ysolde. Again. I've written her four. I sent two. I'm going to send this one. It's about the goat.", "when": { "noneFlag": ["b3_bell_cast"] } },
+          { "say": "nessa", "text": "I'm writing about Ysolde. Not to her. About her. To nobody. I'm going to send it anyway. I'm going to send it to Wil. He can keep it for when he's older.", "when": { "flag": "b3_bell_cast" } },
+          { "say": "maren", "text": "I've kept no list. I've kept her button tin. That's all. That's enough." },
+          { "narrate": "Up in the tower, on the hour, the Briarwatch bell rings. It is Tovin ringing it, by hand, on the rope, because there is nobody in it now to ring it with him. A breath after him, Pim rings the hand-bell on the tower step. He has learned Vell's hours from the old bell-books, and he rings those too, after ours, very gently.", "when": { "flag": "b3_bell_aster" } },
+          { "narrate": "Up in the tower, on the hour, the Briarwatch bell rings. Tovin rings it, and Pim rings the hand-bell on the tower step a breath after, and inside the bronze Aster Vey rings with both of them, exactly on time.", "when": { "notFlag": "b3_bell_aster" } },
+          { "narrate": "Dera puts down her hammer to listen, as she always does. Then she picks it up again." }
+        ],
+        "choices": [
+          { "id": "letter", "label": "Open the letter that came up with the Highpass post", "next": "letter" }
+        ]
+      },
+      "letter": {
+        "title": "A Letter from Vell",
+        "objective": "A letter, from over the pass.",
+        "lines": [
+          { "narrate": "There is a letter with the Highpass post, sealed in grey wax, in a neat clerk's hand you know. It has come over the pass in four days, which is fast." },
+          { "narrate": "\"To the one who broke the Single Voice, at Briarwatch. From Clerk-Major Fennick, at what was Vell. I have come back into the city with two clerks to finish the census of what was left behind. It is irregular. Nobody else was going to.\"", "when": { "flag": "b3_bell_evacuate" } },
+          { "narrate": "\"To the one who broke the Single Voice, at Briarwatch. From the records office at Vell, by the hand of the High Warden's clerks, the High Warden being held at Highpass.\"", "when": { "flag": "b3_corvane_judged", "notFlag": "b3_bell_evacuate" } },
+          { "narrate": "\"To the one who broke the Single Voice, at Briarwatch. From the records office at Vell, by the hand of the High Warden's clerks.\"", "when": { "notFlag": "b3_bell_evacuate", "noneFlag": ["b3_corvane_keeper", "b3_corvane_judged"] } },
+          { "narrate": "\"To the one who broke the Single Voice, at Briarwatch. From the records office at Vell, by the hand of the clerks of the Keeper of the Names.\"", "when": { "flag": "b3_corvane_keeper", "notFlag": "b3_bell_evacuate" } },
+          { "narrate": "\"I report, for the record, that the iron vault under the drill-yard was found open on the morning of the fourteenth. The three keys are on Sergeant Pike's belt, where they should be. The vault was opened with them nonetheless, by someone who knew where the sergeant sleeps.\"" },
+          { "narrate": "\"The round door at the far end of the vault is open. It was not forced. It was unlocked. Beneath it there is a stair. It is not iron and it is not Commandery work. It is cut in the rock, very old, and it goes down further than our lamps.\"" },
+          { "narrate": "\"There are chalk marks on the first steps, and the prints of three pairs of boots, going down. None coming up. Someone has opened the iron door under the vault, and gone down.\"" },
+          { "narrate": "\"I have entered it in the log as 'persons unknown, descending'. I do not know what else to call it. I thought you would want to know.\"" },
+          { "narrate": "To be continued." }
+        ],
+        "choices": [
+          { "id": "fold", "label": "Fold the letter, and put it in your coat", "setFlags": { "b3_partone_done": true } }
+        ]
+      }
+    }
   }
 }

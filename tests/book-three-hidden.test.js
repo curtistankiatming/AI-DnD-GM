@@ -20,7 +20,7 @@ function ready(id) {
 
 test('without the preview, Book Three is written but not on the board', () => {
   assert.ok(!/^(1|true|yes|on)$/i.test(String(process.env.BRIARWATCH_PREVIEW_BOOKS || '')), 'This file runs as a player would.');
-  assert.ok(['b3-letter', 'b3-rite', 'b3-pass', 'b3-saltwick', 'b3-vell', 'b3-witness'].every((id) => QUESTS[id]), 'The chapters exist.');
+  assert.ok(['b3-letter', 'b3-rite', 'b3-pass', 'b3-saltwick', 'b3-vell', 'b3-witness', 'b3-home', 'b3-vault', 'b3-greatbell', 'b3-paid'].every((id) => QUESTS[id]), 'The chapters exist.');
   assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0);
   assert.deepEqual(Book.BOOKS.map((b) => b.n), [1, 2]);
   assert.ok(!Book.CHAPTERS.some((q) => q.book === 3));

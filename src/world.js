@@ -33,6 +33,11 @@ function init(state){
 // and reachable only while one of them is playable (src/book.js townOpen).
 const townOpen=Book.townOpen;
 function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !state.combat?.active&&TOWNS[id]?TOWNS[id]:null;}
+// A town a story choice has emptied ("emptied" in towns.json: Book Three's Vell
+// after the evacuation) has no shop, forge, workshop, inn or side jobs: only a
+// place to sleep, the expedition board and the road out.
+function emptied(state,id){const gone=TOWNS[id]?.emptied;return Boolean(gone&&state.story?.flags?.[gone.flag]);}
+const asNow=(state,t)=>t&&emptied(state,t.id)?{...t,subtitle:t.emptied.subtitle,description:t.emptied.description,rumor:t.emptied.rumor,services:['storage'],stock:[],emptied:true}:t;
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of TOWNS[id].stock)if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
@@ -42,7 +47,7 @@ function activeMerchant(state){
 }
 function market(state,kind='town'){
   if(kind==='merchant'){const m=activeMerchant(state);return m?{id:m.id,stock:m.meeting.stock,discount:m.meeting.discount||0,merchant:true}:null;}
-  const t=town(state);return t?{id:t.id,stock:ensureStock(state,t.id),discount:0,merchant:false}:null;
+  const t=town(state);return t&&!emptied(state,t.id)?{id:t.id,stock:ensureStock(state,t.id),discount:0,merchant:false}:null;
 }
 function price(state,id,kind='town'){
   const m=market(state,kind);const value=ITEMS[id]?.value||0;
@@ -127,7 +132,7 @@ const JOB_SHARE=0.12;
 // A job whose window runs into a book this save cannot play (not released, or
 // a paid book on a free hosted account) is never offered.
 const jobInBooks=(state,job)=>[job.from,job.until].filter(Boolean).every(id=>Book.playable(state,id));
-function jobOpen(state,job){return Boolean(job&&jobInBooks(state,job)&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
+function jobOpen(state,job){return Boolean(job&&jobInBooks(state,job)&&!emptied(state,job.town)&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
 // From Book Three a chapter pays exactly one level, so a job pays mostly gold
 // and about 130 XP (docs/book-three/DESIGN.md, "Side jobs and camp scenes").
 const BOOK_THREE_JOB_XP=130;
@@ -299,8 +304,11 @@ function handle(state,action,rng,events,api){
     api.enterNode(state,node,events);
     return arrive(state,events,`Side job: ${job.name}.`);
   }
+  const empty=emptied(state,t.id);
+  if(empty&&['upgrade','craft'].includes(action.type))return fail(events,`There is nobody left in ${t.name} to do that work.`);
   if(action.type==='town-service'){
     if(action.serviceId==='civic-rest')return longRest(state,false,events);
+    if(empty)return fail(events,`There is nobody left in ${t.name} to offer that.`);
     if(action.serviceId==='inn')return longRest(state,true,events);
     if(action.serviceId==='treatment'){
       const afflicted=G.actors(state).filter(a=>a.conditions.some(c=>['poisoned','bleeding','frightened','deafened'].includes(c.id)));
@@ -388,12 +396,13 @@ function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
   // A written chapter in a book this save cannot open (unreleased, or paid) is not on the board.
   const ready=[...Object.values(QUESTS),...Director.list(state)].filter(q=>Book.playable(state,q.id)&&completed(state,q.unlock)&&!completed(state,q.id));
+  const empty=Boolean(t&&emptied(state,t.id));
   const services=t?[
     {id:'civic-rest',name:'Civic lodging',cost:0,description:'Full HP and resources; persistent poison needs treatment. No stock refresh or XP.'},
     {id:'inn',name:'Inn: expedition lodging',cost:10+state.player.level,description:`Full recovery, ${4+state.player.level} temporary HP each and +1 Inspiration. Once per progress cycle.`,disabled:Boolean(w.servicesUsed[`inn:${w.cycle}`])},
     {id:'treatment',name:'Shrine: treat conditions',cost:8+state.player.level,description:'Clear poison, bleeding, fear and deafness for the party.',disabled:!G.actors(state).some(a=>a.conditions.some(c=>['poisoned','bleeding','frightened','deafened'].includes(c.id)))},
     {id:'blessing',name:'Shrine: bless the hero',cost:12,description:'+1d4 to the hero’s next saving throw, then consumed.',disabled:state.player.conditions.some(c=>c.id==='blessed')}
-  ]:[];
+  ].filter(x=>!empty||x.id==='civic-rest'):[];
   const eq=state.player.inventory.filter(e=>ITEMS[e.itemId].slot).flatMap(e=>{
     const item=ITEMS[e.itemId],up=ITEMS[`${item.id}-fine`];if(!up)return [];
     const owners=G.actors(state).filter(a=>Object.values(a.equipment).includes(item.id));
@@ -410,12 +419,12 @@ function view(state){
     if(q.knownThreat&&original.route.poison&&!state.player.inventory.some(e=>e.itemId==='antitoxin'))warnings.push('Poison was reported. You have no Antitoxin; treatment remains available in town.');
     return {questId:q.id,warnings,knownThreat:q.knownThreat};
   });
-  return {day:w.day,cycle:w.cycle,town:t?{...t,rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!STORY_NODES[state.story.nodeId]?.defeat,
+  return {day:w.day,cycle:w.cycle,town:t?{...asNow(state,t),rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!STORY_NODES[state.story.nodeId]?.defeat,
     towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
     reputation:w.reputation,services,
-    shop:t?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
+    shop:t&&!empty?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
     merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
-    upgrades:t?eq:[],recipes:t?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
+    upgrades:t&&!empty?eq:[],recipes:t&&!empty?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
     storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:ITEMS[e.itemId].purpose})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
     quests:questCards,preparation:prep,director:Director.view(state),bounty:t?require('./bounty').view(state):null,
@@ -430,4 +439,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,townOpen,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={init,town,townOpen,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

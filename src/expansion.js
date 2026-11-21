@@ -146,7 +146,9 @@ function installQuest(q){
   ENEMIES[q.foe]={id:q.foe,name:q.foeName,maxHp:f.main.maxHp,ac:f.main.ac,level,abilities:{str:14,dex:12,con:14,int:13,wis:13,cha:14},attack:{name:q.attackName||(type==='wild'?'Briar Lash':type==='undead'?'Remembered Toll':'Ward Strike'),bonus:f.main.attackBonus,damage:f.main.damage,damageType:type==='undead'?'necrotic':type==='storm'?'lightning':'slashing'},aiRole:level>=8?'boss':'leader',tags:type==='undead'?['undead']:[],resistances:type==='undead'?['slashing','piercing','bludgeoning']:[],xp:0};
   const minion=`${q.foe}-retainer`;
   ENEMIES[minion]={id:minion,name:q.retainerName||(type==='undead'?'Bound Record Keeper':type==='wild'?'Ashbound Reedling':'Bound Retainer'),maxHp:f.retainer.maxHp,ac:f.retainer.ac,level,abilities:{str:12,dex:12,con:12,int:9,wis:11,cha:9},attack:{name:'Guarding Strike',bonus:f.retainer.attackBonus,damage:f.retainer.damage,damageType:'bludgeoning'},aiRole:'soldier',tags:type==='undead'?['undead']:[],xp:0};
-  ENCOUNTERS[`quest:${q.id}`]={id:`quest:${q.id}`,name:q.name,enemies:[q.foe,minion,minion],storyScale:0.82,standardScale:1,grittyScale:1.18,xp:0,loot:[],intro:plain(q.crisis),...(Array.isArray(q.crisis)?{introLines:q.crisis.map(storyLine)}:{}),questId:q.id,objective:q.objective,victoryNode:`${prefix}-after`,defeatNode:'defeat'};
+  // "flagScale" ({story flag: multiplier}) makes a chapter's fight harder or
+  // easier when an earlier choice was made (src/combat.js flagScale).
+  ENCOUNTERS[`quest:${q.id}`]={id:`quest:${q.id}`,name:q.name,enemies:[q.foe,minion,minion],storyScale:0.82,standardScale:1,grittyScale:1.18,xp:0,loot:[],...(q.flagScale?{flagScale:q.flagScale}:{}),intro:plain(q.crisis),...(Array.isArray(q.crisis)?{introLines:q.crisis.map(storyLine)}:{}),questId:q.id,objective:q.objective,victoryNode:`${prefix}-after`,defeatNode:'defeat'};
 }
 for(const q of Object.values(QUESTS))installQuest(q);
 // Conversation scenes (src/data/scenes.json): companions talk with each other
@@ -203,7 +205,14 @@ for(const node of Object.values(STORY_NODES)){
   if(Array.isArray(node.lines)){node.dialogue=node.lines.map(storyLine);node.opening=dialogueText(node.dialogue);}
   for(const c of node.choices||[])for(const key of ['success','failure','result']){const o=c[key];if(o&&Array.isArray(o.lines)){o.dialogue=o.lines.map(storyLine);o.text=dialogueText(o.dialogue);}}
 }
-for(const town of Object.values(TOWNS))STORY_NODES[`town-${town.id}`]={id:`town-${town.id}`,act:'Downtime & preparation',title:town.name,location:town.subtitle,objective:'Recover, develop the party, choose an expedition and prepare for known threats.',opening:town.description,safeRest:true,townId:town.id,choices:[]};
+// A town a story choice has emptied ("emptied": {flag, subtitle, description,
+// rumor}, Book Three's Vell after the evacuation) is told as it is now when the
+// party arrives; src/world.js closes its shops, services and side jobs.
+for(const town of Object.values(TOWNS)){
+  const gone=town.emptied;
+  STORY_NODES[`town-${town.id}`]={id:`town-${town.id}`,act:'Downtime & preparation',title:town.name,location:town.subtitle,objective:'Recover, develop the party, choose an expedition and prepare for known threats.',opening:town.description,safeRest:true,townId:town.id,choices:[],
+    ...(gone?{dialogue:[{narration:town.description,when:{notFlag:gone.flag}},{narration:gone.description,when:{flag:gone.flag}}]}:{})};
+}
 
 // Continue the original story rather than reset the party or fake a level grant.
 STORY_NODES.ending.ending=false;
