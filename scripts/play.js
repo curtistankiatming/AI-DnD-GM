@@ -208,6 +208,8 @@ if (command === "new") {
     if (before.scene.ending && !before.world?.town) break;
     const action = chooseAction(before, memory);
     if (!action) break;
+    // Nothing left to play: the end of what is written so far, or a real dead end.
+    if (action.error) { line(before.world?.book?.waiting ? "[auto] To be continued: nothing more is written yet." : `[auto] ${action.error}`); break; }
     const r = act(file, action);
     line(`[auto] ${JSON.stringify(action)}${r.ok ? "" : " (refused)"}`);
     // The step that ends a fight shows what it achieved (the written objective result).

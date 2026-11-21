@@ -11,7 +11,7 @@
 // into the story registries whenever a save is loaded, so they survive
 // reloads and work in the offline browser build without a model.
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
-const { QUESTS, TOWNS, installQuest } = require('./expansion');
+const { QUESTS, TOWNS, installQuest, trialFraming } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
 const Book = require('./book');
@@ -334,7 +334,7 @@ function writtenTrial(state, kind = P.nextTrial(state.player) || 'third') {
     name: `The ${to} Trial`, region: at.region, faction: 'wardens',
     brief: `The ${at.judges} of the ${b.name} path have named ${hero} a candidate. Pass their trial to rise from ${from} to ${to}.`,
     threat: `The trial ends with a ${at.judge} who fights the way a ${to} must: ${b.style.toLowerCase()}`,
-    opening: `Banners of every ${from} who came before line the road to ${at.ground}. A ${at.judge} waits at the gate.`,
+    opening: `${framing(state, kind)}Banners of every ${from} who came before line the road to ${at.ground}. A ${at.judge} waits at the gate.`,
     clue: `The ${at.judges} care less about winning than about how a ${to} wins.`,
     investigate: { label: `Hear the ${at.judges} out`, skill: 'insight', alt: ['history', 'persuasion'], success: 'They tell you what the last candidate got wrong.', failure: 'They say little, but you learn the order of the trials.' },
     route: { label: `Walk the road to ${at.ground}`, skill: route, alt: ['athletics', 'survival'], tools: [], success: 'You reach the final circle with strength to spare.', failure: 'The road takes its toll, but you reach the final circle.' },
@@ -349,20 +349,26 @@ function writtenTrial(state, kind = P.nextTrial(state.player) || 'third') {
     ]
   };
 }
+// The book's last words before the 3rd job trial (src/expansion.js
+// trialFraming, Book Three's epilogue): what the hero gave or kept, read from
+// the save. The trial opens with it, as the Second Oath framed the 2nd job.
+const framing = (state, kind) => { const text = kind === 'third' ? clean(trialFraming(state), TEXT.brief) : ''; return text ? `${text} ` : ''; };
 // Engine action: put the due job trial on the board, from Claude's draft or
 // the written trial.
 function commissionTrial(state, draft, events) {
   const blocked = trialAvailability(state);
   if (blocked) return { ok: false, error: blocked };
   const d = normalize(state), b = P.branchOf(state.player), kind = P.nextTrial(state.player), to = b[kind];
-  let out = draft ? bound({ ...state, trial: kind }, draft) : null;
+  // Claude's trial opens with the book's framing too (the written one has it built in).
+  const framed = draft && typeof draft === 'object' && framing(state, kind) ? { ...draft, opening: `${framing(state, kind)}${clean(draft.opening, TEXT.long)}` } : draft;
+  let out = framed ? bound({ ...state, trial: kind }, framed) : null;
   const written = !out?.ok;
   if (written) out = bound({ ...state, trial: kind }, writtenTrial(state, kind));
   if (!out.ok) return out;
   const q = finalize({ ...out.quest, createdDay: state.world.day, createdLevel: out.quest.level }, d.count + 1);
   d.count += 1;
   d.quests[q.id] = install(q);
-  const text = `Your ${to} trial is on the expedition board: ${q.name}. ${q.brief} Pass it to become a ${to}. Reward: ${q.xp} XP and ${q.gold} gold.${written && draft ? ' The written trial was used because the AI draft could not be used.' : ''}`;
+  const text = `${framing(state, kind)}Your ${to} trial is on the expedition board: ${q.name}. ${q.brief} Pass it to become a ${to}. Reward: ${q.xp} XP and ${q.gold} gold.${written && draft ? ' The written trial was used because the AI draft could not be used.' : ''}`;
   events.push({ type: 'quest', tone: 'good', text });
   return { ok: true, kind: 'director', questId: q.id, trial: kind, written, outcomeText: text };
 }
@@ -460,7 +466,8 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
 
 function trialBrief(state) {
   const b = P.branchOf(state.player), kind = P.nextTrial(state.player) || 'third', from = kind === 'fourth' ? b.third : b.name;
-  return `This adventure is ${state.player.name}'s ${kind === 'fourth' ? 'legendary 4th job trial' : '3rd job trial'}: the test that turns a ${from} into a ${b[kind]}. ${b.style} Make the opening, crisis and objective test exactly that, ending with an examiner, rival or ordeal worthy of the title. Name the adventure after the trial.`;
+  const f = framing(state, kind).trim();
+  return `This adventure is ${state.player.name}'s ${kind === 'fourth' ? 'legendary 4th job trial' : '3rd job trial'}: the test that turns a ${from} into a ${b[kind]}. ${b.style} Make the opening, crisis and objective test exactly that, ending with an examiner, rival or ordeal worthy of the title. Name the adventure after the trial.${f ? ` The written story ended with these words, which the game puts at the start of your opening; let the trial follow from them: ${f}` : ''}`;
 }
 function trialView(state) {
   const b = P.branchOf(state.player), kind = P.nextTrial(state.player);
@@ -468,7 +475,7 @@ function trialView(state) {
   const q = open(state).find(x => x.trial === kind);
   const blocked = trialAvailability(state);
   return { kind, job: TRIALS[kind].job, label: TRIALS[kind].label, tier: XP.tier(TRIALS[kind].tier).name, level: TRIALS[kind].level, branch: b.name, from: kind === 'fourth' ? b.third : b.name, title: b[kind], third: b.third, style: b.style,
-    canRequest: !blocked, reason: blocked, questId: q?.id || null, started: Boolean(q && (state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node)) };
+    framing: framing(state, kind).trim() || null, canRequest: !blocked, reason: blocked, questId: q?.id || null, started: Boolean(q && (state.world.activeQuest === q.id || state.world.progress?.[q.id]?.node)) };
 }
 function view(state) {
   const blocked = availability(state);

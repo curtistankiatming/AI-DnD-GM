@@ -51,7 +51,8 @@ function chooseAction(v,m={},style='prepared'){
     return done('choose-reward',{level:r.level,optionId:opt.id});}
   if(p.specializationOptions.length)return done('specialize',{specializationId:p.specializationOptions[0].id});
   // memory.bookOneOnly stops after Book One (the level 10 trial and the road after it).
-  if((p.specialization||p.job?.mastery)&&(w.booksComplete||m.bookOneOnly&&w.campaignComplete))return null;
+  // The last book stops in town, after its final scene (Book Three's epilogue is one).
+  if((p.specialization||p.job?.mastery)&&(w.booksComplete&&w.town||m.bookOneOnly&&w.campaignComplete))return null;
   if(w.town){
     if([hero,...v.party].some(a=>a.hp<a.maxHp)||Object.values(hero.resources).some(r=>r.current<r.max))return done('town-service',{serviceId:'civic-rest'});
     const treatment=w.services.find(s=>s.id==='treatment'&&!s.disabled);if(treatment&&hero.gold>=treatment.cost)return done('town-service',{serviceId:'treatment'});

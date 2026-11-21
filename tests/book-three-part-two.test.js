@@ -3,12 +3,14 @@
 // These tests read it the way agent playtests do. node --test runs each file
 // in its own process, so this reaches no other test file.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
-// Book Three, Part Two, "The Stair", chapters 11 to 17
+// Book Three, Part Two, "The Stair", chapters 11 to 20
 // (docs/book-three/DESIGN-PART-TWO.md): the price of a yes, Wren's bell, the
-// order, the town that said no, the witness's seal, the winter watch and
-// Hesk's company, their scenes and side jobs, and the engine work they need
-// (oneOf line groups, line setFlag, walkouts in Part Two and none from the
-// stair on, a peaceful way made easier by an earlier choice).
+// order, the town that said no, the witness's seal, the winter watch,
+// Hesk's company, the deep, the first promise and the first bell, their
+// scenes and side jobs, and the engine work they need (oneOf line groups,
+// line setFlag, walkouts in Part Two and none from the stair on, a peaceful
+// way made easier or harder by an earlier choice, chapters that go straight
+// on with a ledge to wake at, and the epilogue framing the 3rd job trial).
 //
 // These tests start each chapter from a scripted state with every chapter
 // before it marked done.
@@ -20,7 +22,7 @@ const { QUESTS, SCENES, SIDE_JOBS, liveLines, playLines, storyLine, dialogueText
 const RAWQ = require('../src/data/book-three-part-two/quests.json'), RAWS = require('../src/data/book-three-part-two/scenes.json'), RAWJ = require('../src/data/book-three-part-two/side-jobs.json');
 const high = () => .999999, low = () => 0;
 
-const IDS = ['b3-price', 'b3-wren', 'b3-order', 'b3-ashford', 'b3-seal', 'b3-winter', 'b3-company'];
+const IDS = ['b3-price', 'b3-wren', 'b3-order', 'b3-ashford', 'b3-seal', 'b3-winter', 'b3-company', 'b3-deep', 'b3-promise', 'b3-firstbell'];
 const PART_TWO = Object.values(QUESTS).filter((q) => q.book === 3 && q.part === 2);
 const PART_ONE_IDS = ['b3-letter', 'b3-rite', 'b3-pass', 'b3-saltwick', 'b3-vell', 'b3-witness', 'b3-home', 'b3-vault', 'b3-greatbell', 'b3-paid'];
 const ALL_TOWNS = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold', 'saltwick', 'vell'];
@@ -140,7 +142,7 @@ test('a scene choice with requires is offered only when it is met', () => {
 });
 
 // The chapters.
-test('Part Two follows Part One: seven chapters so far, one level each, in their own files', () => {
+test('Part Two follows Part One: ten chapters, one level each, in their own files', () => {
   assert.deepEqual(PART_TWO.map((q) => q.id), IDS);
   assert.deepEqual(PART_TWO.map((q) => [q.id, q.unlock, q.town, q.nextTown || q.town, q.level, q.xp, q.book, q.part]), [
     ['b3-price', 'b3-paid', 'merrowgate', 'cinderfold', 30, 9250, 3, 2],
@@ -149,8 +151,13 @@ test('Part Two follows Part One: seven chapters so far, one level each, in their
     ['b3-ashford', 'b3-order', 'ashford', 'highpass', 33, 10000, 3, 2],
     ['b3-seal', 'b3-ashford', 'highpass', 'briarwatch', 34, 10250, 3, 2],
     ['b3-winter', 'b3-seal', 'briarwatch', 'vell', 35, 10500, 3, 2],
-    ['b3-company', 'b3-winter', 'vell', 'vell', 36, 10750, 3, 2]
+    ['b3-company', 'b3-winter', 'vell', 'vell', 36, 10750, 3, 2],
+    ['b3-deep', 'b3-company', 'vell', 'vell', 37, 11000, 3, 2],
+    ['b3-promise', 'b3-deep', 'vell', 'vell', 38, 11250, 3, 2],
+    ['b3-firstbell', 'b3-promise', 'vell', 'briarwatch', 39, 11500, 3, 2]
   ]);
+  // Chapters 17 to 19 go straight on, down the stair; chapter 20 ends the book.
+  assert.deepEqual(PART_TWO.filter((q) => q.continues).map((q) => q.id), ['b3-company', 'b3-deep', 'b3-promise']);
   for (const q of PART_TWO) {
     assert.equal(q.xp, P.levelBand(q.level), `${q.id} pays exactly one level`);
     assert.ok(RAWQ[q.id] && !require('../src/data/quests.json')._note, `${q.id} is written in the Part Two file`);
@@ -168,9 +175,10 @@ test('Part Two follows Part One: seven chapters so far, one level each, in their
   assert.deepEqual(order.slice(-IDS.length), IDS);
   // Every Part One chapter it follows is written.
   for (const id of PART_ONE_IDS) assert.ok(QUESTS[id], id);
-  // Book Three stays hidden from players; the preview shows it waiting after chapter 17.
+  // Book Three stays hidden from players; with its finale written it is no longer being written.
   assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0);
-  assert.equal(Book.SHELF.find((b) => b.n === 3).writing, true, 'Chapters 18 to 20 are still to come.');
+  assert.equal(Book.SHELF.find((b) => b.n === 3).finale, 'b3-firstbell');
+  assert.equal(Book.SHELF.find((b) => b.n === 3).writing, false, 'Chapter 20 is the last.');
 });
 
 test('every consumer sees one set of tables: the Part Two files are merged into quests, scenes and side jobs', () => {
@@ -198,10 +206,15 @@ const EXPECT = {
   'b3-ashford': { defend: ['b3_ashford_defended', {}], children: ['b3_ashford_children', { maren: -1 }], cast: ['b3_ashford_cast', { nessa: -1, maren: -1 }] },
   'b3-seal': { take: ['b3_seal_taken', { maren: -1 }], refuse: ['b3_seal_refused', { maren: 1 }], many: ['b3_seal_many', {}] },
   'b3-winter': { promise: ['b3_wards_promise', {}], towns: ['b3_towns_asked', {}], alone: ['b3_go_alone', {}] },
-  'b3-company': { keep: ['b3_door_kept', {}], close: ['b3_door_closed', {}] }
+  'b3-company': { keep: ['b3_door_kept', {}], close: ['b3_door_closed', {}] },
+  'b3-deep': { escort: ['b3_turned_escorted', {}], fennick: ['b3_turned_fennick', {}], leave: ['b3_turned_left', { maren: -1, orin: -1 }] },
+  'b3-promise': { tell: ['b3_three_told', {}], take: ['b3_three_taken', { maren: -1 }], left: ['b3_three_left', {}] },
+  'b3-firstbell': { old: ['b3_promise_old', {}], hesk: ['b3_promise_hesk', {}], seal: ['b3_stair_sealed', {}] }
 };
+// The chapter that follows one which goes straight on.
+const nextOf = (id) => PART_TWO.find((q) => q.unlock === id);
 
-test('every chapter plays to its end peacefully, by every decision, levels the hero by one, and its scene leads to the next town', () => {
+test('every chapter plays to its end peacefully, by every decision, levels the hero by one, and its scene or the next chapter follows', () => {
   for (const id of IDS) for (const [decision, [flag, approval]] of Object.entries(EXPECT[id])) {
     const r = playPeaceful(id, decision);
     const s = r.state;
@@ -211,11 +224,12 @@ test('every chapter plays to its end peacefully, by every decision, levels the h
     assert.equal(s.story.flags[`method:${id}`], 'peace');
     assert.equal(s.player.level, QUESTS[id].level + 1, `${id}: after chapter N the hero is level 20+N`);
     assert.equal(s.player.xp, P.XP_NEXT[QUESTS[id].level - 1] + QUESTS[id].xp, `${id}: exactly the chapter's XP`);
-    // Chapter 17 has no scene: it runs straight on (for now, to the town).
-    const scene = sceneOf(id);
-    if (scene) assert.equal(s.story.nodeId, `scene-${scene.id}-${scene.start}`, `${id}: its scene follows`);
-    else assert.equal(id, 'b3-company', `${id} has a scene`);
     assert.deepEqual(QUESTS[id].decisions.find((d) => d.id === decision).approval || {}, approval, `${id}/${decision} approval`);
+    // Chapters 17 to 19 have no scene: they go straight on to the next chapter's opening.
+    const scene = sceneOf(id);
+    if (QUESTS[id].continues) { assert.equal(scene, undefined, id); assert.equal(s.story.nodeId, `q-${nextOf(id).id}-start`, `${id}/${decision} goes straight on`); continue; }
+    assert.ok(scene, `${id} has a scene`);
+    assert.equal(s.story.nodeId, `scene-${scene.id}-${scene.start}`, `${id}: its scene follows`);
     assert.equal(toTown(s).story.nodeId, `town-${QUESTS[id].nextTown}`, `${id}/${decision}`);
   }
 });
@@ -438,22 +452,26 @@ test('every Part Two line uses known conditions, and every flag it reads is set 
   // Read from Books One and Two and from Part One (design, "Book Two and Part One flags read in Part Two").
   const EARLIER = new Set(['nessa_keeper', 'elske_seat', 'elske_free', 'elske_judged', 'b2:haverick_named', 'mother_chorus', 'mother_silenced', 'mother_recalled', 'job:minersvote-decided', 'job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread',
     'b3_rite_law', 'b3_rite_destroyed', 'b3_rite_vell', 'b3_saltwick_moved', 'b3_saltwick_bought', 'b3_bell_evacuate', 'b3_partone_done',
-    'b3_bell_cast', 'b3_bell_aster', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath']);
+    'b3_bell_cast', 'b3_bell_aster', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath', 'wards_seat']);
   const ENGINE = /^(method|prepared|approach|partial|job|away|walked):/;
   const setIn = (content) => { const f = new Set(); JSON.stringify(content, (k, v) => { if (k === 'setFlags' && v) Object.keys(v).forEach((x) => f.add(x)); if (k === 'setFlag') Object.keys(typeof v === 'string' ? { [v]: 1 } : v).forEach((x) => f.add(x)); return v; }); for (const d of content.decisions || []) f.add(d.flag); return f; };
   const byChapter = IDS.map((id) => { const f = setIn(RAWQ[id]); const sc = sceneOf(id); if (sc) for (const x of setIn(RAWS[sc.id])) f.add(x); return f; });
   const setBefore = (flag, upTo) => byChapter.slice(0, upTo).some((f) => f.has(flag));
+  // A line's setFlag is set as it is told, so the lines after it in the same piece may read it.
+  const toldIn = (content) => { const f = new Set(); for (const l of everyLine(content)) if (l.setFlag) Object.keys(typeof l.setFlag === 'string' ? { [l.setFlag]: 1 } : l.setFlag).forEach((x) => f.add(x)); return f; };
   const check = (owner, content, upTo) => {
+    const own = toldIn(content);
     for (const l of everyLine(content)) {
       for (const key of Object.keys(l.when)) assert.ok(KNOWN.has(key), `${owner}: ${key}`);
       for (const key of ['party', 'absent']) if (l.when[key]) assert.ok(COMPANIONS[l.when[key]], owner);
       for (const flag of [l.when.flag, l.when.notFlag, ...(l.when.anyFlag || []), ...(l.when.noneFlag || [])].filter(Boolean)) {
         if (ENGINE.test(flag) && !/^job:(minersvote|library)/.test(flag)) continue;
-        assert.ok(EARLIER.has(flag) || setBefore(flag, upTo), `${owner}: ${flag} is read before it can be set`);
+        assert.ok(EARLIER.has(flag) || setBefore(flag, upTo) || own.has(flag), `${owner}: ${flag} is read before it can be set`);
       }
     }
   };
-  IDS.forEach((id, i) => check(id, RAWQ[id], i));
+  // A chapter's ledge is woken at only after its decision, so it may read the chapter's own flags.
+  IDS.forEach((id, i) => { const { ledge, ...chapter } = RAWQ[id]; check(id, chapter, i); if (ledge) check(`${id} ledge`, ledge, i + 1); });
   for (const [id, s] of Object.entries(RAWS).filter(([k]) => !k.startsWith('_'))) check(id, s, IDS.indexOf(s.after) + 1);
   for (const [id, j] of Object.entries(RAWJ).filter(([k]) => !k.startsWith('_'))) check(id, j, Math.max(0, IDS.indexOf(j.until)));
   for (const id of IDS) for (const t of RAWQ[id].talks) for (const f of t.requires?.flagsAny || []) assert.ok(EARLIER.has(f), `${id}/${t.id}: ${f}`);
@@ -472,7 +490,8 @@ test('a save missing every Book Two and Part One choice still hears each chapter
     if (!party.length) for (const text of [start, after]) assert.doesNotMatch(text, /^(Orin|Maren|Nessa):/m, id);
     if (!party.length) for (const d of QUESTS[id].decisions.filter((x) => !x.requires)) {
       let r = act(at(id, 'after', { party }), { type: 'story-choice', choiceId: d.id }).state;
-      for (let i = 0; i < 4 && !E.buildView(r).world.town; i++) { assert.doesNotMatch(opening(r), /^(Orin|Maren|Nessa):/m, `${id}/${d.id} ${r.story.nodeId}`); r = act(r, { type: 'story-choice', choiceId: E.buildView(r).scene.choices.find((c) => !c.locked).id }).state; }
+      // Through the scene to town, or (straight on) to the next chapter's opening.
+      for (let i = 0; i < 4 && !E.buildView(r).world.town; i++) { assert.doesNotMatch(opening(r), /^(Orin|Maren|Nessa):/m, `${id}/${d.id} ${r.story.nodeId}`); if (r.story.nodeId.startsWith('q-')) break; r = act(r, { type: 'story-choice', choiceId: E.buildView(r).scene.choices.find((c) => !c.locked).id }).state; }
     }
   }
 });
@@ -532,12 +551,13 @@ test('walkouts do not run in Part One, or when no written chapter follows', () =
   s = finish(s, 'b3-witness', 'witness');
   assert.ok(STORY_NODES[s.story.nodeId].townId, `${s.story.nodeId}: no walkout after a Part One chapter`);
   assert.ok(s.party.some((m) => m.id === 'orin'));
-  let last = ready('b3-company');
+  // After the last chapter nothing is written to walk out of.
+  let last = ready('b3-firstbell');
   last.world.approvalWindow = { maren: -2 };
-  last = finish(last, 'b3-company', 'keep');
-  assert.equal(last.story.nodeId, 'town-vell');
+  last = finish(last, 'b3-firstbell', 'seal');
+  assert.equal(last.story.nodeId, 'town-briarwatch');
   assert.ok(last.party.some((m) => m.id === 'maren'));
-  assert.equal(Book.chapter(last).id, 'to-be-continued', 'The hero waits for chapter 18.');
+  assert.equal(Book.chapter(last), null, 'The written books are finished.');
   assert.equal(Away.LIMIT, 2);
 });
 
@@ -777,12 +797,12 @@ test('Hesk escapes down the stair however the vault floor goes, Varn turns forty
   assert.doesNotMatch(noVarn, /Varn|forty/); assert.match(noVarn, /He goes down\./);
   assert.match(opening(peaceAt('b3-company', { party: [], flags: { b3_varn_freed: true } })), /^Odell Varn: Tell Stoneward/m);
   assert.match(opening(peaceAt('b3-company', { flags: { b3_vault_held: true } })), /sledge-tracks/);
-  // Chapter 17 has no scene. Until straight-on chapters are built, its decision goes to Vell and the hero waits for chapter 18.
+  // Chapter 17 has no scene: its decision goes straight on down the stair, to chapter 18.
   assert.equal(sceneOf('b3-company'), undefined);
   for (const [decision, f, line] of [['keep', 'b3_door_kept', /Vell's watch will hold it/], ['close', 'b3_door_closed', /Under the lid/]]) {
     const s = decide('b3-company', decision);
     assert.equal(s.story.flags[f], true); assert.match(told(s), line);
-    assert.equal(s.story.nodeId, 'town-vell'); assert.equal(Book.chapter(s).id, 'to-be-continued');
+    assert.equal(s.story.nodeId, 'q-b3-deep-start'); assert.equal(Book.chapter(s).id, 'b3-deep');
   }
   assert.match(told(decide('b3-company', 'keep', { flags: { b3_bell_evacuate: true } })), /Fennick's clerks will hold it, and Mags's six lamplighters/);
 });
@@ -836,7 +856,7 @@ test('no companion walks out after the winter watch: from the stair on they stay
   } finally { if (was === undefined) delete QUESTS['b3-seal'].together; else QUESTS['b3-seal'].together = was; }
 });
 
-test('chapter 17 plays in the Empty City: from Vell\'s emptied town page, down the stair, and back to it', () => {
+test('chapter 17 plays in the Empty City: from Vell\'s emptied town page, down the stair, and on into the deep', () => {
   let s = strong(ready('b3-company', { flags: { b3_bell_evacuate: true } }));
   assert.equal(E.buildView(s).world.town.subtitle, 'The Empty City');
   assert.deepEqual(E.buildView(s).world.sideJobs, []);
@@ -849,6 +869,218 @@ test('chapter 17 plays in the Empty City: from Vell\'s emptied town page, down t
   assert.equal(s.story.nodeId, 'q-b3-company-after');
   s = act(s, { type: 'story-choice', choiceId: 'keep' }).state;
   assert.match(told(s), /Fennick's clerks will hold it/);
-  assert.equal(s.story.nodeId, 'town-vell'); assert.equal(E.buildView(s).world.town.subtitle, 'The Empty City');
+  assert.equal(s.story.nodeId, 'q-b3-deep-start'); assert.equal(E.buildView(s).world.town, null);
   assert.equal(s.player.level, 37);
+});
+
+// Chapters 18 to 20: straight on down the stair, and the end of the book.
+const D = require('../src/director');
+// Walk a scene's choices (the first one offered, unless named) until a town or a chapter.
+function through(s, pick = {}) {
+  for (let i = 0; i < 8 && !E.buildView(s).world.town && !s.story.nodeId.startsWith('q-'); i++) {
+    const choices = E.buildView(s).scene.choices.filter((c) => !c.locked);
+    s = act(s, { type: 'story-choice', choiceId: (choices.find((c) => c.id === pick[s.story.nodeId]) || choices[0]).id }).state;
+  }
+  return s;
+}
+const fightAt = (id, opts) => act(at(id, 'crisis', opts), { type: 'story-choice', choiceId: 'confront' }).state;
+
+test('chapters 17 to 19 go straight on: a rest, then the next chapter\'s opening, with no town between', () => {
+  let s = strong(ready('b3-company'));
+  s = act(s, { type: 'depart', questId: 'b3-company' }).state;
+  for (const [id, decision, next] of [['b3-company', 'keep', 'b3-deep'], ['b3-deep', 'escort', 'b3-promise'], ['b3-promise', 'tell', 'b3-firstbell']]) {
+    for (const c of ['investigate', 'advance', 'careful']) s = act(s, { type: 'story-choice', choiceId: c }).state;
+    s = act(strong(s), { type: 'story-choice', choiceId: 'resolve' }).state;
+    for (const a of [s.player, ...s.party]) a.hp = 1;
+    const r = act(s, { type: 'story-choice', choiceId: decision }); s = r.state;
+    assert.equal(s.story.nodeId, `q-${next}-start`, `${id} goes straight on to ${next}`);
+    assert.equal(s.world.activeQuest, next); assert.equal(s.world.onExpedition, true); assert.ok(s.world.completed[id]);
+    assert.equal(s.player.level, QUESTS[next].level, 'one level per chapter');
+    // The chapter's end is a safe rest: everyone is whole again.
+    for (const a of [s.player, ...s.party]) assert.equal(a.hp, a.maxHp, `${a.id || 'hero'} rests at the end of ${id}`);
+    assert.ok(r.events.some((e) => /rests at the end of/.test(e.text)), id);
+    const v = E.buildView(s);
+    assert.equal(v.world.town, null, 'no town page below the stair'); assert.deepEqual(v.world.sideJobs, []); assert.equal(v.world.canReturn, false);
+    assert.equal(E.resolveAction(s, { type: 'return-town' }, high).result.ok, false, 'no way back to town below the stair');
+    assert.equal(Book.chapter(s).id, next);
+  }
+});
+
+test('a defeat in the deep wakes the hero at the last safe ledge, which survives a save and load, and goes back down to the fight', () => {
+  for (const [id, ledge, line] of [['b3-deep', 'q-b3-company-ledge', /iron door|stair under Vell/], ['b3-promise', 'q-b3-deep-ledge', /horn button/], ['b3-firstbell', 'q-b3-promise-ledge', /floor of given things/]]) {
+    let s = fightAt(id);
+    assert.equal(s.combat?.encounterId, `quest:${id}`);
+    const xp = s.player.xp;
+    const r = act(s, { type: 'combat', actionId: 'retreat' }); s = r.state;
+    assert.equal(s.story.nodeId, ledge, `${id}: the ledge, not a town`);
+    assert.equal(s.world.pendingBattle, `quest:${id}`); assert.equal(s.player.xp, xp);
+    assert.ok(r.events.some((e) => /last safe ledge/.test(e.text)), id);
+    assert.match(opening(s), line);
+    const v = E.buildView(s);
+    assert.equal(v.world.town, null); assert.equal(v.world.canReturn, false); assert.deepEqual(v.scene.choices.map((c) => c.id), ['down']);
+    assert.equal(STORY_NODES[ledge].safeRest, true);
+    // Saved and loaded on the ledge.
+    s = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+    assert.equal(s.story.nodeId, ledge); assert.equal(s.world.activeQuest, id);
+    s = act(s, { type: 'story-choice', choiceId: 'down' }).state;
+    assert.equal(s.combat?.encounterId, `quest:${id}`, `${id}: back down to the interrupted fight`);
+    assert.equal(s.player.hp, s.player.maxHp, 'rested on the ledge');
+    assert.equal(s.story.nodeId, `q-${id}-crisis`);
+  }
+  // Above the stair a defeat still goes to town.
+  const up = act(fightAt('b3-company'), { type: 'combat', actionId: 'retreat' }).state;
+  assert.equal(up.story.nodeId, 'town-vell');
+});
+
+test('a save made mid-deep loads and plays on to the next chapter', () => {
+  let s = decide('b3-company', 'close');
+  s = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+  assert.equal(s.story.nodeId, 'q-b3-deep-start'); assert.equal(s.world.activeQuest, 'b3-deep'); assert.equal(E.buildView(s).world.town, null);
+  s = act(s, { type: 'story-choice', choiceId: 'investigate' }).state;
+  s = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+  s = act(s, { type: 'story-choice', choiceId: 'advance' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'careful' }).state;
+  s = act(strong(s), { type: 'story-choice', choiceId: 'resolve' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'fennick' }).state;
+  assert.equal(s.story.nodeId, 'q-b3-promise-start');
+  assert.equal(s.story.flags.b3_door_closed, true);
+  // An old save left waiting in Vell after chapter 17 departs for chapter 18 from the board.
+  const old = strong(ready('b3-deep'));
+  assert.ok(E.buildView(old).world.town);
+  assert.equal(act(old, { type: 'depart', questId: 'b3-deep' }).state.story.nodeId, 'q-b3-deep-start');
+});
+
+test('the stay scenes are told below the stair, and the party goes on down after them', () => {
+  for (const [id, decision, who, line, next] of [['b3-company', 'keep', 'orin', /on the vault floor before you go down/, 'b3-deep'], ['b3-deep', 'escort', 'maren', /notice what it takes/, 'b3-promise'], ['b3-promise', 'tell', 'nessa', /the last bit/, 'b3-firstbell']]) {
+    let s = at(id, 'after');
+    s.world.approvalWindow = { [who]: -3 };
+    s.story.flags[`method:${id}`] = 'peace';
+    s = act(s, { type: 'story-choice', choiceId: decision }).state;
+    assert.equal(s.story.nodeId, `away-${who}-stay`, id);
+    assert.match(opening(s), line, id);
+    assert.doesNotMatch(opening(s), /before breakfast|after supper|on the step/, `${id}: not told as if in town`);
+    // Saved and loaded in the middle of it, it still goes on down after.
+    s = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+    assert.equal(E.buildView(s).world.canReturn, false);
+    s = act(s, { type: 'story-choice', choiceId: E.buildView(s).scene.choices[0].id }).state;
+    assert.equal(s.story.nodeId, `q-${next}-start`, `${id}: then straight on`);
+    assert.ok(s.party.some((m) => m.id === who));
+  }
+  // Orin's knot is gone after the stair: he puts the pack down instead of re-tying it.
+  let o = at('b3-deep', 'after'); o.world.approvalWindow = { orin: -2 };
+  o = act(o, { type: 'story-choice', choiceId: 'fennick' }).state;
+  assert.match(opening(o), /He puts the pack down\. He does not untie it\./); assert.doesNotMatch(opening(o), /march knot/);
+});
+
+test('the thirty-one make chapter 19 harder, the lost day makes its peaceful way harder, and the choice in the circle scales chapter 20', () => {
+  const Combat = require('../src/combat');
+  assert.deepEqual(ENCOUNTERS['quest:b3-promise'].flagScale, { b3_thirtyone_came: 1.3 });
+  assert.deepEqual(ENCOUNTERS['quest:b3-firstbell'].flagScale, { b3_three_left: 1.3, b3_three_told: 0.85 });
+  // The thirty-one come only when the vault held and the rite is not law; the flag is set as the opening tells it.
+  const came = act(ready('b3-promise', { flags: { b3_vault_held: true } }), { type: 'depart', questId: 'b3-promise' }).state;
+  assert.equal(came.story.flags.b3_thirtyone_came, true); assert.match(opening(came), /thirty-one iron bells are there/);
+  for (const flags of [{}, { b3_vault_held: true, b3_rite_law: true }]) assert.equal(act(ready('b3-promise', { flags }), { type: 'depart', questId: 'b3-promise' }).state.story.flags.b3_thirtyone_came, undefined);
+  const hp = (s) => s.combat.actors.filter((a) => a.team === 'enemy').reduce((n, a) => n + a.maxHp, 0);
+  assert.ok(hp(fightAt('b3-promise', { flags: { b3_thirtyone_came: true } })) > hp(fightAt('b3-promise')));
+  assert.ok(hp(fightAt('b3-firstbell', { flags: { b3_three_left: true } })) > hp(fightAt('b3-firstbell', { flags: { b3_three_taken: true } })));
+  assert.ok(hp(fightAt('b3-firstbell', { flags: { b3_three_told: true } })) < hp(fightAt('b3-firstbell', { flags: { b3_three_taken: true } })));
+  assert.equal(Combat.flagScale({ story: { flags: { b3_three_told: true } } }, ENCOUNTERS['quest:b3-firstbell']), 0.85);
+  // harderWith: the day lost taking the thirty-eight home.
+  const check = (flags) => E.buildView(at('b3-promise', 'crisis', { flags })).scene.choices.find((c) => c.id === 'resolve').check;
+  const plain = check({}), late = check({ b3_turned_escorted: true });
+  assert.equal(late.dc, plain.dc + 2);
+  assert.ok(late.reasons.some((r) => /day lost on the stair/.test(r))); assert.ok(!plain.reasons.some((r) => /day lost/.test(r)));
+  const crisis = (flags) => dialogueText(liveLines(at('b3-promise', 'crisis', { flags }), QUESTS['b3-promise'].crisis.map(storyLine)));
+  assert.match(crisis({ b3_turned_escorted: true }), /You lost a day on the stair/); assert.doesNotMatch(crisis({}), /lost a day/);
+});
+
+test('in the first promise each companion answers as their story left them; an absent companion sets neither flag', () => {
+  const answers = (flags, party) => { const s = act(ready('b3-promise', { flags, party }), { type: 'depart', questId: 'b3-promise' }).state; return [s, ['orin', 'maren', 'nessa'].map((w) => (s.story.flags[`b3_${w}_gives`] ? 'gives' : s.story.flags[`b3_${w}_keeps`] ? 'keeps' : null))]; };
+  assert.deepEqual(answers({})[1], ['keeps', 'keeps', 'keeps'], 'an old save: everyone keeps');
+  assert.deepEqual(answers({ b3_mags_forgives: true, b3_seal_refused: true, b3_wren_cast: true })[1], ['gives', 'gives', 'gives']);
+  assert.deepEqual(answers({ b3_seal_many: true })[1], ['keeps', 'gives', 'keeps']);
+  const [sealed, seal] = answers({ b3_seal_taken: true });
+  assert.equal(seal[1], 'keeps'); assert.match(opening(sealed), /^Maren: I'm the seal\./m);
+  for (const who of ['orin', 'maren', 'nessa']) {
+    const [s, got] = answers({ b3_mags_forgives: true, b3_seal_refused: true, b3_wren_cast: true }, ['orin', 'maren', 'nessa'].filter((w) => w !== who));
+    const i = ['orin', 'maren', 'nessa'].indexOf(who);
+    assert.equal(got[i], null, `${who} is away: neither flag`);
+    assert.equal(s.story.flags[`b3_${who}_gives`], undefined); assert.equal(s.story.flags[`b3_${who}_keeps`], undefined);
+    assert.doesNotMatch(opening(s), new RegExp(`Aster Vey: ${{ orin: 'Orin Stoneward', maren: 'Maren Vale', nessa: 'Nessa Reed' }[who]}\\. Would you give one\\?`));
+  }
+});
+
+test('Hesk\'s way is offered only if the circle was not emptied by force, and the gift only after the old way', () => {
+  const offered = (flags) => E.buildView(at('b3-firstbell', 'after', { flags })).scene.choices.filter((c) => !c.locked).map((c) => c.id);
+  assert.deepEqual(offered({}), ['old', 'hesk', 'seal']);
+  assert.deepEqual(offered({ b3_three_taken: true }), ['old', 'seal']);
+  assert.equal(E.resolveAction(at('b3-firstbell', 'after', { flags: { b3_three_taken: true } }), { type: 'story-choice', choiceId: 'hesk' }, high).result.ok, false);
+  const gift = (decision) => E.buildView(decide('b3-firstbell', decision)).scene.choices.filter((c) => !c.locked).map((c) => c.id);
+  assert.deepEqual(gift('old'), ['firstnight', 'forge', 'bell', 'name']);
+  for (const d of ['hesk', 'seal']) {
+    assert.deepEqual(gift(d), ['on'], d);
+    assert.equal(E.resolveAction(decide('b3-firstbell', d), { type: 'story-choice', choiceId: 'forge' }, high).result.ok, false, `${d}: nothing is given`);
+  }
+});
+
+const framings = RAWS.firstbell.trialFraming.lines[0].oneOf;
+test('the epilogue: each door comes home its own way, b3_done is set, and the hero arrives in Briarwatch with the book finished', () => {
+  for (const [door, line] of [['b3_door_kept', /Pike asleep in a chair/], ['b3_door_closed', /founders' hatch/], [null, /^You come up\.$/m]]) {
+    let s = decide('b3-firstbell', 'old', { flags: door ? { [door]: true } : {} });
+    s = act(s, { type: 'story-choice', choiceId: 'forge' }).state;
+    s = act(s, { type: 'story-choice', choiceId: 'up' }).state;
+    assert.equal(s.story.nodeId, 'scene-firstbell-home');
+    assert.equal(E.buildView(s).scene.location, "Dera's forge, Briarwatch, in early spring");
+    const epilogue = opening(s);
+    s = act(s, { type: 'story-choice', choiceId: 'home' }).state;
+    assert.match(epilogue, line, door || 'neither');
+    assert.equal(s.story.nodeId, 'town-briarwatch');
+    assert.equal(s.story.flags.b3_done, true); assert.equal(s.story.flags.b3_gave_forge, true);
+    assert.match(epilogue, /There is a trial waiting for the next thing you will be/);
+    assert.match(epilogue, /^Dera: You gave this place\. My forge\./m, 'the epilogue ends on the framing line');
+  }
+  const s = through(decide('b3-firstbell', 'seal'));
+  assert.equal(s.story.nodeId, 'town-briarwatch'); assert.equal(s.player.level, 40);
+  const v = E.buildView(s);
+  assert.equal(v.world.booksComplete, true); assert.equal(v.world.book, null); assert.equal(Book.chapter(s), null);
+  assert.equal(Book.finished(s), true); assert.equal(s.story.flags[Book.FINISHED], true);
+  assert.match(Book.ending(s), /all three books, The Bell Beneath Briarwatch, The Council of Small Voices and The Names in the Bronze\. From here the AI storyteller/);
+  assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0, 'Book Three is still hidden from players');
+  // Every framing line fits the trial's brief.
+  for (const l of framings) assert.ok(`Dera: ${l.text}`.length <= 400, l.text);
+});
+
+test('after b3_done the 3rd job trial opens with the epilogue\'s framing, read from the save, offline', () => {
+  const end = (decision, gift) => { let s = decide('b3-firstbell', decision); s = through(s, gift ? { 'scene-firstbell-gift': gift } : {}); s.player.progression.specialization = 'guardian'; return s; };
+  for (const [decision, gift, line] of [['old', 'firstnight', /You gave the first night/], ['old', 'bell', /You gave the bell/], ['old', 'name', /You gave a name/], ['hesk', null, /You gave nothing down there/], ['seal', null, /You kept all of it/]]) {
+    const s = end(decision, gift);
+    assert.equal(P.nextTrial(s.player), 'third');
+    const first = D.writtenTrial(s).opening;
+    assert.match(first, line, `${decision}/${gift}`); assert.match(first, /^Dera: .*Banners of every Guardian/);
+    const view = E.buildView(s).world.director.trial;
+    assert.match(view.framing, line); assert.equal(view.canRequest, true);
+  }
+  // Commissioned with a draft (as if from Claude, without calling it), the trial still opens with the framing.
+  const s = end('old', 'forge');
+  const before = hero('fighter', 40); before.player.progression.specialization = 'guardian';
+  const draft = { ...D.writtenTrial(before), opening: 'A storm comes down off the pass the morning you set out.' };
+  const out = D.commissionTrial(s, draft, []);
+  assert.equal(out.ok, true);
+  assert.match(out.outcomeText, /^Dera: You gave this place/);
+  assert.match(s.director.quests[out.questId].opening, /^Dera: You gave this place.*A storm comes down off the pass/s);
+  // Without the epilogue there is no framing, and the 4th job is never framed by it.
+  assert.equal(E.buildView(before).world.director.trial.framing, null);
+  assert.doesNotMatch(D.writtenTrial(before).opening, /Dera/);
+  assert.equal(X.trialFraming(before), '');
+  const later = end('seal'); later.player.progression.thirdJob = true;
+  assert.doesNotMatch(D.writtenTrial(later, 'fourth').opening, /Dera/);
+});
+
+test('with the preview on, an agent playtest walks the hero to level 40 and stops at the 3rd job trial', () => {
+  const { run } = require('./campaign-playtest');
+  const r = run('fighter', 'standard', 301, 'prepared');
+  assert.deepEqual(r.errors, []);
+  assert.equal(r.complete, true); assert.equal(r.waiting, false);
+  assert.equal(r.level, 40); assert.equal(r.booksFinished, true); assert.equal(r.trialOffered, true);
+  assert.ok(r.completed['b3-firstbell']);
 });

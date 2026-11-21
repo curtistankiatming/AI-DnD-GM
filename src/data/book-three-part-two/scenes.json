@@ -1,5 +1,5 @@
 {
-  "_note": "Book Three, Part Two camp scenes (docs/book-three/DESIGN-PART-TWO.md), merged into scenes.json's table by src/expansion.js. One scene per chapter, with an empty cast: companions' parts are lines gated on when.party, each with an absent version. Nodes are chained by 'next', and the camp beat is the last node. A line may be {oneOf: [...]} (the first that applies is told) and may setFlag when it is told.",
+  "_note": "Book Three, Part Two camp scenes (docs/book-three/DESIGN-PART-TWO.md), merged into scenes.json's table by src/expansion.js. One scene per chapter, with an empty cast: companions' parts are lines gated on when.party, each with an absent version. Nodes are chained by 'next', and the camp beat is the last node. A line may be {oneOf: [...]} (the first that applies is told) and may setFlag when it is told. The firstbell scene (after chapter 20) is the gift, the bound voices and the epilogue, which ends Book Three; a node may set its own location and act, and its trialFraming ({flag, lines}) is told at the end of the node marked framesTrial and opens the 3rd job trial once the flag is set.",
   "price-camp": {
     "id": "price-camp",
     "after": "b3-price",
@@ -1123,6 +1123,696 @@
                 "narrate": "You stay until the quarter. Tovin and Pim ring it, and the watch answers along the edge of the wood, and then the three of you go down the ladder in the dark, one rung at a time, without a light."
               }
             ]
+          }
+        ]
+      }
+    }
+  },
+  "firstbell": {
+    "id": "firstbell",
+    "after": "b3-firstbell",
+    "cast": [],
+    "act": "The First Bell",
+    "location": "The floor of given things, at the bottom of the stair",
+    "start": "gift",
+    "trialFraming": {
+      "flag": "b3_done",
+      "lines": [
+        {
+          "oneOf": [
+            {
+              "say": "Dera",
+              "text": "You gave the first night you were here. I remember it, if you don't: you came in out of the rain and didn't sleep. Whatever you go to be next, you go to it without that night, and with every night since. That's what you carry.",
+              "when": {
+                "flag": "b3_gave_firstnight"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "You gave this place. My forge. I'll not tell you what it was to you; I'll show you again, as often as you like. Whatever you go to be next, you go to it from here, starting over. That's what you carry.",
+              "when": {
+                "flag": "b3_gave_forge"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "You gave the bell, the night it rang again. You were there; I've told you so. Whatever you go to be next, you go to it without that note, listening for the next one. That's what you carry.",
+              "when": {
+                "flag": "b3_gave_bell"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "You gave a name, and you won't say whose. Don't. Whatever you go to be next, you go to it knowing you gave it. That's what you carry.",
+              "when": {
+                "flag": "b3_gave_name"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "You gave nothing down there. Other people gave everything, and you let them. Whatever you go to be next, you go to it carrying their names. That's what you carry.",
+              "when": {
+                "flag": "b3_promise_hesk"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "You kept all of it. Nobody gave, so nobody's any lighter. Whatever you go to be next, you go to it carrying all of it, and the nine's weight besides. That's what you carry.",
+              "when": {
+                "flag": "b3_stair_sealed"
+              }
+            },
+            {
+              "say": "Dera",
+              "text": "Whatever you gave down there, or kept, you go to what's next carrying it."
+            }
+          ]
+        }
+      ]
+    },
+    "nodes": {
+      "gift": {
+        "title": "The Gift",
+        "objective": "Choose what you give, or go on.",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Before you go up, you kneel at the edge of the swept floor, where the given things begin, to give yours. Everyone who came down here gave one. You are no different.",
+                "when": {
+                  "flag": "b3_promise_old"
+                }
+              },
+              {
+                "narrate": "Where the ring was there is a ring of bells now, standing on the floor of given things in the dark, close together, each the height of a person. Nobody gives anything else here tonight.",
+                "when": {
+                  "flag": "b3_promise_hesk"
+                }
+              },
+              {
+                "narrate": "Nobody gives anything here tonight. You leave the floor as you found it, and turn your back on it.",
+                "when": {
+                  "flag": "b3_stair_sealed"
+                }
+              },
+              {
+                "narrate": "You stand at the edge of the floor of given things for a long time."
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "It has to be something that is yours. It has to be something you would miss."
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Would you give one?",
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "firstnight",
+            "label": "Give the first night you spent in Briarwatch",
+            "requires": {
+              "flagsAll": [
+                "b3_promise_old"
+              ]
+            },
+            "setFlags": {
+              "b3_gave_firstnight": true
+            },
+            "next": "voices",
+            "lines": [
+              {
+                "narrate": "You set it down: the first night in Briarwatch. The rain, and the inn, and Aveline's lists, and the bell silent in the tower, and people who did not know you giving you a bed anyway."
+              },
+              {
+                "narrate": "When you stand up, Briarwatch is a place you have lived in for years. You cannot remember arriving."
+              }
+            ]
+          },
+          {
+            "id": "forge",
+            "label": "Give Dera's forge",
+            "requires": {
+              "flagsAll": [
+                "b3_promise_old"
+              ]
+            },
+            "setFlags": {
+              "b3_gave_forge": true
+            },
+            "next": "voices",
+            "lines": [
+              {
+                "narrate": "You set it down: Dera's forge. The smell of it, and the heat on one side of your face, and the bench where your gear always is, and the sound of her hammer from the square."
+              },
+              {
+                "narrate": "When you stand up, you know that there is a smith in Briarwatch called Dera, and that she is your friend. You cannot remember her forge at all."
+              }
+            ]
+          },
+          {
+            "id": "bell",
+            "label": "Give the first note of Briarwatch's bell, the night it rang again",
+            "requires": {
+              "flagsAll": [
+                "b3_promise_old"
+              ]
+            },
+            "setFlags": {
+              "b3_gave_bell": true
+            },
+            "next": "voices",
+            "lines": [
+              {
+                "narrate": "You set it down: the night under Briarwatch when the bell rang again, and the first note of it going up through the roots and the roofs, not an alarm, an answer."
+              },
+              {
+                "narrate": "When you stand up, you know that the bell rang. You were there; people have told you so. You cannot hear it."
+              }
+            ]
+          },
+          {
+            "id": "name",
+            "label": "Give a name, and do not say whose",
+            "requires": {
+              "flagsAll": [
+                "b3_promise_old"
+              ]
+            },
+            "setFlags": {
+              "b3_gave_name": true
+            },
+            "next": "voices",
+            "lines": [
+              {
+                "narrate": "You give a name. You do not say whose, aloud, to anyone."
+              },
+              {
+                "narrate": "When you stand up, you could not say it if you tried."
+              }
+            ]
+          },
+          {
+            "id": "on",
+            "label": "Go on",
+            "requires": {
+              "flagsNone": [
+                "b3_promise_old"
+              ]
+            },
+            "next": "voices"
+          }
+        ]
+      },
+      "voices": {
+        "title": "The Bound Voices",
+        "objective": "Hear what the bound voices answer.",
+        "lines": [
+          {
+            "narrate": "Up through the rock, through the lid, through every bell in the free wards, the bound voices hear what has been done on the floor, and each of them answers for itself.",
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Aster Vey",
+                "text": "I would like to rest. I have been in one bell or another since before Briarwatch had a tower. Vell's heart will go dark when I do. Tell them I'm sorry. Tell them to go over the pass in the spring, while the road is open. Briarwatch will have them.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "say": "Aster Vey",
+                "text": "I'll stay. One more generation. I would like to see Pim grow old. I would like to see him get tired of ringing, and not stop."
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "narrate": "In the spring Vell's great bell goes quiet, and its heart goes dark, and its people go over the pass with what they can carry.",
+            "when": {
+              "flag": "b3_bell_aster",
+              "anyFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "narrate": "In Vell the voices in the city's bells take a vote, the way Vell does everything, and it is not close. They will rest. Vell holds one more winter on what they have left, and then it will be up to Vell.",
+            "when": {
+              "flag": "b3_bell_cast",
+              "anyFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "I'll stay. One more generation. I said I'd hold the lid, and I'm not done.",
+            "when": {
+              "flag": "b3_wren_cast",
+              "anyFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "say": "Sable",
+            "text": "I will stay. I have something to answer for.",
+            "when": {
+              "flag": "b3_sable_cast",
+              "anyFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "The thirty-one iron bells on their sledges ring once, together. Then one by one they stop, and do not start again. They rest.",
+                "when": {
+                  "flag": "b3_vault_held",
+                  "notFlag": "b3_rite_law"
+                }
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "The free wards vote on it, the way they voted to give the wards a seat, and the wards vote with them. The nine rest. From now on it is the free wards' giving that holds the lid: one memory each, one person at a time, every generation. That is why the asking can never stop.",
+                "when": {
+                  "flag": "wards_seat"
+                }
+              },
+              {
+                "narrate": "The nine stay. They are very tired. You can hear it in every bell."
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I'm still here. Nobody has asked me to go anywhere.",
+            "when": {
+              "notFlag": "b3_promise_old"
+            }
+          },
+          {
+            "narrate": "In Vell the voices in the city's bells go on holding the city, as they have, and nobody asks them anything.",
+            "when": {
+              "flag": "b3_bell_cast",
+              "notFlag": "b3_promise_old"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "Still here. Still ringing.",
+            "when": {
+              "flag": "b3_wren_cast",
+              "notFlag": "b3_promise_old"
+            }
+          },
+          {
+            "say": "Sable",
+            "text": "I am still answering.",
+            "when": {
+              "flag": "b3_sable_cast",
+              "notFlag": "b3_promise_old"
+            }
+          },
+          {
+            "narrate": "The thirty-one iron bells stand on their sledges, still bound, still awake.",
+            "when": {
+              "flag": "b3_vault_held",
+              "notFlag": "b3_rite_law",
+              "noneFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "narrate": "In the new ring on the floor of given things, the bells that were Hesk's company begin to ring, all together and in time.",
+            "when": {
+              "flag": "b3_promise_hesk"
+            }
+          },
+          {
+            "narrate": "The nine ring on, out of time, carrying it alone.",
+            "when": {
+              "notFlag": "b3_promise_old"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "up",
+            "label": "Go up",
+            "next": "home"
+          }
+        ]
+      },
+      "home": {
+        "title": "Dera's Forge, in Early Spring",
+        "location": "Dera's forge, Briarwatch, in early spring",
+        "act": "Epilogue",
+        "objective": "Book Three is complete. Your 3rd job trial waits on any town's expedition board.",
+        "framesTrial": true,
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "You come up the stair. It is a day, and then the iron door, standing open, with Pike's lamps on the rim and Pike asleep in a chair beside them.",
+                "when": {
+                  "flag": "b3_door_kept"
+                }
+              },
+              {
+                "narrate": "You come up the long way, under the nine, along the marked way where it climbs the far wall, to the founders' hatch in the underside of Cinder Fold's lid. You ring on the iron until the miners lower ropes, and you come up into the casting hall at Cinder Fold, into the warm, with the nine hanging over your heads.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "narrate": "You come up."
+              }
+            ]
+          },
+          {
+            "narrate": "The cold came up the open stair while you were below, as Pike said it would. Vell's drill-yard is white to the walls, and will be for years.",
+            "when": {
+              "flag": "b3_door_kept"
+            }
+          },
+          {
+            "narrate": "Then the road. It is a long way to Briarwatch, and by the time you come down the Briarwood road the snow is going off the fields. It is early spring."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Dera is waiting at the door of a forge you do not know: the nearest door to the square, with a smith's sign over it, and the heat coming out of it. She has your gear on the bench.",
+                "when": {
+                  "flag": "b3_gave_forge"
+                }
+              },
+              {
+                "narrate": "Dera has your gear on the bench before you have finished saying hello."
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Dera",
+                "text": "Come in. Mind the step.",
+                "when": {
+                  "flag": "b3_gave_forge"
+                }
+              },
+              {
+                "say": "Dera",
+                "text": "What did you forget? Down there. Don't tell me nothing. Everyone who goes down forgets something. I've had letters."
+              }
+            ]
+          },
+          {
+            "narrate": "She shows you round it as if you had never been in it before: the bellows, the quench, the bench where your gear goes, the hook where your cloak goes. She tells you which side of the fire is the hot side. She does not say why she is telling you. You do not ask. When she has finished she puts the kettle on.",
+            "when": {
+              "flag": "b3_gave_forge"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Hesk is judged at Highpass in the spring session, in the open. He says nothing in his own defence except that he would like it written down that every yes in his ring was bought, and that he paid for each one himself. He is in a cell under the gatehouse now.",
+                "when": {
+                  "flag": "b3_promise_old"
+                }
+              },
+              {
+                "narrate": "Hesk comes up the stair the hero of the free wards. His name is in Corvane's ledger, in his own hand, at the foot of the page of the ones he cast.",
+                "when": {
+                  "flag": "b3_promise_hesk"
+                }
+              },
+              {
+                "narrate": "Hesk is sent back down the stair before the way is sealed, alone, with a lamp and a week's food, because he asked for that rather than a cell. Fennick counts him through the door. It is the last entry in the ledger: went down, one.",
+                "when": {
+                  "flag": "b3_stair_sealed"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "oneOf": [
+                  {
+                    "narrate": "The asking takes the winter, even so. The council keeps its promise quickly: by the first thaw every town has been asked, by its own delegate, in its own square. Some give because they are told to; by spring the council has written giving into a law, as a duty. Two towns fall before the asking reaches them: Harrow End and Low Ebbing.",
+                    "when": {
+                      "flag": "b3_wards_promise"
+                    }
+                  },
+                  {
+                    "narrate": "You ask them yourself, a town at a time, all winter, at every door that will open. It is slow. Five towns fall before you reach them: Harrow End, Low Ebbing, Cotter's Wick, Ennerby and Stell.",
+                    "when": {
+                      "flag": "b3_towns_asked"
+                    }
+                  },
+                  {
+                    "narrate": "You start from nothing. Nobody has promised anything, and every town has to be asked from the beginning, and told why. Nine towns fall before the asking reaches them: Harrow End, Low Ebbing, Cotter's Wick, Ennerby, Stell, Fallowmere, and three more on the Iron Road whose names Fennick has written down.",
+                    "when": {
+                      "flag": "b3_go_alone"
+                    }
+                  },
+                  {
+                    "narrate": "The asking takes the winter. Towns fall while it goes on, and you learn their names."
+                  }
+                ]
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Ashford gives first. Hollis Brede comes down the stair herself, with the first of the Ashford people behind her, and stands at the edge of the floor and says why, for the record: \"A gift isn't a sale and it isn't a sacrifice. We said no to those.\"",
+                "when": {
+                  "flag": "b3_ashford_defended",
+                  "anyFlag": [
+                    "b3_towns_asked"
+                  ]
+                }
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Every town has its own witness for the giving, trained at Highpass: somebody from that town, who knows its people, sitting across a table from each one who comes.",
+                "when": {
+                  "flag": "b3_seal_many"
+                }
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Some towns do not give. It is never a vote. Too few of their people come, that is all, and those towns stay as they were, open to the white, and nobody makes them."
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "It will have to be done again in thirty years, and again after that. The council has it on its agenda now, for good. And the dead stay dead: nobody who went into the bronze before this winter comes out of it."
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_old"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "The new ward holds every town in the free wards, and will for a generation. Every yes in it was bought.",
+                "when": {
+                  "flag": "b3_three_left"
+                }
+              },
+              {
+                "narrate": "The new ward holds some of the free wards, for a while: fewer towns than Hesk wanted, and not for as long. Every yes in it was real.",
+                "when": {
+                  "flag": "b3_three_told"
+                }
+              }
+            ],
+            "when": {
+              "flag": "b3_promise_hesk"
+            }
+          },
+          {
+            "narrate": "The stair is sealed from above, at Vell and at the founders' hatch, and nobody goes down. The nine carry it alone. The next generation will pay more, and will not know why.",
+            "when": {
+              "flag": "b3_stair_sealed"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Orin goes to Saltwick in the spring, for the lamps, as Mags asked him. He goes on foot, with his pack, and the knot on it is a plain one.",
+                "when": {
+                  "flag": "b3_mags_forgives"
+                }
+              },
+              {
+                "narrate": "Orin stays at Dera's forge and teaches Pim knots. One afternoon Pim ties him a round turn and two half-hitches and a stopper on the tail, and Orin watches him do it, and then takes the rope and ties it after him, slowly, and does not say anything, and does not need to."
+              }
+            ],
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Maren is the seal. She sits at a table in Highpass every week, across from people who have come to give, and hears them. She has a list again. It is a list of yeses.",
+            "when": {
+              "flag": "b3_seal_taken",
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "There is a day Maren would have written first, if she had ever kept a list of her own. She has forgotten it. She knows she has. One evening at Dera's fire she asks you what you think it was, and you do not know either, and she seems glad to have asked.",
+            "when": {
+              "flag": "b3_maren_gives",
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Maren keeps no list. She goes to the shrine on the Briarwood side in the mornings, and sits, and comes back.",
+            "when": {
+              "noneFlag": [
+                "b3_seal_taken",
+                "b3_maren_gives"
+              ],
+              "party": "maren"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Nessa has forgotten one thing about Wren. She knows she has. She asks you, by the forge one evening, what it was, and you tell her everything you can think of, and it is not the thing, and she thanks you anyway.",
+                "when": {
+                  "flag": "b3_nessa_gives"
+                }
+              },
+              {
+                "narrate": "Nessa writes about Wren, and sends it to Cinder Fold, to be read out at the lid. She does not keep a copy.",
+                "when": {
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "narrate": "Nessa writes to Wren, and sends it. She does not keep a copy."
+              }
+            ],
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "In Ashford the lower town is being rebuilt, where the ford is, under the ash trees, and Hollis Brede has had its name painted on the bridge-post herself. One word: Ashford.",
+            "when": {
+              "flag": "b3_ashford_defended",
+              "anyFlag": [
+                "b3_promise_old"
+              ]
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "In Cinder Fold the tenth bell rings a little ahead of the other nine, and the galleries hold.",
+                "when": {
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "narrate": "In Cinder Fold the lower galleries are still shut. Wren is still angry, and alive, and has been down to the lid twice to look at the bright line in the iron.",
+                "when": {
+                  "flag": "b3_wren_refused"
+                }
+              },
+              {
+                "narrate": "In Cinder Fold the miners still ring the nine by hand on the worst nights. Wren calls the beat from a chair at the gallery mouth.",
+                "when": {
+                  "flag": "b3_wren_waits"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Fennick's ledger has a column he kept open for twenty years, and in it now, in his square hand: came back, thirty-eight. Underneath, smaller: and one surveyor, name not known. He shows it to everyone. He has shown it to Dera twice, and she has let him.",
+                "when": {
+                  "flag": "b3_turned_escorted"
+                }
+              },
+              {
+                "narrate": "Fennick's ledger says, in his square hand: came back, thirty-one, of thirty-eight. Below it there are seven names with nothing written beside them, because he does not know what to write.",
+                "when": {
+                  "flag": "b3_turned_fennick"
+                }
+              },
+              {
+                "narrate": "Fennick's ledger says that twenty-two of the thirty-eight came up. The other sixteen he has written out in full, one to a line, so that somebody has: Tobiah Keld. Maud Penney. Gil Asher. Jessamy Wicken. Annick Dole. And eleven more, and beside each one, nothing at all.",
+                "when": {
+                  "flag": "b3_turned_left"
+                }
+              }
+            ]
+          },
+          {
+            "narrate": "There is a trial waiting for the next thing you will be. Any town's expedition board will have it. Dera has sharpened everything twice.",
+            "setFlag": "b3_done"
+          }
+        ],
+        "choices": [
+          {
+            "id": "home",
+            "label": "Go out into Briarwatch"
           }
         ]
       }

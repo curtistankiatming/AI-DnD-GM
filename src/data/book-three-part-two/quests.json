@@ -1,5 +1,5 @@
 {
-  "_note": "Book Three, Part Two, The Stair (docs/book-three/DESIGN-PART-TWO.md). Written in its own files and merged after quests.json by src/expansion.js, so these chapters follow Part One in story order. Each chapter has book 3 and part 2, and pays exactly one level (P.levelBand). A line may be {oneOf: [...]}: the first line in it that applies is told. A line's setFlag is set when it is told.",
+  "_note": "Book Three, Part Two, The Stair (docs/book-three/DESIGN-PART-TWO.md). Written in its own files and merged after quests.json by src/expansion.js, so these chapters follow Part One in story order. Each chapter has book 3 and part 2, and pays exactly one level (P.levelBand). A line may be {oneOf: [...]}: the first line in it that applies is told. A line's setFlag is set when it is told. A chapter with continues: true (17 to 19, down the stair) goes from its decision straight into the next chapter, with a rest and no town between; its ledge lines (ledgeTitle) are told where a defeat in the next chapter wakes the party.",
   "b3-price": {
     "id": "b3-price",
     "book": 3,
@@ -3848,6 +3848,7 @@
     "unlock": "b3-winter",
     "nextTown": "vell",
     "together": true,
+    "continues": true,
     "xp": 10750,
     "gold": 760,
     "region": "Vell: the drill-yard, the iron vault beneath it, and the round iron door in the vault floor",
@@ -4396,6 +4397,1892 @@
           }
         ],
         "flag": "b3_door_closed"
+      }
+    ],
+    "ledgeTitle": "The rim of the iron door",
+    "ledge": [
+      {
+        "oneOf": [
+          {
+            "narrate": "You wake on the rim of the iron door in Vell's vault, in the ring of Pike's lamps, with a blanket over you that you did not put there. A day of stair below you, the deep is where you left it.",
+            "when": {
+              "flag": "b3_door_kept"
+            }
+          },
+          {
+            "narrate": "You wake on the first landing below the iron door, with the door shut over your head and the stair going down below you into the dark. Somebody has lit a lamp and set it by you.",
+            "when": {
+              "flag": "b3_door_closed"
+            }
+          },
+          {
+            "narrate": "You wake at the top of the stair under Vell's vault, with the deep a day below you."
+          }
+        ]
+      }
+    ]
+  },
+  "b3-deep": {
+    "id": "b3-deep",
+    "book": 3,
+    "part": 2,
+    "name": "The Deep",
+    "level": 37,
+    "town": "vell",
+    "unlock": "b3-company",
+    "nextTown": "vell",
+    "continues": true,
+    "xp": 11000,
+    "gold": 780,
+    "region": "The stair under Vell, and the deep beneath Cinder Fold's lid, where the marked way begins",
+    "threat": "Somewhere below the foot of the stair, some of Hesk's company turned back in the dark and could not find the way up. The Gloam in the deep takes what nobody gave, and it has found them.",
+    "faction": "wardens",
+    "brief": "A day of stair, going down. At the bottom the stair meets the deep under Cinder Fold's lid, where the founders' bells hang overhead in the dark, and some of the people who went down with Hesk have turned back and are lost.",
+    "opening": [
+      {
+        "oneOf": [
+          {
+            "narrate": "You go down at first light. For the first hundred steps you can look back and see the ring of lamps on the rim of the iron door, getting smaller. Then the stair turns, and there is only the light you carry.",
+            "when": {
+              "flag": "b3_door_kept"
+            }
+          },
+          {
+            "narrate": "You go down at first light. For the first hundred steps you can still hear Oswin Pike turning the three keys in the iron door above you, one after another. Then the stair turns, and there is only the light you carry, and a shut door behind it.",
+            "when": {
+              "flag": "b3_door_closed"
+            }
+          },
+          {
+            "narrate": "You go down at first light, and the stair turns, and there is only the light you carry."
+          }
+        ]
+      },
+      {
+        "narrate": "The stair goes down for a day. It is cut into rock that nobody in Vell cut, and every step is worn hollow in the middle by feet, a great many feet, a long time ago. The cold comes up it steadily, the way a draught comes under a door."
+      },
+      {
+        "narrate": "Fennick counts the steps aloud for the first hours, under his breath. Somewhere past the nine thousandth he stops. He goes on walking. When you look back at him he is writing on his board by lamplight as he walks, and then reading what he has written, and nodding, as if it were somebody else's figure and he had decided to believe it."
+      },
+      {
+        "narrate": "Toward what would be evening, the stair comes out of the rock into open dark, and there are lights. At first you think they are below you. Then you understand that you have come down past them, and are looking back up."
+      },
+      {
+        "narrate": "You are under Cinder Fold. Over your heads, a long way up, is the underside of the iron lid, black and enormous, and hung round the rim of the shaft in it are the nine bells the founders cast, each the size of a cart. From below they are only shapes, each with a faint warmth on its bronze, like a lamp left in a window. They hang in the dark over the deep, and they ring, slowly, out of time."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "There are ten. The tenth is small and plain, a little apart from the others, and it rings a little ahead of them.",
+            "when": {
+              "flag": "b3_wren_cast"
+            }
+          },
+          {
+            "narrate": "You can hear that they are being rung by hand: every note pulled a breath late, by somebody up there on a rope in the dark.",
+            "when": {
+              "flag": "b3_wren_waits"
+            }
+          }
+        ]
+      },
+      {
+        "narrate": "On the last flight Orin stops to re-tie the strap on Fennick's census box, which has worked loose. He takes a round turn with it, the way he always does. Then his hands stop.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Two half-hitches. And then there's a stopper. On the tail. There's a stopper on the tail."
+      },
+      {
+        "say": "orin",
+        "text": "I've tied it every day of my life."
+      },
+      {
+        "narrate": "He looks at the rope in his hands for a long time. Then he ties a plain knot, the kind anyone ties, and stands up, and goes on down. He does not say anything else about it, and nobody asks him to.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "The game. The one I played with the volunteers in Vell, the night before the yard. I can see the table. I can see the cards in the boy's hand across from me. I won every hand."
+      },
+      {
+        "say": "maren",
+        "text": "I don't know what any of the cards were for."
+      },
+      {
+        "narrate": "She takes the pack out of her satchel, and turns over the top card, and looks at it, and puts it back, and buttons the satchel.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "say": "nessa",
+        "text": "The bridge. Where I found him. It had a name, it was on a post, there was a post at the end with the— it had a name."
+      },
+      {
+        "narrate": "She stops on the step. Biscuit leans against her leg. She puts her hand down on his head and keeps it there for the rest of the stair, and does not try again.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Nothing comes back. You go on down.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Nothing comes back. You go on down.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Nothing comes back. You go on down.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ]
+      },
+      {
+        "narrate": "The stair ends on a ledge of rock at the edge of the open dark. There are chalk marks on the wall of it: an arrow, a number, and the lamp-mark of the Lantern Hall. Beside them, pushed into a crack in the rock at the height of a child's hand, there is a horn button."
+      },
+      {
+        "narrate": "And a little way below the ledge, where the way goes on down into the deep, there is a light: a candle-end on a stone, and round it, sitting close, as if it were a fire, people."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Fennick counts them twice. Thirty-eight. A hundred and twelve of Hesk's company went down through the iron door; the rest sat on the vault stair until morning and then went back up into Vell. These thirty-eight went on down with the Commander, and somewhere in the dark below this ledge they turned round, and could not find the way back.",
+            "when": {
+              "flag": "method:b3-company",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "Fennick counts them twice. Thirty-eight. Two hundred and forty of Hesk's company went down through the iron door, some of them pushed. These thirty-eight turned round somewhere in the dark below this ledge, and could not find the way back."
+          }
+        ]
+      },
+      {
+        "narrate": "They have been sitting round that candle for two days. Hesk gave them a lantern when they turned back, because he had said he would let anyone go, and he does what he says. The lantern went out on the first day."
+      },
+      {
+        "narrate": "Among them, thinner than the rest, sits a man in a Lantern Hall surveyor's coat, with chalk on his hands."
+      }
+    ],
+    "talks": [
+      {
+        "id": "fennick",
+        "label": "Sit with Fennick on the ledge",
+        "lines": [
+          {
+            "narrate": "Fennick has sat down on the ledge with his box on his knees. He has not opened it."
+          },
+          {
+            "say": "Fennick",
+            "text": "I have stopped counting. I should like that written down by somebody, since I cannot trust myself to do it."
+          },
+          {
+            "say": "Fennick",
+            "text": "It is not that I don't want to. The numbers go. Between one line and the next. I count the steps to nine thousand and something, and by the time I have the pen out the something has gone, and then the nine thousand. So I write each one down the moment I have it, and then I read it, and I believe it, because it is in my hand. That is what I have come to."
+          },
+          {
+            "say": "Fennick",
+            "text": "Thirty-eight. I have it written. I have looked at it four times."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Fennick",
+                "text": "The door is open at the top, and Pike's lamps are on the rim. Whoever goes back up, it is a day of stair, and then the vault, and then Vell. I have that one by heart. I have had it by heart since I was a boy.",
+                "when": {
+                  "flag": "b3_door_kept"
+                }
+              },
+              {
+                "say": "Fennick",
+                "text": "The door at the top is shut, and Pike has the keys on the other side of it. The way out is up through Cinder Fold, under the lid. I have the distance on paper. I do not trust it. Nobody has measured it in nine hundred years.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "say": "Fennick",
+                "text": "Whoever goes back up, it is a long way. I have the distance on paper. I do not trust it."
+              }
+            ]
+          },
+          {
+            "say": "Fennick",
+            "text": "Whatever I lose down here, I should like to keep the count. It is the only thing I was ever any good at."
+          }
+        ]
+      },
+      {
+        "id": "turned",
+        "label": "Sit with the ones who turned back, round their candle",
+        "lines": [
+          {
+            "narrate": "They make room for you round the candle without being asked. Nobody asks who you are. A woman of fifty or so, with a cooper's hands and her coat buttoned wrong, moves her bag so that you can sit. Her name is Annick Dole, and she is from Tarn Cross, as Lise Bracken is."
+          },
+          {
+            "say": "Annick Dole",
+            "text": "I said yes in the autumn. I meant it. I'd mean it again, up there, in Tarn Cross, with the white coming up the lane."
+          },
+          {
+            "say": "Annick Dole",
+            "text": "Halfway down the stair I couldn't see my daughter's face. Not her name. I had her name. Her face. I stood on the step and tried, and it wasn't there, and I thought: if the stair takes that, what does the bottom take? So I turned round."
+          },
+          {
+            "say": "Annick Dole",
+            "text": "The Commander didn't stop me. He gave us his own lantern and said he was sorry it was only one. Some of the others called him things. He let them."
+          },
+          {
+            "say": "Annick Dole",
+            "text": "I've got her face back a bit. Round the edges. I keep thinking if I sit still long enough the rest will come."
+          },
+          {
+            "narrate": "It does not. You watch her know that it does not, and keep sitting still."
+          }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Listen to the bells overhead",
+        "lines": [
+          {
+            "narrate": "Under the lid the founders' bells ring slowly, out of time, and under their ringing, when you are quiet, there is a voice you know."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "It comes from a long way above and behind you: from Vell, from the great bell over the drill-yard, down the stair and through the rock. Down here, under the lid, all the bells are joined, and she can reach you through any of them.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "narrate": "It comes from very far away: from Briarwatch, from the tower, over the mountains and down through the rock. Down here, under the lid, all the bells are joined, and she can reach you through any of them."
+              }
+            ]
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I can hear you. I didn't know I could, from here. The old woman with the hearth bell used to say that everything was joined, underneath. I thought it was a thing you said to children."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I can hear them too. The nine. They're so tired. It's like standing next to somebody who has been holding their breath for nine hundred years, and is still holding it, because they promised."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "There are people in them. In the founders' bells. Like me. Much older than me. They don't remember their names either. I asked."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Wren is with them. She rings a little ahead, the way Nessa talks when she's frightened. Tell Nessa she sounds well.",
+            "when": {
+              "flag": "b3_wren_cast",
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Wren is with them. She rings a little ahead of the others, as if she can't wait for them. She sounds well.",
+            "when": {
+              "flag": "b3_wren_cast",
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "And there are thirty-one more, ahead of you, a long way down, on Hesk's sledges. I can hear them as well. They are not asleep.",
+            "when": {
+              "flag": "b3_vault_held",
+              "notFlag": "b3_rite_law"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Be careful down there. It takes. It doesn't mean to. It's only what this place does with anything nobody gave."
+          }
+        ]
+      },
+      {
+        "id": "surveyor",
+        "label": "Talk to the surveyor in the Lantern Hall coat",
+        "lines": [
+          {
+            "narrate": "The surveyor has his knees drawn up and his arms round them, and the chalk on his hands has gone into the cracks of his skin, white. He looks up when you sit down, politely, as if you had come to his door."
+          },
+          {
+            "say": "The surveyor",
+            "text": "There were three of us. Lamps and chalk and a week's food. We were to find where the copies came from. Mistress Ord thinks there is an original, at the bottom. The first one."
+          },
+          {
+            "say": "The surveyor",
+            "text": "We followed the old marks. Somebody had marked the way at every turn, a long time ago. Buttons. A bit of ribbon. A spoon. We put our chalk beside theirs, so that we'd know our way back."
+          },
+          {
+            "say": "The surveyor",
+            "text": "The woman went on. She said she could see it from the last turn: a floor down there that went on for miles. I came back to the chalk. I don't know where the other one went. I don't know what he was called. I don't know what I'm called."
+          },
+          {
+            "narrate": "Fennick has come up behind you. He opens his ledger at the first page, where three names are written on one line, and reads them out slowly, in his clerk's voice: Hob Ansty. Dorran Wey. Marit Cole."
+          },
+          {
+            "narrate": "The surveyor listens to the first two carefully, the way you would listen to directions in a strange town. He shakes his head at each, the same small, sorry shake."
+          },
+          {
+            "say": "The surveyor",
+            "text": "They're good names. I'm sorry. One of them's mine, I suppose. I'd take either."
+          },
+          {
+            "narrate": "Fennick writes, in the column he has kept open since the autumn, the first entry he has ever made in it: came back, one. Where the name should be he writes both names, with a line between them, and does not blot it."
+          },
+          {
+            "say": "Fennick",
+            "text": "Corvane asked me for their names, for his ledger. I shall have to give him two, and tell him that one of them is wrong, and that I do not know which.",
+            "when": {
+              "flag": "b3_corvane_keeper"
+            }
+          }
+        ]
+      }
+    ],
+    "clue": "The way down is marked at every turn with small things left on purpose: a button, a ribbon, a spoon, a child's tooth in a twist of cloth. They are older than any bell, and the guild's chalk marks are beside them. Whoever left them was not lost. They were going somewhere on purpose, one at a time, and leaving something at every turn so that the next would know the way.",
+    "investigate": {
+      "label": "Read the marks on the way down",
+      "skill": "survival",
+      "alt": [
+        "arcana",
+        "perception"
+      ],
+      "success": [
+        {
+          "narrate": "You go a little way down the marked way with a lamp, turn by turn, and look at what is there. At every turn, where a person going down in the dark would have to choose, something has been left: pushed into a crack, or set on a shelf of rock, or tied to a knob of stone. A horn button. A twist of red ribbon gone brown. A wooden spoon worn thin. A child's milk tooth knotted in a scrap of cloth."
+        },
+        {
+          "narrate": "Beside each one is the Lantern Hall's chalk: an arrow, a number, the lamp-mark. The chalk is from the summer. The things are older. The frost has grown over them in rings, the way it grows over a stone in a stream, year on year, and there are more rings than nine hundred years would give."
+        },
+        {
+          "narrate": "Nobody dropped these. They were left. A great many people went down this way, one at a time, and at every turn each of them left something, so that the next would know the way."
+        },
+        {
+          "say": "maren",
+          "text": "Look how they're placed. You don't set a thing down like that unless it matters to you."
+        },
+        {
+          "say": "orin",
+          "text": "Whoever they were, they weren't lost. Lost people don't mark a way."
+        },
+        {
+          "narrate": "Whoever they were, they were not lost. Lost people do not mark a way.",
+          "when": {
+            "absent": "orin"
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go a little way down the marked way with a lamp, and find the Lantern Hall's chalk at every turn, an arrow and a number, and beside each one something small: a button, a scrap of ribbon. The frost has grown over them. You do not know what they are, only that the surveyors put their chalk beside them on purpose, as if they trusted them more than their own marks."
+        }
+      ]
+    },
+    "route": {
+      "label": "Get the ones who turned back on their feet, and find the marked way in the dark",
+      "skill": "athletics",
+      "alt": [
+        "persuasion",
+        "medicine"
+      ],
+      "safe": false,
+      "success": [
+        {
+          "narrate": "You get them up, one at a time, the ones who can walk lending an arm to the ones who cannot. You give out your spare lamps. The surveyor goes to the front without being asked, because his hands know the chalk, and nobody argues."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Some of them will not get up. One man fights you when you try to lift him, and you take a knee in the ribs on the rock before he lets go, and by the time they are all standing your hands are white with the cold and will not close."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Go down to the candle and sit with them until something happens",
+      "text": "You go down from the ledge to the candle and sit with them, and wait, and the candle burns down."
+    },
+    "approach": [
+      {
+        "narrate": "Below the ledge the deep opens out. You cannot see its floor, or its walls. There is only the marked way going down into the dark, turn by turn, and the bells overhead, and the thirty-eight in a ragged line with your lamps among them."
+      },
+      {
+        "narrate": "The candle-end on its stone is nearly out."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "The candle goes out."
+      },
+      {
+        "narrate": "In the dark the cold comes up out of the deep the way water comes up into a footprint: from below, all at once, without a sound. Your lamps go dim. Not out. Dim, as if they were further away than they are."
+      },
+      {
+        "narrate": "There are shapes in it. They come up out of the deep along the marked way and stand at the edge of the light, and they have faces. Not their own. Faces you half remember: a carter from your first road, a woman from a town whose name you have lost, someone you are sure you knew."
+      },
+      {
+        "narrate": "They have not come for you. They look past you, at Annick Dole, and at the surveyor, and at the others, the way the frost on the cart in Briarwatch went looking for the warmest house."
+      },
+      {
+        "say": "Annick Dole",
+        "text": "That's her. That's nearly her face."
+      },
+      {
+        "say": "nessa",
+        "text": "Don't look at them. Look at the marks. Look at the button. The button's real."
+      },
+      {
+        "say": "orin",
+        "text": "Everyone on their feet. Hand on the shoulder in front."
+      }
+    ],
+    "peaceful": {
+      "label": "Lead them along the marked way, turn by turn, back to the ledge",
+      "skill": "survival",
+      "alt": [
+        "athletics",
+        "perception"
+      ],
+      "success": [
+        {
+          "narrate": "You do not fight them. You turn your back on the faces and put the ones who turned back in a line, hand on the shoulder in front, and you lead them along the marked way, from one small thing to the next."
+        },
+        {
+          "narrate": "You know the marks now. At each turn there is something left to find: the button, the ribbon, the spoon, the tooth in its cloth. You find it, and touch it, and call it out, and the line behind you turns where you turn.",
+          "when": {
+            "flag": "prepared:b3-deep"
+          }
+        },
+        {
+          "narrate": "At each turn you find the chalk, and beside the chalk something small, and you trust the small thing more than the chalk, and the line behind you turns where you turn.",
+          "when": {
+            "notFlag": "prepared:b3-deep"
+          }
+        },
+        {
+          "narrate": "The faces follow along the edge of the light. They do not touch anyone who is on the way. It is as if the things left there were still being given, every time someone passes them, and the cold cannot take what is being given."
+        },
+        {
+          "narrate": "The surveyor walks at the front with you, his white hand on the rock, and when you lose the chalk he finds it."
+        },
+        {
+          "narrate": "At the ledge, at the foot of the stair, you count them. Thirty-eight. Fennick counts them after you, and writes it down, and reads it."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You try to lead them along the marked way in the dark. At the second turn you cannot find the mark, and the line behind you breaks, and somebody calls out a name, and the faces at the edge of the light come in."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the marked way",
+      "label": "Hold the marked way while the ones who turned back reach the ledge",
+      "description": "Four successful actions keep the shapes off the marked way until the last of the ones who turned back reaches the ledge.",
+      "skill": "survival",
+      "alt": [
+        "athletics",
+        "perception",
+        "intimidation"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The line breaks on the last turn. The shapes reach the end of it, and when you get the lamps up again two of the ones who turned back are sitting on the rock, unhurt, and cannot tell you who they are.",
+      "successText": "The last of the ones who turned back reaches the ledge, and the shapes go back down into the deep."
+    },
+    "foe": "b3-deep-faces",
+    "foeName": "The Faces in the Deep",
+    "enemyTheme": "gloam",
+    "attackName": "Half-Remembered Hand",
+    "retainerName": "Shape with a Known Face",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "At the ledge, at the foot of the stair, the thirty-eight sit down in a row against the rock, all of them, and nobody is hurt. Fennick has written the number in his ledger and keeps opening it to look.",
+            "when": {
+              "flag": "method:b3-deep",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "At the ledge, at the foot of the stair, the ones who turned back sit down in a row against the rock. There is blood on the marked way where the fight was, and two of them sit a little apart, quite calm, and do not know their names, and are being held by people who do. Fennick has counted them: thirty-eight. Underneath, smaller, he has written: two do not know."
+          }
+        ]
+      },
+      {
+        "narrate": "The shapes have gone back down into the deep. The bells ring overhead, slowly, out of time."
+      },
+      {
+        "narrate": "Below, a long way down along the marked way, so far off that it might be a star, there is a light that is not a candle: wide and low and blue, like a town seen from a hill at night. Hesk's company is down there. The Commander is lighting something."
+      },
+      {
+        "say": "The surveyor",
+        "text": "That's where she went. The floor. She said it went on for miles."
+      },
+      {
+        "narrate": "The ones who turned back cannot stay on this ledge, and they cannot go down. Somebody has to take them up."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "The door at the top is open, with Pike's lamps on the rim: a day of stair, up. But a day up is a day back down again, and the light below is getting brighter.",
+            "when": {
+              "flag": "b3_door_kept"
+            }
+          },
+          {
+            "narrate": "The door at the top is shut and locked from the other side. The only way out is up through Cinder Fold: along the marked way where it climbs the far wall of the deep to the underside of the lid, where the founders left a hatch, and where the miners will lower ropes if somebody rings for them. It is a long climb. Up and back again is two days.",
+            "when": {
+              "flag": "b3_door_closed"
+            }
+          },
+          {
+            "narrate": "Whichever way they go up, it is a long way, and the light below is getting brighter."
+          }
+        ]
+      },
+      {
+        "say": "Fennick",
+        "text": "I can take them. I can count them up as well as down."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "escort",
+        "label": "Take them up yourselves, all the way, and come back down",
+        "flag": "b3_turned_escorted",
+        "description": "This decision is permanent. Every one of them gets home. It costs you a day, or two with the door shut, and Hesk will be further on when you reach him.",
+        "text": [
+          {
+            "oneOf": [
+              {
+                "narrate": "You take them up yourselves: the whole day of the stair, with the thirty-eight in a line and the surveyor at the front and Fennick at the back, counting. At the top, on the rim, Pike's lamps are lit. Vell's people take the thirty-eight in one at a time and wrap them in blankets, and Pike asks no questions.",
+                "when": {
+                  "flag": "b3_door_kept"
+                }
+              },
+              {
+                "narrate": "You take them up yourselves, the long way: along the marked way where it climbs the far wall of the deep, to the underside of Cinder Fold's lid and the founders' hatch. You ring on the iron with the hilt of a knife until somebody above rings back. Then the miners lower ropes, and the committee's people bring the thirty-eight up one at a time into the warm, and Hew counts them as they come, out loud, and gets it right.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "narrate": "You take them up yourselves, all the way, and see every one of them into somebody's arms at the top."
+              }
+            ]
+          },
+          {
+            "narrate": "Then you come back down."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "It is two days, there and back, not one. On the way down the second time Fennick says nothing for hours. Then he says that the light below has got brighter, and writes it down, so that he will believe it.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "narrate": "It is a day up and a day down. On the way down the second time the light below is brighter, and Fennick writes that down, so that he will believe it."
+              }
+            ]
+          },
+          {
+            "narrate": "Every one of them got home. Fennick has written that too."
+          }
+        ]
+      },
+      {
+        "id": "fennick",
+        "label": "Send them up with Fennick, and go on down",
+        "flag": "b3_turned_fennick",
+        "description": "This decision is permanent. Fennick takes them up, and most of them get home. You go on down without him.",
+        "text": [
+          {
+            "say": "Fennick",
+            "text": "Thirty-eight, up. I shall count them at every hundred steps, and write it down, and read it."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "He goes up the stair at the back of the line, with his box on his shoulder and the surveyor at the front. It is a day to the top, and Pike's lamps on the rim.",
+                "when": {
+                  "flag": "b3_door_kept"
+                }
+              },
+              {
+                "narrate": "He takes them the long way: along the marked way where it climbs the far wall of the deep, to the underside of Cinder Fold's lid, where the miners will lower ropes if he rings for them. It is a long climb in the dark for thirty-eight tired people and one clerk.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "narrate": "He takes them up at the back of the line, with his box on his shoulder and the surveyor at the front."
+              }
+            ]
+          },
+          {
+            "narrate": "Before he goes he gives you his ledger. Not the box: the ledger he has been writing in since Vell."
+          },
+          {
+            "say": "Fennick",
+            "text": "Somebody has to count, down there. I would rather it were you than nobody."
+          },
+          {
+            "narrate": "Most of them get home. You learn that later, in Fennick's own hand. Not all."
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "label": "Go on down, and let them find their own way up",
+        "flag": "b3_turned_left",
+        "approval": {
+          "maren": -1,
+          "orin": -1
+        },
+        "description": "This decision is permanent. You reach Hesk in good time. Some of the ones who turned back will be lost on the way up, and their names will be written down.",
+        "text": [
+          {
+            "narrate": "You give them every lamp you can spare, and the surveyor, who knows the chalk, and you show them the way."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "A day of stair, up, to the ring of lamps on the rim. You tell them to count the steps, and to write the number down if they can.",
+                "when": {
+                  "flag": "b3_door_kept"
+                }
+              },
+              {
+                "narrate": "Along the marked way where it climbs the far wall, to the underside of the lid, and the hatch, and the miners' ropes. You tell them to ring on the iron until somebody rings back.",
+                "when": {
+                  "flag": "b3_door_closed"
+                }
+              },
+              {
+                "narrate": "You tell them which way is up, and to keep together."
+              }
+            ]
+          },
+          {
+            "say": "Annick Dole",
+            "text": "We'll manage. We came down. We can go up."
+          },
+          {
+            "say": "orin",
+            "text": "We told Fennick we'd count them back up."
+          },
+          {
+            "say": "maren",
+            "text": "Some of them won't get there. You know that. I know you know it."
+          },
+          {
+            "narrate": "You go on down. Behind you, for a while, you can hear the thirty-eight on the marked way, calling the turns to each other. Then you can't."
+          }
+        ]
+      }
+    ],
+    "ledgeTitle": "The ledge under the lid",
+    "ledge": [
+      {
+        "narrate": "You wake on the ledge at the foot of the stair, under the lid, with the founders' bells ringing slowly overhead and the marked way going down into the dark below you."
+      },
+      {
+        "narrate": "Somebody has set a horn button on the rock beside your hand while you slept."
+      }
+    ]
+  },
+  "b3-promise": {
+    "id": "b3-promise",
+    "book": 3,
+    "part": 2,
+    "name": "The First Promise",
+    "level": 38,
+    "town": "vell",
+    "unlock": "b3-deep",
+    "nextTown": "vell",
+    "continues": true,
+    "xp": 11250,
+    "gold": 800,
+    "region": "The deep: the floor of given things, at the bottom of the marked way",
+    "threat": "At the far side of the floor at the bottom of the deep, Hesk is drawing a ring of fire around his company, to cast them all at once. The thirty-one bound bells may be with him.",
+    "faction": "wardens",
+    "brief": "At the bottom of the marked way there is a place with no bell in it, and its floor is made of things people left there. At the far side of it, Hesk is lighting his great casting around his company.",
+    "flagScale": {
+      "b3_thirtyone_came": 1.3
+    },
+    "opening": [
+      {
+        "narrate": "The marked way goes down for the rest of a day, and then it stops going down, and you are standing on a floor."
+      },
+      {
+        "narrate": "It goes on further than your lamps reach, flat and grey under the frost, and it is not rock. It is things. Buttons and cups. Ribbons. Spoons, combs, a child's shoe, letters folded small and tied with thread, a wedding ring, a whistle, a lock of hair in a twist of paper, a carved horse with one leg gone. Nine hundred years of them and more, laid down one at a time by people who came here on purpose and went home again. Each one is lying where it was set. The frost has grown over them in rings."
+      },
+      {
+        "narrate": "There is no bell anywhere. You look for one. There is not even a place where a bell would hang."
+      },
+      {
+        "narrate": "Under your feet, under everything, it is not as cold as it was on the stair."
+      },
+      {
+        "oneOf": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Fennick's ledger is in your pack. On its last page, in his square hand, he worked it out on the stair before he went up: seventy-four went on with the Commander.",
+                "when": {
+                  "flag": "method:b3-company",
+                  "is": "peace"
+                }
+              },
+              {
+                "narrate": "Fennick's ledger is in your pack. On its last page, in his square hand, he worked it out on the stair before he went up: two hundred and two went on with the Commander."
+              }
+            ]
+          }
+        ],
+        "when": {
+          "flag": "b3_turned_fennick"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "oneOf": [
+              {
+                "say": "Fennick",
+                "text": "Seventy-four went on with the Commander, after the thirty-eight turned back. I worked it out on the stair and wrote it down. I am reading it to you off the page.",
+                "when": {
+                  "flag": "method:b3-company",
+                  "is": "peace"
+                }
+              },
+              {
+                "say": "Fennick",
+                "text": "Two hundred and two went on with the Commander, after the thirty-eight turned back. I worked it out on the stair and wrote it down. I am reading it to you off the page."
+              }
+            ]
+          }
+        ],
+        "when": {
+          "notFlag": "b3_turned_fennick"
+        }
+      },
+      {
+        "narrate": "At the far side of the floor, a long way off, is the light you saw from the ledge. It is a ring of fire, low and blue, burning on the floor itself, wide enough to hold a market, and inside it stands Hesk's company, close together, in the cold. Outside the ring Hesk's hired captains go round with oil and tapers, lighting it a length at a time. Commander Idris Hesk walks the inside of it with a book open in one hand."
+      },
+      {
+        "narrate": "The thirty-one iron bells are there, set round the outside of the ring on their sledges at even distances, like the hours on a clock. Hesk's men have rung each one once, to wake it. They are awake.",
+        "when": {
+          "flag": "b3_vault_held",
+          "notFlag": "b3_rite_law"
+        },
+        "setFlag": "b3_thirtyone_came"
+      },
+      {
+        "narrate": "Under the floor the bells are joined, and Aster Vey's voice comes up out of the frost as if she were standing beside you."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "This is where she came. The old woman with the hearth bell. This is where all of them came, once each. Can you feel it? Nothing here was taken. It's the only place under the lid the cold hasn't got into."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "At the edge they used to ask each other. Every one who came. I can hear the nine remembering it. Would you give one?"
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Orin Stoneward. Would you give one?",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "say": "orin",
+            "text": "The Saltwick night. The road out, and the carts, and the order, and the roofs behind us with the lamps going out one at a time. Mags let me go from it. I don't need to hold it any more.",
+            "when": {
+              "flag": "b3_mags_forgives"
+            },
+            "setFlag": "b3_orin_gives"
+          },
+          {
+            "say": "orin",
+            "text": "I keep it. It's how I know.",
+            "setFlag": "b3_orin_keeps"
+          }
+        ]
+      },
+      {
+        "narrate": "He kneels, and takes the old company badge off the inside of his coat, where he has always kept it, and sets it down on the floor among the buttons, where nobody will tread on it. When he stands up he looks toward the roofs of a town that is not there, puzzled, the way you feel for a step in the dark that turns out not to be, and then he looks away.",
+        "when": {
+          "flag": "b3_orin_gives",
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "The stair took the knot. I didn't give it that; it took it. It's not having the road as well. Somebody has to remember those roofs.",
+        "when": {
+          "flag": "b3_orin_keeps"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Maren Vale. Would you give one?",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "say": "maren",
+            "text": "The day it woke. I was nine, and my aunt told me she'd only gone to the market, and I heard the lie in her breathing as plain as a bell, and I knew from then on I'd always hear it. I've kept that day like a relic. I don't need it to hear. I'll give it.",
+            "when": {
+              "anyFlag": [
+                "b3_seal_refused",
+                "b3_seal_many"
+              ]
+            },
+            "setFlag": "b3_maren_gives"
+          },
+          {
+            "say": "maren",
+            "text": "I'm the seal. I need to remember why I can hear it.",
+            "when": {
+              "flag": "b3_seal_taken"
+            },
+            "setFlag": "b3_maren_keeps"
+          },
+          {
+            "say": "maren",
+            "text": "No. Not that one. If I ever stop hearing it, I want to remember that I once could, and why.",
+            "setFlag": "b3_maren_keeps"
+          }
+        ]
+      },
+      {
+        "narrate": "She takes off the plain shrine ring she has worn as long as you have known her and sets it down among the others. Then she stands for a while with two fingers on her own wrist, as if taking a pulse, and frowns, and lets go.",
+        "when": {
+          "flag": "b3_maren_gives",
+          "party": "maren"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Nessa Reed. Would you give one?",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "say": "nessa",
+            "text": "She gave all of it. I can give one.",
+            "when": {
+              "flag": "b3_wren_cast"
+            },
+            "setFlag": "b3_nessa_gives"
+          },
+          {
+            "say": "nessa",
+            "text": "She's still up there. I want all of her.",
+            "setFlag": "b3_nessa_keeps"
+          }
+        ]
+      },
+      {
+        "narrate": "She takes a letter out of the pocket she keeps for later, one of the ones she never sent, and does not read it again. She lays it on the floor, folded, and sets a stone on it so that it will not blow away, though there is no wind. Biscuit lies down beside it until she calls him.",
+        "when": {
+          "flag": "b3_nessa_gives",
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "She puts both hands in her pockets and keeps them there.",
+        "when": {
+          "flag": "b3_nessa_keeps",
+          "party": "nessa"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Nobody tells anybody they are wrong.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Nobody tells anybody they are wrong.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Nobody tells anybody they are wrong.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ]
+      },
+      {
+        "narrate": "Out on the floor, the ring of fire is more than half lit."
+      }
+    ],
+    "talks": [
+      {
+        "id": "fennick",
+        "label": "Stand with Fennick at the edge of the floor",
+        "requires": {
+          "flagsNone": [
+            "b3_turned_fennick"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Fennick is standing at the edge of the floor with his box under his arm, looking out over it. He has not stepped onto it."
+          },
+          {
+            "say": "Fennick",
+            "text": "I should like to count them. Every one. Every button. It would take me the rest of my life and I would lose the number every night, and I should like to do it anyway."
+          },
+          {
+            "say": "Fennick",
+            "text": "I have decided not to. Some things are not for counting. I have never said that in my life. I don't think I have ever thought it."
+          },
+          {
+            "say": "Fennick",
+            "text": "Somebody came down here and put that spoon there. Somebody else came after and stepped round it. For nine hundred years nobody trod on it. That is a kind of record, I suppose. It is better kept than mine."
+          }
+        ]
+      },
+      {
+        "id": "ledger",
+        "label": "Read Fennick's ledger by lamplight",
+        "requires": {
+          "flagsAll": [
+            "b3_turned_fennick"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "The ledger is in Fennick's square hand from the first page to the last: every name that came over the pass, every name chalked on the casting wall, every one the city lost."
+          },
+          {
+            "narrate": "On the last written page is the line he kept open since the autumn: came back, one. Two names after it, with a line between them."
+          },
+          {
+            "narrate": "Below that, in pencil, he has written something else and crossed it out, so that you can still read it: I should like it to be three hundred and three."
+          },
+          {
+            "narrate": "You take out your own pencil and write the date underneath, and where you are. It seems to be what the ledger is for."
+          }
+        ]
+      },
+      {
+        "id": "captain",
+        "label": "Speak to one of Hesk's hired captains at the edge of the ring",
+        "lines": [
+          {
+            "narrate": "The nearest of the captains is a heavy, patient man with a taper in one hand and an oil-can in the other, lighting the ring a length at a time. He does not stop when you come up. His name is Garrick Tench, and he has been paid for the season."
+          },
+          {
+            "say": "Garrick Tench",
+            "text": "We light it and we keep the edge. That's the work. We're not paid to go in it. Nobody's paid to go in it; that's the point, he says. They're the ones who said yes."
+          },
+          {
+            "say": "Garrick Tench",
+            "text": "He paid us out of his own pocket, did you know that? Not the Hall's. His. He sold his house in the district."
+          },
+          {
+            "say": "Garrick Tench",
+            "text": "I don't look at the floor. I'd advise you not to. I looked once, coming in. There's a shoe out there the size of my hand."
+          }
+        ]
+      },
+      {
+        "id": "thirtyone",
+        "label": "Go to the nearest of the thirty-one iron bells",
+        "requires": {
+          "flagsAll": [
+            "b3_vault_held"
+          ],
+          "flagsNone": [
+            "b3_rite_law"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "The nearest of the iron bells stands on its sledge at the edge of the ring, with Hesk's chalk on its shoulder: down. It is ringing very faintly, all the time, the way a struck glass goes on ringing after you have stopped hearing it."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "They're asking what they're for, this time. Every time they're woken, somebody tells them. Nobody has told them yet."
+          },
+          {
+            "say": "maren",
+            "text": "I can't hear them breathe. I couldn't in Vell either. I decided to believe them, that night. I still do."
+          }
+        ]
+      }
+    ],
+    "clue": "Hesk's circle is the founders' shortcut drawn at full size. Its marks are the marks round the ring of nine bells on Cinder Fold's lid, the same measure and the same spacing, drawn out until it would hold a crowd. Where the founders cast nine bells around nine people, Hesk means to cast one ring around all his company at once.",
+    "investigate": {
+      "label": "Pace out Hesk's circle from the dark beyond the captains' tapers",
+      "skill": "arcana",
+      "alt": [
+        "religion",
+        "investigation"
+      ],
+      "success": [
+        {
+          "narrate": "You go round the outside of the ring in the dark, beyond the reach of the captains' tapers, and pace it out. Every so many paces there is a mark cut in the frost of the floor: the same marks that are carved round the rim of the casting floor at Cinder Fold, under the soot, where the founders hung the nine."
+        },
+        {
+          "narrate": "It is the ring of the nine. The same measure, the same marks, the same spacing, drawn out over and over until it would hold a town. Where the founders cast nine bells around nine people on a lid over a hole, Hesk has drawn one ring to cast around all of his company at once."
+        },
+        {
+          "narrate": "You have seen this before, round nine bells on an iron lid. You have never asked what the nine were cast around."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go round the outside of the ring in the dark and lose count of your paces twice; the deep takes the numbers out of your head, as Fennick said it would. There are marks cut in the frost at intervals, and you have seen marks like them before, somewhere, and cannot think where."
+        }
+      ]
+    },
+    "route": {
+      "label": "Go round the edge of the floor and come up on the ring between the captains",
+      "skill": "stealth",
+      "alt": [
+        "perception",
+        "athletics"
+      ],
+      "safe": false,
+      "success": [
+        {
+          "narrate": "You go round the edge of the floor where the given things thin out, stepping on bare frost, and come up to the ring between two captains with their backs to you and their tapers in their hands."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "A captain sees your lamp a long way off and calls the others. They come out to meet you with tapers and blades, and in the scramble at the edge of the ring burning oil spits across your arm and the arms of the people beside you."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Walk straight out across the floor toward the ring",
+      "text": "You walk straight out across the floor toward the ring, carefully, stepping where there is nothing, and the captains watch you come from a long way off."
+    },
+    "approach": [
+      {
+        "narrate": "The ring is wider than it looked from the edge. Close to, the fire is low and blue and burns on nothing but lines of oil poured on the frost. Inside it Hesk's company stand shoulder to shoulder in their coats, with their bags at their feet, as if waiting for a cart."
+      },
+      {
+        "narrate": "Hesk is at the centre with the book. He is reading aloud. You know the words. Everyone in Vell knows them now."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "The ring is closing. A length at a time the captains are lighting the last of it, and when the two ends meet Hesk will read the last lines, and whatever the founders did round the nine will be done round everyone inside."
+      },
+      {
+        "narrate": "They cannot see the floor from in there. The fire is in their eyes. They do not know what they are standing on."
+      },
+      {
+        "narrate": "And there is less of the ring left to light than there would have been. You lost a day on the stair taking the ones who turned back home, and Hesk did not lose one.",
+        "when": {
+          "flag": "b3_turned_escorted"
+        }
+      },
+      {
+        "narrate": "Round the outside of the ring the thirty-one iron bells begin to ring, all together, in one note, the way they rang in Vell's vault the night they were driven into one. Hesk's captains have their ropes.",
+        "when": {
+          "flag": "b3_vault_held",
+          "notFlag": "b3_rite_law"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "They don't know where they are. Somebody has to tell them."
+      },
+      {
+        "say": "orin",
+        "text": "Then tell them. Quickly."
+      }
+    ],
+    "peaceful": {
+      "label": "Tell the people in the circle what they are standing on",
+      "skill": "persuasion",
+      "alt": [
+        "performance",
+        "insight"
+      ],
+      "harderWith": {
+        "flag": "b3_turned_escorted",
+        "reason": "The day lost on the stair: the circle is half lit, DC raised by 2"
+      },
+      "success": [
+        {
+          "narrate": "You go up to the fire, as close as it lets you, and you do not speak to Hesk. You speak to them."
+        },
+        {
+          "narrate": "You tell them to look down. Not at you. At their feet."
+        },
+        {
+          "narrate": "And they do. One, and then the ones beside her, and then a whole side of the ring: people looking down past the blue fire at the floor they are standing on. The buttons, the cups, the ribbons, the letters folded small, a child's shoe. Nine hundred years of them, each set down by somebody who came here on purpose, gave one thing, and went home."
+        },
+        {
+          "narrate": "You tell them that Hesk's ring is the founders' ring round the nine on the lid, made bigger, and that you know now what the nine were cast around.",
+          "when": {
+            "flag": "prepared:b3-promise"
+          }
+        },
+        {
+          "narrate": "You do not have to say much. It is all there, under their feet."
+        },
+        {
+          "narrate": "Nobody moves for a long moment. Then Lise Bracken, in the third rank, crouches down on her heels inside the fire, and picks up a wooden spoon worn thin, and looks at it, and puts it back exactly where it was."
+        },
+        {
+          "narrate": "The captains stop lighting. They do not seem to know why, but they have stopped. The ring stays open, a gap of ten paces between its two ends."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You call to them across the fire, and they look at you, not at the floor. They have been told a great many things on the way down. One of the captains puts his taper to the next length of oil, and the ring creeps on, and the rest of the captains come out round the fire toward you with their blades drawn."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Keep the ring open",
+      "label": "Keep the last of the ring from being lit",
+      "description": "Four successful actions keep Hesk's captains from lighting the last length of the ring while you reach the people inside it.",
+      "skill": "athletics",
+      "alt": [
+        "intimidation",
+        "persuasion",
+        "acrobatics"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "Behind you a captain lights the last length but one. The ring is all but closed, and the fire stands up blue and high, and inside it Hesk turns the page.",
+      "successText": "The last length of the ring stays dark, and the gap stays open, and the people inside it can see out."
+    },
+    "foe": "b3-circle-captains",
+    "foeName": "Hesk's Hired Captains",
+    "enemyTheme": "soldier",
+    "attackName": "Taper and Blade",
+    "retainerName": "Captain of the Ring",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "The ring stands open. Its two ends are ten paces apart on the frost, and the captains stand back from it with their tapers burning down in their hands. Nobody was hurt.",
+            "when": {
+              "flag": "method:b3-promise",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "The ring stands open, for now. There are captains down on the floor, and blood on the frost among the given things where the fight was, and the people inside the fire have backed away from the gap as if it were the fire that had hurt somebody."
+          }
+        ]
+      },
+      {
+        "narrate": "The thirty-one iron bells have stopped ringing. Each stands on its sledge, silent, as if waiting to be told what it is for.",
+        "when": {
+          "flag": "b3_vault_held",
+          "notFlag": "b3_rite_law"
+        }
+      },
+      {
+        "narrate": "Hesk stands at the centre of the ring with his book. He has not moved. He has watched all of it."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "Go on, then. Tell them. Tell them what they're standing on. I knew. I've known since the ledge. It doesn't change the arithmetic. One ring, once, and every town in the free wards safe for a lifetime. Or a button each, for ever, and the white up the lane every winter while you wait for enough buttons."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "They said yes. Each of them. Ask them."
+      },
+      {
+        "narrate": "The people in the ring are looking at you. Not at Hesk. At you, through the gap."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "tell",
+        "label": "Tell them all of it, and let each of them choose",
+        "flag": "b3_three_told",
+        "description": "This decision is permanent. Most of them will step out. The ones who stay will have said a real yes, knowing what they stand on.",
+        "text": [
+          {
+            "narrate": "You tell them all of it: the floor, and the ring, and the nine on the lid, and what the first keepers did before there were any bells. Then you stop, and let them choose."
+          },
+          {
+            "narrate": "They come out through the gap one at a time at first, and then in a stream, carefully, stepping where there is nothing on the floor. Most of them. Not all."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Nine of them stay inside the ring.",
+                "when": {
+                  "flag": "method:b3-company",
+                  "is": "peace"
+                }
+              },
+              {
+                "narrate": "Twenty-three of them stay inside the ring."
+              }
+            ]
+          },
+          {
+            "narrate": "Lise Bracken is one of them. She stands with her hands in her coat pockets, and looks at you through the gap, and nods, as if you had done what you were supposed to do, and so had she."
+          },
+          {
+            "narrate": "Whatever they say now, they have said it standing on this floor, knowing."
+          }
+        ]
+      },
+      {
+        "id": "take",
+        "label": "Pull them out of the circle, every one, by force",
+        "flag": "b3_three_taken",
+        "approval": {
+          "maren": -1
+        },
+        "description": "This decision is permanent. Every one of them is out of the circle, and some of them will never forgive you.",
+        "text": [
+          {
+            "narrate": "You go in through the gap, with everyone who will come with you, and you take them out. By the arm, by the collar, by the strap of a bag. Some come. Some fight. Some sit down on the frost inside the fire and have to be lifted."
+          },
+          {
+            "narrate": "It takes an hour. At the end of it the ring is empty, and every one of Hesk's company is outside it, on the floor among the given things, and some of them are crying and some are shouting and some are quite silent and will not look at you."
+          },
+          {
+            "narrate": "Lise Bracken has a bruise on her wrist where somebody held her. She stands a long way off and does not come any nearer."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Lise Bracken",
+                "text": "I said yes. I had it witnessed. I had the paper. You had no right.",
+                "when": {
+                  "flag": "b3_market_ruled"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "I said yes. It was mine to say. You had no right."
+              }
+            ]
+          },
+          {
+            "say": "maren",
+            "text": "She's right. It doesn't mean you were wrong. I don't know what it means."
+          }
+        ]
+      },
+      {
+        "id": "left",
+        "label": "Leave them in the circle, and go for Hesk",
+        "flag": "b3_three_left",
+        "description": "This decision is permanent. All of them are still in the circle when you reach Hesk, and the last fight will be harder.",
+        "text": [
+          {
+            "narrate": "You do not stop for them. They have heard you or they have not, and there is no time to find out which. You go round the inside of the ring toward the centre, toward Hesk and his book."
+          },
+          {
+            "narrate": "Behind you the captains go back to their tapers. The gap begins to close."
+          },
+          {
+            "narrate": "All of Hesk's company are still inside, every one."
+          }
+        ]
+      }
+    ],
+    "ledgeTitle": "The edge of the floor",
+    "ledge": [
+      {
+        "narrate": "You wake at the edge of the floor of given things, on bare rock, where the marked way ends. Somebody has laid you down carefully, where you would not crush anything."
+      },
+      {
+        "narrate": "Out on the floor the ring is still burning, low and blue."
+      }
+    ]
+  },
+  "b3-firstbell": {
+    "id": "b3-firstbell",
+    "book": 3,
+    "part": 2,
+    "name": "The First Bell",
+    "level": 39,
+    "town": "vell",
+    "unlock": "b3-promise",
+    "nextTown": "briarwatch",
+    "xp": 11500,
+    "gold": 820,
+    "region": "The deep: the heart of Hesk's circle, on the floor of given things",
+    "threat": "Hesk stands at the heart of his circle with a page and a half of the rite to read. Whoever is still in the ring when he finishes will be cast.",
+    "faction": "wardens",
+    "brief": "Hesk stands at the heart of his circle on the floor of given things, finishing the casting. This is the bottom of the stair, and the end of it.",
+    "flagScale": {
+      "b3_three_left": 1.3,
+      "b3_three_told": 0.85
+    },
+    "opening": [
+      {
+        "narrate": "The heart of the circle is a bare place on the floor, ten paces across, where Hesk's men swept the given things aside to make room. Then, at his order, they put every one of them back as near as they could to where it had been, round the edge. He told them to. He has done everything here properly."
+      },
+      {
+        "narrate": "Hesk stands in it with the book open, reading."
+      },
+      {
+        "narrate": "He reads the way a clerk reads out a will: every word, in order, not hurrying, so that nobody can say afterwards that a word was missed."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Round him, inside the ring, stand the ones who stayed: a few, close together, with their bags at their feet. They chose this standing on the floor, knowing what it is. He reads to them more gently than he read to the others.",
+            "when": {
+              "flag": "b3_three_told"
+            }
+          },
+          {
+            "narrate": "The ring is empty. Everyone who was in it is outside, on the floor among the given things, where you put them. Hesk is reading to nobody. He goes on reading anyway, to the end of the page, because the rite does not say to stop.",
+            "when": {
+              "flag": "b3_three_taken"
+            }
+          },
+          {
+            "narrate": "Round him, inside the ring, stands all of his company, close together in the blue light, as it has stood since before you came. The gap behind you has closed.",
+            "when": {
+              "flag": "b3_three_left"
+            }
+          },
+          {
+            "narrate": "Round him, inside the ring, stands his company, close together in the blue light."
+          }
+        ]
+      },
+      {
+        "narrate": "The fire is half up. Hesk has a page and a half to go."
+      },
+      {
+        "narrate": "Overhead, a very long way up, past the dark, the founders' bells are ringing, and every bell in the free wards is ringing with them, because down here they are all joined. You can hear them all. Every one is out of time."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "I'm here. I'm with them. All of us are listening."
+      }
+    ],
+    "talks": [
+      {
+        "id": "hesk",
+        "label": "Speak to Hesk across the heart of the circle",
+        "lines": [
+          {
+            "narrate": "He stops reading when you come up, and keeps his finger in the page."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "You'll want to talk me out of it. You can't. I'll tell you why, so you don't waste the time."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "I bought every yes in this ring. Not with money; the Hall did that part. With the white coming up the lane, and a Commander who came to their town himself and said it once and didn't try to sell it. I know what I paid for each of them. You can't talk a man out of a thing he's bought. You'd have to give him back the price."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "The willing are a luxury. I said it in Vell and I meant it. I've stood at every casting. I held the lamp. I watched the bronze go in. And then I walked through the district afterwards, and nobody was dead in it."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "So. What will you do instead? I'm asking. I've been asking since the road."
+          }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Listen for Aster in the bells",
+        "lines": [
+          {
+            "say": "Aster Vey",
+            "text": "It's easier to hear down here. Everything. The nine. The voices in Vell. All of them."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Sable is listening too. At Highpass, in the gatehouse yard. He says nothing. He has been listening to me for a long time without saying anything.",
+            "when": {
+              "flag": "b3_sable_cast"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "If you do the old thing, the slow thing, the bound ones could rest. I could. I don't know yet if I want to. I would like to be asked."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Nobody asked me the first time."
+          }
+        ]
+      },
+      {
+        "id": "fennick",
+        "label": "Stand with Fennick at the edge of the ring",
+        "requires": {
+          "flagsNone": [
+            "b3_turned_fennick"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Fennick has his ledger open on his box, at a new page, with the pen ready."
+          },
+          {
+            "say": "Fennick",
+            "text": "I counted them in at the gate of Vell. I counted them down the stair. I should like to count them out."
+          },
+          {
+            "say": "Fennick",
+            "text": "If they go into the bronze, I shall write it down. Cast. I have written that word before. I can write it again. I would rather write the other one."
+          }
+        ]
+      },
+      {
+        "id": "ledger",
+        "label": "Open Fennick's ledger at a new page",
+        "requires": {
+          "flagsAll": [
+            "b3_turned_fennick"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You open Fennick's ledger at a new page, on your knee, by the light of the ring, and write at the top of it, the way he would: the heart of the circle, the bottom of the stair. Then you sit with the pen over the page, and find that you do not want to write the next word until you know which word it is."
+          }
+        ]
+      },
+      {
+        "id": "circle",
+        "label": "Find Lise Bracken",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Lise Bracken is inside the ring, a few paces from Hesk, with her bag at her feet and her scarf over her mouth against the cold.",
+                "when": {
+                  "flag": "b3_three_told"
+                }
+              },
+              {
+                "narrate": "Lise Bracken is outside the ring, sitting on the bare rock at its edge with her back to it, rubbing her bruised wrist.",
+                "when": {
+                  "flag": "b3_three_taken"
+                }
+              },
+              {
+                "narrate": "Lise Bracken is inside the ring, in the third rank, with the blue light on her face."
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Lise Bracken",
+                "text": "I looked. I saw what it was. I'm still here. Don't take that off me.",
+                "when": {
+                  "flag": "b3_three_told"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "You've made me somebody who was rescued. I wasn't. I was somebody who'd decided.",
+                "when": {
+                  "flag": "b3_three_taken"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "I heard you. Some of it. It's hard to hear in here, with the fire."
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Lise Bracken",
+                "text": "There's a lane in Tarn Cross with eleven houses on it, and every winter the white comes up it as far as the fourth. I'd like it not to come up it. That's all. That was always all.",
+                "when": {
+                  "flag": "b3_three_told"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "I'll go home. The white'll come up the lane, and I'll stand in my door and watch it, and I'll know who did that.",
+                "when": {
+                  "flag": "b3_three_taken"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "I said yes in the autumn. I'm still saying it, I think. Ask me again when it isn't so loud."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "clue": "The circle answers the first note the founders rang, the note the nine on the lid ring first when they are in time. Ring that note from outside the circle and the circle opens, the way a door opens to its own knock.",
+    "investigate": {
+      "label": "Listen for the note the circle is answering",
+      "skill": "arcana",
+      "alt": [
+        "performance",
+        "religion"
+      ],
+      "success": [
+        {
+          "narrate": "Under the reading and the fire, the ring has a sound: a hum, very low, the way a glass hums when you run a wet finger round its rim. You stand at its edge and listen until you have it."
+        },
+        {
+          "narrate": "It is a note. One note: the one the nine on the lid ring first, every hour, before the others, when they are in time. The founders' first note. The ring was drawn to it, and it is waiting for it, the way a door waits for its own knock."
+        },
+        {
+          "say": "Aster Vey",
+          "text": "Yes. That's the one. Ring it from outside, and it opens. It was never meant to stay shut. They were always meant to be able to come home."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Under the reading and the fire, the ring has a sound, a hum, very low. You listen until your ears ache. You cannot hold it in your head: every time you nearly have it, the deep takes it."
+        }
+      ]
+    },
+    "route": {
+      "label": "Cross the floor to the heart of the circle without treading on anything that was given",
+      "skill": "acrobatics",
+      "alt": [
+        "perception",
+        "stealth"
+      ],
+      "safe": true,
+      "success": [
+        {
+          "narrate": "You cross the floor to the heart of the circle stepping only where there is nothing, from bare frost to bare frost, the way you would cross a stream on stones. You do not tread on one thing. It takes a long time. Nobody hurries you."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You cross the floor slowly, and halfway over you put your foot down on something that gives: a cup, very old, which breaks without a sound. You stand over it for a long moment. Then you go on, more slowly, and you do not look back at it, and you do not forget it."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Walk in along the swept path the company came in by",
+      "text": "You go in along the path Hesk's men swept for his company, where nothing is lying now, and come to the heart of the circle."
+    },
+    "approach": [
+      {
+        "narrate": "At the heart of the circle the fire stands up blue on every side, higher than your head, and the cold inside it is not like the cold of the deep. It is the cold of a bell's bronze before it has been rung: waiting."
+      },
+      {
+        "narrate": "Hesk turns a page."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "Hesk reads the last half page."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "The ones who stayed stand round him with their eyes shut.",
+            "when": {
+              "flag": "b3_three_told"
+            }
+          },
+          {
+            "narrate": "There is nobody in the ring but him and you. He reads anyway.",
+            "when": {
+              "flag": "b3_three_taken"
+            }
+          },
+          {
+            "narrate": "His company stands round him in the blue light, all of them, waiting to be cast."
+          }
+        ]
+      },
+      {
+        "narrate": "The fire goes up. The hum in the ring becomes a sound you can feel in your teeth. Overhead, a long way up, the nine on the lid stop ringing all at once, as if they were listening."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "Stand back. It's nearly done. I would rather not hurt you. I would, though."
+      },
+      {
+        "say": "orin",
+        "text": "Not this time."
+      },
+      {
+        "say": "nessa",
+        "text": "The note. There's a note in it, I can nearly— can anyone sing?"
+      }
+    ],
+    "peaceful": {
+      "label": "Ring the first note from outside the circle, with the people in it",
+      "skill": "performance",
+      "alt": [
+        "religion",
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You go back out through the fire, so that you are outside the ring, and you find the note.",
+          "when": {
+            "flag": "prepared:b3-firstbell"
+          }
+        },
+        {
+          "narrate": "You go back out through the fire, so that you are outside the ring, and you feel for the note under the hum, and find it, nearly, and hold on to nearly.",
+          "when": {
+            "notFlag": "prepared:b3-firstbell"
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "narrate": "You do not ring it alone. The ones who stayed hear you through the fire and take it up, one and then another, a hum and then a voice, the way a crowd takes up a hymn it half remembers.",
+              "when": {
+                "flag": "b3_three_told"
+              }
+            },
+            {
+              "narrate": "You do not ring it alone. Out on the floor among the given things, the people you pulled out of the ring hear you, and some of them take it up and some of them will not, and it is enough.",
+              "when": {
+                "flag": "b3_three_taken"
+              }
+            },
+            {
+              "narrate": "You do not ring it alone. Inside the ring Hesk's company hear you through the fire, and take it up, one and then another, until the note is coming from inside as well as out."
+            }
+          ]
+        },
+        {
+          "narrate": "Overhead, a very long way up, the nine on the lid ring it too. Then every bell in the free wards, all at once and in time, for the first time in a generation: the first note the founders rang."
+        },
+        {
+          "narrate": "The ring opens. The fire does not go out; it lies down, the way grass lies down in a wind, and there is a road through it, and the cold goes out of the heart of the circle like a held breath let go."
+        },
+        {
+          "narrate": "Hesk stops reading. He looks at the page for a long moment. Then he closes the book on his finger and stands there, and does not lift a hand, and lets you take it from him."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go out through the fire and try for the note, and cannot hold it; the deep takes it out of your head between one breath and the next. Inside the ring Hesk turns the last page. He sets the book down on the swept floor, carefully, open, and draws his sword."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Break the circle",
+      "label": "Break the circle before Hesk reads the last line",
+      "description": "Four successful actions break the ring of fire around Hesk before he can read the last line of the rite.",
+      "skill": "athletics",
+      "alt": [
+        "religion",
+        "performance",
+        "intimidation"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "Hesk reads the last line over the clash of it. The fire goes up white, and the cold comes out of the heart of the circle like a blow, and everyone near it, you among them, loses something small and cannot say what. Then the ring breaks under your hands.",
+      "successText": "The ring breaks under your hands, and the fire lies down, and Hesk is on his knees on the swept floor with the book beside him."
+    },
+    "foe": "b3-hesk-circle",
+    "foeName": "Commander Hesk, at the Heart of the Circle",
+    "enemyTheme": "soldier",
+    "attackName": "The Commander's Blade",
+    "retainerName": "Hesk's Last Captain",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "Hesk is on his knees at the heart of the circle, with his book in your hands and the fire lying down round you both like grass in a wind. Nobody was hurt.",
+            "when": {
+              "flag": "method:b3-firstbell",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "Hesk is on his knees at the heart of the circle, with his sword a long way off across the swept floor and blood on his face and on yours. The fire lies broken round you both."
+          }
+        ]
+      },
+      {
+        "narrate": "He is alive, and he is beaten, and he knows it. He looks up at you, and then past you, at the floor of given things going on further than any lamp can reach."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "So. What will you do instead?"
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "Not what you'll stop. I know what you'll stop. What will you do? The nine are tired. The lid is moving. I had an answer. It was a bad one, and it worked. What's yours?"
+      },
+      {
+        "narrate": "Overhead, a long way up, the bells have gone back to ringing out of time. Somebody has to answer him."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "old",
+        "label": "The old way: ask the free wards to give one memory each, one person at a time, and give one yourself",
+        "flag": "b3_promise_old",
+        "description": "This decision is permanent. It takes a winter, and towns will fall while the asking goes on. It has to be done again every generation. The bound voices may choose to rest.",
+        "text": [
+          {
+            "narrate": "You tell him. Not one ring, once. One thing each, for ever."
+          },
+          {
+            "narrate": "You will go up and ask the free wards to come down here, a few at a time, or to send what they would give: one memory each, one person at a time, freely, and nobody made to. And you will give one too, here, before you go up."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "The council promised help for whatever was under the stair, in Briarwatch's hall, the night of the lanterns. It will keep its promise quickly. Quick is not the same as freely, and you know it.",
+                "when": {
+                  "flag": "b3_wards_promise"
+                }
+              },
+              {
+                "narrate": "You said you would ask each town yourself. It will be slow: a hundred towns, one door at a time.",
+                "when": {
+                  "flag": "b3_towns_asked"
+                }
+              },
+              {
+                "narrate": "Nobody has promised anything. You came down alone, and you will start from nothing, with a hundred towns to ask.",
+                "when": {
+                  "flag": "b3_go_alone"
+                }
+              },
+              {
+                "narrate": "A hundred towns will have to be asked."
+              }
+            ]
+          },
+          {
+            "narrate": "It will take a winter. Towns will fall while it goes on. Some of them have names you already know."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "A winter. And then again in thirty years, and again after that, every generation, for ever. You're handing the council a problem it can never put down."
+          },
+          {
+            "narrate": "You tell him yes. That is the price, and it is the council's to carry, and everyone's."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "And the ones who won't give?"
+          },
+          {
+            "narrate": "Then they will not, and their towns will stay as they are, open to the white, and nobody will make them."
+          },
+          {
+            "say": "maren",
+            "text": "Somebody always pays. This way it's never one person."
+          }
+        ]
+      },
+      {
+        "id": "hesk",
+        "label": "Hesk's way: let him finish the casting with whoever is still in the circle",
+        "flag": "b3_promise_hesk",
+        "requires": {
+          "flagsNone": [
+            "b3_three_taken"
+          ]
+        },
+        "description": "This decision is permanent. Whoever is still in the circle is cast, and the ward holds for a generation.",
+        "text": [
+          {
+            "narrate": "You give him back his book."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Every one of his company is still in the ring. He stands up, and finds his place, and reads them the last line. The bronze comes up out of the frost round all of them at once, a ring of bells standing on the floor of given things, and in every town in the free wards the white goes back down the lanes. It will hold for a generation. Every yes in it was bought.",
+                "when": {
+                  "flag": "b3_three_left"
+                }
+              },
+              {
+                "narrate": "Only the ones who stayed are in the ring, and they stayed knowing. He stands up, and finds his place, and reads them the last line, gently. The bronze comes up round them. It is a partial ward, because they are few: it will hold fewer towns, for a shorter time, than Hesk wanted. Every yes in it was real.",
+                "when": {
+                  "flag": "b3_three_told"
+                }
+              },
+              {
+                "narrate": "He stands up, and finds his place, and reads the last line to whoever is in the ring."
+              }
+            ]
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "I'll write their names myself. All of them. I've always meant to."
+          }
+        ]
+      },
+      {
+        "id": "seal",
+        "label": "Seal the stair: nobody gives, nobody is cast, and nobody comes down here again",
+        "flag": "b3_stair_sealed",
+        "description": "This decision is permanent. The nine carry it alone again, and the next generation will pay more.",
+        "text": [
+          {
+            "narrate": "You tell him no. Not his way, and not the old way either. Nobody gives anything tonight, and nobody is cast. You will go up and close the way down behind you, and nobody will come down here again."
+          },
+          {
+            "narrate": "The nine will carry it alone, as they have. They are tired, and the lid is moving. The next generation will pay more than this one would have."
+          },
+          {
+            "say": "Idris Hesk",
+            "text": "So it's somebody else's winter."
+          },
+          {
+            "narrate": "Yes. Somebody else's. You watch him understand that you know it."
+          }
+        ]
       }
     ]
   }

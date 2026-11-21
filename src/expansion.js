@@ -188,15 +188,22 @@ function installQuest(q){
   ]};
   // A peaceful way may be easier after an earlier choice ("easierWith": a
   // story flag and the reason shown): the DC drops by 2 while it is set.
+  // "harderWith" is the same, and raises the DC by 2.
   STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
+    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{}),...(q.peaceful.harderWith?{harderWith:q.peaceful.harderWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
     ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
-  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  // A straight-on chapter ("continues": true, Book Three's stair) goes from
+  // its decision to the next chapter's opening (src/world.js goOn), and its
+  // end is the safe ledge a defeat in the next chapter wakes on: "ledge" is
+  // what is told there, and its one choice rests and goes back down.
+  if(q.continues)STORY_NODES[`${prefix}-ledge`]={id:`${prefix}-ledge`,act:'The last ledge',title:q.ledgeTitle||'The last ledge',location:q.region,objective:'Rest, then go back down.',lines:q.ledge||[{narrate:'You wake where the last part of the way ended, with the dark below you.'}],safeRest:true,sideStory:true,ledge:q.id,
+    choices:[choice('down',q.ledgeLabel||'Rest, then go back down',{once:false,description:'A long rest on the ledge, then back to the encounter that beat you. Nothing earlier is undone.',result:{backDown:true}})]};
   const level=L;
   const type=q.enemyTheme;
   const f=XP.foeStats(challenge);
@@ -223,13 +230,28 @@ function installScene(scene){
   const home=next?sceneNode(next,next.start):`town-${q.nextTown||q.town}`,nodeId=key=>sceneNode(scene,key);
   for(const [key,raw]of Object.entries(scene.nodes)){
     const base=raw.sameAs?scene.nodes[raw.sameAs]:raw;
-    const dialogue=base.lines.map(storyLine);
-    STORY_NODES[nodeId(key)]={id:nodeId(key),act:scene.act,title:base.title,location:scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
+    // The node that names the 3rd job ("framesTrial") ends with the scene's
+    // trialFraming lines, the same ones the trial opens with (trialFraming below).
+    const dialogue=[...base.lines,...(base.framesTrial&&scene.trialFraming?scene.trialFraming.lines:[])].map(storyLine);
+    STORY_NODES[nodeId(key)]={id:nodeId(key),act:base.act||scene.act,title:base.title,location:base.location||scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
       choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{...(c.requires?{requires:c.requires}:{}),result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),nextNode:c.next?nodeId(c.next):home}}))};
   }
   if(QUESTS[scene.after])for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
+// The 3rd job trial is framed the way the Second Oath framed the 2nd job: a
+// scene's "trialFraming" ({flag, lines}) is what the hero carries into it,
+// read from the save once that flag is set (Book Three's epilogue, b3_done).
+// Plain text, the same offline and with the AI game master; '' otherwise.
+function trialFraming(state){
+  for(const scene of Object.values(SCENES)){
+    const f=scene?.trialFraming;
+    if(!f||!state?.story?.flags?.[f.flag])continue;
+    const text=dialogueText(liveLines(state,f.lines.map(storyLine)));
+    if(text)return text;
+  }
+  return '';
+}
 // Side jobs (src/data/side-jobs.json): short optional stories taken from a
 // town. Each node is a story node; a choice either moves on ("next") or
 // finishes the job, which pays it (src/world.js completeJob) and goes back to
@@ -291,4 +313,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};
+module.exports={trialFraming,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};

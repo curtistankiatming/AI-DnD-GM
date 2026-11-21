@@ -509,6 +509,7 @@ function checkPlan(state, choice, forced = null) {
   if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
   if(check.easierWith?.flag && state.story.flags[check.easierWith.flag]){dc-=2;reasons.push(check.easierWith.reason||'An earlier choice lowers DC by 2');}
+  if(check.harderWith?.flag && state.story.flags[check.harderWith.flag]){dc+=2;reasons.push(check.harderWith.reason||'An earlier choice raises DC by 2');}
   if(quest==='beacon'){const n=['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length;dc-=Math.min(3,n);if(n)reasons.push(`Independent allies lower DC by ${Math.min(3,n)}`);}
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
   const effectiveAdvantage = advantage && !disadvantage;
@@ -628,7 +629,14 @@ function applyOutcome(state, written = {}, rng, events) {
     else events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest, state) });
   }
   // toTown: back to whichever town the party is in (nextNode names one only for checks).
-  const next = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
+  // Below the stair there is no town: a companion's scene between straight-on
+  // chapters goes on into the next chapter instead (src/world.js goOn).
+  let next = outcome.toTown && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) : outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
+  // A straight-on chapter ("continues") goes from its decision to the next
+  // chapter's opening, not to a town, when that chapter is there to play.
+  if (outcome.goOn && state.world.completed[outcome.goOn]) next = W.goOn(state, outcome.goOn, events) || next;
+  // The last safe ledge: rest, then go back down to the interrupted chapter.
+  if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
   if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:part-end-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     const id = state.story.flags["books:part-end-due"];

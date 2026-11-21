@@ -163,6 +163,13 @@ function longRest(state,premium,events){
   const cost=premium?10+state.player.level:0;
   if(premium&&state.world.servicesUsed[key])return fail(events,'The inn’s expedition benefit has already been claimed this progress cycle. Free recovery remains available.');
   if(!charge(state,cost,events))return {ok:false,error:'Not enough gold.'};
+  restore(state,premium);
+  state.world.day+=1;
+  if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
+  return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
+}
+// A long rest's recovery: HP, hit dice and class resources (the inn adds temporary HP).
+function restore(state,premium=false){
   for(const a of G.actors(state)){
     a.hp=a.maxHp;a.deathSaves={successes:0,failures:0,stable:false};
     a.conditions=(a.conditions||[]).filter(c=>['poisoned','blessed','poisonWard','coating'].includes(c.id));
@@ -173,9 +180,47 @@ function longRest(state,premium,events){
     else P.refreshCompanion(a,'long');
   }
   Gear.refreshStory(state);
-  state.world.day+=1;
-  if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
-  return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
+}
+// Straight-on chapters (a chapter with "continues": Book Three's stair, 17 to
+// 19): the decision goes on into the next chapter's opening, not to a town.
+// The chapter's end is a safe ledge, so the party rests there first. Below
+// the stair there is no town page and no side job, and a defeat wakes the
+// party at the last ledge (the previous chapter's end), not in a town.
+const continued=q=>{const prev=QUESTS[q?.unlock];return prev&&prev.continues&&!q.sideJob?prev:null;};
+// The ledge before a chapter that follows a straight-on one.
+const ledgeOf=state=>{const q=QUESTS[state.world.activeQuest];const prev=continued(q);return prev&&completed(state,prev.id)&&!completed(state,q.id)&&STORY_NODES[`q-${prev.id}-ledge`]?`q-${prev.id}-ledge`:null;};
+// Whether the party is below the stair now: in a chapter after a straight-on
+// one, on a ledge, or between two such chapters.
+function below(state){
+  const w=state.world||{};
+  return Boolean(w.goingOn||STORY_NODES[state.story?.nodeId]?.ledge||(!town(state)&&ledgeOf(state)));
+}
+// The node to enter after straight-on chapter `from` is done: a companion's
+// scene first, if one is due (src/away.js), then the next chapter's opening.
+// Null when no next chapter can be played here; the party goes to town.
+function goOn(state,from,events){
+  const w=state.world;
+  const next=Book.chapters(state).find(q=>q.unlock===from&&!completed(state,q.id));
+  if(!next||!STORY_NODES[`q-${next.id}-start`]){delete w.goingOn;return null;}
+  const away=Away.pending(state,events);
+  if(away&&STORY_NODES[away]){w.goingOn=from;return away;}
+  delete w.goingOn;
+  restore(state,false);
+  w.activeQuest=next.id;w.townId=next.town;w.onExpedition=true;w.day+=1;
+  w.progress[next.id] ||= {};
+  w.meetings[next.id] ||= {merchantId:null,stock:{},bargained:false,discount:0,bartered:false};
+  emit(events,`The party rests at the end of ${QUESTS[from].name} and goes straight on. HP, hit dice and class resources are restored.`,'rest','good');
+  return `q-${next.id}-start`;
+}
+// The ledge's one choice: rest, then go back down to the interrupted chapter.
+function backDown(state,rng,events,api){
+  restore(state,false);
+  emit(events,'The party rests on the ledge. HP, hit dice and class resources are restored.','rest','good');
+  const w=state.world,id=w.activeQuest;
+  if(w.pendingBattle)return resumeBattle(state,rng,events,api);
+  w.onExpedition=true;
+  api.enterNode(state,w.progress?.[id]?.node&&STORY_NODES[w.progress[id].node]?w.progress[id].node:`q-${id}-start`,events);
+  return {ok:true};
 }
 function recover(state,events,api){
   const trial=state.world.activeQuest==='trial';
@@ -185,6 +230,8 @@ function recover(state,events,api){
   state.combat=null;state.world.onExpedition=false;
   if(state.world.failedEncounter)state.world.pendingBattle=state.world.failedEncounter;
   if(state.world.activeQuest){const p=state.world.progress[state.world.activeQuest] ||= {};p.failures=(p.failures||0)+1;p.setback=true;}
+  const ledge=ledgeOf(state);
+  if(ledge){api.enterNode(state,ledge,events);return emit(events,`The party falls back to the last safe ledge. ${cost?`${cost} gold was lost in the dark; `:''}no XP or equipment lost. Rest there, then go back down to the interrupted encounter.`,'rest','warning');}
   api.enterNode(state,`town-${state.world.townId}`,events);
   return emit(events,`The party returns to ${TOWNS[state.world.townId].name}. Rescue cost ${cost} gold; no XP or equipment lost. Recover, then resume the interrupted encounter from the expedition board.`,'rest','warning');
 }
@@ -246,6 +293,7 @@ function handle(state,action,rng,events,api){
   if(action.type==='return-town'){
     if(town(state))return fail(events,'You are already in a town.');
     if(STORY_NODES[state.story.nodeId]?.defeat)return fail(events,'Resolve the rescue choice first.');
+    if(below(state))return fail(events,'There is no town below the stair. The only way out is on, through the chapter.');
     // A scene whose choices decide the story (a flag, such as the end of a
     // part) is played through; leaving would skip it for good.
     if(sceneDecides(state.story.nodeId))return fail(events,'This scene decides something. Play it through to the end.');
@@ -429,7 +477,7 @@ function view(state){
     if(q.knownThreat&&original.route.poison&&!state.player.inventory.some(e=>e.itemId==='antitoxin'))warnings.push('Poison was reported. You have no Antitoxin; treatment remains available in town.');
     return {questId:q.id,warnings,knownThreat:q.knownThreat};
   });
-  return {day:w.day,cycle:w.cycle,town:t?{...asNow(state,t),rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!STORY_NODES[state.story.nodeId]?.defeat&&!sceneDecides(state.story.nodeId),
+  return {day:w.day,cycle:w.cycle,town:t?{...asNow(state,t),rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!below(state)&&!STORY_NODES[state.story.nodeId]?.defeat&&!sceneDecides(state.story.nodeId),
     towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
     reputation:w.reputation,services,
     shop:t&&!empty?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
@@ -449,4 +497,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,townOpen,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={below,goOn,backDown,restore,init,town,townOpen,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
