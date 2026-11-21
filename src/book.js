@@ -46,7 +46,10 @@ function buildShelf(defs, chapters, preview = false) {
   return Object.freeze(defs.map(b => {
     const open = !b.parts ? Infinity : preview ? b.parts : Math.max(0, Math.min(b.parts, Number(b.out) || 0));
     const last = chapters.filter(q => bookNo(q) === b.n && partNo(q) <= open).at(-1)?.id || null;
-    const writing = Boolean(b.parts) && open > 0 && open < b.parts;
+    // Preview shows every written part, and still waits if the last part has
+    // no chapters yet, so playtests can reach the "to be continued".
+    const written = Math.max(0, ...chapters.filter(q => bookNo(q) === b.n).map(partNo));
+    const writing = Boolean(b.parts) && open > 0 && (preview ? written < b.parts : open < b.parts);
     return Object.freeze({ ...b, open, last, writing });
   }));
 }
@@ -163,7 +166,7 @@ function bookEnd(id, state = null) {
 // expedition in order. Null once the books are finished.
 function chapter(state) {
   if (locked(state)) {
-    const b = lockedBook(state), q = ALL.find(x => bookNo(x) === b.n && !done(state, x.id));
+    const b = lockedBook(state), q = ALL.find(x => bookNo(x) === b.n && partOpen(x) && !done(state, x.id));
     return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save is part-way through Book ${b.n}, ${b.title}, which needs a paid account here. It is kept exactly as it is and carries on when the book is open again.`, book: b.title, n: b.n, locked: true };
   }
   if (finished(state)) return null;
@@ -251,4 +254,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { buildShelf, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

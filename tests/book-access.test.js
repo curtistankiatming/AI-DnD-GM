@@ -129,12 +129,15 @@ test('a book can come out in parts: only released parts play, and the hero waits
   assert.deepEqual([def(1).last, def(1).writing], ['b', true], 'Part One out: to be continued after it.');
   assert.deepEqual([def(2).last, def(2).writing], ['c', false], 'Both out: the whole book.');
   const preview = Book.buildShelf([{ n: 3, title: 'T', parts: 2, out: 0 }], ch, true)[0];
-  assert.equal(preview.last, 'c', 'Tests and playtests see every written part.');
+  assert.deepEqual([preview.last, preview.writing], ['c', false], 'Tests and playtests see every written part.');
+  const half = Book.buildShelf([{ n: 3, title: 'T', parts: 2, out: 0 }], ch.slice(0, 2), true)[0];
+  assert.deepEqual([half.last, half.writing], ['b', true], 'Preview still waits while the last part has no chapters.');
   const three = Book.SHELF.find((b) => b.n === 3);
   assert.equal(three.parts, 2);
   assert.equal(three.out, 0, 'Book Three stays hidden until Part One is finished.');
 });
 
+// Guards each Book Three chapter as it lands (none are written yet).
 test('each Book Three chapter pays exactly one level, so chapter N ends at level 20 + N', () => {
   const P = require('../src/progression');
   for (const q of Object.values(QUESTS).filter((x) => x.book === 3 && !x.sideJob)) {
