@@ -199,6 +199,16 @@ the jobs (about 130 each) and the rest of a job's reward is gold. Written
 chapters' battles pay no extra XP, as in Book One. (Changed on 19 November 2026
 from "30% of a level", which would have needed grinding between chapters.)
 
+### Book Three: The Names in the Bronze (levels 20 to 30, being written)
+
+Book Three follows the Second Oath. Its question is consent: the oldest wards
+were made from keepers who gave their voices, and a High Warden means to do it
+again, openly, with volunteers. It is written in the same way as Book Two
+(`"book": 3` in `src/data/quests.json`), adds the towns of Saltwick and Vell,
+and stays hidden from players until all ten chapters are written. On the
+hosted game it needs a paid account; in the open-source game it is free like
+the others (docs/AI-STORYTELLER.md, "Paid books").
+
 ## How Book Two is built
 
 Each chapter is an authored expedition in `src/data/quests.json` with

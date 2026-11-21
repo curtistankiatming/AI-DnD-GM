@@ -102,6 +102,29 @@ matched by name and updated.
   from the AI adventures they still hold.
 - Exporting the chronicle as a book comes later.
 
+## Paid books
+
+Every book is free in the open-source game, played with the player's own AI
+key. On the hosted web and app game, which plays on its owner's key, Books One
+and Two are free and Book Three onward needs a paid account.
+
+- The server decides how far a session may read, every request
+  (`bookAccess` in `server.js`; the open-source server opens every book). A
+  save can never grant itself access: access is held on the game state in a
+  way a save file cannot carry (`Book.grant`, `Book.ACCESS` in `src/book.js`).
+- A free hosted account that finishes Book Two is told the story goes on in
+  Book Three for paid accounts. If it upgrades before the AI has written it a
+  full adventure of its own, the save carries straight on into Book Three.
+- A save already inside a paid book whose account lapses waits untouched: it
+  is never marked finished or handed to the AI storyteller, the AI writes only
+  small side stories that leave the book alone, and it carries on when access
+  returns. An expedition already under way may be played to its end.
+- A book still being written is marked `ready: false` in `src/book.js` and is
+  shown to no one until its last chapter lands. Tests and agent playtests can
+  see it with `BRIARWATCH_PREVIEW_BOOKS=1`.
+- Written lines can depend on access with `"when": { "access": 3 }` or
+  `{ "notAccess": 3 }`.
+
 ## Rules in both modes
 
 - The game decides every number: dice, damage, XP, gold, items, levels.

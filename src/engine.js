@@ -184,6 +184,8 @@ function normalizeIncomingState(raw) {
   if (!raw || typeof raw !== "object") return createNewGame();
   if (![3, 4].includes(Number(raw.schemaVersion))) { if (Number(raw.schemaVersion) > SCHEMA_VERSION) throw new Error("This save needs a newer game version."); return migrateLegacyState(raw); }
   const state = deepClone(raw);
+  // How far this session may read is the server's to say, never the save's.
+  Book.grant(state, raw[Book.ACCESS]);
   state.schemaVersion = SCHEMA_VERSION;
   const classDef = CLASSES[state.player?.classId] || CLASSES.fighter;
   const backgroundDef = BACKGROUNDS[state.player?.backgroundId] || BACKGROUNDS.outlander;
@@ -573,15 +575,15 @@ function applyOutcome(state, written = {}, rng, events) {
   // storyteller is told when the hero is back in town.
   if (booksOpen && state.story.flags[Book.FINISHED]) {
     if (outcome.nextNode && STORY_NODES[outcome.nextNode]?.scene) state.story.flags["books:ending-due"] = true;
-    else events.push({ type: "story", tone: "good", text: Book.ENDING });
+    else events.push({ type: "story", tone: "good", text: Book.ending(state) });
   }
-  else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest) });
+  else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest, state)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest, state) });
   // toTown: back to whichever town the party is in (nextNode names one only for checks).
   const next = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
   if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:ending-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     delete state.story.flags["books:ending-due"];
-    events.push({ type: "story", tone: "good", text: Book.ENDING });
+    events.push({ type: "story", tone: "good", text: Book.ending(state) });
   }
   if (outcome.combat && startCombat(state, outcome.combat, rng, events) && state.combat?.active && outcome.text && !outcome.nextNode) {
     // Keep what the choice led to (a failed parley, a rescue) ahead of the fight's opening.

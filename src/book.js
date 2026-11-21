@@ -11,24 +11,66 @@
 // story: the AI writes full adventures and no chapter cap applies. That save
 // stays an AI story even if more books are written later; new books are for
 // new saves.
+//
+// Paid books: the open-source game plays every book free. On the hosted game,
+// which uses the owner's AI key, Book Three and later need a paid account;
+// the server says how far a session may read (grant), never the save.
 const { QUESTS, TOWNS } = require('./expansion');
 const P = require('./progression');
 
 const FINISHED = 'books:finished';
 // The written chapters in story order. Book One is the bell and the roads to
-// level 10; Book Two (book: 2 in quests.json) runs from level 10 to 20.
-// Written side jobs (sideJob: true) are optional and never hold up the story.
-const CHAPTERS = Object.values(QUESTS).filter(q => !q.sideJob);
-const LAST_LEVEL = Math.max(1, ...CHAPTERS.map(q => Number(q.level) || 1));
-// A book still being written ("writing") keeps the books open after its last
-// written chapter: the hero waits at a "to be continued" instead of the save
-// becoming an AI story. Remove the mark when the book's last chapter lands.
-const BOOKS = Object.freeze([
+// level 10; Book Two (book: 2 in quests.json) runs from level 10 to 20; Book
+// Three (book: 3) from 20 to 30. Written side jobs are optional and never hold
+// up the story.
+const ALL = Object.values(QUESTS).filter(q => !q.sideJob);
+const bookNo = q => Number(q?.book) || 1;
+
+// Every book on the shelf, written or not. A book still being written
+// ("writing") keeps the books open after its last written chapter: the hero
+// waits at a "to be continued". A book not yet released ("ready: false") is
+// not shown to players at all until its last chapter lands; tests and agent
+// playtests see it with BRIARWATCH_PREVIEW_BOOKS=1. A paid book is free in
+// the open-source game and needs a paid account on the hosted game
+// (docs/AI-STORYTELLER.md, "Paid books").
+const SHELF = Object.freeze([
   { n: 1, title: 'The Bell Beneath Briarwatch' },
-  { n: 2, title: 'The Council of Small Voices' }
-].map(b => ({ ...b, last: CHAPTERS.filter(q => (q.book || 1) === b.n).at(-1)?.id || null })).filter(b => b.last));
-const WRITING = BOOKS.find(b => b.writing) || null;
-const bookOf = id => BOOKS.find(b => b.n === ((QUESTS[id]?.book) || 1)) || BOOKS[0];
+  { n: 2, title: 'The Council of Small Voices' },
+  { n: 3, title: 'The Names in the Bronze', paid: true, ready: false }
+].map(b => Object.freeze({ ...b, last: ALL.filter(q => bookNo(q) === b.n).at(-1)?.id || null })));
+const PREVIEW = /^(1|true|yes|on)$/i.test(String((typeof process !== 'undefined' && process.env && process.env.BRIARWATCH_PREVIEW_BOOKS) || ''));
+const released = b => Boolean(b.last) && (b.ready !== false || PREVIEW);
+
+// How far into the books this session may read: the highest book number. The
+// server sets it per session (never from a save: a symbol cannot be written
+// in JSON). The open-source game sets nothing, so every book is open; the
+// hosted game sets FREE_BOOKS for an account without a subscription.
+const ACCESS = Symbol('books:access');
+const FREE_BOOKS = 2;
+function grant(state, upTo) {
+  if (state && typeof state === 'object') {
+    if (Number.isFinite(upTo)) state[ACCESS] = Math.max(1, Math.floor(upTo));
+    else delete state[ACCESS];
+  }
+  return state;
+}
+const limit = state => Number.isFinite(state?.[ACCESS]) ? state[ACCESS] : Infinity;
+const allows = (state, n) => n <= limit(state);
+
+// The books, and their chapters, this save can play now.
+const books = state => SHELF.filter(b => released(b) && allows(state, b.n));
+const chapters = state => { const open = new Set(books(state).map(b => b.n)); return ALL.filter(q => open.has(bookNo(q))); };
+const lastLevel = state => Math.max(1, ...chapters(state).map(q => Number(q.level) || 1));
+const writing = state => books(state).find(b => b.writing) || null;
+// The next released book this session may not open (a paid book on a free
+// hosted account), or null.
+const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
+// The open-source view, for code and tests that do not hold a save.
+const BOOKS = Object.freeze(books(null));
+const CHAPTERS = Object.freeze(chapters(null));
+const LAST_LEVEL = lastLevel(null);
+const WRITING = writing(null);
+const bookOf = id => SHELF.find(b => b.n === bookNo(QUESTS[id])) || SHELF[0];
 const BELL = Object.freeze({ id: 'bell', name: 'The Bell Beneath Briarwatch', level: 1, brief: 'Find out why the ward-bell beneath Briarwatch fell silent.' });
 
 // Detour turns in one scene before the AI starts steering back, and the steps
@@ -44,8 +86,6 @@ const STEERING = Object.freeze([
 const flags = state => state?.story?.flags && typeof state.story.flags === 'object' ? state.story.flags : null;
 const done = (state, id) => Boolean(state?.world?.completed?.[id]);
 
-// True once every written chapter is complete, or this save was already an AI
-// story. Marks the save so later books never pull it back.
 // True once the AI has written the hero a full adventure of their own (not a
 // side quest during a book). Such a save never goes back to the books.
 function aiStory(state) {
@@ -53,33 +93,53 @@ function aiStory(state) {
   if (c && (c.arc || c.earlier || (Array.isArray(c.arcs) && c.arcs.length) || (Array.isArray(c.chapters) && c.chapters.some(x => x && x.kind !== 'side quest')))) return true;
   return Object.values(state?.director?.quests || {}).some(q => q && !q.side && !q.trial);
 }
-const unwritten = state => !done(state, 'bell') || CHAPTERS.some(q => !done(state, q.id));
+const unwritten = state => !done(state, 'bell') || chapters(state).some(q => !done(state, q.id));
+// A save already inside a book it may no longer open (a lapsed subscription on
+// the hosted game): it waits, untouched, until access returns. It is never
+// marked finished and never handed to the AI storyteller in its place. An
+// expedition already under way when access lapsed may be played to its end.
+function locked(state) {
+  const b = lockedBook(state);
+  const begun = q => done(state, q.id) || state?.world?.activeQuest === q.id;
+  return Boolean(b && ALL.some(q => bookNo(q) === b.n && begun(q)));
+}
 function finished(state) {
+  if (locked(state)) return false;
   const f = flags(state);
+  const W = writing(state), last = lastLevel(state);
   if (f?.[FINISHED]) {
-    // A save marked finished at the end of Book One, before Book Two existed,
-    // with no AI adventure of its own yet, carries on into the new book.
-    const bookOneDone = done(state, 'bell') && CHAPTERS.filter(q => (q.book || 1) === 1).every(q => done(state, q.id));
-    if (!bookOneDone || aiStory(state) || (!unwritten(state) && !WRITING) || (Number(state?.player?.level) || 1) > LAST_LEVEL + (WRITING ? 1 : 0)) return true;
+    // A save marked finished at the end of a book, before the next book was
+    // open to it (not yet written, or not yet paid for), with no AI adventure
+    // of its own yet, carries on into the next book.
+    const bookOneDone = done(state, 'bell') && chapters(state).filter(q => bookNo(q) === 1).every(q => done(state, q.id));
+    if (!bookOneDone || aiStory(state) || (!unwritten(state) && !W) || (Number(state?.player?.level) || 1) > last + (W ? 1 : 0)) return true;
     delete f[FINISHED];
     return false;
   }
   // Saves from before this rule could level past the books on AI adventures
   // alone; a hero above the last written chapter's level is on their own story.
-  const pastBooks = (Number(state?.player?.level) || 1) > LAST_LEVEL + (WRITING ? 1 : 0);
-  if (!pastBooks && (unwritten(state) || WRITING)) return false;
+  const pastBooks = (Number(state?.player?.level) || 1) > last + (W ? 1 : 0);
+  if (!pastBooks && (unwritten(state) || W)) return false;
   if (f) f[FINISHED] = true;
   return true;
 }
 const running = state => !finished(state);
-// Told once, when the last written chapter is finished.
+// Told once, when the last written chapter this save can play is finished.
 const ENDING = 'The written story is complete: you have finished both books, The Bell Beneath Briarwatch and The Council of Small Voices. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.';
-// Told when a book that is not the last one ends.
-function bookEnd(id) {
-  const b = BOOKS.find(x => x.last === id), next = b && BOOKS.find(x => x.n === b.n + 1);
+function ending(state) {
+  const open = books(state), next = lockedBook(state);
+  const titles = open.map(b => b.title);
+  const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
+  const count = ['', 'the first book', 'both books', 'all three books'][titles.length] || `all ${titles.length} books`;
+  const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
+  return next ? `${base} The story goes on in Book ${next.n}, ${next.title}, for paid accounts; this save opens it straight away on an upgrade, as long as it has not begun an AI adventure of its own.` : base;
+}
+// Told when a book that is not the last one this save can play ends.
+function bookEnd(id, state = null) {
+  const b = SHELF.find(x => x.last === id), next = b && books(state).find(x => x.n === b.n + 1);
   if (b?.writing) return `To be continued. You have reached the end of what is written of Book ${b.n}, ${b.title}, so far; its next chapters are being written and will appear on the expedition board. Your hero, party and choices stay saved.`;
   if (!next) return null;
-  const first = CHAPTERS.find(q => (q.book || 1) === next.n);
+  const first = ALL.find(q => bookNo(q) === next.n);
   const where = first ? ` Its first chapter, ${first.name}, is on the expedition board in ${TOWNS[first.town]?.name || first.town}.` : '';
   return `Book ${b.n}, ${b.title}, is complete. Book ${next.n}, ${next.title}, begins.${where}`;
 }
@@ -87,12 +147,21 @@ function bookEnd(id) {
 // The written chapter the hero is on now: the bell, then each authored
 // expedition in order. Null once the books are finished.
 function chapter(state) {
+  if (locked(state)) {
+    const b = lockedBook(state), q = ALL.find(x => bookNo(x) === b.n && !done(state, x.id));
+    return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save is part-way through Book ${b.n}, ${b.title}, which needs a paid account here. It is kept exactly as it is and carries on when the book is open again.`, book: b.title, n: b.n, locked: true };
+  }
   if (finished(state)) return null;
   if (!done(state, 'bell')) return BELL;
-  const q = CHAPTERS.find(x => !done(state, x.id));
-  if (!q && WRITING) return { id: 'to-be-continued', name: `${WRITING.title}: the chapters still being written`, level: LAST_LEVEL + 1, brief: 'The next written chapters are not out yet. Small side stories only; the main story waits for the next chapter.', book: WRITING.title, waiting: true };
-  return q ? { id: q.id, name: q.name, level: q.level, brief: q.brief, book: bookOf(q.id).title } : null;
+  const q = chapters(state).find(x => !done(state, x.id)), W = writing(state);
+  if (!q && W) return { id: 'to-be-continued', name: `${W.title}: the chapters still being written`, level: lastLevel(state) + 1, brief: 'The next written chapters are not out yet. Small side stories only; the main story waits for the next chapter.', book: W.title, n: W.n, waiting: true };
+  return q ? { id: q.id, name: q.name, level: q.level, brief: q.brief, book: bookOf(q.id).title, n: bookOf(q.id).n } : null;
 }
+// Whether this save may take a written chapter now (its book is released and
+// open to this session).
+const playable = (state, id) => !QUESTS[id] || QUESTS[id].sideJob || chapters(state).some(q => q.id === id);
+// The `access` line condition: book n is released and open to this session.
+const reads = (state, n) => books(state).some(b => b.n === Number(n));
 
 // The level the current chapter is written for. AI XP may bring the hero up to
 // this level but never into the next one.
@@ -116,7 +185,7 @@ function jobRoom(state) {
   if (!chapter(state)) return Infinity;
   const xp = Math.max(0, Number(state.player?.xp) || 0);
   let paid = 0, room = xp + xpRoom(state);
-  for (const q of CHAPTERS) {
+  for (const q of chapters(state)) {
     if (done(state, q.id)) continue;
     paid += Math.max(0, Number(q.xp) || 0);
     room = Math.min(room, (P.XP_NEXT[(Number(q.level) || 1) + 1] || Infinity) - 1 - paid);
@@ -159,7 +228,7 @@ function facts(state, chat = null) {
     running: true,
     book: c.book || BOOKS[0].title,
     chapter: c.name,
-    chapterGoal: c.brief,
+    chapterGoal: c.locked ? 'This book is closed to this account for now. Write only small side stories that leave it alone: never continue, spoil or replace it.' : c.brief,
     chapterLevel: c.level,
     heroBehindChapter: behind(state),
     detourTurnsThisScene: turns,
@@ -167,4 +236,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { FINISHED, ENDING, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

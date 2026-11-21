@@ -14,6 +14,7 @@ const {
   currentNode
 } = require("./src/engine");
 const { narrate, savedNarration } = require("./src/narrator");
+const Book = require("./src/book");
 // Optional git-ignored .env beside package.json (for ANTHROPIC_API_KEY).
 const ENV_FILE = path.resolve(process.env.ENV_FILE_PATH || path.join(__dirname, ".env"));
 try { process.loadEnvFile(ENV_FILE); } catch {}
@@ -196,6 +197,14 @@ async function sessionPayload(state, action, events = [], result = null) {
   return { state, view, narration, events };
 }
 
+// Paid books (docs/AI-STORYTELLER.md): how far this session may read in the
+// written books. The open-source game opens every book. A hosted game that
+// plays on its owner's AI key replaces this with its account check, giving a
+// free account Book.FREE_BOOKS and a paid account every book. Access is set
+// on the incoming state each request and is never read from a save.
+function bookAccess(req) { return Infinity; }
+function withAccess(req, state) { return Book.grant(state, bookAccess(req)); }
+
 async function handleApi(req, res, url) {
   const pathname = url.pathname;
 
@@ -227,7 +236,7 @@ async function handleApi(req, res, url) {
   }
   if(pathname==='/api/chat'&&req.method==='POST') {
     const body=await readJsonBody(req);
-    try {const payload=await chatCoordinator.run(body.state,body.request);
+    try {const payload=await chatCoordinator.run(withAccess(req,body.state),body.request);
       sendJson(res,payload.result?.ok===false?422:200,payload);}
     catch(error){sendJson(res,400,{error:error.message});}
     return;
@@ -243,7 +252,7 @@ async function handleApi(req, res, url) {
 
   if (req.method === "POST" && pathname === "/api/session/new") {
     const body = await readJsonBody(req);
-    const state = createNewGame(body.setup || body);
+    const state = withAccess(req, createNewGame(body.setup || body));
     sendJson(res, 200, await sessionPayload(state, { type: "opening" }, []));
     return;
   }
@@ -253,7 +262,7 @@ async function handleApi(req, res, url) {
     const action = pathname === "/api/turn" && typeof body.action === "string"
       ? { type: "freeform", text: body.action }
       : body.action || body;
-    const resolved = resolveAction(body.state, action);
+    const resolved = resolveAction(withAccess(req, body.state), action);
     const payload = await sessionPayload(resolved.state, action, resolved.events, resolved.result);
     payload.result = resolved.result;
     sendJson(res, resolved.result?.ok === false ? 422 : 200, payload);
@@ -291,7 +300,7 @@ async function handleApi(req, res, url) {
     }
     try {
       const raw = JSON.parse(await fsPromises.readFile(savePath(slot), "utf8"));
-      const state = normalizeIncomingState(raw.state || raw);
+      const state = normalizeIncomingState(withAccess(req, raw.state || raw));
       const view = buildView(state);
       sendJson(res, 200, {
         state,

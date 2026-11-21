@@ -65,7 +65,7 @@ function chapterDone(state, questId) {
   if (state.world && QUESTS[questId]) state.world.awayCheck = questId;
 }
 
-const nextChapter = (state) => Book.CHAPTERS.find((q) => !state.world.completed[q.id]) || null;
+const nextChapter = (state) => Book.chapters(state).find((q) => !state.world.completed[q.id]) || null;
 
 // The scene to play before the town, or null once everything is settled
 // (which also starts the count for the next chapter).
