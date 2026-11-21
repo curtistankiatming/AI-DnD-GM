@@ -61,12 +61,18 @@ function walkoutsOn(state) {
   if (!w?.completed) return false;
   const open = Book.chapters(state).filter((q) => !w.completed[q.id]);
   const [now, next] = w.awayCheck && QUESTS[w.awayCheck] ? [QUESTS[w.awayCheck], open[0]] : open;
-  return Boolean(now && next && (now.book || 1) === 2 && (next.book || 1) === 2);
+  return Boolean(now && next && (now.book || 1) === 2 && (next.book || 1) === 2) ? next : null;
+}
+// Whether this companion could walk out after this chapter: not before a
+// chapter that needs them (they stay instead), and not once settled.
+function canWalk(state, id) {
+  const next = SCENES[id] && walkoutsOn(state);
+  return Boolean(next && !(next.needs || []).includes(id) && !(state.world.awayHandled || []).includes(id));
 }
 
 // A companion whose count for this chapter is already at the walkout line.
 function uneasy(state, id) {
-  return Boolean(SCENES[id] && walkoutsOn(state) && (state.world.approvalWindow?.[id] || 0) <= -LIMIT);
+  return Boolean(canWalk(state, id) && (state.world.approvalWindow?.[id] || 0) <= -LIMIT);
 }
 
 const pronoun = (id) => COMPANIONS[id]?.pronouns?.startsWith('he') ? { he: 'he', his: 'his' } : { he: 'she', his: 'her' };
@@ -80,7 +86,7 @@ function count(state, id, delta, events = null) {
   w.approvalWindow ||= {};
   const before = w.approvalWindow[id] || 0, after = before + delta;
   w.approvalWindow[id] = after;
-  if (!events || !SCENES[id] || !walkoutsOn(state)) return;
+  if (!events || !canWalk(state, id)) return;
   const name = COMPANIONS[id].name, p = pronoun(id);
   if (before > -LIMIT && after <= -LIMIT) events.push({ type: 'party', tone: 'warning', text: `${name} is unhappy with how this chapter is going. If it ends like this, ${p.he} may leave the party for a while. Choices ${p.he} agrees with can still change ${p.his} mind.` });
   else if (before <= -LIMIT && after > -LIMIT) events.push({ type: 'party', tone: 'good', text: `${name} seems easier about how this chapter is going.` });

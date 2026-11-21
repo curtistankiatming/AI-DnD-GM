@@ -115,7 +115,7 @@
     // Side jobs you can take in this town (src/data/side-jobs.json); the rest are listed on Prepare.
     for (const j of (w.sideJobs || []).filter(j => j.canStart).slice(0, 2)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
-      text.append(el('strong', '', `Side job: ${j.name}`), el('span', 'muted', ` · from ${j.giver.replace(/^The /, 'the ')}`), el('p', 'muted', `${j.brief} Optional; pays ${j.reward.gold} gold and a little XP.`));
+      text.append(el('strong', '', `Side job: ${j.name}`), el('span', 'muted', ` · from ${j.giver.replace(/^(The|An|A) /, m => m.toLowerCase())}`), el('p', 'muted', `${j.brief} Optional; pays ${j.reward.gold} gold, and maybe a little XP.`));
       row.append(text, action(j.started ? 'Continue the job' : 'Take the job', 'btn btn-secondary btn-small', { type: 'side-job', jobId: j.id }));
       list.append(row);
     }

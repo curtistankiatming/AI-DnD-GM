@@ -73,11 +73,14 @@ test('before a chapter that needs them, a companion stays and says why', () => {
   let s = ready('fenmere');
   s = act(s, { type: 'side-job', jobId: 'letters' }).state;
   s = act(s, { type: 'story-choice', choiceId: 'keep' }).state; // Orin -1
+  const quiet = []; Away.count(JSON.parse(JSON.stringify(s)), 'orin', -1, quiet);
+  assert.deepEqual(quiet, [], 'No "may leave" warning before the chapter that needs him.');
   s = act(s, { type: 'depart', questId: 'fenmere' }).state;
   s = atEnd(s, 'fenmere');
   s = act(s, { type: 'story-choice', choiceId: 'promise' }).state; // Orin -1; next is his chapter
   s = throughScenes(s);
   assert.equal(s.story.nodeId, 'away-orin-stay');
+  assert.equal(Away.uneasy(s, 'orin'), false, 'He stays for his own chapter, so the party card does not say he may leave.');
   assert.match(E.buildView(s).scene.opening, /Kell's Bridge next/);
   s = act(s, { type: 'story-choice', choiceId: 'after' }).state;
   assert.equal(s.story.nodeId, 'town-briarwatch');
