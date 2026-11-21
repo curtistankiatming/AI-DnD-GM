@@ -234,8 +234,8 @@ wins. 861 tests pass.
   Battlecantor and Envoy branches still take 8 to 11 rounds, and the Chronist
   and Lifewarden branches win only about a third of the time (3 to 4 seeds,
   so noisy). Level 20 Heroic was already the hardest cell before this change.
-- Sabotage, Nova and Banishment add stat damage now, but not gear damage or
-  the chain bonus that other job skills get (as before this PR).
+- The "What's next?" card says checks get harder but not that the deciding
+  fight's objective DC rises too.
 - Gold surplus, for the items review.
 
 ## Three things that work well
