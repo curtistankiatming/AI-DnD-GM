@@ -130,3 +130,21 @@ test("What's next and Prepare offer the bounty board and warn when under-levelle
   const prep=fs.readFileSync(path.join(__dirname,'../public/expedition.js'),'utf8');
   assert.match(prep,/\{type:'bounty'\}/);
 });
+// UI review 2026-11-21: rarity labels, requirement lines, buff/debuff chips,
+// the bounty card, the Town tab and the compact message box.
+test('UI review: rarity, requirements, effect chips, bounty card and Town tab',()=>{
+  const read=f=>fs.readFileSync(path.join(__dirname,'../public',f),'utf8');
+  const app=read('app.js'),board=read('combat-board.js'),exp=read('expedition.js'),ui=read('adventure-ui.js'),css=read('adventure.css');
+  assert.match(app,/function rarityTag\(/);assert.match(app,/function requirementLine\(/);
+  assert.match(app,/"Locked"/);
+  assert.match(board,/function effectTone\(x,actor\)/);assert.match(board,/actor\.team==='enemy'\?-kind:kind/);
+  assert.match(exp,/bounty-card/);assert.match(exp,/'Take a bounty',\{type:'bounty'\}/);
+  assert.doesNotMatch(exp,/Bounty board · \$\{w\.bounty\.reward/);
+  assert.match(ui,/\['prepare','Town'\]/);
+  for(const r of ['uncommon','rare','epic','legendary'])assert.match(css,new RegExp(`data-rarity=${r}`));
+  assert.match(css,/\.in-combat \.composer-row \.message-modes \{ display:none; \}/);
+});
+test('Combine actions use a companion\'s first name, not a title',()=>{
+  const src=fs.readFileSync(path.join(__dirname,'../src/combat.js'),'utf8');
+  assert.match(src,/Combine: \$\{member\.name\.replace\(\/\^Sister \/,''\)/);
+});

@@ -702,17 +702,37 @@ function renderScene() {
   renderCombat();
 }
 
+// Rarity as a small coloured label: Common, Uncommon, Rare, Epic, Legendary.
+function rarityTag(rarity) {
+  const tag = createElement("span", "rarity-tag", rarity || "Common");
+  tag.dataset.rarity = String(rarity || "Common").toLowerCase();
+  return tag;
+}
+// The item text without its "Requires: …" sentence, which gets its own line.
+function purposeWithoutRequirement(item) {
+  return item.requires ? String(item.purpose || "").replace(` Requires: ${item.requires}.`, "").replace(`Requires: ${item.requires}.`, "").trim() : item.purpose;
+}
+// "Requires: Level 8 · Strength 13", marked when the hero can't wear it yet.
+function requirementLine(item) {
+  if (!item.requires) return null;
+  const hero = (item.comparisons || []).find((c) => c?.actorId === "player");
+  const line = createElement("p", "item-requires");
+  line.append(createElement("span", "item-requires-label", "Requires"), ` ${item.requires}`);
+  if (hero?.blocked && !/two-handed/.test(hero.blocked)) { line.classList.add("is-unmet"); line.title = hero.blocked; line.append(createElement("span", "item-requires-note", " · not yet for you")); }
+  return line;
+}
+
 function renderEquipment() {
   clear(dom.equipmentSlots);
   for (const slot of view.equipment) {
     const card = createElement("div", "equipment-slot");
     const top = createElement("div", "equipment-slot-head");
     top.append(createElement("span", "", slotLabels[slot.slot] || titleCase(slot.slot)));
-    if (slot.item) top.appendChild(createElement("strong", "", slot.item.name));
+    if (slot.item) top.append(createElement("strong", "", slot.item.name), rarityTag(slot.item.rarity));
     else top.appendChild(createElement("strong", "muted", "Empty"));
     card.appendChild(top);
     if (slot.item) {
-      card.appendChild(createElement("p", "", slot.item.purpose));
+      card.appendChild(createElement("p", "", purposeWithoutRequirement(slot.item)));
       const unequip = createElement("button", "text-button", "Unequip");
       unequip.type = "button";
       unequip.dataset.disabled = String(Boolean(view.combat?.active));
@@ -755,11 +775,15 @@ function renderInventory() {
     const card = createElement("article", "inventory-card");
     const head = createElement("div", "inventory-card-head");
     const identity = createElement("div");
-    identity.append(createElement("strong", "", item.name), createElement("span", "", `${titleCase(item.category)} · ${item.rarity}`));
+    const kind = createElement("span", "item-kind", `${titleCase(item.category)} `);
+    kind.append(rarityTag(item.rarity));
+    identity.append(createElement("strong", "", item.name), kind);
     const quantity = createElement("span", "quantity-badge", item.charges !== undefined ? `×${item.quantity} · ${item.charges} uses in open kit` : `×${item.quantity}`);
     head.append(identity, quantity);
     const purpose = createElement("div", "purpose-box");
-    purpose.append(createElement("span", "", "Purpose"), createElement("p", "", item.purpose));
+    purpose.append(createElement("span", "", "Purpose"), createElement("p", "", purposeWithoutRequirement(item)));
+    const requires = requirementLine(item);
+    if (requires) purpose.append(requires);
     const actions = createElement("div", "inventory-actions");
     const inspect = createElement("button", "btn btn-secondary btn-small", "Inspect");
     inspect.type = "button"; inspect.dataset.readOnly = "true";
@@ -774,6 +798,9 @@ function renderInventory() {
       equip.dataset.disabled = String(Boolean(view.combat?.active));
       equip.disabled = busy || Boolean(view.combat?.active);
       equip.title = view.combat?.active ? "Equipment changes are locked during initiative." : "Equip this item.";
+      // Nobody in the party meets the requirements: say so on the button instead of offering a dead end.
+      const nobody = item.requires && (item.comparisons || []).length && item.comparisons.every((c) => c?.blocked);
+      if (nobody && !item.equippedSlots.length) { equip.textContent = "Locked"; equip.disabled = true; equip.dataset.disabled = "true"; equip.title = `Nobody in the party can use this yet. Requires: ${item.requires}.`; }
       equip.addEventListener("click", () => chooseEquipmentOwner(item));
       actions.appendChild(equip);
     }

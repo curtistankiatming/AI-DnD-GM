@@ -565,3 +565,78 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 #chatPending.roll-result[data-outcome=failure] strong { color:#ee9a88; }
 #chatPending.roll-result p { margin:2px 0 0; }
 #howToPlayBtn { white-space:nowrap; min-height:26px; padding:2px 4px; border:0; background:none; color:var(--muted); font-size:.72rem; font-weight:500; text-decoration:underline; cursor:pointer; }
+/* ---- UI review (21 Nov 2026): rarity, requirements, buffs and debuffs ---- */
+/* Rarity: one colour per tier, used on item cards, worn gear and shop rows. */
+span.rarity-tag.rarity-tag { display:inline-block; padding:0 7px; border:1px solid currentColor; border-radius:99px; font-size:.72rem; font-weight:700; letter-spacing:.02em; line-height:1.5; white-space:nowrap; vertical-align:middle; color:#b9c2bc; background:none; }
+span.rarity-tag[data-rarity=common] { border-color:transparent; padding:0; color:var(--faint); font-weight:500; }
+span.rarity-tag[data-rarity=uncommon] { color:#8fd19e; background:#152a1d; }
+span.rarity-tag[data-rarity=rare] { color:#8cc0ea; background:#14233a; }
+span.rarity-tag[data-rarity=epic] { color:#c9a2f0; background:#261a38; }
+span.rarity-tag[data-rarity=legendary] { color:#f0b45c; background:#36250f; }
+.inventory-card-head span.item-kind { display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin-top:2px; }
+.equipment-slot-head span.rarity-tag { margin-left:6px; }
+.item-requires { margin:6px 0 0; color:var(--muted); font-size:.82rem; line-height:1.4; }
+.item-requires-label { margin-right:2px; color:var(--text); font-weight:700; }
+.item-requires.is-unmet,.item-requires.is-unmet .item-requires-label { color:var(--bad); }
+/* Fighter names wrap instead of cutting off ("Sister Maren …"). */
+.fighter-line strong { overflow:visible; white-space:normal; overflow-wrap:anywhere; line-height:1.2; }
+/* Buffs and debuffs as chips: green helps the bearer, red hurts the bearer. */
+.fighter-notes.fighter-notes { display:flex; flex-wrap:wrap; gap:4px; overflow:visible; -webkit-line-clamp:unset; }
+.effect-chip { padding:0 7px; border:1px solid var(--border); border-radius:99px; color:var(--muted); font-size:.76rem; line-height:1.55; overflow-wrap:anywhere; }
+.effect-chip[data-tone=good] { border-color:#3c6b5d; color:#a8dccb; background:var(--good-bg); }
+.effect-chip[data-tone=bad] { border-color:#7a3b34; color:#f0a59b; background:var(--bad-bg); }
+/* The bounty board stands apart from lodging and shrine tiles. */
+/* Town tiles: the name reads larger than its description. */
+.v4-option-grid > button.btn { font-size:.95rem; font-weight:700; }
+.v4-option-grid > button.btn > p { font-size:.84rem; }
+/* Enemy and party cards share the row's width, so names have room. */
+.fighter-row { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
+.fighter-row > .fighter-card { max-width:320px; }
+/* "How to play" waits until the fight is over. */
+body.in-combat #howToPlay { display:none; }
+/* The bounty board card: an amber edge, set apart from the expeditions. */
+.bounty-card { border-left:3px solid var(--accent); }
+.bounty-card .tag-row { margin:8px 0 10px; }
+.combat-armed-note { margin:0; color:var(--muted); font-size:.84rem; line-height:1.35; }
+/* Laptop: in a fight the board sits in the middle of the window, not against the left edge. */
+.in-combat #adventureScroll > * { margin-inline:auto; }
+.in-combat #workspace-adventure > .adventure-overview,.in-combat #workspace-adventure > .adventure-composer { justify-self:center; }
+/* A fight has no use for the AI tip or campaign instructions under the message box. */
+body.in-combat #promptIdeas,body.in-combat .adventure-composer .composer-meta { display:none; }
+@media(min-width:761px){ .combat-armed-note { display:none; } }
+@media(max-width:760px){
+ /* Act / Say / Ask: a small switch on the same row as the message box, not a row of its own. */
+ .composer-row { flex-wrap:nowrap; align-items:center; gap:6px; }
+ .composer-row .message-modes { gap:2px; padding:2px; border:1px solid var(--border); border-radius:10px; }
+ .composer-row .message-modes button { min-width:0; min-height:40px; padding:2px 8px; border-color:transparent; font-size:.76rem; }
+ .composer-row .action-form { flex:1 1 auto; }
+ .adventure-composer textarea { height:44px; min-height:44px; }
+ .adventure-composer #actionSubmitBtn { min-width:52px; padding:6px 10px; }
+ /* With the AI game master off, the tip lives in How to play and Settings, not under every turn. */
+ #promptIdeas[data-ai=off] { display:none; }
+ /* ---- Shorter combat board on phones ---- */
+ .in-combat .adventure-composer { padding:6px 8px; }
+ .in-combat .composer-row .message-modes { display:none; }
+ .combat-order { gap:4px; margin-bottom:8px; font-size:.76rem; }
+ .order-token { padding:1px 8px; }
+ .combat-board-ui #combatPanel { min-width:0; max-width:100%; }
+ .combat-log .narration-card { max-height:7.5em; }
+ .in-combat .combat-log .story-prose { font-size:.95rem; line-height:1.4; }
+ .fighter-card { gap:3px; padding:6px 8px; }
+ .fighter-line strong { font-size:.88rem; }
+ .fighter-line small,.fighter-pill { font-size:.76rem; }
+ .combat-board-ui #combatActions .combat-action { flex:1 1 40%; min-height:44px; padding:6px 8px; }
+ .combat-board-ui #combatActions .combat-action p { display:none; }
+ .combat-board-ui #combatActions .combat-action strong { font-size:.88rem; }
+ .combat-footer { min-width:0; max-width:100%; }
+ .combat-board-ui .combat-footer [data-combat-group=party] { flex:1 1 100%; min-width:0; gap:6px; }
+ .combat-board-ui .combat-footer .combat-group > h3 { flex:none; }
+ .combat-board-ui #combatActions .combat-footer .combat-action { flex:none; }
+}
+/* In a fight the board's own title names the fight; the scene header steps back. */
+.in-combat .adventure-overview #sceneTitle { font-size:1.15rem; }
+@media(max-width:760px){ .in-combat .adventure-overview { display:none; } }
+@media(max-width:360px){ .fighter-row { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+/* Act / Say / Ask as one small segmented switch on every screen size. */
+.composer-row .message-modes { gap:2px; padding:2px; border:1px solid var(--border); border-radius:10px; }
+.composer-row .message-modes button { border-color:transparent; }

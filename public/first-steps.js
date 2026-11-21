@@ -22,7 +22,7 @@
   steps.append(
     el('li', '', 'Read the story, then pick one of the choices under "What do you do?". The percentage is your chance of success.'),
     typed,
-    el('li', '', 'The Party, Journal and Prepare tabs show your hero, what you have learned and the shop. Looking never costs a turn.'));
+    el('li', '', 'The Party, Journal and Town tabs show your hero, what you have learned and the shops. Looking never costs a turn.'));
   const done = btn('Got it', 'btn btn-primary btn-small', () => { remember(); card.hidden = true; reopen.hidden = false; });
   card.append(title, steps, done);
   const anchor = document.getElementById('adventureApproaches');
@@ -63,6 +63,7 @@
     } else if (!offline) {
       ideas.append(el('span', 'prompt-ideas-label', 'Want to try your own ideas?'), btn('Turn on the AI game master', 'prompt-idea', openAISettings));
     }
+    ideas.dataset.ai = aiOn ? 'on' : 'off';
     ideas.hidden = !ideas.children.length;
   }
   async function refresh() {
