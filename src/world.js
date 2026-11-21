@@ -123,7 +123,7 @@ function completeQuest(state,id,events,api){
   // A chapter's own reward item, or a templated one from an AI adventure (src/gear.js).
   Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);
   Book.finished(state);
-  emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');
+  emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The pay is lower for how costly it was; the XP is not. ':''}The shops have new stock.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
   // A written chapter settles each companion's approval for it (src/away.js).
@@ -161,7 +161,7 @@ function completeJob(state,id,events,api,reward){
 function longRest(state,premium,events){
   const key=`inn:${state.world.cycle}`;
   const cost=premium?10+state.player.level:0;
-  if(premium&&state.world.servicesUsed[key])return fail(events,'The inn’s expedition benefit has already been claimed this progress cycle. Free recovery remains available.');
+  if(premium&&state.world.servicesUsed[key])return fail(events,'You have already had the inn’s paid stay since your last expedition. The free lodging is still open.');
   if(!charge(state,cost,events))return {ok:false,error:'Not enough gold.'};
   for(const a of G.actors(state)){
     a.hp=a.maxHp;a.deathSaves={successes:0,failures:0,stable:false};
@@ -175,7 +175,7 @@ function longRest(state,premium,events){
   Gear.refreshStory(state);
   state.world.day+=1;
   if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
-  return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
+  return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'A free night at the town lodging restores HP, hit dice and class abilities. Poison still needs the shrine.','rest','good');
 }
 function recover(state,events,api){
   const trial=state.world.activeQuest==='trial';
@@ -408,8 +408,8 @@ function view(state){
   const ready=[...Object.values(QUESTS),...Director.list(state)].filter(q=>Book.playable(state,q.id)&&completed(state,q.unlock)&&!completed(state,q.id));
   const empty=Boolean(t&&emptied(state,t.id));
   const services=t?[
-    {id:'civic-rest',name:'Civic lodging',cost:0,description:'Full HP and resources; persistent poison needs treatment. No stock refresh or XP.'},
-    {id:'inn',name:'Inn: expedition lodging',cost:10+state.player.level,description:`Full recovery, ${4+state.player.level} temporary HP each and +1 Inspiration. Once per progress cycle.`,disabled:Boolean(w.servicesUsed[`inn:${w.cycle}`])},
+    {id:'civic-rest',name:'Civic lodging',cost:0,description:'Full HP and class abilities. Poison still needs the shrine.'},
+    {id:'inn',name:'Inn: expedition lodging',cost:10+state.player.level,description:`Full recovery, ${4+state.player.level} temporary HP each and +1 Inspiration. Once after each expedition.`,disabled:Boolean(w.servicesUsed[`inn:${w.cycle}`])},
     {id:'treatment',name:'Shrine: treat conditions',cost:8+state.player.level,description:'Clear poison, bleeding, fear and deafness for the party.',disabled:!G.actors(state).some(a=>a.conditions.some(c=>['poisoned','bleeding','frightened','deafened'].includes(c.id)))},
     {id:'blessing',name:'Shrine: bless the hero',cost:12,description:'+1d4 to the hero’s next saving throw, then consumed.',disabled:state.player.conditions.some(c=>c.id==='blessed')}
   ].filter(x=>!empty||x.id==='civic-rest'):[];
@@ -442,7 +442,7 @@ function view(state){
     jobsDone:Object.keys(w.jobs).filter(id=>SIDE_JOBS[id]).map(id=>({id,name:SIDE_JOBS[id].name})),
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
-    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
+    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title,...(Book.aiStory(state)?{closed:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
     canRecruit:!empty&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,canPractice:Boolean(t&&!empty),
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,

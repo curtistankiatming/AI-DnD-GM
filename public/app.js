@@ -530,7 +530,9 @@ function renderParty() {
     controls.append(select, talk);
     const good = (member.strengths || []).map(s => `${s.name} ${signed(s.bonus)}`).join(", ");
     const strengthLine = good ? createElement("p", "party-strengths muted", `Best at: ${good}`) : null;
-    card.append(head, createElement("p", "party-summary", member.summary), ...(strengthLine ? [strengthLine] : []), hpLine, meter, conditionRow, controls);
+    // At the walkout line for this chapter (src/away.js): said here as well as in the story.
+    const uneasyLine = member.uneasy ? createElement("p", "party-uneasy", "Unhappy with this chapter's choices. May leave the party for a while if it ends like this.") : null;
+    card.append(head, createElement("p", "party-summary", member.summary), ...(uneasyLine ? [uneasyLine] : []), ...(strengthLine ? [strengthLine] : []), hpLine, meter, conditionRow, controls);
     dom.partyCards.appendChild(card);
   }
   // A companion who walked out for a chapter (src/away.js).

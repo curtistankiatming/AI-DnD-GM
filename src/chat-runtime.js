@@ -75,7 +75,9 @@ function context(state,config,input,mode,list=options(state)){
     scene:c.courier?.active?{name:C.TITLE,objective:'Help the detained courier while respecting established consequences.',opening:C.OPENING}:{name:v.scene.title,objective:v.scene.objective,...(!combat.active?{opening:v.scene.opening}:{})},
     hero:{name:v.player.name,class:v.player.className,level:v.player.level,hp:v.player.hp,maxHp:v.player.maxHp,gold:v.player.gold,resources:v.player.resources,conditions:publicConditions(v.player.conditions)},
     combat,
-    party:v.party.map(a=>({name:a.name,hp:a.hp,maxHp:a.maxHp,level:a.level,conditions:publicConditions(a.conditions)})),
+    // Claude also gets each companion's voice for in-character replies; small
+    // local models keep the shorter list.
+    party:v.party.map(a=>({name:a.name,hp:a.hp,maxHp:a.maxHp,level:a.level,conditions:publicConditions(a.conditions),...(config.provider==='claude'&&a.personality?{voice:a.personality}:{})})),
     knownClues:v.clues.map(x=>({name:x.name,text:x.text})),
     journey:c.road?{title:Road.TITLE,phase:c.road.phase,active:Road.present(state),facts:Road.facts(state)}:null,
     courier:c.courier?.active||c.courier?.resolved?{title:C.TITLE,resolved:c.courier.resolved,facts:c.courier.facts}:null,

@@ -210,7 +210,11 @@
       "forgeheart-maul",
       "slag-plate",
       "bellwright-chime",
-      "emberward-shield"
+      "emberward-shield",
+      "cinderglass-longbow",
+      "smokeglass-rapier",
+      "bellmetal-rod",
+      "wardthread-robe"
     ],
     "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
   },
@@ -247,7 +251,11 @@
       "wayfarer-boots",
       "sentinel-charm",
       "saltwick-harpoon",
-      "roofrunner-boots"
+      "roofrunner-boots",
+      "plankwalker-sabre",
+      "mistwatch-bow",
+      "saltwick-oilskin",
+      "lamplighter-staff"
     ],
     "rumor": "Saltwick's echo-stone went dead last year in the middle of supper. Every lamp in town burns oil the town can no longer buy, and Vell's ration office sends oil only to towns that send names."
   },
@@ -288,7 +296,11 @@
       "sentinel-charm",
       "commandery-halberd",
       "vell-casting-mail",
-      "drillmaster-baton"
+      "drillmaster-baton",
+      "commandery-longbow",
+      "vell-duelling-sword",
+      "chancery-rod",
+      "vell-courier-leathers"
     ],
     "rumor": "Every night at dusk High Warden Corvane reads the names of the lost aloud from the wall walk. He begins on the second page. Nobody has ever heard him read the first.",
     "emptied": {
