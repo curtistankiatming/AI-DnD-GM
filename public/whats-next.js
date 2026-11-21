@@ -83,7 +83,7 @@
       if (q.trial) text.append(el('p', 'muted', `Difficulty: ${q.trialTier} (fixed for a trial)`));
       else if (q.tiers?.length) {
         const tiers = el('div', 'whats-next-tier adventure-tier'); tiers.setAttribute('role', 'group'); tiers.setAttribute('aria-label', `Difficulty for ${q.name}`);
-        tiers.append(el('span', 'muted', q.canChangeTier ? 'Difficulty:' : `Difficulty: ${q.tierName}`));
+        tiers.append(el('span', 'muted', q.canChangeTier ? 'Difficulty:' : `Difficulty: ${q.tierName} (fixed once you set out)`));
         if (q.canChangeTier) for (const t of q.tiers) {
           const chosen = t.id === q.tier, b = action(t.name, `btn btn-secondary btn-small${chosen ? ' is-selected' : ''}`, { type: 'adventure-tier', questId: q.id, tier: t.id }, chosen);
           b.title = t.description; b.setAttribute('aria-pressed', String(chosen)); tiers.append(b);
