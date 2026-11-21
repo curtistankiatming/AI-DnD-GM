@@ -72,3 +72,44 @@ test('Fire Bolt sets the target Burning for its level', () => {
   assert.equal(burning.damage, Power.burnDamage(5));
   assert.ok(out.events.some(e => /is Burning/.test(e.text)));
 });
+
+test("an enemy's own buffs never scale the party's damage against it", () => {
+  const hit = buffed => {
+    const s = practice('fighter', 10), foe = enemyOf(s); foe.hp = foe.maxHp = 9999; foe.ac = 1;
+    if (buffed) foe.conditions.push({ id: 'empowered', name: 'Empowered' });
+    const out = E.resolveAction(s, { type: 'combat', actionId: 'weapon-attack', targetId: foe.id }, R.createSeededRng(7));
+    return out.events.filter(e => e.type === 'damage' && /to Guild Training Echo/.test(e.text)).map(e => e.text)[0];
+  };
+  assert.equal(hit(true), hit(false));
+});
+
+test('a wounded boss becomes Empowered once, and only from hero level 5', () => {
+  const enrage = level => {
+    const s = practice('fighter', level), foe = enemyOf(s);
+    foe.aiRole = 'boss'; foe.hp = Math.floor(foe.maxHp / 2);
+    let texts = [];
+    for (let i = 0; i < 4 && s.combat?.active; i++) {
+      const out = E.resolveAction(s, { type: 'combat', actionId: 'end-turn' }, R.createSeededRng(i + 1));
+      texts = texts.concat(out.events.map(e => e.text));
+      Object.assign(s, out.state);
+    }
+    return texts.filter(t => /wounded and furious/.test(t)).length;
+  };
+  assert.equal(enrage(4), 0);
+  assert.equal(enrage(5), 1);
+});
+
+test('the combat view says what each buff and debuff does', () => {
+  const s = practice('fighter', 5), foe = enemyOf(s);
+  foe.conditions.push({ id: 'vulnerable', name: 'Vulnerable to Crossfire' });
+  const seen = E.buildView(s).combat.actors.find(a => a.id === foe.id).conditions.find(c => c.id === 'vulnerable');
+  assert.equal(seen.effect, Power.EFFECTS.vulnerable.text);
+});
+
+test('a chain does not carry into the next fight', () => {
+  const s = practice('fighter', 5);
+  s.combat.chain = { targetId: enemyOf(s).id, round: 1, count: 4 };
+  const next = practice('fighter', 5);
+  assert.equal(next.combat.chain, undefined);
+  assert.equal(Power.chainHit(next.combat, { team: 'party' }, enemyOf(next)), 0);
+});

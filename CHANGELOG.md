@@ -9,9 +9,10 @@ the pull requests that made them.
 - Hits now grow with the attacker's stat: every party hit adds its attacking
   stat's modifier once per power tier (from level 5, 11, 17, then every 24
   levels past 20). Enemies get +3 damage per tier to match.
-- New buffs and debuffs: Empowered, Weakened, Vulnerable, Fortified, Slowed and
-  Burning. Companion combinations now apply them, Fire Bolt sets Burning, and a
-  wounded boss from level 5 becomes Empowered once.
+- New buffs and debuffs: Empowered, Weakened, Vulnerable and Burning (Fortified
+  and Slowed are defined for the coming equipment skills). Companion
+  combinations now apply them, Fire Bolt sets Burning, and a wounded boss from
+  level 5 becomes Empowered once. The combat board shows what each one does.
 - Chain attacks: party hits on the same enemy in one round add 15% each, up to
   60%. A companion combination starts a chain.
 - Fights that used to drag (12 to 15 rounds at levels 15 to 20) now take about

@@ -27,6 +27,7 @@ const EFFECTS = Object.freeze({
   empowered: { name: 'Empowered', dealt: 0.25, text: 'Deals 25% more damage.' },
   weakened: { name: 'Weakened', dealt: -0.25, text: 'Deals 25% less damage.' },
   vulnerable: { name: 'Vulnerable', taken: 0.25, text: 'Takes 25% more damage.' },
+  // Fortified and Slowed have no source yet; equipment skills (step 4) will use them.
   fortified: { name: 'Fortified', taken: -0.25, text: 'Takes 25% less damage.' },
   slowed: { name: 'Slowed', ac: -2, text: '2 less armour.' },
   burning: { name: 'Burning', burn: true, text: 'Takes fire damage at the start of each turn.' }
@@ -52,9 +53,10 @@ function acShift(actor) {
 
 const burnDamage = level => 2 + 2 * tier(level);
 
-// Chain attacks: party hits on the same enemy in the same round build a chain.
-// The second hit adds 15%, the third 30%, up to 60%. A companion combination
-// starts a chain on its target.
+// Chain attacks: party hits on the same enemy in the same round build a chain,
+// whoever lands them (an Extra Attack counts too). The second hit adds 15%, the
+// third 30%, up to 60%. A companion combination starts a fresh chain on its
+// target: its own hit is the first link.
 const CHAIN_STEP = 0.15, CHAIN_MAX = 0.6;
 function chainHit(combat, attacker, target) {
   if (!combat || attacker?.team !== 'party' || target?.team !== 'enemy') return 0;
@@ -64,7 +66,7 @@ function chainHit(combat, attacker, target) {
   return Math.min(CHAIN_MAX, CHAIN_STEP * (combat.chain.count - 1));
 }
 function startChain(combat, target) {
-  if (combat && target) combat.chain = { targetId: target.id, round: combat.round, count: 1 };
+  if (combat && target) combat.chain = { targetId: target.id, round: combat.round, count: 0 };
 }
 
 module.exports = { tier, statDamage, EFFECTS, damageFactor, acShift, burnDamage, chainHit, startChain, CHAIN_STEP, CHAIN_MAX };

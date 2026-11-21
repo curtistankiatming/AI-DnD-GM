@@ -319,7 +319,7 @@ function syncCombatBack(state) {
 function applyCombatDamage(state, target, rawAmount, damageType, events, source = "Attack") {
   let amount = Math.max(0, Math.floor(Number(rawAmount || 0)));
   // Buffs and debuffs on the attacker and the target (src/power.js).
-  const attacker = state.combat ? (combatActor(state, state.combat.damageSourceId) || (damageType === "fire" && source === "Burning" ? null : currentCombatActor(state))) : null;
+  const attacker = state.combat ? (combatActor(state, state.combat.damageSourceId) || currentCombatActor(state)) : null;
   if (amount > 0) amount = Math.floor(amount * Power.damageFactor(attacker && attacker.id !== target.id ? attacker : null, target));
   if (target.resistances?.includes(damageType)) amount = Math.floor(amount / 2);
   if (state.difficulty === "story" && target.team === "party") amount = Math.floor(amount * 0.82);
@@ -340,6 +340,7 @@ function applyCombatDamage(state, target, rawAmount, damageType, events, source 
   if (applied > 0 && hasCondition(target, "sleeping")) removeCondition(target, "sleeping");
   if (previous > 0 && target.hp === 0) {
     target.deathSaves = { successes: 0, failures: 0, stable: false };
+    if (target.team === "enemy") removeCondition(target, "burning");
     events.push({ type: "condition", tone: target.team === "enemy" ? "good" : "bad", text: `${target.name} fell unconscious.` });
     pushLog(state, "Combat", `${target.name} fell unconscious.`, "combat");
   }
@@ -412,7 +413,7 @@ function chained(state, attacker, target, damage, events) {
   const bonus = Power.chainHit(state.combat, attacker, target);
   if (!bonus) return damage;
   const extra = Math.round(damage * bonus);
-  events.push({ type: "feature", tone: "good", text: `Chain x${state.combat.chain.count}: +${extra} damage.` });
+  events.push({ type: "feature", tone: "good", text: `${attacker.name} chains on ${target.name} (hit ${state.combat.chain.count} this round): +${extra} damage.` });
   return damage + extra;
 }
 
@@ -421,6 +422,8 @@ function resolveWeaponAttack(state, attacker, target, rng, events, options = {})
   const attack = rollAttack(state, attacker, target, profile, rng, events, options);
   attacker.actionUsed = true;
   if (!attack.hit) return { hit: false, damage: 0 };
+  // Every damage line of this hit (Ward Oil too) counts this attacker's buffs.
+  state.combat.damageSourceId=attacker.id;
   let damage = damageRoll(rng, profile.damageFormula || profile.damage, attack.critical).total;
   if (attacker.kind === "player" && attacker.classId === "rogue" && !attacker.used.sneakAttackTurn) {
     const allyEngaged = livingActors(state, "party").some((actor) => actor.id !== attacker.id);
@@ -438,7 +441,7 @@ function resolveWeaponAttack(state, attacker, target, rng, events, options = {})
   }
   if (attacker.kind === "companion" && attacker.tactic === "aggressive") damage += 1;
   if(attacker.kind === "player")damage+=P.stats(state.player).damage;
-  damage+=Power.statDamage(attacker,profile.ability||"str");
+  damage+=Power.statDamage(attacker,profile.ability||CLASSES[attacker.classId]?.primaryAbility||"str");
   damage=chained(state,attacker,target,damage,events);
   const oil=condition(attacker,"coating");if(oil){const extra=rollFormula(rng,"1d4").total;applyCombatDamage(state,target,extra,"radiant",events,"Ward Oil");oil.uses-=1;if(oil.uses<=0)removeCondition(attacker,"coating");}
   if(hasCondition(attacker,"shadowStrike")){damage+=rollFormula(rng,"2d6").total;removeCondition(attacker,"shadowStrike");}
@@ -598,11 +601,11 @@ function resolveJobAction(state,actor,def,target,rng,events){
       const dc=spellSaveDc(actor,primary);
       for(const foe of e.area?enemies():pick('target').filter(a=>a.team==='enemy'&&a.hp>0)){
         const saved=savingThrow(state,foe,e.save||'dex',dc,rng,events).success;
-        if(e.damage){const amount=rollFormula(rng,f(e.damage)).total+st.damage;const dealt=saved?(e.half?Math.floor(amount/2):0):amount;if(dealt)applyCombatDamage(state,foe,dealt,e.type||'force',events,def.name);}
+        if(e.damage){const amount=rollFormula(rng,f(e.damage)).total+st.damage+Power.statDamage(actor,def.ability||primary);const dealt=saved?(e.half?Math.floor(amount/2):0):amount;if(dealt)applyCombatDamage(state,foe,dealt,e.type||'force',events,def.name);}
         if(!saved&&e.onFail)condition(foe,e.onFail);
       }
     }else if(e.do==='damage'){
-      for(const foe of pick(e.on).filter(a=>a.team==='enemy'&&a.hp>0))applyCombatDamage(state,foe,rollFormula(rng,f(e.damage)).total+st.damage,e.type||'force',events,def.name);
+      for(const foe of pick(e.on).filter(a=>a.team==='enemy'&&a.hp>0))applyCombatDamage(state,foe,rollFormula(rng,f(e.damage)).total+st.damage+Power.statDamage(actor,def.ability||primary),e.type||'force',events,def.name);
     }else if(e.do==='heal'){
       for(const a of pick(e.on).filter(a=>a.team==='party'))combatHeal(state,a,Math.max(1,rollFormula(rng,f(e.amount)).total)+st.healing,events,def.name);
     }else if(e.do==='tempHp'){
@@ -685,7 +688,7 @@ function resolveClassAction(state, actor, actionDef, target, rng, events) {
       const damage = chained(state, actor, target, damageRoll(rng, actionDef.damage, result.critical).total+P.stats(state.player).damage+Power.statDamage(actor, actionDef.ability), events);
       applyCombatDamage(state, target, damage, actionDef.damageType, events, actionDef.name);
       if (actionDef.onHit === "guiding" && target.hp > 0) addCondition(target, { id: "guiding", name: "Guiding Light" });
-      if (actionDef.damageType === "fire" && target.hp > 0) { addCondition(target, { id: "burning", name: "Burning", rounds: 1, damage: Power.burnDamage(actor.level) }); events.push({ type: "condition", tone: "good", text: `${target.name} is Burning.` }); }
+      if (actionDef.damageType === "fire" && target.hp > 0 && !target.resistances?.includes("fire")) { addCondition(target, { id: "burning", name: "Burning", rounds: 1, damage: Power.burnDamage(actor.level) }); events.push({ type: "condition", tone: "good", text: `${target.name} is Burning.` }); }
     }
     return { ok: true, outcomeText: `${actor.name} casts ${actionDef.name}.` };
   }
@@ -1242,7 +1245,7 @@ function combatView(state) {
       maxHp: actor.maxHp,
       ac: effectiveAc(actor),
       initiative: actor.initiative,
-      conditions: actor.conditions,
+      conditions: (actor.conditions || []).map(c => Power.EFFECTS[c.id] ? { ...c, effect: Power.EFFECTS[c.id].text } : c),
       current: actor.id === current?.id,
       unconscious: actor.hp <= 0
     })),

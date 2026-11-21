@@ -15,14 +15,18 @@ health grows with level and weapon damage did not.
   shorter fights stay as dangerous. Nothing changes below level 5.
 - **Buffs and debuffs**: Empowered (+25% dealt), Weakened (-25% dealt),
   Vulnerable (+25% taken), Fortified (-25% taken), Slowed (-2 armour), Burning
-  (fire damage at the start of the turn).
+  (fire damage at the start of the turn). Fortified and Slowed have no source
+  yet; step 4's equipment skills will use them.
   - Maren's combination: the healed ally is Empowered for two rounds.
   - Orin's combination: the target is Weakened until your next turn.
   - Nessa's combination: the target is Vulnerable until your next turn.
-  - A fire spell hit (Fire Bolt) sets Burning for one round.
+  - A fire spell hit (Fire Bolt) sets Burning for one round, except on a foe
+    that resists fire.
   - A boss or leader below half health becomes Empowered once (hero level 5+).
 - **Chain attacks**: each further party hit on the same enemy in the same round
-  adds 15%, up to 60%. A companion combination starts the chain.
+  adds 15%, up to 60%, whoever lands it (an Extra Attack counts). A companion
+  combination starts a fresh chain: its own hit is the first link.
+- Job skills' save, area and direct-damage effects add stat damage too.
 
 ## Results
 

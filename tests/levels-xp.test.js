@@ -40,7 +40,7 @@ test('bounded growth: proficiency stops at +6 and health grows slowly past 20', 
   assert.equal(P.stats(h100).damage - P.stats(h20).damage, 8, '+1 damage per 10 levels past 20.');
 });
 
-test('adventure enemies are unchanged up to level 20 and stay inside the d20 past it', () => {
+test('adventure enemies grow by power tier up to level 20 and stay inside the d20 past it', () => {
   const f10 = XP.foeStats(XP.challenge({ level: 10 }));
   // +3 damage per power tier matches the party's stat damage (src/power.js).
   assert.deepEqual(f10.main, { maxHp: 82, ac: 15, attackBonus: 8, damage: '3d6+8' });

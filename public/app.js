@@ -426,7 +426,7 @@ function renderNarratorBadge() {
 }
 
 function conditionLabel(condition) {
-  const label=condition.name || titleCase(condition.id);
+  const label=`${condition.name || titleCase(condition.id)}${condition.effect?` (${condition.effect})`:''}`;
   if(!condition.expiresRound)return label;
   const source=view?.combat?.actors.find(a=>a.id===condition.sourceId)?.name;
   return `${label} · ends round ${condition.expiresRound}, ${source?source+"'s":"owner's"} turn`;
