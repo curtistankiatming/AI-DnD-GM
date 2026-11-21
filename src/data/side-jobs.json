@@ -100,7 +100,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You put it to them both at once, which is the only way it could have worked. The delegate from Fenmere is Brannagh, who watched you mend the sluice-house water, with the same brown goat on a rope. She looks Iona up and down."
+                  "narrate": "{You put|@ puts} it to them both at once, which is the only way it could have worked. The delegate from Fenmere is Brannagh, who watched you mend the sluice-house water, with the same brown goat on a rope. She looks Iona up and down."
                 },
                 {
                   "say": "Brannagh",
@@ -284,7 +284,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You do not tell her she did nothing wrong. She would not believe it, and it is not quite true. You tell her that the people in this camp are not waiting for crews like hers to be sorry. They are waiting to find out who is still alive. So is he."
+                  "narrate": "{You do|@ does} not tell her she did nothing wrong. She would not believe it, and it is not quite true. {They} {tell|tells} her that the people in this camp are not waiting for crews like hers to be sorry. They are waiting to find out who is still alive. So is he."
                 },
                 {
                   "narrate": "Ada puts the shovel down and wipes her hands on her coat for a long time. Then she walks round the stable to the wall of names, and stands behind her son while he is pinning up the note, and says his name."
@@ -320,7 +320,7 @@
                   "text": "Not yet. I can't. Not with this on my hands."
                 },
                 {
-                  "narrate": "She writes something on the back of one of his old notes, with a stub of pencil from her pocket, and gives it to you. Then she goes back to the pit."
+                  "narrate": "She writes something on the back of one of his old notes, with a stub of pencil from her pocket, and gives it to {them}. Then she goes back to the pit."
                 },
                 {
                   "narrate": "In the morning, under Tib's note, there is an answer pencilled in a hand he knows: Alive. Working. Ashamed. Coming. Not yet. He reads it nine times, and then he goes round the stables to look."
@@ -485,7 +485,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You spend the next morning helping Pim turn his idea into something a reeve can say yes to. It takes three drafts. The first is eleven pages long and has a chart. The second has a shorter chart. The third says: Briarwatch should keep a night watch on the bell tower, by rota, so that somebody is always awake. Names of volunteers below."
+                  "narrate": "{You spend|@ spends} the next morning helping Pim turn his idea into something a reeve can say yes to. It takes three drafts. The first is eleven pages long and has a chart. The second has a shorter chart. The third says: Briarwatch should keep a night watch on the bell tower, by rota, so that somebody is always awake. Names of volunteers below."
                 },
                 {
                   "narrate": "By noon there are twenty-two names below. Dera's is first. Tovin's is second, in very small letters."
@@ -665,10 +665,10 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "The night magistrate sits at four in the morning, in a nightcap, in no mood. You have spent the night with the ordinance, which is a single long sentence with a great many commas."
+                  "narrate": "The night magistrate sits at four in the morning, in a nightcap, in no mood. {You have|@ has} spent the night with the ordinance, which is a single long sentence with a great many commas."
                 },
                 {
-                  "narrate": "You point out that it forbids complaint after dark. You point out that the complaint was made directly under a lamp that had just been refilled and lit, by the lantern guilds' own man, for the express purpose of ending the dark on that part of the quay. You ask the magistrate whether the guilds are saying their lamps do not work."
+                  "narrate": "{You point|@ points} out that it forbids complaint after dark. {They} {point|points} out that the complaint was made directly under a lamp that had just been refilled and lit, by the lantern guilds' own man, for the express purpose of ending the dark on that part of the quay. {They} {ask|asks} the magistrate whether the guilds are saying their lamps do not work."
                 },
                 {
                   "say": "The magistrate",
@@ -683,11 +683,17 @@
                 },
                 {
                   "say": "maren",
-                  "text": "That was beautiful. I may frame the ordinance."
+                  "text": "That was beautiful. I may frame the ordinance.",
+                  "when": {
+                    "notRoller": "maren"
+                  }
                 },
                 {
                   "say": "orin",
-                  "text": "Every word of that was true. That's the best kind."
+                  "text": "Every word of that was true. That's the best kind.",
+                  "when": {
+                    "notRoller": "orin"
+                  }
                 }
               ],
               "setFlags": {
@@ -701,7 +707,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You make the argument. The magistrate, who was asleep twenty minutes ago and would like to be again, does not follow it past the third comma."
+                  "narrate": "{You make|@ makes} the argument. The magistrate, who was asleep twenty minutes ago and would like to be again, does not follow it past the third comma."
                 },
                 {
                   "say": "The magistrate",
@@ -873,7 +879,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "The harbourmaster is a tired woman with a ledger, and her father was a fisherman, and by the time you have told her about Lenora Crane and the yellow paint she has closed the ledger and is looking out of the window at the boats."
+                  "narrate": "The harbourmaster is a tired woman with a ledger, and her father was a fisherman, and by the time {you have|@ has} told her about Lenora Crane and the yellow paint she has closed the ledger and is looking out of the window at the boats."
                 },
                 {
                   "say": "The harbourmaster",
@@ -889,7 +895,7 @@
                   "text": "If I waive his, I waive everybody's, and the Lantern Hall reads my books. Thirty gold."
                 },
                 {
-                  "narrate": "You pay it in the end. She does knock off the cost of the yellow paint, which she says she did not hear you mention."
+                  "narrate": "You pay it in the end. She does knock off the cost of the yellow paint, which she says she did not hear {you|anyone} mention."
                 }
               ],
               "gold": -30,
@@ -1055,7 +1061,7 @@
                   "text": "I'm retired."
                 },
                 {
-                  "narrate": "You do not argue. You ask him about the galleries instead: what they were like when he was a boy, what the old miners said about the bells in the niches, whether he ever heard one ring on its own. He talks for an hour. At the end of it he has stopped being retired without either of you noticing."
+                  "narrate": "{You do|@ does} not argue. {They} {ask|asks} him about the galleries instead: what they were like when he was a boy, what the old miners said about the bells in the niches, whether he ever heard one ring on its own. He talks for an hour. At the end of it he has stopped being retired without {either of you|either of them} noticing."
                 },
                 {
                   "say": "Harrow",
@@ -1252,13 +1258,13 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You do what Brannagh did at Highpass. You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "narrate": "{You do|@ does} what Brannagh did at Highpass. {They} {stop|stops} asking who should pay, and {ask|asks} who uses the water. Then {they} {count|counts} buckets.",
                   "when": {
                     "flag": "b2_cost_shared"
                   }
                 },
                 {
-                  "narrate": "You stop asking who should pay, and ask who uses the water. Then you count buckets.",
+                  "narrate": "{You stop|@ stops} asking who should pay, and {ask|asks} who uses the water. Then {they} {count|counts} buckets.",
                   "when": {
                     "notFlag": "b2_cost_shared"
                   }
@@ -1627,10 +1633,10 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You get all three of them into the forge at the end of the day, with the door shut: Tovin on the stool, Pim on the anvil step with his arms folded, Dera at the bellows because she will not sit down in her own forge."
+                  "narrate": "{You get|@ gets} all three of them into the forge at the end of the day, with the door shut: Tovin on the stool, Pim on the anvil step with his arms folded, Dera at the bellows because she will not sit down in her own forge."
                 },
                 {
-                  "narrate": "You don't argue for the forge, or for the tower. You ask Dera a question instead: who cast the Briarwatch bell?"
+                  "narrate": "{You don't|@ doesn't} argue for the forge, or for the tower. {They} {ask|asks} Dera a question instead: who cast the Briarwatch bell?"
                 },
                 {
                   "say": "Dera",
@@ -1678,7 +1684,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You get all three of them into the forge at the end of the day, and it goes wrong almost at once. Tovin says forge. Pim says tower. Dera says nobody has asked her, and that she would like to be asked in her own forge, thank you."
+                  "narrate": "{You get|@ gets} all three of them into the forge at the end of the day, and it goes wrong almost at once. Tovin says forge. Pim says tower. Dera says nobody has asked her, and that she would like to be asked in her own forge, thank you."
                 },
                 {
                   "say": "Pim",
@@ -1835,7 +1841,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "It takes you two days, at the table in the guardroom, with Sorrel's lamp. Most of it is scholarship: dates corrected, dead authors argued with, a recipe for ink that does not fade."
+                  "narrate": "It takes {you} two days, at the table in the guardroom, with Sorrel's lamp. Most of it is scholarship: dates corrected, dead authors argued with, a recipe for ink that does not fade."
                 },
                 {
                   "narrate": "Two notes are not scholarship. In the Ashford ward-register, beside a column of keepers \"taken for service\" by Central Command sixty years ago, he has written: \"Not all of them were melted. Ask Vell what it keeps under the drill-yard.\""
@@ -1849,10 +1855,10 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "It takes you two days, at the table in the guardroom, and by the end of it Sable's small hand is swimming in front of your eyes. Most of it is scholarship: dates corrected, dead authors argued with."
+                  "narrate": "It takes {you} two days, at the table in the guardroom, and by the end of it Sable's small hand is swimming in front of {their} eyes. Most of it is scholarship: dates corrected, dead authors argued with."
                 },
                 {
-                  "narrate": "You almost miss the last one. In a book of children's hymns, beside the hymn for the third hour: \"Aster Vey rang this flat. Keep it flat.\" If there is anything else, it is in some other book, in some margin you read too fast."
+                  "narrate": "{You almost miss|@ almost misses} the last one. In a book of children's hymns, beside the hymn for the third hour: \"Aster Vey rang this flat. Keep it flat.\" If there is anything else, it is in some other book, in some margin read too fast."
                 }
               ],
               "next": "margins"
@@ -2053,7 +2059,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You put the two sheets of paper side by side in the middle of the table, and the two of them on the same side of it, and refuse to let either of them leave."
+                  "narrate": "{You put|@ puts} the two sheets of paper side by side in the middle of the table, and the two of them on the same side of it, and {refuse|refuses} to let either of them leave."
                 },
                 {
                   "narrate": "It takes an hour. Fennick's roster frees two hundred and eighteen mattresses, and Iona's carts cover the rest, and between them they find that the rest is three hundred and eighty-two, not six hundred, which is a cheaper number. Iona corrects one of Fennick's sums. Fennick corrects one of hers. Neither of them says a word about it. They both write the correction in."
@@ -2076,10 +2082,10 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You put the two sheets of paper side by side and the two of them on the same side of the table, and within ten minutes they are arguing about whether a hammock is a bed. Iona says a hammock is furniture. Fennick says a hammock is a bed if it is slept in, and has a regulation that says so."
+                  "narrate": "{You put|@ puts} the two sheets of paper side by side and the two of them on the same side of the table, and within ten minutes they are arguing about whether a hammock is a bed. Iona says a hammock is furniture. Fennick says a hammock is a bed if it is slept in, and has a regulation that says so."
                 },
                 {
-                  "narrate": "In the end you split it down the middle yourself: his roster for the fort, her carts for the rest. It works, mostly. It is not as cheap as it could have been, and both of them tell you so, separately."
+                  "narrate": "In the end {you split it down the middle yourself|@ splits it down the middle}: his roster for the fort, her carts for the rest. It works, mostly. It is not as cheap as it could have been, and both of them tell {you|@} so, separately."
                 }
               ],
               "next": "night"
@@ -2123,7 +2129,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You take the roster round the barracks yourself, bunk by bunk, and ask each soldier to give up half a bed. You don't order it. You ask. Most of them have been on the gate all week, watching the line come up the road."
+                  "narrate": "{You take|@ takes} the roster round the barracks in person, bunk by bunk, and {ask|asks} each soldier to give up half a bed. {You don't|@ doesn't} order it. {They} {ask|asks}. Most of them have been on the gate all week, watching the line come up the road."
                 },
                 {
                   "narrate": "By dark there are four hundred and thirty mattresses and pallets stacked in the lower yard, and every soldier in the fort is sharing a bunk by roster, in shifts. A sergeant from Sorrel's north company gives up his own cot as well, and sleeps on the guardroom floor, and pretends it was his idea."
@@ -2138,7 +2144,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You take the roster round the barracks, and the soldiers have been on the gate all week and are tired and cold, and half of them say no. By dark Fennick's roster has freed a hundred and ninety mattresses. The rest of the six hundred sleep under every spare cloak in the fort."
+                  "narrate": "{You take|@ takes} the roster round the barracks, and the soldiers have been on the gate all week and are tired and cold, and half of them say no. By dark Fennick's roster has freed a hundred and ninety mattresses. The rest of the six hundred sleep under every spare cloak in the fort."
                 },
                 {
                   "say": "Fennick",
@@ -2278,7 +2284,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You go down the Iron Road at a run, past the dead stones, forty-one, forty-two, forty-three, and reach the Grey Step with the sun still high. The waystation is a stone barn with a trader's yard. The cart is in the yard, six barrels under canvas. The carter, Joss Brennick, is sitting on the shaft with his arms folded."
+                  "narrate": "{You set|@ sets} the pace down the Iron Road at a run, past the dead stones, forty-one, forty-two, forty-three, and you reach the Grey Step with the sun still high. The waystation is a stone barn with a trader's yard. The cart is in the yard, six barrels under canvas. The carter, Joss Brennick, is sitting on the shaft with his arms folded."
                 }
               ],
               "next": "carter"
@@ -2286,7 +2292,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You go down the Iron Road as fast as you can, and it is further than it looks, and the switchbacks are long. By the time you reach the Grey Step the sun is over the ridge. The cart is in the yard, six barrels under canvas, and the carter, Joss Brennick, is sitting on the shaft with his arms folded, looking at the sky."
+                  "narrate": "{You set|@ sets} the pace down the Iron Road, as fast as anyone can go, and it is further than it looks, and the switchbacks are long. By the time you reach the Grey Step the sun is over the ridge. The cart is in the yard, six barrels under canvas, and the carter, Joss Brennick, is sitting on the shaft with his arms folded, looking at the sky."
                 }
               ],
               "next": "carter"
@@ -2324,7 +2330,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "Joss's mules do not want to go up the Iron Road at dusk any more than Joss does. You talk to them. You walk at the leader's head the whole way, with a lantern, and every time it baulks at a dead stone you stop and let it look, and then go on."
+                  "narrate": "Joss's mules do not want to go up the Iron Road at dusk any more than Joss does. {You talk|@ talks} to them. {They} {walk|walks} at the leader's head the whole way, with a lantern, and every time it baulks at a dead stone {they} {stop|stops} and {let|lets} it look, and then {go|goes} on."
                 },
                 {
                   "narrate": "You come into Saltwick with the last light going and the mist standing up at the corners, and the lamplighters come down the ladders for the barrels before the cart has stopped."
@@ -2363,7 +2369,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You don't tell him the road is safe. It isn't. You tell him you'll be on it with him, the whole way, and that you'll walk him home at dawn yourself, and that Saltwick has nothing to light its lamps with tonight but what is on his cart."
+                  "narrate": "{You don't|@ doesn't} tell him the road is safe. It isn't. {You tell him you'll be on it with him, the whole way, and that you'll walk him home at dawn yourself|@ tells him you'll all be on it with him, the whole way, and walk him home at dawn}, and that Saltwick has nothing to light its lamps with tonight but what is on his cart."
                 },
                 {
                   "say": "Joss Brennick",
@@ -2484,7 +2490,7 @@
                   "narrate": "It takes the afternoon. The Highpass list has a woman from Cask in the store-room hammocks, with a cough, \"caring for one child, not hers\". Fennick's box has Liss Marrin's last known address: the tithe barn at Lindmoor, with her mother-in-law, Ada, and her son, Tobin. Hanne Ostrow's party came from Cask by way of Lindmoor's tithe barn, and walked over the pass together."
                 },
                 {
-                  "narrate": "You find it at the bottom of the Highpass list in Iona's own hand, added late: \"Marrin, A., widow, cough; came over in the Ostrow party; asks after her grandson.\" Sixty-one. Not thirty."
+                  "narrate": "{You find|@ finds} it at the bottom of the Highpass list in Iona's own hand, added late: \"Marrin, A., widow, cough; came over in the Ostrow party; asks after her grandson.\" Sixty-one. Not thirty."
                 },
                 {
                   "say": "Fennick",
@@ -2502,7 +2508,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You go through both lists until the lamp needs filling, and you cannot make it come out. The ages are wrong, or the towns are written two ways, or the Highpass clerk could not hear. In the end there is only one way to be sure, and it is a letter over the pass, and a fortnight."
+                  "narrate": "{You go|@ goes} through both lists until the lamp needs filling, and {they} cannot make it come out. The ages are wrong, or the towns are written two ways, or the Highpass clerk could not hear. In the end there is only one way to be sure, and it is a letter over the pass, and a fortnight."
                 },
                 {
                   "say": "Fennick",
@@ -2542,7 +2548,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You ask in every queue in the ration office yard, and people from Cask shake their heads. They knew the Marrins, or they knew of them, or they knew a Marrin, a dyer, or an egg-woman, or a boy. Nobody knows where any of them went."
+                  "narrate": "{You ask|@ asks} in every queue in the ration office yard, and people from Cask shake their heads. They knew the Marrins, or they knew of them, or they knew a Marrin, a dyer, or an egg-woman, or a boy. Nobody knows where any of them went."
                 },
                 {
                   "say": "Fennick",
@@ -2704,10 +2710,10 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You sit on the step with him, and don't tell him he's too young, because he knows, and that's why he came. You ask him instead what Ysolde said to him when she put her name up. He tells you. She said she'd hear everyone. She said that was the point of a bell."
+                  "narrate": "{You sit|@ sits} on the step with him, and {don't|doesn't} tell him he's too young, because he knows, and that's why he came. {They} {ask|asks} him instead what Ysolde said to him when she put her name up. He tells {them}. She said she'd hear everyone. She said that was the point of a bell."
                 },
                 {
-                  "narrate": "So you ask him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then he gives you the chalk."
+                  "narrate": "So {they} {ask|asks} him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then he gives {them} the chalk."
                 },
                 {
                   "say": "Jory",
@@ -2726,7 +2732,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "You tell him he's too young, and it is the wrong thing to say. He tells you that he's twelve and he carries coal for the Second District every morning and he can carry anything. He tells you that you're from the free wards and you don't know anything. He's right about the second part."
+                  "narrate": "{You tell|@ tells} him he's too young, and it is the wrong thing to say. He tells {them} that he's twelve and he carries coal for the Second District every morning and he can carry anything. He tells {them} that {you're from the free wards and you don't know anything|@'s from the free wards and knows nothing}. He's right about the second part."
                 },
                 {
                   "narrate": "In the end it is Wil who stops it. He takes the chalk out of his brother's hand and puts it in his own pocket, and holds Jory's sleeve, and won't let go. Jory lets him."

@@ -248,3 +248,22 @@ Conversation scenes live in `src/data/scenes.json`; see its `_note` and
 `tests/scenes.test.js`. Lines are `{"say": "<companion id or a name>", "text": "..."}`
 or `{"narrate": "..."}`. Choices change companion approval only, never XP or
 loot. The first example is the camp scene after the bridge (`bridge-camp`).
+
+## How check results are written
+
+The party member best placed for a check rolls it, so a check's success and
+failure text must read for whoever that is. Write the roller's part with
+tokens (`src/expansion.js`, `forRoller`); they read exactly as plain "you"
+text when the hero rolls:
+
+- `{You}`, `{you}`, `{your}`, `{Your}`: the roller ("Orin", "Orin's").
+- `{they}`, `{them}`, `{their}` (and capitalised): the roller's pronouns ("you" for the hero).
+- `{a|b}`: `a` for the hero, `b` for a companion, with `@` in `b` for their name.
+  Use it for verbs: `{You read|@ reads} the letter.`
+- A line's `when` may hold `roller` ("hero", "companion" or a companion id) or
+  `notRoller`, for the few lines that need different words, such as Maren
+  reading the names when she is the one who rolled.
+
+Keep plain "you" where it is the whole party, or someone speaking to the hero.
+A check that is the hero's own (the trial, the Second Oath, and the oath the
+bell-warden asks for at the end of Book One) has `"hero": true` and is always rolled by the hero.

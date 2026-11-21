@@ -104,7 +104,52 @@ function lineApplies(state, line) {
   // the hosted game). Required here, not at the top: book.js requires this file.
   if (w.access !== undefined && !require('./book').reads(state, w.access)) return false;
   if (w.notAccess !== undefined && require('./book').reads(state, w.notAccess)) return false;
+  // roller / notRoller are settled when a check's result is told (outcomeForRoller);
+  // anywhere else the hero is the one acting.
+  if (w.roller !== undefined && w.roller !== 'hero') return false;
+  if (w.notRoller === 'hero') return false;
   return true;
+}
+// Who rolled a check (21 November 2026): the best-suited party member may
+// roll for the hero, so a check's written result can name them. In a check's
+// success or failure text, "{You}", "{you}", "{your}" and "{Your}" become the
+// roller ("You", or "Orin", "Orin's"); "{they}", "{them}", "{their}" (and
+// capitalised) their pronouns ("you" for the hero); and "{a|b}" picks a for the
+// hero and b for a companion, where "@" in b is the companion's name. A line's
+// "when" may also hold roller ("hero", "companion" or a companion id) or
+// notRoller; these are settled here, when the result is told, so they never
+// need the roll again later.
+const PRONOUNS={he:['he','him','his'],she:['she','her','her'],they:['they','them','their']};
+function rollerWords(actor){
+  if(!actor||actor.id==='player')return {name:'you',possessive:'your',p:['you','you','your'],hero:true};
+  const c=C.COMPANIONS[actor.id],name=speakerName(actor.id),key=String(c?.pronouns||'they').split('/')[0];
+  return {name,possessive:`${name}'s`,p:PRONOUNS[key]||PRONOUNS.they,hero:false};
+}
+const cap=t=>t?t[0].toUpperCase()+t.slice(1):t;
+function forRoller(text,actor){
+  if(typeof text!=='string'||!text.includes('{'))return text;
+  const w=rollerWords(actor),who=w.hero?'you':w.name;
+  const map={You:cap(who),you:who,your:w.hero?'your':w.possessive,Your:w.hero?'Your':w.possessive,they:w.p[0],They:cap(w.p[0]),them:w.p[1],Them:cap(w.p[1]),their:w.p[2],Their:cap(w.p[2])};
+  return text.replace(/\{([^{}|]*)\|([^{}]*)\}/g,(m,a,b)=>w.hero?a:b.replace(/@/g,w.name)).replace(/\{(You|you|your|Your|they|They|them|Them|their|Their)\}/g,(m,k)=>map[k]);
+}
+function rollerFits(w,actor){
+  const id=actor?.id||'player',is=v=>v==='hero'?id==='player':v==='companion'?id!=='player':id===v;
+  if(w.roller!==undefined&&!is(w.roller))return false;
+  if(w.notRoller!==undefined&&is(w.notRoller))return false;
+  return true;
+}
+// A check's outcome as told for whoever rolled it.
+function outcomeForRoller(outcome,actor){
+  if(!outcome)return outcome;
+  const out={...outcome};
+  if(Array.isArray(outcome.dialogue)){
+    out.dialogue=outcome.dialogue.filter(l=>!l.when||rollerFits(l.when,actor)).map(l=>{
+      const {roller,notRoller,...rest}=l.when||{};const line={...l,...(l.narration!==undefined?{narration:forRoller(l.narration,actor)}:{}),...(l.text!==undefined?{text:forRoller(l.text,actor)}:{})};
+      if(l.when){if(Object.keys(rest).length)line.when=rest;else delete line.when;}
+      return line;});
+    if(outcome.text!==undefined)out.text=dialogueText(out.dialogue);
+  }else if(typeof outcome.text==='string')out.text=forRoller(outcome.text,actor);
+  return out;
 }
 function liveLines(state, lines) {
   return Array.isArray(lines) ? lines.filter((line) => lineApplies(state, line)).map(({ when, ...line }) => line) : lines;
@@ -130,8 +175,10 @@ function installQuest(q){
   // chapters to level 10, where Help is almost always on hand, are 2 harder
   // to keep the average odds near 60-70% (docs/BALANCE-2026-11-21-CHECKS.md).
   const D=Math.floor(A/2)+(q.level<=10?2:0);
-  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools};
-  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools};
+  // hero: true on a check means the hero always rolls it (their own trial, their own oath).
+  const own=c=>c.hero?{hero:true}:{};
+  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools,...own(q.investigate)};
+  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools,...own(q.route)};
   STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,...toldOpening(q.opening),safeRest:true,questId:q.id,phase:'start',choices:[
     choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{...told(q.investigate.success),clues:[evidence],setFlags:{[preparation]:true}},failure:{...told(q.investigate.failure),clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
     // Optional conversations before setting out ("talks"): lines only, no
@@ -145,7 +192,7 @@ function installQuest(q){
     choice('direct',q.direct?.label||'Take the obvious route and keep the party together',{description:'No check. Arrive openly without an approach advantage.',result:{text:q.direct?.text||'The party arrives together by the direct route. You have surrendered surprise, not the opportunity to decide what happens next.',nextNode:`${prefix}-crisis`}})
   ]};
   STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
+    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...own(q.peaceful)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
     ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
@@ -247,4 +294,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,lineApplies,nodeLocation};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,lineApplies,outcomeForRoller,forRoller,nodeLocation};

@@ -352,7 +352,7 @@ test('a peaceful ending never credits a lead the hero skipped', () => {
   const vote = (clue) => peace('vote', {}, clue).after;
   assert.match(vote(true), /exactly who the carters are/);
   assert.doesNotMatch(vote(false), /exactly who the carters are/);
-  assert.match(vote(false), /You don't know who the carters are/);
+  assert.match(vote(false), /Nobody knows who the carters are/);
   assert.doesNotMatch(peace('vote', {}, false).said, /exactly who the carters are/, 'The text sent on to chat narration is filtered too.');
   const fen = (clue) => peace('fenmere', {}, clue);
   assert.match(fen(true).before, /I have the verse/);
@@ -360,7 +360,7 @@ test('a peaceful ending never credits a lead the hero skipped', () => {
   assert.match(fen(false).after, /Nobody knew she knew it/);
   const bell = (clue) => peace('motherbell', { vote_elske_lost: true }, clue).after;
   assert.match(bell(true), /You tell her what the founders wrote/);
-  assert.match(bell(false), /never found what the founders wrote/);
+  assert.match(bell(false), /None of you ever found what the founders wrote/);
 });
 
 test('talking Elske down with the rope locked away looks up at the beam, not a rope', () => {
@@ -380,7 +380,7 @@ test('the tollhouse never hands an unprepared hero receipts they did not find', 
   assert.doesNotMatch(none.opening, /documents/);
   const s = atCrisis('road', { 'prepared:road': true, 'approach:road': true }, false); s.player.inspirationPrepared = true; s.player.abilities.cha = 30;
   const text = act(s, { type: 'story-choice', choiceId: 'resolve' }).state.story.lastOutcome.text;
-  assert.match(text, /You don't have the captain's papers/);
+  assert.match(text, /Without the captain's papers/);
   assert.doesNotMatch(text, /read what they have been paid/);
 });
 

@@ -60,7 +60,7 @@
         "success": {
           "lines": [
             {
-              "narrate": "Under the rain-dark fibres you find a thumbprint of black wax, stamped with a thorn wound around a broken bell."
+              "narrate": "Under the rain-dark fibres {you find|@ finds} a thumbprint of black wax, stamped with a thorn wound around a broken bell."
             },
             {
               "say": "orin",
@@ -84,7 +84,16 @@
         "failure": {
           "lines": [
             {
-              "narrate": "The rain has ruined most of the traces. Maren takes the rope's end from you and turns it to the light."
+              "narrate": "The rain has ruined most of the traces. Maren takes the rope's end from {you|@} and turns it to the light.",
+              "when": {
+                "notRoller": "maren"
+              }
+            },
+            {
+              "narrate": "The rain has ruined most of the traces. Maren frowns at the rope's end and turns it to the light.",
+              "when": {
+                "roller": "maren"
+              }
             },
             {
               "say": "maren",
@@ -372,7 +381,7 @@
         "success": {
           "lines": [
             {
-              "narrate": "You sit, and wait, and let the rain do the talking for a while."
+              "narrate": "{You sit|@ sits}, and {wait|waits}, and {let|lets} the rain do the talking for a while."
             },
             {
               "say": "Tovin",
@@ -449,7 +458,7 @@
         "failure": {
           "lines": [
             {
-              "narrate": "You clean the wound and bind it fresh, but you cannot tell what made it."
+              "narrate": "{You clean|@ cleans} the wound and {bind|binds} it fresh, but {they} cannot tell what made it."
             },
             {
               "say": "Tovin",
@@ -481,7 +490,7 @@
         "success": {
           "lines": [
             {
-              "narrate": "You lean over the bed and ask again, harder."
+              "narrate": "{You lean|@ leans} over the bed and {ask|asks} again, harder."
             },
             {
               "say": "Tovin",
@@ -574,11 +583,14 @@
           "combat": "road-ambush",
           "lines": [
             {
-              "narrate": "You find the ambush line before it closes: a trip-cord in the fern, a crossbow lashed to a stump and aimed at the road. You turn the cord round. When the masked figures rise out of the brush, they rise into their own trap."
+              "narrate": "{You find|@ finds} the ambush line before it closes: a trip-cord in the fern, a crossbow lashed to a stump and aimed at the road. {They} {turn|turns} the cord round. When the masked figures rise out of the brush, they rise into their own trap."
             },
             {
               "say": "orin",
-              "text": "Whoever taught you that, buy them a drink."
+              "text": "Whoever taught you that, buy them a drink.",
+              "when": {
+                "notRoller": "orin"
+              }
             }
           ]
         },
@@ -660,7 +672,7 @@
           "nextNode": "mist-hollow",
           "lines": [
             {
-              "narrate": "You separate the true note from its echoes and follow it down into the mist. It isn't a bell at all. It is someone hanging upside down in a snare, tapping a belt buckle against a ward-stone, slowly, the way you would if you had been doing it for an hour."
+              "narrate": "{You separate|@ separates} the true note from its echoes, and you all follow it down into the mist. It isn't a bell at all. It is someone hanging upside down in a snare, tapping a belt buckle against a ward-stone, slowly, the way you would if you had been doing it for an hour."
             }
           ]
         },
@@ -751,13 +763,13 @@
           },
           "lines": [
             {
-              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot and Tovin's half-remembered verse: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot and Tovin's half-remembered verse: the bell's old name, Aster Vey, 'the star that answers'. When {you say|@ says} it aloud, the silver chime over the altar rings once on its own.",
               "when": {
                 "clue": "hushed-verse"
               }
             },
             {
-              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot: the bell's old name, Aster Vey, 'the star that answers'. When {you say|@ says} it aloud, the silver chime over the altar rings once on its own.",
               "when": {
                 "notClue": "hushed-verse"
               }
@@ -774,7 +786,7 @@
           ],
           "lines": [
             {
-              "narrate": "The full name escapes you. But the vow underneath it survives, and it is clear enough: the ward-spirit answered willing keepers. Not masters."
+              "narrate": "The full name escapes {you}. But the vow underneath it survives, and it is clear enough: the ward-spirit answered willing keepers. Not masters."
             },
             {
               "say": "maren",
@@ -812,7 +824,7 @@
           ],
           "lines": [
             {
-              "narrate": "A hidden pin gives under your thumb. Inside are two flasks of holy water and a travel cloak woven with briars that look, by candlelight, very slightly alive."
+              "narrate": "A hidden pin gives under {your} thumb. Inside are two flasks of holy water and a travel cloak woven with briars that look, by candlelight, very slightly alive."
             },
             {
               "say": "orin",
@@ -825,7 +837,7 @@
           ]
         },
         "failure": {
-          "text": "The catch bites like a thorn. The reliquary opens, but its ward burns your hand before fading.",
+          "text": "The catch bites like a thorn. The reliquary opens, but its ward burns {your} hand before fading.",
           "damage": {
             "target": "player",
             "formula": "1d4"
@@ -1020,7 +1032,7 @@
         "success": {
           "lines": [
             {
-              "narrate": "You tear the anchor out of the ground and drag Nessa clear before the wolves cross the clearing."
+              "narrate": "{You tear|@ tears} the anchor out of the ground and {drag|drags} Nessa clear before the wolves cross the clearing."
             },
             {
               "say": "Nessa",
@@ -1191,7 +1203,7 @@
           ]
         },
         "failure": {
-          "text": "You find the route marks but miss whatever the lookout tried hardest to conceal.",
+          "text": "{You find|@ finds} the route marks but {miss|misses} whatever the lookout tried hardest to conceal.",
           "setFlags": {
             "rootGateKnown": true
           }
@@ -1297,7 +1309,7 @@
           }
         },
         "failure": {
-          "text": "She calls your bluff and spits in the fern. Orin takes the map from the fallen satchel, and Lysa is gone into the trees before anyone thinks to stop her.",
+          "text": "She calls {your} bluff and spits in the fern. Orin takes the map from the fallen satchel, and Lysa is gone into the trees before anyone thinks to stop her.",
           "setFlags": {
             "rootGateKnown": true,
             "lysaGone": true
@@ -1415,7 +1427,7 @@
           "dc": 13
         },
         "success": {
-          "text": "You break the current's line and create a moving shield for the others.",
+          "text": "{You break|@ breaks} the current's line and {create|creates} a moving shield for the others.",
           "approval": {
             "orin": 1
           },
@@ -1531,7 +1543,7 @@
               }
             },
             {
-              "narrate": "You catch the door before its bronze teeth can ring together.",
+              "narrate": "{You catch|@ catches} the door before its bronze teeth can ring together.",
               "when": {
                 "absent": "nessa"
               }
@@ -1633,15 +1645,15 @@
           "nextNode": "vault-antechamber",
           "lines": [
             {
-              "narrate": "You hear it in pieces, between the swings of the censers. Sable has changed the last verse of the rite. And he keeps the payment ledger under the cipher desk, in a false bottom, because he doesn't trust the acolytes."
+              "narrate": "{You hear|@ hears} it in pieces, between the swings of the censers. Sable has changed the last verse of the rite. And he keeps the payment ledger under the cipher desk, in a false bottom, because he doesn't trust the acolytes."
             },
             {
-              "narrate": "You find the ledger exactly where they said. Most of the buyers are in cipher. One line is not, as if Sable were proud of it: 'Copy of the binding rite. Central Command, Highpass. Paid in full.'"
+              "narrate": "{You find|@ finds} the ledger exactly where they said. Most of the buyers are in cipher. One line is not, as if Sable were proud of it: 'Copy of the binding rite. Central Command, Highpass. Paid in full.'"
             }
           ]
         },
         "failure": {
-          "text": "A censer stops mid-swing. The acolyte looks directly toward your hiding place and calls the guards.",
+          "text": "A censer stops mid-swing. The acolyte looks directly toward {your} hiding place and calls the guards.",
           "combat": "hollow-guards"
         }
       },
