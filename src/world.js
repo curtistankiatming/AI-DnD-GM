@@ -115,7 +115,10 @@ function completeQuest(state,id,events,api){
 // level the next chapter will take the hero to (Book.capJobXp), so the story
 // still reaches level 20 at the Second Oath.
 const JOB_SHARE=0.12;
-function jobOpen(state,job){return Boolean(job&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
+// A job whose window runs into a book this save cannot play (not released, or
+// a paid book on a free hosted account) is never offered.
+const jobInBooks=(state,job)=>[job.from,job.until].filter(Boolean).every(id=>Book.playable(state,id));
+function jobOpen(state,job){return Boolean(job&&jobInBooks(state,job)&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
 function jobXp(job){const L=Math.max(2,job.level);return Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));}
 function completeJob(state,id,events,api,reward){
   const job=SIDE_JOBS[id],w=state.world;if(!job||w.jobs[id])return false;
@@ -126,7 +129,7 @@ function completeJob(state,id,events,api,reward){
   // The written chapters leave only a little XP to spare before level 20 must
   // wait for the Second Oath; it is shared out over the jobs still to come, so
   // every job pays some and the first ones taken do not use it all.
-  const left=Object.values(SIDE_JOBS).filter(j=>!w.jobs[j.id]&&!(j.until&&completed(state,j.until))).length+1;
+  const left=Object.values(SIDE_JOBS).filter(j=>!w.jobs[j.id]&&jobInBooks(state,j)&&!(j.until&&completed(state,j.until))).length+1;
   const full=jobXp(job),xp=Math.min(full,Math.floor(Book.jobRoom(state)/left));
   if(xp)api.awardXp(state,xp,events,`Side job: ${job.name}`);
   emit(events,`Side job done: ${job.name}.${gold?` Paid ${gold} gold.`:''}${xp<full?' XP is capped: the written chapters still to come will level you, so the job pays its gold and only a little XP.':''}`,'reward','good');
@@ -366,7 +369,8 @@ function handle(state,action,rng,events,api){
 function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:item.purpose,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
 function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
-  const ready=[...Object.values(QUESTS),...Director.list(state)].filter(q=>completed(state,q.unlock)&&!completed(state,q.id));
+  // A written chapter in a book this save cannot open (unreleased, or paid) is not on the board.
+  const ready=[...Object.values(QUESTS),...Director.list(state)].filter(q=>Book.playable(state,q.id)&&completed(state,q.unlock)&&!completed(state,q.id));
   const services=t?[
     {id:'civic-rest',name:'Civic lodging',cost:0,description:'Full HP and resources; persistent poison needs treatment. No stock refresh or XP.'},
     {id:'inn',name:'Inn: expedition lodging',cost:10+state.player.level,description:`Full recovery, ${4+state.player.level} temporary HP each and +1 Inspiration. Once per progress cycle.`,disabled:Boolean(w.servicesUsed[`inn:${w.cycle}`])},

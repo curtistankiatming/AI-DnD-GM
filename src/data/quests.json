@@ -5151,5 +5151,1942 @@
         "flag": "elske_free"
       }
     ]
+  },
+  "b3-letter": {
+    "id": "b3-letter",
+    "book": 3,
+    "part": 1,
+    "name": "The Letter from Vell",
+    "level": 20,
+    "town": "briarwatch",
+    "unlock": "oath",
+    "nextTown": "highpass",
+    "xp": 6750,
+    "gold": 520,
+    "region": "Briarwatch, in the first week of spring",
+    "threat": "Frost has ridden into Briarwatch on a Commandery courier's cart, folded into the canvas. At dusk it will get loose in the lanes. Bring light.",
+    "faction": "wardens",
+    "brief": "A Commandery courier reaches Briarwatch half dead, with a letter from High Warden Corvane for the one who broke the Single Voice. Hear what it says, and find out what came up the road with her.",
+    "opening": [
+      {
+        "narrate": "Spring comes to Briarwatch the way it always does, late and all at once. The mud on the Briarwood road is ankle-deep, the forge door stands open for the first time since autumn, and every hour the bell in the tower rings twice: once from Tovin, and once, a breath behind him, from Pim."
+      },
+      {
+        "narrate": "Pim is fifteen now. He rings exactly on the hour. Tovin has stopped telling him to breathe, because he does."
+      },
+      {
+        "narrate": "At the fourth hour of the afternoon a cart comes up out of the Briarwood. The horse is walking because it can no longer trot. The canvas over the cart is white: not snow-white, but frost-white, in a week without a frost, and the white has a grain to it, like the inside of a shell."
+      },
+      {
+        "narrate": "The woman on the box wears a Commandery greatcoat with the iron badge cut off it. There is a bandage round one hand, and a satchel strapped to her chest under the coat, the way people carry the one thing they will not lose."
+      },
+      {
+        "say": "Dera",
+        "text": "That horse wants water and that woman wants a fire. Somebody take the horse."
+      },
+      {
+        "say": "orin",
+        "text": "I have him."
+      },
+      {
+        "narrate": "Orin takes the bridle. The horse leans its whole weight on him and he lets it.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "You take the bridle yourself. The horse leans its whole weight on you, and you let it.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "Roke",
+        "text": "Sergeant Ama Roke. Courier, Vell to the free wards. I have a letter for the one who broke the Single Voice."
+      },
+      {
+        "say": "Roke",
+        "text": "They said you'd be in the village with the bell. They said you'd look tired. You do."
+      },
+      {
+        "say": "maren",
+        "text": "She is frozen through, and not from the road. Sit her by the forge. Now, please."
+      },
+      {
+        "narrate": "Roke will not give up the satchel until she has looked at your face for a long moment. Then she hands it over as if it weighs more than it does, sits down on the mounting block by the forge door, and does not get up again for some time."
+      },
+      {
+        "narrate": "Inside the satchel is one letter, sealed in grey wax with the Commandery's iron mark."
+      },
+      {
+        "narrate": "Aveline reads it at the long table in the reeve's hall, where the council's business in Briarwatch is done. You swore your oath to the council, she says, so a letter to you is council business. She reads it standing, with her spectacles on and her coat still buttoned.",
+        "when": {
+          "flag": "second_oath",
+          "is": "council"
+        }
+      },
+      {
+        "narrate": "Aveline reads it in the square, from the step of the well. You swore your oath to Briarwatch, and Briarwatch holds you to it: what comes to you comes to all of them. Half the village is there before she has it unfolded. Tovin stands at the back with Pim, who has brought a lantern although it is not yet dark.",
+        "when": {
+          "flag": "second_oath",
+          "is": "town"
+        }
+      },
+      {
+        "narrate": "Orin reads it by the fire in the forge. You swore your oath to the people you walk with, and he says that means they hear your letters. He reads slowly, giving every word the same weight, the way he reads orders.",
+        "when": {
+          "flag": "second_oath",
+          "is": "companions",
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "You read it aloud by the fire in the forge. You swore your oath to the people you walk with, and they are owed your letters.",
+        "when": {
+          "flag": "second_oath",
+          "is": "companions",
+          "absent": "orin"
+        }
+      },
+      {
+        "narrate": "You read it alone, on the bench outside the forge. You swore your oath to no one but what is right as best you can see it, and a letter addressed to you is yours to read first. Who else hears it is yours to decide.",
+        "when": {
+          "flag": "second_oath",
+          "is": "none"
+        }
+      },
+      {
+        "narrate": "Aveline reads it at the long table in the reeve's hall, with her spectacles on and her coat still buttoned. A letter from the Commandery to anyone in Briarwatch is Briarwatch's business, she says, and she is not going to argue about it.",
+        "when": {
+          "notFlag": "second_oath"
+        }
+      },
+      {
+        "narrate": "\"To the one who broke the Single Voice, at Briarwatch or wherever this finds you. From Corvane, High Warden, at Vell.\""
+      },
+      {
+        "narrate": "\"I will not apologise for the beacon. You would not believe me, and I would not mean it. I will tell you instead what it cost, since nobody else will.\""
+      },
+      {
+        "narrate": "\"When the Single Voice went quiet, every echo-stone in the Commandery went quiet with it. They had no other master. We melted down every ward this province had to make them, a generation ago, because one voice was safer than a hundred. I agreed with that. I still think it was nearly right.\""
+      },
+      {
+        "narrate": "\"These are the towns the Gloam has taken this winter. Harl. Upper Morrow. Cask. Lindmoor. Greyhythe. The three Teller villages. Brack Mill. Osgood's Cross. Wennet. Saltwick is not taken. Saltwick is on its roofs.\""
+      },
+      {
+        "narrate": "\"I write their names because nobody in the free wards has heard them, and somebody should.\""
+      },
+      {
+        "narrate": "\"I have found a way to give Vell its wards back. It is quick, and it is willing, and it came to me in your Warden Sable's hand. I would rather you came and saw it than heard about it from someone who has not. Come and see the nurseries. They are under the casting yard, where it is warmest. There are eleven hundred children in them. Count them, if you like. I have.\""
+      },
+      {
+        "narrate": "\"Corvane.\""
+      },
+      {
+        "say": "maren",
+        "text": "I cannot hear a letter breathe. I wish I could."
+      },
+      {
+        "say": "nessa",
+        "text": "Sable's hand. He said Sable's hand. Sable's in a cell. What's Sable doing writing to—"
+      },
+      {
+        "say": "orin",
+        "text": "Nurseries."
+      },
+      {
+        "narrate": "By the forge fire Roke has her bandaged hand round a cup and is not drinking from it."
+      },
+      {
+        "say": "Roke",
+        "text": "He wrote it four times. I watched him. The first three were longer."
+      },
+      {
+        "narrate": "Up in the tower, the bell rings a quarter of an hour early, once, softly. Tovin looks up. Pim looks at Tovin. In all the years since the bell came back, it has never rung by itself."
+      }
+    ],
+    "talks": [
+      {
+        "id": "aster",
+        "label": "Climb the bell tower and hear what Aster Vey wants",
+        "lines": [
+          {
+            "narrate": "The tower stair is narrow and smells of rope. At the top the bell hangs still, and when you put your hand on the bronze it is warm, the way a wall is warm with a fire behind it."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "He means my rite. Sable's. The one he used on me."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "The old keepers had a rite of their own. When a keeper died, if she chose, her spirit could stay in her bell and go on keeping the place. Chose. That was the whole of it. Sable changed the words so that nobody had to choose. You broke his rite before it finished me, and it still took me years to find my own name again."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "While he worked, he talked. He told me once that the change had a second use. He was pleased with it. I didn't understand what he meant. I think I do now."
+          },
+          {
+            "say": "maren",
+            "text": "You think Corvane has found the second use."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I think a man who writes about nurseries has found something quick. Take me to Sable before you answer him. I want to hear him say it, and I want you there when he does."
+          },
+          {
+            "say": "orin",
+            "text": "Can you travel?"
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Tovin has a hand-bell cast from the same pour as this one. I can sit in it for a while. It is like sleeping in someone else's coat."
+          },
+          {
+            "say": "maren",
+            "text": "Does it hurt?"
+          },
+          {
+            "narrate": "The bell is quiet for long enough that you wonder if she has gone."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Nobody has asked me that before. A little. Ask me again on the road."
+          }
+        ]
+      },
+      {
+        "id": "pim",
+        "label": "Find Pim and Tovin on the tower steps",
+        "lines": [
+          {
+            "narrate": "Tovin and Pim are sitting on the bottom step of the tower with the hand-bell between them, polishing it, although it does not need polishing."
+          },
+          {
+            "say": "Pim",
+            "text": "Tovin. If a person was in a bell. Would they know what time it was?"
+          },
+          {
+            "narrate": "Tovin's cloth stops moving."
+          },
+          {
+            "say": "Pim",
+            "text": "I only mean, do they hear the hours, or is it all one long hour, or do they sleep in between? Because if they slept, you'd want to ring gently, and if they didn't, you'd want—"
+          },
+          {
+            "say": "Tovin",
+            "text": "Pim. I'm frightened."
+          },
+          {
+            "say": "Tovin",
+            "text": "I've been frightened since that cart came up the road. I'm telling you because you asked a real question and you ought to get a real answer, and that is the answer. I don't know what it's like in there. I know what it did to her."
+          },
+          {
+            "say": "Pim",
+            "text": "I'm sorry. I didn't mean to—"
+          },
+          {
+            "say": "Tovin",
+            "text": "Don't be. Ring the half-hour with me. It helps."
+          },
+          {
+            "say": "Pim",
+            "text": "It isn't the half-hour for four minutes."
+          },
+          {
+            "say": "Tovin",
+            "text": "Then wait four minutes with me."
+          },
+          {
+            "narrate": "They wait. When the half-hour comes they climb the stair together, and the bell rings twice, a breath apart, the way it always does."
+          }
+        ]
+      },
+      {
+        "id": "roke",
+        "label": "Sit with Sergeant Roke by the forge fire",
+        "lines": [
+          {
+            "narrate": "Roke has thawed enough to take her boots off. Her toes are white at the ends. Maren has seen them and has said nothing yet, which Roke has noticed.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Roke has thawed enough to take her boots off. Her toes are white at the ends, and she keeps them close to the fire.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
+            "say": "Roke",
+            "text": "Three towns between Vell and the pass are still standing, if you want to call it standing. They live on the roofs. Planks laid between the chimneys, ropes for rails. The lamplighters keep lamps lit all night along the roof-ridges, to hold the mist down in the streets."
+          },
+          {
+            "say": "Roke",
+            "text": "I slept on their roofs, all three. Kettle Cross. Dunmow. Saltwick."
+          },
+          {
+            "narrate": "Orin has been mending a strap on his shield. At the third name his hands stop, and stay stopped.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Orin?",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "Nothing. Go on."
+          },
+          {
+            "say": "Roke",
+            "text": "Saltwick's lamplighters gave me oil for the cart lamps. They haven't enough for themselves. Their head, a woman called Mags, said take it, and tell them we're up here. So."
+          },
+          {
+            "say": "Roke",
+            "text": "They're up there."
+          },
+          {
+            "say": "nessa",
+            "text": "Why'd you cut the badge off your coat?"
+          },
+          {
+            "say": "Roke",
+            "text": "Roof folk don't love the iron badge. You don't get a plank put out for you wearing it. I can sew it back on in Vell, if I get back to Vell."
+          }
+        ]
+      },
+      {
+        "id": "dera",
+        "label": "Let Dera look at your gear while there is still light",
+        "lines": [
+          {
+            "narrate": "Dera has your gear on the bench before you have finished asking. She turns your blade over, sniffs at the edge as if it might be off, and puts it down."
+          },
+          {
+            "say": "Dera",
+            "text": "That's a week's work, that. I'll take news for it. From Vell. Proper news, mind, not what the whole square heard."
+          },
+          {
+            "narrate": "You tell her the courier's name."
+          },
+          {
+            "say": "Dera",
+            "text": "That's not news. That's a name. A name's worth a rivet. What's the weather like in Vell?"
+          },
+          {
+            "narrate": "You don't know the weather in Vell."
+          },
+          {
+            "say": "Dera",
+            "text": "What do they eat? Do they have smiths? Good ones? What do they charge? You've had that woman by my fire for an hour and you don't know what a Vell smith charges?"
+          },
+          {
+            "say": "nessa",
+            "text": "She knows the towns that've gone."
+          },
+          {
+            "say": "Dera",
+            "text": "That's the whole square's news. I want something for me."
+          },
+          {
+            "narrate": "So you tell her about the nurseries: eleven hundred children, under the casting yard, where it is warmest. Dera listens with the blade across her knees."
+          },
+          {
+            "say": "Dera",
+            "text": "That's too much. That isn't payment, that's... you've overpaid."
+          },
+          {
+            "narrate": "She finishes the work anyway, and when she hands it back she has also sharpened your belt knife, which you did not ask for, and she does not mention it."
+          }
+        ],
+        "approval": {
+          "nessa": 1
+        }
+      }
+    ],
+    "clue": "The white on Roke's cart is not frost. It is Gloam, folded into the canvas the way damp folds into a tent, and it rode up the Briarwood road with her. At dusk it will look for somewhere warm. Briarwatch's old bell-books say that carried cold was rung back together twice before, both times by two bells ringing at once.",
+    "investigate": {
+      "label": "Look at the frost on Roke's cart before the light goes",
+      "skill": "history",
+      "alt": [
+        "arcana",
+        "investigation"
+      ],
+      "success": [
+        {
+          "narrate": "Up close, the white on the canvas lies in folds, and the folds have moved since noon. Under the cart, the mud has gone grey and hard in the shape of the wheels."
+        },
+        {
+          "narrate": "Tovin brings down the tower's bell-books, the old ones, and you go through them together on Dera's bench. Two hundred years of hours, rung and written down. Twice in all that time there is a word in the margin: carried cold. Once a peddler's pack, once a wool-cart from the north. Both times it got loose at dusk. Both times the keeper and a second bell rang it back together into one place, and it was burned."
+        },
+        {
+          "say": "Tovin",
+          "text": "Two bells. We have two bells. We have this one, and the hand-bell, and her."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Up close, the white on the canvas lies in folds, and the folds have moved since noon. Under the cart the mud has gone grey and hard in the shape of the wheels. Whatever it is, it is not staying where it is."
+        },
+        {
+          "narrate": "Tovin goes up to look for the old bell-books, and is still looking when the light starts to go."
+        }
+      ]
+    },
+    "route": {
+      "label": "Go door to door and get people in and their hearths built up before dusk",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "intimidation"
+      ],
+      "safe": true,
+      "success": [
+        {
+          "narrate": "You go down every lane in Briarwatch before the light goes. Doors shut, shutters up, hearths built high. Old Mother Tanner wants to know who you think you are. Then she builds up her fire."
+        },
+        {
+          "say": "Dera",
+          "text": "And the forge stays lit. All night. I'll sit up."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Half of Briarwatch listens. The other half wants to know why, and you don't have a good answer that doesn't sound mad. When the light goes there are still doors open on the Ashford road, and a child chasing a cat down the lane by the mill."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Stay in the forge yard and watch the cart",
+      "text": "You stay in the forge yard with the cart, and let the village find out what is happening the way villages do, by shouting it from door to door."
+    },
+    "approach": [
+      {
+        "narrate": "The light goes at the sixth hour. Roke's cart stands in the forge yard where Dera put it, and in the last of the light the white on the canvas moves: one fold, then another, like something turning over in its sleep."
+      },
+      {
+        "say": "Roke",
+        "text": "It did that in Saltwick. On the roofs. I thought I was tired."
+      },
+      {
+        "say": "orin",
+        "text": "Get the lanes clear first. Then the cart."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "At dusk the canvas lets go of it all at once. The white comes off the cart like breath off a horse, and goes, low and quick, into the lanes."
+      },
+      {
+        "narrate": "Where it passes, the warmth goes out of things. A candle in the Tanners' window goes grey and stands there lit and cold. The kitchen fire at the mill sinks to embers in a breath. A dog in the lane by the well lies down and will not get up. Shapes walk in the white: a cart, a horse, a woman with a sack, all of frost, all walking toward the warmest houses in the village."
+      },
+      {
+        "say": "Tovin",
+        "text": "The bell-books say two bells. Ours and a second, rung together, to call it back into one place. I can ring the tower. I can't ring both.",
+        "when": {
+          "clue": "b3-letter-evidence"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Tovin. Ring with me. I don't know why. I know it wants two.",
+        "when": {
+          "notClue": "b3-letter-evidence"
+        }
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Give the hand-bell to someone with steady hands. I'll be the other bell."
+      },
+      {
+        "narrate": "Pim holds out his hands. They are shaking. Tovin looks at them, and then puts the hand-bell in them anyway."
+      },
+      {
+        "say": "nessa",
+        "text": "I'll keep the lane by the tower clear. Biscuit, with me."
+      },
+      {
+        "say": "orin",
+        "text": "Nothing gets up that stair."
+      }
+    ],
+    "peaceful": {
+      "label": "Ring the cold back together with Tovin and Aster Vey",
+      "skill": "performance",
+      "alt": [
+        "religion",
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You stand at the foot of the tower and give them the beat, the way the old bell-books mark it: tower, hand-bell, tower, hand-bell, and a breath between.",
+          "when": {
+            "clue": "b3-letter-evidence"
+          }
+        },
+        {
+          "narrate": "You stand at the foot of the tower and give them the beat, because somebody has to: tower, hand-bell, tower, hand-bell, and a breath between. You find it by ear, and they follow you.",
+          "when": {
+            "notClue": "b3-letter-evidence"
+          }
+        },
+        {
+          "narrate": "Tovin rings the tower. Pim rings the hand-bell a breath behind him, the way he has rung every hour this spring, and inside the hand-bell Aster Vey rings with him. The two notes meet over the square."
+        },
+        {
+          "narrate": "In the lanes, the white stops. Then it turns, slowly, like a flock turning, and comes back. It comes up the lanes and across the square and into the forge yard, and folds itself back down on the empty cart, and lies there."
+        },
+        {
+          "say": "Dera",
+          "text": "Right. Out of the way."
+        },
+        {
+          "narrate": "Dera and Roke drag the canvas off the cart with forge tongs and feed it into the forge, a yard at a time. It does not burn like canvas. It burns like ice on a griddle, hissing, and then it is gone."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The two notes don't find each other. The tower rings, and the hand-bell rings, and they ring past each other like two people shouting from opposite ends of a field."
+        },
+        {
+          "narrate": "The frost-shapes turn toward the sound, and toward the warmest place in the village, which is the forge, and the tower beside it. You will have to hold the lanes while Tovin and Pim find the beat."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Ring the carried cold back into the forge yard",
+      "label": "Hold the lanes while the two bells ring",
+      "description": "Four successful actions keep the frost-shapes off the tower stair while Tovin, Pim and Aster Vey ring the cold back into one place.",
+      "skill": "performance",
+      "alt": [
+        "religion",
+        "athletics",
+        "medicine"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The cold reaches the mill and three houses on the Ashford road before the bells call it back. The families get out. By morning their hearths will light again, but one old man has lost the name of the street he was born on, and does not get it back.",
+      "successText": "The two bells find each other. The white turns in the lanes and comes back to the cart, and Dera feeds the canvas into the forge."
+    },
+    "foe": "b3-carts-cold",
+    "foeName": "The Cart's Cold",
+    "enemyTheme": "gloam",
+    "attackName": "Hearth-Thief Touch",
+    "retainerName": "Frost-Shape",
+    "after": [
+      {
+        "narrate": "By midnight the canvas is ash and the lanes smell of wet stone and smoke. The candle in the Tanners' window has gone out at last, as an ordinary candle does. The dog by the well has got up and gone home."
+      },
+      {
+        "narrate": "Tovin sits on the tower step with his hands shaking. Pim sits beside him with the hand-bell in his lap and says nothing at all for nearly ten minutes.",
+        "when": {
+          "flag": "method:b3-letter",
+          "is": "peace"
+        }
+      },
+      {
+        "narrate": "There are frost-burns on your hands and on everyone who held the lanes. Up in the tower, Tovin and Pim finished the ringing while you fought, and the last of the white came back to the cart and burned. Tovin sits on the tower step with his hands shaking. Pim sits beside him with the hand-bell in his lap.",
+        "when": {
+          "flag": "method:b3-letter",
+          "is": "objective"
+        }
+      },
+      {
+        "narrate": "There are frost-burns on your hands and on everyone who held the lanes. Up in the tower, Tovin and Pim finished the ringing while you fought, and the last of the white came back to the cart and burned. Tovin sits on the tower step with his hands shaking. Pim sits beside him with the hand-bell in his lap.",
+        "when": {
+          "flag": "method:b3-letter",
+          "is": "force"
+        }
+      },
+      {
+        "say": "Pim",
+        "text": "She was in here. The whole time. I could feel her ringing."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "You kept the beat, Pim. Nobody ever kept a beat for me before."
+      },
+      {
+        "narrate": "Roke is asleep by the forge with the empty satchel under her head. Before she went to sleep she said that she will carry an answer back over the pass, if there is one, as soon as her toes are hers again."
+      },
+      {
+        "say": "maren",
+        "text": "A week. Not before."
+      },
+      {
+        "narrate": "The letter is on the table where it was left. Corvane's hand is very neat. The list of towns takes up most of the page."
+      },
+      {
+        "say": "orin",
+        "text": "He wants an answer. So does the bell."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "answer",
+        "label": "Write back to Corvane that you are coming",
+        "description": "This decision is permanent. Corvane will know to expect you, and will meet you himself.",
+        "text": [
+          {
+            "narrate": "You write it at Dera's bench, short, because nothing longer comes out right: you have read the names; you are coming to see the nurseries; you will decide nothing until you have."
+          },
+          {
+            "narrate": "A week later Roke reads it over twice, folds it into the satchel and straps the satchel under her coat."
+          },
+          {
+            "say": "Roke",
+            "text": "He'll meet you at Vell's gate himself. He'll want to. He doesn't get many answers."
+          },
+          {
+            "say": "nessa",
+            "text": "Good. Finally. We go."
+          }
+        ],
+        "rep": {
+          "wardens": 1,
+          "trade": 2
+        },
+        "approval": {
+          "nessa": 1
+        },
+        "flag": "b3_answered"
+      },
+      {
+        "id": "council",
+        "label": "Take the letter to the council at Highpass before you answer it",
+        "description": "This decision is permanent. The council will send someone to Vell with you.",
+        "text": [
+          {
+            "say": "Aveline",
+            "text": "You swore your oath to the council. This is what that looks like. It's slower.",
+            "when": {
+              "flag": "second_oath",
+              "is": "council"
+            }
+          },
+          {
+            "narrate": "Aveline copies the letter out twice in her small square hand and sends the copies to Highpass by the morning rider. The council answers in four days, which is fast for the council."
+          },
+          {
+            "narrate": "It sends Quartermaster Iona to go with you to Vell: to observe, to record, and where necessary to object. She writes to say that she will meet you at Highpass and is bringing paper."
+          },
+          {
+            "say": "orin",
+            "text": "Good. Somebody who reads ledgers."
+          }
+        ],
+        "rep": {
+          "wardens": 3
+        },
+        "approval": {
+          "orin": 1
+        },
+        "flag": "b3_to_council"
+      },
+      {
+        "id": "aster",
+        "label": "Tell Aster Vey you will hear her out before you answer Corvane",
+        "description": "This decision is permanent. Corvane waits for an answer; Aster Vey does not.",
+        "text": [
+          {
+            "narrate": "You climb the tower again after midnight and tell the bell that the letter can wait. You will take her to Sable first, and hear what she has to say, and what he does."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Thank you."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Nobody has ever waited for me before deciding something about me. Sable didn't. The council asked, and that was kind, but they were asking about the wards. You're asking about me."
+          },
+          {
+            "narrate": "Tovin wraps the hand-bell in a scarf for the road. Pim knitted the scarf."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 1
+        },
+        "approval": {
+          "maren": 1
+        },
+        "flag": "b3_asked_aster"
+      }
+    ]
+  },
+  "b3-rite": {
+    "id": "b3-rite",
+    "book": 3,
+    "part": 1,
+    "name": "Sable's Rite",
+    "level": 21,
+    "town": "highpass",
+    "unlock": "b3-letter",
+    "xp": 7000,
+    "gold": 540,
+    "region": "The cells under Highpass Watch",
+    "threat": "Lantern Hall agents are in Highpass under other names, with a hired guide who knows the fort. They want something from the prison. Bring a lantern for the cells.",
+    "faction": "trade",
+    "brief": "Take Aster Vey to Warden Sable's cell under Highpass, and hear from him what he changed in the keepers' rite, and why Corvane has it.",
+    "opening": [
+      {
+        "narrate": "Highpass in spring is wind, mud and new timber. The palisade the mist greyed last year has been rebuilt plank by plank, and the new planks are still yellow. Captain Sorrel meets you at the gate."
+      },
+      {
+        "say": "Sorrel",
+        "text": "You want Sable. North stair, all the way down. Mind the third step. It's been loose since the Commandery built this place, and I've had other things to mend."
+      },
+      {
+        "narrate": "Quartermaster Iona is waiting at the top of the north stair with a satchel and a folding stool. The council has sent her to Vell with you, and she has spent the two days before you arrived reading the prison's ledgers, for practice.",
+        "when": {
+          "flag": "b3_to_council"
+        }
+      },
+      {
+        "say": "Iona",
+        "text": "Observe, record, and where necessary object. Those are my instructions. I intend to do all three.",
+        "when": {
+          "flag": "b3_to_council"
+        }
+      },
+      {
+        "narrate": "Tovin's hand-bell rides in your pack, wrapped in a scarf. Aster Vey has been quiet in it since the foothills."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "I can hear the mountain. It's very loud. I didn't know stone was this loud."
+      },
+      {
+        "narrate": "Sable's cell was a powder store once: dry, windowless, with a door a foot thick. It has become a library. There are books on the bunk and under it, books stacked against every wall to the height of a man, books on the floor with slips of paper in them like tongues. Every scholar in the free wards who wanted his opinion on anything has sent him a book, and he has given his opinion, in the margins."
+      },
+      {
+        "narrate": "He is thinner than he was under Briarwatch. His hair has gone white at the front. He is reading by a lamp turned very low, to make the oil last, and he finishes his line before he looks up."
+      },
+      {
+        "say": "Sable",
+        "text": "The hero. And—"
+      },
+      {
+        "narrate": "He stops. He looks at your pack."
+      },
+      {
+        "say": "Sable",
+        "text": "You've brought her."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "I've brought myself. You don't get to say who brought me."
+      },
+      {
+        "say": "Sable",
+        "text": "No. Quite right."
+      },
+      {
+        "narrate": "He moves a stack of books off the only chair, carefully, keeping it in order, and offers you the chair. Then he sits down on the edge of the bunk with his hands between his knees and waits, the way he used to wait in the bell-vault for you to understand him."
+      }
+    ],
+    "talks": [
+      {
+        "id": "rite",
+        "label": "Ask Sable what he changed in the keepers' rite",
+        "lines": [
+          {
+            "say": "Sable",
+            "text": "The old rite is a door. The keeper opens it from inside, when she dies, if she wants to. Most didn't. Those who did kept their bells for a hundred years, and their towns were never cold. The old keepers called it staying."
+          },
+          {
+            "say": "Sable",
+            "text": "I put a handle on the outside of the door. That's all. The words are nearly the same."
+          },
+          {
+            "say": "maren",
+            "text": "And the second use. Aster Vey said you were pleased with it."
+          },
+          {
+            "say": "Sable",
+            "text": "I was. I am, in the way you are pleased with a proof. Once the handle is on the outside, you need not wait for the keeper to die. Cast the bell around a living person, say the words while the bronze is cooling, and the ward is whole by morning. One night. The old way takes a keeper's whole life of ringing, and then her death, and then her choice."
+          },
+          {
+            "say": "maren",
+            "text": "A living person. In the bronze."
+          },
+          {
+            "say": "Sable",
+            "text": "A volunteer. It works far better with a volunteer. The unwilling fight it, and a bell that is fighting itself rings badly. I worked that out from Aster Vey."
+          },
+          {
+            "narrate": "The hand-bell in your pack makes no sound at all."
+          },
+          {
+            "say": "Sable",
+            "text": "Think of it honestly, all of you, before you look at me like that. Fenmere's keeper lost a verse in one night and a village went under the mist. A bell with a person in it does not forget a verse. It does not get old. It does not go to the council and wait three days for an answer. Every town in the Commandery that died this winter would be alive if it had one bell like that, and one person willing. One."
+          },
+          {
+            "say": "nessa",
+            "text": "He's—"
+          },
+          {
+            "say": "orin",
+            "text": "He's doing it again."
+          },
+          {
+            "say": "nessa",
+            "text": "Doing what?"
+          },
+          {
+            "say": "orin",
+            "text": "Making sense."
+          }
+        ]
+      },
+      {
+        "id": "corvane",
+        "label": "Ask Sable why Corvane has a copy of it",
+        "lines": [
+          {
+            "say": "Sable",
+            "text": "He asked."
+          },
+          {
+            "say": "Sable",
+            "text": "He wrote to me last autumn. Four pages, in a very good hand, by the Lantern Hall's courier, since nobody else carries a prisoner's letters over the pass. He had read what I did under Briarwatch in the council's own report. He asked whether it could be made to work for a city. He asked whether it could be made gentler."
+          },
+          {
+            "say": "Sable",
+            "text": "I told him no, it could not be made gentler. He thanked me for my honesty. Then he asked for the words, and I sent them."
+          },
+          {
+            "say": "nessa",
+            "text": "You sent a man a way to put people in bells because he said please."
+          },
+          {
+            "say": "Sable",
+            "text": "He asked politely. Nobody had asked me anything in a year. Every book in this room came with a question in it except his, and his was the only one that mattered."
+          },
+          {
+            "say": "Sable",
+            "text": "And I sent him the truth because he asked for it. What he does with it is his."
+          },
+          {
+            "say": "orin",
+            "text": "That's what you said about the bell."
+          },
+          {
+            "say": "Sable",
+            "text": "Yes. I've had a great deal of time to notice that, Stoneward. It hasn't changed my mind."
+          },
+          {
+            "say": "Iona",
+            "text": "For the record: on what date did the letter leave, and was it copied?",
+            "when": {
+              "flag": "b3_to_council"
+            }
+          },
+          {
+            "say": "Sable",
+            "text": "The second week of autumn, Quartermaster, and everything that leaves this prison is copied. Ask the ledger room.",
+            "when": {
+              "flag": "b3_to_council"
+            }
+          }
+        ]
+      },
+      {
+        "id": "name",
+        "label": "Let Aster Vey ask Sable her question",
+        "lines": [
+          {
+            "narrate": "You take the hand-bell out of your pack and unwrap it and set it on the stack of books between you. Sable looks at it the way you would look at a face."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I have one question. I've had it a long time."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Did you know my name? When you did it?"
+          },
+          {
+            "narrate": "Sable does not answer at once. The lamp hisses."
+          },
+          {
+            "say": "Sable",
+            "text": "Yes."
+          },
+          {
+            "say": "Sable",
+            "text": "Aster Vey. First keeper of Briarwatch. You had a sister in Ashford called Linnet, and you rang the third hour a little flat, and the village liked it that way and never said. It was all in the tower records. I read everything."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Then you knew who you were doing it to."
+          },
+          {
+            "say": "Sable",
+            "text": "I knew. I thought it would be easier if I didn't use your name. It was."
+          },
+          {
+            "narrate": "For a long time nobody in the cell says anything. Somewhere above, the watch changes; boots on the stair, a door."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Thank you. I wanted to know whether it was carelessness. It wasn't."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "That is better, somehow. You can be angry at a person. I spent a long time angry at nothing."
+          },
+          {
+            "say": "maren",
+            "text": "Do you want to go?"
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Not yet. I want him to look at me a little longer."
+          },
+          {
+            "narrate": "Sable looks at the little bell. He does not look away."
+          }
+        ],
+        "approval": {
+          "maren": 1
+        }
+      }
+    ],
+    "clue": "Sable's letters to Corvane went south with Lantern Hall couriers, the only ones who carry a prisoner's mail over the pass. Highpass copies every letter that leaves the prison into its ledger, and the ledger room under the north stair holds a full second copy of the rite. The Lantern Hall's courier knows where it is, because he paid a clerk to tell him.",
+    "investigate": {
+      "label": "Go through the prison's letter ledger",
+      "skill": "investigation",
+      "alt": [
+        "insight",
+        "history"
+      ],
+      "success": [
+        {
+          "narrate": "The ledger room is a cupboard under the north stair, with one lamp and a clerk called Abernathy who has been copying prisoners' letters for nine years and has never once been asked about them."
+        },
+        {
+          "narrate": "The entry is in his hand: \"Second week of autumn. One letter, to Vell, eleven pages. Carried by the Lantern Hall's courier, under seal. Copied in full.\" The copy is bound into the ledger between a request for socks and a complaint about the soup. Eleven pages of Sable's small hand, with the old words and the new words side by side, and a note in the margin: \"This is the line that matters.\""
+        },
+        {
+          "say": "Iona",
+          "text": "There's a second signature beside the courier's. A week later. \"Received: a note of the ledger's shelf and number.\" Abernathy, what is this?",
+          "when": {
+            "flag": "b3_to_council"
+          }
+        },
+        {
+          "narrate": "Beside the courier's mark there is a second entry, a week later, in a different ink: \"Received: a note of the ledger's shelf and number.\"",
+          "when": {
+            "notFlag": "b3_to_council"
+          }
+        },
+        {
+          "narrate": "Abernathy goes the colour of the paper. The courier asked for a copy, he says. He said no. The courier paid him two silver to tell him where the ledger was kept instead, and he did not see the harm in it, because it was only a shelf."
+        },
+        {
+          "say": "orin",
+          "text": "They'll come for it."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The ledger room is a cupboard under the north stair, with one lamp and a clerk who does not want to be asked anything. You find the entry: one letter, to Vell, eleven pages, carried by the Lantern Hall's courier, copied in full. The copy is bound into the ledger, between a request for socks and a complaint about the soup."
+        },
+        {
+          "narrate": "There is something else on the page, a second mark beside the courier's, but the clerk closes the ledger before you can read it, and says the ledger room shuts at dark."
+        }
+      ]
+    },
+    "route": {
+      "label": "Keep watch on the ledger room from the north stair",
+      "skill": "stealth",
+      "alt": [
+        "perception",
+        "insight"
+      ],
+      "safe": true,
+      "success": [
+        {
+          "narrate": "You put the lamp out and sit in the dark on the north stair, above the loose third step, where anyone going down to the ledger room has to pass under you. Nessa takes the drain-grate at the bottom, because she says everyone forgets drains.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "narrate": "You put the lamp out and sit in the dark on the north stair, above the loose third step, where anyone going down to the ledger room has to pass under you.",
+          "when": {
+            "absent": "nessa"
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You sit up on the north stair with a lamp, which is a mistake, and at midnight you move it, which is a worse one. Whoever is coming will know somebody is watching."
+        }
+      ]
+    },
+    "approach": [
+      {
+        "narrate": "Highpass goes quiet late. The wind drops. Somewhere in the lower camp a child is crying and then is not. Down the north stair, the ledger room's door is shut, and the lamp behind it is out."
+      },
+      {
+        "say": "orin",
+        "text": "If they come, they come down that stair."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "There are people in the wall. Four. They are walking very softly."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "They come up through the old powder drain under the ledger room, not down the stair: four of them, in mountain coats, with a dark lantern between them. Three are Lantern Hall men; you can tell from the boots, which are city boots, and from the way they hold their cudgels, which is the way men hold things they are paid to hold."
+      },
+      {
+        "narrate": "The fourth is their guide, the one who knew about the drain. She stops dead with one foot on the ledger-room floor when the light falls on her face. It is Lysa.",
+        "when": {
+          "flag": "b2:lysa_turned"
+        }
+      },
+      {
+        "say": "Lysa",
+        "text": "Oh, no. No. Not you.",
+        "when": {
+          "flag": "b2:lysa_turned"
+        }
+      },
+      {
+        "say": "Lysa",
+        "text": "They told me it was books. A collector's errand. Get them in under the fort, get them out with a parcel, and nobody hurt. I've been guiding on the pass since the harbour. It pays.",
+        "when": {
+          "flag": "b2:lysa_turned"
+        }
+      },
+      {
+        "narrate": "The fourth is their guide: a lean mountain man called Corrin Mabry, who has taken travellers over the pass for twenty years and knows every drain in Highpass because he helped dig half of them. He looks at you, and then at the men he brought, and then at the floor.",
+        "when": {
+          "notFlag": "b2:lysa_turned"
+        }
+      },
+      {
+        "say": "Corrin Mabry",
+        "text": "I was told books. A collector. I've got four children and no work since the beacon went. Books, they said.",
+        "when": {
+          "notFlag": "b2:lysa_turned"
+        }
+      },
+      {
+        "narrate": "The man in front has ink on his cuffs and a soft, pleasant voice. He is Factor Wend of the Lantern Hall, and he says so, because he is not ashamed of it."
+      },
+      {
+        "say": "Wend",
+        "text": "I'm sorry for the hour. We've come for one book, and we'll pay for it. Every frightened town in the free wards will buy a ward that is whole in a night. Merrowgate will. Ashford will. The Hall would rather sell it fairly than have it sold badly by someone else, and it will be sold. You can't un-write a thing."
+      },
+      {
+        "say": "Wend",
+        "text": "Stand aside, and the Hall will remember it. Don't, and the Hall will remember that too."
+      }
+    ],
+    "peaceful": {
+      "label": "Tell the guide what the book is, and turn them",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "intimidation"
+      ],
+      "success": [
+        {
+          "narrate": "You don't talk to Wend. You talk to Lysa. You tell her what the book is: the rite that was used on the bell under Briarwatch, made quick, to be sold to every frightened town that can pay.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Lysa",
+          "text": "The bell.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Lysa",
+          "text": "I stood in the hollow with a lantern while he did that to her. I didn't know her name. I know it now. Everybody does.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "narrate": "She steps back into the drain mouth, so the only way out is past her, and folds her arms.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Lysa",
+          "text": "Factor. The job's off. You can come back out the way we came in, with me, or you can stay here and explain yourselves to Captain Sorrel. I know which I'd pick. I've been on the wrong side of a hero before.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "narrate": "You don't talk to Wend. You talk to Corrin Mabry. You tell him what the book is: a way to put a living person into a bell, to be sold to every frightened town in the free wards.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Corrin Mabry",
+          "text": "A person. In a bell.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Corrin Mabry",
+          "text": "My eldest is fifteen. She'd volunteer. She'd be first in the line, she would, if she thought it'd keep the little ones warm.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "narrate": "He steps back into the drain mouth, so the only way out is past him, and puts his lantern down on the floor.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Corrin Mabry",
+          "text": "Job's off, Factor. You can go back out with me, or wait for the captain.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "narrate": "Wend looks at the way out, and at you, and at the ledger. Then he puts his cudgel down on the ledger-room table, very neatly."
+        },
+        {
+          "say": "Wend",
+          "text": "It will be sold. Not tonight. But you know it will."
+        },
+        {
+          "narrate": "Sorrel's watch takes the three of them up the north stair. Nobody steps on the third step."
+        }
+      ],
+      "failure": [
+        {
+          "say": "Lysa",
+          "text": "I can't. I'm sorry. I've had nothing since the harbour, and they've paid me for the month.",
+          "when": {
+            "flag": "b2:lysa_turned"
+          }
+        },
+        {
+          "say": "Corrin Mabry",
+          "text": "I can't. Four children. I'm sorry.",
+          "when": {
+            "notFlag": "b2:lysa_turned"
+          }
+        },
+        {
+          "narrate": "Wend sighs, the way a man sighs at a bad price, and his men come forward with their cudgels. You will have to hold the ledger room until the watch comes down the stair."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Keep the rite out of the Lantern Hall's hands",
+      "label": "Hold the ledger room until the watch comes",
+      "description": "Four successful actions keep the agents away from the ledger until Captain Sorrel's watch comes down the north stair.",
+      "skill": "athletics",
+      "alt": [
+        "intimidation",
+        "perception",
+        "sleightOfHand"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "One of the agents gets a hand on the ledger and tears a page out before the watch arrives. It is a page of the old rite, the words for staying. Sable writes it out again from memory before morning, without being asked.",
+      "successText": "The watch comes down the north stair with lanterns, and the Lantern Hall's men put their cudgels down."
+    },
+    "foe": "b3-hall-factor",
+    "foeName": "Factor Wend",
+    "enemyTheme": "guild",
+    "attackName": "Lead-Weighted Cane",
+    "retainerName": "Lantern Hall Bravo",
+    "after": [
+      {
+        "narrate": "Before dawn you are back in Sable's cell, because there is nowhere else in Highpass to put the ledger where everyone can see it. The eleven pages lie on top of the Ashford Chronicles. Sorrel stands in the doorway. She has not slept either."
+      },
+      {
+        "narrate": "Lysa waits at the top of the north stair, sitting on her pack. Sorrel has not decided what to do with her, and says so, and Lysa says that is fair.",
+        "when": {
+          "flag": "method:b3-rite",
+          "is": "peace",
+          "anyFlag": [
+            "b2:lysa_turned"
+          ]
+        }
+      },
+      {
+        "narrate": "Lysa is in the guardroom at the top of the north stair with the Lantern Hall's men. She asked to be put in a different room from them, and Sorrel, after some thought, agreed.",
+        "when": {
+          "flag": "method:b3-rite",
+          "is": "objective",
+          "anyFlag": [
+            "b2:lysa_turned"
+          ]
+        }
+      },
+      {
+        "narrate": "Lysa is in the guardroom at the top of the north stair with the Lantern Hall's men. She asked to be put in a different room from them, and Sorrel, after some thought, agreed.",
+        "when": {
+          "flag": "method:b3-rite",
+          "is": "force",
+          "anyFlag": [
+            "b2:lysa_turned"
+          ]
+        }
+      },
+      {
+        "say": "Sorrel",
+        "text": "I want it out of my fort. I don't much care where."
+      },
+      {
+        "say": "Sable",
+        "text": "You should know before you decide. Burn it, carry it, give it to your council. I will still have it."
+      },
+      {
+        "narrate": "He taps the side of his head, once."
+      },
+      {
+        "say": "Sable",
+        "text": "That isn't a boast. It's simply where it is. Every word, and the old rite beside it, and the line in the margin that matters. Whatever you do with the paper, you are deciding about the paper."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Then decide about the paper. It's the part we can do something about."
+      },
+      {
+        "say": "Iona",
+        "text": "For the record, a paper can be recorded, witnessed and kept under seal. A head cannot.",
+        "when": {
+          "flag": "b3_to_council"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "Paper can be read by people who weren't in this room."
+      },
+      {
+        "say": "nessa",
+        "text": "Corvane has one already. If he's got Sable's, he hasn't got the old one beside it. This has both."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "burn",
+        "label": "Burn the copy here, in Sable's lamp",
+        "description": "This decision is permanent. One copy fewer in the world. Sable still remembers it.",
+        "text": [
+          {
+            "narrate": "You feed it to Sable's lamp a page at a time, because the lamp is small. It takes most of an hour. Sable watches every page go and does not ask you to stop."
+          },
+          {
+            "say": "Sable",
+            "text": "The eighth page was the best thing I ever wrote."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "It was the worst thing anyone ever did to me."
+          },
+          {
+            "say": "Sable",
+            "text": "Yes. Both of those."
+          },
+          {
+            "say": "maren",
+            "text": "Good. Good. Thank you."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 1
+        },
+        "approval": {
+          "maren": 1
+        },
+        "flag": "b3_rite_burned"
+      },
+      {
+        "id": "carry",
+        "label": "Carry the copy to Vell, so Corvane can see the old rite beside his",
+        "description": "This decision is permanent. You take the rite over the pass yourself.",
+        "text": [
+          {
+            "narrate": "You wrap the eleven pages in oilcloth and put them at the bottom of your pack, under the hand-bell. Corvane has the new words. He has never seen the old ones beside them: the door opened from inside, and what the old keepers called staying."
+          },
+          {
+            "say": "nessa",
+            "text": "Then he can read the difference with his own eyes. If he's what his letter says he is, that'll matter."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "I don't like riding on top of it."
+          },
+          {
+            "narrate": "You move the hand-bell to the outside pocket."
+          },
+          {
+            "say": "Sable",
+            "text": "Give him my regards. He was very polite."
+          }
+        ],
+        "rep": {
+          "trade": 1,
+          "wardens": 1
+        },
+        "approval": {
+          "nessa": 1
+        },
+        "flag": "b3_rite_carried"
+      },
+      {
+        "id": "council",
+        "label": "Give the copy to the council, sealed, to keep under its law",
+        "description": "This decision is permanent. The council keeps the rite and answers for it.",
+        "text": [
+          {
+            "narrate": "Sorrel seals the eleven pages in the council's strongbox with her own seal and a delegate's beside it, and writes in the prison ledger who holds the key, and why.",
+            "when": {
+              "notFlag": "b3_to_council"
+            }
+          },
+          {
+            "narrate": "Iona seals the eleven pages in the council's strongbox with Sorrel's seal and her own beside it, and writes in the prison ledger who holds the key, and why, and how the key may be used, and by whose vote.",
+            "when": {
+              "flag": "b3_to_council"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "Good. Now somebody answers for it. Not just whoever's holding it."
+          },
+          {
+            "say": "Sable",
+            "text": "A council with my rite in a box. I wonder how long it will be before somebody on it opens the box with very good reasons."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Then I'll ask for a seat on whoever decides.",
+            "when": {
+              "notFlag": "wards_seat"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Then it's a good thing the wards have a seat. I'll be in the room when they do.",
+            "when": {
+              "flag": "wards_seat"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": 3
+        },
+        "approval": {
+          "orin": 1
+        },
+        "flag": "b3_rite_council"
+      }
+    ]
+  },
+  "b3-pass": {
+    "id": "b3-pass",
+    "book": 3,
+    "part": 1,
+    "name": "The Pass in Spring",
+    "level": 22,
+    "town": "highpass",
+    "unlock": "b3-rite",
+    "xp": 7250,
+    "gold": 560,
+    "region": "The lower gate of Highpass, and the pass road below it",
+    "threat": "Six hundred refugees from the Commandery are on the pass road, with the Gloam a mile behind them and frost in everything they carry. Bring light.",
+    "faction": "wilds",
+    "brief": "Six hundred people have walked over the pass from the Commandery with the Gloam behind them. Get them through Highpass's gate without letting the cold in with them.",
+    "opening": [
+      {
+        "narrate": "They come up the pass road in the morning, from the south, from the Commandery side: a line of people a mile long, walking. Carts where there are carts. Barrows. A man carrying a door on his back with a sick woman lying on it. Six hundred of them, give or take, and behind them, a mile back down the road, the white."
+      },
+      {
+        "narrate": "Captain Sorrel watches them come from the lower gate with her arms folded and her face set."
+      },
+      {
+        "say": "Sorrel",
+        "text": "Six hundred people. Forty beds. I did the sum twice."
+      },
+      {
+        "narrate": "The council's delegates are at Highpass for the spring sitting, and every one of them has come down to the lower gate. Aveline, with her satchel. Quartermaster Iona, already writing. Brannagh of Fenmere, with the goat on its rope, who looks at the line on the road and then, for a while, at nothing."
+      },
+      {
+        "narrate": "Elske Marrow has come down too, as Merrowgate's delegate, in a plain coat, with no clerk. She says nothing at all. She is watching the white on the road behind the line, and her hand is on the gatepost as if she were holding it up.",
+        "when": {
+          "flag": "elske_seat"
+        }
+      },
+      {
+        "say": "Brannagh",
+        "text": "I know what that looks like. That's what we looked like."
+      },
+      {
+        "narrate": "At the head of the line, a thin man in a Commandery clerk's coat is carrying a wooden box in both arms, the way you carry something that is asleep. Behind him a woman with grey in her hair is pushing a barrow with two children in it and a cradle lashed on top."
+      },
+      {
+        "say": "maren",
+        "text": "Captain, the sick will need to come in first, whatever else you decide."
+      },
+      {
+        "say": "Sorrel",
+        "text": "I know what the sick need, Sister. I need to know what's in the carts."
+      },
+      {
+        "say": "nessa",
+        "text": "What's in the carts? People's things. What else would—"
+      },
+      {
+        "narrate": "Nessa stops. On the nearest cart, the blankets are white at the folds.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "On the nearest cart, the blankets are white at the folds.",
+        "when": {
+          "absent": "nessa"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Like Roke's cart."
+      }
+    ],
+    "talks": [
+      {
+        "id": "hanne",
+        "label": "Talk with the woman pushing the barrow",
+        "lines": [
+          {
+            "narrate": "Her name is Hanne Ostrow, and she is from Cask, and then from Lindmoor. She says it like that, as if they were one place with a long name."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "Cask went first. Before midwinter. The stone on the green just stopped. No sound. We didn't know it had been making a sound until it stopped, and then we couldn't hear anything else."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "We walked to Lindmoor. My sister's there. Was there. Lindmoor took us in, every one of us, put us in the tithe barn with straw. Lindmoor's stone stopped in the second week of the new year."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "So I've done this before. Twice. That's why I'm at the front. I know how to do it now. You go at the pace of the slowest cart and you don't look back."
+          },
+          {
+            "say": "maren",
+            "text": "Are those your children?"
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "The boy's mine. The girl's my sister's. The cradle's my sister's too. The baby's mine now. I haven't decided what to tell her yet. She's nine months. I've got time."
+          },
+          {
+            "narrate": "She looks up at the gate, and at the soldiers on it, and then at you, for the first time."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "Are you going to let us in?"
+          }
+        ]
+      },
+      {
+        "id": "fennick",
+        "label": "Ask the clerk what is in his box",
+        "lines": [
+          {
+            "say": "Fennick",
+            "text": "Clerk-Major Fennick. Census office, Vell. I have papers for all of this. I have papers for everything."
+          },
+          {
+            "say": "Fennick",
+            "text": "The box is the census of the lost. Every name from every town the Gloam took this winter, entered and checked. Name, age, town, last known address, ward. I walked it over the pass because it was not safe in Vell, and because I thought somebody on this side ought to see it."
+          },
+          {
+            "say": "Iona",
+            "text": "May I hold it while you rest? You've been carrying it for nine days."
+          },
+          {
+            "say": "Fennick",
+            "text": "No."
+          },
+          {
+            "say": "Fennick",
+            "text": "Thank you. No. I don't put it down. If I put it down I'm afraid somebody will put something on top of it, and then something else on top of that, and then it's a box at the bottom of a pile."
+          },
+          {
+            "narrate": "Iona looks at him for a long moment. Then she puts her own satchel down on the road beside him, on its own, with nothing on top of it."
+          },
+          {
+            "say": "Iona",
+            "text": "Then we'll go through it standing up. When there's time."
+          },
+          {
+            "say": "Fennick",
+            "text": "There's never time."
+          },
+          {
+            "say": "Iona",
+            "text": "That's what everyone says to me. I've found that there is, if you're rude enough about it."
+          }
+        ]
+      },
+      {
+        "id": "hal",
+        "label": "Find Lieutenant Hal and her company on the palisade",
+        "requires": {
+          "flagsAll": [
+            "south_hal_council"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Hal's company serves the council now, and the council has posted them at Highpass for the spring. They are on the palisade in their council coats, watching the line come up the road. Some of them are saying names under their breath."
+          },
+          {
+            "say": "Hal",
+            "text": "We crewed the echo-stones. You know that. Half my people did two winters on the Commandery side before Central Command pulled us back to the beacons."
+          },
+          {
+            "say": "Hal",
+            "text": "Cask. I did the Cask relay. There was a woman sold eggs at the gate and charged soldiers double, and we paid it, because she was right to. Brack Mill. Wennet. Osgood's Cross. We know these towns. We rang the stones that kept them, when Central Command told us to."
+          },
+          {
+            "say": "orin",
+            "text": "And then we broke the voice that told you."
+          },
+          {
+            "say": "Hal",
+            "text": "And then you broke it, and you were right to, and the stones stopped, and these people walked. Both of those, Stoneward. I've stopped trying to make it one thing."
+          },
+          {
+            "say": "Hal",
+            "text": "Put my people on the gate. They'll know the towns. It'll help, a little, if the first face they see knows the name of where they're from."
+          }
+        ],
+        "approval": {
+          "orin": 1
+        }
+      }
+    ],
+    "clue": "Every town in the line had an echo-stone and nothing else: the Commandery melted down its own wards a generation ago to make the stones, and when you broke the Single Voice at the beacon, the stones went dead with it. Your victory cost these people their wards. And the frost in their blankets, sacks and cradles is not weather. It is the Gloam they walked away from, riding with them, as it rode up the Briarwood road on Roke's cart.",
+    "investigate": {
+      "label": "Ask the people in the line what wards their towns had",
+      "skill": "history",
+      "alt": [
+        "insight",
+        "investigation"
+      ],
+      "success": [
+        {
+          "narrate": "You walk down the line and ask. Cask: an echo-stone on the green. Lindmoor: an echo-stone by the tithe barn. Greyhythe, Wennet, the three Teller villages: a stone, a stone, a stone. You ask about the old wards, the hearth-bells, the songs, and the old people shake their heads. Melted down, their grandparents' time, to make the stones. One voice was safer than a hundred."
+        },
+        {
+          "narrate": "Fennick's census has a column for it. Ward. Every line, in his neat hand: echo-stone. Echo-stone. Echo-stone."
+        },
+        {
+          "say": "Fennick",
+          "text": "They went dead the night of the beacon. All at once. I wrote down the hour."
+        },
+        {
+          "narrate": "He does not say which night of the beacon. He does not need to. He knows who you are."
+        },
+        {
+          "narrate": "On the way back up the line, you put your hand on a cradle blanket. It is colder than the morning. The white at the fold moves under your fingers."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You walk down the line and ask, and nobody much wants to talk to a stranger from the free wards with a sword. You learn that the towns had echo-stones, and that the stones stopped, and that is all anyone will say."
+        },
+        {
+          "narrate": "On the way back up the line, you put your hand on a cradle blanket. It is colder than the morning. The white at the fold moves under your fingers."
+        }
+      ]
+    },
+    "route": {
+      "label": "Walk the line down the pass road and bring the stragglers up before the Gloam closes",
+      "skill": "survival",
+      "alt": [
+        "athletics",
+        "medicine"
+      ],
+      "tools": [
+        "lantern"
+      ],
+      "success": [
+        {
+          "narrate": "You go down the road against the line and bring the last carts up: an old man who sat down and would not get up, two boys arguing over a goat, a cart with a broken axle that Orin and four strangers carry the last half-mile between them.",
+          "when": {
+            "party": "orin"
+          }
+        },
+        {
+          "narrate": "You go down the road against the line and bring the last carts up: an old man who sat down and would not get up, two boys arguing over a goat, a cart with a broken axle that you and four strangers carry the last half-mile between you.",
+          "when": {
+            "absent": "orin"
+          }
+        },
+        {
+          "narrate": "The white is a quarter-mile behind the last cart when you reach the gate. It is not hurrying. It doesn't need to."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go down the road against the line, and the white comes up faster than you thought. The last carts come up at a run, and the cold catches you on the road: your fingers go grey and slow, and for a moment you cannot remember which way the gate is. Then you can, and you run."
+        }
+      ]
+    },
+    "approach": [
+      {
+        "narrate": "By noon the whole line is pressed up against the lower gate, six hundred people and their carts in the switchback below the palisade, and the white has stopped a hundred yards down the road, as if it were waiting to be let in with everyone else."
+      },
+      {
+        "say": "Sorrel",
+        "text": "I'm not opening that gate until I know what's coming through it."
+      },
+      {
+        "say": "Aveline",
+        "text": "Captain, there are children on that road."
+      },
+      {
+        "say": "Sorrel",
+        "text": "I know there are children on that road, Reeve. There are children up here too."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "It starts in the carts. A sack goes white from the bottom up. A blanket stiffens on a barrow. In the cradle lashed to Hanne Ostrow's barrow, the baby's quilt frosts over at the edge, and the baby, who has slept through the whole pass, wakes up and screams."
+      },
+      {
+        "narrate": "Hanne has her out of the cradle and under her coat before anyone else has moved."
+      },
+      {
+        "narrate": "All down the line people are pulling back from their own things. The frost does not care. It comes up out of the bundles and the sacks in thin white threads, and the threads lean toward the palisade, toward the fort and its fires, the way plants lean toward a window."
+      },
+      {
+        "say": "Sorrel",
+        "text": "There. That's what's in the carts. If they bring it through my gate, it comes up through my fort."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Then they leave the carts outside."
+      },
+      {
+        "say": "Hanne Ostrow",
+        "text": "Everything we've got is on those carts. Everything. I walked my sister's cradle over a mountain."
+      },
+      {
+        "say": "maren",
+        "text": "It'll take what's left of her, if you keep it. The warmth first, then the memory."
+      },
+      {
+        "narrate": "There is one way to bring them in, and it is to ask six hundred people who have lost everything twice to burn the rest, here, at the gate, and walk into a strange fort with nothing."
+      }
+    ],
+    "peaceful": {
+      "label": "Tell them what the beacon cost them, and ask them to burn it all",
+      "labelNoLead": "Ask them to burn everything they carried, and come in with nothing",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "performance"
+      ],
+      "success": [
+        {
+          "narrate": "You climb up on the gate's mounting step, where the whole line can see you, and tell them the first thing first, because it is true: you broke the Single Voice. You did it because it had to be broken, and when you did, every stone in their towns went dead. Nobody told you that would happen. Nobody told them either.",
+          "when": {
+            "clue": "b3-pass-evidence"
+          }
+        },
+        {
+          "narrate": "You climb up on the gate's mounting step, where the whole line can see you. You don't know their towns. You don't know what they have walked through. You tell them so, and then you tell them what the white in their blankets is, and what it will do.",
+          "when": {
+            "notClue": "b3-pass-evidence"
+          }
+        },
+        {
+          "narrate": "Then you ask them to burn it. All of it. Here, now, and come in with what they are wearing."
+        },
+        {
+          "narrate": "Nobody moves. Then Hanne Ostrow gives the baby to Maren, goes back to her barrow, unlashes her sister's cradle and carries it to the brazier by the gate. She puts it on the coals. The frost on it hisses and goes up in a thin white smoke.",
+          "when": {
+            "party": "maren"
+          }
+        },
+        {
+          "narrate": "Nobody moves. Then Hanne Ostrow tucks the baby deeper into her coat, goes back to her barrow, unlashes her sister's cradle and carries it to the brazier by the gate. She puts it on the coals. The frost on it hisses and goes up in a thin white smoke.",
+          "when": {
+            "absent": "maren"
+          }
+        },
+        {
+          "say": "Hanne Ostrow",
+          "text": "Third time. You get better at it."
+        },
+        {
+          "narrate": "After that, it is only a matter of time. Sacks, blankets, barrows, a door with a sick woman's quilt on it; Hal's people pass them up to the braziers hand to hand, saying the names of towns.",
+          "when": {
+            "flag": "south_hal_council"
+          }
+        },
+        {
+          "narrate": "After that, it is only a matter of time. Sacks, blankets, barrows, a door with a sick woman's quilt on it, passed up to the braziers hand to hand.",
+          "when": {
+            "notFlag": "south_hal_council"
+          }
+        },
+        {
+          "narrate": "The white on the road below draws back as the frost in the carts burns, a yard at a time, until it is only mist."
+        },
+        {
+          "narrate": "Clerk-Major Fennick is the last. He stands at the brazier with the census box in his arms for a long time. Then Iona opens the lid for him, and puts her bare hand inside, on the papers."
+        },
+        {
+          "say": "Iona",
+          "text": "Warm. You never put it down. Nine days. It never had the chance."
+        },
+        {
+          "narrate": "Fennick carries the census of the lost through the gate of Highpass, warm, the only thing six hundred people brought over the pass."
+        }
+      ],
+      "failure": [
+        {
+          "say": "Hanne Ostrow",
+          "text": "No. No. You don't get to break our stones and then burn our cradles. Not you.",
+          "when": {
+            "clue": "b3-pass-evidence"
+          }
+        },
+        {
+          "say": "Hanne Ostrow",
+          "text": "No. We've given enough. Let us in with what's ours, or don't.",
+          "when": {
+            "notClue": "b3-pass-evidence"
+          }
+        },
+        {
+          "narrate": "The line pulls back from the gate and round its carts, and the frost comes up out of them in white threads, then in shapes, rising at the palisade. You will have to hold it while the braziers do their work."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Burn the carried cold at the gate",
+      "label": "Hold the palisade while the carts burn",
+      "description": "Four successful actions hold the Gloam at the palisade while the carts and bundles are passed up to the braziers and burned.",
+      "skill": "athletics",
+      "alt": [
+        "persuasion",
+        "survival",
+        "medicine"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The cold gets over the palisade at the north corner before the last carts burn. It takes the warmth out of the lower barracks and two store-rooms, and the soldiers who were sleeping there wake not knowing where they are. By evening they know again. The store-rooms stay cold for a week.",
+      "successText": "The last cart goes up on the braziers, and the white on the road draws back into ordinary mist."
+    },
+    "foe": "b3-cart-gloam",
+    "foeName": "What Rose from the Carts",
+    "enemyTheme": "gloam",
+    "attackName": "Carried Cold",
+    "retainerName": "Frost-Bound Bundle",
+    "after": [
+      {
+        "narrate": "By evening there are six hundred people inside the lower gate of Highpass, in what they are wearing, around the braziers. The braziers are full of ash. The white on the pass road has gone back to being mist, and the mist is thinning."
+      },
+      {
+        "narrate": "Hanne Ostrow sits with her back to the palisade and the two children and the baby, wrapped in a soldier's cloak. Somebody has given her a bowl of something hot. She has not eaten it. She is holding it for the warmth."
+      },
+      {
+        "narrate": "Fennick and Iona sit on two upturned buckets by the gatehouse lamp with the census box between them and Iona's relief ledgers on her knees. For an hour they go through each other's paperwork in silence, line by line: his names, her stores. Neither of them says a word."
+      },
+      {
+        "narrate": "Then Iona leans over, takes his pencil out of his hand, crosses out a figure on the fourth page and writes the right one above it."
+      },
+      {
+        "say": "Fennick",
+        "text": "...Thank you."
+      },
+      {
+        "say": "Iona",
+        "text": "You carried the seven."
+      },
+      {
+        "narrate": "Up at the council's fire, the delegates are already arguing about what happens now. Six hundred people. Forty beds. A spring still cold in the nights."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Don't look at me like that. Fenmere has a rise with room on it, and people on it who've been where these people are. I'm only saying."
+      },
+      {
+        "say": "Sorrel",
+        "text": "And Highpass has walls. I'm only saying."
+      },
+      {
+        "say": "Aveline",
+        "text": "They're all looking at you. They usually are."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "all",
+        "label": "Let all six hundred in, and ask the council to feed them",
+        "description": "This decision is permanent. The council feeds six hundred people until they can be moved.",
+        "text": [
+          {
+            "say": "Sorrel",
+            "text": "Forty beds."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Then six hundred people sleep on the floor of a warm fort. It's been done. It's been done to me."
+          },
+          {
+            "narrate": "Iona does the sum on the back of Fennick's fourth page. It is a terrible sum. She signs it anyway."
+          },
+          {
+            "say": "Iona",
+            "text": "Ashford will pay its share. I will be sending everyone an invoice. Including, Captain, you."
+          },
+          {
+            "narrate": "The six hundred sleep that night on the floors of Highpass: the mess, the chapel, the corridors, the stables, the north stair. Sorrel walks the fort at midnight and steps over them, one by one, and says nothing at all."
+          },
+          {
+            "say": "orin",
+            "text": "Nobody left outside. Good."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 2
+        },
+        "approval": {
+          "orin": 1
+        },
+        "flag": "b3_pass_all"
+      },
+      {
+        "id": "some",
+        "label": "Bring the children and the sick inside, and camp the rest below the walls",
+        "description": "This decision is permanent. Highpass keeps its stores; most of the six hundred sleep outside.",
+        "text": [
+          {
+            "narrate": "Sorrel opens the barracks for the children, the sick, and whoever is caring for them. Two hundred and twelve people. The rest make camp in the lower switchback, under the palisade, with the braziers kept lit all night and Hal's company walking the line.",
+            "when": {
+              "flag": "south_hal_council"
+            }
+          },
+          {
+            "narrate": "Sorrel opens the barracks for the children, the sick, and whoever is caring for them. Two hundred and twelve people. The rest make camp in the lower switchback, under the palisade, with the braziers kept lit all night and soldiers walking the line.",
+            "when": {
+              "notFlag": "south_hal_council"
+            }
+          },
+          {
+            "say": "Sorrel",
+            "text": "It's what the stores will bear. I'm sorry. I am."
+          },
+          {
+            "narrate": "Hanne Ostrow takes the two children and the baby inside, and comes back out again an hour later, alone, to sit with the people from Cask by the brazier."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "I've done the inside. I've done the outside. It's better outside if your own people are there."
+          },
+          {
+            "say": "maren",
+            "text": "It's cold tonight."
+          },
+          {
+            "say": "Hanne Ostrow",
+            "text": "It's cold every night, Sister.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": 2,
+          "trade": 2
+        },
+        "flag": "b3_pass_some"
+      },
+      {
+        "id": "fenmere",
+        "label": "Send them on to Fenmere's rise, beside Fenmere's own people",
+        "description": "This decision is permanent. Two days' walk east, to people who have been where they are.",
+        "text": [
+          {
+            "say": "Brannagh",
+            "text": "Two days east. It's not far, for people who've walked a mountain."
+          },
+          {
+            "say": "Brannagh",
+            "text": "We built on the rise, above the old waterline. Sensible. Dull. Right. There's room up there, if they don't mind a flood plot. I've got one. It'll remind them of home.",
+            "when": {
+              "flag": "fen_build_above"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "There's room on the rise. Not much. We'll dig.",
+            "when": {
+              "notFlag": "fen_build_above"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "And somebody promised my people we'd have the lower village back one day. When we do, there'll be houses down there with nobody in them. That's six hundred somebodies.",
+            "when": {
+              "flag": "fen_promise"
+            }
+          },
+          {
+            "narrate": "Fenmere's families come over the fell to meet the line on the second day: the people who walked out of the lower village two winters ago, with their own carts, to carry the children the last miles. Nobody has to explain anything to anybody."
+          },
+          {
+            "narrate": "Hanne Ostrow walks beside Brannagh the whole way. The goat walks between them. On the second evening the baby is asleep on Brannagh's shoulder, and Brannagh is holding her as if she has done it all her life."
+          },
+          {
+            "say": "nessa",
+            "text": "Brannagh. You're crying."
+          },
+          {
+            "say": "Brannagh",
+            "text": "I'm seventy. It's the wind.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ],
+        "rep": {
+          "wilds": 3,
+          "wardens": 1
+        },
+        "flag": "b3_pass_fenmere"
+      }
+    ]
   }
 }
