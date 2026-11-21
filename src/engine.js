@@ -90,7 +90,7 @@ function createPlayer(setup = {}) {
 }
 
 // A companion's authored identity: refreshed from companions.json on every load.
-const AUTHORED = (base) => Object.fromEntries(["name", "role", "pronouns", "summary", "personality", "signature", "gearClass"].filter((k) => base[k] !== undefined).map((k) => [k, deepClone(base[k])]));
+const AUTHORED = (base) => Object.fromEntries(["name", "role", "pronouns", "summary", "personality", "dialogue", "signature", "gearClass"].filter((k) => base[k] !== undefined).map((k) => [k, deepClone(base[k])]));
 
 function createCompanion(id) {
   const definition = COMPANIONS[id];

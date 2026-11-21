@@ -18,7 +18,7 @@ the code rather than playing the story; nothing here is natural play.
 
 | Area | Where | Verdict |
 | --- | --- | --- |
-| Damage formula (stat x power tier, gear, buffs) | `src/power.js`, `src/combat.js` | Sound. Four older skills and Trick Shot missed the stat bonus (fixed). |
+| Damage formula (stat x power tier, gear, buffs) | `src/power.js`, `src/combat.js` | Sound. Five older skills missed the stat bonus (fixed). |
 | Buffs and debuffs | `Power.EFFECTS`, `damageFactor`, `acShift` | Sound. Floor of 25% damage holds. Burning's text was wrong (fixed). |
 | Chain attacks | `Power.chainHit`, `chained()` | Sound. Arcane Snare, an attack roll, did not join chains (fixed). |
 | Under-level rule (more than 5 under) | `src/xp.js`, `startCombat`, `checkPlan` | Enemies and story checks get harder; the fight objective did not (fixed). |
@@ -32,9 +32,11 @@ the code rather than playing the story; nothing here is natural play.
 ## Findings fixed in this branch
 
 1. **Older skills got no stat damage.** Arcane Snare, Saboteur, Lorekeeper,
-   Focused Nova, Sever the Binding and Nessa's Trick Shot dealt their dice
-   only, so from level 5 they fell behind every other attack. They now add the
-   attacking stat's bonus (stat modifier x power tier) like the rest. Arcane
+   Focused Nova and Sever the Binding dealt their dice only, so from level 5
+   they fell behind every other attack. They now add the attacking stat's
+   bonus (stat modifier x power tier) and the hero's gear damage bonus, like
+   the job skills. Nessa's Trick Shot is a rider on a weapon hit that already
+   counts her Dexterity, like Sneak Attack, so it is left as it was. Arcane
    Snare, which rolls to hit, also joins chain attacks; the automatic and
    saving-throw skills do not, matching the job skills.
 2. **Burning said "each turn".** It burns once by default (two turns from
@@ -58,13 +60,17 @@ the code rather than playing the story; nothing here is natural play.
    `upcomingAuthoredAdventures` listed the first unfinished entries of every
    written chapter, so once Books One and Two were done the AI was sent the
    names of hidden Book Three chapters ("The Letter from Vell", "Sable's
-   Rite", ...), and a free hosted account would be sent paid chapter names. It
-   now lists only chapters this save can play.
+   Rite", ...). Once Book Three is released, a free hosted account would also
+   have been sent the paid book's chapter names. It now lists only chapters
+   this save can play (the test checks the gate with a Book One-only grant).
 
 Each fix has a regression test in `tests/systems-review.test.js`; all five
 tests fail on `master` and pass here.
 
 ## Balance check for fix 1
+
+Run before the gear damage bonus was added to Saboteur, Lorekeeper, Nova and
+Sever the Binding (a flat bonus from the hero's weapon, usually +0 to +3).
 
 Seeded simulation (`--seeds 6 --levels 20,40`, 1,296 battles each run; the
 standard AI-adventure battle, not play). Only the branches whose skills
@@ -90,7 +96,9 @@ its class. Six seeds is a small sample, so single cells move by chance.
   Worth an account-side save before the hosted game charges money.
 - **Companion personal missions** pay 12% of a level once each and are not
   held to the chapter's level cap. At most three, so the effect is small.
-- **Trick Shot's dice** stay 1d6 / 2d6 at every level; the stat bonus now
-  scales it, which is enough for a once-every-few-turns rider.
+- **Trick Shot's dice** stay 1d6 / 2d6 at every level, like the other
+  on-hit riders; the hit it rides on scales.
+- **The testing tools' scenario list** (`src/public-preview.js`) names every
+  written chapter, hidden ones too. It is a developer menu, not sent to the AI.
 - **Clerics are still the strongest class** in the balance simulation;
   Curtis said the current balance is good (11 November).
