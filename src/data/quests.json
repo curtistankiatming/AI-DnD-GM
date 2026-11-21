@@ -2260,7 +2260,7 @@
         "narrate": "The convoy reaches the first settlement before dusk. Your mastery has faced something more demanding than a title ceremony: people depending on the way you choose to act."
       },
       {
-        "narrate": "The drivers have news from over the mountains. High Warden Corvane has gone home to Vell, to the Commandery, which melted down its own wards a generation ago to feed the Single Voice, and has none now. Nobody on the convoy knows what he will do there. Nobody is sorry he has gone."
+        "narrate": "The drivers have news from over the mountains. High Warden Corvane has gone home to Vell. Nobody on the convoy knows what he will do there. Nobody is sorry he has gone."
       }
     ],
     "decisions": [
@@ -2375,7 +2375,7 @@
         "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. Brannagh has come up from Fenmere, white-haired, in a mud-stiff cloak, with the same brown goat on a rope. She nods to you once, which from her is a long conversation. Nobody has asked about the goat."
       },
       {
-        "narrate": "On the door is Lieutenant Garrow of the Watch, who signed the keystone's shared oath on the summit ledge. He nods to you the way people nod at someone they have signed something with.",
+        "narrate": "On the door is Lieutenant Garrow of the Watch, who stood witness for the Watch when the keystone's custody was shared on the summit ledge. He nods to you the way people nod at someone they have signed something with.",
         "when": {
           "flag": "keystone_shared"
         }
@@ -3220,7 +3220,7 @@
         }
       },
       {
-        "narrate": "Oda, the convoy driver, is the keeper of the Briarwatch road now, chosen by the towns after the convoy. She stops you at the crossroads to tell you everything that is wrong with the south road. It takes a while.",
+        "narrate": "Oda, the convoy driver, is the keeper of the Briarwatch road now, chosen by the convoy. She stops you at the crossroads to tell you everything that is wrong with the south road. It takes a while.",
         "when": {
           "flag": "epilogue_keepers"
         }
@@ -3605,10 +3605,10 @@
       },
       {
         "say": "maren",
-        "text": "'To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold, eleven pence.' She's itemised the beer."
+        "text": "'To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold and eleven pence.' She's itemised the beer."
       },
       {
-        "narrate": "It is itemised. To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold, eleven pence. She has itemised the beer.",
+        "narrate": "It is itemised. To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold and eleven pence. She has itemised the beer.",
         "when": {
           "absent": "maren"
         }
@@ -5180,10 +5180,6 @@
             "text": "She'll fail the same way I did. Not because she's cruel. Because she'll be tired, and the bell will be right there, and nobody will be in the room to say no. One year. You know what a year is, when the mist is at the door? It's for ever."
           },
           {
-            "say": "Sable",
-            "text": "Corvane went home to Vell, you know. People send me books, and the books come with gossip. A province that melted every ward it had for his Voice, and you broke the Voice. It will be a cold winter there. He'll be thinking. Corvane always thinks when he's cold."
-          },
-          {
             "say": "orin",
             "text": "And you think she should lose."
           },
@@ -5196,6 +5192,10 @@
           {
             "say": "Sable",
             "text": "I think she'll win. I'm telling you what to watch for afterwards."
+          },
+          {
+            "say": "Sable",
+            "text": "Corvane went home to Vell, you know. People send me books, and the books come with gossip. You broke his Voice, and Vell has been very quiet since. I'd like to know what he's thinking. I expect we'll all find out."
           }
         ],
         "setFlags": {
@@ -6069,7 +6069,7 @@
         "label": "Look in on Pell Haverick in the miners' lock-up",
         "lines": [
           {
-            "narrate": "The miners have put Pell Haverick in their lock-up by the gate, a stone room meant for drunks on pay night. He has been given a chair, a blanket and a lamp, and he has turned the lamp down low to save the oil, out of habit."
+            "narrate": "The miners have put Pell Haverick in their lock-up by the gate, a stone room meant for drunks on pay night. He has been given a chair, a blanket and one lamp, which is the first lamp in years he has had to pay for himself, and he has turned it down very low."
           },
           {
             "narrate": "Iona sits outside the grille with a writing desk across her knees, reading to him from a list. She does not stop when you come in."
@@ -6087,7 +6087,16 @@
             "text": "It was deliberate. You signed it. You sign everything. It's the one thing I admire about you."
           },
           {
-            "narrate": "Haverick turns to you, delighted, exactly as he was in the room with forty lamps."
+            "narrate": "Haverick turns to you, delighted, exactly as he was in the room with forty lamps.",
+            "when": {
+              "flag": "b2:met_haverick"
+            }
+          },
+          {
+            "narrate": "Haverick turns to you, delighted, as if you had come to buy something.",
+            "when": {
+              "notFlag": "b2:met_haverick"
+            }
           },
           {
             "say": "Haverick",
@@ -6095,7 +6104,7 @@
           },
           {
             "say": "Haverick",
-            "text": "You named me to the whole auction hall, you know. Without a hearing. I took that very personally. I'd like it noted, Quartermaster.",
+            "text": "You told the whole auction hall about me, you know, and I wasn't even there to object. I took that very personally. I'd like it noted, Quartermaster.",
             "when": {
               "flag": "harbour_exposed"
             }
@@ -6135,7 +6144,7 @@
             "narrate": "Iona writes that down. Haverick smiles, without any malice at all, the way he has smiled at everyone. Then he asks her, politely, whether there is a total."
           },
           {
-            "narrate": "There is. She turns the desk round so he can read it. For the first time since you met him, Pell Haverick has nothing to say."
+            "narrate": "There is. She turns the desk round so he can read it. For the first time anyone in the lock-up can remember, Pell Haverick has nothing to say."
           }
         ]
       },
@@ -6318,7 +6327,7 @@
         "narrate": "In the end, the council decides. Slowly. With a great deal of argument, and three adjournments, and one long silence while Iona finds the right page."
       },
       {
-        "narrate": "Aveline has her pen ready for when they do, because before the council rises somebody is going to want your answer to Elske's question written down. She has, for once, only one bag."
+        "narrate": "Aveline has her pen ready. Before the council rises, somebody is going to want your answer to Elske's question written down. She has, for once, only one bag."
       }
     ],
     "decisions": [

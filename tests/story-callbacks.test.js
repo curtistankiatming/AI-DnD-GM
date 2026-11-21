@@ -56,7 +56,7 @@ test('Pell Haverick faces the council\'s list before the Second Oath', () => {
   const r = act(s, { type: 'story-choice', choiceId: 'talk-haverick' });
   const text = told(r.state);
   assert.match(text, /Somebody was always going to sell it/);
-  assert.match(text, /You named me to the whole auction hall/);
+  assert.match(text, /You told the whole auction hall about me/);
   assert.match(text, /Those receipts of the lamp-man's/);
   assert.doesNotMatch(text, /replaced every lamp in the Sallows out of her own salary/);
   assert.match(text, /Pell Haverick has nothing to say/);

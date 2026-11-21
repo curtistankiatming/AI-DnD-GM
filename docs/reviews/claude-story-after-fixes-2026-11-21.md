@@ -24,7 +24,7 @@ Every written line of Books One and Two, in play order, with every flag variant:
 | Where Aster Vey lives | She says it at Cinder Fold: her bell is still Briarwatch's, in the tower, and she rings when Tovin does at six, but a bell is a door and she can travel in a small one. At the Mother Bell, "Aster Vey's own bell" goes silent in Briarwatch and "the little bell she travels in" goes cold. | `cinderfold` opening, `motherbell` crisis |
 | Wren's map payoff | The signal tower now remembers who was given the map. At Cinder Fold, if it was Nessa, she puts it on Wren's table with new lines in a different pencil ("You've moved the north gully." "It moved. After the thaw. I went and looked."), and Wren says "Better". If it was you, you give it back, and Nessa corrects it. | `signal` decisions, `cinderfold` opening and Wren talk |
 | Crowns against gold | Book Two now uses gold everywhere, like the rest of the game: Iona's invoice, the auction's opening bid, and the harbour bell sold for one gold piece. | `harbour`, `side-jobs.json` (boat) |
-| Where Corvane is | The convoy drivers say it at the end of Book One: he has gone home to Vell, to the Commandery, which melted its own wards for the Single Voice and has none now. Sable says it again in his cell before the vote ("He'll be thinking. Corvane always thinks when he's cold."), which sets up the letter that opens Book Three without giving it away. | `aftermath` after, `vote` Sable talk |
+| Where Corvane is | The convoy drivers say it at the end of Book One: he has gone home to Vell. Sable says it again in his cell before the vote ("I'd like to know what he's thinking. I expect we'll all find out."), which sets up the letter that opens Book Three without giving away what it says. | `aftermath` after, `vote` Sable talk |
 
 ## Other findings
 
@@ -56,6 +56,10 @@ Against Curtis's rule (story first, comedy only when it comes naturally, no one-
 ## Engine change
 
 Decisions in `quests.json` can now carry `flagsIf`: a list of `{when, setFlags}`, where `when` is checked the same way as a written line's `when` at the moment the choice is made. The signal tower uses it to set `wren_map_nessa` or `wren_map_hero`. Saves already past the signal tower simply have neither flag, so the map lines don't play for them; nothing else changes.
+
+## Reviewer changes
+
+Two independent reviewers read the change. Both approved the engine change and both judgement calls (gold instead of crowns, the vote at the first snow). Both asked for the same wording fixes, now made: the Haverick scene no longer assumes you met him at the Lantern Hall, Garrow "stood witness" for the keystone (he only signed an oath on the peaceful route), and the Second Oath's closing line reads cleanly. One reviewer also asked that Sable's Corvane line come after his last word on Elske, that neither Corvane line give away what Book Three's letter reveals about the Commandery's wards, that Oda be "chosen by the convoy", and that Haverick not repeat Elske's "without a hearing". All done.
 
 ## Tests
 
