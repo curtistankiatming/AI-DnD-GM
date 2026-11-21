@@ -14,7 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines, lineApplies, nodeLocation } = require("./expansion");
+const { dialogueText, liveLines, lineApplies, nodeLocation, outcomeForRoller } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const Gear = require("./gear");
@@ -677,7 +677,8 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   if (choice.check) {
     const checkResult = resolveStoryCheck(state, choice, rng, events);
     success = checkResult.success;
-    outcome = success ? choice.success : choice.failure;
+    // Told for whoever rolled it: the hero, or the companion best placed.
+    outcome = outcomeForRoller(success ? choice.success : choice.failure, checkResult.plan?.actor);
   } else if (choice.autoSuccess) {
     outcome = choice.result;
   } else {

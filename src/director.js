@@ -232,6 +232,8 @@ function bound(state, draft, forcedId = null) {
   if (name.length < 3) return fail('The new adventure had no title. Nothing was added.');
   const investigate = ck(draft.investigate, 'Investigate'), route = ck(draft.route, 'Approach carefully'), peaceful = ck(draft.peaceful, 'Resolve it without a fight');
   if (!investigate || !route || !peaceful) return fail('The new adventure named an unknown skill. Nothing was added.');
+  // A job trial is the hero's own: the hero rolls its checks, as in the written trial.
+  if (trial) for (const c of [investigate, route, peaceful]) c.hero = true;
   route.tools = [...new Set((Array.isArray(draft.route.tools) ? draft.route.tools : []).filter(t => TOOLS.includes(t)))].slice(0, 2);
   if (draft.route.poison === true) route.poison = true;
   const o = draft.objective || {};
