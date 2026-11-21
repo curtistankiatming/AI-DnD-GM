@@ -19,7 +19,8 @@ const chapterXp = level => share(level, CHAPTER_SHARE);
 
 // Falling behind: a hero more than UNDER_FREE levels under an adventure's
 // level faces enemies that hit harder and more often, and harder checks. Each
-// level further behind adds one step, up to UNDER_MAX. A written chapter can be
+// level further behind adds one step, up to UNDER_MAX (weighted for the fight
+// past level 20, see underSteps). A written chapter can be
 // started up to UNDER_FREE + UNDER_MAX levels under its level.
 const UNDER_FREE = 5, UNDER_MAX = 5;
 const UNDER_DAMAGE = 0.1;   // per step: +10% enemy damage
@@ -36,9 +37,14 @@ function underChecks(heroLevel, level) {
   return Math.min(UNDER_MAX, Math.max(0, underBy(heroLevel, level) - UNDER_FREE));
 }
 // Steps for the deciding fight: +1 to hit and UNDER_DAMAGE more damage each.
+// Only the missing levels past UNDER_LATE_LEVEL are weighted (levels below it
+// still add real power), and the total stops at UNDER_LATE_MAX so a fight far
+// behind stays hard rather than hopeless.
+const UNDER_LATE_MAX = 9;
 function underSteps(heroLevel, level) {
   const steps = underChecks(heroLevel, level);
-  return Math.floor(Number(level) || 1) > UNDER_LATE_LEVEL ? steps * UNDER_LATE_WEIGHT : steps;
+  const late = underChecks(Math.max(Math.floor(Number(heroLevel) || 1), UNDER_LATE_LEVEL), level);
+  return late ? Math.min(UNDER_LATE_MAX, steps + late * (UNDER_LATE_WEIGHT - 1)) : steps;
 }
 
 // Difficulty a player picks for an AI-written adventure before departing.
@@ -134,4 +140,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, UNDER_LATE_MAX, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };

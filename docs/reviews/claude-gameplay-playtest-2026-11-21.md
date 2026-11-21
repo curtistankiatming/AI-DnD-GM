@@ -74,11 +74,18 @@ penalty starts at 6 under. In Book Three a level past 20 adds little raw power
 (the jobs carry the growth), so a level 21 hero at the level 27 Vault fought as
 well as a level 27 one.
 
-**Fix** (`src/xp.js`): for chapters written past level 20, each penalty step
-counts three times in the deciding fight (+3 to hit and +30% damage per level
-past 5 under). Story checks keep one step per level, at most 5. With that, at
-the Vault 7 under wins 94% and 8 under 50% (Saltwick: 33% and 22%), and the
-"What's next?" card shows the real numbers before you set out.
+**Fix** (`src/xp.js`): in the deciding fight, each missing level past 20 (and
+past 5 under) counts three times: +3 to hit and +30% damage instead of +1 and
++10%. Missing levels below 20 count once, as before, and the fight penalty
+stops at 9 steps so a fight far behind stays hard rather than hopeless. Story
+checks keep one step per level, at most 5. Both reviewers flagged the first
+version (weight by chapter level, no cap) as too harsh at chapters 21 to 23
+and at 10 under; this is the corrected rule. With that, at
+the Vault (after the fight fixes) 7 under wins 94%, 8 under 83% and 10 under
+56% on Standard (Gritty 72%, 39% and 28%), against 100% at 6 under before.
+Saltwick (23) is mostly below level 20 for a hero that far behind, so it keeps
+the single steps. The "What's next?" card shows the real numbers before you
+set out.
 
 **Fixable by side battles?** Yes. A bounty pays 15% of a level while you are
 behind, so each missing level costs about 7 bounties. No scripted player ever
@@ -129,7 +136,9 @@ of its turn while it burns".
 No crash, rejected action loop or dead end in the 144 scripted or the 60-plus
 random-action campaigns, including selling and re-equipping gear mid-story,
 changing tactics, retreating and reloading saves. Every run reaches the end of
-Book Three Part One, where the written story stops until Part Two. One
+Book Three Part One, where the written story stops until Part Two
+(`tests/campaign-playtest.js` reports that end state as an engine error, on
+master too, because it expects the books to be complete). One
 random-action run on Gritty spent 1,500 steps 3 levels behind losing the first
 Book Three fight by force and retrying; the scripted direct player only takes
 bounties when more than 3 behind, and the same run finished on the final code,
@@ -197,8 +206,27 @@ slightly riskier at levels 11 to 30 (on Standard 10 of 329 fights lost instead
 of 6 of 320), because enemies now hit harder while that fight still lasts 4 to
 5 rounds.
 
+Bounty fights after the fixes: 3.8 to 5.8 rounds (before 4.6 to 8.1) and still
+no losses in about 2,600 bounty fights across all three difficulties. Hero
+knock-downs per fight by force, levels 11 to 20: Standard 0.15 before, 0.13
+after; Gritty 0.57 before, 0.42 after.
+
 Standard and Story force fights now sit inside 4 to 7 rounds (4.5 to 6.4);
 Gritty, the hard setting, runs 6.3 to 7.8 past level 5 and loses far less. The objective route is unchanged at 4 to 5 rounds.
+
+## Left for later
+
+- The objective route got slightly riskier, because one enemy table feeds every
+  fight: Gritty levels 21 to 30 lost 7 of 221 objective fights (1 of 209
+  before). A small objective DC relief would offset it; watch it in the next
+  playtest.
+- Averages hide some long AI adventures at level 20: on Heroic, the bard's
+  Battlecantor and Envoy branches still take 8 to 11 rounds, and the Chronist
+  and Lifewarden branches win only about a third of the time (3 to 4 seeds,
+  so noisy). Level 20 Heroic was already the hardest cell before this change.
+- Sabotage, Nova and Banishment add stat damage now, but not gear damage or
+  the chain bonus that other job skills get (as before this PR).
+- Gold surplus, for the items review.
 
 ## Three things that work well
 

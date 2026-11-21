@@ -8,11 +8,11 @@ the pull requests that made them.
 
 - Fights by force were 7 to 11 rounds. Enemies now have a quarter less health
   from level 8 (easing in from level 5) and hit harder to match, so they last
-  about 5 to 6 rounds on Standard and 6 to 8 on Gritty, about as dangerous as
+  about 5.5 to 6.5 rounds on Standard and 6 to 8 on Gritty past level 5, about as dangerous as
   before. AI adventures go from 7.5-9 rounds to 5.7-7.
 - In Book Three, being more than 5 levels behind a chapter barely mattered.
-  Past level 20 the deciding fight's penalty now counts three times per level
-  (story checks are unchanged).
+  In the deciding fight, each missing level past 20 now counts three times,
+  up to a cap (story checks are unchanged).
 - Arcane Snare, Sabotage, Nova, Banishment and Nessa's Trick Shot now add stat
   damage like every other attack.
 - Report: [docs/reviews/claude-gameplay-playtest-2026-11-21.md](docs/reviews/claude-gameplay-playtest-2026-11-21.md).
