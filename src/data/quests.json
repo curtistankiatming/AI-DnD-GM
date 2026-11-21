@@ -935,7 +935,16 @@
       ],
       "success": [
         {
-          "narrate": "You earth the lowest ring with the grounding rod and climb through the quiet it leaves, one ring at a time, with the storm hissing on every side. At the top, the control platform is dark and the rain is coming in sideways."
+          "narrate": "You earth the lowest ring with the grounding rod and climb through the quiet it leaves, one ring at a time, with the storm hissing on every side. At the top, the control platform is dark and the rain is coming in sideways.",
+          "when": {
+            "item": "storm-grounder"
+          }
+        },
+        {
+          "narrate": "You climb between the strikes, ring by ring, flattening yourselves against the bronze each time the lightning crawls past, with the storm hissing on every side. At the top, the control platform is dark and the rain is coming in sideways.",
+          "when": {
+            "notItem": "storm-grounder"
+          }
         }
       ],
       "failure": "The rings arc across your route. You reach the platform, but the tower’s bound sentinels awaken."
@@ -1439,7 +1448,7 @@
     },
     "crisis": [
       {
-        "narrate": "In the square the magistrate is waiting for you: Magistrate Imelda Abernathy, in her chain of office, standing very straight under the clicking bell. Her mouth moves. The voice that comes out of it belongs to every echo-stone at once."
+        "narrate": "In the square the magistrate is waiting for you: Magistrate Imelda Rook, in her chain of office, standing very straight under the clicking bell. Beside her stands the tallest of the iron bell-wardens, with her face cast in its bronze. When it speaks, it speaks in her voice, and every echo-stone in the district speaks with it."
       },
       {
         "say": "The Borrowed Magistrate",
@@ -1449,7 +1458,7 @@
         "narrate": "Then, under it, so quietly you nearly miss it, her own voice."
       },
       {
-        "say": "Abernathy",
+        "say": "Rook",
         "text": "Don't break the wards. Please. The mist is right there, past the wall. Get them out, but don't break the wards."
       },
       {
@@ -1465,7 +1474,16 @@
       ],
       "success": [
         {
-          "narrate": "Nessa starts it, because somebody has to: a skipping song from the road, the first one she ever learned. Maren takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb."
+          "narrate": "Nessa starts it, because somebody has to: a skipping song from the road, the first one she ever learned. Maren takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "narrate": "Maren starts it, because somebody has to: a hymn from the shrine at home, sung badly and much too loud. Orin takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb.",
+          "when": {
+            "absent": "nessa"
+          }
         },
         {
           "narrate": "It is not a routine. Nobody in Tallowmarket has heard it before. One by one, all down the street, people stop what they did yesterday and choose to answer it, and the voice in the bell runs out of mouths to borrow."
@@ -1496,14 +1514,14 @@
     "enemyTheme": "construct",
     "after": [
       {
-        "narrate": "Magistrate Abernathy takes her chain of office off and holds it in both hands, as if it has got heavier."
+        "narrate": "Magistrate Rook takes her chain of office off and holds it in both hands, as if it has got heavier."
       },
       {
-        "say": "Abernathy",
+        "say": "Rook",
         "text": "The wards did that to us for our own good. They did keep the mist out. I want you to understand that. Nobody here was hurt."
       },
       {
-        "say": "Abernathy",
+        "say": "Rook",
         "text": "So you tell me. When is a ward allowed to overrule the people it's guarding? Because somebody is going to ask the next town that question, and I'd like the answer written down before they do."
       },
       {
@@ -1516,7 +1534,7 @@
         "label": "Require the keeper’s and community’s consent",
         "text": [
           {
-            "narrate": "Tallowmarket adopts a double-consent rule: a ward may only hold people with its keeper's word and the district's together, and either can take it back. Abernathy writes it on the wall of the square in whitewash, where the bell can read it."
+            "narrate": "Tallowmarket adopts a double-consent rule: a ward may only hold people with its keeper's word and the district's together, and either can take it back. Rook writes it on the wall of the square in whitewash, where the bell can read it."
           }
         ],
         "rep": {
@@ -1530,7 +1548,7 @@
         "label": "Create a public emergency oversight council",
         "text": [
           {
-            "narrate": "Tallowmarket sets up a public oversight council. Emergency powers need named votes, a record anyone can read, and a date when they run out. Old Hobb is elected first, because he was the first to answer the song."
+            "narrate": "Tallowmarket sets up a public oversight council. Emergency powers need named votes, a record anyone can read, and a date when they run out. Old Hobb is elected first, because he was the first to choose anything for himself."
           }
         ],
         "rep": {
@@ -1585,7 +1603,7 @@
         "narrate": "The first beacon stands above the cloud line, on a stair cut into the mountain before anyone now alive was born. Its bronze rings are open to the sky, and something is singing in them."
       },
       {
-        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh, telling somebody not to expect her to be pleasant. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
+        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh: one word, and you know it is her. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
       },
       {
         "say": "orin",
@@ -1634,7 +1652,7 @@
           }
         },
         {
-          "narrate": "Their choices on the road give you a rhythm the chorus cannot predict, because none of them would ever have chosen it."
+          "narrate": "Their choices on the road give you a rhythm the chorus cannot predict, because nobody chose it for them."
         }
       ],
       "failure": [
@@ -1655,7 +1673,16 @@
       ],
       "success": [
         {
-          "narrate": "You earth the nearest rings with the grounding rod, as you did on Wren's tower, and climb through the quiet patch it leaves. You reach the cradle before the chorus has finished tuning them."
+          "narrate": "You earth the nearest rings with the grounding rod, as you did on Wren's tower, and climb through the quiet patch it leaves. You reach the cradle before the chorus has finished tuning them.",
+          "when": {
+            "item": "storm-grounder"
+          }
+        },
+        {
+          "narrate": "You time your climb between the peals, a ring at a time, the way Wren's tower taught you, and reach the cradle before the chorus has finished tuning them.",
+          "when": {
+            "notItem": "storm-grounder"
+          }
         }
       ],
       "failure": [
@@ -1756,7 +1783,7 @@
         "label": "Leave the wards in independent, cooperating hands",
         "text": [
           {
-            "narrate": "Every settlement keeps its own voice and its own keeper. Your party becomes the road between them, not a throne above them. Nobody will ever be told what to do by the first beacon again. They will have to argue, which is the point."
+            "narrate": "Every settlement keeps its own voice and its own keeper. Your party becomes the road between them, not a throne above them. Nobody will ever be told what to do by the first beacon again. They will have to argue instead."
           }
         ],
         "rep": {
@@ -1770,7 +1797,7 @@
         "label": "Found a public charter for the ward network",
         "text": [
           {
-            "narrate": "A public charter for the ward network: what it may do, what it may never do, and the names of the people who must answer when it is used. It is nailed to the beacon door. Within a week somebody has written a complaint in the margin, which is how you know it is working."
+            "narrate": "A public charter for the ward network: what it may do, what it may never do, and the names of the people who must answer when it is used. It is nailed to the beacon door. Within a week somebody has written a complaint in the margin."
           }
         ],
         "rep": {
@@ -1787,15 +1814,11 @@
         "label": "Stop on the stair and talk",
         "lines": [
           {
-            "narrate": "Halfway up, where the stair turns, you all stop at once without anybody saying so. The keystone is warm through its wrappings."
+            "narrate": "At the foot of the stair, you all stop at once without anybody saying so. The keystone is warm through its wrappings."
           },
           {
             "say": "orin",
             "text": "Before we go up. If it goes wrong up there, I take the front. That's not a discussion."
-          },
-          {
-            "say": "maren",
-            "text": "It's never a discussion with you. That's why it's always a discussion."
           },
           {
             "say": "nessa",
