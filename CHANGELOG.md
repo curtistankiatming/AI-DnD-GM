@@ -4,6 +4,18 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Equipment step 5: the item catalogue (21 November 2026)
+
+- 38 new pieces of equipment, 68 in all, from common axes to legendary
+  Commandery gear for Book Three. Every town sells gear for its levels, and one
+  or two items per town are sold only there.
+- Eleven chapters now give their own reward item, and the first bounty claimed
+  in each of five towns gives that town's bounty item.
+- AI adventures give one item each, built from fixed templates so the
+  storyteller can't invent stats.
+- Prices rise with rarity and the level an item needs. List:
+  [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md).
+
 ## Equipment step 4: requirements, rarity, item skills (21 November 2026)
 
 - Items can need a level, a class or a stat. The item card says what it needs,

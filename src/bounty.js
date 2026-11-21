@@ -8,6 +8,7 @@ const { ENCOUNTERS, ENEMIES } = require('./content');
 const XP = require('./xp');
 const Book = require('./book');
 const P = require('./progression');
+const Gear = require('./gear');
 
 // Who is posted on each town's board. Unknown towns use the road wardens' list.
 const BOARDS = Object.freeze({
@@ -105,6 +106,8 @@ function finish(state, result, events, api) {
   state.player.gold += r.gold;
   if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
   events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${AFTER_BOOKS_LEVEL}; AI adventures or the next book go further.`) : ''}` });
+  // The first bounty claimed in a town gives that town's bounty item (src/gear.js).
+  Gear.award(state, `bounty:${b.nodeId.replace(/^town-/, '')}`, events);
   api.enterNode(state, b.nodeId, events);
 }
 

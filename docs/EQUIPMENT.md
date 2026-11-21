@@ -36,7 +36,7 @@ Common, Uncommon, Rare, Epic and Legendary. Shown on item cards and in shops.
 
 ## Special stats
 
-`stats: { dealt, taken }`: a share of damage dealt or taken, such as +10%
+`stats: { dealt, taken }`: a share of damage dealt or taken, such as 10% more
 damage dealt or 10% less damage taken. They add to the buffs and debuffs of
 `src/power.js`.
 
@@ -66,7 +66,7 @@ its spent or ready state.
 | Hexwood Rod | Main hand (focus) | Rare | Level 4; Wizard, Bard or Cleric | +2 spell attack and DC; Unravel: Vulnerable |
 | Bulwark Shield | Off hand | Rare | Fighter or Cleric; Strength 13 | +3 AC; Brace: Fortified |
 | Ember Brand | Main hand | Rare | Level 8; Strength 13 | +1 to hit, +2 damage; Kindle: Burning, 2 rounds |
-| Warden's Signet | Accessory | Rare | Level 10 | +10% damage dealt; Insight story ability |
+| Warden's Signet | Accessory | Rare | Level 10 | 10% more damage dealt; Insight story ability |
 | Oathbound Mail | Armour | Epic | Level 15; Strength 15 | AC 19; 10% less damage taken |
 
 They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
