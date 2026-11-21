@@ -75,9 +75,19 @@ The problems found were small, and most were fixed in this branch:
   `claude/project-thread-h460xs`: a Haverick scene in the oath chapter, and
   `wren_map_nessa` / `wren_map_hero` flags with a payoff at Wren's table). That
   branch and this one merge without conflicts.
-- **Nessa's epilogue choice has one answer** ("yes, but not yet"). The bible
-  allows a permanent parting only in the epilogue; adding a second answer would
-  change Book Three's cast, so it is left for Curtis.
+- **Nessa's epilogue choice has one answer** ("yes, but not yet", flag
+  `nessa_keeper = "later"`). Question for Curtis: should the player shape it?
+  Two independent reviewers were asked and agreed only that she must not leave
+  the party for good (Book Three gives her chapters 5, 12 and 19). They split on
+  the rest, so nothing was changed:
+  - Reviewer 1: keep the one outcome (her choosing and sending the letter is
+    the arc's payoff) but let the hero speak first ("Take it", "Stay with us a
+    while", "It's your call"), recorded as `b2:nessa_advice` for one line in
+    Wren's Bell.
+  - Reviewer 2: add a real second outcome, a sent "no" (`nessa_keeper =
+    "declined"`), so the choice is the player's; Book Three's Wren's Bell would
+    then branch on `is: "later"` versus `is: "declined"`, since any value is
+    truthy.
 - **Book Three name clash** (outside this review's scope): the Book Three camp
   scene after the letter names "Sister Hesper", a keeper of Upper Morrow taken
   for service; Book One already has Hesper Moss, Edric's sister at the dyers'
