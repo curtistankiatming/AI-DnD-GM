@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Combat step 1: stat damage, buffs and debuffs, chain attacks (21 November 2026)
+
+- Hits now grow with the attacker's stat: every party hit adds its attacking
+  stat's modifier once per power tier (from level 5, 11, 17, then every 24
+  levels past 20). Enemies get +3 damage per tier to match.
+- New buffs and debuffs: Empowered, Weakened, Vulnerable, Fortified, Slowed and
+  Burning. Companion combinations now apply them, Fire Bolt sets Burning, and a
+  wounded boss from level 5 becomes Empowered once.
+- Chain attacks: party hits on the same enemy in one round add 15% each, up to
+  60%. A companion combination starts a chain.
+- Fights that used to drag (12 to 15 rounds at levels 15 to 20) now take about
+  8; AI adventures keep the same win odds per difficulty. Report:
+  [docs/BALANCE-2026-11-21-DAMAGE.md](docs/BALANCE-2026-11-21-DAMAGE.md).
+
 ## Gameplay review fixes (21 November 2026)
 
 - Book One story text is told in the order it happened: the roll and what it
