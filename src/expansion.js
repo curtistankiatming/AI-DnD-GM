@@ -50,6 +50,33 @@ for(const base of UPGRADE_BASES){
 // Items with requirements, special stats, skills and story abilities
 // (src/gear.js). They have no forge upgrade: they are already special.
 for(const item of require('./data/gear.json'))ITEMS[item.id]=item;
+// Gold sink (items review, 21 November 2026): the smith can also refine each
+// of these once. An Epic or Legendary item becomes a Masterwork one step rarer,
+// for twice the item's price (Gear.upgradeCost), so late gold has a use.
+// The refined copy is never in a shop or given as a reward, so it drops its exclusive tag.
+{
+  const R=['Common','Uncommon','Rare','Epic','Legendary'];
+  for(const base of require('./data/gear.json')){
+    // Uncommon and Rare special items have no upgrade: a cheap refine of early
+    // gear would outclass the next towns' items.
+    if(!base.slot||['Uncommon','Rare'].includes(base.rarity))continue;
+    const master=R.indexOf(base.rarity)>=3;
+    const item=deepClone(base);delete item.exclusive;
+    Object.assign(item,{id:`${base.id}-fine`,name:`${master?'Masterwork':'Fine'} ${base.name}`,baseId:base.id,upgradeTier:1,masterwork:master||undefined,
+      rarity:R[Math.min(R.length-1,Math.max(1,R.indexOf(base.rarity)+(master?1:0)))],value:master?base.value*3:base.value+50});
+    if(!master)delete item.masterwork;
+    let effect;
+    // A Common item gets the usual Fine +1 to hit and damage; a Masterwork refine adds one number only.
+    if(item.weapon&&!master){item.attackBonus=(item.attackBonus||0)+1;item.damageBonus=(item.damageBonus||0)+1;effect='+1 to hit and damage.';}
+    else if(item.weapon){item.damageBonus=(item.damageBonus||0)+1;effect='+1 damage.';}
+    else if(item.armor){item.armor={...item.armor,base:item.armor.base+1};effect='+1 base AC.';}
+    else if(item.category==='shield'){item.acBonus=(item.acBonus||0)+1;effect='+1 AC.';}
+    else if(item.category==='focus'){item.spellDcBonus=(item.spellDcBonus||0)+1;effect='+1 spell save DC.';}
+    else{item.stats={...(item.stats||{}),dealt:Math.round(((item.stats?.dealt||0)+0.05)*100)/100};effect='5% more damage dealt.';}
+    item.purpose=`${base.purpose} ${master?'Masterwork':'Fine'} quality: ${effect} This is the maximum forge tier in this campaign.`;
+    ITEMS[item.id]=item;
+  }
+}
 const TOWNS=require('./data/towns.json');
 const MERCHANTS=require('./data/merchants.json');
 const RECIPES=require('./data/recipes.json');

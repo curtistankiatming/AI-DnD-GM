@@ -37,6 +37,29 @@ finesse fighters and casters keep finding better gear up to level 24.
 An item costs at least a floor for its rarity (Uncommon 30, Rare 70, Epic 150,
 Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 
+## Masterwork: what late gold is for
+
+From mid Book Two, heroes earned far more gold than shops could take: a
+playtest of 144 campaigns ended Book Three Part One with 10,000 to 12,000
+gold unspent. So any smith can now refine an Epic or Legendary item, once,
+into a **Masterwork** item one rarity higher. A refine adds one number:
+
+- Weapon: +1 damage. Armour: +1 base AC. Shield: +1 AC.
+- Focus: +1 spell save DC. Accessory: 5% more damage dealt.
+- Price: **twice the item's price** (Commandery Halberd: 1,240 gold).
+
+Refining the best Epic and Legendary gear of the hero and all three companions
+late in Book Three Part One costs up to about 14,000 gold, more than a player
+has spare, so gold buys real choices again: who to refine first, and whether
+to refine now or wait for the next town's gear. Each item is refined once, so
+this is not an endless sink. Basic items, and the two Common catalogue
+weapons (Woodcutter's Axe, Hunting Spear), keep their Fine upgrade at the old
+price (45 gold plus half the item's price). Uncommon and Rare special items
+have no upgrade, because a cheap refine of early gear would beat the next
+towns' items. A Masterwork item is never in a shop or given as a reward; it
+sells for 30% of its value, like everything else, which is less than it cost.
+A refined item shares its base item's story use.
+
 ## The new items
 
 | Item | Slot | Rarity | Gold | Requires | Where |

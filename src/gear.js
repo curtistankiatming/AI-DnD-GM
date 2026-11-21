@@ -74,8 +74,10 @@ const skills = (a) => worn(a).filter((i) => i.skill && Power.EFFECTS[i.skill.eff
 // owned gives one use. The Thornward Cloak also keeps its old save flag,
 // player.used.cloakReady, for the character sheet and old saves.
 const copies = (state, id) => state.player.inventory.filter((e) => e.itemId === id).reduce((n, e) => n + (e.quantity || 0), 0);
+// A refined copy shares its base item's story use, so refining doesn't give a fresh one.
+const storyKey = (id) => ITEMS[id]?.baseId || id;
 function spent(state, id) {
-  const n = state.world?.storySpent?.[id];
+  const n = state.world?.storySpent?.[storyKey(id)];
   if (Number.isInteger(n)) return n;
   return id === 'thornward-cloak' && state.player.used?.cloakReady === false ? 1 : 0;
 }
@@ -87,7 +89,7 @@ function storyItem(state, actor, skillId) {
 function spendStory(state, plan) {
   if (!plan?.storyItemId) return;
   const id = plan.storyItemId;
-  (state.world.storySpent ||= {})[id] = spent(state, id) + 1;
+  (state.world.storySpent ||= {})[storyKey(id)] = spent(state, id) + 1;
   if (id === 'thornward-cloak') (state.player.used ||= {}).cloakReady = false;
 }
 // After a long rest every story ability is ready again.
@@ -121,6 +123,9 @@ function source(item) {
 
 // Prices rise with rarity and with the level an item needs.
 const RARITY_FLOOR = Object.freeze({ Common: 0, Uncommon: 30, Rare: 70, Epic: 150, Legendary: 300 });
+// What the smith charges to upgrade `item` (its "-fine" version): a basic
+// item 45 gold plus half its price, a special item made Masterwork twice its price.
+const upgradeCost = (item) => ITEMS[`${item?.id}-fine`]?.masterwork ? 2 * item.value : 45 + Math.floor((item?.value || 0) / 2);
 const minValue = (item) => (RARITY_FLOOR[item.rarity] || 0) + 10 * (item.requires?.level || 0);
 
 // Exclusive rewards: a quest's item when it is finished, a town's bounty item
@@ -216,4 +221,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = { specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };
+module.exports = { upgradeCost, specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };

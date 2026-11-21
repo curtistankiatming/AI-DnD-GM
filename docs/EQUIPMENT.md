@@ -72,3 +72,8 @@ until the next long rest.
 
 They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
 (brand, signet) and Cinder Fold (mail, brand).
+
+## Masterwork
+
+The smith refines an Epic or Legendary item once for twice its price;
+see [ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#masterwork-what-late-gold-is-for).
