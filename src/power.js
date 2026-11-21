@@ -30,7 +30,7 @@ const EFFECTS = Object.freeze({
   // Fortified and Slowed come from item skills (src/gear.js).
   fortified: { name: 'Fortified', taken: -0.25, text: 'Takes 25% less damage.' },
   slowed: { name: 'Slowed', ac: -2, text: '2 less armour.' },
-  burning: { name: 'Burning', burn: true, text: 'Takes fire damage at the start of each turn.' }
+  burning: { name: 'Burning', burn: true, text: 'Takes fire damage at the start of its turn until the fire goes out.' }
 });
 
 const has = (actor, id) => Boolean(actor?.conditions?.some(c => c.id === id));
