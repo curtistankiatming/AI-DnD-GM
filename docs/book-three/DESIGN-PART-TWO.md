@@ -85,8 +85,9 @@ Part Two adds:
 ## Who knows the rite
 
 Sable is the last person who knows the altered rite by heart. Every other
-caster reads from a copy, and that includes Hesk, who is the only trained
-caster left after Vell. The copy the Lantern Hall took is in Merrowgate. Corvane
+caster reads from a copy, and that includes Hesk. Corvane did Vell's castings
+and will not cast again, so Hesk, who stood at every one, is the only trained
+caster still willing. The copy the Lantern Hall took is in Merrowgate. Corvane
 knows it from his copy (if `b3_rite_destroyed`, that copy is gone).
 
 ## Hesk in Part Two
@@ -94,7 +95,7 @@ knows it from his copy (if `b3_rite_destroyed`, that copy is gone).
 Commander Idris Hesk was beaten on the Iron Road and taken into the council's
 custody. How he gets out depends on chapter 10:
 - `b3_rite_law`: he is released on licence to the Lantern Hall, because the law
-  needs a trained caster.
+  needs a trained caster and Corvane refuses.
 - `b3_rite_destroyed`: the Lantern Hall buys his bond.
 - `b3_rite_vell`: Merrowgate claims him as a contractor.
 
