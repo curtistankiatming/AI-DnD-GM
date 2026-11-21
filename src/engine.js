@@ -13,7 +13,7 @@ const Director = require("./director");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines } = require("./expansion");
+const { dialogueText, liveLines, lineApplies } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
@@ -536,6 +536,9 @@ function applyOutcome(state, written = {}, rng, events) {
     if (change) events.push({ type: "loot", tone: change > 0 ? "good" : "neutral", text: change > 0 ? `Received ${change} gold.` : `Paid ${-change} gold.` });
   }
   if (outcome.setFlags) Object.assign(state.story.flags, outcome.setFlags);
+  // flagsIf: [{when, setFlags}], flags that depend on the moment the choice is
+  // made (who is in the party, what is carried), checked like a written line's "when".
+  if (Array.isArray(outcome.flagsIf)) for (const entry of outcome.flagsIf) if (entry && entry.setFlags && lineApplies(state, { when: entry.when })) Object.assign(state.story.flags, entry.setFlags);
   // A companion walking out or coming back (src/away.js), before any approval.
   if (outcome.away) Away.apply(state, outcome.away, events);
   if (outcome.completeJob) W.completeJob(state, outcome.completeJob, events, extensionApi(), outcome.jobReward);
