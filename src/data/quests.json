@@ -5238,7 +5238,7 @@
       },
       {
         "say": "Elske",
-        "text": "Merrowgate: yes. And Merrowgate agrees with Highpass. I knew what he did to the Sallows lamps, and I kept him on because I needed his money for tonight. That was mine, not the council's. Write it down.",
+        "text": "Merrowgate: yes. And Merrowgate agrees with Highpass. I knew what he did to the Sallows lamps, and I kept him on because I needed his money for this vote. That was mine, not the council's. Write it down.",
         "when": {
           "flag": "keeper_told_elske"
         }
@@ -5518,7 +5518,7 @@
       },
       {
         "say": "maren",
-        "text": "She means it. Every word. I've listened for the lie all year, and there was never going to be one. That was never the thing to listen for."
+        "text": "She means it. Every word. I've listened for the lie all year. There was never going to be one."
       },
       {
         "say": "orin",
