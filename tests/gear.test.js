@@ -12,9 +12,9 @@ const equip = (s, itemId, actorId = 'player') => E.resolveAction(s, { type: 'equ
 test('requirements say what is missing, in plain words', () => {
   const s = sandbox('wizard', 5);
   assert.equal(Gear.requirementText(ITEMS['ember-brand']), 'Level 8 · Strength 13');
-  assert.match(Gear.unmet(s.player, ITEMS['ember-brand']), /^Needs level 8 \(you are 5\), Strength 13 \(you have \d+\)\.$/);
+  assert.match(Gear.unmet(s.player, ITEMS['ember-brand']), /^Needs level 8 \(you are 5\) and Strength 13 \(you have \d+\)\.$/);
   assert.equal(Gear.unmet(s.player, ITEMS['iron-longsword']), null);
-  assert.match(Gear.unmet(s.party.find(m => m.id === 'maren'), ITEMS['veilstep-cloak']), /Rogue or Ranger or Bard only/);
+  assert.match(Gear.unmet(s.party.find(m => m.id === 'maren'), ITEMS['veilstep-cloak']), /^Only a Rogue, Ranger or Bard can use this\.$/);
 });
 
 test('an item the wearer does not qualify for cannot be put on, and nothing changes', () => {
@@ -22,7 +22,7 @@ test('an item the wearer does not qualify for cannot be put on, and nothing chan
   const before = JSON.stringify(s.player.equipment);
   const out = equip(s, 'ember-brand');
   assert.equal(out.result.ok, false);
-  assert.match(out.result.error, /can't use Ember Brand\. Needs level 8/);
+  assert.match(out.result.error, /^You can't use Ember Brand\. Needs level 8/);
   assert.equal(JSON.stringify(out.state.player.equipment), before);
 });
 
@@ -118,4 +118,14 @@ test('every new item is well formed', () => {
 test('item skills sit with Items on the combat board', () => {
   const M = require('../public/management-view.js');
   assert.equal(M.actionGroup('gear:ember-brand', null), 'items');
+});
+
+test('the forge cannot get round a requirement', () => {
+  for (const id of ['field-plate', 'greatsword']) assert.deepEqual(ITEMS[`${id}-fine`].requires, ITEMS[id].requires);
+  assert.doesNotMatch(ITEMS['field-plate-fine'].purpose, /Any class/);
+});
+
+test('special stats read as more or less', () => {
+  assert.match(Gear.purpose(ITEMS['oathbound-mail']), /10% less damage taken/);
+  assert.match(Gear.purpose(ITEMS['warden-signet']), /10% more damage dealt/);
 });

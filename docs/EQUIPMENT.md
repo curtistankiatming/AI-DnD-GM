@@ -17,14 +17,18 @@ before. The code is in `src/gear.js`; the items are in `src/data/gear.json`.
 
 The item card ends with "Requires: Level 8 · Strength 13." When you choose who
 wears an item, anyone who can't is greyed out with the reason, for example
-"Needs level 8 (you are 5), Strength 13 (you have 10)." Trying anyway changes
+"Needs level 8 (you are 5) and Strength 13 (you have 10)." or "Only a
+Fighter or Cleric can use this." Trying anyway changes
 nothing and says why.
 
 Requirements are checked only when an item is put on. **An old save keeps
 everything its party already wears**, even if the wearer no longer qualifies.
 
 Two older items gained a requirement: Field Plate and the Greatsword need
-Strength 13.
+Strength 13, and so do their Fine versions from the smith. That leaves them to
+Fighters, Clerics and Orin unless the hero raises Strength. Companions'
+ability scores don't change, so Maren (Strength 10) and Nessa (Strength 9)
+can't wear the heaviest gear.
 
 ## Rarity
 
@@ -56,11 +60,11 @@ rule (its save key, `cloakReady`, is unchanged).
 |---|---|---|---|---|
 | Mirefang Dagger | Main hand | Uncommon | Dexterity 13 | Hamstring: Slowed, 2 rounds |
 | Veilstep Cloak | Accessory | Uncommon | Rogue, Ranger or Bard | +1 AC; Stealth story ability |
-| Hexwood Rod | Main hand (focus) | Rare | Level 6; Wizard, Bard or Cleric | +1 spell attack and DC; Unravel: Vulnerable |
-| Bulwark Shield | Off hand | Rare | Fighter or Cleric; Strength 13 | +2 AC; Brace: Fortified |
-| Ember Brand | Main hand | Rare | Level 8; Strength 13 | +1 to hit; Kindle: Burning, 2 rounds |
+| Hexwood Rod | Main hand (focus) | Rare | Level 4; Wizard, Bard or Cleric | +2 spell attack and DC; Unravel: Vulnerable |
+| Bulwark Shield | Off hand | Rare | Fighter or Cleric; Strength 13 | +3 AC; Brace: Fortified |
+| Ember Brand | Main hand | Rare | Level 8; Strength 13 | +1 to hit, +2 damage; Kindle: Burning, 2 rounds |
 | Warden's Signet | Accessory | Rare | Level 10 | +10% damage dealt; Insight story ability |
-| Oathbound Mail | Armour | Epic | Level 15; Strength 15 | AC 17; 10% less damage taken |
+| Oathbound Mail | Armour | Epic | Level 15; Strength 15 | AC 19; 10% less damage taken |
 
 They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
 (brand, signet) and Cinder Fold (mail, brand).

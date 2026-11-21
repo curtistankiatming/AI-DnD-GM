@@ -29,24 +29,31 @@ function requirementText(item) {
   if (!r) return '';
   const parts = [];
   if (r.level > 1) parts.push(`Level ${r.level}`);
-  if (r.classes?.length) parts.push(r.classes.map(className).join(' or '));
+  if (r.classes?.length) parts.push(orList(r.classes.map(className)));
   for (const [id, n] of Object.entries(r.abilities || {})) parts.push(`${abilityName(id)} ${n}`);
   return parts.join(' · ');
 }
 
+// "A, B or C".
+const orList = (xs) => xs.length > 1 ? `${xs.slice(0, -1).join(', ')} or ${xs[xs.length - 1]}` : xs[0] || '';
+
 // Why `actor` can't put `item` on, in plain words, or null when they can.
+// "Only a Fighter or Cleric can use this. Needs Strength 13 (you have 8)."
 function unmet(actor, item) {
   const r = item?.requires;
   if (!r || !actor) return null;
-  const who = actor.id === 'player' ? 'You' : actor.name.split(' ')[0];
-  const reasons = [];
-  if (r.level > 1 && (actor.level || 1) < r.level) reasons.push(`level ${r.level} (${who === 'You' ? 'you are' : who + ' is'} ${actor.level || 1})`);
-  if (r.classes?.length && !r.classes.includes(gearClass(actor))) reasons.push(`${r.classes.map(className).join(' or ')} only`);
+  const you = actor.id === 'player' || actor.kind === 'player';
+  const is = you ? 'you are' : `${actor.name} is`, has = you ? 'you have' : `${actor.name} has`;
+  const out = [];
+  if (r.classes?.length && !r.classes.includes(gearClass(actor))) out.push(`Only a ${orList(r.classes.map(className))} can use this.`);
+  const needs = [];
+  if (r.level > 1 && (actor.level || 1) < r.level) needs.push(`level ${r.level} (${is} ${actor.level || 1})`);
   for (const [id, n] of Object.entries(r.abilities || {})) {
     const have = actor.abilities?.[id] ?? 10;
-    if (have < n) reasons.push(`${abilityName(id)} ${n} (${who === 'You' ? 'you have' : who + ' has'} ${have})`);
+    if (have < n) needs.push(`${abilityName(id)} ${n} (${has} ${have})`);
   }
-  return reasons.length ? `Needs ${reasons.join(', ')}.` : null;
+  if (needs.length) out.push(`Needs ${orList(needs).replace(/ or ([^,]*)$/, ' and $1')}.`);
+  return out.length ? out.join(' ') : null;
 }
 
 const worn = (a) => slots.map((s) => ITEMS[a?.equipment?.[s]]).filter(Boolean);
@@ -83,8 +90,9 @@ function refreshStory(a) {
 // Plain words for the item card: what the extra rules do.
 function describe(item) {
   const out = [];
-  if (item.stats?.dealt) out.push(`${item.stats.dealt > 0 ? '+' : ''}${Math.round(item.stats.dealt * 100)}% damage dealt`);
-  if (item.stats?.taken) out.push(`${item.stats.taken > 0 ? '+' : ''}${Math.round(item.stats.taken * 100)}% damage taken`);
+  const pct = (v) => Math.round(Math.abs(v) * 100);
+  if (item.stats?.dealt) out.push(`${pct(item.stats.dealt)}% ${item.stats.dealt > 0 ? 'more' : 'less'} damage dealt`);
+  if (item.stats?.taken) out.push(`${pct(item.stats.taken)}% ${item.stats.taken > 0 ? 'more' : 'less'} damage taken`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
   return out;

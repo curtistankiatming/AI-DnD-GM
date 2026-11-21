@@ -68,7 +68,7 @@ function weaponProfile(a){
 function equip(state,id,actorId='player'){
   const a=actor(state,actorId),item=ITEMS[id];if(!a||!item?.slot)return {ok:false,error:'Select an existing party member and an equippable item.'};
   if(a.equipment[item.slot]===id)return {ok:false,error:`${a.name} already has that item equipped.`};
-  const unmet=Gear.unmet(a,item);if(unmet)return {ok:false,error:`${a.name} can't use ${item.name}. ${unmet}`};
+  const unmet=Gear.unmet(a,item);if(unmet)return {ok:false,error:`${a.id==='player'?'You':a.name} can't use ${item.name}. ${unmet}`};
   if(available(state,id)<1)return {ok:false,error:'No unallocated copy is available. Unequip it from the other party member first.'};
   if(item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded'))return {ok:false,error:'A shield cannot be equipped with a two-handed weapon.'};
   if(item.slot==='mainHand'&&item.weapon?.properties?.includes('twoHanded'))a.equipment.offHand=null;
