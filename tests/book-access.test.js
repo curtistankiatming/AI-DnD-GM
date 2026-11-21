@@ -88,6 +88,19 @@ test('upgrading carries the waiting save straight into the next book', () => {
   assert.equal(Book.chapter(own), null);
 });
 
+test('a free account is told, before it starts an AI story, that doing so closes the paid book to this save', () => {
+  const { state, events } = home(finishChapter(Book.grant(ready('aftermath'), 1), 'aftermath'));
+  const end = events.map((e) => e.text).find((t) => /for paid accounts/.test(t));
+  // The paid book first, then the one trade-off, said plainly.
+  assert.ok(end.indexOf('Book 2, The Council of Small Voices, for paid accounts') < end.indexOf('AI storyteller'), end);
+  assert.match(end, /once this save starts one, it follows its own story and will not go back to Book 2/);
+  assert.doesNotMatch(end, /written campaign ends here/);
+  // The board says the same every visit, and says when the save has gone its own way.
+  assert.equal(E.buildView(state).world.paidBook.closed, undefined);
+  const own = Book.grant(JSON.parse(JSON.stringify(state)), 1); own.chronicle = { ...(own.chronicle || {}), arc: { title: 'My own road' } };
+  assert.equal(E.buildView(own).world.paidBook.closed, true);
+});
+
 test('a save part-way through a book it can no longer open waits, untouched', () => {
   const s = Book.grant(ready('fenmere'), 1);
   assert.equal(Book.locked(s), true);

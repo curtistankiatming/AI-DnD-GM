@@ -564,7 +564,7 @@ function resolveTacticalAction(state,actor,action,rng,events) {
     const target=kind==='focus'?validateCombatTarget(state,action.targetId,'enemy'):kind==='protect'?validateCombatTarget(state,action.targetId,'ally'):actor;
     if(!target)return invalidResult(state,events,'Choose a valid order target.');
     state.combat.order={kind,targetId:target.id,round:state.combat.round};state.combat.orderRound=state.combat.round;
-    const text=kind==='focus'?`Companions focus their attacks on ${target.name}.`:kind==='protect'?`Companions prioritize protection and healing for ${target.name}.`:'Companions provide covering help for the hero’s next objective check instead of attacking when help is still needed.';
+    const text=kind==='focus'?`Companions focus their attacks on ${target.name}.`:kind==='protect'?`Companions prioritize protection and healing for ${target.name}.`:'Companions help with the objective instead of attacking, giving your next objective check advantage.';
     events.push({type:'party',tone:'good',text});return {ok:true,kind:'combat',outcomeText:text};
   }
   if(id==='objective'||id==='spec-objective'){
@@ -581,7 +581,7 @@ function resolveTacticalAction(state,actor,action,rng,events) {
       if(success)o.progress+=1;
       events.push({type:'roll',tone:success?'good':'warning',text:`${o.label}: d20 ${d20.natural} ${formatSigned(plan.bonus)} = ${total} vs DC ${plan.dc} — ${success?'progress made':'no progress this turn'}. ${o.progress}/${o.target}.`,roll:{...d20,total,bonus:plan.bonus,dc:plan.dc,success}});
     }
-    return {ok:true,kind:'combat',outcomeText:`${actor.name} works toward ${o.name.toLowerCase()}: ${o.progress}/${o.target}.`};
+    return {ok:true,kind:'combat',outcomeText:`${actor.name} works to ${o.name.charAt(0).toLowerCase()+o.name.slice(1)}: ${o.progress}/${o.target}.`};
   }
   if(id.startsWith('combo:')){
     const cid=id.slice(6),comp=state.combat.actors.find(a=>a.refId===cid&&a.kind==='companion'&&a.hp>0);

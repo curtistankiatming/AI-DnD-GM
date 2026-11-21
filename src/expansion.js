@@ -44,7 +44,7 @@ for(const base of UPGRADE_BASES){
   if(item.armor){item.armor.base+=1;effect='+1 base AC.';}
   if(item.category==='shield'){item.acBonus=(item.acBonus||0)+1;effect='+1 AC.';}
   if(item.category==='focus'){item.spellAttackBonus=(item.spellAttackBonus||0)+1;effect='+1 spell attack bonus.';}
-  item.purpose=`${base.purpose} Fine quality: ${effect} This is the maximum forge tier in this campaign.`;
+  item.purpose=`${base.purpose} Fine quality: ${effect} The smith cannot improve it further.`;
   ITEMS[item.id]=item;
 }
 // Items with requirements, special stats, skills and story abilities

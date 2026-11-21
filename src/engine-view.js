@@ -10,6 +10,7 @@ const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
 const Road = require("./road-story");
 const Journal = require("./journal");
+const Away = require("./away");
 const { titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
 const { dialogueText, liveLines, nodeLocation } = require("./expansion");
@@ -156,6 +157,8 @@ function partyView(state) {
       maxHp: actor?.maxHp ?? member.maxHp,
       ac: actor?.ac ?? member.ac,
       bond: member.bond,
+      // At the walkout line for this chapter (src/away.js).
+      uneasy: Away.uneasy(state, member.id),
       tactic: member.tactic,
       tactics: TACTICS,
       conditions: actor?.conditions || member.conditions,

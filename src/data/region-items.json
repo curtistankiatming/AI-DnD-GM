@@ -43,7 +43,7 @@
     "rarity": "Common",
     "value": 12,
     "description": "A hooded lamp with a long-burning wick.",
-    "purpose": "Reusable: helps investigation in mines and drowned ruins when shown on a route card. Routine fuel tracking is deliberately omitted."
+    "purpose": "Reusable: helps investigation in mines and drowned ruins when shown on a route card."
   },
   {
     "id": "herb-bundle",
