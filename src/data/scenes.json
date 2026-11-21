@@ -722,7 +722,7 @@
             "id": "maren",
             "label": "Ask Maren what became of the keeper at Upper Morrow",
             "lines": [
-              { "say": "maren", "text": "Sister Hesper. She went for service when I was nineteen. The receipt said \"released to duty\". I asked what duty, and the officer said the Commandery's, and gave me more tea." },
+              { "say": "maren", "text": "Sister Corra. She went for service when I was nineteen. The receipt said \"released to duty\". I asked what duty, and the officer said the Commandery's, and gave me more tea." },
               { "say": "maren", "text": "I never found out. I don't suppose he'd know. I don't suppose anyone wrote it down." },
               { "say": "orin", "text": "Someone always writes it down. That's what the Commandery is." },
               { "say": "maren", "text": "Then I'd like to read it." }
