@@ -294,6 +294,9 @@ function availability(state) {
   if (state.combat?.active) return 'Finish the fight before asking for a new adventure.';
   if (!w.completed?.bell) return 'Finish the bell investigation first. After that, the AI game master can write new adventures for you.';
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
+  // A town a story choice has emptied (Book Three's Vell) has nobody left to ask.
+  const here = TOWNS[STORY_NODES[state.story.nodeId].townId];
+  if (here?.emptied && state.story?.flags?.[here.emptied.flag]) return `There is nobody left in ${here.name} to ask for work. Ask in another town.`;
   if (openAdventures(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
   return null;
 }

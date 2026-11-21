@@ -8,6 +8,8 @@ const { STORY_NODES, ENEMIES } = require('../src/content');
 const { QUESTS, TOWNS, SCENES } = require('../src/expansion');
 const draft = require('./fixtures/director-draft');
 const high = () => .999999;
+// With BRIARWATCH_PREVIEW_BOOKS, Book Three follows Book Two and the books do not end here.
+const PREVIEW = /^(1|true|yes|on)$/i.test(String(process.env.BRIARWATCH_PREVIEW_BOOKS || ''));
 
 const TWO = Object.values(QUESTS).filter((q) => q.book === 2);
 function hero(cls = 'fighter', level = 1) { const s = E.createNewGame({ name: 'Rowan', classId: cls }); if (level > 1) E.awardXp(s, P.XP_NEXT[level - 1], [], 'test fixture'); return s; }
@@ -122,12 +124,14 @@ test('while Book Two is still being written, its last written chapter says "to b
   let s = ready(last.id);
   s.story.nodeId = `q-${last.id}-after`; s.world.activeQuest = last.id; s.world.onExpedition = true;
   const r = act(s, { type: 'story-choice', choiceId: last.decisions[0].id });
-  assert.ok(r.events.some((e) => /^To be continued\./.test(e.text)));
   assert.equal(r.state.story.flags[Book.FINISHED], undefined, 'The save does not become an AI story.');
   assert.equal(r.view.world.book.waiting, true);
-  // Through the camp scene to town; the AI may still write small side quests, capped below the next chapter.
-  let t = r.state;
-  for (let i = 0; i < 5 && !E.buildView(t).world.town; i++) t = act(t, { type: 'story-choice', choiceId: E.buildView(t).scene.choices[0].id }).state;
+  // Through the chapter's last scene to town, where "to be continued" is said
+  // (straight away if the chapter has no scene); the AI may still write small
+  // side quests, capped below the next chapter.
+  let t = r.state; const events = [...r.events];
+  for (let i = 0; i < 8 && !E.buildView(t).world.town; i++) { const x = act(t, { type: 'story-choice', choiceId: E.buildView(t).scene.choices[0].id }); t = x.state; events.push(...x.events); }
+  assert.equal(events.filter((e) => /^To be continued\./.test(e.text)).length, 1);
   const made = act(t, { type: 'director-commission', draft: draft() });
   assert.equal(made.state.director.quests[made.result.questId].side, true);
   assert.equal(Book.levelCap(made.state), Book.LAST_LEVEL + 1);
@@ -171,8 +175,8 @@ test('chapters 7 to 10 run Cinder Fold, Briarwatch, Cinder Fold, then home', () 
   assert.deepEqual(['cinderfold', 'vote', 'motherbell', 'oath'].map((id) => [QUESTS[id].level, QUESTS[id].town, QUESTS[id].nextTown || QUESTS[id].town]), [
     [16, 'cinderfold', 'briarwatch'], [17, 'briarwatch', 'cinderfold'], [18, 'cinderfold', 'cinderfold'], [19, 'cinderfold', 'briarwatch']
   ]);
-  assert.equal(Book.CHAPTERS.at(-1).id, 'oath');
-  assert.equal(Book.WRITING, null, 'Book Two is complete.');
+  assert.equal(Book.CHAPTERS.filter((q) => (q.book || 1) <= 2).at(-1).id, 'oath');
+  if (!PREVIEW) assert.equal(Book.WRITING, null, 'Book Two is complete.');
 });
 
 test('the Mother Bell is told the way the vote went', () => {
@@ -193,7 +197,7 @@ test("Elske's charge names what this hero decided alone, and nothing they didn't
   assert.doesNotMatch(b, /own fee|gave away a harbour/);
 });
 
-test('the last chapter ends the books, then the epilogue records the Second Oath', () => {
+test('the last chapter ends the books, then the epilogue records the Second Oath', { skip: PREVIEW && 'Book Three follows in the preview (tests/book-three.test.js)' }, () => {
   let s = ready('oath');
   s.story.nodeId = 'q-oath-after'; s.world.activeQuest = 'oath'; s.world.onExpedition = true;
   const r = act(s, { type: 'story-choice', choiceId: 'seat' });
