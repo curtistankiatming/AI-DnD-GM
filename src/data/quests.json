@@ -6101,7 +6101,7 @@
         "label": "Look in on Pell Haverick in the miners' lock-up",
         "lines": [
           {
-            "narrate": "The miners have put Pell Haverick in their lock-up by the gate, a stone room meant for drunks on pay night. He has been given a chair, a blanket and one lamp, which is the first lamp in years he has had to pay for himself, and he has turned it down very low."
+            "narrate": "The miners have put Pell Haverick in their lock-up by the gate, a stone room meant for drunks on pay night. He has been given a chair, a blanket and one lamp, the first lamp in years that he does not own, and he has turned it down very low."
           },
           {
             "narrate": "Iona sits outside the grille with a writing desk across her knees, reading to him from a list. She does not stop when you come in."
@@ -6136,14 +6136,14 @@
           },
           {
             "say": "Haverick",
-            "text": "You told the whole auction hall about me, you know, and I wasn't even there to object. I took that very personally. I'd like it noted, Quartermaster.",
+            "text": "You told the whole auction hall about me, you know, and I wasn't even there to object. I took that very personally. Put it on your list, Quartermaster.",
             "when": {
               "flag": "harbour_exposed"
             }
           },
           {
             "say": "Iona",
-            "text": "It's noted. Under 'complaints, the prisoner's'.",
+            "text": "It's on the list. Under 'complaints, the prisoner's'.",
             "when": {
               "flag": "harbour_exposed"
             }
