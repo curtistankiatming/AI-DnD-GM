@@ -5710,7 +5710,10 @@
       },
       {
         "say": "nessa",
-        "text": "I had your back the whole time, you know. You never looked round once."
+        "text": "I had your back the whole time, you know. You never looked round once.",
+        "when": {
+          "party": "orin"
+        }
       },
       {
         "say": "orin",
