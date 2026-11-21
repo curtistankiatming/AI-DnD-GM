@@ -275,7 +275,7 @@
           { "say": "orin", "text": "I couldn't say yes. And I couldn't write that I'd think about it, because I wasn't going to. So I didn't write." },
           { "say": "Hal", "text": "You could have written that it was a bad idea." },
           { "say": "orin", "text": "It was a bad idea." },
-          { "say": "Hal", "text": "I know that now. Took me two years and a cabbage patch." },
+          { "say": "Hal", "text": "I know that now. Took me a summer and a cabbage patch." },
           { "narrate": "Hal laughs, a short tired bark of a laugh, and puts another stick on the fire. Orin doesn't laugh. He is looking at the beacon frame on top of the tower, where the echo-stones used to hang." },
           { "say": "orin", "text": "Forty of you out here. Nobody came. I should have come." }
         ],
@@ -584,7 +584,7 @@
             "label": "“To the council. It can recall me, like anyone.”",
             "lines": [
               { "narrate": "Aveline writes it down. Then, after a moment, she adds a line, and reads it out: 'Recallable by two-thirds.' The council votes on it. It is the fastest vote anyone has ever seen." },
-              { "say": "Brannagh", "text": "I'd like it noted that we can be quick when we feel like it." }
+              { "say": "Iona", "text": "Noted. We can be quick when we feel like it." }
             ],
             "setFlags": { "second_oath": "council" },
             "next": "forge"

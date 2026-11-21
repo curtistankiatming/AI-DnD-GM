@@ -12,7 +12,25 @@
     "threat": "Armed extortion and a trapped causeway. A rope or climbing kit can open a side approach.",
     "faction": "trade",
     "brief": "Three wagons carrying winter seed have stopped answering their road signals. Find the missing drivers before the village’s planting stores are sold across the border.",
-    "opening": "An abandoned wagon stands with its wheels chocked, not broken. From the tollhouse beyond, a bell repeats three short notes. A driver behind a shutter flashes a hand and vanishes.",
+    "opening": [
+      {
+        "narrate": "Reeve Aveline gave you this job in the square with a list. Three wagons of winter seed, three drivers, and one of the drivers Jory Tanner, whose family has farmed the Ashford road since before the bell. 'If that seed is sold across the border,' she said, 'we eat the seed corn in February and go hungry in May. Bring it back. Bring Jory back first.'"
+      },
+      {
+        "narrate": "Now an empty wagon stands on the western road with its wheels chocked, not broken. Somebody stopped it on purpose, took the horses and left the seed. From the tollhouse beyond, where the new toll captain, Venn, keeps his office, a bell repeats three short notes: the old road signal for 'wait', rung backwards."
+      },
+      {
+        "say": "orin",
+        "text": "Wagon's chocked. Bandits don't chock wheels."
+      },
+      {
+        "say": "maren",
+        "text": "Clerks do."
+      },
+      {
+        "narrate": "A face appears behind a shutter in the tollhouse yard, sees you, flashes one hand, and is pulled away from the glass."
+      }
+    ],
     "clue": "The road signal has been reversed. Drivers are being held while their cargo is inventoried; the toll captain’s own payment slips contradict his orders.",
     "investigate": {
       "label": "Compare the wagon manifest with the toll notices",
@@ -20,8 +38,27 @@
       "alt": [
         "insight"
       ],
-      "success": "You find two incompatible seals. The captain has been collecting an illegal second toll and hiding the drivers who objected.",
-      "failure": "The handwriting defeats you, but you find a driver’s scratched tally: the prisoners are still alive. You now know where to focus."
+      "success": [
+        {
+          "narrate": "The manifest says three wagons, forty sacks each. Venn's notice on the tollhouse door says the seed is 'held for inspection'. The two papers carry two different seals: the road wardens' thorn, and a second one that Venn has had cut for himself, slightly crooked."
+        },
+        {
+          "say": "orin",
+          "text": "He's collecting the toll twice. Once for the road. Once for himself."
+        },
+        {
+          "narrate": "Tucked behind the notice is a pay-slip in Venn's own hand, for 'yard work', to three men whose faces are on the wanted board in Ashford."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The handwriting defeats you. But scratched into the abandoned wagon's tailboard with a nail is a tally: three strokes, and the word ALIVE."
+        },
+        {
+          "say": "maren",
+          "text": "Jory Tanner's hand. He keeps the tithe-book at the shrine. Nobody else makes an A like a tent."
+        }
+      ]
     },
     "route": {
       "label": "Cross under the causeway and reach the drivers",
@@ -33,7 +70,18 @@
         "silk-rope",
         "climbing-kit"
       ],
-      "success": "You cross beneath the sentries. The prisoners pass you a complete set of duplicate receipts.",
+      "success": [
+        {
+          "narrate": "Under the causeway the old drainage arches are knee-deep and full of frogs. You come up through a grating in the drivers' yard, where Jory Tanner is sitting on a seed sack with his hands tied, and he looks at you as if you are late for supper."
+        },
+        {
+          "say": "Jory",
+          "text": "Took your time. Here. Venn makes everybody sign for everything. These are his copies."
+        },
+        {
+          "narrate": "He has been sitting on the duplicate receipts for two days."
+        }
+      ],
       "failure": "A loose stone gives you away. You reach the tollhouse, but the captain pulls his guards inward."
     },
     "crisis": [
@@ -89,12 +137,35 @@
     "foe": "toll-captain",
     "foeName": "Captain Venn",
     "enemyTheme": "road",
-    "after": "The drivers recover their animals. The confiscated coin could compensate the households at once or fund an escort for future caravans.",
+    "after": [
+      {
+        "narrate": "The drivers get their horses back from a field behind the tollhouse, where Venn had been charging them for grazing. Jory Tanner counts the seed sacks twice, and then a third time, out loud, because his boy Wat is watching from the milestone."
+      },
+      {
+        "say": "Jory",
+        "text": "Forty, forty, thirty-nine. One's gone. Venn's guards took it for their own fields, I'd bet. Let them have it. I've got my wagons and my boy."
+      },
+      {
+        "narrate": "Venn's strongbox holds the illegal tolls, sorted by road and by week. It could go back to the households it was taken from, or pay for an escort on this road so it doesn't happen again."
+      }
+    ],
     "decisions": [
       {
         "id": "households",
         "label": "Return the illegal tolls to the drivers",
-        "text": "Families recover their winter coin. Briarwatch’s trust in you grows.",
+        "text": [
+          {
+            "narrate": "You count the toll money back out to the drivers, family by family and week by week, with Venn's own ledger as the list. It takes all afternoon. Jory Tanner tells everyone in three villages."
+          },
+          {
+            "say": "maren",
+            "text": "That is the slowest way to give money back I've ever seen."
+          },
+          {
+            "say": "orin",
+            "text": "It's the only way they'll believe it."
+          }
+        ],
         "rep": {
           "wardens": 2
         },
@@ -103,14 +174,77 @@
       {
         "id": "escort",
         "label": "Fund a permanent caravan escort",
-        "text": "Iona receives enough money to keep a watch on the road. Trading houses recognize your work.",
+        "text": [
+          {
+            "narrate": "You hand Venn's strongbox to Reeve Aveline, who uses it to hire four riders to keep the western road through the winter. The trading houses in Ashford have heard about it before you get there."
+          },
+          {
+            "say": "orin",
+            "text": "Next time somebody tries this, there's somebody to stop them."
+          },
+          {
+            "say": "maren",
+            "text": "And the families who paid Venn get a road instead of their money."
+          }
+        ],
         "rep": {
           "trade": 2
         },
         "flag": "road_escort"
       }
     ],
-    "approach": "The causeway runs straight at the tollhouse, in full view of its shutters. Underneath it, the old drainage arches lead toward the drivers’ yard: low, wet and out of sight."
+    "approach": "The causeway runs straight at the tollhouse, in full view of its shutters. Underneath it, the old drainage arches lead toward the drivers’ yard: low, wet and out of sight.",
+    "talks": [
+      {
+        "id": "board",
+        "label": "Read the new toll board at the foot of the causeway",
+        "lines": [
+          {
+            "narrate": "The toll board has been repainted this month. The old board charged a penny a wheel. The new one charges a penny a wheel, a penny a hoof, two pence a sack, a road-keeping levy, a bell levy (the bell has been silent for a week), and a fee for the reading of this board."
+          },
+          {
+            "say": "orin",
+            "text": "That last one's new."
+          },
+          {
+            "say": "maren",
+            "text": "He's charging people to find out what he's charging them."
+          },
+          {
+            "narrate": "Under the board, in chalk, somebody has written VENN IS A THIEF. Somebody else has rubbed it out, though not very hard."
+          }
+        ]
+      },
+      {
+        "id": "wat",
+        "label": "Talk to the boy sitting on the milestone",
+        "lines": [
+          {
+            "narrate": "A boy of about twelve is sitting on the milestone with his boots off, rubbing his feet. He has the Tanner chin."
+          },
+          {
+            "say": "Wat",
+            "text": "Pa said if they stopped us, I was to run home and not look back. I ran. I'm a good runner. He said that too."
+          },
+          {
+            "say": "Wat",
+            "text": "I came back, though. Somebody has to be here when he comes out."
+          },
+          {
+            "say": "orin",
+            "text": "Stay on the stone. If you see us run, run too."
+          },
+          {
+            "say": "Wat",
+            "text": "Which way?"
+          },
+          {
+            "say": "orin",
+            "text": "Same way as us. Faster."
+          }
+        ]
+      }
+    ]
   },
   "marsh": {
     "id": "marsh",
@@ -121,13 +255,30 @@
     "xp": 1250,
     "gold": 100,
     "region": "Fenmere marsh",
-    "threat": "Poisonous vapor and flooded paths. Antitoxin protects the next poison save; a lantern helps identify safe valves.",
+    "threat": "Poisoned water and flooded paths, and two banks of one village ready to fight over it. Antitoxin protects the next poison save; a lantern helps you find the safe valves.",
     "faction": "wilds",
-    "brief": "Fenmere’s well has turned bitter. The village blames marsh gatherers, who in turn blame a new pumping station. Find the cause before fear becomes violence.",
-    "opening": "Reeds lie flat around the pumping station. A sick heron watches from a dry pipe. On opposite banks, villagers and gatherers wait with improvised weapons.",
-    "clue": "The pump carries dissolved ward ash upstream. Both communities drink the same tainted water; neither poisoned the other.",
+    "brief": "Fenmere's well has turned bitter. The upper bank blames the marsh gatherers on the lower bank, who blame the new sluice-house the upper bank built. Find the cause before fear becomes violence.",
+    "opening": [
+      {
+        "narrate": "Fenmere is two villages pretending to be one: the upper bank on its rise, with the well and the church, and the lower bank down among the reeds, where the gatherers cut rushes and smoke eels. Between them stands the new sluice-house, which the upper bank paid for and the lower bank did not ask for."
+      },
+      {
+        "narrate": "Reeds lie flat around it. A sick heron watches from a dry pipe. On the upper bank, villagers stand holding pitchforks they are pretending are for hay. On the lower bank, the gatherers hold eel-spears behind their headwoman, old Sefa, and are not pretending anything."
+      },
+      {
+        "narrate": "On the sluice-house steps in the middle, a young woman with a little bell on a cord round her neck is trying to make both sides listen to her, and neither is."
+      },
+      {
+        "say": "Ilka",
+        "text": "I'm the keeper! It's the ward's water! If everybody would just... Nobody poisoned anybody!"
+      },
+      {
+        "narrate": "At the edge of it all, a white-haired woman with a brown goat on a rope watches the whole thing and says nothing at all."
+      }
+    ],
+    "clue": "The new sluice draws dissolved ward ash from a cracked jar dumped upstream. Both banks drink the same tainted water; neither poisoned the other.",
     "investigate": {
-      "label": "Examine the pump residue with the gathered healers",
+      "label": "Examine the residue in the sluice with the village healers",
       "skill": "medicine",
       "alt": [
         "nature",
@@ -136,8 +287,28 @@
       "tools": [
         "lantern"
       ],
-      "success": "The copper-green residue is artificial. You trace it to a cracked containment jar feeding the intake.",
-      "failure": "Your samples are spoiled, but the sick fish cluster below the new pump. It is enough to turn suspicion toward the machinery."
+      "success": [
+        {
+          "narrate": "The residue in the sluice's intake is copper-green and smells like a burnt church. Ward ash. Somebody has dumped old ward ash upstream in a cracked jar, and the new sluice draws it in and sends it straight up to the well."
+        },
+        {
+          "say": "Ilka",
+          "text": "Ward ash? Nobody in Fenmere burns wards."
+        },
+        {
+          "say": "maren",
+          "text": "Nobody in Fenmere. Somebody upstream is getting rid of something."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Your samples spoil in the jar. But the sick fish are all lying below the new sluice, belly-up, in a line that points straight at it."
+        },
+        {
+          "say": "Sefa",
+          "text": "Told you."
+        }
+      ]
     },
     "route": {
       "label": "Reach the intake through the vapor trench",
@@ -152,14 +323,37 @@
       "success": "You choose the dry stepping stones and arrive without disturbing the trapped vapor.",
       "failure": "A gas pocket ruptures around the party. You reach the intake coughing, with less time to work."
     },
-    "crisis": "A bound marsh guardian lashes at anyone near the valves. Its keeper shouts that opening the spillway will flood the gatherers’ shelters; leaving it shut will poison the well again.",
+    "crisis": [
+      {
+        "narrate": "As you reach the valves, the water in the sluice-race stands up. It is the fen's guardian, the old ward-spirit of the marsh, choked on the ash and lashing at anything that comes near the valves."
+      },
+      {
+        "say": "Ilka",
+        "text": "Open the spillway and the lower bank's shelters flood! Leave it shut and the well's poisoned again! I don't... I haven't got a verse for this!"
+      },
+      {
+        "say": "orin",
+        "text": "Then we make you some room to find one."
+      }
+    ],
     "peaceful": {
-      "label": "Show both banks the residue and organize a controlled release",
+      "label": "Show both banks the residue and organise a controlled release",
       "skill": "persuasion",
       "alt": [
         "medicine"
       ],
-      "success": "Both groups carry their vulnerable neighbors to high ground. With no one left in its threatened boundary, the guardian accepts the keeper’s recall.",
+      "success": [
+        {
+          "narrate": "You stand on the sluice-house steps with a jar of green water in each hand and make both banks look at it. Then you make them look at each other, which is harder."
+        },
+        {
+          "narrate": "It is Sefa who moves first. She sends her grandsons up to help carry the upper bank's old people to the high ground, and the upper bank, ashamed of itself, sends carts down for the gatherers' sick. With nobody left inside its boundary, the guardian lets Ilka sing it back to sleep."
+        },
+        {
+          "say": "Ilka",
+          "text": "I did have a verse. It was the second one. It's always the second one."
+        }
+      ],
       "failure": "The warning gets some people moving, but the keeper cannot calm the guardian. You must open the safe valves while it rages.",
       "labelNoLead": "Get both banks to look at the water together and organize a controlled release"
     },
@@ -180,12 +374,27 @@
     "foe": "marsh-guardian",
     "foeName": "Ashbound Marsh Guardian",
     "enemyTheme": "wild",
-    "after": "With clean water running, the two banks must decide who will care for the pump. Neither trusts the other yet.",
+    "after": [
+      {
+        "narrate": "By evening the water runs clean, and the two banks are standing on either side of the sluice-house arguing about who will look after it, which everyone agrees is an improvement."
+      },
+      {
+        "say": "Ilka",
+        "text": "Somebody has to keep the sluice. It can't be me. I've got the ward."
+      },
+      {
+        "narrate": "The woman with the goat comes down from the rise at last, looks at the sluice-house, looks at both banks, and goes home again without a word. Ilka says that was Brannagh, and that it means she approves."
+      }
+    ],
     "decisions": [
       {
         "id": "council",
         "label": "Establish a shared water council",
-        "text": "Each bank appoints a keeper. It is slower work, but neither controls the other’s drinking water.",
+        "text": [
+          {
+            "narrate": "Each side appoints a keeper for the water. The gatherers send Sefa. The village sends Brannagh, who says she'll do it as long as nobody expects her to be pleasant. The first meeting lasts four hours. At the end of it, the water is still clean."
+          }
+        ],
         "rep": {
           "wilds": 2,
           "wardens": 1
@@ -194,15 +403,63 @@
       },
       {
         "id": "engineers",
-        "label": "Ask Ashford’s engineers to maintain the pump",
-        "text": "Paid engineers take charge and guarantee a regular inspection schedule.",
+        "label": "Ask Ashford's engineers to maintain the sluice",
+        "text": [
+          {
+            "narrate": "Paid engineers from Ashford take charge of the sluice and promise an inspection every month. They send Fenmere the first bill before they have left the village."
+          }
+        ],
         "rep": {
           "trade": 2
         },
         "flag": "marsh_engineers"
       }
     ],
-    "approach": "A trench of yellow vapor runs under the reeds to the intake. The causeway above it is dry and open, and both banks are watching it."
+    "approach": "A trench of yellow vapor runs under the reeds to the intake. The causeway above it is dry and open, and both banks are watching it.",
+    "talks": [
+      {
+        "id": "ilka",
+        "label": "Talk to Ilka, the young keeper",
+        "lines": [
+          {
+            "say": "Ilka",
+            "text": "I've been keeper since the spring. Old Edric kept the ward before me, and then he went off to Ashford about some letters and never came back, and they gave it to me because I know the verses. I'm good at the verses. I'm not good at this."
+          },
+          {
+            "say": "Ilka",
+            "text": "The well went bitter the week the sluice-house opened. The upper bank says the gatherers put something in it. The gatherers say the sluice did it. Nobody asks the keeper. I'm nineteen."
+          },
+          {
+            "say": "maren",
+            "text": "Edric Moss?"
+          },
+          {
+            "narrate": "Maren takes out a soft, much-folded sheet of paper, runs her finger down it, and stops. She does not say anything else. She puts the paper away very carefully."
+          }
+        ]
+      },
+      {
+        "id": "sefa",
+        "label": "Ask the gatherers' headwoman what she thinks happened",
+        "lines": [
+          {
+            "narrate": "Old Sefa is smoking eels on the lower bank as if nothing at all were happening, which on the lower bank is a political position."
+          },
+          {
+            "say": "Sefa",
+            "text": "The upper bank built a sluice on our water to fill their well faster. Then their well went bad. And now it's us that poisoned it. Funny how it's always us."
+          },
+          {
+            "say": "orin",
+            "text": "Did you?"
+          },
+          {
+            "say": "Sefa",
+            "text": "If I poisoned somebody, soldier, they'd know about it."
+          }
+        ]
+      }
+    ]
   },
   "bridge": {
     "id": "bridge",
@@ -216,7 +473,29 @@
     "threat": "Sabotaged anchors and barricades. Climbing gear helps cross; protecting refugees matters more than chasing every raider.",
     "faction": "wardens",
     "brief": "Refugees are trapped beyond the western bridge. Orin recognizes the banners of the company holding it. Get the last carts across before a demolition charge is lit.",
-    "opening": "A bridge bell sounds once for each cart allowed through. The queue stopped an hour ago. Under the span, freshly cut cables sway over the river.",
+    "opening": [
+      {
+        "narrate": "Ashford's western span is the only bridge in thirty miles a loaded cart can cross. A bell on the gatehouse sounds once for each cart allowed through. It stopped ringing an hour ago."
+      },
+      {
+        "narrate": "On the far bank, people from the burned villages wait with everything they own on carts. Between them and the bridge, a company of soldiers holds the far gate, under a banner that stops Orin in the middle of the road."
+      },
+      {
+        "say": "orin",
+        "text": "Second Company. My old company."
+      },
+      {
+        "say": "maren",
+        "text": "Is that good?"
+      },
+      {
+        "say": "orin",
+        "text": "Ask me in an hour."
+      },
+      {
+        "narrate": "Under the span, freshly cut cables sway over the river."
+      }
+    ],
     "clue": "The demolition order is forged. A faction within the bridge company intends to abandon both refugees and its own rear guard.",
     "investigate": {
       "label": "Ask the bridge veterans to compare their orders",
@@ -225,7 +504,18 @@
         "persuasion",
         "history"
       ],
-      "success": "Orin points out a commander’s signature from a man who died years ago. Several soldiers realize they were meant to be expendable.",
+      "success": [
+        {
+          "narrate": "The veterans let you see the demolition order. Orin holds it up to the light."
+        },
+        {
+          "say": "orin",
+          "text": "That's Colonel Ashe's signature. Colonel Ashe died at Calder. I carried him."
+        },
+        {
+          "narrate": "The paper goes from hand to hand down the line, and you watch them work it out, one by one: somebody forged an order to blow the bridge with the rear guard still on it."
+        }
+      ],
       "failure": "The veterans close ranks. One quietly warns you that the demolition fuse is already laid beneath the guardhouse."
     },
     "route": {
@@ -241,14 +531,44 @@
       "success": "You reach the fuse box unseen and disconnect the first charge.",
       "failure": "An anchor tears loose. You reach the far bank bruised, while the sentries call their lieutenant."
     },
-    "crisis": "Lieutenant Hal says her orders allow no exceptions. Behind her, a child in the last cart asks Orin whether soldiers always leave first.",
+    "crisis": [
+      {
+        "narrate": "Lieutenant Hal holds the gate: a small, hard woman with a voice that carries across a river."
+      },
+      {
+        "say": "Hal",
+        "text": "Nobody else crosses. The span goes at the bell. Those are my orders."
+      },
+      {
+        "say": "orin",
+        "text": "Hal."
+      },
+      {
+        "say": "Hal",
+        "text": "Stoneward."
+      },
+      {
+        "narrate": "Neither of them says anything else. Behind Hal, a girl of eight or so in the last cart leans out and asks Orin whether soldiers always leave first."
+      }
+    ],
     "peaceful": {
       "label": "Offer the soldiers a shared withdrawal with the refugees",
       "skill": "persuasion",
       "alt": [
         "intimidation"
       ],
-      "success": "Hal orders every cart onto the bridge, then marches her company out behind them. No one is left as a diversion.",
+      "success": [
+        {
+          "narrate": "You don't argue with Hal. You show her the order with a dead man's name on it. Then you ask her what she did at Calder, the crossing she and Orin both left people behind at."
+        },
+        {
+          "narrate": "Hal looks at Orin for a long moment. Then she turns and bellows down the span: every cart onto the bridge, the company to march out behind them, nobody left behind as a diversion."
+        },
+        {
+          "say": "Hal",
+          "text": "If somebody wants this bridge blown, they can do it with me standing on it."
+        }
+      ],
       "failure": "Most soldiers hesitate, but the demolition crew follows its own orders. You must clear the cart route under fire."
     },
     "objective": {
@@ -268,12 +588,28 @@
     "foe": "bridge-lieutenant",
     "foeName": "Demolition Lieutenant",
     "enemyTheme": "soldier",
-    "after": "The bridge is safe for now. Hal asks whether you will make an example of the confused soldiers or let them help repair what they nearly destroyed.",
+    "after": [
+      {
+        "narrate": "The last cart rolls off the span. The demolition crew sits in a row on the bank with their hands on their heads, looking more embarrassed than dangerous. Most of them are boys who did what the paper said."
+      },
+      {
+        "say": "Hal",
+        "text": "So. Make an example of them, or put them to work? The paper says example. I'm off papers today."
+      }
+    ],
     "decisions": [
       {
         "id": "repair",
         "label": "Offer supervised repair work instead of punishment",
-        "text": "The company works beside the refugees. Orin recognizes a way to make his old failure count for something.",
+        "text": [
+          {
+            "narrate": "The demolition crew will spend the next month re-hanging the cables they cut, beside the refugees they nearly drowned. Tonight, for the first time, they eat at the same fire."
+          },
+          {
+            "say": "orin",
+            "text": "I'd have had them in front of a tribunal. Maybe I'd have been wrong. Ask me in a year."
+          }
+        ],
         "rep": {
           "wardens": 2,
           "wilds": 1
@@ -283,7 +619,15 @@
       {
         "id": "tribunal",
         "label": "Preserve the orders and call a public tribunal",
-        "text": "The forged orders enter the public record. Ashford’s council must answer for the chain of command.",
+        "text": [
+          {
+            "narrate": "The forged order goes into Ashford's public record. Quartermaster Iona reads it into the minutes herself, every word, including the dead colonel's name, and Ashford's council has to answer for whoever sent it."
+          },
+          {
+            "say": "orin",
+            "text": "Slow. But nobody gets to say it didn't happen."
+          }
+        ],
         "rep": {
           "trade": 2,
           "wardens": 1
@@ -291,7 +635,27 @@
         "flag": "bridge_tribunal"
       }
     ],
-    "approach": "The maintenance anchors hang under the span, slick with river spray. On the deck above, the queue of carts waits in plain sight of Hal’s line."
+    "approach": "The maintenance anchors hang under the span, slick with river spray. On the deck above, the queue of carts waits in plain sight of Hal’s line.",
+    "talks": [
+      {
+        "id": "calder",
+        "label": "Ask Orin about the Second Company",
+        "lines": [
+          {
+            "say": "orin",
+            "text": "Eight years ago we held a ford at Calder for a column of farmers coming down out of the hills. Orders came to fall back. We fell back. The farmers didn't know we'd gone until they reached the water."
+          },
+          {
+            "say": "orin",
+            "text": "Hal was a corporal then. She went back for them on her own and got eleven of them out. They gave her a reprimand and a stripe in the same week."
+          },
+          {
+            "say": "orin",
+            "text": "I didn't go back."
+          }
+        ]
+      }
+    ]
   },
   "archive": {
     "id": "archive",
@@ -1351,7 +1715,7 @@
         "text": "Six delegates. Five good chairs. One that rocks. I did the sum twice."
       },
       {
-        "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. A white-haired woman in a mud-stiff cloak has come up from Fenmere with a brown goat on a rope. Nobody has asked about the goat."
+        "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. Brannagh has come up from Fenmere, white-haired, in a mud-stiff cloak, with the same brown goat on a rope. She nods to you once, which from her is a long conversation. Nobody has asked about the goat."
       },
       {
         "narrate": "And there is the delegate from Merrowgate: Provost Elske Marrow, grey-eyed, ink on two fingers, with a guild clerk at her elbow who writes down everything, including the weather."
@@ -1476,6 +1840,20 @@
           {
             "say": "Brannagh",
             "text": "Fenmere has two halves. The upper village on the rise, the lower village by the water. The mist came into the lower fields four days ago. Our keeper says the ward will hold the lower village a week. Our keeper is an optimist. I've told her so."
+          },
+          {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter water at the sluice. You left us a water council, one keeper for each bank, and I'm the village side. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
+            "when": {
+              "flag": "marsh_council"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter water at the sluice. Ashford's engineers still come out every month to look at the sluice, and send us the bill. Ashford is very reliable about bills.",
+            "when": {
+              "flag": "marsh_engineers"
+            }
           },
           {
             "say": "nessa",
@@ -1611,11 +1989,11 @@
       "success": [
         {
           "say": "Brannagh",
-          "text": "Fenmere consents. I'd like it noted Fenmere consented first."
+          "text": "Fenmere consents. First, if anybody's counting."
         },
         {
           "say": "Iona",
-          "text": "Ashford consents. Note that too."
+          "text": "Ashford consents. Second. Somebody write it down."
         },
         {
           "narrate": "Aveline, Sorrel and Elske say it together. The ward catches the five voices and rings with all of them, and the note goes down the pass like a wave pushing back the tide. The shapes in the mist come apart into frost, and the frost melts."
@@ -1697,7 +2075,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "Well. We didn't agree on anything, and we're all still alive. I'd like that noted.",
+        "text": "Well. We didn't agree on anything, and we're all still alive. At my age you take what you're given.",
         "when": {
           "flag": "method:chairs",
           "is": "force"
@@ -1717,13 +2095,6 @@
       {
         "say": "Elske",
         "text": "Fenmere's help leaves at first light. It should have left three days ago. I'll say it once and then I'll stop: a council that needs a mist at the door to agree on anything will always agree one day late. When the council sits again, Merrowgate will make a proposal. I'd like you all to read it before you hate it."
-      },
-      {
-        "say": "maren",
-        "text": "She means that too.",
-        "when": {
-          "party": "maren"
-        }
       },
       {
         "narrate": "Then the room argues, for the last time today, about who pays for Fenmere."
@@ -1841,14 +2212,14 @@
       },
       {
         "say": "Ilka",
-        "text": "Since this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "text": "Since this morning. You remember me, from the sluice-house. I'm still the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
         "when": {
           "party": "orin"
         }
       },
       {
         "say": "Ilka",
-        "text": "The ward went quiet this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "text": "The ward went quiet this morning. You remember me, from the sluice-house. I'm still the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
         "when": {
           "absent": "orin"
         }
@@ -2154,6 +2525,18 @@
       {
         "say": "Dera",
         "text": "That's worth a free strap. Go on."
+      },
+      {
+        "narrate": "On the Ashford road you pass two of the seed-wagon drivers from the tollhouse. They have told everyone in three villages about the toll money you gave back, and they tell you about it again, in case you missed it.",
+        "when": {
+          "flag": "road_restitution"
+        }
+      },
+      {
+        "narrate": "On the Ashford road the caravan escort you paid for at the tollhouse rides past, four riders with a wagon of seed behind them. Their sergeant salutes Orin, and Orin salutes back before he can stop himself.",
+        "when": {
+          "flag": "road_escort"
+        }
       },
       {
         "narrate": "Tovin is at the bell tower with his apprentice, Pim, who is fourteen and has read every book on bell-keeping in Briarwatch, both of them, several times."
@@ -2920,20 +3303,6 @@
         "narrate": "Nobody says anything for a long time. Then the hall starts talking all at once, and does not stop until well after midnight."
       },
       {
-        "say": "maren",
-        "text": "Every word true.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
-        "say": "orin",
-        "text": "That's what bothers me.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
         "narrate": "In the end the auctioneer, who has a share of the price and can count a room, asks the council what it wants done with the bell."
       }
     ],
@@ -2968,7 +3337,7 @@
           },
           {
             "say": "Brannagh",
-            "text": "Fenmere wants it noted that it bought a harbour."
+            "text": "Fenmere has bought a harbour. Nobody at home is going to believe me."
           }
         ],
         "rep": {
@@ -3082,10 +3451,6 @@
           {
             "say": "Aveline",
             "text": "Highpass is for it too. Sorrel sent word. She's had three hundred refugees under her wall since the spring, and she says she'd vote for a goat if it could ring a bell on time."
-          },
-          {
-            "say": "Brannagh",
-            "text": "My goat is not available."
           },
           {
             "say": "Aveline",
@@ -3358,6 +3723,9 @@
       },
       {
         "narrate": "Hollin's Reach was a market town of four thousand people. It is black now: walls without roofs, chimneys without houses. In the middle of it, the council house still stands, and in its tower the ward-bell still hangs. A thin grey mist lies in the streets, not moving, the way water lies in a bowl."
+      },
+      {
+        "narrate": "The Gloam came up the river road first, and the fire came behind it: lamps and hearths left burning in houses whose people had forgotten they were there, and doors left open by people who had forgotten why you shut them."
       },
       {
         "say": "Elske",
@@ -3764,10 +4132,6 @@
         "when": {
           "notItem": "silver-chime"
         }
-      },
-      {
-        "say": "maren",
-        "text": "A ward on the council. Aveline will need a fourth bag."
       }
     ],
     "talks": [
@@ -4003,25 +4367,25 @@
     "region": "Briarwatch, at midwinter",
     "threat": "The council votes on Elske's Warden of the Chorus at Briarwatch. Somebody is paying people to make sure Briarwatch's own town meeting never gets to decide how its delegate votes.",
     "faction": "wardens",
-    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs four towns of five. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
+    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs two-thirds of the towns that vote: four, if all five do. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
     "opening": [
       {
         "narrate": "Briarwatch at midwinter is the same as ever, only more so. There is snow on the bell tower. Dera's forge is the warmest place in the village, so the whole village is in it."
       },
       {
         "say": "Dera",
-        "text": "Back again. Twice in a year. People will talk. They are talking. Mostly about the goat."
+        "text": "Back again. Twice in a year. You'll want to know what I think of Elske's Warden. I think it took the council three days to send carts to Fenmere, and I could have shod a horse every hour of them. Don't tell Tovin I said so. He's voting no, and he's earned it."
       },
       {
         "narrate": "The council has taken over the inn. Elske has the corner table, and is writing letters to every delegate she has already won, thanking them, which is either very gracious or very thorough."
       },
       {
         "say": "Aveline",
-        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs four towns of five. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
+        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs two-thirds of the towns that vote. All five voting, that's four. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
       },
       {
         "say": "Aveline",
-        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her."
+        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her, and she has to vote. And if the meeting can't vote at all, Briarwatch doesn't count, three of four is two-thirds, and nobody needs to ask Fenmere anything."
       },
       {
         "say": "Brannagh",
@@ -4117,7 +4481,7 @@
         }
       }
     ],
-    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, and the council can pass the Warden on three towns' word plus Fenmere's. The carters' purse came from the Lantern Hall.",
+    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, the charter counts only the four towns that voted, and the three that are already for it carry the Warden without Fenmere. The carters' purse came from the Lantern Hall.",
     "investigate": {
       "label": "Ask around the inn about the strangers who arrived this week",
       "skill": "investigation",
@@ -4270,14 +4634,14 @@
           },
           {
             "say": "Brannagh",
-            "text": "Round the new village on the rise. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the new village on the rise. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "notFlag": "fen_promise"
             }
           },
           {
             "say": "Brannagh",
-            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "flag": "fen_promise"
             }
@@ -4290,17 +4654,10 @@
             "text": "Thank you. I will give it back. Hold me to that."
           },
           {
-            "say": "maren",
-            "text": "She means it.",
-            "when": {
-              "party": "maren"
-            }
-          },
-          {
             "say": "orin",
-            "text": "I know. That's the part I'm going to watch.",
+            "text": "She'll mean it. That's the part I'm going to watch.",
             "when": {
-              "party": "maren"
+              "party": "orin"
             }
           }
         ],
@@ -4324,13 +4681,6 @@
           {
             "say": "Elske",
             "text": "The council has decided. I'll abide by it. I hope I never have to say I told you so."
-          },
-          {
-            "say": "maren",
-            "text": "She means that too.",
-            "when": {
-              "party": "maren"
-            }
           }
         ],
         "rep": {
@@ -4405,7 +4755,7 @@
         }
       },
       {
-        "narrate": "He eats all of it. Maren watches him do it, and does not say anything, and after a while she looks away into the dark.",
+        "narrate": "He eats all of it, and doesn't say a word about it. Maren looks away into the dark for a while.",
         "when": {
           "party": "maren"
         }
@@ -4807,7 +5157,7 @@
     "xp": 6800,
     "gold": 500,
     "region": "The council in the casting hall at Cinder Fold",
-    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you.",
+    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you. Then she has one more thing to ask, and the Mother Bell is listening.",
     "faction": "wardens",
     "brief": "The council sits at Cinder Fold to decide what to do with Elske Marrow. She has asked to speak first. Answer her, and decide who your oath answers to.",
     "opening": [
@@ -4909,7 +5259,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "She's not wrong. I'd like that noted. I hate it, but she's not wrong."
+        "text": "She's not wrong. I hate it, but she's not wrong."
       }
     ],
     "talks": [
@@ -5019,20 +5369,16 @@
       },
       {
         "say": "Elske",
-        "text": "I'll go. Wherever you send me. But I'm going to ask the council to put the Mother Bell under one voice again. Mine or anyone's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it."
+        "text": "I'll go. Wherever you send me. But first I'm going to ask the council to put the Mother Bell under one voice again. Not mine; I've had my turn. Somebody's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it. I'm asking now, in front of all of you, in daylight. I took, once. I won't again. I'd rather ask."
       },
       {
-        "say": "maren",
-        "text": "She means it. Of course she means it."
-      },
-      {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. And over everyone's heads the Mother Bell has begun, very faintly, to hum: the note from midwinter, the one that silenced every other ward. Nobody has touched the bell-rope. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting to the bell first.",
         "when": {
           "notFlag": "mother_silenced"
         }
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She does not need it. Two of the miners have brought a forge hammer up from the floor, and the ladder to the great beam stands open, and Elske is standing at the foot of it. Somebody, in the end, has to answer her: with words, or by getting to that ladder first.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. It does not matter. Over everyone's heads the Mother Bell has begun, very faintly, to hum, with no rope on it at all: the note from midwinter, the one that silenced every other ward. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting up the ladder to the great beam and putting a hand on the bronze.",
         "when": {
           "flag": "mother_silenced"
         }
@@ -5050,19 +5396,19 @@
           "narrate": "You tell Elske the one thing nobody has said to her in eleven years. That the room in Hollin's Reach was not her fault. That seven people had the numbers wrong, not one. That the answer to a slow council is not a fast person but a council that has learned to look at the window. And that you would like her in this one, looking at it with them."
         },
         {
-          "narrate": "Elske stands by the rope for a long time.",
+          "narrate": "Elske looks up at the humming bell for a long time.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "Elske stands at the foot of the ladder for a long time, looking up at the beam, and at the hammer in the miner's hands.",
+          "narrate": "Elske looks up at the great beam for a long time, where the hum is coming from, with no rope on it at all.",
           "when": {
             "flag": "mother_silenced"
           }
         },
         {
-          "narrate": "Then she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
+          "narrate": "Then she says, very clearly, 'I withdraw it,' and the hum dies away to nothing, and she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
         },
         {
           "say": "Elske",
@@ -5076,16 +5422,16 @@
       "failure": [
         {
           "say": "Elske",
-          "text": "You can't promise it won't happen again. Nobody can. So someone must hold the rope."
+          "text": "You can't promise it won't happen again. Nobody can. Then I'll ask the room. Hands, please. One voice for the Mother Bell."
         },
         {
-          "narrate": "She takes the rope. The Mother Bell stirs over your heads. You have to reach her before she rings it.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to quiet it before the vote is counted.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "She takes the forge hammer from the miners and starts up the ladder to the beam. The Mother Bell does not need a rope if someone is willing to climb up and strike it. You have to reach her before she gets there.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder, with no rope and nobody near it. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to get up the ladder and quiet it before the vote is counted.",
           "when": {
             "flag": "mother_silenced"
           }
@@ -5093,9 +5439,9 @@
       ]
     },
     "objective": {
-      "name": "Keep the Mother Bell from one voice",
-      "label": "Reach Elske before the bell is rung alone",
-      "description": "Three successful actions get you to Elske and keep the Mother Bell from being rung by one person again.",
+      "name": "Quiet the Mother Bell before the room rings it",
+      "label": "Quiet the bell's single note before the room agrees",
+      "description": "Three successful actions reach the Mother Bell and quiet its single note while the council finds its other voices.",
       "skill": "athletics",
       "alt": [
         "persuasion",
@@ -5104,13 +5450,13 @@
       ],
       "target": 3,
       "deadline": 6,
-      "failText": "Before you reach her, the Mother Bell sounds one stroke under one voice. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it.",
-      "successText": "You reach her first. Your hand closes over hers. She lets go."
+      "failText": "Before you reach it, the Mother Bell sounds one stroke under one voice: the room's, this time, not anybody's hand. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it. Sorrel and Iona put their hands down, and Elske, white to the lips, withdraws the proposal herself.",
+      "successText": "Your hand is on the bronze. Below you, Elske says, very clearly, 'I withdraw it,' and the note dies under your palm."
     },
-    "foe": "elske-marrow",
-    "foeName": "Elske Marrow",
+    "foe": "single-note",
+    "foeName": "The Single Note",
     "enemyTheme": "boss",
-    "attackName": "The Single Note",
+    "attackName": "One Voice",
     "retainerName": "Echo of the Single Voice",
     "after": [
       {

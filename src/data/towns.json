@@ -69,7 +69,7 @@
       "duelist-buckler",
       "wayfarer-boots"
     ],
-    "rumor": "Sabotage at the western span and poison in the marsh share the same copper dust. Someone is moving ward machinery downstream."
+    "rumor": "Sabotage at the western span, and ward ash in the Fenmere marsh. Someone is getting rid of old wards downstream, and does not care who drinks them."
   },
   "highpass": {
     "id": "highpass",
@@ -112,7 +112,7 @@
     "id": "merrowgate",
     "name": "Merrowgate",
     "subtitle": "The Harbour of Lanterns",
-    "description": "A harbour city of steep streets and stone quays, lit at night by the lantern guilds' lamps, which everyone pays for. Gulls, rope-sellers, and a ward-bell in a tower on the harbour mole that has not rung in public since anyone can remember.",
+    "description": "A harbour city of steep streets and stone quays, lit at night by the lantern guilds' lamps, which everyone pays for. Gulls, rope-sellers, and a ward-bell in a tower on the harbour mole that the fishers and pilots ring every night.",
     "faction": "trade",
     "services": [
       "inn",

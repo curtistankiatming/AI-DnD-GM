@@ -70,7 +70,8 @@
     "leave": {
       "title": "Maren, after supper",
       "lines": [
-        {"narrate": "Maren finds you after supper, when the others have gone up. She has her shrine-satchel over her shoulder and her list in her hand, and she sits down across the table from you as if for cards."},
+        {"narrate": "Maren finds you after supper, when the others have gone up. She has her shrine-satchel over her shoulder and her list in her hand, and she sits down across the table from you as if for cards.", "when": {"notFlag": "keeper-list-done"}},
+        {"narrate": "Maren finds you after supper, when the others have gone up. She has her shrine-satchel over her shoulder, and her hands are empty in a way they never used to be, and she sits down across the table from you as if for cards.", "when": {"flag": "keeper-list-done"}},
         {"say": "maren", "text": "I'm going to go and sit with someone who doesn't need anything decided, for a while. There's always a shrine. There's always someone in it who would like company and no advice."},
         {"say": "maren", "text": "I hear what people mean, you know. Not only what they say. Lately I keep hearing you mean well, and then do things I can't stand beside. I don't think you're lying to me. I think you may be lying to yourself, a little. I can't hear that from this close."},
         {"say": "maren", "text": "I'll come back. I always come back. I just need to be somewhere quiet enough to hear myself think."},
@@ -142,7 +143,7 @@
       ],
       "choices": [
         {"id": "keep", "label": "Fold the letter and keep it", "lines": [
-          {"narrate": "You fold it along the creases she made and put it somewhere safe. It is the first letter Nessa Reed has ever sent anyone."}
+          {"narrate": "You fold it along the creases she made and put it somewhere safe. It is the first letter Nessa Reed has ever finished and left where somebody would read it."}
         ]},
         {"id": "gate", "label": "Go to the gate anyway", "lines": [
           {"narrate": "The road is empty for a mile in both directions. Whoever taught Nessa to leave without being seen did a very good job of it. You stand there long enough to feel foolish, and then a little longer."}
