@@ -80,3 +80,13 @@ test('a story choice is told in order: the roll and its result, then the new sce
   assert.ok(path.text.indexOf('rolled') < path.text.indexOf('Roots split the shrine'), path.text);
   assert.ok(path.text.indexOf('toward a forgotten shrine') < path.text.indexOf('Roots split the shrine'), path.text);
 });
+
+test('a choice that stays in its scene keeps its own text ahead of its effects', () => {
+  const { createSeededRng } = require('../src/rules');
+  const rng = createSeededRng(7);
+  const state = E.createNewGame({ classId: 'wizard' });
+  const r = E.resolveAction(state, { type: 'story-choice', choiceId: 'inspect-rope' }, rng);
+  const text = N.deterministicFallback(r.state, r.view, { type: 'story-choice', choiceId: 'inspect-rope' }, r.events);
+  assert.doesNotMatch(text, /^\S+ rolled/);
+  assert.ok(text.indexOf('rolled') > 0, text);
+});

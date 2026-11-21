@@ -129,9 +129,11 @@ function deterministicFallback(state, view, action, events) {
     .join(" ");
   const companionBeat = '';
   const actionLead = action?.type === "freeform" && action.text ? `You attempt: ${action.text}. ` : "";
-  // A story choice is told in the order it happened: the roll and what it did,
-  // then the place it leads to.
-  const ordered = action?.type === "story-choice" ? `${mechanics} ${outcome}` : `${outcome}${mechanics ? ` ${mechanics}` : ""}`;
+  // A story choice that moves to a new scene is told in the order it happened:
+  // the roll and what it did, then the place it leads to. A choice that stays
+  // (a clue, a fight starting) keeps its own text ahead of its effects.
+  const moved = action?.type === "story-choice" && state.story.lastOutcome?.kind === "node";
+  const ordered = moved ? `${mechanics} ${outcome}` : `${outcome}${mechanics ? ` ${mechanics}` : ""}`;
   const body = `${actionLead}${ordered}${companionBeat}`.replace(/\s+/g, " ").trim();
   return body || "The party pauses as the consequences of the last decision settle into place.";
 }
