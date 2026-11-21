@@ -53,7 +53,7 @@ for(const item of require('./data/gear.json'))ITEMS[item.id]=item;
 // Gold sink (items review, 21 November 2026): the smith can also refine each
 // of these once. An Epic or Legendary item becomes a Masterwork one step rarer,
 // for twice the item's price (Gear.upgradeCost), so late gold has a use.
-// The refined copy is never sold or awarded, so it drops its exclusive tag.
+// The refined copy is never in a shop or given as a reward, so it drops its exclusive tag.
 {
   const R=['Common','Uncommon','Rare','Epic','Legendary'];
   for(const base of require('./data/gear.json')){
