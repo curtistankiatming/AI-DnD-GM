@@ -37,8 +37,11 @@ test('the bridge camp scene plays after the bridge, keeps its lines and returns 
   s = act(s, { type: 'story-choice', choiceId: E.buildView(s).scene.choices[0].id }).state;
   assert.equal(s.story.nodeId, 'scene-bridge-camp-night');
   const view = E.buildView(s);
-  assert.equal(view.scene.lastOutcome.dialogue[1].speaker, 'Nessa');
-  assert.equal(view.scene.lastOutcome.dialogue[1].text, 'What is this.');
+  // The bridge decision's own lines come first; the scene's lines follow, all of them.
+  const told = view.scene.lastOutcome.dialogue, first = told.length - STORY_NODES['scene-bridge-camp-night'].dialogue.length;
+  assert.ok(first >= 0);
+  assert.equal(told[first + 1].speaker, 'Nessa');
+  assert.equal(told[first + 1].text, 'What is this.');
   assert.deepEqual(view.scene.choices.map((c) => c.id), ['didnt-leave', 'tell-truth', 'sometimes', 'sit']);
   const gained = s.player.xp - xp, gold = s.player.gold, items = JSON.stringify(s.player.inventory);
 
@@ -83,6 +86,6 @@ test('a save made in the middle of a scene loads back into it', () => {
   s = act(s, { type: 'story-choice', choiceId: E.buildView(s).scene.choices[0].id }).state;
   const loaded = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
   assert.equal(loaded.story.nodeId, 'scene-bridge-camp-night');
-  assert.equal(E.buildView(loaded).scene.lastOutcome.dialogue.length, STORY_NODES['scene-bridge-camp-night'].dialogue.length);
+  assert.equal(E.buildView(loaded).scene.lastOutcome.dialogue.length, E.buildView(s).scene.lastOutcome.dialogue.length);
   act(loaded, { type: 'story-choice', choiceId: 'sit' });
 });

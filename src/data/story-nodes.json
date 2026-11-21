@@ -549,7 +549,6 @@
     "location": "North Verge of the Briarwood",
     "safeRest": false,
     "objective": "Choose a route toward the hidden hollow and accept the risks that come with it.",
-    "opening": "The north road divides beneath trees knitted together by old thorns. Wagon ruts vanish into fern on the left. A pilgrim marker leans toward a narrow rise. From the misted hollow to the right comes one faint, impossible bell note.",
     "choices": [
       {
         "id": "track-wagon",
@@ -569,15 +568,31 @@
           ]
         },
         "success": {
-          "text": "Nessa's kind of trailcraft would approve: you find the ambush line before it closes and turn the trap back on its makers.",
           "setFlags": {
             "ambushSurprise": true
           },
-          "combat": "road-ambush"
+          "combat": "road-ambush",
+          "lines": [
+            {
+              "narrate": "You find the ambush line before it closes: a trip-cord in the fern, a crossbow lashed to a stump and aimed at the road. You turn the cord round. When the masked figures rise out of the brush, they rise into their own trap."
+            },
+            {
+              "say": "orin",
+              "text": "Whoever taught you that, buy them a drink."
+            }
+          ]
         },
         "failure": {
-          "text": "The trail is deliberately doubled. A cord snaps behind you and masked figures rise from the brush.",
-          "combat": "road-ambush"
+          "combat": "road-ambush",
+          "lines": [
+            {
+              "narrate": "The trail is doubled back on itself, deliberately. A cord snaps somewhere behind you, and masked figures rise out of the fern on both sides."
+            },
+            {
+              "say": "orin",
+              "text": "Backs together."
+            }
+          ]
         }
       },
       {
@@ -606,13 +621,25 @@
           ]
         },
         "success": {
-          "text": "The old marks resolve into a sequence of safe steps. The path carries you above the traps and toward a forgotten shrine.",
-          "nextNode": "old-shrine"
+          "nextNode": "old-shrine",
+          "lines": [
+            {
+              "narrate": "The old ward-stones are carved with safe steps, the way pilgrims marked them when this road was holy. Maren reads them aloud like a hymn-book, one stone at a time, and the path carries you up over the traps to a shrine nobody has visited in a hundred years."
+            }
+          ]
         },
         "failure": {
-          "text": "You find the shrine, but a false ward-stone cuts the party with a burst of thorn splinters.",
           "partyDamage": "1d4",
-          "nextNode": "old-shrine"
+          "nextNode": "old-shrine",
+          "lines": [
+            {
+              "narrate": "You find the shrine. You also find the false ward-stone set in front of it, which bursts into a spray of thorn splinters as you pass."
+            },
+            {
+              "say": "maren",
+              "text": "That stone is new. Somebody added it. Somebody who knew pilgrims would come this way."
+            }
+          ]
         }
       },
       {
@@ -630,15 +657,23 @@
           "dc": 12
         },
         "success": {
-          "text": "You separate the true note from its echoes and discover a trapped Briarwatch scout before the hunters return.",
-          "nextNode": "mist-hollow"
+          "nextNode": "mist-hollow",
+          "lines": [
+            {
+              "narrate": "You separate the true note from its echoes and follow it down into the mist. It isn't a bell at all. It is someone hanging upside down in a snare, tapping a belt buckle against a ward-stone, slowly, the way you would if you had been doing it for an hour."
+            }
+          ]
         },
         "failure": {
-          "text": "The note leads in circles. By the time you find the snare clearing, the creatures guarding it are already moving.",
           "setFlags": {
             "snareEnemiesAlert": true
           },
-          "nextNode": "mist-hollow"
+          "nextNode": "mist-hollow",
+          "lines": [
+            {
+              "narrate": "The note leads you round in circles through the mist. By the time you find the snare clearing, the things guarding it are already moving."
+            }
+          ]
         }
       },
       {
@@ -652,6 +687,23 @@
         ],
         "combat": "road-ambush"
       }
+    ],
+    "lines": [
+      {
+        "narrate": "The north road divides beneath trees knitted together by old thorns. Wagon ruts vanish into the fern on the left. A pilgrim marker leans toward a narrow rise. And from the misted hollow on the right comes one faint bell note, which is impossible, because the only ward-bell for ten miles is hanging silent over Briarwatch."
+      },
+      {
+        "say": "orin",
+        "text": "Ruts are fresh. Somebody brought a cart up here who didn't want to be followed."
+      },
+      {
+        "say": "maren",
+        "text": "And the note?"
+      },
+      {
+        "say": "orin",
+        "text": "I'm trying not to think about the note."
+      }
     ]
   },
   "old-shrine": {
@@ -661,7 +713,6 @@
     "location": "Abandoned Pilgrim Shrine",
     "safeRest": true,
     "objective": "Recover the shrine's forgotten knowledge and find the under-road into the cult's hollow.",
-    "opening": "Roots split the shrine's roof but leave its little silver bell untouched. Six names have been chiselled from the altar. A seventh remains beneath soot, beside a stone reliquary with no visible hinge.",
     "choices": [
       {
         "id": "read-altar",
@@ -686,7 +737,6 @@
           ]
         },
         "success": {
-          "text": "The missing dedication names the bell Aster Vey—‘the star that answers.’ The silver chime rings once when you speak it aloud.",
           "clues": [
             "bell-true-name"
           ],
@@ -698,12 +748,38 @@
           ],
           "approval": {
             "maren": 1
-          }
+          },
+          "lines": [
+            {
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot and Tovin's half-remembered verse: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "when": {
+                "clue": "hushed-verse"
+              }
+            },
+            {
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "when": {
+                "notClue": "hushed-verse"
+              }
+            },
+            {
+              "say": "maren",
+              "text": "It knows its name. Then it was a someone, once. Not a something."
+            }
+          ]
         },
         "failure": {
-          "text": "The full name escapes you, but the surviving vow makes one fact clear: the ward-spirit once answered willing keepers, not masters.",
           "clues": [
             "wraith-bound"
+          ],
+          "lines": [
+            {
+              "narrate": "The full name escapes you. But the vow underneath it survives, and it is clear enough: the ward-spirit answered willing keepers. Not masters."
+            },
+            {
+              "say": "maren",
+              "text": "Sable's rite is a leash. This was a promise."
+            }
           ]
         }
       },
@@ -724,7 +800,6 @@
           "toolsRequiredOrPenalty": "thieves-tools"
         },
         "success": {
-          "text": "A hidden pin yields. Inside are two flasks of holy water and a travel cloak woven with living-looking briars.",
           "items": [
             {
               "itemId": "holy-water",
@@ -733,6 +808,19 @@
             {
               "itemId": "thornward-cloak",
               "quantity": 1
+            }
+          ],
+          "lines": [
+            {
+              "narrate": "A hidden pin gives under your thumb. Inside are two flasks of holy water and a travel cloak woven with briars that look, by candlelight, very slightly alive."
+            },
+            {
+              "say": "orin",
+              "text": "I'm not wearing that."
+            },
+            {
+              "say": "maren",
+              "text": "Nobody asked you to."
             }
           ]
         },
@@ -761,6 +849,15 @@
           "leave shrine"
         ],
         "nextNode": "underroad"
+      }
+    ],
+    "lines": [
+      {
+        "narrate": "Roots have split the shrine's roof but left its little silver bell untouched, as if they knew better. Six names have been chiselled off the altar. A seventh is still there under the soot, beside a stone reliquary with no visible hinge."
+      },
+      {
+        "say": "maren",
+        "text": "Somebody took a great deal of trouble to make this place forget something."
       }
     ]
   },
@@ -1059,7 +1156,6 @@
     "location": "Bell Road Ambush Site",
     "safeRest": true,
     "objective": "Search the ambush site and decide what to do with the wounded lookout.",
-    "opening": "The last goblin flees into the fern. A wounded cult lookout lies beside a dropped satchel, mask cracked, one hand held away from her spear. The black seal recovered from the fight is still warm.",
     "choices": [
       {
         "id": "search-satchel",
@@ -1077,13 +1173,21 @@
           "dc": 10
         },
         "success": {
-          "text": "A false seam hides a cipher strip bearing Sable's crest and a route to the root-gate.",
           "setFlags": {
             "cipherStrip": true,
             "rootGateKnown": true
           },
           "clues": [
             "sable-dispute"
+          ],
+          "lines": [
+            {
+              "narrate": "A false seam in the satchel hides a cipher strip with Sable's own crest on it, and a route to a root-gate under the ridge."
+            },
+            {
+              "say": "orin",
+              "text": "His own crest. He's either very sure of himself or very tired."
+            }
           ]
         },
         "failure": {
@@ -1108,7 +1212,6 @@
           "dc": 11
         },
         "success": {
-          "text": "She gives her name—Lysa—and admits Sable changed the binding rite. The spirit below is a prisoner, not an ally. She marks a safe sign on the root-gate.",
           "clues": [
             "wraith-bound"
           ],
@@ -1120,17 +1223,46 @@
           "approval": {
             "maren": 2,
             "orin": 1
-          }
+          },
+          "lines": [
+            {
+              "say": "Lysa",
+              "text": "Lysa. My name's Lysa. Don't write it down."
+            },
+            {
+              "say": "Lysa",
+              "text": "He changed the rite. Sable. The old verse asked the spirit to keep the village. His tells it to. Whatever's down there isn't on his side. It's a prisoner."
+            },
+            {
+              "narrate": "She takes your map and marks a sign on it, the hand-sign that gets a friend past the root-gate's sentries."
+            },
+            {
+              "say": "maren",
+              "text": "Why tell us?"
+            },
+            {
+              "say": "Lysa",
+              "text": "Because you stopped."
+            }
+          ]
         },
         "failure": {
-          "text": "Lysa refuses to give names, but she lets Maren treat her. Before she limps into the fern she looks back once: ‘The bell remembers who betrayed it.’",
           "setFlags": {
             "lysaSpared": true,
             "lysaGone": true
           },
           "approval": {
             "maren": 1
-          }
+          },
+          "lines": [
+            {
+              "narrate": "Lysa won't give you names. But she lets Maren clean and bind her leg, and before she limps off into the fern she looks back once."
+            },
+            {
+              "say": "Lysa",
+              "text": "The bell remembers who betrayed it."
+            }
+          ]
         },
         "requires": {
           "flagsNone": [
@@ -1193,6 +1325,15 @@
         ],
         "nextNode": "underroad"
       }
+    ],
+    "lines": [
+      {
+        "narrate": "The last goblin runs off into the fern, and nobody chases it. A wounded cult lookout lies beside a dropped satchel, her mask cracked across, one hand held carefully away from her spear so that you can see it. She is perhaps twenty. The black seal you took from the fight is still warm."
+      },
+      {
+        "say": "maren",
+        "text": "She's bleeding. Whatever else she is."
+      }
     ]
   },
   "underroad": {
@@ -1202,7 +1343,6 @@
     "location": "Pilgrim Tunnels",
     "safeRest": false,
     "objective": "Cross the drowned passage without arriving exhausted or exposed.",
-    "opening": "Black water fills the old pilgrim tunnel from wall to wall. Bell-shaped niches mark a path beneath the surface, but the current pulls toward a shaft where something large turns slowly below.",
     "choices": [
       {
         "id": "rope-crossing",
@@ -1219,11 +1359,15 @@
         },
         "autoSuccess": true,
         "result": {
-          "text": "The rope holds. One by one the party crosses while Orin anchors the line and you watch the dark shaft.",
           "setFlags": {
             "crossedDry": true
           },
-          "nextNode": "root-gate"
+          "nextNode": "root-gate",
+          "lines": [
+            {
+              "narrate": "The rope holds. Orin anchors the line with his whole weight, and one by one the party crosses while you watch the dark shaft. He doesn't say a word the whole time, which is how you know it was close."
+            }
+          ]
         }
       },
       {
@@ -1283,6 +1427,23 @@
           "nextNode": "root-gate"
         }
       }
+    ],
+    "lines": [
+      {
+        "narrate": "Black water fills the old pilgrim tunnel from wall to wall. Bell-shaped niches mark a path somewhere under the surface, and the current pulls toward a shaft where something large is turning, slowly, in the dark."
+      },
+      {
+        "say": "orin",
+        "text": "I'll go first."
+      },
+      {
+        "say": "maren",
+        "text": "You always go first."
+      },
+      {
+        "say": "orin",
+        "text": "I'm the heaviest. If it holds me, it holds you."
+      }
     ]
   },
   "root-gate": {
@@ -1292,7 +1453,6 @@
     "location": "Root-Gate of the Hollow Court",
     "safeRest": false,
     "objective": "Open the cult's gate without surrendering the advantage.",
-    "opening": "A door grown from black roots seals the passage. Its bronze mouth bears no keyhole, only a shallow seal-mark and a line of script: WHAT ENTERS UNNAMED ENTERS OWNED.",
     "choices": [
       {
         "id": "use-cult-seal",
@@ -1356,11 +1516,27 @@
           "toolsRequiredOrPenalty": "thieves-tools"
         },
         "success": {
-          "text": "The lock opens without a cry. Nessa catches the door before its bronze teeth can ring together.",
           "setFlags": {
             "infiltrated": true
           },
-          "nextNode": "hollow-court"
+          "nextNode": "hollow-court",
+          "lines": [
+            {
+              "narrate": "The living lock gives without a cry."
+            },
+            {
+              "narrate": "Nessa catches the door before its bronze teeth can ring together.",
+              "when": {
+                "party": "nessa"
+              }
+            },
+            {
+              "narrate": "You catch the door before its bronze teeth can ring together.",
+              "when": {
+                "absent": "nessa"
+              }
+            }
+          ]
         },
         "failure": {
           "text": "The root-lock shrieks like metal under strain. The door opens, but the court beyond is ready.",
@@ -1403,6 +1579,15 @@
           "nextNode": "hollow-court"
         }
       }
+    ],
+    "lines": [
+      {
+        "narrate": "A door grown from black roots seals the passage. It has no keyhole: only a bronze mouth with a shallow seal-mark on its tongue, and a line of script cut above it. WHAT ENTERS UNNAMED ENTERS OWNED."
+      },
+      {
+        "say": "maren",
+        "text": "Charming."
+      }
     ]
   },
   "hollow-court": {
@@ -1412,7 +1597,6 @@
     "location": "Cult Antechamber",
     "safeRest": false,
     "objective": "Reach the bell-vault and obtain proof of Sable's role if possible.",
-    "opening": "The hollow court was once a wardens' hall. Now roots pin old shields to the walls. Acolytes carry bronze bowls between a cipher desk and a stair descending toward the bell-vault.",
     "choices": [
       {
         "id": "eavesdrop-court",
@@ -1433,7 +1617,6 @@
         },
         "advantageIfFlag": "infiltrated",
         "success": {
-          "text": "You hear that Sable altered the final verse and keeps the payment ledger beneath the desk's false bottom.",
           "clues": [
             "sable-payments",
             "wraith-bound"
@@ -1447,7 +1630,15 @@
           "setFlags": {
             "bossRitualKnown": true
           },
-          "nextNode": "vault-antechamber"
+          "nextNode": "vault-antechamber",
+          "lines": [
+            {
+              "narrate": "You hear it in pieces, between the swings of the censers. Sable has changed the last verse of the rite. And he keeps the payment ledger under the cipher desk, in a false bottom, because he doesn't trust the acolytes."
+            },
+            {
+              "narrate": "You find the ledger exactly where they said. Most of the buyers are in cipher. One line is not, as if Sable were proud of it: 'Copy of the binding rite. Central Command, Highpass. Paid in full.'"
+            }
+          ]
         },
         "failure": {
           "text": "A censer stops mid-swing. The acolyte looks directly toward your hiding place and calls the guards.",
@@ -1472,7 +1663,6 @@
           "dc": 11
         },
         "success": {
-          "text": "Orin begins a loud argument about delivery seals. Nessa slips behind the desk and returns with the ledger before the acolyte finishes objecting.",
           "clues": [
             "sable-payments"
           ],
@@ -1488,7 +1678,15 @@
           "nextNode": "vault-antechamber",
           "approval": {
             "nessa": 1
-          }
+          },
+          "lines": [
+            {
+              "narrate": "Orin starts a loud argument with the nearest acolyte about the correct way to seal a delivery. It is an argument Orin genuinely cares about, which makes it very convincing. Nessa slips behind the desk and is back with the ledger before the acolyte has finished objecting."
+            },
+            {
+              "narrate": "Most of the buyers in it are in cipher. One line is not: 'Copy of the binding rite. Central Command, Highpass. Paid in full.'"
+            }
+          ]
         },
         "failure": {
           "text": "The false bottom catches. Nessa gets the ledger, but the desk's bronze alarm rings through the court.",
@@ -1545,6 +1743,15 @@
           "combat": "hollow-guards"
         }
       }
+    ],
+    "lines": [
+      {
+        "narrate": "The hollow court was a wardens' hall, once. Roots pin the old shields to its walls now, like antlers in a hunting lodge. Acolytes in grey carry bronze bowls between a cipher desk and a stair that goes down toward the sound of the bell."
+      },
+      {
+        "say": "maren",
+        "text": "Those are Briarwatch's shields. The wardens who kept this village. He's hung them up like trophies."
+      }
     ]
   },
   "vault-antechamber": {
@@ -1554,7 +1761,6 @@
     "location": "Bell-Vault Antechamber",
     "safeRest": true,
     "objective": "Choose how the party will disrupt Sable's ritual before entering the bell-vault.",
-    "opening": "The last door trembles with each slow toll from below. Through its seams you see Sable at a circle of black candles and the outline of a chained spirit inside the cracked bell. Your companions speak in low voices; each has a different answer.",
     "choices": [
       {
         "id": "maren-rite",
@@ -1680,6 +1886,27 @@
         ],
         "nextNode": "bell-vault"
       }
+    ],
+    "lines": [
+      {
+        "narrate": "The last door shakes with every toll from below. Through its seams you can see Sable inside a ring of black candles, and inside the cracked bell above him, the outline of someone pressing against the bronze."
+      },
+      {
+        "say": "maren",
+        "text": "The verse. Give it back its real words and the chains will show."
+      },
+      {
+        "say": "orin",
+        "text": "Or I break the winch that's pulling them tight. Simpler."
+      },
+      {
+        "say": "nessa",
+        "text": "Or I take the key off his belt and nobody has to sing anything."
+      },
+      {
+        "say": "orin",
+        "text": "Everybody thinks their own plan is best. That's how you know we're nervous."
+      }
     ]
   },
   "bell-vault": {
@@ -1689,7 +1916,6 @@
     "location": "The Ward-Bell Vault",
     "safeRest": false,
     "objective": "Break Sable's control of the ward-spirit and survive the final reckoning.",
-    "opening": "The buried bell is larger than the village tower above it. Black roots suspend it over a pit of pale fire. Warden Sable stands inside the ritual circle with one hand on a bronze chain. A human shape presses against the bell's inner surface each time it tolls.",
     "choices": [
       {
         "id": "name-the-spirit",
@@ -1803,6 +2029,25 @@
           "charge"
         ],
         "dynamicCombat": true
+      }
+    ],
+    "lines": [
+      {
+        "narrate": "The buried bell is bigger than the tower above it. Black roots hold it over a pit of pale fire. Warden Sable stands in his circle with one hand on a bronze chain, and each time the bell tolls, a human shape presses against the inside of it, like someone at a window."
+      },
+      {
+        "narrate": "The chain runs into a lantern of black glass with no wick, hanging cold enough to frost the air around it. Tovin's lantern, the one Dera couldn't name. It was never a light. It's a lock.",
+        "when": {
+          "flag": "blackLanternKnown"
+        }
+      },
+      {
+        "say": "Sable",
+        "text": "You shouldn't have come down. Every ward in the north is failing, and Briarwatch's was failing with them. A willing spirit rings when it likes. A bound one rings when it's told. I am keeping this village alive."
+      },
+      {
+        "say": "maren",
+        "text": "Then ask her if she minds. She's the one in the bell."
       }
     ]
   },

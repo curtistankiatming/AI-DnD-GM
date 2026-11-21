@@ -77,8 +77,8 @@ test('a story choice is told in order: the roll and its result, then the new sce
   assert.match(leave.text, /^The north road divides/);
   const path = play('pilgrim-path');
   assert.match(path.text, /rolled/);
-  assert.ok(path.text.indexOf('rolled') < path.text.indexOf('Roots split the shrine'), path.text);
-  assert.ok(path.text.indexOf('toward a forgotten shrine') < path.text.indexOf('Roots split the shrine'), path.text);
+  assert.ok(path.text.indexOf('rolled') < path.text.indexOf('Roots have split the shrine'), path.text);
+  assert.ok(path.text.indexOf('nobody has visited in a hundred years') < path.text.indexOf('Roots have split the shrine'), path.text);
 });
 
 test('a choice that stays in its scene keeps its own text ahead of its effects', () => {
