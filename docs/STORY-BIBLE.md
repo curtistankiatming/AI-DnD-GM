@@ -194,7 +194,7 @@ was (the shared room at the Chair Problem, Ada Rusk at Kell's Bridge).
 pays about 70% of the level it is written for. Side jobs (up to 12% of a level
 each), the town bounty board (a repeatable fight, about 10% of a level, 15%
 while behind the chapter) and AI side quests make up the rest. A player who
-skips all of it ends Book Two at about level 16; a careful one at 19, reaching
+skips all of it ends Book Two at about level 17; a careful one at 19, reaching
 20 and the 2nd job with a bounty or two after the Second Oath. A chapter can be
 started up to 10 levels under its level; more than 5 under, it gets harder.
 Written chapters' battles pay no extra XP. (Before: 105% per chapter, so the
