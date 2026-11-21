@@ -121,6 +121,9 @@ function source(item) {
 
 // Prices rise with rarity and with the level an item needs.
 const RARITY_FLOOR = Object.freeze({ Common: 0, Uncommon: 30, Rare: 70, Epic: 150, Legendary: 300 });
+// What the smith charges to upgrade `item` (its "-fine" version): a basic
+// item 45 gold plus half its price, a special item made Masterwork twice its price.
+const upgradeCost = (item) => ITEMS[`${item?.id}-fine`]?.masterwork ? 2 * item.value : 45 + Math.floor((item?.value || 0) / 2);
 const minValue = (item) => (RARITY_FLOOR[item.rarity] || 0) + 10 * (item.requires?.level || 0);
 
 // Exclusive rewards: a quest's item when it is finished, a town's bounty item
@@ -216,4 +219,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = { specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };
+module.exports = { upgradeCost, specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };

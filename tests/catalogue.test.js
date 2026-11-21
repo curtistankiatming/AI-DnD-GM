@@ -87,7 +87,8 @@ test('no new item is weaker than the Fine version of a cheaper item in the same 
   const ac = i => (i.armor ? i.armor.base + (i.armor.dexCap === null ? 2 : Math.min(2, i.armor.dexCap)) : 0) + (i.acBonus || 0);
   const power = i => i.category === 'focus' ? (i.spellAttackBonus || 0) + (i.spellDcBonus || 0) : i.weapon ? (i.attackBonus || 0) + (i.damageBonus || 0) : ac(i);
   for (const item of GEAR.filter(i => ['weapon', 'focus', 'armor', 'shield'].includes(i.category) && i.rarity !== 'Common' && i.rarity !== 'Uncommon')) {
-    for (const fine of Object.values(ITEMS).filter(f => f.upgradeTier && f.category === item.category && f.value < item.value)) {
+    // Masterwork items are refined by the smith for twice their price, so they're left out.
+    for (const fine of Object.values(ITEMS).filter(f => f.upgradeTier && !f.masterwork && f.category === item.category && f.value < item.value)) {
       if (item.weapon && fine.weapon && (fine.weapon.damage !== item.weapon.damage)) continue;
       // Light armour (full Dexterity) is compared only with light armour, heavy with heavy.
       if (item.armor && fine.armor && (item.armor.dexCap === null) !== (fine.armor.dexCap === null)) continue;
@@ -192,4 +193,37 @@ test('typed "equip" picks the found item you own and can wear when two share a n
   assert.equal(low.name, high.name, 'the names repeat 24 levels apart');
   const out = E.resolveAction(s, { type: 'freeform', text: `equip ${low.name.toLowerCase()}` });
   assert.equal(out.state.player.equipment.mainHand, 'forged-blade-1', 'the level 1 one, which a level 3 hero can wear');
+});
+
+// Gold sink (21 November 2026): the smith refines special gear into Masterwork.
+test('the smith refines Rare and better gear into Masterwork for twice its price', () => {
+  const mw = ITEMS['commandery-halberd-fine'], base = ITEMS['commandery-halberd'];
+  assert.equal(mw.name, 'Masterwork Commandery Halberd');
+  assert.ok(mw.masterwork && mw.rarity === 'Legendary' && !mw.exclusive);
+  assert.equal(mw.attackBonus, base.attackBonus + 1);
+  assert.equal(mw.damageBonus, base.damageBonus + 1);
+  assert.equal(Gear.upgradeCost(base), 2 * base.value);
+  assert.equal(ITEMS['harbour-cutlass-fine'].rarity, 'Epic', 'one step rarer');
+  assert.equal(ITEMS['chancery-rod-fine'].spellDcBonus, ITEMS['chancery-rod'].spellDcBonus + 1);
+  assert.equal(ITEMS['warden-signet-fine'].stats.dealt, 0.15);
+  assert.equal(ITEMS['mirefang-dagger-fine'], undefined, 'Uncommon special items have no upgrade');
+  assert.equal(Gear.upgradeCost(ITEMS['iron-longsword']), 45 + Math.floor(ITEMS['iron-longsword'].value / 2), 'basic upgrades cost what they did');
+  // A refined chapter reward is not a second reward.
+  const s = makeSandbox({ classId: 'fighter', level: 8 }), events = [];
+  assert.equal(Gear.award(s, 'quest:summit', events)?.id, 'glasswind-cloak');
+});
+
+test('refining an equipped item charges twice its price and keeps it worn', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 10 }); s.player.level = 24;
+  s.world.townId = 'briarwatch'; s.story.nodeId = 'town-briarwatch';
+  G.addTo(s.player.inventory, 'commandery-halberd', 1);
+  s.player.equipment.offHand = null; s.player.equipment.mainHand = 'commandery-halberd'; G.derive(s.player);
+  s.player.gold = 2000;
+  const card = E.buildView(s).world.upgrades.find(u => u.itemId === 'commandery-halberd' && u.actorId === 'player');
+  assert.equal(card.cost, 1240);
+  const out = E.resolveAction(s, { type: 'upgrade', itemId: 'commandery-halberd', actorId: 'player' });
+  assert.equal(out.state.player.gold, 760);
+  assert.equal(out.state.player.equipment.mainHand, 'commandery-halberd-fine');
+  const again = E.resolveAction(out.state, { type: 'upgrade', itemId: 'commandery-halberd-fine', actorId: 'player' });
+  assert.equal(again.state.player.gold, 760, 'only one upgrade');
 });
