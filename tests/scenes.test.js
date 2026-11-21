@@ -19,14 +19,15 @@ const bond = (s, id) => s.party.find((m) => m.id === id).bond;
 
 test('every scene follows a real expedition and every line and choice resolves', () => {
   for (const scene of Object.values(SCENES).filter((x) => x && x.nodes)) {
-    assert.ok(QUESTS[scene.after], `${scene.id} follows a known expedition`);
+    // A scene follows an expedition, or another scene that does (a chapter's second choice, then its camp).
+    assert.ok(QUESTS[scene.after] || (SCENES[scene.after]?.nodes && QUESTS[SCENES[scene.after].after]), `${scene.id} follows a known expedition`);
     assert.ok(scene.nodes[scene.start], `${scene.id} has its start node`);
     for (const id of scene.cast) assert.ok(COMPANIONS[id], `${scene.id} cast ${id}`);
     for (const [key, node] of Object.entries(scene.nodes)) {
       const compiled = STORY_NODES[`scene-${scene.id}-${key}`];
       assert.ok(compiled.dialogue.length && compiled.choices.length, `${scene.id}/${key} has lines and choices`);
       for (const c of compiled.choices) assert.ok(STORY_NODES[c.result.nextNode], `${scene.id}/${key}/${c.id} leads somewhere`);
-      for (const c of node.choices || []) for (const id of Object.keys(c.approval || {})) assert.ok(scene.cast.includes(id), `approval for cast only (${id})`);
+      for (const c of node.choices || []) for (const id of Object.keys(c.approval || {})) assert.ok(scene.cast.includes(id) || c.requires?.companion === id, `approval for cast only (${id}), or for a companion the choice needs`);
     }
   }
 });

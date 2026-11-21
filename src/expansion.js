@@ -62,8 +62,9 @@ const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister
 const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{})});
 function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
-// party, and its optional "when" holds (flag / is, notFlag, anyFlag, party,
-// absent, class, item, notItem, clue, notClue, access, notAccess). The written text keeps every line; this picks the ones for this save.
+// party, and its optional "when" holds (flag / is, notFlag, anyFlag, noneFlag,
+// party, absent, class, spec, bondAtLeast, bondBelow, item, notItem, clue,
+// notClue, access, notAccess). The written text keeps every line; this picks the ones for this save.
 function lineApplies(state, line) {
   const inParty = (id) => state.party.some((member) => member.id === id);
   if (line.speakerId && !inParty(line.speakerId)) return false;
@@ -73,9 +74,16 @@ function lineApplies(state, line) {
   if (w.flag !== undefined && !(w.is !== undefined ? f[w.flag] === w.is : Boolean(f[w.flag]))) return false;
   if (w.notFlag && f[w.notFlag]) return false;
   if (Array.isArray(w.anyFlag) && !w.anyFlag.some((flag) => f[flag])) return false;
+  if (Array.isArray(w.noneFlag) && w.noneFlag.some((flag) => f[flag])) return false;
   if (w.party && !inParty(w.party)) return false;
   if (w.absent && inParty(w.absent)) return false;
   if (w.class && state.player.classId !== w.class) return false;
+  // spec: the hero's 2nd job branch ("none" before one is chosen).
+  if (w.spec !== undefined && (state.player.progression?.specialization || 'none') !== w.spec) return false;
+  // bondAtLeast / bondBelow: {companion id: bond}, how far a companion trusts the hero.
+  const bond = (id) => Number(state.party.find((member) => member.id === id)?.bond) || 0;
+  if (w.bondAtLeast && Object.entries(w.bondAtLeast).some(([id, n]) => !inParty(id) || bond(id) < n)) return false;
+  if (w.bondBelow && Object.entries(w.bondBelow).some(([id, n]) => !inParty(id) || bond(id) >= n)) return false;
   const carried = (id) => (state.player.inventory || []).some((entry) => entry.itemId === id);
   if (w.item && !carried(w.item)) return false;
   if (w.notItem && carried(w.notItem)) return false;
@@ -145,17 +153,22 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // after an expedition. Each beat is a story node whose lines are kept as
 // structured dialogue; choices change approval only. A scene whose cast is
 // not all in the party is skipped (engine enterNode follows skipTo).
+// A scene may also follow another scene ("after" names that scene): it plays
+// straight after it, as the second choice of a chapter runs before its camp.
 const SCENES=require('./data/scenes.json');
+const sceneNode=(scene,key)=>`scene-${scene.id}-${key}`;
+const chapterOf=scene=>{for(let s=scene,i=0;s&&i<10;s=SCENES[s.after],i++)if(QUESTS[s.after])return QUESTS[s.after];return null;};
 function installScene(scene){
-  const q=QUESTS[scene.after];if(!q)throw new Error(`Scene ${scene.id} follows unknown expedition ${scene.after}`);
-  const home=`town-${q.nextTown||q.town}`,nodeId=key=>`scene-${scene.id}-${key}`;
+  const q=chapterOf(scene);if(!q)throw new Error(`Scene ${scene.id} follows unknown expedition ${scene.after}`);
+  const next=Object.values(SCENES).find(s=>s&&s.nodes&&s.after===scene.id);
+  const home=next?sceneNode(next,next.start):`town-${q.nextTown||q.town}`,nodeId=key=>sceneNode(scene,key);
   for(const [key,raw]of Object.entries(scene.nodes)){
     const base=raw.sameAs?scene.nodes[raw.sameAs]:raw;
     const dialogue=base.lines.map(storyLine);
     STORY_NODES[nodeId(key)]={id:nodeId(key),act:scene.act,title:base.title,location:scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
-      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),nextNode:c.next?nodeId(c.next):home}}))};
+      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{...(c.requires?{requires:c.requires}:{}),result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),nextNode:c.next?nodeId(c.next):home}}))};
   }
-  for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
+  if(QUESTS[scene.after])for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
 // Side jobs (src/data/side-jobs.json): short optional stories taken from a

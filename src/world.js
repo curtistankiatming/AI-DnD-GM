@@ -29,6 +29,9 @@ function init(state){
   G.normalizeEquipment(state);
   return w;
 }
+// A town that only a later book's chapters reach (Saltwick, Vell) is shown
+// and reachable only while one of them is playable (src/book.js townOpen).
+const townOpen=Book.townOpen;
 function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !state.combat?.active&&TOWNS[id]?TOWNS[id]:null;}
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of TOWNS[id].stock)if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
@@ -125,7 +128,11 @@ const JOB_SHARE=0.12;
 // a paid book on a free hosted account) is never offered.
 const jobInBooks=(state,job)=>[job.from,job.until].filter(Boolean).every(id=>Book.playable(state,id));
 function jobOpen(state,job){return Boolean(job&&jobInBooks(state,job)&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
-function jobXp(job){const L=Math.max(2,job.level);return Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));}
+// From Book Three a chapter pays exactly one level, so a job pays mostly gold
+// and about 130 XP (docs/book-three/DESIGN.md, "Side jobs and camp scenes").
+const BOOK_THREE_JOB_XP=130;
+const jobBook=job=>Math.max(1,...[job.from,job.until].filter(Boolean).map(id=>Number(QUESTS[id]?.book)||1));
+function jobXp(job){const L=Math.max(2,job.level);const share=Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));return jobBook(job)>=3?Math.min(BOOK_THREE_JOB_XP,share):share;}
 function completeJob(state,id,events,api,reward){
   const job=SIDE_JOBS[id],w=state.world;if(!job||w.jobs[id])return false;
   const gold=Math.max(0,Number.isFinite(reward)?reward:job.gold||0);
@@ -242,7 +249,7 @@ function handle(state,action,rng,events,api){
     return depart(state,w.activeQuest,rng,events,api);
   }
   if(action.type==='travel-town'){
-    if(!town(state)||!w.unlockedTowns.includes(action.townId)||!TOWNS[action.townId])return fail(events,'Travel is only available between discovered towns while out of combat.');
+    if(!town(state)||!w.unlockedTowns.includes(action.townId)||!TOWNS[action.townId]||!townOpen(state,action.townId))return fail(events,'Travel is only available between discovered towns while out of combat.');
     if(town(state).id===action.townId)return fail(events,'You are already there.');
     w.day+=1;w.townId=action.townId;w.onExpedition=false;api.enterNode(state,`town-${action.townId}`,events);return emit(events,`The party travels to ${TOWNS[action.townId].name}. Stock and progress are preserved.`);
   }
@@ -404,7 +411,7 @@ function view(state){
     return {questId:q.id,warnings,knownThreat:q.knownThreat};
   });
   return {day:w.day,cycle:w.cycle,town:t?{...t,rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!STORY_NODES[state.story.nodeId]?.defeat,
-    towns:w.unlockedTowns.map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
+    towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
     reputation:w.reputation,services,
     shop:t?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
     merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
@@ -423,4 +430,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={init,town,townOpen,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

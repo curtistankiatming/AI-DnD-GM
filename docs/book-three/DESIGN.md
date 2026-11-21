@@ -244,3 +244,9 @@ default of mother_chorus, as the world rules above require.
 
 **New flags in Part One** add nothing beyond the table above except
 `b3_partone_done` (set by the end-of-part scene), which Part Two reads.
+
+**TODO (from the PR #62 review).** Saltwick's town page (src/data/towns.json)
+does not change after `b3_saltwick_moved`: it still describes a town living on
+its roofs. It should read as the emptied town, its lamps kept lit by Mags and a
+few lamplighters, the way Vell's page is to change after `b3_bell_evacuate`.
+This needs a town page that can follow a flag.

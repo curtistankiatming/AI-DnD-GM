@@ -20,7 +20,7 @@ function ready(id) {
 
 test('without the preview, Book Three is written but not on the board', () => {
   assert.ok(!/^(1|true|yes|on)$/i.test(String(process.env.BRIARWATCH_PREVIEW_BOOKS || '')), 'This file runs as a player would.');
-  assert.ok(QUESTS['b3-letter'] && QUESTS['b3-rite'] && QUESTS['b3-pass'], 'The chapters exist.');
+  assert.ok(['b3-letter', 'b3-rite', 'b3-pass', 'b3-saltwick', 'b3-vell', 'b3-witness'].every((id) => QUESTS[id]), 'The chapters exist.');
   assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0);
   assert.deepEqual(Book.BOOKS.map((b) => b.n), [1, 2]);
   assert.ok(!Book.CHAPTERS.some((q) => q.book === 3));
@@ -35,7 +35,33 @@ test('a hero who has finished Book Two cannot take a Book Three chapter or its s
   assert.equal(Book.chapter(s), null, 'The written story is over for this save.');
   const view = E.buildView(s).world;
   assert.ok(!view.quests.some((q) => String(q.id).startsWith('b3-')));
-  assert.ok(!view.sideJobs.some((j) => ['apprentice', 'library'].includes(j.id)), 'Book Three\'s side jobs stay hidden with it.');
+  assert.ok(!view.sideJobs.some((j) => ['apprentice', 'library', 'beds', 'oil', 'census', 'brothers'].includes(j.id)), 'Book Three\'s side jobs stay hidden with it.');
   assert.equal(E.resolveAction(s, { type: 'depart', questId: 'b3-letter' }, high).result.ok, false);
   assert.equal(E.resolveAction(s, { type: 'side-job', jobId: 'apprentice' }, high).result.ok, false);
+});
+
+const PREVIEW = /^(1|true|yes|on)$/i.test(String(process.env.BRIARWATCH_PREVIEW_BOOKS || ''));
+test('Saltwick and Vell are neither shown nor reachable while Book Three is hidden, even on a save that has them', { skip: PREVIEW && 'Runs only as a player would, without the preview.' }, () => {
+  const { TOWNS } = require('../src/expansion');
+  assert.ok(TOWNS.saltwick && TOWNS.vell, 'The towns are written.');
+  const s = ready('b3-letter');
+  s.world.unlockedTowns.push('saltwick', 'vell');
+  s.world.townId = 'highpass'; s.story.nodeId = 'town-highpass';
+  const towns = E.buildView(s).world.towns.map((t) => t.id);
+  assert.ok(towns.includes('highpass') && towns.includes('cinderfold'));
+  assert.ok(!towns.includes('saltwick') && !towns.includes('vell'));
+  for (const id of ['saltwick', 'vell']) {
+    assert.equal(W.townOpen(s, id), false, id);
+    assert.equal(E.resolveAction(s, { type: 'travel-town', townId: id }, high).result.ok, false, `${id} cannot be travelled to`);
+  }
+  assert.equal(W.townOpen(s, 'merrowgate'), true, 'Book Two\'s towns stay open.');
+});
+
+test('without the preview, the AI storyteller is never offered Saltwick or Vell', { skip: PREVIEW && 'Runs only without the preview.' }, () => {
+  const Director = require('../src/director');
+  const schema = JSON.stringify(Director.SCHEMA);
+  assert.ok(!schema.includes('"saltwick"') && !schema.includes('"vell"'));
+  assert.ok(schema.includes('"merrowgate"'));
+  const s = ready('b3-letter'); s.world.unlockedTowns.push('saltwick', 'vell');
+  assert.equal(Director.destination(s, 'vell', 'highpass'), 'highpass');
 });

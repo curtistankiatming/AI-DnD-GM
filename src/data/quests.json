@@ -7790,6 +7790,7 @@
     "level": 22,
     "town": "highpass",
     "unlock": "b3-rite",
+    "nextTown": "saltwick",
     "xp": 7250,
     "gold": 560,
     "region": "The lower gate of Highpass, and the pass road below it",
@@ -8363,6 +8364,2316 @@
           "wardens": 1
         },
         "flag": "b3_pass_fenmere"
+      }
+    ]
+  },
+  "b3-saltwick": {
+    "id": "b3-saltwick",
+    "book": 3,
+    "part": 1,
+    "name": "The Last Roof",
+    "level": 23,
+    "town": "saltwick",
+    "unlock": "b3-pass",
+    "nextTown": "vell",
+    "needs": [
+      "orin"
+    ],
+    "xp": 7500,
+    "gold": 580,
+    "region": "Saltwick, a salt town on the Iron Road, living on its roofs",
+    "threat": "Saltwick has lived on its rooftops since its echo-stone died. Its lamps keep the mist down in the streets, and the oil for them is running out. The night tides come higher every week.",
+    "faction": "wilds",
+    "brief": "Saltwick lives on its roofs above the Gloam, and its lamp oil is nearly gone. Orin was here eight years ago, the night his company left. See the town through the next tide.",
+    "opening": [
+      {
+        "narrate": "The Iron Road goes over the pass and down the far side in long grey switchbacks, and every mile of it there is a post, and on every post there is an echo-stone. They are the size of a loaf, black iron, each with a Commandery number stamped on a plate beneath it. Every one of them is dead. You can tell from twenty yards. A live stone hummed; you felt it in your teeth. These are only iron."
+      },
+      {
+        "narrate": "Someone has hung a wreath of dried heather on stone forty-one. Someone else has scratched a name into the plate of stone forty-six, too small to read without stopping. Nobody stops."
+      },
+      {
+        "narrate": "Quartermaster Iona walks with the party, as the council sent her to, and writes down the number of every stone you pass, and the date, and the words: not working.",
+        "when": {
+          "flag": "b3_to_council"
+        }
+      },
+      {
+        "narrate": "Orin walks at the front all the way down. He has not said anything since the top of the pass. Nobody has asked him to.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "You come to Saltwick at dusk, and at first you think it is empty. The streets are white to the height of a man: a thick, slow mist lying in them the way water lies in a ditch, with the doorways and the ground-floor windows sunk out of sight under it."
+      },
+      {
+        "narrate": "Then you look up. Saltwick lives on its roofs. Planks run from eave to eave across every lane, lashed down with rope, and the whole town is up there: washing on lines between the chimneys, hens in a coop on the chandler's roof, a cookfire on a sheet of iron, a dozen children doing lessons on the slates of the old salt-hall with their slates on their knees. On every corner, on poles twice the height of the houses, there are lamps, and the lamplighters are going round them on the planks with long hooks, one after another, lighting them against the dark. Where the lamplight falls the mist lies flat. Where it doesn't, the mist rises."
+      },
+      {
+        "narrate": "A ladder comes down to the road. At the top of it a woman of sixty or so is looking down at you, with a lamp-hook in one hand and a coil of rope over her shoulder. She has a lamplighter's hands, black at the fingertips."
+      },
+      {
+        "narrate": "She is not looking at you. She is looking at Orin.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "She looks at each of you in turn, slowly, the way a person looks along a line of faces for one in particular. She does not find it.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "I know you.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "Orin stops at the foot of the ladder.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Salt carts. Eight years ago this spring. You were at the back of the column, with the lantern. You had a beard then. It didn't suit you.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Yes."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Mags Peller. I keep the lamps. I kept them then. You won't remember me. I was the one shouting.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "I remember."
+      },
+      {
+        "narrate": "For a long moment neither of them says anything. Then Mags turns her lamp-hook round and holds the end of it down to him, the way you would offer it to someone on the ladder who needed a hand up.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Mags Peller. I keep the lamps. You're the free wards' lot, from over the pass. Roke said you might come.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Well. Come up, then. You'll want to see it. All of you. Mind the third rung, and don't look at the mist too long. It looks back."
+      },
+      {
+        "say": "maren",
+        "text": "Orin.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "I know. Later."
+      },
+      {
+        "narrate": "He takes the end of the hook, and climbs.",
+        "when": {
+          "party": "orin"
+        }
+      }
+    ],
+    "talks": [
+      {
+        "id": "orin",
+        "label": "Sit with Orin on the salt-hall roof, after the lamps are lit",
+        "requires": {
+          "companion": "orin"
+        },
+        "lines": [
+          {
+            "narrate": "He is sitting on the ridge of the salt-hall roof with his boots on the slates and his hands hanging between his knees. Below him the mist moves in the lanes like something breathing. He doesn't look round when you sit down."
+          },
+          {
+            "say": "orin",
+            "text": "Captain Odell Varn. That was his name. A hired road company, forty of us. The Commandery paid us to bring salt over the pass for one season. Good pay. I'd never had good pay."
+          },
+          {
+            "say": "orin",
+            "text": "We were here three nights, loading. Then there was a tide. Not like this. Bigger. It came up the valley all at once, like a door opening. And the town had nothing. No bell. Commandery melted it down years before, for the stones, and the stones weren't here yet. They had lamps and a lot of shouting."
+          },
+          {
+            "say": "orin",
+            "text": "Varn had us hitched and moving in a quarter of an hour. High road, over the ridge, carts first. I asked him what about the town. He said the contract was the salt."
+          },
+          {
+            "narrate": "He stops. Down in the lane, a lamplighter's hook knocks against a pole, twice, and a lamp flares."
+          },
+          {
+            "say": "orin",
+            "text": "I was at the back. With the lantern. That's the job at the back: you hold it up so the carts behind can see the cart in front. So I held it up. And the town could see us go. All the way up the ridge. I could hear them, and I held it up so they could see exactly where we were going without them."
+          },
+          {
+            "say": "orin",
+            "text": "Fourteen. That's how many they lost that night. I found out later. I've always known the number. I never knew a single name."
+          },
+          {
+            "say": "orin",
+            "text": "That's what I meant, all these years, when I said we left civilians behind once. Once. As if it were a thing that happened one time and was finished."
+          },
+          {
+            "say": "orin",
+            "text": "It isn't finished. It's here. She's here. She remembers my beard."
+          }
+        ],
+        "approval": {
+          "orin": 1
+        }
+      },
+      {
+        "id": "mags",
+        "label": "Walk the lamp round with Mags Peller",
+        "lines": [
+          {
+            "narrate": "Mags walks the planks the way other people walk a road: fast, without looking down, talking. She lights each lamp with one turn of the hook, and checks the oil in each with a dip-stick she keeps behind her ear."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "After that night, Central Command sent a man to say they were sorry, and set us an echo-stone on the green the next spring, so it would never happen again. And it didn't, for seven years. You could feel it at night, humming. My grandson used to put his ear to it."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Then last year it stopped. Middle of supper. Just stopped. And the mist came up the lanes the same week, and we came up onto the roofs, and we've been up here since. Eleven months. We've had two babies born on the roofs. One wedding. The wedding was on the chandler's, which has the best view, and it was a fine wedding."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "The lamps hold it in the lanes. The mist doesn't like light, any more than it likes noise. As long as every lamp's lit, it lies down. If one goes out, it comes up that corner, and you go up and light it again, and mind you don't breathe in. That's the whole of the trade. Nineteen lamplighters. I trained every one."
+          },
+          {
+            "narrate": "At the corner of Cooper's Lane she stops, and looks at you, sideways."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "You want to know what I think of him. Everyone who comes up the ladder with him is going to want to know that. I'll tell you what I'll tell him, when he asks. Which he will. He's got that look."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I don't know yet. That's what I think. I didn't think I'd ever see his face again, and I've been carrying it eight years, and now it's on my roof, and I don't know."
+          }
+        ]
+      },
+      {
+        "id": "davin",
+        "label": "Ask the boy mending the plank bridge what he remembers",
+        "lines": [
+          {
+            "narrate": "Davin Peller is fourteen and has his grandmother's hands, black at the fingertips already. He is relashing the plank across Salt Street, lying on his front to reach the knots, with nothing between him and the mist but six inches of board."
+          },
+          {
+            "say": "Davin",
+            "text": "That night? I was six. I remember the bell-man's dog. It was yellow. It got up on the well-house roof and wouldn't come down, and everyone said it was the cleverest dog in Saltwick, because it was the only one that went up."
+          },
+          {
+            "say": "Davin",
+            "text": "I don't remember the carts. Gran says there were carts. Were you there?"
+          },
+          {
+            "say": "orin",
+            "text": "Yes. I was at the back.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "Davin",
+            "text": "Sorry. I don't remember you at all.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Nobody answers him. Davin shrugs, and goes back to the knot.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "narrate": "Orin nods, and goes and holds the end of the plank steady while the boy finishes the knot.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "Davin",
+            "text": "Vell's going to send us oil. If we send them two names. For the wall. I've put mine down on Gran's slate, but she rubbed it off. I put it back. She keeps rubbing it off."
+          },
+          {
+            "say": "Davin",
+            "text": "Someone's got to. Hasn't someone got to?"
+          },
+          {
+            "say": "nessa",
+            "text": "No. No, someone hasn't. That's not how it—",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Davin pulls the knot tight and sits up on the plank, which moves under him, and doesn't seem to notice."
+          },
+          {
+            "narrate": "You tell him no. Nobody has got to.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Davin",
+            "text": "Then how is it?"
+          }
+        ]
+      },
+      {
+        "id": "knots",
+        "label": "Watch Orin and the lamplighters re-rig the Cooper's Lane plank",
+        "requires": {
+          "companion": "orin"
+        },
+        "lines": [
+          {
+            "narrate": "The plank across Cooper's Lane has been creaking all evening, and two lamplighters go out to relash it, and Orin goes with them because he cannot watch someone tie a knot and not have a view on it."
+          },
+          {
+            "say": "Tam Ostler",
+            "text": "Lamplighter's hitch. Two turns and a tuck. Holds anything."
+          },
+          {
+            "say": "orin",
+            "text": "It holds if you're pulling it. It walks if you're standing on it. You want a round turn and two half-hitches, and a stopper on the tail."
+          },
+          {
+            "say": "Tam Ostler",
+            "text": "A stopper. On a plank. He wants a stopper. Mags! He wants a stopper."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Then give him a stopper and see if he falls off.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "They argue about it for twenty minutes, kneeling on a board over a twenty-foot drop into the mist, passing the rope back and forth: the lamplighter's hitch, the round turn, a third knot that Tam's mother used to use on washing lines that both of them agree is terrible. In the end they tie it Tam's way on one side and Orin's way on the other, and stand on the middle of the plank together, and bounce, carefully, to see which side gives first."
+          },
+          {
+            "narrate": "Neither side gives. Tam looks at Orin. Orin looks at Tam."
+          },
+          {
+            "say": "Tam Ostler",
+            "text": "Tomorrow we'll try it with three of us."
+          },
+          {
+            "say": "orin",
+            "text": "And a barrel."
+          },
+          {
+            "narrate": "It is the first time since the top of the pass that you have seen him look as though he has forgotten, for a moment, where he is."
+          }
+        ]
+      }
+    ],
+    "clue": "Saltwick's lamps burn the town's last oil, and it runs out in four nights. Vell's ration office, run under Commander Hesk's quotas, sends lamp oil only to the towns that send volunteers to the casting wall: two names from Saltwick, and the oil comes. A ration convoy goes up the Iron Road every week to the towns that paid.",
+    "investigate": {
+      "label": "Go through the lamplighters' oil tally and the letters from Vell",
+      "skill": "investigation",
+      "alt": [
+        "survival",
+        "insight"
+      ],
+      "success": [
+        {
+          "narrate": "The oil is kept in the salt-hall loft, in barrels with chalk marks on the lids. Mags's tally is on a slate by the hatch: nineteen lamplighters, a hundred and six lamps, so much a night. You count the barrels twice, and dip each one, and do the sum. It comes out the same as Mags's. Four nights. Five, if they let the corners on the edge of town go dark and move the families off those roofs."
+        },
+        {
+          "narrate": "Under the slate there is a bundle of letters on grey Commandery paper, tied with string. They are from the ration office at Vell, one a fortnight since the stone died, and they all say the same thing in slightly different words."
+        },
+        {
+          "narrate": "\"Allocation of lamp oil to Saltwick: nil. Allocation will resume on receipt at Vell of volunteers, two (2), for the casting wall, in accordance with the district quota. Signed for Commander I. Hesk.\""
+        },
+        {
+          "say": "Mags Peller",
+          "text": "Two. Not two hundred. Two. As if that made it smaller."
+        },
+        {
+          "narrate": "The last letter adds a line. The weekly ration convoy will pass Saltwick on the Iron Road at first light on the fifth day, carrying oil to Harl Cross and Dunmere, which have sent their names."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The oil is kept in the salt-hall loft, in barrels with chalk marks on the lids, and you lose count of them twice in the dark under the eaves. Mags's tally says four nights. You have no reason to think she is wrong."
+        },
+        {
+          "narrate": "There is a bundle of grey letters under the tally slate. You read the top one: oil to Saltwick, nil, until Saltwick sends two volunteers to Vell's wall. Signed for Commander Hesk. You do not get to the others before Mags takes the lamp back for the round."
+        }
+      ]
+    },
+    "route": {
+      "label": "Walk the night round on the planks with the lamplighters, to the edge of town",
+      "skill": "athletics",
+      "alt": [
+        "acrobatics",
+        "survival"
+      ],
+      "tools": [
+        "silk-rope",
+        "climbing-kit",
+        "lantern"
+      ],
+      "success": [
+        {
+          "narrate": "You go round with Tam and Davin on the second night, the whole of the round, a hundred and six lamps. The planks bow under you and you learn to go with them. At the far edge of town, where the Vell road starts to climb out of the valley, the roofs run out at a cooper's yard, and beyond it the road goes up between two walls, clear of the mist, to the ridge."
+        },
+        {
+          "say": "Davin",
+          "text": "That's the way out. If we ever go. Gran says nobody's going. Gran says that about everything."
+        },
+        {
+          "narrate": "You walk it back in your head on the way home: the planks, the turns, the place on Mill Street where the boards are rotten. You know the way now."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go round with Tam and Davin on the second night. Halfway along Mill Street a board gives under your heel and you go through to the waist, legs in the mist. It is like stepping into a river in winter, if the river could think. It has your warmth before Tam has your collar. For a while afterwards you cannot remember the name of the lane you are on, or why it matters."
+        },
+        {
+          "narrate": "You come home shaking, by a way you will not remember tomorrow."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Stay on the salt-hall roof and wait for the night with the town",
+      "text": "You stay on the salt-hall roof with Mags and the oil, and let the lamplighters keep their own rounds. The town knows its roofs better than you could learn them in two nights."
+    },
+    "approach": [
+      {
+        "narrate": "On the fourth night, the last of the oil goes into the lamps at dusk. Mags stands on the salt-hall roof with her dip-stick behind her ear and watches the mist."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "It's high tonight. See the way it stands up at the corners? Like it's listening. It's coming in."
+      },
+      {
+        "say": "maren",
+        "text": "How high does it come?"
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Last month, to the sills. The month before, to the doorframes. You can see the line on the walls, where the paint's gone grey. It goes up a bit every time, and the lamps hold it a bit less every time, and I don't know where it stops. Nobody does."
+      },
+      {
+        "narrate": "Across the town, on every roof, people are bringing in the washing and banking the cookfires, and doing it quickly and without talking, the way people do a thing they have done too many times."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "It comes up the valley a little after midnight, like a door opening."
+      },
+      {
+        "narrate": "The mist in the lanes stands up. It rises to the sills, to the lintels, to the gutters, and keeps rising, white and slow and absolutely silent, and where it touches the lamp poles the lamps gutter and shrink and go blue. On Mill Street a lamp goes out. Then the one beside it."
+      },
+      {
+        "say": "Tam Ostler",
+        "text": "Mill Street's gone! I can't get to it, it's over the plank!"
+      },
+      {
+        "narrate": "The white is at the eaves. It laps at the edge of the roofs like a tide coming over a harbour wall, and the planks on the low side of town are under it, and the families on the low roofs are scrambling up their chimneys."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Back! Everyone back to the salt-hall! Leave the lamps, leave everything, come to the hall!"
+      },
+      {
+        "say": "nessa",
+        "text": "The hall's not high enough. Look at it. It's not going to stop at the—",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "Mags. If it covers the roofs, it takes them. Everyone on them. The warmth first, then the memory, then the rest."
+      },
+      {
+        "narrate": "Across the roofs, three hundred people are looking towards the salt-hall, where Mags is, and where you are."
+      },
+      {
+        "narrate": "Orin is standing on the ridge of the hall roof with a lamp in his hand. He has taken it off the hall's own pole. He is looking at the far edge of town, where the roofs run out at the cooper's yard and the Vell road climbs up between its two walls to the ridge, clear of the white.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "You look at the far edge of town, where the roofs run out at the cooper's yard and the Vell road climbs up between its two walls to the ridge, clear of the white. You have seen that road. You tell Mags: not to the hall. Over the roofs, all of them, and up the road, tonight.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Not to the hall. Over the roofs. All of them, all the way to the cooper's yard, and up the Vell road to the ridge. Tonight. Now."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Three hundred people over the planks in the dark? With the mist at the eaves? You'll lose half of them in the lanes."
+      },
+      {
+        "say": "orin",
+        "text": "We won't lose anyone. I'll be at the back."
+      }
+    ],
+    "peaceful": {
+      "label": "Take the whole town over the roofs and up the Vell road, nobody left behind",
+      "labelNoLead": "Lead the town over the roofs in the dark, and hope the planks hold",
+      "skill": "athletics",
+      "alt": [
+        "survival",
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You go first, because you have walked the round and you know where Mill Street's boards are rotten. Tam and Davin go with you with the lamplighters' hooks, and behind them the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
+          "when": {
+            "flag": "approach:b3-saltwick"
+          }
+        },
+        {
+          "narrate": "You go first, with Tam and Davin and their hooks, finding the way plank by plank because you did not learn it in time. Behind you the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
+          "when": {
+            "notFlag": "approach:b3-saltwick"
+          }
+        },
+        {
+          "narrate": "The white comes over the low roofs behind you as you go, a roof at a time, the way water fills a lock."
+        },
+        {
+          "narrate": "Orin is at the back. He has the salt-hall's lamp. He holds it up, high over his head, the whole way, so that the last family in the line can always see the family in front. Every time someone stops, he is there. Every time the line breaks at a gap, he closes it. Twice he goes back along a plank into the edge of the white for someone who has sat down, and comes out with them, grey to the knees, and keeps going.",
+          "when": {
+            "party": "orin"
+          }
+        },
+        {
+          "narrate": "Maren walks in the middle of the line, where the old people are, and counts them out loud, every one, so that they can hear their own names.",
+          "when": {
+            "party": "maren"
+          }
+        },
+        {
+          "narrate": "Mags is at the back. She has the salt-hall's lamp. She holds it up high the whole way, so the last family in the line can always see the family in front, and you can hear her shouting at people, as she shouted eight years ago, except that this time they can hear where she is.",
+          "when": {
+            "absent": "orin"
+          }
+        },
+        {
+          "narrate": "At the cooper's yard the roofs run out, and the line goes down a ladder into the head of the Vell road and up between the two walls, where the mist has not reached, and onto the ridge. It takes until the sky is going grey. Then the last of them are on the ridge: Davin, and Tam, and Mags with her lamp-hook, and last of all the lamp."
+        },
+        {
+          "say": "Mags Peller",
+          "text": "Count. Somebody count. Don't tell me it's all of them. Count."
+        },
+        {
+          "narrate": "Maren counts. It takes a long time. It is all of them.",
+          "when": {
+            "party": "maren"
+          }
+        },
+        {
+          "narrate": "Davin counts, out loud, family by family, the way his grandmother taught him to count lamps. It takes a long time. It is all of them.",
+          "when": {
+            "absent": "maren"
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The line starts over the roofs and does not get far. On Mill Street the plank goes under the white, and the people at the front stop, and the people behind them push, and somebody screams. Out of the mist on the planks things are rising, shapes of mist the height of a man, with the cold coming off them like breath, standing up on the boards between the town and the way out."
+        },
+        {
+          "say": "Mags Peller",
+          "text": "Hold them! Hold them off the planks, and we'll get them across behind you!"
+        },
+        {
+          "narrate": "You will have to hold the planks while Saltwick crosses."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the planks while the town crosses",
+      "label": "Hold the planks while Saltwick crosses to the Vell road",
+      "description": "Four successful actions keep the tide's shapes off the planks while the people of Saltwick cross the roofs to the cooper's yard and the road out.",
+      "skill": "athletics",
+      "alt": [
+        "survival",
+        "persuasion",
+        "acrobatics"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The white comes over the Mill Street roofs before the last families are across. You get them out, all of them, but four of the Mill Street people come out grey to the shoulder and cannot say their own names for a day. One old man never quite remembers his wife's. She tells him it every morning.",
+      "successText": "The last family comes down the ladder at the cooper's yard and up the Vell road, and the shapes on the planks sink back into the white."
+    },
+    "foe": "b3-night-tide",
+    "foeName": "The Night Tide",
+    "enemyTheme": "gloam",
+    "attackName": "Rising Cold",
+    "retainerName": "Shape on the Planks",
+    "after": [
+      {
+        "narrate": "Morning on the ridge. Three hundred people sitting on the Vell road in what they climbed out in, looking down at their town. Below them the white has gone down again, back into the lanes, lying flat. The roofs are wet and grey. A hen that got out of the coop is walking along the salt-hall ridge, alone, where the cookfire was."
+      },
+      {
+        "narrate": "Everyone is here. Nobody went into the white and did not come out.",
+        "when": {
+          "flag": "method:b3-saltwick",
+          "is": "peace"
+        }
+      },
+      {
+        "narrate": "Everyone is here. Some of the Mill Street people are grey to the shoulder and wrapped in other people's coats.",
+        "when": {
+          "flag": "method:b3-saltwick",
+          "is": "objective"
+        }
+      },
+      {
+        "narrate": "Maren is going between them, saying their names to them until they say them back.",
+        "when": {
+          "flag": "method:b3-saltwick",
+          "is": "objective",
+          "party": "maren"
+        }
+      },
+      {
+        "narrate": "Everyone is here. Some of the Mill Street people are grey to the shoulder and wrapped in other people's coats.",
+        "when": {
+          "flag": "method:b3-saltwick",
+          "is": "force"
+        }
+      },
+      {
+        "narrate": "Maren is going between them, saying their names to them until they say them back.",
+        "when": {
+          "flag": "method:b3-saltwick",
+          "is": "force",
+          "party": "maren"
+        }
+      },
+      {
+        "narrate": "Orin is sitting by himself on a milestone at the side of the road with the salt-hall lamp at his feet. It has gone out. He is looking at it.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "Mags Peller goes and sits down on the road beside him. For a while neither of them says anything.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "I'm sorry. I should have said it on the ladder. I'm sorry. I held the lantern up and I walked away and I'm sorry."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "I know you are. I could see it on you at the bottom of the ladder. You've been sorry for eight years. I'm not going to tell you that's enough, Stoneward, because I don't know if it is.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "I'll think about it.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "Mags sits down on a milestone with the salt-hall lamp at her feet. It has gone out. She looks at it for a long time, and then up the road towards the pass, where a hired company's carts went up a hill eight years ago with a lantern at the back.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Your friend. The one with the beard that didn't suit him. Tell him I'm thinking about it. He'll know what that means. Tell him it isn't a yes.",
+        "when": {
+          "absent": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "How long?",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "Mags Peller",
+        "text": "As long as it takes. Longer than a night. You don't get it for one night, however good the night was. Eight years I've had your face. You can have mine a while.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "She gets up, using his shoulder to do it, and goes to count the lamplighters again.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "narrate": "Up the road from the Vell side, at first light on the fifth day, exactly as the letter said, comes the ration convoy: six carts of lamp oil under grey canvas, and a dozen of Commander Hesk's drill-guard, and a ration officer on a mule with a ledger on her knee. She reins in at the sight of three hundred people sitting in the road.",
+        "when": {
+          "flag": "prepared:b3-saltwick"
+        }
+      },
+      {
+        "narrate": "Up the road from the Vell side, at first light, comes the ration convoy: six carts of lamp oil under grey canvas, and a dozen of Commander Hesk's drill-guard, and a ration officer on a mule with a ledger on her knee. She reins in at the sight of three hundred people sitting in the road.",
+        "when": {
+          "notFlag": "prepared:b3-saltwick"
+        }
+      },
+      {
+        "say": "Ration Officer Dunn",
+        "text": "Saltwick? Saltwick's on the list for nil. Has Saltwick got its names?"
+      },
+      {
+        "narrate": "Davin stands up."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Sit down, Davin."
+      },
+      {
+        "narrate": "Behind him, on the road, three hundred people from Saltwick are looking at you. The town is down there, empty and wet, waiting for a night's oil. The road goes on over the ridge to Vell, two days' walk."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "moved",
+        "label": "Take all of Saltwick on to Vell with you, together",
+        "description": "This decision is permanent. Saltwick leaves its roofs. Three hundred people walk to Vell with you, nobody left behind.",
+        "text": [
+          {
+            "narrate": "You tell the ration officer that Saltwick has no names for her, and that Saltwick is coming to Vell instead, all of it, to be counted at the gate like anyone else. She writes that down, because she does not know what else to do with it."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "All of us? The old ones? Hanne Coyle is ninety."
+          },
+          {
+            "say": "orin",
+            "text": "Then she goes on a cart. They've got six."
+          },
+          {
+            "narrate": "The convoy, after a long argument between the ration officer and her sergeant, lends two carts for the old and the babies, and the oil goes on to Harl Cross without them. Saltwick walks."
+          },
+          {
+            "narrate": "Two days on the Iron Road. Orin walks at the back the whole way, with the salt-hall lamp, lit, though it is daylight. On the second evening Mags falls into step beside him for a mile or so. They do not talk. Then she goes back up the line to shout at someone.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Two days on the Iron Road. Mags walks at the back the whole way, with the salt-hall lamp, lit, though it is daylight.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "say": "Davin",
+            "text": "Gran. Gran, look. Nobody's on the list. Nobody at all."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I can see that, Davin. Walk."
+          }
+        ],
+        "rep": {
+          "wilds": 3,
+          "wardens": 1
+        },
+        "approval": {
+          "orin": 1
+        },
+        "flag": "b3_saltwick_moved"
+      },
+      {
+        "id": "bought",
+        "label": "Buy the town's oil from the ration office, with gold and two names",
+        "description": "This decision is permanent. Saltwick goes back to its roofs with a season's oil. It costs 120 gold, and two of its people go to Vell for the wall.",
+        "gold": -120,
+        "text": [
+          {
+            "narrate": "The ration officer will sell. She is not supposed to sell, she says, but there is a column in the ledger for exceptional allocations, and the column needs two names in it as well as the money. Gold covers the oil. Names cover the column."
+          },
+          {
+            "narrate": "You count out a hundred and twenty gold onto her ledger. Then she holds out the pen."
+          },
+          {
+            "narrate": "The first name is Bram Tolley, a widower of fifty who says he has been ready since his wife died. Then Davin Peller steps up for the pen. Mags takes it out of his hand before he has it, and holds it out instead to Ella Marsh, a lamplighter of thirty-one with nobody left, who has asked her three times on the ridge this morning."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "He's fourteen. Not him. Not while I've got hands."
+          },
+          {
+            "say": "Ration Officer Dunn",
+            "text": "The wall takes from fourteen, Mistress. It's in the regulations. But I've only the two lines."
+          },
+          {
+            "say": "maren",
+            "text": "We've bought oil with two people. Say it plainly, so we've all heard it said."
+          },
+          {
+            "say": "orin",
+            "text": "And the town keeps its roofs. Say that too. Both of them.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Saltwick goes back down the ridge to its roofs with six barrels of oil on a borrowed cart. Bram Tolley and Ella Marsh go on with the convoy towards Vell. Mags walks beside the cart to the edge of the town, and stops there, and watches it all the way over the ridge, the way a person might once have watched a lantern go up a hill."
+          }
+        ],
+        "rep": {
+          "trade": 2,
+          "wardens": 1
+        },
+        "approval": {
+          "orin": -1,
+          "maren": -1
+        },
+        "flag": "b3_saltwick_bought"
+      },
+      {
+        "id": "seized",
+        "label": "Take the oil off the convoy, and send it back to Vell empty",
+        "description": "This decision is permanent. Saltwick keeps its roofs and sends no names. The ration office will know who took its oil.",
+        "text": [
+          {
+            "narrate": "There are twelve of Hesk's drill-guard with the convoy. There are three hundred people from Saltwick on the road, and you, and your companions. Nobody draws anything. Nobody needs to."
+          },
+          {
+            "say": "Ration Officer Dunn",
+            "text": "This is the Commandery's oil. It's going to Harl Cross. Harl Cross sent its names."
+          },
+          {
+            "say": "nessa",
+            "text": "Then Harl Cross can have the next lot. Unhitch it.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "The lamplighters unhitch three carts and run them down the ridge to the roofs with Tam steering and Davin on the brake. The ration officer writes in her ledger the whole time, very carefully: the date, the hour, the number of barrels, your name, and a description of each of your companions."
+          },
+          {
+            "say": "Ration Officer Dunn",
+            "text": "Commander Hesk reads every line of this ledger. Every line. You know that."
+          },
+          {
+            "say": "orin",
+            "text": "Then he can read that Saltwick kept its lamps lit, and nobody went on his wall for it."
+          },
+          {
+            "narrate": "The convoy goes on towards Harl Cross with half a load. That night, for the first time in a month, every lamp in Saltwick is lit at once, and the mist lies flat in every lane."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "trade": -2
+        },
+        "flag": "b3_saltwick_seized"
+      }
+    ]
+  },
+  "b3-vell": {
+    "id": "b3-vell",
+    "book": 3,
+    "part": 1,
+    "name": "The Casting Yard",
+    "level": 24,
+    "town": "vell",
+    "unlock": "b3-saltwick",
+    "needs": [
+      "nessa"
+    ],
+    "xp": 7750,
+    "gold": 600,
+    "region": "Vell, the Commandery's seat: the gate, the drill-yard and the casting wall",
+    "threat": "High Warden Corvane will cast the first volunteers into bells in nine days. His second, Commander Hesk, has his eye on the iron vault under the drill-yard, and on what is in it.",
+    "faction": "wardens",
+    "brief": "Corvane will cast four hundred willing volunteers into Vell's new wards with Sable's rite, the first in nine days. He wants your blessing, and he will cast without it.",
+    "opening": [
+      {
+        "narrate": "Vell sits in a bowl of bare hills with the Iron Road running into it like a nail. You see it from the last ridge: a grey city of twenty thousand, walled in iron, with the mist lying round the outside of the walls in a ring, the way snow lies round a warm house. Every gate is iron. Every gate is shut."
+      },
+      {
+        "narrate": "Saltwick comes down the last ridge behind you, three hundred people and two borrowed carts, and stops at the gate in a long, tired line. Orin is still at the back with the lamp.",
+        "when": {
+          "flag": "b3_saltwick_moved"
+        }
+      },
+      {
+        "narrate": "The gate opens before you reach it. A man is standing in it alone, without a guard, in a grey coat with no badge on it at all: tall, stooped, sixty, with a ledger under one arm and ink on his fingers. You have heard his voice once before, coming out of a beacon. It was larger then.",
+        "when": {
+          "flag": "b3_answered"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You came. I had your letter. I read it a good deal more often than it needed. Come in. Come in out of the road.",
+        "when": {
+          "flag": "b3_answered"
+        }
+      },
+      {
+        "narrate": "The gate opens a crack, and a thin man in a clerk's coat comes out of it with a writing-board, a pen, and a wooden box under his arm. Clerk-Major Fennick has walked back over the pass ahead of you, and he processes you at the gate: name, town of origin, purpose of visit, ward. He writes \"none\" under ward without asking. It takes an hour. Then he takes you in, through the iron streets, to a plain stone room off the drill-yard, where a tall, stooped man of sixty in a grey coat without a badge is waiting with a ledger under his arm. You have heard his voice once before, coming out of a beacon. It was larger then.",
+        "when": {
+          "notFlag": "b3_answered"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "I am Corvane. Thank you for coming. Fennick tells me your papers are in order, which in Vell is very nearly a compliment.",
+        "when": {
+          "notFlag": "b3_answered"
+        }
+      },
+      {
+        "narrate": "Quartermaster Iona is a step behind you with her satchel. Corvane looks at her, and at the council's seal on her satchel, and bows to it, very slightly.",
+        "when": {
+          "flag": "b3_to_council"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You answer to your council, they tell me. Then my first question is for them, through you. If you say yes to me here, does the council say it too? Or is your yes only yours, and they will undo it in a vote next spring?",
+        "when": {
+          "flag": "second_oath",
+          "is": "council"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You answer to one village, they tell me. Briarwatch. Then my first question is about Briarwatch. How many people? Four hundred? Five? If the mist came for all of them, what would you give to keep it off? I ask because I have had to answer that every night this winter.",
+        "when": {
+          "flag": "second_oath",
+          "is": "town"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You answer to the people who walk with you, they tell me. Then my first question is for them. If one of them stood in my yard and asked to go into the bronze, so that a city could live, would you let them?",
+        "when": {
+          "flag": "second_oath",
+          "is": "companions"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You answer to no one, they tell me. Neither do I, now. Then my first question is the one I ask myself. How do you know you are right, with nobody to tell you that you are wrong?",
+        "when": {
+          "flag": "second_oath",
+          "is": "none"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "My first question is the one I ask everyone from the free wards. When your council argues, who decides while it argues?",
+        "when": {
+          "notFlag": "second_oath"
+        }
+      },
+      {
+        "narrate": "He does not wait for the answer. He takes you across the drill-yard."
+      },
+      {
+        "narrate": "The drill-yard is the size of Briarwatch: the whole village, green and well and forge and square, would fit inside it with room for the inn. Along its north side runs a wall of black stone forty feet high, and on the wall, in white chalk, in neat rows from the top down, there are names. Four hundred of them. Each has an age beside it and a district. Under them, at the foot of the wall, an iron door stands open on a stair going down, and up the stair, faintly, comes the heat and the smell of a furnace."
+      },
+      {
+        "narrate": "At the bottom of the wall, on the last row, the chalk is fresh. \"Bram Tolley, 50, Saltwick.\" \"Ella Marsh, 31, Saltwick.\"",
+        "when": {
+          "flag": "b3_saltwick_bought"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "Every one of them came to that door and asked. Nobody was taken. I want you to know that before anything else. I am not Central Command. I was, and I am not."
+      },
+      {
+        "say": "Corvane",
+        "text": "The first casting is in nine days: fifty names, the top two rows. The furnace takes nine days to come to heat. I would like your blessing before then. The free wards will follow your word, and I will need their bronze; I cannot cast four hundred bells from what Vell has left. So I would like you to say yes."
+      },
+      {
+        "say": "Corvane",
+        "text": "And I will tell you plainly, because you would find out: I will cast on the ninth day with your blessing or without it. I would rather it were with."
+      },
+      {
+        "narrate": "In your pack, the hand-bell is very still. Then Aster Vey speaks, so quietly that only the people nearest you hear it."
+      },
+      {
+        "say": "Aster Vey",
+        "text": "I can hear the bronze. Down the stair. It's waiting. It's very patient. I didn't know bronze could wait like that."
+      },
+      {
+        "say": "maren",
+        "text": "Four hundred."
+      },
+      {
+        "say": "nessa",
+        "text": "She's nineteen. The top one. Look. Ysolde Carr, nineteen, Sixth District. She's the first one on the wall."
+      }
+    ],
+    "talks": [
+      {
+        "id": "ledger",
+        "label": "Stand with Corvane on the wall walk while he reads the ledger of the lost",
+        "lines": [
+          {
+            "narrate": "At dusk Corvane climbs to the wall walk above the casting wall with his ledger, and reads aloud. Not loudly. He does not need to. The drill-yard below goes quiet for it, the way a church goes quiet: soldiers, clerks, the volunteers sitting on the steps of their barracks, a woman with a bucket who has stopped halfway across the yard."
+          },
+          {
+            "say": "Corvane",
+            "text": "Harl. Ada Brennick, sixty-one. Tobias Brennick, sixty-four. Their grandson, Aldo Brennick, eight. Lindmoor. Joss Marley, forty. The Teller villages. Anwen Teller, thirty-three, and her daughters..."
+          },
+          {
+            "narrate": "He reads for most of an hour. When he stops it is because the light has gone, not because the names have."
+          },
+          {
+            "say": "Corvane",
+            "text": "Every night. Somebody should say them. Fennick writes them. I read them. Between us they are not nothing."
+          },
+          {
+            "narrate": "He closes the ledger. You notice that he began on the second page. The first page, a single page in older ink, he read to himself before he started, with his lips moving, and did not read out."
+          },
+          {
+            "say": "Corvane",
+            "text": "You broke the Single Voice. I don't hold it against you. I held it against you for about a month, and then I read the first winter's ledger, and I understood that it was mine. Central Command melted down our wards to make the stones. I sat in the room. I voted for it. I thought one voice was safer than a hundred, and for forty years it was."
+          },
+          {
+            "say": "Corvane",
+            "text": "Your Mother Bell rang out for the free wards, they tell me, and every ward that heard it answered. We heard nothing. It had nothing here to speak through. We had made very sure of that.",
+            "when": {
+              "notFlag": "mother_silenced"
+            }
+          },
+          {
+            "say": "Corvane",
+            "text": "Your council took the rope down from its Mother Bell, they tell me, so that nobody can ring it again. It would have made no difference here. A bell speaks through wards. We had made very sure we had none.",
+            "when": {
+              "flag": "mother_silenced"
+            }
+          },
+          {
+            "say": "Corvane",
+            "text": "So I am trying to give them back. Quickly. With what I have. And what I have is people who are willing."
+          }
+        ]
+      },
+      {
+        "id": "hesk",
+        "label": "Hear Commander Hesk out in the officers' mess",
+        "lines": [
+          {
+            "narrate": "Commander Idris Hesk has a square grey head and a soldier's stillness. He commands the Fourth, Fifth and Sixth Districts of Vell, the poor side of the city, by the river. He gives you his chair in the officers' mess and stands."
+          },
+          {
+            "say": "Hesk",
+            "text": "Saltwick. Your name's in Ration Officer Dunn's ledger, with a description of your friends. Three carts of oil, on the Iron Road. Harl Cross went four nights dark on half a load. Nobody died of it. I want you to know that I checked.",
+            "when": {
+              "flag": "b3_saltwick_seized"
+            }
+          },
+          {
+            "say": "Hesk",
+            "text": "My districts lost six hundred and eleven people this winter. Not on the roads. In their beds, in Vell, inside the walls, in the streets where the stones went dead first. Six hundred and eleven, while the High Warden waited for volunteers to come to his door and ask nicely."
+          },
+          {
+            "say": "Hesk",
+            "text": "I'm not a monster, whatever your healer is about to tell you. I've buried my own. I'm a man who can count. Four hundred bells is four hundred streets. I need two thousand. The willing are a luxury. I can't afford them any more, and neither can he, and he knows it, and he won't say it."
+          },
+          {
+            "say": "maren",
+            "text": "And the unwilling? What are they?"
+          },
+          {
+            "say": "Hesk",
+            "text": "Alive, Sister. On the other side of the wall from the mist. Ask the six hundred and eleven which they'd rather."
+          },
+          {
+            "narrate": "He means it. That is the worst of it. He holds your eye while he says it, and he means every word, and he does not look away first."
+          },
+          {
+            "say": "Hesk",
+            "text": "Give him your blessing. Or don't. But if you're going to tell him no, tell him something else as well, because no doesn't keep anyone warm."
+          }
+        ]
+      },
+      {
+        "id": "ysolde",
+        "label": "Find Ysolde Carr, the first name on the wall",
+        "lines": [
+          {
+            "narrate": "Ysolde Carr is in the volunteers' barracks by the casting wall, sitting on her bunk sewing a button back onto a boy's coat. She has red hands and a quick, plain face and her hair tied back with string. She is nineteen."
+          },
+          {
+            "say": "Ysolde",
+            "text": "You're the one from the free wards. Everyone's been saying. Sit down if you like, I can sew and talk. Mind the button tin."
+          },
+          {
+            "say": "Ysolde",
+            "text": "It's Jory's. My brother. He's twelve, and he's grown out of everything, and Wil's nine and gets everything Jory grows out of, so I'm sewing it for both of them really."
+          },
+          {
+            "say": "nessa",
+            "text": "Why are you on the wall?"
+          },
+          {
+            "narrate": "You ask her why she is on the wall.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Ysolde",
+            "text": "The High Warden's promise. A volunteer's family is fed for life. Bread and coal and a room in the Second District, which has glass in the windows. Our mam died in the first week of the mist. Dad was gone before that. It's me, and them. And I can't feed them, not this winter, not the next. I've tried. I can do this."
+          },
+          {
+            "say": "nessa",
+            "text": "That's not a choice. That's a — someone's put you in a corner and called it a door, and you're—"
+          },
+          {
+            "narrate": "You ask her whether that is a choice at all, with two brothers to feed and nothing else.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Ysolde",
+            "text": "It's my corner. I picked the door. I was first. Did you see? I was first on the wall. I walked up to the High Warden the morning he chalked the first line and I said put me at the top, so I don't have to watch anyone go before me."
+          },
+          {
+            "narrate": "She bites off the thread and holds up the coat to look at it."
+          },
+          {
+            "say": "Ysolde",
+            "text": "You'll like Jory. He's furious about it. Wil just wants to know if I'll be able to hear him when he's in the Second District. I said I'll hear everyone. That's the point of a bell."
+          },
+          {
+            "narrate": "Nessa doesn't say anything else. She stays and holds the button tin until Ysolde has finished the coat, and you can see her thinking, fast, the way she thinks before she does something.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ]
+      },
+      {
+        "id": "saltwick",
+        "label": "Find the Saltwick people in Fennick's queue",
+        "requires": {
+          "flagsAll": [
+            "b3_saltwick_moved"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Saltwick is in the ration office yard, in a queue that goes twice round it, waiting to be issued with ration cards. Fennick is at the desk at the front, issuing them, very slowly and very correctly. Beside him a district warden in a good coat is going down the queue."
+          },
+          {
+            "say": "The district warden",
+            "text": "Full rations for any household that puts a name on the wall. Full rations for life. Half rations otherwise. That's the regulation, I don't make it. Any names? Any names, Saltwick?"
+          },
+          {
+            "say": "Mags Peller",
+            "text": "We walked two days so we wouldn't have to give you names. Tell your Commander that. Write it on a card."
+          },
+          {
+            "narrate": "Fennick, without looking up, issues Mags Peller a ration card. It is a half card, like everyone's without a name on the wall. But he has written \"household: Saltwick (entire)\" on it in his neat hand, and on the line for volunteers he has written \"none required\", and initialled it, so nobody can ask her for one again."
+          },
+          {
+            "say": "Fennick",
+            "text": "Regulation fourteen, displaced settlements, entire: half rations, and no names may be asked for. It isn't enough. It's what there is. Nobody reads regulation fourteen."
+          },
+          {
+            "say": "orin",
+            "text": "You do."
+          },
+          {
+            "say": "Fennick",
+            "text": "I read all of them. It's the only thing I've got."
+          }
+        ],
+        "approval": {
+          "orin": 1
+        }
+      },
+      {
+        "id": "davin",
+        "label": "Find the two from Saltwick at the casting wall",
+        "requires": {
+          "flagsAll": [
+            "b3_saltwick_bought"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Ella Marsh is standing at the foot of the casting wall, looking up at her own name on the last row, in fresh chalk. Bram Tolley is sitting on the barracks step behind her with his hands between his knees."
+          },
+          {
+            "say": "Ella Marsh",
+            "text": "It's the last row. The last row isn't till the eighth casting. That's months. Mags will have thought of something by then. She always thinks of something. It just takes her a while."
+          },
+          {
+            "say": "orin",
+            "text": "You can take it off. Anyone can take their name off. Corvane said so."
+          },
+          {
+            "narrate": "You tell her that anyone can take their name off the wall. Corvane said so.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "say": "Ella Marsh",
+            "text": "And then the oil stops. I can read a ledger. Exceptional allocation, conditional on volunteers, two. If it isn't me it's Davin. He'd have had the pen if Mags hadn't been quicker."
+          },
+          {
+            "say": "Ella Marsh",
+            "text": "I've got nobody. He's got Mags. That's the sum. Mags did it in her head on the ridge, and so did I."
+          },
+          {
+            "narrate": "Orin stands next to her for a long time, looking up at the same chalk, and does not say anything else.",
+            "when": {
+              "party": "orin"
+            }
+          }
+        ]
+      },
+      {
+        "id": "iona",
+        "label": "Find Iona in the ration office, reading",
+        "requires": {
+          "flagsAll": [
+            "b3_to_council"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Iona has found the ration office, which means she has found its ledgers, which means you do not see her for most of a day. When you find her she has three of them open on a table and a fourth on her knee, and her face has gone very still."
+          },
+          {
+            "say": "Iona",
+            "text": "Observe, record, and where necessary object. I am observing that every district has a quota. Not a target: a quota. So many names on the wall by such a date, or its oil and bread are cut. The Fourth District is behind. It is being cut."
+          },
+          {
+            "say": "Iona",
+            "text": "The High Warden says that nobody is taken. The ledger says nobody is taken. The ledger also says that the Fourth District's children are on half rations until the Fourth District volunteers. Both of those are true. I am recording both."
+          },
+          {
+            "say": "maren",
+            "text": "Does Corvane know?"
+          },
+          {
+            "say": "Iona",
+            "text": "He signed the regulation. Whether he has read it is a separate question. In my experience people who sign things very rarely have."
+          }
+        ]
+      }
+    ],
+    "clue": "The rite Corvane means to cast with is Sable's altered rite, in Sable's own hand: it binds a living volunteer into the bronze in a single night, and asks their yes once, at the start, and never again. A voice cast this way cannot leave its bell or be let go. The old keepers' rite asked every year, and the door opened from inside.",
+    "investigate": {
+      "label": "Ask Corvane to show you the rite he means to cast with",
+      "skill": "arcana",
+      "alt": [
+        "history",
+        "religion"
+      ],
+      "success": [
+        {
+          "narrate": "He shows you without hesitating, in his room off the drill-yard, by lamplight. Eleven pages in Sable's small neat hand, with a covering letter: \"High Warden, since you ask so politely.\" You read it twice, and the second time you see it: it is the rite that bound Aster Vey. Not the old keepers' staying. A binding. The volunteer's yes is asked once, at the start of the casting, and then the bronze closes, and nothing in the rite ever asks again."
+        },
+        {
+          "say": "Aster Vey",
+          "text": "That's mine. That's the one. I can hear it in the words. Nobody asked me even once."
+        },
+        {
+          "narrate": "You take Sable's eleven pages out of the oilcloth at the bottom of your pack and lay them on the table beside Corvane's, page by page: the old keepers' rite, the one the first keepers used, and beside it the same rite in Sable's altered form. In the old one there is a line that is missing from his. Every year, at the turning of the year, the keeper in the bell is asked whether they wish to stay. And the door, the old keepers wrote, opens from inside.",
+          "when": {
+            "flag": "b3_rite_carried"
+          }
+        },
+        {
+          "narrate": "Corvane reads the two side by side for a long time. Then he takes off his spectacles and rubs his eyes, and puts them back on, and reads it again.",
+          "when": {
+            "flag": "b3_rite_carried"
+          }
+        },
+        {
+          "say": "Corvane",
+          "text": "He told me it was the same rite. Improved. He said the old keepers' rite was slow, and that his was quick, and he never said it was shut. I didn't ask. I didn't think to ask. I was so grateful that somebody had answered my letter.",
+          "when": {
+            "flag": "b3_rite_carried"
+          }
+        },
+        {
+          "say": "Corvane",
+          "text": "They know. Every volunteer is told the bronze will not let them go. It is chalked over the door. I did not hide it. I would not do that.",
+          "when": {
+            "notFlag": "b3_rite_carried"
+          }
+        },
+        {
+          "narrate": "And you remember a note in the margin of a book in Sable's cell, in Sable's hand: \"Ask Vell what it keeps under the drill-yard.\"",
+          "when": {
+            "anyFlag": [
+              "job:library-sent",
+              "job:library-cut",
+              "job:library-noted"
+            ]
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "He shows you, by lamplight, in his room off the drill-yard: eleven pages in Sable's small neat hand. It is dense, and old, and full of words for things that have not had names in the free wards for two hundred years. You understand enough. It casts a living person into bronze in a night. It asks their yes at the start. You cannot find, anywhere in it, a place where it asks again."
+        },
+        {
+          "say": "Aster Vey",
+          "text": "Read me the third page again. Slowly. I know that page."
+        }
+      ]
+    },
+    "route": {
+      "label": "Keep watch on the iron vault from the drill-yard roofs at night",
+      "skill": "stealth",
+      "alt": [
+        "perception",
+        "acrobatics"
+      ],
+      "tools": [
+        "climbing-kit",
+        "silk-rope"
+      ],
+      "success": [
+        {
+          "narrate": "Hesk's officers have been looking at the iron vault all day: a low black door in the floor of the drill-yard by the casting wall, with three locks, and a sergeant-at-keys who sleeps in the little guardhouse beside it with the keys on his belt. On the first night you go up onto the barracks roof and lie flat on the leads in the cold, and watch the guardhouse. A little after the second hour, eight men in drill-guard coats come across the yard without lanterns."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go up onto the barracks roof on the first night to watch the iron vault, and a slate goes from under your knee and shatters on the drill-yard flags, forty feet down. Nobody comes. But a little after the second hour, when eight men in drill-guard coats come across the yard without lanterns, they are walking quickly, as if they knew someone was watching, and one of them looks straight up at you."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Stay near the guardhouse by the vault and wait",
+      "text": "You sit up in the drill-yard by the casting wall, in the open, where anyone can see you, and wait to see who comes to the iron vault at night."
+    },
+    "approach": [
+      {
+        "narrate": "The iron vault is a door in the ground: a low black slab in the floor of the drill-yard beside the casting wall, with three locks in it, older than the wall, older than anything in the yard. Nobody in Vell will say what is under it. When you ask, people say \"stores\", and then talk about something else."
+      },
+      {
+        "say": "Hesk",
+        "text": "There's iron down there that could hold my districts this winter, if the High Warden would let it be used. He won't. He won't say why. Ask him."
+      },
+      {
+        "narrate": "You did ask him. Corvane said \"not those\", and went back to his ledger."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "They come to the guardhouse by the vault in the dead middle of the night: eight of Hesk's drill-guard, in their long coats, with a lieutenant at the front. Hesk is not with them. Hesk is careful."
+      },
+      {
+        "narrate": "The sergeant-at-keys is an old man called Oswin Pike, who has kept the three keys of the iron vault for thirty-one years and has never once opened it. He comes out of the guardhouse in his nightshirt with the keys on his belt and a lamp in his hand, and stands in the doorway."
+      },
+      {
+        "say": "The lieutenant",
+        "text": "Commander's orders, Oswin. The keys. The Commander needs what's down there on the walls by the new moon, and the High Warden's in no state to decide anything. Hand them over and go back to bed."
+      },
+      {
+        "say": "Oswin Pike",
+        "text": "High Warden's orders, Lieutenant. Thirty-one years. Nobody opens it. Nobody. Not the Commander, not you, not the High Warden himself without the three of us here."
+      },
+      {
+        "narrate": "Two of the drill-guard take him by the arms. The lamp falls and rolls across the flags and does not go out. The lieutenant reaches for the keys."
+      },
+      {
+        "say": "nessa",
+        "text": "Oi. Hands off him. He's seventy, you—",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "Every head in the drill-guard turns towards you. Across the yard, in the barracks by the casting wall, the volunteers have woken and come to the windows. Up on the wall walk, by the light of the fallen lamp, you can see the four hundred names."
+      },
+      {
+        "say": "orin",
+        "text": "Eight of them. And whoever's behind the door of the officers' mess. This doesn't have to be a fight. The man who can stop it is asleep two hundred yards away."
+      }
+    ],
+    "peaceful": {
+      "label": "Wake Corvane, and make him refuse them in front of his own officers",
+      "labelNoLead": "Wake Corvane and bring him to the vault, and hope he will say no",
+      "skill": "persuasion",
+      "alt": [
+        "intimidation",
+        "insight"
+      ],
+      "success": [
+        {
+          "narrate": "You do not fight them. You go and get Corvane."
+        },
+        {
+          "narrate": "He is not asleep. He is sitting at his table in his shirt with the ledger open and the lamp turned low, and he looks up when you come in without knocking, and you can see that he knows already, or has been afraid of it for a long time. You tell him what is happening at the vault. You tell him that it does not matter what he says to you about it tomorrow; it matters what he says to his officers tonight, in the yard, where the volunteers can see."
+        },
+        {
+          "narrate": "And you tell him what you read in the old keepers' rite: that a door can open from inside or from out, and that this one is his to keep shut or not.",
+          "when": {
+            "flag": "b3_rite_carried"
+          }
+        },
+        {
+          "narrate": "He comes in his shirt, without his coat, carrying the lamp. The drill-guard see him coming across the yard and let go of Oswin Pike's arms, one at a time, without being told."
+        },
+        {
+          "say": "Corvane",
+          "text": "Lieutenant. Whose order?"
+        },
+        {
+          "say": "The lieutenant",
+          "text": "The Commander's, High Warden. For the walls. He says—"
+        },
+        {
+          "say": "Corvane",
+          "text": "I know what he says. He says it to me every morning. Tell him I've heard him again."
+        },
+        {
+          "narrate": "He picks Oswin Pike's lamp up off the flags and hands it back to him. Then he turns round so that the windows of the volunteers' barracks can see his face, and raises his voice for the first time since you came to Vell."
+        },
+        {
+          "say": "Corvane",
+          "text": "Nobody opens the iron vault. Not for the walls, not for the winter, not for me. The bronze takes only those who come to the door and ask. That was the promise. If I break it once, it was never a promise at all. Go back to your barracks, Lieutenant, and tell Commander Hesk that if he wants those keys he will have to come and ask me for them himself, here, in front of everyone. In daylight."
+        },
+        {
+          "narrate": "The drill-guard go. Up at the barracks windows, one by one, the volunteers go back to bed."
+        },
+        {
+          "say": "Corvane",
+          "text": "You'll want to know what's under it. Not tonight. Please. Not tonight."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go for Corvane, and the lieutenant sees you go, and does the arithmetic. By the time you are halfway across the yard the drill-guard have their pikes down and the keys off Oswin Pike's belt, and two of them are between you and the High Warden's door."
+        },
+        {
+          "say": "The lieutenant",
+          "text": "Stand aside. Commander's business. You're a guest here."
+        },
+        {
+          "narrate": "There are eight of them, and the keys are in the lieutenant's fist. You will have to take them back."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Get the keys back to Oswin Pike",
+      "label": "Get the three keys back to the old sergeant-at-keys",
+      "description": "Four successful actions win back the iron vault's three keys from the drill-guard and get them into Oswin Pike's hands before the vault is opened.",
+      "skill": "athletics",
+      "alt": [
+        "sleightOfHand",
+        "intimidation",
+        "persuasion"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The lieutenant gets one key into the first lock before you take it off him. It turns, a quarter turn, and something under the drill-yard answers it: a sound like a bell struck far down in the ground, very faint, and then silence. Oswin Pike puts the key back in its place on his belt with his hands shaking. He will not say what the sound was.",
+      "successText": "The last key goes back onto Oswin Pike's belt, and the drill-guard go back across the yard without their lieutenant's orders done."
+    },
+    "foe": "b3-drill-guard",
+    "foeName": "Hesk's Drill-Guard",
+    "enemyTheme": "soldier",
+    "attackName": "Drill-Yard Pike",
+    "retainerName": "Drill-Guard Pikeman",
+    "after": [
+      {
+        "narrate": "In the morning, nobody in Vell talks about the night. The drill-guard drill. The volunteers sit on the barracks steps in the thin sun. Commander Hesk passes you in the yard and nods, once, as if nothing has happened, and in a way nothing has: the keys are on Oswin Pike's belt, and the furnace under the casting yard is one day hotter."
+      },
+      {
+        "narrate": "Corvane comes out at noon and tells his officers, in the yard, that the iron vault stays shut. He says it twice. Hesk listens with his arms folded.",
+        "when": {
+          "flag": "method:b3-vell",
+          "is": "peace"
+        }
+      },
+      {
+        "narrate": "Corvane hears what happened at the vault from Oswin Pike at breakfast. He has the lieutenant sent to a post on the outer wall, and says nothing about it to Hesk, and Hesk says nothing about it to him.",
+        "when": {
+          "flag": "method:b3-vell",
+          "is": "objective"
+        }
+      },
+      {
+        "narrate": "Corvane hears what happened at the vault from Oswin Pike at breakfast. He has the lieutenant sent to a post on the outer wall, and says nothing about it to Hesk, and Hesk says nothing about it to him.",
+        "when": {
+          "flag": "method:b3-vell",
+          "is": "force"
+        }
+      },
+      {
+        "narrate": "And then Clerk-Major Fennick finds you, with a writing-board, and informs you that you have not yet completed Vell's welcome procedures, which are required of every visitor, including guests of the High Warden, including (he has checked) the person who broke the Single Voice."
+      },
+      {
+        "narrate": "They take all day. There is a form for your name, and a form for your companions' names, and a separate form for Biscuit, who Fennick enters under \"livestock (canine, attached)\" after a long and careful discussion with Nessa about whether he is attached or accompanying. There is a ward declaration, in which you declare a bell that is currently in your pack, and Aster Vey declares herself.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "They take all day. There is a form for your name, and a form for your companions' names, and a ward declaration, in which you declare a bell that is currently in your pack, and Aster Vey declares herself.",
+        "when": {
+          "absent": "nessa"
+        }
+      },
+      {
+        "narrate": "There is a medical inspection, which Maren conducts on Fennick's clerk in return, very thoroughly.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "say": "Fennick",
+        "text": "Name of ward?"
+      },
+      {
+        "say": "Aster Vey",
+        "text": "Aster Vey. A-S-T-E-R. Nobody ever spells it right."
+      },
+      {
+        "say": "Fennick",
+        "text": "I always spell it right."
+      },
+      {
+        "narrate": "At the fifth hour precisely, Fennick stamps the last form, blots it, and hands you a brass token with VELL stamped on it, which entitles you to be in Vell. It is the only thing you have seen in the city that started on time and finished on time, and Fennick knows it, and is quietly proud."
+      },
+      {
+        "narrate": "That evening Corvane finds you on the wall walk above the casting wall, after the ledger. Eight days. He doesn't ask. He waits, with the ledger closed under his arm, the way he waited at the gate."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "bless",
+        "label": "Give Corvane your blessing for the casting",
+        "description": "This decision is permanent. Your name goes into the ledger beside the first fifty, and will be read over the pit.",
+        "text": [
+          {
+            "narrate": "You tell him yes. They asked. They know what the bronze is. Vell is dying in its beds, and he is the only one who has done anything but wait."
+          },
+          {
+            "narrate": "He opens the ledger to the page for the first casting, and writes your name at the top, above the fifty, in his small neat hand. Then he blots it."
+          },
+          {
+            "say": "Corvane",
+            "text": "I will read it out over the pit, with theirs. So that they know somebody from the free wards stood here and said yes, and it was not only me. Thank you. I don't think you know how heavy that page has been."
+          },
+          {
+            "say": "maren",
+            "text": "Then let it be heavy. It should be. It's people."
+          },
+          {
+            "say": "nessa",
+            "text": "Ysolde's on that page. Top line. Right under you.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": 2,
+          "trade": 1
+        },
+        "flag": "b3_blessed"
+      },
+      {
+        "id": "refuse",
+        "label": "Refuse it: you will not bless a casting of living people",
+        "description": "This decision is permanent. Corvane will cast without the free wards' blessing, and say so.",
+        "text": [
+          {
+            "narrate": "You tell him no. Not this. Not living people, not bronze that never asks again, not with your name on it. You will not tell the free wards to send their bells to melt."
+          },
+          {
+            "narrate": "He listens to all of it. He does not argue."
+          },
+          {
+            "say": "Corvane",
+            "text": "Then I'll cast without it, on the ninth day, and when I read the names over the pit I will say that the free wards were asked, and said no. I'll say it fairly. I'll say you had your reasons, and I'll say what they were, because I think they're good ones. They just aren't warm."
+          },
+          {
+            "say": "Corvane",
+            "text": "Hesk said you'd tell me no. He said, if they tell you no, ask them what else. So: what else?"
+          },
+          {
+            "narrate": "You do not have an answer for him yet. He nods, as if that is what he expected, and goes down the stair."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 1
+        },
+        "flag": "b3_refused"
+      },
+      {
+        "id": "wait",
+        "label": "\"Not yet. Show me all of it first.\"",
+        "description": "This decision is permanent. You give Corvane neither yes nor no until you have seen everything he is doing; the free wards' bronze does not go to Vell while you look.",
+        "text": [
+          {
+            "narrate": "You tell him: not yes, and not no. Not yet. You came to see, and you have seen one yard and one night. Show you all of it: the nurseries, the barracks, the districts, the vault. Then you will answer."
+          },
+          {
+            "say": "Corvane",
+            "text": "The vault, no. Everything else."
+          },
+          {
+            "say": "Corvane",
+            "text": "And you should know what it costs, since you are asking to see everything. I meant to send to the free wards for their bronze tonight, on your word. Without it the carts don't go. Every day you spend looking is a day of bronze that will not be on the Iron Road in time, and fewer bells on the ninth day, and the river districts will pay for that, not you or I."
+          },
+          {
+            "say": "Corvane",
+            "text": "That is the first time anyone from your side of the pass has asked to see more instead of less. I'll show you. I'll show you the nurseries tomorrow. There are eleven hundred children in them. I meant what I wrote. Count them."
+          },
+          {
+            "say": "Corvane",
+            "text": "And I would like to ask your healer something. Not tonight. Tomorrow. I have been told what she can hear."
+          },
+          {
+            "say": "maren",
+            "text": "Ask me now. I'd rather know what it is before I sleep on it.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "Corvane",
+            "text": "Tomorrow, Sister. Sleep on it anyway. One of us should.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": 1
+        },
+        "flag": "b3_waiting"
+      }
+    ]
+  },
+  "b3-witness": {
+    "id": "b3-witness",
+    "book": 3,
+    "part": 1,
+    "name": "The Witness",
+    "level": 25,
+    "town": "vell",
+    "unlock": "b3-vell",
+    "nextTown": "briarwatch",
+    "needs": [
+      "maren"
+    ],
+    "xp": 8000,
+    "gold": 620,
+    "region": "Vell: the volunteers' barracks, and the casting yard",
+    "threat": "Corvane wants every yes on the casting wall heard by someone who can tell a lie. The district wardens who filled Commander Hesk's quotas would rather nobody listened that closely.",
+    "faction": "wardens",
+    "brief": "Corvane asks Maren to sit with every volunteer on the casting wall, face to face, and hear whether their yes is true. She can hear a calm lie. She cannot hear a person who believes what they say.",
+    "opening": [
+      {
+        "narrate": "Corvane comes to find Maren himself, in the morning, at the well in the drill-yard where she is washing her hands. He has his ledger under his arm and his spectacles pushed up on his forehead, and he waits until she has finished drying her hands before he speaks."
+      },
+      {
+        "say": "Corvane",
+        "text": "Sister. I have been told what you can hear. The breath of a calm person who is lying to your face. They say you heard Provost Marrow, and she was telling the truth, and you said so in front of the whole council."
+      },
+      {
+        "say": "maren",
+        "text": "I did. It did me no good at all."
+      },
+      {
+        "say": "Corvane",
+        "text": "I have four hundred people on my wall who say yes. I believe every one of them. I want to. I would like you to sit with each of them, face to face, and listen to them say it, and tell me if any of them is lying."
+      },
+      {
+        "say": "Corvane",
+        "text": "You put your name on the top of the page. I would like the page to be honest, if your name is on it.",
+        "when": {
+          "flag": "b3_blessed"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You told me no. I am casting anyway. So I would like it to be as honest as I can make it, since you won't make it anything else.",
+        "when": {
+          "flag": "b3_refused"
+        }
+      },
+      {
+        "say": "Corvane",
+        "text": "You asked to see all of it. This is all of it. This is the part I can't see myself.",
+        "when": {
+          "flag": "b3_waiting"
+        }
+      },
+      {
+        "narrate": "Maren puts the cloth down on the edge of the well. She takes a long breath. When she speaks it is to you as much as to him."
+      },
+      {
+        "say": "maren",
+        "text": "You should know exactly what you are asking for, High Warden, because people never do. I can hear a calm person lie. If someone has been told what to say, and says it, I'll hear it. I'll hear it in the breath, under the words, like a stone under a stream."
+      },
+      {
+        "say": "maren",
+        "text": "What I cannot hear is a person who believes what they are saying. If someone has talked themselves into it, at night, over and over, until it's true for them, then it's true when they say it to me, and I'll tell you so. I'll say \"true\". And it will be true. And it will tell you nothing about whether they should be on your wall."
+      },
+      {
+        "say": "Corvane",
+        "text": "Then you'll catch the ones who were made to say it, and miss the ones who made themselves."
+      },
+      {
+        "say": "maren",
+        "text": "Yes."
+      },
+      {
+        "say": "Corvane",
+        "text": "That's more than I have now. Will you do it?"
+      },
+      {
+        "narrate": "Maren looks across the drill-yard to the casting wall, and the four hundred names, and the first name at the top. Ysolde Carr, nineteen. Ysolde is sitting on the barracks step, darning, in the sun."
+      },
+      {
+        "say": "maren",
+        "text": "She'll be true. Every word. You know that, don't you. She believes every word she says."
+      },
+      {
+        "narrate": "Nessa, who is sitting on the barracks step a little way from Ysolde, does not look up when Maren says it. She has been sitting a little way from Ysolde all morning, and Ysolde has not once looked at her.",
+        "when": {
+          "flag": "b3_ysolde_pressed",
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "Nessa is sitting on the barracks step beside Ysolde, holding the other end of the wool. Neither of them is talking. They do not seem to need to.",
+        "when": {
+          "flag": "b3_ysolde_respected",
+          "party": "nessa"
+        }
+      }
+    ],
+    "talks": [
+      {
+        "id": "maren",
+        "label": "Ask Maren what it is like to be the one who says \"true\"",
+        "requires": {
+          "companion": "maren"
+        },
+        "lines": [
+          {
+            "narrate": "She has set up a table in the corner of the volunteers' barracks, by the window, with two chairs facing each other across it and nothing else on it at all. She is looking at the empty chair."
+          },
+          {
+            "say": "maren",
+            "text": "When I was a novice, the shrine-mother told me it was a gift. I was sixteen. I thought she meant it was a good thing. She meant it was a thing that had been given to me without being asked whether I wanted it, which is what a gift is."
+          },
+          {
+            "say": "maren",
+            "text": "People think the hard part is hearing a lie. It isn't. Lies are easy. You hear them and you say so and everyone is angry for a day. The hard part is saying \"true\". Because when I say it, they stop looking. Whoever I said it to, whoever I said it about. \"Maren heard it. It's true.\" And they put it down, and walk away from it, and it's mine."
+          },
+          {
+            "say": "maren",
+            "text": "Elske Marrow was telling the truth, and I said so, and half the council took that to mean she was right. Not the same thing. Never the same thing. I said it as loudly as I could, and they didn't hear that part."
+          },
+          {
+            "say": "maren",
+            "text": "Four hundred times. Four hundred people will sit in that chair, and I will say \"true\" to most of them, and then they'll go into the bronze with my word on them like a seal."
+          },
+          {
+            "narrate": "She straightens the empty chair, a half-inch, so that it faces hers exactly."
+          },
+          {
+            "say": "maren",
+            "text": "Sit there a moment. Would you? I want to see what it looks like with someone in it."
+          }
+        ],
+        "approval": {
+          "maren": 1
+        }
+      },
+      {
+        "id": "bertil",
+        "label": "Sit in on Maren's first volunteer, a porter from the Fourth District",
+        "lines": [
+          {
+            "narrate": "Bertil Mosk is forty-four, a river porter from the Fourth District with shoulders like a doorframe and a careful, quiet voice. He sits in the chair with his cap on his knee and his hands folded on it, and he looks Maren in the eye, and says it."
+          },
+          {
+            "say": "Bertil Mosk",
+            "text": "I come of my own free will, for my district and my city, knowing what the bronze is. Nobody has asked me to. I'm not owed anything for it."
+          },
+          {
+            "narrate": "It is word for word what is chalked over the iron door. He says it perfectly. He says it calmly."
+          },
+          {
+            "narrate": "Maren is quiet for a long moment.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Mister Mosk. That's not true. Not any of it. Who told you to say it?"
+          },
+          {
+            "narrate": "His hands tighten on the cap. He doesn't move otherwise. He looks at the window, at the drill-yard, where a district warden in a good coat is standing by the barracks door with a list."
+          },
+          {
+            "say": "Bertil Mosk",
+            "text": "Nobody, Sister. I come of my own free will."
+          },
+          {
+            "say": "maren",
+            "text": "That's not true either. It's all right. You don't have to tell me who. I only have to tell him that I heard it."
+          },
+          {
+            "say": "Bertil Mosk",
+            "text": "Then tell him quiet. Please. I've got four at home and a debt at the chandler's, and the debt's paid now, and it stays paid as long as I'm on the wall. Tell him quiet, Sister, or don't tell him at all."
+          }
+        ],
+        "requires": {
+          "companion": "maren"
+        }
+      },
+      {
+        "id": "abel",
+        "label": "Sit in on an old man who crewed the Cask echo-stone",
+        "lines": [
+          {
+            "narrate": "Abel Strand is fifty-eight, small and bald and very clean, in a coat that was a Commandery uniform once and has had the badges unpicked. He sits down in the chair before Maren has asked him to and puts both hands flat on the table."
+          },
+          {
+            "say": "Abel Strand",
+            "text": "Twelve years I crewed the Cask stone for Central Command. Rang it on orders. You don't ring a stone, exactly, you sort of lean on it. Twelve years I leaned on it and Cask was safe, and then a hero I never met broke the voice it answered to, and Cask went in a night."
+          },
+          {
+            "say": "Abel Strand",
+            "text": "I'm not angry at the hero. Hero was right. I've had a winter to think about it and I've thought about nothing else. Cask had a bell once, before the stone. They melted it to make the stone, and I helped carry it to the cart. I was seventeen. I can still feel the weight of it."
+          },
+          {
+            "say": "Abel Strand",
+            "text": "So. I'll be the bell. That's all. I carried one out. I'll be the one that goes back in. I come of my own free will, Sister, and I've never meant anything more in my life."
+          },
+          {
+            "narrate": "Maren listens. She listens for a long time, longer than she needs to. Then she nods.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "True."
+          },
+          {
+            "say": "Abel Strand",
+            "text": "I know. I wanted someone else to hear it. Thank you."
+          },
+          {
+            "narrate": "He goes out into the yard. Maren sits looking at the table where his hands were, and does not call the next one in for some minutes.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "requires": {
+          "companion": "maren"
+        }
+      },
+      {
+        "id": "kit",
+        "label": "Sit in on a boy who has not decided",
+        "lines": [
+          {
+            "narrate": "Kit Fallow is seventeen, and sits on the very edge of the chair, as if he might need to get up from it quickly."
+          },
+          {
+            "say": "Kit Fallow",
+            "text": "My name's on the wall. Row six. I put it there myself, nobody made me. And then I went home and I've not slept since. I keep thinking I'll take it off and then I think about my mam's hands in the cold and I put it back on in my head."
+          },
+          {
+            "say": "Kit Fallow",
+            "text": "So I thought. You can hear if it's true. If I say yes, and you hear it, and it's true, then it's true, and I'll go. And if it's a lie, you'll tell me, and I'll take my name off. So I'll say it, and you tell me."
+          },
+          {
+            "say": "maren",
+            "text": "Kit. No."
+          },
+          {
+            "say": "Kit Fallow",
+            "text": "Please. Someone's got to decide. I can't."
+          },
+          {
+            "say": "maren",
+            "text": "I can't hear what you haven't decided. There's nothing there yet for me to hear. If you say yes to me today it'll be half true, and I'll hear half a lie, and then what? You'd go into the bronze on half of my word."
+          },
+          {
+            "say": "maren",
+            "text": "Go home. Sleep, if you can. Come back when you know, and I'll listen then. I'll still be here. That's the one thing I can promise."
+          },
+          {
+            "narrate": "Kit goes. Halfway to the door he stops and comes back and shakes Maren's hand, very formally, and then goes again. He is not back by evening.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "requires": {
+          "companion": "maren"
+        }
+      },
+      {
+        "id": "cards",
+        "label": "Join the card game in the volunteers' barracks, the night before the crisis",
+        "requires": {
+          "companion": "maren"
+        },
+        "lines": [
+          {
+            "narrate": "The volunteers play cards in the evenings, at the long table at the end of the barracks, for buttons and bread-ends and Commandery coppers. On the third night Maren sits down at the table and asks to be dealt in. Ysolde moves up the bench to make room."
+          },
+          {
+            "say": "Ysolde",
+            "text": "Do you know Seven Bells? It's easy. You'll pick it up."
+          },
+          {
+            "say": "maren",
+            "text": "I may pick it up."
+          },
+          {
+            "narrate": "She loses the first hand, carefully, so that everyone can see her learning. Then she wins the next fourteen."
+          },
+          {
+            "narrate": "She does it without hurry and without mercy. She wins Abel Strand's coppers and Bertil Mosk's bread and a river-man's tin whistle and, towards midnight, the whole of Ysolde's button tin, which Ysolde pushes across the table laughing, and the whole table is laughing, the first time anyone in the barracks has laughed in a week."
+          },
+          {
+            "say": "Abel Strand",
+            "text": "Sister, I crewed for Central Command twelve years and I've never seen anything as frightening as you with a pair of bells and a sixer."
+          },
+          {
+            "say": "maren",
+            "text": "Anwen Holt taught me, years ago. We played for candles. The shrine was always very well lit."
+          },
+          {
+            "narrate": "At midnight she gathers up everything she has won, the coppers and the bread and the whistle and the buttons, and pushes it all back across the table, one pile at a time, to whoever it came from. Exactly. She has been keeping count."
+          },
+          {
+            "say": "Ysolde",
+            "text": "You can't give it back. You won it."
+          },
+          {
+            "say": "maren",
+            "text": "I wanted to win it. I didn't want to keep it. Those are different things, and I'm too old to pretend they aren't."
+          },
+          {
+            "narrate": "Ysolde takes her button tin back, and looks at it for a moment, and then at Maren, and does not say anything at all."
+          }
+        ]
+      }
+    ],
+    "clue": "Commander Hesk set every district of Vell a quota of names for the casting wall, with its bread and oil cut until the quota is met. The district wardens who fill the quotas have made a trade of it: a family with money pays to keep its child off the wall, and the warden pays a poor family to send one of theirs in that place, and tells them exactly what to say at the door.",
+    "investigate": {
+      "label": "Watch who brings the volunteers to Maren's table, and read the wardens' rolls",
+      "skill": "insight",
+      "alt": [
+        "investigation",
+        "perception"
+      ],
+      "success": [
+        {
+          "narrate": "You sit at the end of the barracks and watch the door instead of the table. The volunteers come in ones and twos, and some of them come alone, and some of them come with a district warden in a good coat who stands by the door with a list, and does not leave until they have sat down and said it."
+        },
+        {
+          "narrate": "The ones who come with a warden all say it the same way. Word for word. The words over the iron door."
+        },
+        {
+          "narrate": "That night you get a look at the Fourth District warden's roll, which he leaves on the table at the mess while he eats. Hesk's quota is at the top in a clerk's hand: forty names by the ninth day, or the district's oil is cut by half. Under it are the names. Some are struck through, neatly, with a sum written beside them: twelve gold, twenty, forty. Beside each struck name, in the same hand, is the name that went on in its place. Bertil Mosk is on the list in place of a chandler's son. The chandler's debt book has a line for Bertil Mosk, paid in full."
+        },
+        {
+          "say": "Iona",
+          "text": "It's a market. They've made it a market. Of course they have. Anything with a quota becomes a market. I should have seen it in the ration ledgers the first day.",
+          "when": {
+            "flag": "b3_to_council"
+          }
+        },
+        {
+          "say": "orin",
+          "text": "The rich buy out. The poor are bought in. Same number on the wall. Hesk gets his forty."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You sit at the end of the barracks and watch, and you see the district wardens come and go with their lists, and you see that some of the volunteers say the words over the iron door exactly, word for word, as if they had learned them. You do not get near the rolls. You know there is something in them. You do not know what."
+        }
+      ]
+    },
+    "route": {
+      "label": "Get to the casting yard muster before Hesk's officers do",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "intimidation"
+      ],
+      "safe": true,
+      "success": [
+        {
+          "narrate": "Word goes round the barracks before dawn: Commander Hesk will speak to the volunteers in the casting yard at muster, himself. You are in the yard before the drill-guard, and so are the volunteers, because you went along the bunks and woke them and asked them to come early and stand together."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Word goes round the barracks before dawn that Commander Hesk will speak to the volunteers at muster. By the time you reach the casting yard the drill-guard are already in a line across it, and the district wardens are standing with their own volunteers, separately, in little groups, the way they came in."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Walk into the casting yard with Maren and stand by her table",
+      "text": "You carry Maren's table out of the barracks and set it down in the middle of the casting yard, with its two chairs, and stand beside it, and wait for Hesk."
+    },
+    "approach": [
+      {
+        "narrate": "By the end of the second day Maren has sat with a hundred and eighty volunteers. She has said \"true\" to a hundred and fifty-one of them. To the rest she has said, quietly, that she heard something, and that she is sorry."
+      },
+      {
+        "narrate": "Every one she heard a lie in came with a district warden."
+      },
+      {
+        "say": "maren",
+        "text": "They'll go to Corvane. The wardens. They'll say I'm calling honest people liars to make a point. And he'll have to choose between his witness and his districts."
+      },
+      {
+        "say": "Corvane",
+        "text": "I've chosen. I asked for a witness, and I'll have one. But Hesk wants to speak to them himself. In the yard. I said he might. He has a right to be heard, and I'd rather he said it in the open than in the mess."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "Commander Hesk stands on the step of the iron door at the foot of the casting wall, with the four hundred names over his head, and speaks to the volunteers in the yard. He does not shout. He has a voice that carries without it."
+      },
+      {
+        "say": "Hesk",
+        "text": "You've heard what the Sister is saying. That some of you were told what to say. Some of you were. I'll not pretend otherwise. I set the quotas. I'll tell you why."
+      },
+      {
+        "say": "Hesk",
+        "text": "Six hundred and eleven of my people died in their beds this winter, waiting for enough of you to be brave. Quotas made people brave faster. Yes, the wardens have made a trade of it. Yes, the chandler's son is at home and Bertil Mosk is here. And Bertil Mosk's children eat, and the chandler's son's money keeps a district's oil lit. Every name on that wall keeps a street warm, whoever's name it is."
+      },
+      {
+        "say": "Hesk",
+        "text": "So go to her table if you like. Tell her your truth. And then ask yourselves how many of your neighbours will die of it this winter, if half of you go home."
+      },
+      {
+        "narrate": "Around the edges of the yard, the district wardens' men have moved up, quietly, between the volunteers and the barracks door: heavy men in good coats with cudgels under them. Nobody has told them to. Nobody has told them not to."
+      },
+      {
+        "narrate": "Up on the wall walk, Corvane is standing with his ledger, listening, and not saying anything at all."
+      },
+      {
+        "say": "maren",
+        "text": "He's not lying. Do you understand? He believes every word. That's what makes it so hard to answer."
+      }
+    ],
+    "peaceful": {
+      "label": "Lay the trade before the volunteers themselves, names and prices",
+      "labelNoLead": "Tell the volunteers what the wardens are doing, and ask them to listen",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "performance"
+      ],
+      "success": [
+        {
+          "narrate": "You do not argue with Hesk. You climb up on Maren's table, in the middle of the yard, and talk to the volunteers."
+        },
+        {
+          "narrate": "You have the Fourth District warden's roll. You read it out. Not the quota: the names. The struck ones, and the sums beside them, twelve gold, twenty, forty, and then the names that went on in their place. Bertil Mosk, for the chandler's son. A girl called Ruth Callan, fifteen, for a grain-factor's daughter. You read every line, and the wardens' men stop moving, and the yard gets very quiet, because half of the people in it are hearing their own names read out beside a price.",
+          "when": {
+            "flag": "prepared:b3-witness"
+          }
+        },
+        {
+          "narrate": "You don't have the wardens' rolls. You have only what you saw at the barracks door. So you ask. You ask everyone in the yard who came to Maren's table with a district warden at their back to put up their hand. Nobody does. You ask again. Bertil Mosk puts his hand up. Then a girl beside him. Then eleven more, slowly, all over the yard.",
+          "when": {
+            "notFlag": "prepared:b3-witness"
+          }
+        },
+        {
+          "say": "Bertil Mosk",
+          "text": "The chandler's debt. That's what I am. I'm a debt, paid."
+        },
+        {
+          "narrate": "You tell them what Hesk said is true: every name on the wall keeps a street warm. And then you tell them that a street kept warm by a poor man going in for a rich man's son is not a city saved. It is a city that has found out what its poor are worth, and the price is twelve gold."
+        },
+        {
+          "say": "Abel Strand",
+          "text": "I'm on the wall because I chose it. I'll go. But I'll not go in the same casting as a man who was sold. Not with my name next to his. You hear me, Commander? Not next to his."
+        },
+        {
+          "narrate": "There is a sound in the yard that you have not heard in Vell before: a great many people agreeing out loud."
+        },
+        {
+          "narrate": "The district wardens' men look at each other, and at the four hundred, and at the Commander on the step. One by one, they put their cudgels back under their coats."
+        },
+        {
+          "narrate": "Hesk looks up at the wall walk. Corvane looks back down at him, for a long moment. Then he closes his ledger."
+        },
+        {
+          "say": "Corvane",
+          "text": "Commander. My office. Now, please. The yard is the Sister's."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You climb up on Maren's table and start to speak, and a district warden shouts you down from the back of the yard: the free wards' hero, who broke their stones, telling Vell's poor what they are worth."
+        },
+        {
+          "narrate": "It goes through the yard like a draught. Somebody throws something. The wardens' men come forward with their cudgels out to clear the table, and the volunteers scatter in every direction, and you are standing between the men with the cudgels and Maren's empty chair."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Keep the yard for the witness",
+      "label": "Hold the casting yard for Maren's table",
+      "description": "Four successful actions keep the district wardens' men off the volunteers and away from Maren's table, so the witnessing can go on in the open.",
+      "skill": "intimidation",
+      "alt": [
+        "athletics",
+        "persuasion",
+        "insight"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The wardens' men break the table and drag three volunteers back to their districts before Corvane's own guard comes down off the wall and stops it. The three are back by evening, bruised, and sit down in front of Maren and say it again, word for word. She hears the lie again. They come back anyway.",
+      "successText": "The wardens' men go back out of the yard the way they came, and Maren sets her chair straight, and calls the next volunteer."
+    },
+    "foe": "b3-wardens-men",
+    "foeName": "The District Wardens' Men",
+    "enemyTheme": "soldier",
+    "attackName": "Warden's Cudgel",
+    "retainerName": "Warden's Bravo",
+    "after": [
+      {
+        "narrate": "It takes Maren three more days to sit with everyone. She sits in the middle of the casting yard, in the open, in the cold, with the table and the two chairs, and the volunteers come to her one at a time, and Corvane stands on the wall walk above and writes down what she says."
+      },
+      {
+        "narrate": "Bertil Mosk sits in front of her again on the last morning. He says it differently this time. He says he is going because he is a debt, paid, and that he would rather be honest about it than not. Maren listens for a long time."
+      },
+      {
+        "say": "maren",
+        "text": "That's true. I'm so sorry. That's true. I'll write down both."
+      },
+      {
+        "narrate": "Last of all, at dusk on the eighth day, Ysolde Carr sits down in the chair, with her red hands folded and the string in her hair, and says it."
+      },
+      {
+        "say": "Ysolde",
+        "text": "I come of my own free will. For Jory and Wil, and the Sixth District, and the city. I know what the bronze is. I'm not afraid of it. I'm afraid of them being cold, and I'm not afraid of anything else."
+      },
+      {
+        "narrate": "Maren listens. You can see her listening, with all of herself, for anything at all under the words. There is nothing. There is no stone under the stream."
+      },
+      {
+        "say": "maren",
+        "text": "True."
+      },
+      {
+        "narrate": "Ysolde smiles at her, as if Maren has done something kind. On her way out she puts her button tin down on the table in front of Maren."
+      },
+      {
+        "say": "Ysolde",
+        "text": "Keep it. Please. Then somebody has it."
+      },
+      {
+        "narrate": "That night a letter comes over the pass from Briarwatch, in Aveline's square hand. The council is to sit at Briarwatch in a week, and asks the hero of the free wards to come home before the casting and tell it what they have seen. Corvane reads it too, over your shoulder, with your leave."
+      },
+      {
+        "say": "Corvane",
+        "text": "Go. Tell them. I would rather you told them than anyone. And I would rather you were not in the yard on the ninth day. I don't think I could do it with you watching."
+      },
+      {
+        "narrate": "Maren's ledger lies on the table in the yard: four hundred lines, each with a word beside it. She has not decided yet what to do with it. She is looking at you."
+      },
+      {
+        "say": "maren",
+        "text": "I'll do whatever I do. It's my word. But tell me what you think first. I'd like to hear someone else say it before I do."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "witness",
+        "label": "Maren gives her witness: every lie she heard goes to Corvane",
+        "description": "This decision is permanent. Sixty-three volunteers the wardens bought are taken off the wall. Three hundred and thirty-seven remain.",
+        "text": [
+          {
+            "narrate": "Maren takes the ledger up the stair to the wall walk and gives it to Corvane, and stands beside him while he reads it. Sixty-three lines have the word \"heard\" beside them."
+          },
+          {
+            "narrate": "He goes down to the casting wall himself with a cloth and a bucket, in the dark, and wipes sixty-three names off it, one at a time. Nobody helps him. He does not ask anyone to."
+          },
+          {
+            "say": "Corvane",
+            "text": "Three hundred and thirty-seven. Fewer bells. Fewer streets. And every one of them true. Thank you, Sister. I asked for this. I didn't know it would weigh this much."
+          },
+          {
+            "say": "maren",
+            "text": "Ysolde is still on the wall."
+          },
+          {
+            "say": "Corvane",
+            "text": "Yes. You said she was true."
+          },
+          {
+            "say": "maren",
+            "text": "I did. I did say that."
+          }
+        ],
+        "rep": {
+          "wardens": 2,
+          "wilds": 1
+        },
+        "flag": "b3_witnessed"
+      },
+      {
+        "id": "unwitness",
+        "label": "Maren refuses to be the casting's witness at all",
+        "description": "This decision is permanent. Maren's word is on nobody. All four hundred stay on the wall, on the district officers' word.",
+        "text": [
+          {
+            "narrate": "Maren takes the ledger up the stair to the wall walk, and puts it in the brazier there, and watches it burn."
+          },
+          {
+            "say": "maren",
+            "text": "I won't be your seal, High Warden. Not on any of them. If I give you the sixty-three, you'll cast the other three hundred and thirty-seven with my \"true\" on them, and they'll go into the bronze believing somebody checked. Nobody can check this. I can't. I won't pretend I can."
+          },
+          {
+            "say": "Corvane",
+            "text": "Then they're cast on the district officers' word. All four hundred. You know what that means."
+          },
+          {
+            "say": "maren",
+            "text": "I know what it means. It means it's yours. It was always yours. I'm giving it back."
+          },
+          {
+            "narrate": "Corvane looks at the brazier for a long time. Then he nods, very slightly, the way he bowed to Iona's seal at the gate."
+          },
+          {
+            "say": "Corvane",
+            "text": "That's fair. That's very fair, Sister. I don't like it at all."
+          }
+        ],
+        "rep": {
+          "wilds": 2
+        },
+        "approval": {
+          "maren": 1
+        },
+        "flag": "b3_unwitnessed"
+      },
+      {
+        "id": "expose",
+        "label": "Maren gives her witness, and the wardens' trade goes to Corvane with it",
+        "description": "This decision is permanent. Corvane ends the quotas. Only a hundred and ninety stay on the wall, and Commander Hesk turns elsewhere.",
+        "text": [
+          {
+            "narrate": "Maren gives Corvane the ledger, and you give him the Fourth District warden's roll, with the prices on it, and the debt book from the chandler's, and every line about every name that was bought.",
+            "when": {
+              "flag": "prepared:b3-witness"
+            }
+          },
+          {
+            "narrate": "Maren gives Corvane the ledger, and you tell him what the volunteers told you in the yard, every name that was bought and every price, and he writes it all down.",
+            "when": {
+              "flag": "method:b3-witness",
+              "is": "peace",
+              "notFlag": "prepared:b3-witness"
+            }
+          },
+          {
+            "narrate": "Maren gives Corvane the ledger, and you tell him what you saw at the barracks door: which volunteers came with a district warden at their back, and said the words over the iron door by heart. He writes it all down, and sends his own clerks to the districts for the rolls.",
+            "when": {
+              "flag": "method:b3-witness",
+              "is": "force",
+              "notFlag": "prepared:b3-witness"
+            }
+          },
+          {
+            "narrate": "Maren gives Corvane the ledger, and you tell him what you saw at the barracks door: which volunteers came with a district warden at their back, and said the words over the iron door by heart. He writes it all down, and sends his own clerks to the districts for the rolls.",
+            "when": {
+              "flag": "method:b3-witness",
+              "is": "objective",
+              "notFlag": "prepared:b3-witness"
+            }
+          },
+          {
+            "narrate": "In the morning, in the casting yard, in front of everyone, Corvane ends the quotas. Every one, in every district. No district's oil or bread will be cut again for want of names. Any name on the wall may come off, today, with nothing owed."
+          },
+          {
+            "narrate": "By evening there are a hundred and ninety names on the wall. Abel Strand's is one. Ysolde Carr's is the first."
+          },
+          {
+            "say": "Corvane",
+            "text": "A hundred and ninety. I can hold the inner city with a hundred and ninety. Perhaps. Not the river districts. Not the Fourth, or the Fifth, or the Sixth."
+          },
+          {
+            "narrate": "Commander Hesk stands in the yard while the names come off, and watches every one go. He does not argue. When it is over he walks to the middle of the drill-yard, where the iron vault's door lies flat in the ground, and stands looking down at it for a long time, with his hands behind his back. Oswin Pike watches him from the guardhouse door, and does not go to bed that night."
+          },
+          {
+            "say": "orin",
+            "text": "He's not finished."
+          },
+          {
+            "say": "maren",
+            "text": "No. He believes every word he says. That's why."
+          }
+        ],
+        "rep": {
+          "wilds": 2,
+          "wardens": 1,
+          "trade": -1
+        },
+        "flag": "b3_quotas_exposed"
       }
     ]
   }

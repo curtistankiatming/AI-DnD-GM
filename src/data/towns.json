@@ -188,5 +188,78 @@
       "wayfarer-boots"
     ],
     "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
+  },
+  "saltwick": {
+    "id": "saltwick",
+    "name": "Saltwick",
+    "subtitle": "The Town on Its Roofs",
+    "description": "A salt town on the Iron Road below the pass, its houses joined at the eaves by lashed planks over lanes the mist has filled to the height of a man. Lamps on tall poles stand at every corner. Mags Peller's lamplighters walk the planks with long hooks, and the chandler's roof, which has the best view, keeps a small market.",
+    "faction": "wilds",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "herb-bundle",
+      "lantern",
+      "silk-rope",
+      "climbing-kit",
+      "smoke-bomb",
+      "ward-coating",
+      "storm-grounder",
+      "warbow",
+      "field-plate",
+      "wayfarer-boots",
+      "sentinel-charm"
+    ],
+    "rumor": "Saltwick's echo-stone went dead last year in the middle of supper. Every lamp in town burns oil the town can no longer buy, and Vell's ration office sends oil only to towns that send names."
+  },
+  "vell": {
+    "id": "vell",
+    "name": "Vell",
+    "subtitle": "The Iron City",
+    "description": "The Commandery's seat: a grey city of twenty thousand in a bowl of bare hills, walled and gated in iron, with the mist lying in a ring outside its walls. Its drill-yard is the size of a village. Along one side runs the casting wall, chalked with names, and under it the furnace breathes up through an iron door.",
+    "faction": "wardens",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "herb-bundle",
+      "ward-fragment",
+      "ward-coating",
+      "storm-grounder",
+      "greatsword",
+      "dueling-blade",
+      "resonant-blade",
+      "warbow",
+      "ward-staff",
+      "field-plate",
+      "duelist-buckler",
+      "scholars-lens",
+      "sentinel-charm"
+    ],
+    "rumor": "Every night at dusk High Warden Corvane reads the names of the lost aloud from the wall walk. He begins on the second page. Nobody has ever heard him read the first."
   }
 }

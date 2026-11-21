@@ -397,6 +397,9 @@ function requirementStatus(state, requires = {}) {
   if (requires.gold && state.player.gold < Number(requires.gold)) {
     return { met: false, reason: `Requires ${requires.gold} gold.` };
   }
+  if (requires.absent && findCompanion(state, requires.absent)) {
+    return { met: false, reason: `Only while ${COMPANIONS[requires.absent]?.name || "that companion"} is away.` };
+  }
   if (requires.companion && !findCompanion(state, requires.companion)) {
     return { met: false, reason: `Requires ${COMPANIONS[requires.companion]?.name || "a specific companion"}.` };
   }
