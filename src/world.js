@@ -120,6 +120,8 @@ function completeQuest(state,id,events,api){
   const gain=q?.generated?Book.capXp(state,xp):xp;state.world.completed[id].xp=gain;
   if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
   api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
+  // A chapter's own reward item, or a templated one from an AI adventure (src/gear.js).
+  Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);
   Book.finished(state);
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}

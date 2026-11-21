@@ -186,6 +186,8 @@ function normalizeIncomingState(raw) {
   if (!raw || typeof raw !== "object") return createNewGame();
   if (![3, 4].includes(Number(raw.schemaVersion))) { if (Number(raw.schemaVersion) > SCHEMA_VERSION) throw new Error("This save needs a newer game version."); return migrateLegacyState(raw); }
   const state = deepClone(raw);
+  // Items found in AI adventures are rebuilt from their templates first, so the inventory keeps them.
+  Gear.register(state);
   // How far this session may read is the server's to say, never the save's.
   Book.grant(state, raw[Book.ACCESS]);
   state.schemaVersion = SCHEMA_VERSION;
