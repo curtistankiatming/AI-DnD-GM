@@ -69,22 +69,31 @@ function stats(a) {
 const skills = (a) => worn(a).filter((i) => i.skill && Power.EFFECTS[i.skill.effect]).map((i) => ({ itemId: i.id, ...i.skill }));
 
 // Story abilities: the first check with the item's skill after each long rest
-// has advantage. The Thornward Cloak keeps its old save key, cloakReady.
-const storyKey = (item) => item.story?.key || `ready:${item.id}`;
-function storyItem(actor, skillId) {
-  if (!skillId) return null;
-  return worn(actor).find((i) => i.story?.skill === skillId && actor.used?.[storyKey(i)] !== false) || null;
+// has advantage. Uses are counted per item for the whole party
+// (world.storySpent), so passing the item round doesn't reuse it; each copy
+// owned gives one use. The Thornward Cloak also keeps its old save flag,
+// player.used.cloakReady, for the character sheet and old saves.
+const copies = (state, id) => state.player.inventory.filter((e) => e.itemId === id).reduce((n, e) => n + (e.quantity || 0), 0);
+function spent(state, id) {
+  const n = state.world?.storySpent?.[id];
+  if (Number.isInteger(n)) return n;
+  return id === 'thornward-cloak' && state.player.used?.cloakReady === false ? 1 : 0;
 }
-function spendStory(plan) {
+const storyReady = (state, id) => spent(state, id) < Math.max(1, copies(state, id));
+function storyItem(state, actor, skillId) {
+  if (!skillId) return null;
+  return worn(actor).find((i) => i.story?.skill === skillId && storyReady(state, i.id)) || null;
+}
+function spendStory(state, plan) {
   if (!plan?.storyItemId) return;
-  const item = ITEMS[plan.storyItemId];
-  (plan.actor.used ||= {})[storyKey(item)] = false;
+  const id = plan.storyItemId;
+  (state.world.storySpent ||= {})[id] = spent(state, id) + 1;
+  if (id === 'thornward-cloak') (state.player.used ||= {}).cloakReady = false;
 }
 // After a long rest every story ability is ready again.
-function refreshStory(a) {
-  a.used ||= {};
-  a.used.cloakReady = true;
-  for (const k of Object.keys(a.used)) if (k.startsWith('ready:')) delete a.used[k];
+function refreshStory(state) {
+  if (state.world) delete state.world.storySpent;
+  for (const a of [state.player, ...(state.party || [])]) { a.used ||= {}; a.used.cloakReady = true; for (const k of Object.keys(a.used)) if (k.startsWith('ready:')) delete a.used[k]; }
 }
 
 // Plain words for the item card: what the extra rules do.
@@ -105,4 +114,4 @@ function purpose(item) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : ''].filter(Boolean).join(' ');
 }
 
-module.exports = { purpose,  RARITIES, gearClass, requirementText, unmet, stats, skills, storyKey, storyItem, spendStory, refreshStory, describe };
+module.exports = { purpose,  RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };

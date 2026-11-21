@@ -898,6 +898,7 @@ function resolvePlayerCombatAction(state, action, rng, events) {
     if(!gearSkillReady(state,actor,skill))return invalidResult(state,events,`${skill.name} has already been used this fight.`);
     const target=skill.target==='self'?actor:validateCombatTarget(state,action.targetId,'enemy');
     if(!target)return invalidResult(state,events,'Choose a living enemy target.');
+    if(skill.effect==='burning'&&target.resistances?.includes('fire'))return invalidResult(state,events,`${target.name} does not burn. Choose another target; ${skill.name} was not used.`);
     useGearSkill(state,actor,skill,target,events);
     return {ok:true,kind:'combat',outcomeText:`${actor.name} uses ${skill.name}.`};
   }
@@ -981,19 +982,20 @@ function companionAttackTarget(state, actor) {
 function processCompanionTurn(state, actor, rng, events) {
   if(actor.hp<=0||hasCondition(actor,'sleeping'))return;
   if(hasCondition(actor,'stunned')||hasCondition(actor,'surprised')){actor.actionUsed=true;events.push({type:'condition',tone:'neutral',text:`${actor.name} loses this action to a control effect.`});return;}
-  // A companion uses a worn item's skill the first time they can.
-  for(const skill of actor.gearSkills||[]){if(actor.bonusUsed||!gearSkillReady(state,actor,skill))continue;const foe=skill.target==='self'?actor:livingActors(state,'enemy').sort((a,b)=>b.hp-a.hp)[0];if(foe)useGearSkill(state,actor,skill,foe,events);}
   const ordered=state.combat.order?.kind==='protect'?combatActor(state,state.combat.order.targetId):null;
   const lowest=companionLowTarget(state),threshold=actor.tactic==='aggressive'?0.22:actor.tactic==='protective'||actor.tactic==='support'?0.72:0.48;
-  if(actor.aiRole==='healer'&&lowest&&actor.resources.healingWords>0&&(lowest.hp<=0||lowest.hp/lowest.maxHp<threshold)){
+  if(actor.aiRole==='healer'&&!actor.bonusUsed&&lowest&&actor.resources.healingWords>0&&(lowest.hp<=0||lowest.hp/lowest.maxHp<threshold)){
     actor.resources.healingWords--;actor.bonusUsed=true;
     combatHeal(state,lowest,rollFormula(rng,actor.level>=5?'2d4':'1d4').total+abilityModifier(actor.abilities.wis)+Math.floor(P.accuracyLevel(actor.level)/3),events,`${actor.name}'s Healing Word`);
   }
   if(actor.aiRole==='guardian'){
-    if(actor.hp/actor.maxHp<0.5&&actor.resources.secondWind>0){actor.resources.secondWind--;actor.bonusUsed=true;combatHeal(state,actor,rollFormula(rng,'1d10').total+P.accuracyLevel(actor.level),events,`${actor.name}'s Second Wind`);}
+    if(!actor.bonusUsed&&actor.hp/actor.maxHp<0.5&&actor.resources.secondWind>0){actor.resources.secondWind--;actor.bonusUsed=true;combatHeal(state,actor,rollFormula(rng,'1d10').total+P.accuracyLevel(actor.level),events,`${actor.name}'s Second Wind`);}
     const protect=ordered||((actor.tactic==='protective'||lowest?.hp/lowest?.maxHp<0.45)&&actor.tactic!=='aggressive'?lowest:null);
     if(protect&&protect.id!==actor.id&&protect.hp>0){addCondition(protect,{id:'guarded',name:`Guarded by ${actor.name}`,sourceId:actor.id,expiresRound:state.combat.round+1});addCondition(actor,{id:'taunting',name:'Holding the line',expiresRound:state.combat.round+1});events.push({type:'party',tone:'good',text:`${actor.name} grants ${protect.name} +2 AC and draws enemy attention.`});}
   }
+  // A companion uses a worn item's skill the first time their bonus action is free
+  // (after Healing Word and Second Wind), never on a foe it can't affect.
+  for(const skill of actor.gearSkills||[]){if(actor.bonusUsed||!gearSkillReady(state,actor,skill))continue;const foe=skill.target==='self'?actor:livingActors(state,'enemy').filter(e=>skill.effect!=='burning'||!e.resistances?.includes('fire')).sort((a,b)=>b.hp-a.hp)[0];if(foe)useGearSkill(state,actor,skill,foe,events);}
   if(ordered&&ordered.hp>0&&actor.tactic!=='aggressive'&&actor.aiRole!=='guardian')addCondition(ordered,{id:'guarded',name:`Covered by ${actor.name}`,sourceId:actor.id,expiresRound:state.combat.round+1});
   const hero=combatActor(state,'player');
   if(hero?.hp>0&&state.combat.objective&&(actor.tactic==='support'||state.combat.order?.kind==='cover')&&!hasCondition(hero,'covered')){

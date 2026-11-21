@@ -493,7 +493,7 @@ function checkPlan(state, choice, forced = null) {
   }
   if (actor.id==='player' && actor.level>=6 && check.tools?.some(id=>hasItem(state,id))) { bonus+=2;reasons.push('Fieldcraft +2 with the listed tools'); }
   // A worn item's story ability (src/gear.js), such as the Thornward Cloak's.
-  const story=Gear.storyItem(actor,skillId);
+  const story=Gear.storyItem(state,actor,skillId);
   const usesCloak=Boolean(story);
   if(story){advantage=true;reasons.push(`${story.name}: first ${SKILLS[skillId].name} check after a long rest`);}
   const usesInspiration=state.player.inspirationPrepared && actor.id==='player' && !advantage;
@@ -515,7 +515,7 @@ function checkPlan(state, choice, forced = null) {
 function resolveStoryCheck(state, choice, rng, events) {
   const plan = checkPlan(state, choice);
   if (!plan) return { success: true, text: "" };
-  Gear.spendStory(plan);
+  Gear.spendStory(state, plan);
   if (plan.usesInspiration) {
     state.player.inspirationPrepared = false;
     state.player.inspiration = Math.max(0, state.player.inspiration - 1);

@@ -121,7 +121,7 @@ function playerSheetView(state) {
     nextLevelXp: XP_THRESHOLDS[state.player.level] || null,
     gold:state.player.gold,
     temporaryHp:state.player.temporaryHp||0,
-    cloakReady:state.player.used?.cloakReady!==false,
+    cloakReady:Gear.storyReady(state,'thornward-cloak'),
     hp: state.player.hp,
     maxHp: state.player.maxHp,
     ac: state.player.ac,

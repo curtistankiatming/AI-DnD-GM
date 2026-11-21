@@ -91,20 +91,48 @@ test('a story ability gives advantage once per long rest, for whoever wears it',
   const plan = E.checkPlan(s, choice);
   assert.equal(plan.advantage, true);
   assert.equal(plan.storyItemId, 'veilstep-cloak');
-  Gear.spendStory(plan);
+  Gear.spendStory(s, plan);
   assert.equal(E.checkPlan(s, choice).storyItemId, null);
-  Gear.refreshStory(s.player);
+  Gear.refreshStory(s);
   assert.equal(E.checkPlan(s, choice).storyItemId, 'veilstep-cloak');
 });
 
-test('the Thornward Cloak still uses its old save key', () => {
+test('passing an item round does not reuse its story ability', () => {
+  let s = give(sandbox('fighter', 10), 'warden-signet');
+  s = equip(s, 'warden-signet').state;
+  const choice = { id: 'read', check: { skill: 'insight', dc: 15 } };
+  Gear.spendStory(s, E.checkPlan(s, choice, s.player));
+  s = E.resolveAction(s, { type: 'unequip', slot: 'accessory', actorId: 'player' }).state;
+  s = equip(s, 'warden-signet', 'orin').state;
+  assert.equal(E.checkPlan(s, choice, s.party.find(m => m.id === 'orin')).storyItemId, null);
+  give(s, 'warden-signet');
+  assert.equal(E.checkPlan(s, choice, s.party.find(m => m.id === 'orin')).storyItemId, 'warden-signet', 'a second copy gives a second use');
+});
+
+test('the Thornward Cloak keeps working with old saves and the character sheet', () => {
   const s = sandbox('ranger', 5);
   give(s, 'thornward-cloak'); s.player.equipment.accessory = 'thornward-cloak';
-  s.player.used = { cloakReady: true };
-  const plan = E.checkPlan(s, { id: 't', check: { skill: 'survival', dc: 12, hero: true } });
+  s.player.used = { cloakReady: false };
+  const choice = { id: 't', check: { skill: 'survival', dc: 12, hero: true } };
+  assert.equal(E.checkPlan(s, choice).usesCloak, false, 'an old save that spent it stays spent');
+  Gear.refreshStory(s);
+  const plan = E.checkPlan(s, choice);
   assert.equal(plan.usesCloak, true);
-  Gear.spendStory(plan);
+  Gear.spendStory(s, plan);
   assert.equal(s.player.used.cloakReady, false);
+  assert.equal(E.buildView(s).player.cloakReady, false);
+});
+
+test('a companion never takes two bonus actions in a turn', () => {
+  let s = give(sandbox('fighter', 10), 'bulwark-shield');
+  s = equip(s, 'bulwark-shield', 'orin').state;
+  s = E.resolveAction(s, { type: 'practice' }, R.createSeededRng(41)).state;
+  const orin = s.combat.actors.find(a => a.refId === 'orin'); orin.hp = Math.floor(orin.maxHp / 3);
+  const out = E.resolveAction(s, { type: 'combat', actionId: 'end-turn' }, R.createSeededRng(1));
+  const texts = out.events.map(e => e.text).join('\n');
+  // One round runs before the player's next turn: Second Wind and Brace can't both happen in it.
+  assert.ok(/Orin Stoneward's Second Wind/.test(texts), texts);
+  assert.doesNotMatch(texts, /Orin Stoneward uses Brace/);
 });
 
 test('every new item is well formed', () => {

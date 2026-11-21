@@ -43,7 +43,7 @@ function apply(state,id,rng,events,api){
   if(choice.plan){
     const p=choice.plan,roll=R.rollD20(rng,p);success=roll.natural+p.bonus>=p.dc;
     if(p.usesInspiration){state.player.inspiration=Math.max(0,state.player.inspiration-1);state.player.inspirationPrepared=false;}
-    Gear.spendStory(p);
+    Gear.spendStory(state,p);
     events.push({type:'roll',text:`${choice.label}: ${roll.rolls.join('/')} ${R.formatSigned(p.bonus)} = ${roll.natural+p.bonus} vs DC ${p.dc}: ${success?'success':'setback'}.`});
   }
   let line='';

@@ -45,14 +45,17 @@ damage dealt or 10% less damage taken. They add to the buffs and debuffs of
 `skill: { name, effect, target, rounds, text }`: a bonus action once per fight
 that puts one of the existing buffs or debuffs (Burning, Slowed, Vulnerable,
 Weakened, Empowered, Fortified) on an enemy or the wearer. The hero gets it as
-a combat button. A companion wearing it uses it on their first turn that they
-can (enemy skills on the healthiest enemy).
+a combat button. A companion wearing it uses it once their bonus action is free (after
+Healing Word or Second Wind), on the healthiest enemy it can affect. Kindle
+is never wasted on an enemy that resists fire.
 
 ## Story abilities
 
 `story: { skill }`: advantage on the first check with that skill after each
-long rest, for whoever wears it and rolls. The Thornward Cloak now uses this
-rule (its save key, `cloakReady`, is unchanged).
+long rest, for whoever wears it and rolls. Uses are counted per item for the
+whole party, so handing the item to someone else doesn't give a second use;
+a second copy does. The Thornward Cloak now uses this rule, and old saves keep
+its spent or ready state.
 
 ## The first seven items
 

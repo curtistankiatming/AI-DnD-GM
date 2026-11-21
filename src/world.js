@@ -158,10 +158,11 @@ function longRest(state,premium,events){
     a.conditions=(a.conditions||[]).filter(c=>['poisoned','blessed','poisonWard','coating'].includes(c.id));
     if(premium)a.temporaryHp=4+P.accuracyLevel(state.player.level);
     else a.temporaryHp=0;
-    Gear.refreshStory(a);
+    a.used ||= {};
     if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=P.hitDiceMax(a.level);}
     else P.refreshCompanion(a,'long');
   }
+  Gear.refreshStory(state);
   state.world.day+=1;
   if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
   return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
