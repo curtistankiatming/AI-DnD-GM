@@ -14,7 +14,7 @@
     "region": "Merrowgate: the Lantern Hall, the north quay, and the casting pit at the end of the old rope-walk",
     "threat": "The Lantern Hall is selling castings: a town pays the guild, a volunteer goes into the bronze, and the guild pays the volunteer's family for life. Tonight it casts Merrowgate's own bell, around a docker who owes money.",
     "faction": "trade",
-    "brief": "Late summer. The Lantern Hall has painted a price for a casting on a board outside its door. Tonight it casts a ward for Merrowgate itself, around a docker called Coll Garrow, and his daughter will be paid for it every month for the rest of her life.",
+    "brief": "Late summer. The Lantern Hall has painted a price for a casting on a board outside its door. Tonight it casts a ward for Merrowgate itself, around a docker called Coll Haddow, and his daughter will be paid for it every month for the rest of her life.",
     "opening": [
       {
         "narrate": "Late summer in Merrowgate. The harbour smells of tar and hot stone, and the gulls sit on the bollards with their beaks open in the heat. Up the hill from the quays, on the steps of the Lantern Hall, there is a new board, painted in good blue and gold, the way the guild paints its prices."
@@ -96,7 +96,7 @@
         "text": "People think we're hiding something. We're not. It's painted on the board. The poor have always paid for safety. Now somebody pays them."
       },
       {
-        "narrate": "Down on the quay, a docker is mending nets on an upturned crate, with a girl beside him gutting fish into a bucket. Everyone going past looks at him. He has his name on a board too, smaller, nailed to the Hall's door: tonight's casting, at the old rope-walk. Coll Garrow, docker, thirty-six."
+        "narrate": "Down on the quay, a docker is mending nets on an upturned crate, with a girl beside him gutting fish into a bucket. Everyone going past looks at him. He has his name on a board too, smaller, nailed to the Hall's door: tonight's casting, at the old rope-walk. Coll Haddow, docker, thirty-six."
       }
     ],
     "talks": [
@@ -120,7 +120,7 @@
           },
           {
             "say": "Cass Ord",
-            "text": "I pay them. Twelve gold a month, for life. Bett Garrow will be the best-fed girl on the north quay by the winter. Tell me what's wrong with that, and I'll write it down. I mean that. I keep a page for it."
+            "text": "I pay them. Twelve gold a month, for life. Bett Haddow will be the best-fed girl on the north quay by the winter. Tell me what's wrong with that, and I'll write it down. I mean that. I keep a page for it."
           },
           {
             "say": "maren",
@@ -155,7 +155,7 @@
           },
           {
             "say": "Hesk",
-            "text": "Six hundred and eleven of my people died in their beds, the winter before last, waiting for enough volunteers. I told you that in Vell. It's still true. It'll be true every winter until the free wards decide what they think, and you don't decide quickly, any of you. You decide fairly. It takes a long time to be fair."
+            "text": "Six hundred and eleven of my people died in their beds, last winter, waiting for enough volunteers. I told you that in Vell. It's still true. It'll be true every winter until the free wards decide what they think, and you don't decide quickly, any of you. You decide fairly. It takes a long time to be fair."
           },
           {
             "say": "Hesk",
@@ -183,17 +183,17 @@
       },
       {
         "id": "dock",
-        "label": "Go down to the north quay, where Coll Garrow is mending nets with his daughter",
+        "label": "Go down to the north quay, where Coll Haddow is mending nets with his daughter",
         "lines": [
           {
-            "narrate": "Coll Garrow is a docker with a docker's back and big, careful hands, mending nets on an upturned crate because there is no work for him on the quay today. His daughter Bett is ten, and is gutting fish into a bucket beside him, faster than he mends, without looking at what her hands are doing."
+            "narrate": "Coll Haddow is a docker with a docker's back and big, careful hands, mending nets on an upturned crate because there is no work for him on the quay today. His daughter Bett is ten, and is gutting fish into a bucket beside him, faster than he mends, without looking at what her hands are doing."
           },
           {
-            "say": "Coll Garrow",
+            "say": "Coll Haddow",
             "text": "Tonight. In the pit at the end of the old rope-walk. They're casting the harbour its own bell at last. The Hall says Merrowgate shouldn't only sell them, it should have one. They wanted a docker. I said yes."
           },
           {
-            "say": "Coll Garrow",
+            "say": "Coll Haddow",
             "text": "Twelve gold a month. Do you know what twelve gold a month is, on the north quay? It's boots. It's a room with a window in it. It's her at the Sallows school with the clerks' children, and not down here with the fish."
           },
           {
@@ -208,7 +208,7 @@
             "text": "People come back from sea."
           },
           {
-            "say": "Coll Garrow",
+            "say": "Coll Haddow",
             "text": "Bett."
           },
           {
@@ -220,7 +220,7 @@
             "text": "He's not going to sea. You know he's not. Has anyone asked you, Bett? Has anyone even—"
           },
           {
-            "say": "Coll Garrow",
+            "say": "Coll Haddow",
             "text": "Nobody needs to ask her. She's ten.",
             "when": {
               "party": "nessa"
@@ -318,9 +318,9 @@
         ]
       }
     ],
-    "clue": "The Lantern Hall buys debts from Merrowgate's moneylenders, cheaply, from the people on the north quay and in the Tanneries who have nothing behind them. Then a Hall clerk comes round with the paper and a kind voice and offers to clear it, all of it, for one yes. Coll Garrow's debt was bought nine days before he put his name down.",
+    "clue": "The Lantern Hall buys debts from Merrowgate's moneylenders, cheaply, from the people on the north quay and in the Tanneries who have nothing behind them. Then a Hall clerk comes round with the paper and a kind voice and offers to clear it, all of it, for one yes. Coll Haddow's debt was bought nine days before he put his name down.",
     "investigate": {
-      "label": "Find out who held Coll Garrow's debt, and when it changed hands",
+      "label": "Find out who held Coll Haddow's debt, and when it changed hands",
       "skill": "investigation",
       "alt": [
         "insight",
@@ -334,7 +334,7 @@
           "narrate": "It buys debts. Not all of them: the ones on the north quay and in the Tanneries, from people with nothing behind them, at a third of what they are worth. Then a Hall clerk goes round with the paper and a kind voice and offers to clear it. All of it. For one yes."
         },
         {
-          "narrate": "Coll Garrow owed forty-one gold on Chandlery Row, for his wife's last winter: the physician, the coal, the burying. The Hall bought the paper on the ninth of the month. He put his name down for the casting on the eighteenth. The Hall's clerk initialled the page both times."
+          "narrate": "Coll Haddow owed forty-one gold on Chandlery Row, for his wife's last winter: the physician, the coal, the burying. The Hall bought the paper on the ninth of the month. He put his name down for the casting on the eighteenth. The Hall's clerk initialled the page both times."
         },
         {
           "say": "nessa",
@@ -386,7 +386,7 @@
         "text": "They've come to watch. Of course they have. I'd have come to watch, if I didn't know."
       },
       {
-        "narrate": "On the platform over the pit there is a bell-mould the height of a man, and beside it, in a clean shirt, with his hair combed down with water, stands Coll Garrow."
+        "narrate": "On the platform over the pit there is a bell-mould the height of a man, and beside it, in a clean shirt, with his hair combed down with water, stands Coll Haddow."
       }
     ],
     "crisis": [
@@ -398,14 +398,14 @@
       },
       {
         "say": "Cass Ord",
-        "text": "Coll Garrow. You've been asked three times, in private. I'll ask once in public, because the harbour should hear it. Do you come of your own free will?"
+        "text": "Coll Haddow. You've been asked three times, in private. I'll ask once in public, because the harbour should hear it. Do you come of your own free will?"
       },
       {
-        "say": "Coll Garrow",
+        "say": "Coll Haddow",
         "text": "I do."
       },
       {
-        "narrate": "In the front row, at the rail, Bett Garrow is standing with a bucket of fish she has forgotten to put down. She is not clapping."
+        "narrate": "In the front row, at the rail, Bett Haddow is standing with a bucket of fish she has forgotten to put down. She is not clapping."
       },
       {
         "narrate": "At the foot of the pit stairs, a line of the Hall's guards in guild blue has closed up across the steps: hired swords, with truncheons. They are there for the crowd. They have been told that crowds sometimes change their minds."
@@ -426,14 +426,14 @@
           }
         },
         {
-          "say": "Coll Garrow",
+          "say": "Coll Haddow",
           "text": "They said the debt was cleared. As a kindness. After.",
           "when": {
             "flag": "prepared:b3-price"
           }
         },
         {
-          "narrate": "You ask Cass Ord, in front of everyone, whether the Hall bought Coll Garrow's paper before he volunteered or after. She does not lie. You can see her decide not to.",
+          "narrate": "You ask Cass Ord, in front of everyone, whether the Hall bought Coll Haddow's paper before he volunteered or after. She does not lie. You can see her decide not to.",
           "when": {
             "flag": "prepared:b3-price"
           }
@@ -464,7 +464,7 @@
           }
         },
         {
-          "say": "Coll Garrow",
+          "say": "Coll Haddow",
           "text": "Before. They said I'd want it off my mind.",
           "when": {
             "notFlag": "prepared:b3-price"
@@ -474,7 +474,7 @@
           "narrate": "Then you ask him to look at Bett."
         },
         {
-          "say": "Coll Garrow",
+          "say": "Coll Haddow",
           "text": "She's still got the fish. She's still holding the bloody fish."
         },
         {
@@ -496,7 +496,7 @@
     },
     "objective": {
       "name": "Bring Coll down",
-      "label": "Get Coll Garrow down from the casting platform",
+      "label": "Get Coll Haddow down from the casting platform",
       "description": "Four successful actions get you past the Hall's guard on the pit stairs and Coll down from the platform before the reading ends.",
       "skill": "athletics",
       "alt": [
@@ -525,15 +525,15 @@
             }
           },
           {
-            "narrate": "Three of the Hall's guards are carried out of the rope-walk, and a docker with a broken arm, and the guild band's big drum. The furnace burns all night for nothing, and in the morning the Hall lets it go out."
+            "narrate": "Three of the Hall's guards are carried out of the rope-walk, and a docker with a broken arm. The furnace burns all night for nothing, and in the morning the Hall lets it go out."
           }
         ]
       },
       {
-        "narrate": "Coll Garrow is sitting on his upturned crate on the north quay the next morning, with Bett asleep against his side and the cleared paper folded in his shirt."
+        "narrate": "Coll Haddow is sitting on his upturned crate on the north quay the next morning, with Bett asleep against his side and the cleared paper folded in his shirt."
       },
       {
-        "say": "Coll Garrow",
+        "say": "Coll Haddow",
         "text": "I'd have done it. You know that. I'd have gone in for her. I'm not sorry I came down. I don't know yet whether I'm glad."
       },
       {
@@ -635,7 +635,7 @@
             "narrate": "The fund's clerk buys the Hall's paper that afternoon, every sheet, at what the Hall paid for it, which Cass Ord insists on being exact about. Four hundred and six debts. They burn them on the north quay at dusk in a tar barrel, and the whole quay comes down to watch, and this time nobody is selling pies."
           },
           {
-            "narrate": "Coll Garrow's sheet goes in with the rest. Bett puts it in herself."
+            "narrate": "Coll Haddow's sheet goes in with the rest. Bett puts it in herself."
           },
           {
             "narrate": "The clerk writes to Fenmere that night. The lower village's walls will wait another year."
@@ -687,7 +687,7 @@
       {
         "oneOf": [
           {
-            "narrate": "Last winter was mild. The Mother Bell was quieted at the Vote, and the free wards had a soft winter anyway, and in Cinder Fold everyone said they had been lucky. This autumn nobody says it.",
+            "narrate": "Last winter was mild. The Mother Bell was quieted here, under the first forge, and the free wards had a soft winter anyway, and in Cinder Fold everyone said they had been lucky. This autumn nobody says it.",
             "when": {
               "flag": "mother_silenced"
             }
@@ -704,7 +704,7 @@
         ]
       },
       {
-        "narrate": "The miners' committee met last night in the old casting hall, with the doors open. It voted, thirty-one to four, to cast a ward around one of their own at the pit, with the rite the Lantern Hall brought out of Vell. Then it asked the one it wanted, and she said yes."
+        "narrate": "The miners' committee met last night in the old casting hall, with the doors open. All fourteen seats voted, eleven to three, to cast a ward around one of their own at the pit, with the rite the Lantern Hall brought out of Vell. Then it asked the one it wanted, and she said yes."
       },
       {
         "narrate": "It is the same committee that tied fourteen times over the cold galleries, until somebody from over the pass opened them for it. It has not tied once since. People in Cinder Fold say that was your doing. Not all of them say it kindly.",
@@ -713,7 +713,7 @@
         }
       },
       {
-        "narrate": "Wren is sixty. Her leg is worse: she uses the stick for walking now, not for pointing at people. She has kept the forge-signal and walked the galleries for thirty years, and she has decided that her last work will be to hold them."
+        "narrate": "Wren is sixty. Her leg is worse: she uses the stick for walking now, not for pointing at people. She kept the Highpass tower for twenty years, and she has kept the forge-signal since she came over the pass. She has decided that her last work will be to hold the town that took her in."
       },
       {
         "narrate": "The Lantern Hall has a man at the inn, with a letter from Cass Ord. The Hall will cast Wren for nothing: no fee, a casting master sent at the Hall's own cost. Everybody in Cinder Fold understands why. A free casting at the first forge, of the keeper of the forge-signal, would sell a hundred more."
@@ -722,6 +722,7 @@
         "narrate": "Wren is waiting at her kitchen door with a letter in her hand that has been folded and unfolded until it is soft. You know the handwriting from across the yard. It runs uphill.",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -730,13 +731,15 @@
         "text": "Reed. Come in. Sit down. No, sit. I've a thing to read you, and I'd like you sitting for it.",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
       {
-        "narrate": "The committee will not cast without Nessa's answer. A year ago she wrote that she would take the forge-signal after Wren, and the miners have it in their minutes. A casting would make that long yes come due tonight.",
+        "narrate": "The committee will not cast without Nessa's answer. In the spring she wrote that she would take the forge-signal after Wren, and the miners have it in their minutes. A casting would make that long yes come due tonight.",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -745,6 +748,7 @@
         "text": "'Yes, but not yet. I've got a council to keep an eye on, and you're not dead, so you can manage another winter.'",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -753,6 +757,7 @@
         "text": "That's the last line. I've read it every night since. I can't, Reed. That's the trouble. I can't manage another winter, not on those stairs. So it's yes now, or it's no, and I need you to say which.",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -760,7 +765,8 @@
         "say": "nessa",
         "text": "You can't use my letter. That's my letter. I wrote that so you'd—",
         "when": {
-          "flag": "nessa_keeper"
+          "flag": "nessa_keeper",
+          "is": "later"
         }
       },
       {
@@ -768,6 +774,7 @@
         "text": "So I'd what?",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -775,7 +782,8 @@
         "say": "nessa",
         "text": "So you'd still be here.",
         "when": {
-          "flag": "nessa_keeper"
+          "flag": "nessa_keeper",
+          "is": "later"
         }
       },
       {
@@ -820,6 +828,14 @@
         "when": {
           "absent": "nessa"
         }
+      },
+      {
+        "narrate": "Nessa's long yes is in the committee's minutes: in the spring she wrote that she would take the forge-signal after Wren. The committee's chair has written beside it, in pencil: held for her.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "later",
+          "absent": "nessa"
+        }
       }
     ],
     "talks": [
@@ -832,7 +848,7 @@
           },
           {
             "say": "Wren",
-            "text": "Thirty years. I know every gallery under this town by the sound it makes when you knock on it. I know where the water comes in in spring. I know which props are lying to you."
+            "text": "Twenty years I kept that tower, and I knew the pass by the sound of it. I came over with a bad leg and nothing else, and this town gave me the forge-signal and a kitchen and never asked what I was for. I've walked every gallery under it since. I know them by the sound they make when you knock on them. I know where the water comes in in spring. I know which props are lying to you."
           },
           {
             "say": "Wren",
@@ -871,25 +887,25 @@
       },
       {
         "id": "chair",
-        "label": "Talk to Agnes Tallis, who chairs the miners' committee",
+        "label": "Talk to Ottilie Brand, who chairs the miners' committee",
         "lines": [
           {
-            "narrate": "Agnes Tallis chairs the miners' committee. She is a short, square woman with a pick-scar through one eyebrow, and she has the minutes of last night's meeting in her apron pocket. She takes them out and gives them to you to read without being asked."
+            "narrate": "Ottilie Brand has chaired the miners' committee for years: a broad grey woman with a voice like a dropped shovel. She has the minutes of last night's meeting in her apron pocket. She takes them out and gives them to you to read without being asked."
           },
           {
-            "say": "Agnes Tallis",
-            "text": "Thirty-one to four. The four were Wren's own gallery crew. They voted no because they love her, and they said so. Nobody was paid. Nobody was told what to say. We asked her after, with the doors open, and she said yes before I'd finished asking."
+            "say": "Ottilie Brand",
+            "text": "Eleven to three. Fourteen seats, and for once nobody tied. The three walk the signal round with her. They voted no because they love her, and they said so. Osric voted yes. He's never voted with me in his life. He did it for her. Nobody was paid. Nobody was told what to say. We asked her after, with the doors open, and she said yes before I'd finished asking."
           },
           {
-            "say": "Agnes Tallis",
+            "say": "Ottilie Brand",
             "text": "So it's fair. I'd like you to know it's fair before you decide whether to tell us we're wrong. People come over the pass and tell us we're wrong, and they're right more often than I like. This time it's fair."
           },
           {
-            "say": "Agnes Tallis",
+            "say": "Ottilie Brand",
             "text": "And the Hall's man can take his letter back to Merrowgate. We voted yes to Wren. We didn't vote yes to Cass Ord. They seem to think in Merrowgate that it's the same thing."
           },
           {
-            "narrate": "Since the harbour shut its doors to paid castings, the Hall's man says, Cinder Fold is the best customer the Hall could have. He says it to everyone at the inn. Agnes has stopped going to the inn.",
+            "narrate": "Since the harbour shut its doors to paid castings, the Hall's man says, Cinder Fold is the best customer the Hall could have. He says it to everyone at the inn. Ottilie has stopped going to the inn.",
             "when": {
               "flag": "b3_market_shut"
             }
@@ -904,7 +920,7 @@
         },
         "lines": [
           {
-            "narrate": "Nessa has spent the day interrupting people. She interrupted Agnes Tallis in the middle of the minutes. She interrupted the Hall's man at the inn. She interrupted Wren twice, and Wren let her. Now she is sitting on the forge wall with Biscuit, not saying anything to anyone."
+            "narrate": "Nessa has spent the day interrupting people. She interrupted Ottilie Brand in the middle of the minutes. She interrupted the Hall's man at the inn. She interrupted Wren twice, and Wren let her. Now she is sitting on the forge wall with Biscuit, not saying anything to anyone."
           },
           {
             "say": "nessa",
@@ -968,7 +984,7 @@
       ],
       "success": [
         {
-          "narrate": "The founders' ledger lives in an iron box in the vault under the first forge, and the committee keeps the key. Agnes Tallis lets you have it for an hour, and stands in the door while you read, because nobody has opened it in forty years and she would like to know what it says."
+          "narrate": "The founders' ledger lives in an iron box in the vault under the first forge, and the committee keeps the key. Ottilie Brand lets you have it for an hour, and stands in the door while you read, because nobody has opened it in forty years and she would like to know what it says."
         },
         {
           "narrate": "It is a builder's book. Nine bells, each with its weight, its metal, and the day it was hung on the lid. Beside each bell a name, in a careful hand. They are not the founders' names. They are the names of the people the bells were cast around."
@@ -980,8 +996,36 @@
           "narrate": "Not this way. Ask them all."
         },
         {
-          "say": "Agnes Tallis",
-          "text": "Ask who? Ask them all what?"
+          "oneOf": [
+            {
+              "say": "Ottilie Brand",
+              "text": "The same five words as on the mould. Ask them all. It's been standing in the casting hall all season, and I've asked everyone who walks past it, and nobody knows.",
+              "when": {
+                "anyFlag": [
+                  "job:mould-kept",
+                  "job:mould-bought"
+                ]
+              }
+            },
+            {
+              "say": "Ottilie Brand",
+              "text": "The same five words the Coppin children found on their mould, before the Hall carted it off to Merrowgate. Ask them all. Ask who?",
+              "when": {
+                "flag": "job:mould-sold"
+              }
+            },
+            {
+              "say": "Ottilie Brand",
+              "text": "Ask who? Ask them all what?",
+              "when": {
+                "noneFlag": [
+                  "job:mould-kept",
+                  "job:mould-bought",
+                  "job:mould-sold"
+                ]
+              }
+            }
+          ]
         },
         {
           "narrate": "Nobody in the vault can tell her. But by the morning everyone in Cinder Fold knows that the founders wrote it, and the miners who are for the casting and the miners who are against it are both quoting it."
@@ -1035,7 +1079,7 @@
         "narrate": "The nine ring all at once, and then not at all. Up the cold galleries, from the mouths along the chamber wall, the white comes in like a tide, and there are shapes in it. They are made of what Cinder Fold has forgotten: the names of galleries nobody walks any more, a song the miners used to sing on the ore lift, a face from a burial nobody went to. The largest of them reaches for the lid like a hand."
       },
       {
-        "say": "Agnes Tallis",
+        "say": "Ottilie Brand",
         "text": "Ropes! Every rope! Get them ringing!"
       },
       {
@@ -1061,7 +1105,7 @@
           }
         },
         {
-          "narrate": "You put every miner in the chamber on a rope. Not only the crews: everyone, two and three to a rope, the committee, the lamp-boys, Agnes Tallis with her apron tied back.",
+          "narrate": "You put every miner in the chamber on a rope. Not only the crews: everyone, two and three to a rope, the committee, the lamp-boys, Ottilie Brand with her apron tied back.",
           "when": {
             "notFlag": "prepared:b3-wren"
           }
@@ -1129,13 +1173,13 @@
         ]
       },
       {
-        "narrate": "The nine are ringing in time again. They will not stay in time. Everyone in the pit could hear it: how tired they are, and how near the next heave is. The miners say a month. Agnes Tallis says less."
+        "narrate": "The nine are ringing in time again. They will not stay in time. Everyone in the pit could hear it: how tired they are, and how near the next heave is. The miners say a month. The committee's chair says less."
       },
       {
         "narrate": "The committee meets at noon at the edge of the lid, standing, because nobody wants to sit down. The Hall's man from the inn is there with his letter. Wren is there in her coat, with her stick, beside the mould."
       },
       {
-        "say": "Agnes Tallis",
+        "say": "Ottilie Brand",
         "text": "The founders wrote 'not this way'. I've had it in my head all night. Ask them all. And I don't know what it means, and Wren's sixty, and the lid is moving.",
         "when": {
           "flag": "prepared:b3-wren"
@@ -1157,6 +1201,7 @@
         "text": "And you, Reed. You've a long yes owing. It's due.",
         "when": {
           "flag": "nessa_keeper",
+          "is": "later",
           "party": "nessa"
         }
       },
@@ -1164,7 +1209,7 @@
         "narrate": "The Hall's man clears his throat and says that the casting master can be here by tomorrow night, at no cost, if the committee will let the Hall say so afterwards."
       },
       {
-        "say": "Agnes Tallis",
+        "say": "Ottilie Brand",
         "text": "We'll pay. Whatever it costs. Then it's ours, and nobody paints it on a board."
       },
       {
@@ -1183,6 +1228,31 @@
           {
             "say": "Wren",
             "text": "Good. That's all I wanted. Somebody to say it out loud."
+          },
+          {
+            "narrate": "Before she goes to the mould, Wren takes the signal key off the string round her neck and holds it out across the lid, and waits.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later",
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "Yes. That's the answer. Now, not later. I'll take it.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later"
+            }
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "Then it's in the minutes. Nessa Reed, keeper of the forge-signal. We'll keep the lamp lit for you till you're back from wherever you're going next.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later",
+              "party": "nessa"
+            }
           },
           {
             "narrate": "The committee pays the Hall's casting master his fee in full, in silver, counted out on the lid, and he reads the words the next night by the light of the miners' lamps, and goes home without his supper. The Hall's man never gets his notice painted."
@@ -1209,10 +1279,10 @@
         "description": "This decision is permanent. You overrule a fair vote. Wren lives. The lower galleries are closed and lost, and twenty families lose their work.",
         "text": [
           {
-            "narrate": "You tell the committee no. Not this way, the founders wrote, and you will not let it be done this way either. You say it in front of everyone at the edge of the lid, and you watch Agnes Tallis's face close like a door."
+            "narrate": "You tell the committee no. Not this way, the founders wrote, and you will not let it be done this way either. You say it in front of everyone at the edge of the lid, and you watch Ottilie Brand's face close like a door."
           },
           {
-            "say": "Agnes Tallis",
+            "say": "Ottilie Brand",
             "text": "It was a fair vote."
           },
           {
@@ -1223,6 +1293,23 @@
             "say": "Wren",
             "text": "You've no right. Either of you. It was mine to give.",
             "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "And the long yes. It's not yet, Wren. That's my answer. You're not dead, so you can keep the signal from a chair at the top, and I'll come back and do the stairs.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "From a chair. You've an answer for everything, Reed. You always did.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later",
               "party": "nessa"
             }
           },
@@ -1266,7 +1353,7 @@
             "text": "All right. One. And I'll tell you now what it'll cost, so you can't say I didn't. Somebody'll be on those ropes every hour of every night all winter, because the nine can't keep time on their own. Somebody'll slip. Ropes are like that."
           },
           {
-            "say": "Agnes Tallis",
+            "say": "Ottilie Brand",
             "text": "Then we'll ring them. By hand. All of us, in turns."
           },
           {
@@ -1276,7 +1363,25 @@
             "say": "nessa",
             "text": "One season. That's a yes but not yet. That's my one. You've stolen my one.",
             "when": {
-              "flag": "nessa_keeper"
+              "flag": "nessa_keeper",
+              "is": "later"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "So here's a real one. Yes. In the spring, whatever's under Vell, I'll come back and take the signal. Write it down.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later"
+            }
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "It's written.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "later",
+              "party": "nessa"
             }
           }
         ],
@@ -1337,6 +1442,13 @@
       },
       {
         "narrate": "Captain Odell Varn, who commanded the hired road company that left Saltwick to the tide eight years ago, was caught last week recruiting among Saltwick's people for Commander Hesk. He was paying in lamp oil: a cask for a family, and a name for the cask. When they caught him he gave his own name. He did not run."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "And before you say it: we've sold the Commander names already. Bram Tolley and Ella Marsh, in the spring, for the oil. They're chalked on his wall in Vell. We'll not sell him a third.",
+        "when": {
+          "flag": "b3_saltwick_bought"
+        }
       },
       {
         "say": "Mags Peller",
@@ -1508,7 +1620,7 @@
           },
           {
             "say": "Davin",
-            "text": "I know. I've been practising it on the hens.",
+            "text": "I know.",
             "when": {
               "party": "nessa"
             }
@@ -1621,7 +1733,7 @@
       }
     ],
     "peaceful": {
-      "label": "Stand on the plank with Orin, and make the hired men turn round",
+      "label": "Stand on the plank, and make the hired men turn round",
       "skill": "intimidation",
       "alt": [
         "persuasion"
@@ -1741,11 +1853,23 @@
         "text": "I'll say one thing before you decide. Then I'll sit down."
       },
       {
-        "say": "Mags Peller",
-        "text": "Stoneward asked me a question in the spring, on the Vell road, and I told him I'd think about it. I have. Here it is. I'll not forgive a man who's been let off. If this council lets either of them off, it'll be the council I'm forgiving, and the council never did anything to me.",
-        "when": {
-          "party": "orin"
-        }
+        "oneOf": [
+          {
+            "say": "Mags Peller",
+            "text": "Stoneward asked me a question in the spring, on the Vell road, and I told him I'd think about it. I have. Here it is. I'll not forgive a man who's been let off. If this council lets either of them off, it'll be the council I'm forgiving, and the council never did anything to me.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_saltwick_moved"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Stoneward asked me a question in the spring, on the salt-hall roof, and I told him I'd think about it. I have. Here it is. I'll not forgive a man who's been let off. If this council lets either of them off, it'll be the council I'm forgiving, and the council never did anything to me.",
+            "when": {
+              "party": "orin"
+            }
+          }
+        ]
       },
       {
         "say": "Mags Peller",
@@ -1836,7 +1960,7 @@
             }
           },
           {
-            "narrate": "He sits down. He sits very still, the way he sat on the salt-hall roof in the spring, with his hands hanging between his knees. He has been let off, and he will have to live with it.",
+            "narrate": "He sits down. He sits very still, the way he sat on the salt-hall roof in the spring, with his hands hanging between his knees.",
             "when": {
               "party": "orin"
             }
@@ -1853,7 +1977,7 @@
       {
         "id": "free",
         "label": "Argue that neither man be judged, and send Varn back to Hesk with a message",
-        "description": "This decision is permanent. Varn goes free, back to Hesk's company, with a message from Orin. Neither Orin nor Maren likes it.",
+        "description": "This decision is permanent. Varn goes free, back to Hesk's company, with a message. Few in the room like it.",
         "text": [
           {
             "narrate": "You argue that this council cannot try that night: that a town on its roofs is not a court, that eight years is too long, that neither exile nor lamps will bring back one of the fourteen. And that a man inside Hesk's company who owes Saltwick something may be worth more than a man on the Iron Road who owes it nothing."
@@ -2073,7 +2197,7 @@
           },
           {
             "say": "Saul Pruett",
-            "text": "Ansel Wick. He lives in the lower town, by the fulling mill. He's seventy, his wife's dead, and his house is the first one the white will reach. He says he'd rather be the reason it stops than the first house it takes. I can't tell him he's wrong. I've tried."
+            "text": "Amos Wick. He lives in the lower town, by the fulling mill. He's seventy, his wife's dead, and his house is the first one the white will reach. He says he'd rather be the reason it stops than the first house it takes. I can't tell him he's wrong. I've tried."
           },
           {
             "say": "maren",
@@ -2175,10 +2299,10 @@
       },
       {
         "say": "nessa",
-        "text": "Ansel Wick's still in his house by the mill. He won't come out. Someone's got to—"
+        "text": "Amos Wick's still in his house by the mill. He won't come out. Someone's got to—"
       },
       {
-        "narrate": "Ansel Wick's house, by the fulling mill, has its door shut and its lamp lit. He has not come out.",
+        "narrate": "Amos Wick's house, by the fulling mill, has its door shut and its lamp lit. He has not come out.",
         "when": {
           "absent": "nessa"
         }
@@ -2205,7 +2329,7 @@
           "text": "Last street. I've got the end. Go."
         },
         {
-          "narrate": "Ansel Wick comes out of his house by the fulling mill on his own, before you reach it, with his lamp in his hand and his coat on, and gets onto the last cart without a word."
+          "narrate": "Amos Wick comes out of his house by the fulling mill on his own, before you reach it, with his lamp in his hand and his coat on, and gets onto the last cart without a word."
         },
         {
           "narrate": "The north gate shuts behind the last cart with the white in the street below it. Iona's number at the gate is one thousand and ninety-four. Six would not come. Brede has their names. She says she knew them all, and that every one of them was exactly as stubborn as she is."
@@ -2260,7 +2384,7 @@
         "text": "Well. Now we find out what our no costs. All winter, with eleven hundred more mouths, and no wood, and that at the foot of the hill."
       },
       {
-        "narrate": "At the north gate Saul Pruett is still at his table. Ansel Wick is standing in front of it, in his coat, with his hat in his hands. He has been standing there since dawn. He has asked Brede's leave, at the gate, in front of everyone, to give himself to the Hall's bell so that the white will go back down the valley. Brede has not answered him."
+        "narrate": "At the north gate Saul Pruett is still at his table. Amos Wick is standing in front of it, in his coat, with his hat in his hands. He has been standing there since dawn. He has asked Brede's leave, at the gate, in front of everyone, to give himself to the Hall's bell so that the white will go back down the valley. Brede has not answered him."
       },
       {
         "narrate": "Brede has the old wall's building rolls under her arm, with the word given beside every street.",
@@ -2290,7 +2414,7 @@
             "text": "That's what I'd do."
           },
           {
-            "narrate": "She goes down to the north gate and tells Ansel Wick no, in front of everyone, gently, and takes his arm and walks him up the hill to the market hall, where there is a place for him by the stove. Saul Pruett packs up his table and goes. He shakes your hand before he does."
+            "narrate": "She goes down to the north gate and tells Amos Wick no, in front of everyone, gently, and takes his arm and walks him up the hill to the market hall, where there is a place for him by the stove. Saul Pruett packs up his table and goes. He shakes your hand before he does."
           },
           {
             "say": "Saul Pruett",
@@ -2351,11 +2475,11 @@
       },
       {
         "id": "cast",
-        "label": "Let the recruiters cast Ansel Wick, the one man in Ashford who wants it",
+        "label": "Let the recruiters cast Amos Wick, the one man in Ashford who wants it",
         "description": "This decision is permanent. The white goes back down the valley and Ashford holds. Its no is broken.",
         "text": [
           {
-            "narrate": "You tell Brede that Ansel Wick has asked, freely, twice, and that Saul Pruett sent him home both times to think, and that he has thought. That the no was the town's, and the yes is his."
+            "narrate": "You tell Brede that Amos Wick has asked, freely, twice, and that Saul Pruett sent him home both times to think, and that he has thought. That the no was the town's, and the yes is his."
           },
           {
             "say": "Hollis Brede",

@@ -16,7 +16,7 @@
         "title": "Chandlery Row",
         "lines": [
           {
-            "narrate": "Ida Ferris is a clerk at a moneylender's on Chandlery Row: twenty-six, ink to the wrist, her hair held up with a pencil. She finds you at the inn and talks very fast and very quietly, without sitting down."
+            "narrate": "Ida Ferris is a clerk at Silas Dorrit's, the moneylender's on Chandlery Row: twenty-six, ink to the wrist, her hair held up with a pencil. She finds you at the inn and talks very fast and very quietly, without sitting down."
           },
           {
             "say": "Ida Ferris",
@@ -76,14 +76,14 @@
             "narrate": "Upstairs a floorboard creaks. Then the stair."
           },
           {
-            "say": "Dorrit's son",
+            "say": "Lem Dorrit",
             "text": "Ida? Who's down there? Who's that at the door?"
           }
         ],
         "choices": [
           {
             "id": "talk",
-            "label": "Talk the moneylender's son back up the stairs",
+            "label": "Talk Lem Dorrit, the moneylender's son, back up the stairs",
             "check": {
               "skill": "persuasion",
               "alt": [
@@ -97,7 +97,7 @@
                   "narrate": "You tell him the truth, or most of it: that Ida is working late, that you are a friend come to walk her home, that it is cold and he should go back to bed. He looks at you for a long time, and at Ida's candle, and at the book."
                 },
                 {
-                  "say": "Dorrit's son",
+                  "say": "Lem Dorrit",
                   "text": "My mother's name is in that book. From before. Dad bought her debt when they married. Did you know that, Ida?"
                 },
                 {
@@ -105,7 +105,7 @@
                   "text": "I know."
                 },
                 {
-                  "say": "Dorrit's son",
+                  "say": "Lem Dorrit",
                   "text": "Burn it, then. I slept through it."
                 },
                 {
@@ -197,7 +197,7 @@
             "label": "Help her take every page back to the name on it",
             "lines": [
               {
-                "narrate": "You take the book out of the strongroom while the moneylender's son sleeps, and you and Ida walk the north quay and the Tanneries until dawn, knocking. She tears each page out at the door and hands it over."
+                "narrate": "You take the book out of the strongroom while Lem Dorrit sleeps, and you and Ida walk the north quay and the Tanneries until dawn, knocking. She tears each page out at the door and hands it over."
               },
               {
                 "narrate": "People do different things with them. A net-maker burns hers on the step, there and then. A carter folds his into his hat. An old woman on Rope Lane reads hers twice and gives it back to Ida, and asks her to keep it, because it has her husband's name on it as well as hers, and it is the last thing she has with his name written on it."
@@ -304,14 +304,14 @@
                   "narrate": "You tell them what the words on the band mean, as far as anyone knows: that the founders could have cast a tenth and chose not to, and wrote down why. That it is the one thing in Cinder Fold that says no to the Hall in the founders' own hand, and that it would stand in the Hall's front hall with its writing turned to the wall."
                 },
                 {
-                  "narrate": "Tilda listens. Rafe argues. Then they take you to Agnes Tallis together, and Agnes looks at the mould for a long time, and pays them a finder's fee out of the committee's box: enough for a physician from Highpass for their mother, and the coal for her room all winter."
+                  "narrate": "Tilda listens. Rafe argues. Then they take you to Ottilie Brand together, and Ottilie looks at the mould for a long time, and pays them a finder's fee out of the committee's box: enough for a physician from Highpass for their mother, and the coal for her room all winter."
                 },
                 {
                   "say": "Tilda Coppin",
                   "text": "It's not five hundred."
                 },
                 {
-                  "say": "Agnes Tallis",
+                  "say": "Ottilie Brand",
                   "text": "No. It's what we've got. And it's ours, and so's the mould, and so are you."
                 }
               ],
@@ -325,7 +325,7 @@
                   "narrate": "Rafe will not hear it. Five hundred is five hundred. In the end Tilda says she will go to the committee whatever her brother does, and he follows her because he will not let her go alone."
                 },
                 {
-                  "narrate": "Agnes Tallis pays them a finder's fee out of the committee's box. It is not five hundred. Rafe takes it without saying thank you, and then comes back an hour later and says it."
+                  "narrate": "Ottilie Brand pays them a finder's fee out of the committee's box. It is not five hundred. Rafe takes it without saying thank you, and then comes back an hour later and says it."
                 }
               ],
               "setFlags": {
@@ -342,10 +342,10 @@
                 "narrate": "You count out sixty gold on the dusty cradle. It is not five hundred. It is a physician from Highpass, and coal for their mother's room, and Rafe looks at it for a long time before he picks it up."
               },
               {
-                "narrate": "You give the mould to the committee the same afternoon. Agnes Tallis has it carried up and stood in the old casting hall, where the council sat, with its writing turned outwards."
+                "narrate": "You give the mould to the committee the same afternoon. Ottilie Brand has it carried up and stood in the old casting hall, where the council sat, with its writing turned outwards."
               },
               {
-                "say": "Agnes Tallis",
+                "say": "Ottilie Brand",
                 "text": "Not this way. Ask them all. I'll ask. I don't know what I'm asking, but I'll ask."
               }
             ],
@@ -402,6 +402,15 @@
           {
             "oneOf": [
               {
+                "narrate": "Saltwick is empty, its people camped with Vell's on the Highpass road above the pass since the great bell, but its lamps are lit. Mags comes back down the road every week with six of her lamplighters to keep them lit, so that there is a town for Saltwick to come back to. The mist lies in the lanes under the lamps, flat, waiting.",
+                "when": {
+                  "flag": "b3_saltwick_moved",
+                  "anyFlag": [
+                    "b3_bell_evacuate"
+                  ]
+                }
+              },
+              {
                 "narrate": "Saltwick is empty, its people gone to Vell in the spring, but its lamps are lit. Mags comes back over the ridge every week with six of her lamplighters to keep them lit, so that there is a town for Saltwick to come back to. The mist lies in the lanes under the lamps, flat, waiting.",
                 "when": {
                   "flag": "b3_saltwick_moved"
@@ -450,7 +459,7 @@
             ]
           },
           {
-            "narrate": "Peg Halloran, who is eighty-one, says she has walked those planks since before the tannery was built and does not intend to stop for a little mist. Mags writes her name down without arguing, which Peg says is the first time in sixty years."
+            "narrate": "Peg Halloran, who is eighty-one, says she has walked those planks since before the tannery was built and does not intend to stop for a little mist. Mags writes her name down without arguing."
           },
           {
             "narrate": "Corry Marl, a carter, says yes before you have finished asking. He drove salt for the Commandery the spring after the tide, on the same road, and nobody here knew him then. He has felt it ever since, he says, and has never known what to do about it. He would like to be told what to do about it."

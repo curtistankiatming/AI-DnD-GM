@@ -10,10 +10,10 @@
     "nodes": {
       "fish": {
         "title": "Fish",
-        "objective": "Bett Garrow comes to the inn.",
+        "objective": "Bett Haddow comes to the inn.",
         "lines": [
           {
-            "narrate": "In the evening there is a knock at the back door of the inn, and it is Bett Garrow with a basket. In the basket, on wet sacking, are six mackerel, cleaned, and a crab that has not yet decided whether it is alive."
+            "narrate": "In the evening there is a knock at the back door of the inn, and it is Bett Haddow with a basket. In the basket, on wet sacking, are six mackerel, cleaned, and a crab, still moving."
           },
           {
             "say": "Bett",
@@ -49,7 +49,7 @@
             ]
           },
           {
-            "narrate": "Nobody is quite sure how to take it. It is six mackerel and a crab, and it is plainly everything the Garrows caught today, and the girl is holding the basket out at arm's length and will not lower it until somebody takes it."
+            "narrate": "Nobody is quite sure how to take it. It is six mackerel and a crab, and it is plainly everything the Haddows caught today, and the girl is holding the basket out at arm's length and will not lower it until somebody takes it."
           },
           {
             "say": "orin",
@@ -124,7 +124,7 @@
     "nodes": {
       "letter": {
         "title": "The Letter",
-        "objective": "Nessa and Wren, alone.",
+        "objective": "The letter.",
         "lines": [
           {
             "narrate": "That night Nessa goes up to Wren's kitchen alone and shuts the door, and you sit on the forge wall outside with Biscuit and do not listen. You can see them through the window, at the table, with the rolled maps between them and the lamp.",
@@ -135,8 +135,9 @@
           {
             "narrate": "Nessa takes a letter out of her pocket. Not the long yes, which Wren already has: the other one, folded small, that she has carried since the spring. She puts it on the table. Wren does not open it. She puts her hand flat on it and keeps it there.",
             "when": {
-              "party": "nessa",
-              "flag": "nessa_keeper"
+              "flag": "nessa_keeper",
+              "is": "later",
+              "party": "nessa"
             }
           },
           {
@@ -149,7 +150,7 @@
           {
             "oneOf": [
               {
-                "narrate": "They sit like that for a long time. Then Wren reads it, and laughs once, and folds it up again, and puts it inside her coat against her chest, and buttons the coat over it. In the morning, when Wren walks to the mould, she is still wearing that coat.",
+                "narrate": "They sit like that for a long time. Then Wren reads it, and laughs once, and folds it up again, and puts it inside her coat against her chest, and buttons the coat over it. The next night, when Wren walks to the mould, she is still wearing that coat.",
                 "when": {
                   "party": "nessa",
                   "flag": "b3_wren_cast"
@@ -533,7 +534,7 @@
             "oneOf": [
               {
                 "say": "Hollis Brede",
-                "text": "And it's standing. All of it. Because Ansel Wick said yes and we said no, and his yes won. I'll walk past that gate every day for the rest of my life. I'll say good morning to him. I don't know what else you say.",
+                "text": "And it's standing. All of it. Because Amos Wick said yes and we said no, and his yes won. I'll walk past that gate every day for the rest of my life. I'll say good morning to him. I don't know what else you say.",
                 "when": {
                   "flag": "b3_ashford_cast"
                 }

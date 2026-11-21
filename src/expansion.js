@@ -69,9 +69,14 @@ for(const q of Object.values(QUESTS))if(Number(q.xp)>0&&!q.sideJob&&(Number(q.bo
 // A line may also be a group, {"oneOf": [lines]}: the first line in it that
 // applies is told, and no other (an optional "when" on the group is checked
 // first). A line's "setFlag" (a flag name, or {flag: value}) is set when the
-// line is told (playLines), so later lines can read it.
+// line is told (playLines), so later lines can read it; a group's setFlag is
+// set when any line in it is told.
+// Never gate a line on the negation of its own setFlag (notFlag or noneFlag on
+// the flag it sets): once playLines has set it, the engine's view and the
+// narrator run liveLines over the same lines again, and the line would vanish
+// from what they show.
 const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const storyLine=l=>l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
+const storyLine=l=>l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
 // The written text keeps every line, every alternative of a group included.
 const everyLine=lines=>lines.flatMap(l=>l.oneOf?everyLine(l.oneOf):[l]);
 function dialogueText(lines){return everyLine(lines).map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
@@ -131,7 +136,7 @@ function liveLines(state, lines, play = false) {
     const picked = pickLine(seen, line);
     if (!picked) continue;
     const { when, setFlag, ...told } = picked;
-    if (setFlag) Object.assign(flags, lineFlags(setFlag));
+    for (const set of [line.oneOf && line.setFlag, setFlag]) if (set) Object.assign(flags, lineFlags(set));
     out.push(told);
   }
   return out;

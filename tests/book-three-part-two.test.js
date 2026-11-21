@@ -107,6 +107,26 @@ test('a line\'s setFlag is set when the line is told, and counts for the lines a
   assert.equal(u.story.flags.orin_spoke, undefined);
 });
 
+test('a oneOf group\'s own setFlag is set when any line in it is told, and not when none is', () => {
+  const group = [{ oneOf: [{ narrate: 'A.', when: { flag: 'a' } }, { narrate: 'B.', when: { flag: 'b' } }], setFlag: 'heard' }].map(storyLine);
+  const s = hero(); s.story.flags.b = true;
+  assert.deepEqual(playLines(s, group).map((l) => l.narration), ['B.']);
+  assert.equal(s.story.flags.heard, true);
+  const t = hero(); playLines(t, group);
+  assert.equal(t.story.flags.heard, undefined);
+});
+
+test('no written line is gated on the negation of the flag it sets itself (views re-run the lines after they are played)', () => {
+  const sets = (l) => Object.keys(typeof l.setFlag === 'string' ? { [l.setFlag]: 1 } : l.setFlag || {});
+  const check = (l, outer = []) => {
+    const own = [...outer, ...sets(l)];
+    const w = l.when || {};
+    for (const f of own) assert.ok(w.notFlag !== f && !(w.noneFlag || []).includes(f), `${l.narrate || l.text}: notFlag ${f}`);
+    for (const alt of l.oneOf || []) check(alt, own);
+  };
+  for (const file of ['quests.json', 'scenes.json', 'side-jobs.json']) JSON.stringify(require(`../src/data/book-three-part-two/${file}`), (k, v) => { if (Array.isArray(v)) for (const l of v) if (l && typeof l === 'object' && (l.narrate || l.say || l.oneOf)) check(l); return v; });
+});
+
 test('a scene choice with requires is offered only when it is met', () => {
   // The Mother Bell's first node (chapter 20) needs this; Part Two uses it in the lamp round.
   const s = decide('b3-order', 'both');
@@ -276,6 +296,33 @@ test('Wren\'s bell: Nessa\'s long yes comes due if she gave it, and otherwise Wr
   assert.doesNotMatch(asked, /manage another winter/);
   const away = start({ nessa_keeper: 'later' }, ['orin', 'maren']);
   assert.match(away, /No Reed\./); assert.doesNotMatch(away, /^Nessa:|manage another winter|Stand at the pit/m);
+  assert.match(away, /held for her/); assert.doesNotMatch(start({}, ['orin', 'maren']), /held for her/);
+});
+
+test('Wren\'s bell: Nessa answers her long yes in every decision, and only if she gave it and is there', () => {
+  const answer = { cast: /Now, not later\. I'll take it\./, refuse: /It's not yet, Wren\. That's my answer\./, wait: /So here's a real one\. Yes\./ };
+  for (const [decision, line] of Object.entries(answer)) {
+    const keeper = told(decide('b3-wren', decision, { flags: { nessa_keeper: 'later' } }));
+    assert.match(keeper, line, decision);
+    for (const other of Object.values(answer).filter((x) => x !== line)) assert.doesNotMatch(keeper, other, decision);
+    assert.doesNotMatch(told(decide('b3-wren', decision)), line, `${decision}: no long yes, no answer`);
+    const away = told(decide('b3-wren', decision, { flags: { nessa_keeper: 'later' }, party: ['orin', 'maren'] }));
+    assert.doesNotMatch(away, /^Nessa:|signal key|It's written|From a chair/m, `${decision}: without Nessa`);
+  }
+  assert.match(told(decide('b3-wren', 'cast', { flags: { nessa_keeper: 'later' } })), /Nessa Reed, keeper of the forge-signal/);
+});
+
+test('Wren\'s bell agrees with Books One and Two: twenty years on the tower, and Ottilie Brand\'s fourteen-seat committee', () => {
+  const s = act(ready('b3-wren'), { type: 'depart', questId: 'b3-wren' }).state;
+  const all = `${opening(s)}\n${RAWQ['b3-wren'].talks.flatMap((t) => everyLine(t.lines)).map((l) => l.narrate || l.text).join('\n')}`;
+  assert.match(all, /kept the Highpass tower for twenty years/); assert.match(all, /Eleven to three\. Fourteen seats/); assert.match(all, /eleven to three/);
+  assert.doesNotMatch(all, /[Tt]hirty years|[Tt]hirty-one to four|Agnes|gallery crew/);
+  assert.match(all, /Ottilie Brand has chaired the miners' committee/);
+  // With the mould job done first, Ottilie knows the founders' words already.
+  const ledger = (flags) => { const t = at('b3-wren', 'start', { flags }); return told(act(t, { type: 'story-choice', choiceId: 'investigate' }).state); };
+  assert.match(ledger({}), /Ask who\? Ask them all what\?/);
+  assert.match(ledger({ 'job:mould-kept': true }), /same five words as on the mould/); assert.doesNotMatch(ledger({ 'job:mould-kept': true }), /Ask who\? Ask them all what/);
+  assert.match(ledger({ 'job:mould-sold': true }), /before the Hall carted it off/);
 });
 
 test('the wren-nessa scene: with Nessa the letter on the table, without her the letter to pass on; the camp beat is last', () => {
@@ -355,7 +402,7 @@ test('the town that said no: Sister Ilse has Sable\'s books only if they were se
   for (const f of ['job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread']) assert.ok(talks({ [f]: true }).includes('talk-ilse'), f);
   const ilse = (flags) => { const s = act(ready('b3-ashford', { flags }), { type: 'depart', questId: 'b3-ashford' }).state; return told(act(s, { type: 'story-choice', choiceId: 'talk-ilse' }).state); };
   assert.match(ilse({ 'job:library-sent': true }), /Why did they stop/); assert.match(ilse({ 'job:library-cut': true }), /birds/); assert.doesNotMatch(ilse({ 'job:library-cut': true }), /Why did they stop/);
-  for (const [decision, line] of [['defend', /I've given it up again/], ['children', /My grandson's at Highpass/], ['cast', /Ansel Wick said yes/]]) {
+  for (const [decision, line] of [['defend', /I've given it up again/], ['children', /My grandson's at Highpass/], ['cast', /Amos Wick said yes/]]) {
     const s = decide('b3-ashford', decision);
     assert.equal(s.story.nodeId, 'scene-ashford-camp-wall');
     const text = opening(s);
@@ -390,7 +437,7 @@ test('every Part Two line uses known conditions, and every flag it reads is set 
   const KNOWN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess']);
   // Read from Books One and Two and from Part One (design, "Book Two and Part One flags read in Part Two").
   const EARLIER = new Set(['nessa_keeper', 'elske_seat', 'elske_free', 'elske_judged', 'b2:haverick_named', 'mother_chorus', 'mother_silenced', 'mother_recalled', 'job:minersvote-decided', 'job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread',
-    'b3_rite_law', 'b3_rite_destroyed', 'b3_rite_vell', 'b3_saltwick_moved', 'b3_bell_evacuate', 'b3_partone_done',
+    'b3_rite_law', 'b3_rite_destroyed', 'b3_rite_vell', 'b3_saltwick_moved', 'b3_saltwick_bought', 'b3_bell_evacuate', 'b3_partone_done',
     'b3_bell_cast', 'b3_bell_aster', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath']);
   const ENGINE = /^(method|prepared|approach|partial|job|away|walked):/;
   const setIn = (content) => { const f = new Set(); JSON.stringify(content, (k, v) => { if (k === 'setFlags' && v) Object.keys(v).forEach((x) => f.add(x)); if (k === 'setFlag') Object.keys(typeof v === 'string' ? { [v]: 1 } : v).forEach((x) => f.add(x)); return v; }); for (const d of content.decisions || []) f.add(d.flag); return f; };
@@ -437,7 +484,7 @@ test('no new name reuses one the story bible keeps for someone else', () => {
     if (name === 'Pell Haverick') assert.ok(uses.length <= 2, 'Haverick is named only as himself.');
     else assert.equal(uses.length, 0, name);
   }
-  assert.match(text, /Cass Ord/); assert.match(text, /Captain Odell Varn|Odell Varn/); assert.match(text, /Hollis Brede/); assert.match(text, /Coll Garrow/);
+  assert.match(text, /Cass Ord/); assert.match(text, /Captain Odell Varn|Odell Varn/); assert.match(text, /Hollis Brede/); assert.match(text, /Coll Haddow/);
 });
 
 // Walkouts in Part Two.

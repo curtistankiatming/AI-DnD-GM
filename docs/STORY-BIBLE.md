@@ -214,8 +214,10 @@ It has twenty chapters, one per level, in two parts: **Part One, The Bronze**
 chapters 11 to 20). It ends at the 3rd job trial at level 40, as Book Two ends
 at the 2nd job. Each chapter pays 100% of its level's XP (105% would compound
 past level 40). New towns: Saltwick and Vell. It is written like Book Two
-(`"book": 3`, and `"part": 2` for Part Two chapters, in
-`src/data/quests.json`). Each part stays hidden from players until all of its
+(`"book": 3`). Part One is in `src/data/quests.json`, `scenes.json` and
+`side-jobs.json`; Part Two's chapters (`"part": 2`), scenes and side jobs are in
+their own files under `src/data/book-three-part-two/`, which
+`src/expansion.js` merges into the same tables after Part One. Each part stays hidden from players until all of its
 chapters are written; then `out` in `src/book.js` releases it. With only Part
 One out, heroes wait at "to be continued" at level 30. On the hosted game it
 needs a paid account; in the open-source game it is free like the others
