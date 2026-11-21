@@ -112,14 +112,14 @@
       row.append(text, action('Take a bounty', 'btn btn-secondary btn-small', { type: 'bounty' }));
       list.append(row);
     }
-    // Side jobs you can take in this town (src/data/side-jobs.json); the rest are listed on Prepare.
+    // Side jobs you can take in this town (src/data/side-jobs.json); the rest are listed in Town.
     for (const j of (w.sideJobs || []).filter(j => j.canStart).slice(0, 2)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', `Side job: ${j.name}`), el('span', 'muted', ` · from ${j.giver.replace(/^(The|An|A) /, m => m.toLowerCase())}`), el('p', 'muted', `${j.brief} Optional; pays ${j.reward.gold} gold, and maybe a little XP.`));
       row.append(text, action(j.started ? 'Continue the job' : 'Take the job', 'btn btn-secondary btn-small', { type: 'side-job', jobId: j.id }));
       list.append(row);
     }
-    const more = el('button', 'text-button', 'Rest, shop and see everything in Prepare'); more.type = 'button'; more.dataset.readOnly = 'true';
+    const more = el('button', 'text-button', 'Rest, shop and see everything in Town'); more.type = 'button'; more.dataset.readOnly = 'true';
     more.addEventListener('click', () => window.BriarwatchAdventure?.navigate('prepare'));
     board.replaceChildren(title, list, wishCard(w), more);
     if (typing) { const input = document.getElementById('wishInput'); if (input) { input.focus(); try { input.setSelectionRange(caret, caret); } catch { /* not a text field */ } } }
