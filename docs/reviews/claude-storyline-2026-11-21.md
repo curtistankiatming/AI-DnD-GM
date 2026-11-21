@@ -133,7 +133,7 @@ All 707 tests pass (one skipped, as before) and all 108 scripted playthroughs co
 - **Gags removed from serious moments:** Maren's "fourth bag" after Aster Vey's plea; Brannagh's "My goat is not available."
 - **Dera at the vote** has an opinion instead of a goat joke: the council took three days to send carts to Fenmere, and Tovin, who is voting no, has earned it.
 - **The Mother Bell stew** now echoes the bridge camp instead of copying it.
-- **The toll road comes back** on the way out of Briarwatch in the Long Road South, with a line for each of the two tollhouse decisions.
+- **The toll road comes back** in Briarwatch, on the Ashford road, at the start of the Long Road South, with a line for each of the two tollhouse decisions.
 
 Still open from Finding 8: Corvane's whereabouts (to agree with the Book Three plan), Haverick facing someone, where Aster Vey lives, Wren's map (it needs a flag to say Nessa received it), crowns against gold, and callbacks for the keystone, the Quiet District and the beacon ending.
 

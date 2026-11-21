@@ -268,8 +268,8 @@ test('if the bell-rope was locked away, the hearing is about the key, not a hang
   const opening = (flags) => E.buildView(atCrisis('oath', flags)).scene.opening;
   const silenced = opening({ vote_elske_lost: true, mother_silenced: true });
   assert.match(silenced, /only key is in your pocket/);
-  assert.doesNotMatch(silenced, /standing between the room and the bell-rope/);
-  assert.match(opening({ vote_elske_lost: true, mother_chorus: true }), /standing between the room and the bell-rope/);
+  assert.doesNotMatch(silenced, /getting to the bell first/);
+  assert.match(opening({ vote_elske_lost: true, mother_chorus: true }), /getting to the bell first/);
   assert.doesNotMatch(QUESTS.oath.objective.label, /rope/);
 });
 

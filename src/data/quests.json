@@ -1479,12 +1479,12 @@
           },
           {
             "say": "Brannagh",
-            "text": "You've been to Fenmere before. The bitter well. You left us a water council, one keeper for each bank, and I'm the upper bank. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
+            "text": "You've been to Fenmere before. The bitter well. You left us a water council, one keeper for each bank, and I'm the village side. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
             "when": {"flag": "marsh_council"}
           },
           {
             "say": "Brannagh",
-            "text": "You've been to Fenmere before. The bitter well. Ashford's engineers still come out every month to look at the pump, and send us the bill. Ashford is very reliable about bills. That's why I asked to sit next to it.",
+            "text": "You've been to Fenmere before. The bitter well. Ashford's engineers still come out every month to look at the pump, and send us the bill. Ashford is very reliable about bills.",
             "when": {"flag": "marsh_engineers"}
           },
           {
@@ -3357,7 +3357,7 @@
         "narrate": "Hollin's Reach was a market town of four thousand people. It is black now: walls without roofs, chimneys without houses. In the middle of it, the council house still stands, and in its tower the ward-bell still hangs. A thin grey mist lies in the streets, not moving, the way water lies in a bowl."
       },
       {
-        "narrate": "The carters tell it the same way. The Gloam came up the river road first, and the fire came behind it: lamps and hearths left burning in houses whose people had forgotten they were there, and doors left open by people who had forgotten why you shut them."
+        "narrate": "The Gloam came up the river road first, and the fire came behind it: lamps and hearths left burning in houses whose people had forgotten they were there, and doors left open by people who had forgotten why you shut them."
       },
       {
         "say": "Elske",
@@ -4017,7 +4017,7 @@
       },
       {
         "say": "Aveline",
-        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her. And if the meeting can't vote at all, Briarwatch doesn't count, three of four is two-thirds, and nobody needs to ask Fenmere anything."
+        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her, and she has to vote. And if the meeting can't vote at all, Briarwatch doesn't count, three of four is two-thirds, and nobody needs to ask Fenmere anything."
       },
       {
         "say": "Brannagh",
@@ -4387,7 +4387,7 @@
         }
       },
       {
-        "narrate": "He eats all of it, and says nothing about it whatsoever, which from Orin is a speech. Maren looks away into the dark for a while.",
+        "narrate": "He eats all of it, and doesn't say a word about it. Maren looks away into the dark for a while.",
         "when": {
           "party": "maren"
         }
@@ -5001,10 +5001,10 @@
       },
       {
         "say": "Elske",
-        "text": "I'll go. Wherever you send me. But first I'm going to ask the council to put the Mother Bell under one voice again. Not mine; I've had my turn. Somebody's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it. I'm asking now, in front of all of you, in daylight. I'd rather ask than take. I always would."
+        "text": "I'll go. Wherever you send me. But first I'm going to ask the council to put the Mother Bell under one voice again. Not mine; I've had my turn. Somebody's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it. I'm asking now, in front of all of you, in daylight. I took, once. I won't again. I'd rather ask."
       },
       {
-        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. And over everyone's heads the Mother Bell has begun, very faintly, to hum: the note from midwinter, the one that silenced every other ward. Nobody has touched the bell-rope. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by standing between the room and the bell-rope.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. And over everyone's heads the Mother Bell has begun, very faintly, to hum: the note from midwinter, the one that silenced every other ward. Nobody has touched the bell-rope. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting to the bell first.",
         "when": {
           "notFlag": "mother_silenced"
         }
@@ -5072,7 +5072,7 @@
     },
     "objective": {
       "name": "Quiet the Mother Bell before the room rings it",
-      "label": "Quiet the bell's single note before the vote is counted",
+      "label": "Quiet the bell's single note before the room agrees",
       "description": "Three successful actions reach the Mother Bell and quiet its single note while the council finds its other voices.",
       "skill": "athletics",
       "alt": [
@@ -5082,7 +5082,7 @@
       ],
       "target": 3,
       "deadline": 6,
-      "failText": "Before you reach it, the Mother Bell sounds one stroke under one voice: the room's, this time, not anybody's hand. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it, and Sorrel and Iona put their hands down.",
+      "failText": "Before you reach it, the Mother Bell sounds one stroke under one voice: the room's, this time, not anybody's hand. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it. Sorrel and Iona put their hands down, and Elske, white to the lips, withdraws the proposal herself.",
       "successText": "Your hand is on the bronze. Below you, Elske says, very clearly, 'I withdraw it,' and the note dies under your palm."
     },
     "foe": "single-note",
