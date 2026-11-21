@@ -124,6 +124,9 @@ and Two are free and Book Three onward needs a paid account.
   shown to no one until all of its chapters are written; between parts, heroes
   wait at "to be continued" and are never handed to the AI storyteller. Tests
   and agent playtests see every written part with `BRIARWATCH_PREVIEW_BOOKS=1`.
+  `BRIARWATCH_PREVIEW_PARTS` holds a preview back to fewer parts of a book, as
+  `book:parts` pairs separated by commas: with `3:1`, Book Three's Part One
+  ends at "to be continued" as it will for players (tests/book-three.test.js).
 - Written lines can depend on access with `"when": { "access": 3 }` or
   `{ "notAccess": 3 }`.
 

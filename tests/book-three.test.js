@@ -3,6 +3,9 @@
 // "out"). These tests read it the way agent playtests do. node --test runs
 // each file in its own process, so this reaches no other test file.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
+// Part Two is held back, so Part One ends at "To be continued" as it will for
+// players; tests/book-three-part-two.test.js shows Part Two following it.
+process.env.BRIARWATCH_PREVIEW_PARTS = '3:1';
 // Book Three, "The Names in the Bronze", Part One, chapters 1 to 10
 // (docs/book-three/DESIGN.md): the letter, Sable's rite, the pass in spring,
 // Saltwick, the casting yard, the witness, home for help, the quiet bells, the
@@ -16,7 +19,8 @@ const RAWQ = require('../src/data/quests.json'), RAWS = require('../src/data/sce
 const high = () => .999999, low = () => 0;
 
 const IDS = ['b3-letter', 'b3-rite', 'b3-pass', 'b3-saltwick', 'b3-vell', 'b3-witness', 'b3-home', 'b3-vault', 'b3-greatbell', 'b3-paid'];
-const THREE = Object.values(QUESTS).filter((q) => q.book === 3);
+// Part One's chapters; Part Two's are tested in tests/book-three-part-two.test.js.
+const THREE = Object.values(QUESTS).filter((q) => q.book === 3 && (q.part || 1) === 1);
 function hero(cls = 'fighter', level = 1) { const s = E.createNewGame({ name: 'Rowan', classId: cls }); if (level > 1) E.awardXp(s, P.XP_NEXT[level - 1], [], 'test fixture'); return s; }
 function act(s, a, rng = high) { const r = E.resolveAction(s, a, rng); assert.equal(r.result.ok, true, `${JSON.stringify(a)}: ${r.result.error}`); return r; }
 // A hero in the town where a chapter starts, with every earlier chapter done.
@@ -81,7 +85,7 @@ test('Book Three follows the Second Oath, one chapter per level, from Briarwatch
     assert.ok(ENEMIES[q.foe] && ENEMIES[`${q.foe}-retainer`], q.id);
     assert.equal(ENEMIES[q.foe].name, q.foeName); assert.equal(ENEMIES[q.foe].attack.name, q.attackName); assert.equal(ENEMIES[`${q.foe}-retainer`].name, q.retainerName);
   }
-  assert.deepEqual(Book.CHAPTERS.slice(-11).map((q) => q.id), ['oath', ...IDS], 'With the preview, the board reads Book Three after Book Two.');
+  assert.deepEqual(Book.CHAPTERS.filter((q) => (q.part || 1) === 1).slice(-11).map((q) => q.id), ['oath', ...IDS], 'With the preview, the board reads Book Three after Book Two.');
 });
 
 test('the Second Oath epilogue hands the hero straight on to the letter from Vell', () => {
@@ -252,7 +256,9 @@ function lineArrays(owner, value, out = []) {
 // The chapter a scene belongs to: the one it follows, or the one the scene before it follows.
 const chapterOf = (s) => { for (let x = s, i = 0; x && i < 10; x = RAWS[x.after], i++) if (RAWQ[x.after]) return x.after; return null; };
 const B3_SCENES = Object.values(RAWS).filter((x) => x?.nodes && IDS.includes(chapterOf(x)));
-const B3_JOBS = Object.values(RAWJ).filter((j) => j?.nodes && [j.from, j.until].some((id) => IDS.includes(id)));
+// Part One's jobs: a job that runs on into Part Two is tested there.
+const partTwo = (id) => (RAWQ[id]?.book || 1) === 3 && (RAWQ[id]?.part || 1) === 2;
+const B3_JOBS = Object.values(RAWJ).filter((j) => j?.nodes && [j.from, j.until].some((id) => IDS.includes(id)) && ![j.from, j.until].some(partTwo));
 const order = (id) => IDS.indexOf(id);
 // Flags set by each Book Three chapter, its camp scene or a job, and every flag
 // Books One and Two can set.
@@ -629,7 +635,7 @@ test('on the hosted game, a free account does not see Saltwick or Vell, though t
 
 test('Book Three side jobs pay mostly gold and 130 XP; Book Two jobs keep their share of a level', () => {
   for (const job of B3_JOB_IDS.map((id) => SIDE_JOBS[id])) assert.equal(W.jobXp(job), 130, job.id);
-  for (const job of Object.values(SIDE_JOBS).filter((j) => !B3_JOB_IDS.includes(j.id))) assert.equal(W.jobXp(job), Math.round(0.12 * P.levelBand(Math.max(2, job.level))), job.id);
+  for (const job of Object.values(SIDE_JOBS).filter((j) => !B3_JOB_IDS.includes(j.id) && [j.from, j.until].every((id) => (QUESTS[id]?.book || 1) < 3))) assert.equal(W.jobXp(job), Math.round(0.12 * P.levelBand(Math.max(2, job.level))), job.id);
   const s = ready('b3-vell'); s.world.townId = 'vell'; s.story.nodeId = 'town-vell';
   assert.equal(E.buildView(s).world.sideJobs.find((j) => j.id === 'census').reward.xp, 130);
 });
