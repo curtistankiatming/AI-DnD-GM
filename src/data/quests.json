@@ -1621,11 +1621,11 @@
       "success": [
         {
           "say": "Brannagh",
-          "text": "Fenmere consents. I'd like it noted Fenmere consented first."
+          "text": "Fenmere consents. First, if anybody's counting."
         },
         {
           "say": "Iona",
-          "text": "Ashford consents. Note that too."
+          "text": "Ashford consents. Second. Somebody write it down."
         },
         {
           "narrate": "Aveline, Sorrel and Elske say it together. The ward catches the five voices and rings with all of them, and the note goes down the pass like a wave pushing back the tide. The shapes in the mist come apart into frost, and the frost melts."
@@ -1707,7 +1707,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "Well. We didn't agree on anything, and we're all still alive. I'd like that noted.",
+        "text": "Well. We didn't agree on anything, and we're all still alive. At my age you take what you're given.",
         "when": {
           "flag": "method:chairs",
           "is": "force"
@@ -1727,13 +1727,6 @@
       {
         "say": "Elske",
         "text": "Fenmere's help leaves at first light. It should have left three days ago. I'll say it once and then I'll stop: a council that needs a mist at the door to agree on anything will always agree one day late. When the council sits again, Merrowgate will make a proposal. I'd like you all to read it before you hate it."
-      },
-      {
-        "say": "maren",
-        "text": "She means that too.",
-        "when": {
-          "party": "maren"
-        }
       },
       {
         "narrate": "Then the room argues, for the last time today, about who pays for Fenmere."
@@ -2164,6 +2157,18 @@
       {
         "say": "Dera",
         "text": "That's worth a free strap. Go on."
+      },
+      {
+        "narrate": "On the Ashford road you pass two of the seed-wagon drivers from the tollhouse. They have told everyone in three villages about the toll money you gave back, and they tell you about it again, in case you missed it.",
+        "when": {
+          "flag": "road_restitution"
+        }
+      },
+      {
+        "narrate": "On the Ashford road the caravan escort you paid for at the tollhouse rides past, four riders with a wagon of seed behind them. Their sergeant salutes Orin, and Orin salutes back before he can stop himself.",
+        "when": {
+          "flag": "road_escort"
+        }
       },
       {
         "narrate": "Tovin is at the bell tower with his apprentice, Pim, who is fourteen and has read every book on bell-keeping in Briarwatch, both of them, several times."
@@ -2930,20 +2935,6 @@
         "narrate": "Nobody says anything for a long time. Then the hall starts talking all at once, and does not stop until well after midnight."
       },
       {
-        "say": "maren",
-        "text": "Every word true.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
-        "say": "orin",
-        "text": "That's what bothers me.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
         "narrate": "In the end the auctioneer, who has a share of the price and can count a room, asks the council what it wants done with the bell."
       }
     ],
@@ -2978,7 +2969,7 @@
           },
           {
             "say": "Brannagh",
-            "text": "Fenmere wants it noted that it bought a harbour."
+            "text": "Fenmere has bought a harbour. Nobody at home is going to believe me."
           }
         ],
         "rep": {
@@ -3092,10 +3083,6 @@
           {
             "say": "Aveline",
             "text": "Highpass is for it too. Sorrel sent word. She's had three hundred refugees under her wall since the spring, and she says she'd vote for a goat if it could ring a bell on time."
-          },
-          {
-            "say": "Brannagh",
-            "text": "My goat is not available."
           },
           {
             "say": "Aveline",
@@ -3777,10 +3764,6 @@
         "when": {
           "notItem": "silver-chime"
         }
-      },
-      {
-        "say": "maren",
-        "text": "A ward on the council. Aveline will need a fourth bag."
       }
     ],
     "talks": [
@@ -4023,7 +4006,7 @@
       },
       {
         "say": "Dera",
-        "text": "Back again. Twice in a year. People will talk. They are talking. Mostly about the goat."
+        "text": "Back again. Twice in a year. You'll want to know what I think of Elske's Warden. I think it took the council three days to send carts to Fenmere, and I could have shod a horse every hour of them. Don't tell Tovin I said so. He's voting no, and he's earned it."
       },
       {
         "narrate": "The council has taken over the inn. Elske has the corner table, and is writing letters to every delegate she has already won, thanking them, which is either very gracious or very thorough."
@@ -4283,14 +4266,14 @@
           },
           {
             "say": "Brannagh",
-            "text": "Round the new village on the rise. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the new village on the rise. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "notFlag": "fen_promise"
             }
           },
           {
             "say": "Brannagh",
-            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "flag": "fen_promise"
             }
@@ -4303,17 +4286,10 @@
             "text": "Thank you. I will give it back. Hold me to that."
           },
           {
-            "say": "maren",
-            "text": "She means it.",
-            "when": {
-              "party": "maren"
-            }
-          },
-          {
             "say": "orin",
-            "text": "I know. That's the part I'm going to watch.",
+            "text": "She'll mean it. That's the part I'm going to watch.",
             "when": {
-              "party": "maren"
+              "party": "orin"
             }
           }
         ],
@@ -4337,13 +4313,6 @@
           {
             "say": "Elske",
             "text": "The council has decided. I'll abide by it. I hope I never have to say I told you so."
-          },
-          {
-            "say": "maren",
-            "text": "She means that too.",
-            "when": {
-              "party": "maren"
-            }
           }
         ],
         "rep": {
@@ -4418,7 +4387,7 @@
         }
       },
       {
-        "narrate": "He eats all of it. Maren watches him do it, and does not say anything, and after a while she looks away into the dark.",
+        "narrate": "He eats all of it, and says nothing about it whatsoever, which from Orin is a speech. Maren looks away into the dark for a while.",
         "when": {
           "party": "maren"
         }
@@ -4922,7 +4891,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "She's not wrong. I'd like that noted. I hate it, but she's not wrong."
+        "text": "She's not wrong. I hate it, but she's not wrong."
       }
     ],
     "talks": [
@@ -5033,10 +5002,6 @@
       {
         "say": "Elske",
         "text": "I'll go. Wherever you send me. But I'm going to ask the council to put the Mother Bell under one voice again. Mine or anyone's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it."
-      },
-      {
-        "say": "maren",
-        "text": "She means it. Of course she means it."
       },
       {
         "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside.",

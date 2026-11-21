@@ -584,7 +584,7 @@
             "label": "“To the council. It can recall me, like anyone.”",
             "lines": [
               { "narrate": "Aveline writes it down. Then, after a moment, she adds a line, and reads it out: 'Recallable by two-thirds.' The council votes on it. It is the fastest vote anyone has ever seen." },
-              { "say": "Brannagh", "text": "I'd like it noted that we can be quick when we feel like it." }
+              { "say": "Iona", "text": "Noted. We can be quick when we feel like it." }
             ],
             "setFlags": { "second_oath": "council" },
             "next": "forge"
