@@ -582,5 +582,549 @@
         ]
       }
     }
+  },
+  "seal-sable": {
+    "id": "seal-sable",
+    "after": "b3-seal",
+    "cast": [],
+    "act": "Highpass",
+    "location": "The cells under the gatehouse at Highpass, and the gatehouse wall, the night after",
+    "start": "cell",
+    "nodes": {
+      "cell": {
+        "title": "What Sable Asks",
+        "objective": "Sable has asked to see you.",
+        "lines": [
+          {
+            "narrate": "Sable sends for you that night. The guard who brings the message says he has never sent for anyone before."
+          },
+          {
+            "narrate": "He is sitting on his bed with the brazier out and his books stacked against the wall, all of them, as if he were packing."
+          },
+          {
+            "say": "Sable",
+            "text": "I want to be cast. Here, at Highpass, in the gatehouse yard. The pass needs a ward. It has needed one since the Single Voice went dead. I am asking you because you are the only person who has ever asked me anything that mattered, and it seems fair to ask you back."
+          },
+          {
+            "say": "Sable",
+            "text": "I bound her. I knew her name and I bound her, and she spent years without it. No court can give me what I owe for that. A bell can. A bell is a long time."
+          },
+          {
+            "say": "Sable",
+            "text": "And there is the other thing, which you have already thought of. I am the last person alive who knows the rite by heart. If I go into the bronze, it goes in with me. Hesk will still have his copy, and the Hall will still have theirs. But nobody will ever again be able to say it without reading it off a page, and pages burn."
+          },
+          {
+            "say": "Sable",
+            "text": "Nobody need cast me. I will say the words myself while the founders pour. It is the one casting that needs no caster."
+          },
+          {
+            "narrate": "He is calm. Maren, by the door, says nothing for a long time.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "He means it. I can hear that he means it. That isn't the same as its being right."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "You open Aster's second letter, which came up the pass with the first and was not to be opened until Sable asked. It is very short.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "narrate": "You set the little bell on the table between you. Sable looks at it, and does not touch it."
+              }
+            ]
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Nobody is owed that. Not even by you."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "That is all the letter says. It does not tell him no. It does not tell you no.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "narrate": "That is all she says. She does not tell him no. She does not tell you no. After a while the little bell is only a bell again, and cold."
+              }
+            ]
+          },
+          {
+            "say": "Sable",
+            "text": "That's fair. It is more than fair. Then it's yours to say."
+          }
+        ],
+        "choices": [
+          {
+            "id": "let",
+            "label": "Let him be cast",
+            "setFlags": {
+              "b3_sable_cast": true
+            },
+            "next": "snow",
+            "lines": [
+              {
+                "narrate": "They cast him at dawn in the gatehouse yard, with the Highpass founders at the furnace and Captain Sorrel's guard standing round with their pikes reversed, which nobody told them to do."
+              },
+              {
+                "oneOf": [
+                  {
+                    "narrate": "Maren sits with him first, for an hour, at a table in the yard, as the seal. When she gets up she says one word to the council's clerk, and the clerk writes it down: true.",
+                    "when": {
+                      "party": "maren",
+                      "flag": "b3_seal_taken"
+                    }
+                  },
+                  {
+                    "narrate": "Maren sits with him at the end, not as a witness, and holds his hand while he says the first lines.",
+                    "when": {
+                      "party": "maren"
+                    }
+                  },
+                  {
+                    "narrate": "Captain Sorrel stands beside him at the end. Nobody else offers."
+                  }
+                ]
+              },
+              {
+                "narrate": "He says the words himself, all of them, in a clear voice, while the bronze goes in. Nobody writes them down. When it is over there is a bell in the gatehouse yard at Highpass, and the snow on the pass road lies white and ordinary, and stays that way."
+              },
+              {
+                "narrate": "Highpass has a ward, the first the pass has had in a generation. Nobody alive knows the rite by heart."
+              }
+            ]
+          },
+          {
+            "id": "refuse",
+            "label": "Refuse him",
+            "setFlags": {
+              "b3_sable_lives": true
+            },
+            "next": "snow",
+            "lines": [
+              {
+                "narrate": "You tell him no."
+              },
+              {
+                "say": "Sable",
+                "text": "Then I live with it. I have been doing that. I am not very good at it, but I have had practice."
+              },
+              {
+                "narrate": "In the morning the guard says he has asked for his brazier to be lit again, and for more lamp oil, and a new pen. His books are back on the shelf."
+              }
+            ]
+          }
+        ]
+      },
+      "snow": {
+        "title": "First Snow",
+        "objective": "Sit up on the gatehouse wall.",
+        "lines": [
+          {
+            "narrate": "That night it snows again. You sit up on the gatehouse wall, because nobody wants to go to bed, under a sky that has come down soft and close."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Down in the yard the new bell stands with snow on its shoulders.",
+                "when": {
+                  "flag": "b3_sable_cast"
+                }
+              },
+              {
+                "narrate": "Down under the gatehouse one cell has its lamp lit, late."
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Unbreakable. That's what the old guild books call it, when a guardian stops being knocked down. On the steps you had half the square leaning on you at once and you didn't give an inch. I looked you over afterwards. Not a bruise."
+              },
+              {
+                "narrate": "On the council steps half the square leaned its weight on you at once, and you did not give an inch. Unbreakable, the old guild books call it, when a guardian stops being knocked down."
+              }
+            ],
+            "when": {
+              "spec": "guardian"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Your blade has changed. Not the steel. The way it arrives. It used to cut; now it finishes. The fencing masters called it the Perfect Edge. I'd hoped never to see it up close."
+              },
+              {
+                "narrate": "Your blade has changed this winter. Not the steel; the way it arrives. The fencing masters called it the Perfect Edge, and you have it."
+              }
+            ],
+            "when": {
+              "spec": "duelist"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "When you call out in a crowd now, people stand up straighter. On the steps I bound a man's head while you shouted, and he got up and helped me with the next. Inspiring Banner, the old captains called that. It mends people. I didn't know it could."
+              },
+              {
+                "narrate": "When you call out in a crowd now, people stand up straighter and fight better, and the hurt get up again. Inspiring Banner, the old captains called it."
+              }
+            ],
+            "when": {
+              "spec": "warlord"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You came up the wall stair behind me tonight and I didn't hear you, and I hear everyone's breathing. Ghost Step, the old books call it. I wish they'd called it something that didn't sound so much like dying."
+              },
+              {
+                "narrate": "You came up the wall stair tonight and nobody heard you. Ghost Step, the old books call it: the shadow agent who is never quite where the blow lands."
+              }
+            ],
+            "when": {
+              "spec": "shadow"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You looked at the council hall's doors this morning, and I watched you work out how to bring them down. Then you looked away, because you didn't need to. Demolitions, Fennick would write on the form. Everything you hit now stays broken."
+              },
+              {
+                "narrate": "You look at a door now and know how to bring it down, and everything you strike stays broken. Demolitions, the old sappers called it."
+              }
+            ],
+            "when": {
+              "spec": "saboteur"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You knew who Gaddis was before I did. You'd had it from the stable boy, the coachman and the woman who sells chestnuts, and none of them knew they'd told you. Network of Eyes. It's very useful. It frightens me a little."
+              },
+              {
+                "narrate": "You knew who the forger was before anyone told you. The stable boy, the coachman and the chestnut seller had all told you something, without knowing it. Network of Eyes, the grifters call it."
+              }
+            ],
+            "when": {
+              "spec": "grifter"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "The snow doesn't settle on you any more. It melts a hand's breadth off your coat. Elemental Ward, I think. I'd have liked one of those every winter of my life."
+              },
+              {
+                "narrate": "The snow does not settle on you any more. It melts a hand's breadth off your coat. Elemental Ward, the evokers call it."
+              }
+            ],
+            "when": {
+              "spec": "evoker"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "When I bind someone and you're beside me, it takes. Faster than it should. As though you'd given the wound a little more time to close than there was. Hourglass, the old chronists called it. I've been wanting to thank you all week."
+              },
+              {
+                "narrate": "When you tend a wound now it closes faster than it should, as though you had given it a little more time than there was. Hourglass, the old chronists called it."
+              }
+            ],
+            "when": {
+              "spec": "chronist"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You drew a line in the snow at the foot of the steps tonight, without thinking about it, and nobody crossed it. Not one of them. Gatecraft. You're making doors out of nothing now, and walls out of chalk."
+              },
+              {
+                "narrate": "You drew a line in the snow at the foot of the council steps tonight, without thinking about it, and nobody crossed it. Gatecraft, the binders call it."
+              }
+            ],
+            "when": {
+              "spec": "binder"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "There's light round you when you work now. Not much. Enough to see a wound by. Living Light, the old healers called it, and I've read about it all my life and never seen it, and now I've seen it on you."
+              },
+              {
+                "narrate": "There is light round your hands when you work now. Not much; enough to see a wound by. Living Light, the old healers called it."
+              }
+            ],
+            "when": {
+              "spec": "lifewarden"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Gaddis looked at you once tonight and looked away, and didn't look back. Inquisitor's Will. You're very hard to move now. I hope you're moving the right way, because nobody else is going to be able to shift you."
+              },
+              {
+                "narrate": "The forger looked at you once tonight, and looked away, and did not look back. Nothing moves you any more. Inquisitor's Will, the exorcists call it."
+              }
+            ],
+            "when": {
+              "spec": "exorcist"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "When you strike now, the ones beside you get up. I saw it on the steps. A hit and a blessing at once. Hallowed Champion, the old temple books say. I don't know how you keep both in one hand."
+              },
+              {
+                "narrate": "When you strike now, the ones beside you get up again: a blow and a blessing at once. Hallowed Champion, the old temple books call it."
+              }
+            ],
+            "when": {
+              "spec": "battlepriest"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Every dog in Highpass has followed you up the wall stair tonight, and the ones in the stable have stopped barking, and there was a hawk on the gatehouse this afternoon that watched you and nobody else. Lord of the Wild. You're never alone now, are you."
+              },
+              {
+                "narrate": "Every dog in Highpass followed you up the wall stair tonight, and a hawk sat on the gatehouse all afternoon and watched nobody else. Lord of the Wild, the wardens call it."
+              }
+            ],
+            "when": {
+              "spec": "beastwarden"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Somebody threw a lantern from the crowd tonight and you put an arrow through the handle before it reached the steps. In the dark. In the snow. Starfall Eye. I didn't breathe until it landed."
+              },
+              {
+                "narrate": "Somebody threw a lantern from the crowd tonight, and you put an arrow through its handle before it reached the steps, in the dark, in the snow. Starfall Eye, the archers call it."
+              }
+            ],
+            "when": {
+              "spec": "deadeye"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You walked straight across the square tonight as if the crowd had left you a road, and nothing touched you. Worldwalker. You'd find a path through anything, I think. Even this winter."
+              },
+              {
+                "narrate": "You walked straight across the square tonight as if the crowd had left a road for you, and nothing touched you. Worldwalker, the pathfinders call it."
+              }
+            ],
+            "when": {
+              "spec": "pathfinder"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You were humming in the seal-office. Something very old. Hettie Dimmock stopped writing to listen and didn't know she had. First Song, the lorekeepers call it: the tune under all the others. You're steadier for it. I can hear it in your breathing."
+              },
+              {
+                "narrate": "You hum something very old when you are thinking now, and people stop to listen without knowing they have. First Song, the lorekeepers call it: the tune under all the others."
+              }
+            ],
+            "when": {
+              "spec": "lorekeeper"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You were singing on the steps. Under your breath. The cut on my hand closed while you did it, and so did the one on the man I was holding. Voice of Legions. I don't know how one voice does that. I'm grateful it does."
+              },
+              {
+                "narrate": "You sang on the council steps, under your breath, and the cuts round you closed while you did. Voice of Legions, the old war-singers called it."
+              }
+            ],
+            "when": {
+              "spec": "battlecantor"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Aveline asked you what you thought, in the hall, and the whole council turned round to hear the answer. Before you'd opened your mouth. Kingmaker, the envoys call that. Please be careful with it. They'd have done whatever you said."
+              },
+              {
+                "narrate": "Tonight, when Aveline asked you what you thought, the whole council turned round to hear before you had opened your mouth. Kingmaker, the envoys call it."
+              }
+            ],
+            "when": {
+              "spec": "envoy"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "You're different this winter. Steadier. I can't say what it is. Whatever you've been learning on the road, it's started to show."
+              },
+              {
+                "narrate": "You are different this winter, steadier, in a way nobody can name. Whatever you have been learning on the road has started to show."
+              }
+            ],
+            "when": {
+              "spec": "none"
+            }
+          },
+          {
+            "narrate": "The snow keeps coming. Nobody goes in."
+          }
+        ],
+        "choices": [
+          {
+            "id": "stay",
+            "label": "Stay on the wall until it stops",
+            "lines": [
+              {
+                "narrate": "It stops a little before dawn. The pass below is white from end to end, and all of it is only snow."
+              }
+            ]
+          },
+          {
+            "id": "sleep",
+            "label": "Go in at last",
+            "lines": [
+              {
+                "narrate": "You go in. Behind you on the wall, somebody brushes the snow off the place where you were sitting, out of habit."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "winter-camp": {
+    "id": "winter-camp",
+    "after": "b3-winter",
+    "cast": [],
+    "act": "Camp",
+    "location": "The bell tower at Briarwatch, the night before you leave",
+    "start": "hour",
+    "nodes": {
+      "hour": {
+        "title": "The Hour",
+        "objective": "The last night in Briarwatch.",
+        "lines": [
+          {
+            "narrate": "The night before you leave for Vell, you go up the tower with Tovin and Pim for the midnight hour, because you have never once been up there for it."
+          },
+          {
+            "narrate": "It is very cold at the top. The bell hangs in the dark with frost on its lip. Tovin takes one rope and Pim takes the other."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "There is nobody in the bell. It is bronze, only. Tovin rings it, and Pim rings it a breath behind him, the way he has rung every hour since he was a boy, and the two notes go out over the snow.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "narrate": "Tovin rings, and Pim rings a breath behind him, the way he has rung every hour since he was a boy, and inside the bell Aster Vey rings with them, a little late, because she is tired this winter. The notes go out over the snow."
+              }
+            ]
+          },
+          {
+            "narrate": "Down along the Briarwood edge, the watch line answers with its hand-bells, one after another, from the mill to the charcoal burners' clearing. Every one of them is out of time."
+          },
+          {
+            "say": "Pim",
+            "text": "Twelve."
+          },
+          {
+            "say": "Tovin",
+            "text": "Twelve."
+          },
+          {
+            "narrate": "Nessa has Biscuit inside her coat against the cold, and he puts his head out at the bell, and back in.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Orin is at the top of the ladder with a lantern, and does not come all the way up, because there is no room.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "Tovin",
+            "text": "You'll come back. I'm not asking. I've got Pim on nights until you do, and he won't get off them."
+          },
+          {
+            "say": "Pim",
+            "text": "I won't."
+          }
+        ],
+        "choices": [
+          {
+            "id": "ring",
+            "label": "Ask Pim to show you how",
+            "lines": [
+              {
+                "narrate": "Pim gives you his rope and stands behind you and puts his hands over yours, and you ring the quarter with Tovin, badly, a full breath late. Down on the watch line someone rings back."
+              },
+              {
+                "say": "Pim",
+                "text": "That's it. That's all it is. Late's all right. Late's still ringing."
+              }
+            ]
+          },
+          {
+            "id": "listen",
+            "label": "Stay and listen until the quarter",
+            "lines": [
+              {
+                "narrate": "You stay until the quarter. Tovin and Pim ring it, and the watch answers along the edge of the wood, and then the three of you go down the ladder in the dark, one rung at a time, without a light."
+              }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

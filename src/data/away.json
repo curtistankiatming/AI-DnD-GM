@@ -33,6 +33,7 @@
         {"say": "orin", "text": "But it's the Mother Bell next, and there'll be a door to hold. I don't walk away from doors. After, we talk. If there's an after.", "when": {"flag": "away:stay-orin", "is": "motherbell"}},
         {"say": "orin", "text": "But they're deciding about Elske next, and I'll stand in that hall whatever I think of you this week. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "oath"}},
         {"say": "orin", "text": "But it's Saltwick next. Mags sent word: they've caught my old captain, and the roof council's going to try him. If they're trying that night, I'm in the room. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-order"}},
+        {"say": "orin", "text": "But it's Vell next, and the stair. Once we're down there, there's no walking back to anyone. I'm not letting you go down a hole I haven't checked first. After, if there's an after, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-company"}},
         {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}
       ],
       "choices": [
@@ -99,7 +100,9 @@
         {"say": "maren", "text": "I was going to go and sit in a shrine somewhere for a while. I keep hearing you mean well and do things I can't stand beside."},
         {"say": "maren", "text": "But Anwen's note is in my pocket, and I've carried her name for six years. I'm not going anywhere tonight. After the Sallows, we'll talk.", "when": {"flag": "away:stay-maren", "is": "keeper"}},
         {"say": "maren", "text": "But Elske is riding for the Mother Bell, and somebody who can hear her should be in that hall. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "motherbell"}},
-        {"say": "maren", "text": "But they're deciding what to do with Elske, and I want to hear what she says. And what you say. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "oath"}}
+        {"say": "maren", "text": "But they're deciding what to do with Elske, and I want to hear what she says. And what you say. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "oath"}},
+        {"say": "maren", "text": "But it's Highpass next, and the council's letter is addressed to me. Whatever they want of me, I'll answer it myself, and I'd like you there when I do. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-seal"}},
+        {"say": "maren", "text": "But it's the stair next. Nobody who goes down it can come back for anyone who stayed behind, and I won't be the one you have to leave. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-company"}}
       ],
       "choices": [
         {"id": "after", "label": "“After, then.”", "lines": [
@@ -160,6 +163,7 @@
         {"say": "nessa", "text": "But it's the Mother Bell. Everyone's going to be there. I'm not missing that to sulk on a road.", "when": {"flag": "away:stay-nessa", "is": "motherbell"}},
         {"say": "nessa", "text": "But they're deciding about Elske, and I want to see your face when you answer her.", "when": {"flag": "away:stay-nessa", "is": "oath"}},
         {"say": "nessa", "text": "But Wren's written. From Cinder Fold. The committee's voted, and she's said yes, and I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b3-wren"}},
+        {"say": "nessa", "text": "But it's the stair. Under Vell. You're not going down a hole in the ground without someone who can find the way back, and that's me. That's always been me.", "when": {"flag": "away:stay-nessa", "is": "b3-company"}},
         {"narrate": "She folds the letter and puts it in her pocket. The one for later."}
       ],
       "choices": [

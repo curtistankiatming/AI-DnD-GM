@@ -390,7 +390,7 @@
     "town": "saltwick",
     "level": 32,
     "from": "b3-wren",
-    "until": "b3-ashford",
+    "until": "b3-seal",
     "gold": 105,
     "giver": "Mags Peller, who keeps the lamps",
     "brief": "Mags Peller's lamp roster has no names for the far roofs. Find her three people who will walk the long planks at night.",
@@ -518,6 +518,218 @@
               "setFlags": {
                 "job:lamps-davin": true
               }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "roster": {
+    "id": "roster",
+    "name": "The Watch Roster",
+    "town": "briarwatch",
+    "level": 35,
+    "from": "b3-seal",
+    "until": "b3-winter",
+    "gold": 115,
+    "giver": "Reeve Aveline, who keeps the roster",
+    "brief": "Briarwatch is arguing over who walks the night watch on the Briarwood edge, and Pim has put his own name down for every night of the winter.",
+    "start": "board",
+    "nodes": {
+      "board": {
+        "title": "The Roster",
+        "lines": [
+          {
+            "narrate": "The night-watch roster is pinned to Aveline's board outside the inn, under the letters: a sheet for every week of the winter, with a column for each night and a line in each column for every name."
+          },
+          {
+            "narrate": "Most of the lines are empty. One name is in every column of every sheet, in letters an inch high: PIM."
+          },
+          {
+            "say": "Reeve Aveline",
+            "text": "Every night. All winter. I've rubbed it out four times and he writes it back before I'm home. Tovin says he can't stop him. Tovin means he won't."
+          },
+          {
+            "say": "Reeve Aveline",
+            "text": "And the rest of the village is in the hall every evening, arguing about whose turn it is, while the sheets stay empty. I've run Briarwatch on lists for twenty years. I can't make this one fill."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Reeve Aveline",
+                "text": "There are two thousand people from Vell in the fields, as well, and none of them has been asked. Half the village doesn't want them on the line. Half of them don't want to be on it.",
+                "when": {
+                  "flag": "b3_bell_evacuate"
+                }
+              },
+              {
+                "say": "Reeve Aveline",
+                "text": "The houses on the Briarwood side say they've walked that edge for two hundred years, and it's the new houses' turn. The new houses say they pay the same tithe and they're a mile from the trees."
+              }
+            ]
+          },
+          {
+            "say": "Reeve Aveline",
+            "text": "Come to the hall tonight. They might listen to you. They won't listen to me; I'm the one with the list."
+          }
+        ],
+        "choices": [
+          {
+            "id": "hall",
+            "label": "Go to the hall that evening",
+            "next": "hall"
+          }
+        ]
+      },
+      "hall": {
+        "title": "Whose Turn",
+        "lines": [
+          {
+            "narrate": "The hall is half full, which for Briarwatch on a winter evening means everyone who has an opinion. The roster is on the table at the front, with Pim's name all down it."
+          },
+          {
+            "say": "Barnaby Fisk",
+            "text": "My grandfather walked the edge. My father walked it. I've walked it forty years. My knees are done. I'm not asking for anything except that somebody else take a night."
+          },
+          {
+            "narrate": "Barnaby Fisk is seventy-three and lives in the last house on the Briarwood side, with the trees at the bottom of his garden."
+          },
+          {
+            "say": "Jem Tullow",
+            "text": "And I'll take a night. I'll take two. But not because Barnaby's grandfather walked it. Because it needs walking. Every house the same, and no house first."
+          },
+          {
+            "narrate": "Jem Tullow keeps the new mill on the Ashford road, and his house is a mile from the trees, and he has said this every evening for a fortnight."
+          },
+          {
+            "say": "Greta Danner",
+            "text": "We're in your fields. Two thousand of us. We've walked a city wall every night of our lives. Give us nights, and stop arguing about whether we're allowed.",
+            "when": {
+              "flag": "b3_bell_evacuate"
+            }
+          },
+          {
+            "narrate": "At the back of the hall, Pim is sitting by the door with his coat on, because the watch goes out at dusk and it is nearly dusk."
+          },
+          {
+            "say": "Pim",
+            "text": "I'm not trying to make a point. I'm awake anyway. I ring the bell at night. I might as well walk the line between the hours."
+          },
+          {
+            "say": "nessa",
+            "text": "That's what you say when you're trying to make a point."
+          },
+          {
+            "say": "Pim",
+            "text": "It's also what you say when it's true.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "lots",
+            "label": "Ask them to draw the nights by lot, every house in, no house first",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "performance"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You put a jar on the table and ask every house to put its name in, once, the Briarwood side and the mill road alike, and to draw the winter's nights out of it, a week at a time, in front of everyone."
+                },
+                {
+                  "oneOf": [
+                    {
+                      "narrate": "Greta Danner puts in a name for every tent in the fields. Nobody stops her. Somebody from the Briarwood side moves up the bench to make room for her.",
+                      "when": {
+                        "flag": "b3_bell_evacuate"
+                      }
+                    },
+                    {
+                      "narrate": "Barnaby Fisk puts his name in first, and then Jem Tullow, and they do not look at each other, and the rest of the hall comes up after them."
+                    }
+                  ]
+                },
+                {
+                  "narrate": "By the end of the evening the sheets are full. Pim's name comes out of the jar for one night in nine, like everyone's. He looks at the sheet for a long time."
+                },
+                {
+                  "say": "Pim",
+                  "text": "One night in nine. What do I do with the other eight?"
+                },
+                {
+                  "say": "Reeve Aveline",
+                  "text": "Sleep, Pim. Ring the bell and go to sleep. That's what the other eight are for."
+                }
+              ],
+              "setFlags": {
+                "job:roster-lots": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You put a jar on the table and ask every house to put its name in. Half the hall does. The other half says a jar is how the Commandery chose people, and they will not be chosen by a jar."
+                },
+                {
+                  "narrate": "In the end Aveline fills the sheets herself, house by house, the way she fills every list, and everyone in the hall is a little angry with her, which she says is how she knows it is fair. Pim's name stays on every third night. He says that will do, for now."
+                }
+              ],
+              "setFlags": {
+                "job:roster-aveline": true
+              }
+            }
+          },
+          {
+            "id": "walk",
+            "label": "Take Pim's name off every night but one, and walk the rest of his nights yourself while you are here",
+            "lines": [
+              {
+                "narrate": "You rub Pim's name off every night but one, and write your own in the rest, for as long as you are in Briarwatch."
+              },
+              {
+                "narrate": "The hall goes quiet. Then Barnaby Fisk gets up, stiffly, and writes his name under yours on the first night, and Jem Tullow writes his under that, and by the end of the evening there are four names in every column."
+              },
+              {
+                "say": "Pim",
+                "text": "You're going to Vell. You won't be here for most of them."
+              },
+              {
+                "say": "Barnaby Fisk",
+                "text": "Then we'll walk them. We've all just put our names down under that one, lad. That's what that was."
+              },
+              {
+                "narrate": "Pim walks the first night with you, the one he kept. Between the hours, on the line at the stream, he tells you he knew he was being foolish, and that he does not know how to stop doing things for everyone."
+              }
+            ],
+            "setFlags": {
+              "job:roster-walked": true
+            }
+          },
+          {
+            "id": "oil",
+            "label": "Pay for lamp oil and a hot supper for the watch every night of the winter",
+            "gold": -40,
+            "lines": [
+              {
+                "narrate": "You give Aveline forty gold for lamp oil and a hot supper at the inn for whoever walks the watch, every night of the winter, and ask her to write it at the top of every sheet."
+              },
+              {
+                "narrate": "It does not settle the argument. It changes it. By the end of the week people are arguing about whose turn it is to get the supper, and the sheets are full, and Pim's name is on one night in five."
+              },
+              {
+                "say": "Reeve Aveline",
+                "text": "I'd have thought better of them if it hadn't taken a supper. I'd have thought worse of them if it hadn't worked."
+              }
+            ],
+            "setFlags": {
+              "job:roster-supper": true
             }
           }
         ]

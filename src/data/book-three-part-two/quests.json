@@ -2392,5 +2392,1887 @@
         "flag": "b3_ashford_cast"
       }
     ]
+  },
+  "b3-seal": {
+    "id": "b3-seal",
+    "book": 3,
+    "part": 2,
+    "name": "The Witness's Seal",
+    "level": 34,
+    "town": "highpass",
+    "unlock": "b3-ashford",
+    "nextTown": "briarwatch",
+    "needs": [
+      "maren"
+    ],
+    "xp": 10250,
+    "gold": 720,
+    "region": "Highpass: the council hall, the seal-office in its cellar, and the cells under the gatehouse",
+    "threat": "Every lawful casting in the free wards now needs a witness, and the council wants one witness for all of them, with one seal. Seals are already on the inland roads, in a hand that is not the witness's own.",
+    "faction": "wardens",
+    "brief": "First snow at Highpass. The council wants one witness for every casting in the free wards, and it wants her to be Maren. Cass Ord has come up the pass to make the same offer, with a salary. And there are sealed papers on the inland roads already, at castings the witness never saw.",
+    "opening": [
+      {
+        "narrate": "The first snow comes to Highpass in the night. In the morning the whole pass is white and quiet, the ordinary white of snow, which nobody trusts any more. The gate guards prod every drift with a pike before they let a cart through it."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Since the Iron Road there has been a law. The council wrote it in the autumn, in Highpass's hall: no casting without a witness, no quotas, and never anyone unwilling. The law did not say who the witness should be, and every town has argued about it since.",
+            "when": {
+              "flag": "b3_rite_law"
+            }
+          },
+          {
+            "narrate": "Since Merrowgate made its rule there has been a witness at every casting sold in the harbour, and the inland towns have copied the rule, because it makes the papers look better. The rule did not say who the witness should be, and every town has argued about it since.",
+            "when": {
+              "flag": "b3_market_ruled"
+            }
+          },
+          {
+            "narrate": "No law asks for a witness. The buyers do. A town that pays for a casting wants someone to swear the volunteer meant it, so that the town can sleep. Since the summer every town has argued about who that someone should be."
+          }
+        ]
+      },
+      {
+        "narrate": "Merrowgate's rule says the same, harbour by harbour, and the two have been argued over together.",
+        "when": {
+          "flag": "b3_market_ruled",
+          "anyFlag": [
+            "b3_rite_law"
+          ]
+        }
+      },
+      {
+        "narrate": "Now the council has settled the argument for them. It wants one witness for all the free wards, with one seal, so that a casting with that seal on its paper is lawful from Fenmere to the coast, and a casting without it is not. And it wants the one person in the free wards whom everyone already knows can hear a lie."
+      },
+      {
+        "narrate": "Reeve Aveline brings the council's letter down to the inn herself. She puts it on the table in front of Maren, sits down, and waits.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "narrate": "Reeve Aveline brings the council's letter down to the inn herself. It is addressed to Sister Maren Vale. The council has sent a copy to every shrine between here and Merrowgate, in case she is in one of them.",
+        "when": {
+          "absent": "maren"
+        }
+      },
+      {
+        "say": "Reeve Aveline",
+        "text": "They want you to be the seal, Maren. Yours, for every casting there is. They think it's the kindest thing they can do: no casting anywhere unless somebody who can hear a lie has heard the yes.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "say": "Reeve Aveline",
+        "text": "They want her to be the seal. Hers, for every casting there is. They think it's the kindest thing they can do. I'm not sure it's kind to her.",
+        "when": {
+          "absent": "maren"
+        }
+      },
+      {
+        "say": "Reeve Aveline",
+        "text": "I said I'd bring it. I didn't say I'd argue for it. I've sat on that council two years. I know what it does to the people it's grateful to."
+      },
+      {
+        "narrate": "Maren reads the letter twice. Then she folds it in three, exactly, and puts it under the salt cellar, and leaves her hand on it.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "Every yes in the free wards. Across my table."
+      },
+      {
+        "narrate": "A second letter came up the pass with the snow. Guildmistress Cass Ord is at Highpass, at the Drover's House, and asks for an hour. The Lantern Hall, she writes, would like to make the council's offer itself, with a salary."
+      }
+    ],
+    "talks": [
+      {
+        "id": "maren",
+        "label": "Walk the wall with Maren",
+        "requires": {
+          "companion": "maren"
+        },
+        "lines": [
+          {
+            "narrate": "Maren walks the wall with you in the snow, as far as the gatehouse and back, twice, before she says anything."
+          },
+          {
+            "say": "maren",
+            "text": "In Vell I sat at a table with four hundred people and said \"true\" or \"not true\". You know which one I couldn't hear."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "maren",
+                "text": "Ysolde. She's in Vell's great bell now. She said yes, and I said \"true\", and both of those were so. I've gone over it every night since, and I still can't hear what I should have heard.",
+                "when": {
+                  "flag": "b3_bell_cast"
+                }
+              },
+              {
+                "say": "maren",
+                "text": "Ysolde. She wasn't cast, in the end. She's alive, with her brothers. That isn't because of anything I heard. I said \"true\" to her, and I would have watched her go into the bronze.",
+                "when": {
+                  "anyFlag": [
+                    "b3_bell_evacuate",
+                    "b3_bell_aster"
+                  ]
+                }
+              },
+              {
+                "say": "maren",
+                "text": "Ysolde. I said \"true\" to her. I still have her button tin. I still can't hear what I should have heard."
+              }
+            ]
+          },
+          {
+            "say": "maren",
+            "text": "She believed it. That's the whole trouble. I can hear a lie. I can't hear a mistake somebody has made with their whole heart. And the council wants me to stand at every pit in the free wards and be the reason it's allowed."
+          },
+          {
+            "say": "maren",
+            "text": "They think I'd be a lock on the door. I wouldn't. I'd be the key. Every casting with my seal on it would be one I'd said yes to. Not the volunteer's yes. Mine."
+          },
+          {
+            "say": "maren",
+            "text": "I don't want to be the stamp on other people's yes. I've never said that aloud before. It's a selfish thing to want, in a winter like this one."
+          },
+          {
+            "narrate": "Orin is waiting at the foot of the wall steps with the lamp. He has heard the last of it.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "It isn't selfish. Wanting to be a person and not a stamp. It isn't."
+          },
+          {
+            "say": "maren",
+            "text": "Thank you, Orin. Come up out of the snow.",
+            "when": {
+              "party": "orin"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cass",
+        "label": "Hear Cass Ord's offer at the Drover's House",
+        "lines": [
+          {
+            "narrate": "Cass Ord has the best room at the Drover's House and a fire she is paying for by the hour. She came up the pass in the snow in a hired coach with two clerks and a strongbox, and she gives you the chair nearest the fire."
+          },
+          {
+            "say": "Cass Ord",
+            "text": "The council wants her for nothing, out of gratitude. Gratitude doesn't pay for a coach to Fenmere in the snow. We would. A salary, a coach, a clerk, a guard. Every Hall casting in every town, with her at the table."
+          },
+          {
+            "say": "Cass Ord",
+            "text": "I'm not ashamed of the Hall, so I'll tell you the rest. We would choose which castings she goes to. She would see every one of ours. She wouldn't see anybody else's, because we would be paying for the coach."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Cass Ord",
+                "text": "You shut my harbour. I went inland, where nobody asks for a witness at all. That is worse for everyone, and I would like it mended as much as you would. I would simply like to be paid for mending it.",
+                "when": {
+                  "flag": "b3_market_shut"
+                }
+              },
+              {
+                "say": "Cass Ord",
+                "text": "You made us lawful. I'm grateful; lawful sells. The rule wants a witness. I am offering to pay for the best one there is.",
+                "when": {
+                  "flag": "b3_market_ruled"
+                }
+              },
+              {
+                "say": "Cass Ord",
+                "text": "You bought my harbour's debts out from under me. Very well. There is a great deal of other paper in the world.",
+                "when": {
+                  "flag": "b3_debts_bought"
+                }
+              }
+            ]
+          },
+          {
+            "say": "Cass Ord",
+            "text": "And there are seals going round already. Not ours. I don't need to forge anything; I have lawyers. But there are papers on the inland roads with her name at the foot, because there is only one of her and a great many towns. Scarcity makes forgers."
+          },
+          {
+            "say": "maren",
+            "text": "And if I said no?"
+          },
+          {
+            "say": "Cass Ord",
+            "text": "Then somebody else's seal goes on the papers. Very likely still with your name under it. That is rather my point.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sable",
+        "label": "Go down to Sable's cell",
+        "lines": [
+          {
+            "narrate": "Sable's cell is under the gatehouse, warm and dry and full of books, as it has been for years. He has a brazier now. The council gave it to him the first winter he was useful."
+          },
+          {
+            "say": "Sable",
+            "text": "They want to make your healer a seal. The guard told me. Everyone in Highpass is talking about it, and I am the one person in Highpass nobody talks to, so I hear all of it."
+          },
+          {
+            "say": "Sable",
+            "text": "I was a seal once. Briarwatch's warden. Whatever I did was lawful because I was the one doing it. It is a very comfortable thing to be. It is how I did what I did without once being asked to explain."
+          },
+          {
+            "say": "Sable",
+            "text": "You know what else they are saying. Corvane will not cast again. He did every casting in Vell with his own hands, and now he sits with his ledger and will not go near a mould. So there is one trained caster left who is willing, and that is Idris Hesk, who stood at every one of Corvane's castings and learned them standing there. He reads the rite from a copy."
+          },
+          {
+            "say": "Sable",
+            "text": "Everyone reads it from a copy. Except me. I wrote it. I am the only person alive who has it by heart."
+          },
+          {
+            "say": "Sable",
+            "text": "Your council burned every copy it could reach. It cannot burn me. I have wondered, since, whether anyone up there has thought of trying.",
+            "when": {
+              "flag": "b3_rite_destroyed"
+            }
+          },
+          {
+            "say": "Sable",
+            "text": "Is she well? Aster. You needn't tell me. I ask everyone who comes down. Nobody ever does tell me."
+          }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Hear what Aster Vey has to say",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Aster Vey is in Vell's great bell and cannot come. Her letter came up the pass a week ago, in the hand of one of Corvane's clerks, because she has no hand of her own. He has written down every word, and has added a note at the bottom to say that she made him read it back to her twice.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "narrate": "Aster Vey travels in the little bell in your pack, the hand-bell from the same pour as Briarwatch's. You set it on the inn table. It is warm, and she speaks."
+              }
+            ]
+          },
+          {
+            "say": "Aster Vey",
+            "text": "When I was under the roots, nobody witnessed anything. That was the whole of the harm: nobody asked me, and nobody saw. So I understand why they want somebody to see. I would want it too."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "But I said yes to this bell, in Vell, and nobody stamped it. If somebody had, I think I would always have wondered whether it was mine or theirs.",
+            "when": {
+              "flag": "b3_bell_aster"
+            }
+          },
+          {
+            "say": "Aster Vey",
+            "text": "She should not have to carry all of it. Nobody should carry all of anything. That is the one thing I have learned, and it took me two hundred years."
+          },
+          {
+            "say": "Aster Vey",
+            "text": "Sable will ask for me. When he does, I will answer him myself. Don't answer for me before then."
+          }
+        ]
+      }
+    ],
+    "clue": "The seals already on the inland roads are forged in the witness's own hand. Three castings this month, at Hollowmere, at Tarn Cross and at a hamlet with no name on the map, were sealed \"M. Vale\" by someone who learned her letters from the council's copies of her reports from Vell.",
+    "investigate": {
+      "label": "Go through the casting papers in the council's seal-office",
+      "skill": "insight",
+      "alt": [
+        "religion",
+        "investigation"
+      ],
+      "success": [
+        {
+          "narrate": "The council's seal-office is a cellar under the hall, with a clerk called Hettie Dimmock and every casting paper the free wards have sent in since the summer, boxed by town."
+        },
+        {
+          "say": "Hettie Dimmock",
+          "text": "Three came in from inland this month already sealed. Witnessed. Look at the name."
+        },
+        {
+          "narrate": "The name at the foot of each is M. Vale, in a small careful hand, with a seal pressed under it: a shrine-lamp in a ring. Three castings, at Hollowmere, at Tarn Cross, and at a hamlet with no name on the map. Three people in three bells, witnessed true."
+        },
+        {
+          "say": "maren",
+          "text": "That's my hand. That's my hand better than I write it. I have never been to any of those places."
+        },
+        {
+          "narrate": "It is Maren's hand, small and careful, and she has never been to any of those places.",
+          "when": {
+            "absent": "maren"
+          }
+        },
+        {
+          "narrate": "In the next box are the council's copies of every report that came back from the witness table at Vell, in the same hand. Someone has had them out. There are finger marks in the dust on the lid."
+        },
+        {
+          "say": "Hettie Dimmock",
+          "text": "They were copied out for the inland towns in the autumn, so that people would know what a witness does. Two hundred copies. Anyone with one of those could learn the letters."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The seal-office is a cellar full of boxes and a clerk who wants to close for the night. You find three inland castings already sealed and witnessed, in a small careful hand, but the clerk is putting out the lamp before you have looked properly at whose."
+        }
+      ]
+    },
+    "route": {
+      "label": "Get through the crowd to the council doors",
+      "skill": "persuasion",
+      "alt": [
+        "insight",
+        "intimidation"
+      ],
+      "safe": true,
+      "success": [
+        {
+          "narrate": "By evening there is a crowd in the square under the council hall, two or three hundred people in the snow with lanterns: families of people who have been cast, agents from towns with castings booked and papers to be sealed, and people who have come to see. You go through slowly, saying good evening, and it lets you through to the steps."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "By evening the square under the council hall is full, and the crowd will not let anyone through who might be going in to decide something without it. You reach the steps with your coat torn and somebody's lamp-oil down your back."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Go straight up the hall steps",
+      "text": "You go straight across the square to the hall steps, and the crowd parts for you, and closes again behind you."
+    },
+    "approach": [
+      {
+        "narrate": "The council has not sat. It has said that it will sit when it has its answer."
+      },
+      {
+        "narrate": "The crowd has come to hear the answer and does not mean to go home without one. A man with a town agent's satchel is on the lowest step, holding up a paper with a seal on it, calling out that his town has already paid and already been witnessed, and wants only the council's word that the witness counts."
+      },
+      {
+        "narrate": "There are other men at the edge of the crowd, big ones, who are not carrying lanterns."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "At dusk a thin man in a good coat joins the agent on the step and starts calling for the witness, and the crowd takes it up. They want the one the council asked for to come out, look at the papers and say whether the seals are hers. If they are, three castings are lawful and the town agents go home. If they are not, three towns have bells in them that nobody had the right to make."
+      },
+      {
+        "narrate": "You have seen his seal before, in the cellar under your feet. The man in the good coat is the one who sold the papers.",
+        "when": {
+          "flag": "prepared:b3-seal"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "I'll go out. If they want to hear it from me, they can hear it from me."
+      },
+      {
+        "narrate": "The crowd wants the witness, and the witness is not here. It will settle for you.",
+        "when": {
+          "absent": "maren"
+        }
+      },
+      {
+        "narrate": "The big men at the edge of the crowd begin to move in toward the steps."
+      }
+    ],
+    "peaceful": {
+      "label": "Let the crowd hear the forger lie, face to face",
+      "skill": "insight",
+      "alt": [
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You go out with the forged paper from the seal-office in your hand, and hold it up beside his.",
+          "when": {
+            "flag": "prepared:b3-seal"
+          }
+        },
+        {
+          "narrate": "Maren goes down the steps to the man in the good coat and stands in front of him, close, the way she sat across a table from four hundred people in Vell, and asks him to tell the crowd where he got his paper.",
+          "when": {
+            "party": "maren"
+          }
+        },
+        {
+          "narrate": "You go down the steps to the man in the good coat and stand close in front of him, and ask him, so that the crowd can hear, where he got his paper.",
+          "when": {
+            "absent": "maren"
+          }
+        },
+        {
+          "say": "Lenn Gaddis",
+          "text": "From the witness herself, at Hollowmere. She sat with the volunteer for an hour and sealed it in front of me. Lenn Gaddis, agent for the inland towns. Ask anyone."
+        },
+        {
+          "say": "maren",
+          "text": "That's a lie. You said it very calmly. Calm people lie to me all the time; it's the only kind I can hear. Say it again."
+        },
+        {
+          "narrate": "He says it very calmly. People telling the truth about something that mattered are seldom so calm, and the crowd nearest the steps can see it.",
+          "when": {
+            "absent": "maren"
+          }
+        },
+        {
+          "say": "maren",
+          "text": "And then write my name. Here, on the step, on the back of your paper. You must know how. You've done it three times.",
+          "when": {
+            "party": "maren",
+            "flag": "prepared:b3-seal"
+          }
+        },
+        {
+          "narrate": "You give him a pencil and the back of his own paper, and ask him to write the witness's name, since he has seen it written so often.",
+          "when": {
+            "absent": "maren",
+            "flag": "prepared:b3-seal"
+          }
+        },
+        {
+          "narrate": "He writes it. It is very good. It is better than the one on the front, because he is frightened and goes slowly, and everyone nearest the steps can see the two side by side.",
+          "when": {
+            "flag": "prepared:b3-seal"
+          }
+        },
+        {
+          "narrate": "Lenn Gaddis looks for his big men. They have stopped where they are. They were hired for a fight, not for a square that has gone quiet, and a square that has gone quiet is listening to him."
+        },
+        {
+          "narrate": "The town agent who bought the paper takes it out of his hand and reads it again, and sits down on the step in the snow. Nobody is hurt. Captain Sorrel's guard walks Gaddis down to the cells, and his men go back into the dark the way they came."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "He tells his story again, and it is a good story, and the crowd wants it to be true. Somebody shouts that the witness is calling an honest man a liar to save her own name. The big men at the edge of the crowd stop waiting."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the council steps",
+      "label": "Hold the council steps against the forgers' men",
+      "description": "Four successful actions keep the forgers' men off the steps and the crowd off each other until Captain Sorrel's guard comes down.",
+      "skill": "athletics",
+      "alt": [
+        "intimidation",
+        "persuasion",
+        "insight"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "Sorrel's guard reaches the steps late. The forgers' men are gone into the dark with Lenn Gaddis among them, and there are people in the square with broken heads, and a town agent sitting in the snow with his paper torn in half.",
+      "successText": "Captain Sorrel's guard comes down the hall steps with pikes. The forgers' men break and run, and leave Lenn Gaddis behind them."
+    },
+    "foe": "b3-seal-hired",
+    "foeName": "The Forgers' Hired Men",
+    "enemyTheme": "soldier",
+    "attackName": "Loaded Cudgel",
+    "retainerName": "Hired Bruiser",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "The square is empty by midnight. The snow has covered the footprints. Lenn Gaddis is in a cell under the gatehouse, two doors from Sable's, and has given Captain Sorrel the names of the two men who forge for him on the inland roads. Nobody was hurt on the steps.",
+            "when": {
+              "flag": "method:b3-seal",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "The square is empty by midnight, but for blood in the snow by the steps and a torn paper the wind keeps turning over. Captain Sorrel's guard has Lenn Gaddis in a cell under the gatehouse, with a cut over his eye from the fight. The two men who forge for him are still on the inland roads."
+          }
+        ]
+      },
+      {
+        "narrate": "The council has sat after all, late, in the cold hall, and it has not changed its mind. It still wants one witness. It wants her more than before, because now everyone in Highpass has seen what happens without one."
+      },
+      {
+        "narrate": "Cass Ord's clerk leaves a card at the inn. The Hall's offer stands, and the salary has gone up."
+      },
+      {
+        "narrate": "Maren sits at the inn table with the council's letter and the Hall's card side by side, and Gaddis's paper on top of both.",
+        "when": {
+          "party": "maren"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "I could be the seal. I'd be good at it. I would sit at every table in the free wards and hear every yes, and the castings would slow to the few I believed, and fewer people would go into the bronze. That's true. I can hear that it's true."
+      },
+      {
+        "say": "maren",
+        "text": "Or I say no, and they go on without anyone, or with a man like him. That's true as well."
+      },
+      {
+        "say": "maren",
+        "text": "Or there's a slower thing. Every town its own witness. Somebody in every town who can sit at a table and listen, and be taught to. I can teach what I do. Not the hearing. The listening. It would take a year, and for that year men like Gaddis would do very well."
+      },
+      {
+        "say": "maren",
+        "text": "You know what I want. I've told you. I'm asking what you would do, because I don't trust what I want tonight."
+      },
+      {
+        "narrate": "The council's letter is still on the inn table, addressed to someone who is not here. Aveline says she will write to her tonight, and that she would like to put in the letter what you would do.",
+        "when": {
+          "absent": "maren"
+        }
+      }
+    ],
+    "decisions": [
+      {
+        "id": "take",
+        "label": "Tell Maren to take the seal",
+        "description": "This decision is permanent. Maren becomes the one witness for the free wards, and castings slow to the few she believes.",
+        "text": [
+          {
+            "narrate": "You tell her to take it. She looks at you for a long moment, the way she looks at someone across a table, and you do not know what she hears.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "All right. For you, then. Not because I want it. I want you to know that I know the difference."
+          },
+          {
+            "narrate": "She goes up to the hall in the morning and gives the council its answer, and by noon it has had a seal cut for her: a shrine-lamp in a ring. Her first table is at Highpass's own gate, the next day, with a volunteer from the Fenmere road. She listens to his yes for two hours, and tells him it is not true, and he goes home.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "You tell Aveline that she should take it, and Aveline writes it to her. The answer comes back up the pass a week later in a small careful hand: yes, if that is what you think. By the end of the month the council has had a seal cut for Sister Maren Vale, and the castings slow to the few she believes.",
+            "when": {
+              "absent": "maren"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": 1
+        },
+        "approval": {
+          "maren": -1
+        },
+        "flag": "b3_seal_taken"
+      },
+      {
+        "id": "refuse",
+        "label": "Tell Maren to refuse it",
+        "description": "This decision is permanent. Maren refuses the seal. The castings go on, unwitnessed or under forged seals.",
+        "text": [
+          {
+            "narrate": "You tell her to say no.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Thank you."
+          },
+          {
+            "narrate": "She goes up to the hall in the morning and refuses, standing, in front of the whole council. She will witness any casting she is asked to, as one witness among many. She will not be the one that makes it lawful. The council is angry for a day. Then it goes back to arguing over whom else it could ask, and in the meantime the castings go on, unwitnessed, or sealed in a forger's copy of her hand.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "You tell Aveline that she should refuse, and Aveline writes it to her. The answer comes back a week later: Maren had already written to the council to say no, and is glad to hear you would have said it too. The castings go on, unwitnessed, or sealed in a forger's copy of her hand.",
+            "when": {
+              "absent": "maren"
+            }
+          }
+        ],
+        "rep": {
+          "wardens": -1
+        },
+        "approval": {
+          "maren": 1
+        },
+        "flag": "b3_seal_refused"
+      },
+      {
+        "id": "many",
+        "label": "Tell Maren to train witnesses, every town its own",
+        "description": "This decision is permanent. Maren trains a witness for every town. It is slow, and for a season the forgers do well.",
+        "text": [
+          {
+            "say": "maren",
+            "text": "Every town its own. Somebody who lives there, who knows whose debts are whose, who'll still be there after the bell is cast. Yes."
+          },
+          {
+            "say": "maren",
+            "text": "It will be slow. I'll be bad at teaching it for a year at least."
+          },
+          {
+            "narrate": "She goes up to the hall in the morning and tells the council she will not be its seal, and that she will teach anyone it sends her to listen the way she listens. By the end of the week it has sent her nine people, one from each town that sits on it. She takes them down to the seal-office and sits them across from Hettie Dimmock, one at a time, and makes them listen to Hettie tell the truth about her mother for an hour.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "You tell Aveline that she should train witnesses, every town its own, and Aveline writes it to her. Sister Maren Vale comes up the pass herself a fortnight later and tells the council the same. By midwinter she has nine people to teach, one from each town that sits on it.",
+            "when": {
+              "absent": "maren"
+            }
+          },
+          {
+            "narrate": "For a season the forgers do very well. There are nine witnesses and a hundred towns, and the inland roads are long."
+          }
+        ],
+        "rep": {
+          "wardens": 1,
+          "trade": -1
+        },
+        "flag": "b3_seal_many"
+      }
+    ]
+  },
+  "b3-winter": {
+    "id": "b3-winter",
+    "book": 3,
+    "part": 2,
+    "name": "The Winter Watch",
+    "level": 35,
+    "town": "briarwatch",
+    "unlock": "b3-seal",
+    "nextTown": "vell",
+    "xp": 10500,
+    "gold": 740,
+    "region": "Briarwatch: the hall, the bell tower, and the watch line along the Briarwood edge",
+    "threat": "The second winter since the Vote. The Gloam is testing Briarwatch's watch line at the Briarwood edge every night, and the council has come to Briarwatch's hall to decide what the free wards will promise for whatever is under the stair at Vell.",
+    "faction": "wilds",
+    "brief": "Midwinter, the second since the Vote. Letters have come from Vell and Cinder Fold and Fenmere, and none of them is good. The council meets in Briarwatch's hall to decide what the free wards will give for whatever is under the stair, while the Gloam tests the village's night watch at the edge of the wood.",
+    "opening": [
+      {
+        "narrate": "Midwinter in Briarwatch, the second since the Vote. The snow is a foot deep in the square and the forge is the only warm place in the village, and every evening at dusk the night watch goes out along the Briarwood edge with lanterns and hand-bells, and comes back at dawn with its eyebrows white."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "The tower is empty. Aster Vey is in Vell's great bell, and Briarwatch's own bell is only bronze now. Tovin rings it by hand on the hour, and Pim rings it with him. Since last winter the Gloam has come to the edge of the Briarwood every night the frost is hard, and the village has kept a watch against it ever since.",
+            "when": {
+              "flag": "b3_bell_aster"
+            }
+          },
+          {
+            "narrate": "Vell's people are in Briarwatch's fields. Two thousand of them, of the twenty thousand who came over the pass, in tents and byres and the old tithe barn, with the snow on the canvas and their children in Briarwatch's school in two sittings, morning and afternoon. Aster Vey is in the tower, and rings with Tovin. Even so, this winter the Gloam has come to the edge of the Briarwood, and the village keeps a night watch against it.",
+            "when": {
+              "flag": "b3_bell_evacuate"
+            }
+          },
+          {
+            "narrate": "News came over the pass in the autumn that the voices in Vell's bells are holding the city. Aster Vey is in Briarwatch's tower, and rings with Tovin on the hour. Even so, this winter the Gloam has come to the edge of the Briarwood, and the village keeps a night watch against it.",
+            "when": {
+              "flag": "b3_bell_cast"
+            }
+          },
+          {
+            "narrate": "Aster Vey is in Briarwatch's tower and rings with Tovin on the hour. Even so, this winter the Gloam has come to the edge of the Briarwood, and the village keeps a night watch against it."
+          }
+        ]
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Corvane's clerks write that it is four hundred voices, and that the whole city holds.",
+            "when": {
+              "noneFlag": [
+                "b3_witnessed",
+                "b3_quotas_exposed"
+              ]
+            }
+          },
+          {
+            "narrate": "Corvane's clerks write that it is three hundred and thirty-seven voices, and that the city holds, all but the outer district.",
+            "when": {
+              "flag": "b3_witnessed"
+            }
+          },
+          {
+            "narrate": "Corvane's clerks write that it is a hundred and ninety voices, and that they hold the inner city, and that the rest of Vell's people have gone over the pass.",
+            "when": {
+              "flag": "b3_quotas_exposed"
+            }
+          }
+        ],
+        "when": {
+          "flag": "b3_bell_cast"
+        }
+      },
+      {
+        "narrate": "Three letters came up the Briarwood road in the last week, and Reeve Aveline has pinned them to the board outside the inn, because she says the village has a right to read them."
+      },
+      {
+        "narrate": "The first is from Clerk-Major Fennick, in Vell, on the Commandery's ruled paper, numbered. Item one: Commander Idris Hesk is on the Iron Road with three hundred volunteers and is expected at Vell before the year turns. Item two: the three who went down the stair under the iron vault in the summer, the morning after Commander Hesk was taken at the foot of the pass, were Lantern Hall surveyors, sent by Guildmistress Ord with lamps and chalk and a week's food. Fennick has had it from the Hall's own papers. None of them has come up. Item three: Fennick has counted the volunteers twice and would like it on record that the number is three hundred exactly, which he does not find reassuring."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "The second is from Cinder Fold, in Wren's hand. The miners have rung the nine by hand all winter, as you asked. In the eleventh week Ned Thorne fell from the ropes in the dark and broke his back, and he will not walk again. And Wren can no longer climb to the pit. She writes that she sits at the gallery mouth now and calls the beat to the ones who can.",
+            "when": {
+              "flag": "b3_wren_waits"
+            }
+          },
+          {
+            "narrate": "The second is from Cinder Fold. The lid has been quiet since the autumn. There is a bell at the first forge that rings a little behind the other nine, and the miners have stopped noticing.",
+            "when": {
+              "flag": "b3_wren_cast"
+            }
+          },
+          {
+            "narrate": "The second is from Cinder Fold. The lower galleries are shut and the twenty families who worked them have gone to Merrowgate for the winter. Wren writes that she is well, and that her leg is no worse, and that she is still angry, and that she will stop being angry by the spring.",
+            "when": {
+              "flag": "b3_wren_refused"
+            }
+          },
+          {
+            "narrate": "The second is from Cinder Fold, from the miners' committee, to say that the nine are ringing out of time again."
+          }
+        ]
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "The third is from Brannagh. Fenmere's lower village was to be rebuilt this year with the free wards' relief fund, and the fund went to buy Merrowgate's harbour debts instead. Fenmere's lower village is still under the white, and its people are still on the rise, in their second winter of tents. She does not complain. She lists the names of the families on the rise, and their number, which is two hundred and twelve, and signs it.",
+            "when": {
+              "flag": "b3_debts_bought"
+            }
+          },
+          {
+            "narrate": "The third is from Brannagh. Fenmere's lower village has eleven roofs on it again, and the rest by spring if the fund holds. She has put the goat in the first house finished, she writes, so that someone is living there."
+          }
+        ]
+      },
+      {
+        "narrate": "And the council has come. It meets tomorrow night in Briarwatch's hall, because the free wards wanted to meet where the hero of the free wards lives, and Aveline has been up since four counting chairs."
+      }
+    ],
+    "talks": [
+      {
+        "id": "tovin",
+        "label": "Sit on the tower step with Tovin and Pim",
+        "lines": [
+          {
+            "narrate": "Tovin and Pim are on the bottom step of the bell tower in the snow, between the hours, with a pot of something hot between them and two cups."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Tovin",
+                "text": "We ring it by hand. Every hour, day and night. Pim takes the nights, mostly. I tell him to sleep and he tells me he will after this one.",
+                "when": {
+                  "flag": "b3_bell_aster"
+                }
+              },
+              {
+                "say": "Tovin",
+                "text": "She rings with us. She always does. But she's tired this winter. I can hear it. She comes in a little after the beat, the way I used to when my hands were bad."
+              }
+            ]
+          },
+          {
+            "say": "Pim",
+            "text": "I've put myself down for the watch. Every night. Somebody has to, and I'm awake anyway, because of the bell."
+          },
+          {
+            "say": "Tovin",
+            "text": "He has. Every night on Aveline's roster, in letters an inch high. The whole village has been arguing about that roster since the first frost, and he thinks writing himself in for every night is a way of settling it."
+          },
+          {
+            "say": "Pim",
+            "text": "It is a way of settling it."
+          },
+          {
+            "say": "Tovin",
+            "text": "It's a way of getting frostbite."
+          },
+          {
+            "narrate": "Tovin pours out the last of the pot and gives Pim the bigger cup without looking."
+          },
+          {
+            "say": "Tovin",
+            "text": "Do you know what the oldest houses had? On the Briarwood side, the ones from before the tower. Every one of them had a little bell over the hearth. My grandmother's did. Nobody remembered what it was for. She said her grandmother rang it once a year, at midwinter, and then went to bed, and wouldn't say why."
+          }
+        ]
+      },
+      {
+        "id": "dera",
+        "label": "Go round to Dera's forge",
+        "lines": [
+          {
+            "narrate": "Dera has the forge door shut against the snow for the first time you can remember, and a dozen people round her fire who have nowhere warmer to be."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Half of them are from Vell, from the fields. A woman from Vell's Sixth District is turning a spit for her, and Dera has not asked her to and has not told her to stop.",
+                "when": {
+                  "flag": "b3_bell_evacuate"
+                }
+              },
+              {
+                "narrate": "Two of them are watchmen just off the line, still in their coats, with their boots by the fire."
+              }
+            ]
+          },
+          {
+            "say": "Dera",
+            "text": "Sit down. Not there; that's the hot side. There."
+          },
+          {
+            "say": "Dera",
+            "text": "Your gear wants doing before Vell. Don't tell me you're not going to Vell. Fennick's letter is on Aveline's board for the whole square, and you've had that look since you read it."
+          },
+          {
+            "say": "Dera",
+            "text": "I'll do it for news, same as always. Not Vell news. I've got Vell news coming out of my ears. Tell me something about Highpass. Tell me what it's like up there in the snow. I've never seen the pass."
+          },
+          {
+            "narrate": "So you tell her about the pass in the first snow, and the gate guards prodding the drifts with their pikes, and the gatehouse wall at night. She listens with your blade across her knees."
+          },
+          {
+            "say": "Dera",
+            "text": "That's fair. That's fair payment."
+          },
+          {
+            "say": "Dera",
+            "text": "You come back from wherever this is. That's not news, that's an order. I've put a lot of rivets into you."
+          }
+        ]
+      },
+      {
+        "id": "brannagh",
+        "label": "Find Brannagh and her goat",
+        "lines": [
+          {
+            "narrate": "Brannagh of Fenmere has come to the council by cart, at seventy, through the snow, with her goat in the back. She is in the inn's best chair by the fire, and the goat is in the inn's stable, and she has been out to see it twice since supper."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Brannagh",
+                "text": "You bought Merrowgate's debts with my roofs. I don't say it was wrong. A docker's girl in Merrowgate has her father, and I've two hundred and twelve on a hill in tents. Both of those are true. I'd like you to hold both of them, the way I have to.",
+                "when": {
+                  "flag": "b3_debts_bought"
+                }
+              },
+              {
+                "say": "Brannagh",
+                "text": "Eleven roofs. You should see them. The goat has the first one. Nobody else wanted to go first, and somebody had to."
+              }
+            ]
+          },
+          {
+            "say": "Brannagh",
+            "text": "They'll ask you what you want tomorrow. The council. They'll ask you because they're frightened, and because they're tired of being the ones who decide. Don't let them make you their excuse."
+          },
+          {
+            "say": "Brannagh",
+            "text": "I'm in the chair, since there's nobody else who'll take it in this weather. I'll give you the floor. Use it.",
+            "when": {
+              "noneFlag": [
+                "elske_seat"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "elske",
+        "label": "Speak with Elske Marrow",
+        "requires": {
+          "flagsAny": [
+            "elske_seat",
+            "elske_free",
+            "elske_judged"
+          ]
+        },
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Provost Elske Marrow holds Merrowgate's seat, and this winter the council has given her its chair. She has taken the back room of the inn as an office, and she has the council's papers in four neat piles on the table, and she gives you the fifth chair.",
+                "when": {
+                  "flag": "elske_seat"
+                }
+              },
+              {
+                "narrate": "Elske Marrow has come up from Merrowgate's harbour hospice to the council, though she holds no seat. She came with a ledger: every volunteer the hospice nursed before a casting, since midsummer, and every one after. She is in the inn kitchen with it, out of the way.",
+                "when": {
+                  "flag": "elske_free"
+                }
+              },
+              {
+                "narrate": "Elske Marrow is in her cell at Highpass. Her letter came up the Briarwood road with the council's, addressed to you, on prison paper.",
+                "when": {
+                  "flag": "elske_judged"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Elske Marrow",
+                "text": "I chair a council that is about to ask you what to do. I would like you to notice that, and to think about who that makes you. I once asked a council to put one voice over all the wards. You told me no. You were right. Don't become what you stopped.",
+                "when": {
+                  "flag": "elske_seat"
+                }
+              },
+              {
+                "say": "Elske Marrow",
+                "text": "Thirty-one volunteers through the hospice since midsummer. Nineteen were in debt. Six were sick and would have died within the year. Four said yes to save someone else. Two I could not tell you why. I would like that read into the council's minutes before anyone asks for anything.",
+                "when": {
+                  "flag": "elske_free"
+                }
+              },
+              {
+                "say": "Elske Marrow",
+                "text": "They will ask you what the free wards should promise. I can tell you what I would have done: asked for everything at once, from everyone, by law. It would have worked for a winter. I have had a long time in a small room to think about what it would have cost after.",
+                "when": {
+                  "flag": "elske_judged"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "clue": "The first keepers held the Gloam back by each giving a little, all of them, one at a time. Aster Vey remembers them saying it: \"We gave a little, all of us, and it was enough.\" Briarwatch's oldest houses kept a hearth bell for it, as every house in Cinder Fold still does: each house once rang one for its giving.",
+    "investigate": {
+      "label": "Ask what the first keepers did, before there were bells to hold the Gloam",
+      "skill": "history",
+      "alt": [
+        "arcana",
+        "religion"
+      ],
+      "success": [
+        {
+          "oneOf": [
+            {
+              "narrate": "Tovin brings the oldest of the tower's bell-books down to Dera's bench, the one nobody can read any more, from before the tower was built. On its first page, in Aster Vey's own hand, from when she was Briarwatch's first keeper and not yet in any bell, there is a single line, set down as if somebody had said it to her and she did not want to forget.",
+              "when": {
+                "flag": "b3_bell_aster"
+              }
+            },
+            {
+              "narrate": "You go up into the tower at midnight, between the hours, and ask Aster Vey what the first keepers did, before there were any bells to hold the Gloam. She is quiet a long time. When she answers, it is in the voice she uses for things she has only just found again."
+            }
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "narrate": "\"They said: we gave a little, all of us, and it was enough.\"",
+              "when": {
+                "flag": "b3_bell_aster"
+              }
+            },
+            {
+              "say": "Aster Vey",
+              "text": "I was a girl. There was an old woman who kept the hearth bell in our house. At midwinter she took it down and rang it once, and sat by the fire for a while, very quiet, and then went to bed. I asked her what she had done. She said: we gave a little, all of us, and it was enough."
+            }
+          ]
+        },
+        {
+          "say": "Aster Vey",
+          "text": "I didn't know what she meant. I think I do now. I think I have been in a bell for two hundred years because somebody forgot what she meant.",
+          "when": {
+            "notFlag": "b3_bell_aster"
+          }
+        },
+        {
+          "say": "Tovin",
+          "text": "The hearth bells. The old houses on the Briarwood side. That's what they were for. Every house rang one, for whatever it gave. And then the tower went up, and the bell in it did it for everybody, and the houses stopped."
+        },
+        {
+          "say": "Tovin",
+          "text": "Every house in Cinder Fold still keeps one, Pim. Nessa told me once. Nobody there knows why either.",
+          "when": {
+            "party": "nessa"
+          }
+        },
+        {
+          "say": "Tovin",
+          "text": "Every house in Cinder Fold still keeps one. Nobody there knows why either.",
+          "when": {
+            "absent": "nessa"
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Tovin brings the oldest bell-book down to Dera's bench, from before the tower was built, and you sit over it until the candles are out. The hand is too old to read. You can make out one word, over and over, down the first page: gave."
+        }
+      ]
+    },
+    "route": {
+      "label": "Walk the watch line along the Briarwood edge before the council sits",
+      "skill": "survival",
+      "alt": [
+        "perception",
+        "athletics"
+      ],
+      "safe": false,
+      "success": [
+        {
+          "narrate": "You walk the whole watch line at dusk, from the mill to the old charcoal burners' clearing, with the watch captain, and learn where the frost comes out of the wood first: at the stream, where the ground is low, and along the old hedge, where the cold runs like water."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You walk the watch line at dusk and lose it in the snow past the mill, and come back in the dark with frost in your boots and your fingers white at the tips, and the watch captain says that happens to everyone once."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Go straight to the hall and wait for the council",
+      "text": "You go straight to the hall, where Aveline is still putting out chairs, and help her."
+    },
+    "approach": [
+      {
+        "narrate": "The council sits at dusk in Briarwatch's hall. Every seat is taken, and every bench along the walls, and the windows are full of faces from the square. Reeve Aveline has made a seating chart. Nobody is following it."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "Provost Elske Marrow is in the chair, with the council's papers in four neat piles.",
+            "when": {
+              "flag": "elske_seat"
+            }
+          },
+          {
+            "narrate": "Brannagh of Fenmere is in the chair, because nobody else would take it, with her stick across her knees."
+          }
+        ]
+      },
+      {
+        "narrate": "Outside, at the edge of the Briarwood, the watch is going out with its lanterns. You can see the line of them from the hall windows, small and yellow along the dark of the trees."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "An hour into the council, somebody at the window says the lanterns are going out."
+      },
+      {
+        "narrate": "They are. Not all at once: one at the stream, then two along the old hedge, then four. The frost has come out of the Briarwood all along the edge in one breath, white and low and moving, and there are shapes in it, and the watch line is a dozen people with hand-bells and lanterns and half of them are children who put their names down on a roster."
+      },
+      {
+        "narrate": "Pim is out there. He put himself down for every night, and tonight is a night."
+      },
+      {
+        "say": "orin",
+        "text": "Everyone who can walk, with me. Bring a light."
+      },
+      {
+        "say": "nessa",
+        "text": "The stream. It's coming up the stream, that's where it's low, I've seen it—"
+      },
+      {
+        "narrate": "The council is on its feet. Nobody knows whether to go out or to stay and finish deciding what to do about the Gloam."
+      }
+    ],
+    "peaceful": {
+      "label": "Hold the watch line with the village, lantern by lantern",
+      "skill": "survival",
+      "alt": [
+        "persuasion"
+      ],
+      "success": [
+        {
+          "narrate": "You know where the cold comes out first: at the stream, and along the old hedge. You put the steadiest people there.",
+          "when": {
+            "flag": "approach:b3-winter"
+          }
+        },
+        {
+          "narrate": "You do not fight it. You go out into the snow and call the village out after you, everyone with a light, and you build the watch line again, two to a lantern, so that when one goes out there is someone beside it to light it again."
+        },
+        {
+          "narrate": "The council comes too. Not all of it. Enough. A delegate from Ashford holding a lantern next to a woman from the Briarwood side whose name she does not know, and both of them ringing hand-bells, out of time."
+        },
+        {
+          "narrate": "Tovin rings the tower on the hour, and the hour after, and does not stop. Down at the stream, Pim rings his hand-bell a breath behind him, the way he always does, and the line takes the beat from him without anyone saying so."
+        },
+        {
+          "narrate": "By midnight the frost has gone back into the trees. Nobody is lost. Two of the children on the roster have white fingers, and Maren has them by the forge fire with their hands in warm water and is telling them that it hurts because it is getting better.",
+          "when": {
+            "party": "maren"
+          }
+        },
+        {
+          "narrate": "By midnight the frost has gone back into the trees. Nobody is lost. Two of the children on the roster have white fingers, and Dera has them by the forge fire with their hands in warm water.",
+          "when": {
+            "absent": "maren"
+          }
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You call the village out, and some come, and too many lanterns are already out. The shapes in the frost are along the hedge and at the stream, between the line and the houses, and they are walking up into the village as if they lived there."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Hold the watch line",
+      "label": "Hold the watch line at the Briarwood edge",
+      "description": "Four successful actions keep the frost-shapes off the watch line until the lanterns can be lit again along the edge.",
+      "skill": "survival",
+      "alt": [
+        "athletics",
+        "persuasion",
+        "performance"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The line breaks at the stream. The frost comes up as far as the mill before the tower bell turns it, and three houses on the Briarwood side are white to the eaves by morning, and the people in them cannot remember for an hour what their children are called.",
+      "successText": "The lanterns are lit again from the mill to the charcoal burners' clearing, and the frost goes back into the trees."
+    },
+    "foe": "b3-briarwood-frost",
+    "foeName": "The Briarwood Frost",
+    "enemyTheme": "gloam",
+    "attackName": "Rime Grasp",
+    "retainerName": "Frost-Shape of the Edge",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "Morning. The watch line is a row of trampled snow along the Briarwood edge, with spent lanterns standing in it, and the frost lying back under the trees where it belongs. Nobody was lost.",
+            "when": {
+              "flag": "method:b3-winter",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "Morning. The watch line is a row of trampled snow along the Briarwood edge, with broken lanterns in it and blood in two places, and three houses on the Briarwood side white to the eaves. Nobody died. Old Walt Reddin, who was on the line at the stream, does not know this morning which house is his, and his daughter is walking him round the village to show him."
+          }
+        ]
+      },
+      {
+        "narrate": "The council sits again at noon, in the same hall, with fewer chairs, because a dozen of its members are asleep at the inn with frost-burns. It asks you to speak."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "You swore your Second Oath to the council. So you speak to it as one of its own, and it listens as if you were.",
+            "when": {
+              "flag": "second_oath",
+              "is": "council"
+            }
+          },
+          {
+            "narrate": "You swore your Second Oath to Briarwatch. So you speak to the council in Briarwatch's hall as Briarwatch's, and Aveline stands at the back with her arms folded, and nods once.",
+            "when": {
+              "flag": "second_oath",
+              "is": "town"
+            }
+          },
+          {
+            "narrate": "You swore your Second Oath to the people who walk with you. So when the council asks you what the free wards should give, you speak for the party, because they are the ones who will go down the stair with you.",
+            "when": {
+              "flag": "second_oath",
+              "is": "companions"
+            }
+          },
+          {
+            "narrate": "You swore your Second Oath to no one. So the council is asking a free person what it should promise, and whatever you say, you will have to carry alone.",
+            "when": {
+              "flag": "second_oath",
+              "is": "none"
+            }
+          },
+          {
+            "narrate": "The council is asking the hero of the free wards what it should promise, and the hall is very quiet."
+          }
+        ]
+      },
+      {
+        "narrate": "There is something under the stair at Vell. The surveyors have not come back. Hesk is taking three hundred people down to it before the year turns. And the free wards know now what the first keepers did, if the council will believe it.",
+        "when": {
+          "flag": "prepared:b3-winter"
+        }
+      },
+      {
+        "narrate": "There is something under the stair at Vell. The surveyors have not come back. Hesk is taking three hundred people down to it before the year turns.",
+        "when": {
+          "notFlag": "prepared:b3-winter"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "say": "Elske Marrow",
+            "text": "Ask for what you need, and ask clearly. A council that is not told what it is promising will promise anything, and then keep none of it.",
+            "when": {
+              "flag": "elske_seat"
+            }
+          },
+          {
+            "say": "Brannagh",
+            "text": "Go on, then. Ask. They're frightened, and frightened people promise things. Mind what you make them promise."
+          }
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "id": "promise",
+        "label": "Ask the council to promise help for whatever is under the stair",
+        "description": "This decision is permanent. The free wards are bound to help with whatever you find. It will come quickly, and it will come as a duty.",
+        "text": [
+          {
+            "narrate": "You ask the council to promise, now, in Briarwatch's hall, that whatever is under the stair, the free wards will help with it: every town, when it is asked, with whatever it is asked for."
+          },
+          {
+            "narrate": "The council votes. It is not close. Frightened people promise things, and this hall was frightened last night."
+          },
+          {
+            "say": "Brannagh",
+            "text": "There. It's promised. It'll come quickly, when you ask. You'll want to remember it was promised by people who'd just been out in the snow with lanterns."
+          },
+          {
+            "narrate": "By the spring, though nobody knows it yet, the council will have written the promise into a law, and the law will say that giving is a duty, and some will give because they are told to."
+          }
+        ],
+        "rep": {
+          "wardens": 1
+        },
+        "flag": "b3_wards_promise"
+      },
+      {
+        "id": "towns",
+        "label": "Ask each town yourself, in person, when it comes to it",
+        "description": "This decision is permanent. Nobody is bound tonight. Every giver will be asked in person, and it will be slower.",
+        "text": [
+          {
+            "narrate": "You tell the council you will not ask it for a promise. Whatever is under the stair, if it needs the free wards, you will come to each town and ask its people yourself, face to face, and they can say yes or no to you."
+          },
+          {
+            "say": "Reeve Aveline",
+            "text": "That'll take a winter. There are a hundred towns."
+          },
+          {
+            "narrate": "It will. The council knows it. Some of the delegates are relieved, and do not hide it, and some are angry, and do not hide that either. The delegate from Ashford writes something down and folds it into her coat."
+          },
+          {
+            "say": "Brannagh",
+            "text": "Slower. Every one of them asked. Well. I've been asked for things by councils all my life. I don't think anyone has ever come to my door."
+          }
+        ],
+        "rep": {
+          "trade": 1
+        },
+        "flag": "b3_towns_asked"
+      },
+      {
+        "id": "alone",
+        "label": "Ask nothing of anyone: go down alone",
+        "description": "This decision is permanent. No town is bound to the stair. Whatever you find, the free wards will start from nothing.",
+        "text": [
+          {
+            "narrate": "You tell the council you are not asking it for anything. You will go down the stair with the people who walk with you and see what is there. No town is bound to it, and no town owes it anything."
+          },
+          {
+            "narrate": "The hall is quiet for a long time."
+          },
+          {
+            "say": "Reeve Aveline",
+            "text": "If it needs us, after, we'll be starting from nothing."
+          },
+          {
+            "narrate": "You know. So does she. She writes it down anyway, so that it is written down."
+          },
+          {
+            "say": "orin",
+            "text": "Then we'll go down with nothing to sell. That's a thing, with Hesk's three hundred. They've all been sold something."
+          }
+        ],
+        "rep": {
+          "wilds": 1
+        },
+        "flag": "b3_go_alone"
+      }
+    ]
+  },
+  "b3-company": {
+    "id": "b3-company",
+    "book": 3,
+    "part": 2,
+    "name": "Hesk's Company",
+    "level": 36,
+    "town": "vell",
+    "unlock": "b3-winter",
+    "nextTown": "vell",
+    "together": true,
+    "xp": 10750,
+    "gold": 760,
+    "region": "Vell: the drill-yard, the iron vault beneath it, and the round iron door in the vault floor",
+    "threat": "Commander Idris Hesk is bringing three hundred volunteers down the Iron Road to the iron door under Vell's vault, which Cass Ord's surveyors left open in the summer. He means to take them all the way down.",
+    "faction": "wardens",
+    "brief": "The same midwinter. The iron door in the floor of Vell's vault is standing open, and the three surveyors who opened it have not come back. Hesk is coming down the Iron Road with three hundred people who have said yes to something, and he means to take them through it.",
+    "opening": [
+      {
+        "oneOf": [
+          {
+            "narrate": "Vell is empty. The iron gates stand open because there is nobody left to shut them, and the snow lies a foot deep in the drill-yard, unmarked, all the way across. On the casting wall the chalked names have run in the wet and been rewritten, by someone, in a careful hand. A few lamps are lit along the gate road: Mags Peller has sent six of her lamplighters over the pass to keep them, so that the city is not quite dark.",
+            "when": {
+              "flag": "b3_bell_evacuate"
+            }
+          },
+          {
+            "narrate": "Vell in midwinter: iron gates, a drill-yard the size of a village under snow, and the ring of mist lying outside the walls where it has lain all year. Inside, the city is quiet in a way it was not in the spring. People go along the streets close to the walls, and do not stop to talk."
+          }
+        ]
+      },
+      {
+        "narrate": "Clerk-Major Fennick meets you at the gate with his writing-board and his census box under his arm. He processes you, name and town and purpose, on the proper form, and then he takes you straight down to the vault without a word about anything else."
+      },
+      {
+        "narrate": "Old Oswin Pike, the sergeant-at-keys, is at the foot of the vault stair with his lamp. He has kept the vault's three keys for more than thirty years. He has not needed them since the autumn. The round iron door in the vault floor, the one nobody in Vell built, is standing open, and the cold is coming up out of it like breath."
+      },
+      {
+        "say": "Oswin Pike",
+        "text": "I never saw them. The morning after they took the Commander at the foot of the pass, I came down and the vault was open and that door was open, and three pairs of boots going down in the chalk. My keys were on my belt. Nobody's come up. I've kept a lamp at the top for them every night since."
+      },
+      {
+        "narrate": "The round key went into Captain Sorrel's custody ledger at Highpass with the rest of Hesk's effects. Somebody took it out of the council's strongbox, and it came to Cass Ord, and she sent three surveyors down with it to find where the copies of the rite came from. Fennick has their names now, from the Hall's own papers."
+      },
+      {
+        "narrate": "And Hesk is coming. His company is on the Iron Road, a day out, three hundred people in a column in the snow, with hired men at the front and the back."
+      },
+      {
+        "oneOf": [
+          {
+            "narrate": "They are the inland buyers' volunteers: people from towns where the Lantern Hall sold castings after Merrowgate shut its harbour to them, where nobody witnessed anything. Fennick has their names from the Hall's own lists. He says a good many of them are the same few surnames.",
+            "when": {
+              "flag": "b3_market_shut"
+            }
+          },
+          {
+            "narrate": "They are witnessed volunteers, every one. Each of them sat across a table from somebody and said yes, and was heard, and has the paper to show for it. Fennick has the papers' numbers. He says that this is the part he cannot get past.",
+            "when": {
+              "flag": "b3_market_ruled"
+            }
+          },
+          {
+            "narrate": "Hardly any of them are from Merrowgate's docks. The harbour's debts were cleared in the autumn, and the docks had nothing left to sell. They are from everywhere else.",
+            "when": {
+              "flag": "b3_debts_bought"
+            }
+          },
+          {
+            "narrate": "They are from every town the Lantern Hall has sold to since the summer. Fennick has their names from the Hall's own lists."
+          }
+        ]
+      },
+      {
+        "narrate": "Captain Odell Varn is in the column, Fennick's outriders say, near the back, with forty of the recruits he found on Saltwick's roofs.",
+        "when": {
+          "flag": "b3_varn_freed"
+        }
+      },
+      {
+        "narrate": "In the vault itself, the thirty-one iron bells are still in their rows, still bound, as they have been since the night they held the walls. Hesk's quartermaster came ahead of the column with sledges and rope, and has written on each one in chalk: down.",
+        "when": {
+          "flag": "b3_vault_held",
+          "notFlag": "b3_rite_law"
+        }
+      },
+      {
+        "narrate": "Fennick puts his census box on the vault floor beside the open door, and opens it, and takes out a fresh ledger."
+      },
+      {
+        "say": "Fennick",
+        "text": "I counted them into the city. I shall count them down the stair. I intend to count them back up."
+      }
+    ],
+    "talks": [
+      {
+        "id": "fennick",
+        "label": "Sit with Fennick by his census box",
+        "lines": [
+          {
+            "narrate": "Fennick has set up a trestle on the vault floor, six paces from the door, with a lamp and an inkstand and the box."
+          },
+          {
+            "say": "Fennick",
+            "text": "Three surveyors. Their names are on the first line. Hob Ansty, Dorran Wey, Marit Cole. I had them from the Hall's own papers in the autumn. I have left the line open for the time they came up."
+          },
+          {
+            "say": "Fennick",
+            "text": "I have carried this box over the pass and back twice. Every name in it is somebody Vell lost. I have never once been able to write in it the other way: came back. I would like to, before I die. I would like it to be three hundred and three."
+          },
+          {
+            "say": "Fennick",
+            "text": "I am coming down with you. That is not a request. Somebody has to count."
+          }
+        ]
+      },
+      {
+        "id": "corvane",
+        "label": "Find Corvane",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Corvane is in the vault already, at a small table by the door, with his ledger of the lost open in front of him. The council left him the names, and he has kept them. He means to write down every one of the three hundred as they go through.",
+                "when": {
+                  "flag": "b3_corvane_keeper"
+                }
+              },
+              {
+                "narrate": "Corvane is in the empty city with a handful of his clerks, in the old census hall, with every window shuttered and the stove lit. His own people left him to himself, as he asked, and these few stayed.",
+                "when": {
+                  "flag": "b3_corvane_vell",
+                  "anyFlag": [
+                    "b3_bell_evacuate"
+                  ]
+                }
+              },
+              {
+                "narrate": "Corvane is in the census hall with his clerks. His own people left him to himself, as he asked. Vell has not forgiven him and has not tried him, and he goes about the city in a plain coat, and people step round him.",
+                "when": {
+                  "flag": "b3_corvane_vell"
+                }
+              },
+              {
+                "narrate": "Corvane is in a cell at Highpass, judged. His letter came to the gate the day before you did, addressed to you, on the council's paper.",
+                "when": {
+                  "flag": "b3_corvane_judged"
+                }
+              },
+              {
+                "narrate": "Corvane is not in the vault. Fennick says the High Warden has kept to his rooms all winter, and has left word that he will see you, if you go up."
+              }
+            ]
+          },
+          {
+            "say": "Corvane",
+            "text": "I cast every bell in this city with my own hands. Every one. I stood at the pit and said the words off Sable's paper, and I watched each of them go into the bronze."
+          },
+          {
+            "say": "Corvane",
+            "text": "I will not do it again. I have told the council so, and Hesk so, and I am telling you. Not for any law. I have done it enough times to know what it is, and I will not do it again."
+          },
+          {
+            "say": "Corvane",
+            "text": "Hesk stood beside me at every casting. He held the lamp. He learned it there, standing where I stood. He is the only one left who has done it and is willing to do it again. You should know that about the man coming down the road."
+          },
+          {
+            "say": "Corvane",
+            "text": "If you see the surveyors down there, I would like their names. For the ledger. Whichever way it goes.",
+            "when": {
+              "flag": "b3_corvane_keeper"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ysolde",
+        "label": "Talk to Ysolde Carr",
+        "requires": {
+          "flagsNone": [
+            "b3_bell_cast"
+          ]
+        },
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Ysolde Carr came back over the pass in the autumn with Fennick's clerks to help him count the empty city. Jory and Wil are at Briarwatch, in the fields, at school in the afternoon sitting.",
+                "when": {
+                  "flag": "b3_bell_evacuate"
+                }
+              },
+              {
+                "narrate": "Ysolde Carr works in the nurseries under the casting yard, where it is warmest, with the children whose parents went on the wall. She comes up to the vault when she hears you are there."
+              }
+            ]
+          },
+          {
+            "say": "Ysolde Carr",
+            "text": "Three hundred. I keep thinking I would have been one of them. Not would have. Was. I was first on the wall. If it had gone another way I would be walking down that road tonight, and I would be glad."
+          },
+          {
+            "say": "Ysolde Carr",
+            "text": "People keep telling me I was talked into it. I wasn't. I talked myself into it, every night, for a year. That's worse, isn't it. You can't talk somebody out of something they did themselves."
+          },
+          {
+            "say": "nessa",
+            "text": "You can. I— somebody can. You did. You're here."
+          },
+          {
+            "say": "Ysolde Carr",
+            "text": "I'm here because of a lot of things that weren't me. That's what I want to tell them. That it wasn't them deciding, either, not all of it. I don't know if they'd hear it from me.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Ysolde Carr",
+            "text": "I'm here because of a lot of things that weren't me, Nessa. That's what I want to tell them. I don't know if they'd hear it from me.",
+            "when": {
+              "party": "nessa"
+            }
+          }
+        ]
+      },
+      {
+        "id": "volunteer",
+        "label": "Walk out along the Iron Road to meet the head of the column",
+        "lines": [
+          {
+            "narrate": "The column's outriders let you through to the van, because Hesk has given orders that anyone who wants to talk may, and that nobody is to be stopped from leaving. A woman walking near the front falls in beside you. She is perhaps forty, with a carter's hands and a scarf over her mouth against the cold. Her name is Lise Bracken."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Lise Bracken",
+                "text": "Tarn Cross. The Hall sold the town a casting in the autumn and the town picked me, because I've no children and my husband's dead, and they'd have picked somebody. Nobody witnessed it. Nobody asked me anything except whether I could be ready by the Thursday.",
+                "when": {
+                  "flag": "b3_market_shut"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "Tarn Cross. I sat with the witness for an hour and she said it was true, and it was. I've the paper. It's in my coat. I wanted to go. I still want to go. I want you to know that before you start.",
+                "when": {
+                  "flag": "b3_market_ruled"
+                }
+              },
+              {
+                "say": "Lise Bracken",
+                "text": "Tarn Cross. I came because I said I would. The Hall sold the town a casting, and I said yes, and I don't go back on things."
+              }
+            ]
+          },
+          {
+            "say": "Lise Bracken",
+            "text": "The Commander came to Tarn Cross himself. He said there's a place at the bottom, under all of it, where the bells came from. He said one casting there, all of us at once, would hold every town in the free wards for a lifetime. Not one town. All of them. He said it once and didn't try to sell it."
+          },
+          {
+            "say": "Lise Bracken",
+            "text": "I believe him. That's the thing. I've been sold things. This isn't that. He believes it, and I believe him, and I'd rather go into the bronze once for everyone than wait in Tarn Cross for the white to come up the lane."
+          },
+          {
+            "narrate": "She walks on with the column. She does not look back."
+          }
+        ]
+      }
+    ],
+    "clue": "Hesk's written orders, in his own hand: the company goes down together, all three hundred, to the bottom, \"where the copies came from\", and the casting is made there, once, around all of them at the same time.",
+    "investigate": {
+      "label": "Find Hesk's written orders in the quartermaster's wagon",
+      "skill": "investigation",
+      "alt": [
+        "insight",
+        "stealth"
+      ],
+      "success": [
+        {
+          "narrate": "Hesk's quartermaster came ahead of the column with the sledges, and his wagon is in the drill-yard under a tarpaulin. The orders are in a leather case under the seat, in Hesk's square hand, signed and dated."
+        },
+        {
+          "narrate": "The company goes down the stair together. Nobody is cast on the way. At the bottom, \"where the copies came from\", the casting is made once, around all three hundred at the same time, in a single circle. The rite to be read from the copy carried by the Commander. The circle to be drawn to the measurements in the Commander's book."
+        },
+        {
+          "narrate": "In the margin, in the same hand, smaller: Ord's surveyors used the same words. She thinks there is an original at the bottom. So do I. If one bell holds a street, and four hundred hold a city, what holds a country?"
+        },
+        {
+          "say": "Fennick",
+          "text": "He has done the arithmetic. He has always done the arithmetic. That has always been what is wrong with him."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The quartermaster's wagon is in the drill-yard under a tarpaulin, with a hired man sitting on the tail of it. You get as far as a leather case under the seat and the words \"where the copies came from\" before he turns round, and you have to go."
+        }
+      ]
+    },
+    "route": {
+      "label": "Go down into the iron vault and hold the floor before the company arrives",
+      "skill": "stealth",
+      "alt": [
+        "athletics",
+        "perception"
+      ],
+      "safe": false,
+      "success": [
+        {
+          "narrate": "You go down the vault stair at dusk, before the column reaches the gate, and find places on the vault floor along the walls where the lamplight does not reach: behind the rows of iron, behind Fennick's trestle, in the arch at the foot of the stair. When Hesk's men come down they see Fennick and Pike and nobody else."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You go down the vault stair at dusk and are halfway across the floor when the first of Hesk's hired men come down behind you with lanterns. They see you. They do not stop you. They send a man back up the stair to tell the Commander you are there, and you hear him go."
+        }
+      ]
+    },
+    "direct": {
+      "label": "Stand by the iron door and wait for Hesk",
+      "text": "You go down the vault stair and stand by the open iron door, beside Fennick and his box, and wait for Hesk to come down."
+    },
+    "approach": [
+      {
+        "narrate": "The company comes through the gate after dark. You can hear it from the vault: three hundred people crossing the drill-yard in the snow, and nobody talking."
+      },
+      {
+        "narrate": "They come down the vault stair in ranks of four, between hired men with lanterns, and fill the vault floor from the door to the stair. The front ranks stand at the rim of the iron door with the cold coming up past their faces. The rear ranks are still on the stair."
+      },
+      {
+        "narrate": "Commander Idris Hesk comes down last, and walks the length of them to the door, and turns round."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "Nobody is made to go down. I have said that in every town, and I will say it here. Anyone who wants to go home, go home now, and nobody will stop you, and nobody will think less of you. I will not think less of you."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "The rest of you, with me. It is a long way down. I would like to be at the bottom before the year turns."
+      },
+      {
+        "narrate": "Nobody goes home."
+      }
+    ],
+    "crisis": [
+      {
+        "narrate": "Hesk's hired guard closes up round the iron door, twenty of them, sellswords and Lantern Hall men in good coats, with halberds. The front ranks begin to go down, four at a time, into the dark."
+      },
+      {
+        "narrate": "The rear ranks are behind you, on the vault floor and the bottom of the stair, two hundred people, waiting their turn. They are close enough to hear you if you speak. They have been told a great many things by a great many people since the summer."
+      },
+      {
+        "narrate": "Fennick is writing. He does not look up. Every four who go through the door, he makes a mark."
+      },
+      {
+        "say": "orin",
+        "text": "If we're going to say something, it has to be now."
+      },
+      {
+        "say": "maren",
+        "text": "Not to Hesk. He's decided. To them."
+      }
+    ],
+    "peaceful": {
+      "label": "Make the rear ranks hear you before they reach the door",
+      "skill": "persuasion",
+      "alt": [
+        "intimidation",
+        "performance"
+      ],
+      "easierWith": {
+        "flag": "b3_go_alone",
+        "reason": "Coming down with nothing to sell lowers DC by 2"
+      },
+      "success": [
+        {
+          "narrate": "You climb onto Fennick's trestle, so that the back of the vault can see you, and you speak to the rear ranks, not to Hesk."
+        },
+        {
+          "oneOf": [
+            {
+              "narrate": "You tell them you have nothing to offer them. No council has promised you anything. No town has sent you. You came down with the people who walk with you, and that is all, and you are asking them only to stop and think for as long as it takes to count to a hundred.",
+              "when": {
+                "flag": "b3_go_alone"
+              }
+            },
+            {
+              "narrate": "You tell them the free wards have promised help for whatever is down there, all of them, every town, and that nobody has to go into the bronze to make it hold. You can see some of them hear the word promised, and you can see what they have been promised before.",
+              "when": {
+                "flag": "b3_wards_promise"
+              }
+            },
+            {
+              "narrate": "You tell them you will go to every one of their towns yourself, when this is done, and ask every one of their neighbours in person. You can see some of them believe it, and some think it is one more thing somebody has come to their town to say.",
+              "when": {
+                "flag": "b3_towns_asked"
+              }
+            },
+            {
+              "narrate": "You tell them that nobody knows what is at the bottom. Not Hesk. Not the Hall. Not you."
+            }
+          ]
+        },
+        {
+          "narrate": "You tell them what is in Hesk's orders: one circle, all of them at once, at a place none of them has seen, to the measurements in a book. You tell them that the surveyors who went down first have not come up.",
+          "when": {
+            "flag": "prepared:b3-company"
+          }
+        },
+        {
+          "narrate": "You tell them that a yes they gave in a town in the autumn does not have to be the yes they give at the bottom of a stair. That they can say it again down there, or not say it, and that either one is theirs."
+        },
+        {
+          "narrate": "They hear you. Not all of them stop. But the rear ranks stop pressing forward, and the people at the bottom of the stair sit down where they are, on the steps, to think. The hired guard cannot push two hundred seated people down a hole, and does not try."
+        },
+        {
+          "narrate": "Lise Bracken is in the third rank from the door. She looks back at you once, and then she goes down."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "You speak, and they listen politely, the way people listen to the eleventh person this year who has come to tell them what to do. Then the hired guard begins to move the rear ranks forward, and the front of the guard turns its halberds toward the trestle you are standing on."
+        }
+      ]
+    },
+    "objective": {
+      "name": "Reach the iron door",
+      "label": "Break through the hired guard to the iron door",
+      "description": "Four successful actions break through Hesk's hired guard to the rim of the iron door before the last of the front ranks go down.",
+      "skill": "athletics",
+      "alt": [
+        "intimidation",
+        "persuasion",
+        "acrobatics"
+      ],
+      "target": 4,
+      "deadline": 7,
+      "failText": "You reach the rim of the door late, over the hired guard, with the last of the front ranks gone down and the rear ranks pushed down after them in the crush. Fennick's marks run off the edge of the page.",
+      "successText": "You break through the hired guard to the rim of the iron door, with the rear ranks behind you still on the vault floor."
+    },
+    "foe": "b3-door-guard",
+    "foeName": "Hesk's Hired Guard",
+    "enemyTheme": "soldier",
+    "attackName": "Halberd Sweep",
+    "retainerName": "Lantern Hall Sellsword",
+    "after": [
+      {
+        "oneOf": [
+          {
+            "narrate": "You reach the iron door with the rear ranks behind you, sitting on the vault floor and the stair, and nobody hurt.",
+            "when": {
+              "flag": "method:b3-company",
+              "is": "peace"
+            }
+          },
+          {
+            "narrate": "You reach the iron door over the hired guard. There are men down on the vault floor, and blood on the rim of the door, and the rear ranks pressed back against the walls, and some of them were pushed down the stair in the crush and did not mean to go."
+          }
+        ]
+      },
+      {
+        "narrate": "Captain Odell Varn is at the rim, with forty of his recruits from the roofs behind him. He stops there, and turns round to them, and says something you cannot hear. They turn round. They go back up the vault stair, forty of them, in a line, past the hired guard, and the hired guard lets them.",
+        "when": {
+          "flag": "b3_varn_freed"
+        }
+      },
+      {
+        "say": "Odell Varn",
+        "text": "Stoneward. I gave the order. The other way, this time. Tell Mags.",
+        "when": {
+          "party": "orin",
+          "flag": "b3_varn_freed"
+        }
+      },
+      {
+        "say": "Odell Varn",
+        "text": "Tell Stoneward I gave the order. The other way, this time.",
+        "when": {
+          "absent": "orin",
+          "flag": "b3_varn_freed"
+        }
+      },
+      {
+        "narrate": "Varn goes up after them. He does not look back at the door.",
+        "when": {
+          "flag": "b3_varn_freed"
+        }
+      },
+      {
+        "narrate": "The thirty-one iron bells are gone from their rows. The sledge-tracks run across the vault floor to the rim of the door and over it.",
+        "when": {
+          "flag": "b3_vault_held",
+          "notFlag": "b3_rite_law"
+        }
+      },
+      {
+        "narrate": "And Hesk is at the door. He has waited for you. He stands on the first step below the rim with a lantern, with the last of his front ranks below him on the stair, and the cold coming up round him."
+      },
+      {
+        "say": "Idris Hesk",
+        "text": "You came. You always do. You beat me on a road, and I went down the road anyway. Come down and see what it costs, at the bottom. Then tell me there's another way."
+      },
+      {
+        "narrate": "He goes down. The last of the hired guard close the stair behind him with their halberds, and go down after him, backward, step by step, until the lantern-light is gone and there is only the cold coming up out of the dark, and the sound of a great many people going down a stair, a long way below."
+      },
+      {
+        "narrate": "Fennick has stopped writing. He looks at his page for a long time, and then he writes one more line, and blots it, and closes the ledger."
+      },
+      {
+        "say": "Oswin Pike",
+        "text": "The door. You'll want to decide about the door before you go. It opens from this side and it closes from this side. I've no orders. I've never had orders for it."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "keep",
+        "label": "Keep the door open behind you, for the way back",
+        "description": "This decision is permanent. The door is held open for whoever comes back up. While you are below, the Gloam will come up the open stair.",
+        "text": [
+          {
+            "narrate": "You tell Pike to keep it open. Whoever comes back up this stair, Hesk's people or the surveyors or you, there will be a door at the top."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "There is no watch left in Vell to hold it. Fennick's clerks will hold it, and Mags's six lamplighters, with lamps along the rim, day and night, until you come up.",
+                "when": {
+                  "flag": "b3_bell_evacuate"
+                }
+              },
+              {
+                "narrate": "Vell's watch will hold it, a dozen at a time, with lamps along the rim, day and night, until you come up."
+              }
+            ]
+          },
+          {
+            "say": "Oswin Pike",
+            "text": "It'll come up. The cold. With the door open and nobody below to ring it back, it'll come up the stair like water up a well, and the drill-yard's the first thing it'll reach. I'm telling you so it's been said."
+          },
+          {
+            "narrate": "You know. You go down at first light, with Fennick and his box, and behind you on the rim the lamps are lit in a ring."
+          }
+        ],
+        "flag": "b3_door_kept"
+      },
+      {
+        "id": "close",
+        "label": "Close the door behind you",
+        "description": "This decision is permanent. Nothing comes up after you. The only way back is up through Cinder Fold's lid, the long way, for everyone below.",
+        "text": [
+          {
+            "narrate": "You tell Pike to close it behind you, once you are through. Nothing comes up after you. Nothing comes up at all."
+          },
+          {
+            "say": "Oswin Pike",
+            "text": "Then the only way out is the other end. Under Cinder Fold, they say. Under the lid. It's a long way round, from the bottom, and you'd be bringing everybody with you that way."
+          },
+          {
+            "narrate": "You know. You go down at first light, with Fennick and his box. Above you the round iron door comes down, slowly, on its old hinge, and Pike turns the three keys in it one after another, and the last of the light goes."
+          }
+        ],
+        "flag": "b3_door_closed"
+      }
+    ]
   }
 }
