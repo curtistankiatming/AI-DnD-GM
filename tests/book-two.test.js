@@ -260,15 +260,16 @@ test('starting a fight tells only the version of the vote this hero lived throug
   const hearing = act(atCrisis('oath', { vote_elske_lost: true }), { type: 'story-choice', choiceId: 'objective' }).state;
   assert.match(hearing.combat.intro, /She was never Warden/);
   assert.doesNotMatch(hearing.combat.intro, /lawful Warden|We recalled her/);
-  assert.equal(ENEMIES['elske-marrow'].name, 'Elske Marrow', 'Her title is not in the enemy list on routes that never granted it.');
+  assert.doesNotMatch(ENEMIES['single-note'].name, /Warden/, 'Her title is not in the enemy list on routes that never granted it.');
+  assert.equal(ENEMIES['elske-marrow'], undefined, 'The hearing never makes Elske herself the enemy.');
 });
 
 test('if the bell-rope was locked away, the hearing is about the key, not a hanging rope', () => {
   const opening = (flags) => E.buildView(atCrisis('oath', flags)).scene.opening;
   const silenced = opening({ vote_elske_lost: true, mother_silenced: true });
   assert.match(silenced, /only key is in your pocket/);
-  assert.doesNotMatch(silenced, /standing between her and the bell-rope/);
-  assert.match(opening({ vote_elske_lost: true, mother_chorus: true }), /standing between her and the bell-rope/);
+  assert.doesNotMatch(silenced, /getting to the bell first/);
+  assert.match(opening({ vote_elske_lost: true, mother_chorus: true }), /getting to the bell first/);
   assert.doesNotMatch(QUESTS.oath.objective.label, /rope/);
 });
 
@@ -290,12 +291,12 @@ test('keeping the receipts costs 60 gold, and the rest of the Sallows stays dark
 });
 
 // Third Codex review of Book Two (docs/reviews/codex-bard-book-two-third-run-2026-11-19.md).
-test('with the rope locked away, the hearing shows how Elske could still ring the bell', () => {
+test('with the rope locked away, the hearing shows how the bell could still ring', () => {
   const s = atCrisis('oath', { vote_elske_lost: true, mother_silenced: true });
-  assert.match(E.buildView(s).scene.opening, /forge hammer.*ladder/s);
+  assert.match(E.buildView(s).scene.opening, /hum, with no rope on it.*ladder/s);
   const failed = act(s, { type: 'story-choice', choiceId: 'resolve' }, () => 0).state;
   assert.ok(failed.combat?.active);
-  assert.match(failed.story.lastOutcome.text, /starts up the ladder/);
+  assert.match(failed.story.lastOutcome.text, /get up the ladder/);
   assert.doesNotMatch(failed.story.lastOutcome.text, /only key is in your pocket/, 'The fight starts at the climb, without retelling the scene before it.');
 });
 
@@ -356,11 +357,11 @@ test('a peaceful ending never credits a lead the hero skipped', () => {
   assert.match(bell(false), /never found what the founders wrote/);
 });
 
-test('talking Elske down with the rope locked away keeps her at the ladder', () => {
+test('talking Elske down with the rope locked away looks up at the beam, not a rope', () => {
   const s = atCrisis('oath', { vote_elske_lost: true, mother_silenced: true, 'prepared:oath': true, 'approach:oath': true }); s.player.inspirationPrepared = true; s.player.abilities.cha = 30;
   const text = act(s, { type: 'story-choice', choiceId: 'resolve' }).state.story.lastOutcome.text;
-  assert.match(text, /foot of the ladder/);
-  assert.doesNotMatch(text, /stands by the rope/);
+  assert.match(text, /great beam/);
+  assert.doesNotMatch(text, /humming bell/);
 });
 
 // Fifth Codex review: a fresh bard from level 1 to 21 (docs/reviews/codex-bard-level1-21-2026-11-20.md).

@@ -1478,6 +1478,16 @@
             "text": "Fenmere has two halves. The upper village on the rise, the lower village by the water. The mist came into the lower fields four days ago. Our keeper says the ward will hold the lower village a week. Our keeper is an optimist. I've told her so."
           },
           {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter well. You left us a water council, one keeper for each bank, and I'm the village side. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
+            "when": {"flag": "marsh_council"}
+          },
+          {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter well. Ashford's engineers still come out every month to look at the pump, and send us the bill. Ashford is very reliable about bills.",
+            "when": {"flag": "marsh_engineers"}
+          },
+          {
             "say": "nessa",
             "text": "What's the goat's name?",
             "when": {
@@ -1611,11 +1621,11 @@
       "success": [
         {
           "say": "Brannagh",
-          "text": "Fenmere consents. I'd like it noted Fenmere consented first."
+          "text": "Fenmere consents. First, if anybody's counting."
         },
         {
           "say": "Iona",
-          "text": "Ashford consents. Note that too."
+          "text": "Ashford consents. Second. Somebody write it down."
         },
         {
           "narrate": "Aveline, Sorrel and Elske say it together. The ward catches the five voices and rings with all of them, and the note goes down the pass like a wave pushing back the tide. The shapes in the mist come apart into frost, and the frost melts."
@@ -1697,7 +1707,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "Well. We didn't agree on anything, and we're all still alive. I'd like that noted.",
+        "text": "Well. We didn't agree on anything, and we're all still alive. At my age you take what you're given.",
         "when": {
           "flag": "method:chairs",
           "is": "force"
@@ -1717,13 +1727,6 @@
       {
         "say": "Elske",
         "text": "Fenmere's help leaves at first light. It should have left three days ago. I'll say it once and then I'll stop: a council that needs a mist at the door to agree on anything will always agree one day late. When the council sits again, Merrowgate will make a proposal. I'd like you all to read it before you hate it."
-      },
-      {
-        "say": "maren",
-        "text": "She means that too.",
-        "when": {
-          "party": "maren"
-        }
       },
       {
         "narrate": "Then the room argues, for the last time today, about who pays for Fenmere."
@@ -2154,6 +2157,18 @@
       {
         "say": "Dera",
         "text": "That's worth a free strap. Go on."
+      },
+      {
+        "narrate": "On the Ashford road you pass two of the seed-wagon drivers from the tollhouse. They have told everyone in three villages about the toll money you gave back, and they tell you about it again, in case you missed it.",
+        "when": {
+          "flag": "road_restitution"
+        }
+      },
+      {
+        "narrate": "On the Ashford road the caravan escort you paid for at the tollhouse rides past, four riders with a wagon of seed behind them. Their sergeant salutes Orin, and Orin salutes back before he can stop himself.",
+        "when": {
+          "flag": "road_escort"
+        }
       },
       {
         "narrate": "Tovin is at the bell tower with his apprentice, Pim, who is fourteen and has read every book on bell-keeping in Briarwatch, both of them, several times."
@@ -2920,20 +2935,6 @@
         "narrate": "Nobody says anything for a long time. Then the hall starts talking all at once, and does not stop until well after midnight."
       },
       {
-        "say": "maren",
-        "text": "Every word true.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
-        "say": "orin",
-        "text": "That's what bothers me.",
-        "when": {
-          "party": "maren"
-        }
-      },
-      {
         "narrate": "In the end the auctioneer, who has a share of the price and can count a room, asks the council what it wants done with the bell."
       }
     ],
@@ -2968,7 +2969,7 @@
           },
           {
             "say": "Brannagh",
-            "text": "Fenmere wants it noted that it bought a harbour."
+            "text": "Fenmere has bought a harbour. Nobody at home is going to believe me."
           }
         ],
         "rep": {
@@ -3082,10 +3083,6 @@
           {
             "say": "Aveline",
             "text": "Highpass is for it too. Sorrel sent word. She's had three hundred refugees under her wall since the spring, and she says she'd vote for a goat if it could ring a bell on time."
-          },
-          {
-            "say": "Brannagh",
-            "text": "My goat is not available."
           },
           {
             "say": "Aveline",
@@ -3358,6 +3355,9 @@
       },
       {
         "narrate": "Hollin's Reach was a market town of four thousand people. It is black now: walls without roofs, chimneys without houses. In the middle of it, the council house still stands, and in its tower the ward-bell still hangs. A thin grey mist lies in the streets, not moving, the way water lies in a bowl."
+      },
+      {
+        "narrate": "The Gloam came up the river road first, and the fire came behind it: lamps and hearths left burning in houses whose people had forgotten they were there, and doors left open by people who had forgotten why you shut them."
       },
       {
         "say": "Elske",
@@ -3764,10 +3764,6 @@
         "when": {
           "notItem": "silver-chime"
         }
-      },
-      {
-        "say": "maren",
-        "text": "A ward on the council. Aveline will need a fourth bag."
       }
     ],
     "talks": [
@@ -4003,25 +3999,25 @@
     "region": "Briarwatch, at midwinter",
     "threat": "The council votes on Elske's Warden of the Chorus at Briarwatch. Somebody is paying people to make sure Briarwatch's own town meeting never gets to decide how its delegate votes.",
     "faction": "wardens",
-    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs four towns of five. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
+    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs two-thirds of the towns that vote: four, if all five do. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
     "opening": [
       {
         "narrate": "Briarwatch at midwinter is the same as ever, only more so. There is snow on the bell tower. Dera's forge is the warmest place in the village, so the whole village is in it."
       },
       {
         "say": "Dera",
-        "text": "Back again. Twice in a year. People will talk. They are talking. Mostly about the goat."
+        "text": "Back again. Twice in a year. You'll want to know what I think of Elske's Warden. I think it took the council three days to send carts to Fenmere, and I could have shod a horse every hour of them. Don't tell Tovin I said so. He's voting no, and he's earned it."
       },
       {
         "narrate": "The council has taken over the inn. Elske has the corner table, and is writing letters to every delegate she has already won, thanking them, which is either very gracious or very thorough."
       },
       {
         "say": "Aveline",
-        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs four towns of five. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
+        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs two-thirds of the towns that vote. All five voting, that's four. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
       },
       {
         "say": "Aveline",
-        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her."
+        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her, and she has to vote. And if the meeting can't vote at all, Briarwatch doesn't count, three of four is two-thirds, and nobody needs to ask Fenmere anything."
       },
       {
         "say": "Brannagh",
@@ -4117,7 +4113,7 @@
         }
       }
     ],
-    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, and the council can pass the Warden on three towns' word plus Fenmere's. The carters' purse came from the Lantern Hall.",
+    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, the charter counts only the four towns that voted, and the three that are already for it carry the Warden without Fenmere. The carters' purse came from the Lantern Hall.",
     "investigate": {
       "label": "Ask around the inn about the strangers who arrived this week",
       "skill": "investigation",
@@ -4270,14 +4266,14 @@
           },
           {
             "say": "Brannagh",
-            "text": "Round the new village on the rise. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the new village on the rise. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "notFlag": "fen_promise"
             }
           },
           {
             "say": "Brannagh",
-            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. I'm not being persuaded of anything, I'd like that noted. I just want a fence.",
+            "text": "Round the rise, where we're living until somebody gives us the lower village back, like they promised. A good one. For the goat. Nobody has persuaded me of anything. I just want a fence.",
             "when": {
               "flag": "fen_promise"
             }
@@ -4290,17 +4286,10 @@
             "text": "Thank you. I will give it back. Hold me to that."
           },
           {
-            "say": "maren",
-            "text": "She means it.",
-            "when": {
-              "party": "maren"
-            }
-          },
-          {
             "say": "orin",
-            "text": "I know. That's the part I'm going to watch.",
+            "text": "She'll mean it. That's the part I'm going to watch.",
             "when": {
-              "party": "maren"
+              "party": "orin"
             }
           }
         ],
@@ -4324,13 +4313,6 @@
           {
             "say": "Elske",
             "text": "The council has decided. I'll abide by it. I hope I never have to say I told you so."
-          },
-          {
-            "say": "maren",
-            "text": "She means that too.",
-            "when": {
-              "party": "maren"
-            }
           }
         ],
         "rep": {
@@ -4405,7 +4387,7 @@
         }
       },
       {
-        "narrate": "He eats all of it. Maren watches him do it, and does not say anything, and after a while she looks away into the dark.",
+        "narrate": "He eats all of it, and doesn't say a word about it. Maren looks away into the dark for a while.",
         "when": {
           "party": "maren"
         }
@@ -4807,7 +4789,7 @@
     "xp": 6800,
     "gold": 500,
     "region": "The council in the casting hall at Cinder Fold",
-    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you.",
+    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you. Then she has one more thing to ask, and the Mother Bell is listening.",
     "faction": "wardens",
     "brief": "The council sits at Cinder Fold to decide what to do with Elske Marrow. She has asked to speak first. Answer her, and decide who your oath answers to.",
     "opening": [
@@ -4909,7 +4891,7 @@
       },
       {
         "say": "Brannagh",
-        "text": "She's not wrong. I'd like that noted. I hate it, but she's not wrong."
+        "text": "She's not wrong. I hate it, but she's not wrong."
       }
     ],
     "talks": [
@@ -5019,20 +5001,16 @@
       },
       {
         "say": "Elske",
-        "text": "I'll go. Wherever you send me. But I'm going to ask the council to put the Mother Bell under one voice again. Mine or anyone's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it."
+        "text": "I'll go. Wherever you send me. But first I'm going to ask the council to put the Mother Bell under one voice again. Not mine; I've had my turn. Somebody's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it. I'm asking now, in front of all of you, in daylight. I took, once. I won't again. I'd rather ask."
       },
       {
-        "say": "maren",
-        "text": "She means it. Of course she means it."
-      },
-      {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. And over everyone's heads the Mother Bell has begun, very faintly, to hum: the note from midwinter, the one that silenced every other ward. Nobody has touched the bell-rope. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting to the bell first.",
         "when": {
           "notFlag": "mother_silenced"
         }
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She does not need it. Two of the miners have brought a forge hammer up from the floor, and the ladder to the great beam stands open, and Elske is standing at the foot of it. Somebody, in the end, has to answer her: with words, or by getting to that ladder first.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. It does not matter. Over everyone's heads the Mother Bell has begun, very faintly, to hum, with no rope on it at all: the note from midwinter, the one that silenced every other ward. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting up the ladder to the great beam and putting a hand on the bronze.",
         "when": {
           "flag": "mother_silenced"
         }
@@ -5050,19 +5028,19 @@
           "narrate": "You tell Elske the one thing nobody has said to her in eleven years. That the room in Hollin's Reach was not her fault. That seven people had the numbers wrong, not one. That the answer to a slow council is not a fast person but a council that has learned to look at the window. And that you would like her in this one, looking at it with them."
         },
         {
-          "narrate": "Elske stands by the rope for a long time.",
+          "narrate": "Elske looks up at the humming bell for a long time.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "Elske stands at the foot of the ladder for a long time, looking up at the beam, and at the hammer in the miner's hands.",
+          "narrate": "Elske looks up at the great beam for a long time, where the hum is coming from, with no rope on it at all.",
           "when": {
             "flag": "mother_silenced"
           }
         },
         {
-          "narrate": "Then she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
+          "narrate": "Then she says, very clearly, 'I withdraw it,' and the hum dies away to nothing, and she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
         },
         {
           "say": "Elske",
@@ -5076,16 +5054,16 @@
       "failure": [
         {
           "say": "Elske",
-          "text": "You can't promise it won't happen again. Nobody can. So someone must hold the rope."
+          "text": "You can't promise it won't happen again. Nobody can. Then I'll ask the room. Hands, please. One voice for the Mother Bell."
         },
         {
-          "narrate": "She takes the rope. The Mother Bell stirs over your heads. You have to reach her before she rings it.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to quiet it before the vote is counted.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "She takes the forge hammer from the miners and starts up the ladder to the beam. The Mother Bell does not need a rope if someone is willing to climb up and strike it. You have to reach her before she gets there.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder, with no rope and nobody near it. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to get up the ladder and quiet it before the vote is counted.",
           "when": {
             "flag": "mother_silenced"
           }
@@ -5093,9 +5071,9 @@
       ]
     },
     "objective": {
-      "name": "Keep the Mother Bell from one voice",
-      "label": "Reach Elske before the bell is rung alone",
-      "description": "Three successful actions get you to Elske and keep the Mother Bell from being rung by one person again.",
+      "name": "Quiet the Mother Bell before the room rings it",
+      "label": "Quiet the bell's single note before the room agrees",
+      "description": "Three successful actions reach the Mother Bell and quiet its single note while the council finds its other voices.",
       "skill": "athletics",
       "alt": [
         "persuasion",
@@ -5104,13 +5082,13 @@
       ],
       "target": 3,
       "deadline": 6,
-      "failText": "Before you reach her, the Mother Bell sounds one stroke under one voice. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it.",
-      "successText": "You reach her first. Your hand closes over hers. She lets go."
+      "failText": "Before you reach it, the Mother Bell sounds one stroke under one voice: the room's, this time, not anybody's hand. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it. Sorrel and Iona put their hands down, and Elske, white to the lips, withdraws the proposal herself.",
+      "successText": "Your hand is on the bronze. Below you, Elske says, very clearly, 'I withdraw it,' and the note dies under your palm."
     },
-    "foe": "elske-marrow",
-    "foeName": "Elske Marrow",
+    "foe": "single-note",
+    "foeName": "The Single Note",
     "enemyTheme": "boss",
-    "attackName": "The Single Note",
+    "attackName": "One Voice",
     "retainerName": "Echo of the Single Voice",
     "after": [
       {
