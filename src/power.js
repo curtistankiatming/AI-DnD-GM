@@ -27,7 +27,7 @@ const EFFECTS = Object.freeze({
   empowered: { name: 'Empowered', dealt: 0.25, text: 'Deals 25% more damage.' },
   weakened: { name: 'Weakened', dealt: -0.25, text: 'Deals 25% less damage.' },
   vulnerable: { name: 'Vulnerable', taken: 0.25, text: 'Takes 25% more damage.' },
-  // Fortified and Slowed have no source yet; equipment skills (step 4) will use them.
+  // Fortified and Slowed come from item skills (src/gear.js).
   fortified: { name: 'Fortified', taken: -0.25, text: 'Takes 25% less damage.' },
   slowed: { name: 'Slowed', ac: -2, text: '2 less armour.' },
   burning: { name: 'Burning', burn: true, text: 'Takes fire damage at the start of each turn.' }
@@ -42,6 +42,9 @@ function damageFactor(attacker, target) {
     if (e.dealt && has(attacker, id)) f += e.dealt;
     if (e.taken && has(target, id)) f += e.taken;
   }
+  // Worn items' special stats (src/gear.js).
+  f += Number(attacker?.gearDealt) || 0;
+  f += Number(target?.gearTaken) || 0;
   // Under-level penalty (src/xp.js): the condition carries its own share.
   for (const c of attacker?.conditions || []) if (c.id === 'outclassing') f += Number(c.dealt) || 0;
   return Math.max(0.25, f);

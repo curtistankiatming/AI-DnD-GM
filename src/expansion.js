@@ -20,6 +20,7 @@ ITEMS.antitoxin.value=12;
 ITEMS.antitoxin.purpose='Action: cure Poisoned, or prepare advantage on the next poison saving throw. The protection is consumed by that save, not by unrelated saves.';
 ITEMS['healers-kit'].value=12;
 ITEMS['healers-kit'].purpose='Three uses per kit. Outside combat each use heals 1d6+2 HP. In combat it only stabilizes an unconscious, unstable ally (0 HP); it does not revive them.';
+ITEMS['thornward-cloak'].story={skill:'survival',key:'cloakReady'};
 ITEMS['thornward-cloak'].purpose='Equip for +1 AC and advantage on your first Survival check after each long rest. This charge is shown on the character sheet.';
 ITEMS['smoke-bomb'].value=18;
 ITEMS['holy-water'].value=15;
@@ -39,6 +40,13 @@ for(const base of UPGRADE_BASES){
   item.purpose=`${base.purpose} Fine quality: ${effect} This is the maximum forge tier in this campaign.`;
   ITEMS[item.id]=item;
 }
+// Items with requirements, special stats, skills and story abilities
+// (src/gear.js). They have no forge upgrade: they are already special.
+for(const item of require('./data/gear.json'))ITEMS[item.id]=item;
+// The heaviest gear now needs the strength to use it (21 November 2026).
+ITEMS['field-plate'].requires={abilities:{str:13}};
+ITEMS['field-plate'].purpose='Base AC 17, no Dexterity bonus. Heavy and conspicuous: −2 Stealth.';
+ITEMS.greatsword.requires={abilities:{str:13}};
 const TOWNS=require('./data/towns.json');
 const MERCHANTS=require('./data/merchants.json');
 const RECIPES=require('./data/recipes.json');

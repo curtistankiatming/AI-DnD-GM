@@ -2,6 +2,7 @@
 // A bounded, optional interactive scenario. The model chooses an approach, never
 // a DC, reward, item, story flag or dice result. All routes are also playable offline.
 const M=require('./chat-memory');
+const Gear=require('./gear');
 const R=require('./rules');
 const TITLE='The Courier at the Ferry';
 const OPENING='At Briarwatch’s ferry, a courier is being held over a disputed toll. A ledger lies on the desk, a ferryman watches the quay, and a guard blocks the gangway. You can investigate, negotiate, distract the guard, or find a practical way to help. This is an optional side story; the original campaign remains available.';
@@ -42,7 +43,7 @@ function apply(state,id,rng,events,api){
   if(choice.plan){
     const p=choice.plan,roll=R.rollD20(rng,p);success=roll.natural+p.bonus>=p.dc;
     if(p.usesInspiration){state.player.inspiration=Math.max(0,state.player.inspiration-1);state.player.inspirationPrepared=false;}
-    if(p.usesCloak)p.actor.used.cloakReady=false;
+    Gear.spendStory(p);
     events.push({type:'roll',text:`${choice.label}: ${roll.rolls.join('/')} ${R.formatSigned(p.bonus)} = ${roll.natural+p.bonus} vs DC ${p.dc}: ${success?'success':'setback'}.`});
   }
   let line='';

@@ -9,6 +9,7 @@ const W = require("./world");
 const Director = require("./director");
 const XP = require("./xp");
 const Power = require("./power");
+const Gear = require("./gear");
 const Bounty = require("./bounty");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
@@ -47,6 +48,9 @@ function combatActorFromPlayer(player) {
     temporaryHp: Number(player.temporaryHp||0),
     gearSpellAttack: player.gearSpellAttack||0,
     gearSpellDc: player.gearSpellDc||0,
+    gearDealt: player.gearDealt||0,
+    gearTaken: player.gearTaken||0,
+    gearSkills: Gear.skills(player),
     progression: deepClone(player.progression||{}),
     initiative: 0,
     actionUsed: false,
@@ -76,6 +80,7 @@ function combatActorFromCompanion(member) {
     attack: member.id==='maren' && ITEMS[member.equipment?.mainHand]?.category==='focus' ? {...deepClone(member.attack), damage:member.level>=5?'2d8':'1d8'} : G.weaponProfile(member),
     temporaryHp: Number(member.temporaryHp||0),
     gearSpellAttack:member.gearSpellAttack||0,gearSpellDc:member.gearSpellDc||0,
+    gearDealt:member.gearDealt||0,gearTaken:member.gearTaken||0,gearSkills:Gear.skills(member),
     saveBonuses:deepClone(member.saveBonuses||{}),
     skillBonuses:deepClone(member.skillBonuses||{}),
     equippedFocus: ITEMS[member.equipment?.mainHand]?.category==='focus',
@@ -527,6 +532,18 @@ function objectivePlan(state) {
   return {skill,skillName:SKILLS[skill].name,bonus,dc,mode,successProbability:successProbability(dc,bonus,mode),tools:tools.map(id=>ITEMS[id].name),covered,description:`${SKILLS[skill].name} ${formatSigned(bonus)} vs DC ${dc}${mode==='normal'?'':` • ${mode}`}. ${o.progress}/${o.target} progress; deadline after round ${o.deadline}.`};
 }
 
+// An item's combat skill (src/gear.js): a bonus action once per fight that
+// puts one of the src/power.js buffs or debuffs on an enemy or the wearer.
+const gearKey=(actor,itemId)=>`gear:${actor.id}:${itemId}`;
+function gearSkillReady(state,actor,skill){return !state.combat.usedActions[gearKey(actor,skill.itemId)];}
+function useGearSkill(state,actor,skill,target,events){
+  const e=Power.EFFECTS[skill.effect],who=skill.target==='self'?actor:target;
+  state.combat.usedActions[gearKey(actor,skill.itemId)]=true;actor.bonusUsed=true;
+  if(skill.effect==='burning'){if(who.resistances?.includes('fire')){events.push({type:'condition',tone:'neutral',text:`${actor.name} uses ${skill.name}, but ${who.name} does not burn.`});return;}addCondition(who,{id:'burning',name:`Burning (${skill.name})`,rounds:skill.rounds||1,damage:Power.burnDamage(actor.level)});}
+  else addCondition(who,{id:skill.effect,name:`${e.name} (${skill.name})`,sourceId:actor.id,expiresRound:state.combat.round+(skill.rounds||1)});
+  events.push({type:'condition',tone:'good',text:`${actor.name} uses ${skill.name}: ${who.name} is ${e.name}. ${e.text}`});
+}
+
 function resolveTacticalAction(state,actor,action,rng,events) {
   const id=normalizeId(action.actionId||action.id);
   if(id==='retreat'){
@@ -874,6 +891,16 @@ function resolvePlayerCombatAction(state, action, rng, events) {
     const result=playerDeathSave(state,actor,rng,events);
     endActorTurn(state,actor);state.combat.awaitingPlayer=false;incrementCombatTurn(state);advanceAutomaticTurns(state,rng,events);return result;
   }
+  if(actionId.startsWith('gear:')){
+    const skill=(actor.gearSkills||[]).find(s=>s.itemId===actionId.slice(5));
+    if(!skill)return invalidResult(state,events,'You are not wearing an item with that skill.');
+    if(actor.bonusUsed)return invalidResult(state,events,'Your bonus action has already been used this turn.');
+    if(!gearSkillReady(state,actor,skill))return invalidResult(state,events,`${skill.name} has already been used this fight.`);
+    const target=skill.target==='self'?actor:validateCombatTarget(state,action.targetId,'enemy');
+    if(!target)return invalidResult(state,events,'Choose a living enemy target.');
+    useGearSkill(state,actor,skill,target,events);
+    return {ok:true,kind:'combat',outcomeText:`${actor.name} uses ${skill.name}.`};
+  }
   const special=resolveTacticalAction(state,actor,action,rng,events);if(special)return special;
   if (actionId === "end-turn") {
     endActorTurn(state, actor);
@@ -954,6 +981,8 @@ function companionAttackTarget(state, actor) {
 function processCompanionTurn(state, actor, rng, events) {
   if(actor.hp<=0||hasCondition(actor,'sleeping'))return;
   if(hasCondition(actor,'stunned')||hasCondition(actor,'surprised')){actor.actionUsed=true;events.push({type:'condition',tone:'neutral',text:`${actor.name} loses this action to a control effect.`});return;}
+  // A companion uses a worn item's skill the first time they can.
+  for(const skill of actor.gearSkills||[]){if(actor.bonusUsed||!gearSkillReady(state,actor,skill))continue;const foe=skill.target==='self'?actor:livingActors(state,'enemy').sort((a,b)=>b.hp-a.hp)[0];if(foe)useGearSkill(state,actor,skill,foe,events);}
   const ordered=state.combat.order?.kind==='protect'?combatActor(state,state.combat.order.targetId):null;
   const lowest=companionLowTarget(state),threshold=actor.tactic==='aggressive'?0.22:actor.tactic==='protective'||actor.tactic==='support'?0.72:0.48;
   if(actor.aiRole==='healer'&&lowest&&actor.resources.healingWords>0&&(lowest.hp<=0||lowest.hp/lowest.maxHp<threshold)){
@@ -1203,6 +1232,7 @@ function combatActionView(state) {
     });
   }
 
+  for(const skill of actor.gearSkills||[]){const used=!gearSkillReady(state,actor,skill),targetKind=skill.target==='self'?'self':'enemy';actions.push({id:`gear:${skill.itemId}`,name:skill.name,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:`${ITEMS[skill.itemId]?.name}: ${skill.text||Power.EFFECTS[skill.effect].text} Once per fight.`,disabled:Boolean(actor.bonusUsed||used),disabledReason:used?'Already used this fight.':actor.bonusUsed?'Bonus action already used.':''});}
   if(state.combat.objective){const plan=objectivePlan(state);actions.push({id:'objective',name:state.combat.objective.label,cost:'action',targetKind:'none',targets:[],description:plan.description+` Success ${Math.round(plan.successProbability*100)}%.`,disabled:actor.actionUsed,disabledReason:actor.actionUsed?'Action already used.':''});}
   for(const [kind,name,targetKind]of [['focus','Order: Focus fire','enemy'],['protect','Order: Protect ally','ally'],['cover','Order: Cover objective','none']]){
     if(kind==='cover'&&!state.combat.objective)continue;

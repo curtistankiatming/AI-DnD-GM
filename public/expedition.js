@@ -20,7 +20,7 @@ function chooseEquipmentOwner(item){
 function v4Shop(root,stock,market){
   const box=createElement('div','v4-shop');
   for(const item of stock){
-    const c=v4Card(item.name,item.purpose);c.appendChild(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));
+    const c=v4Card(item.name,item.purpose);c.appendChild(createElement('span','tag',`${item.price} gold · ${item.stock} in stock${item.rarity&&item.rarity!=='Common'?' · '+item.rarity:''}`));if(item.requires)c.appendChild(createElement('span','tag tag-warning',`Requires ${item.requires}`));
     if(item.comparisons.length){const details=createElement('details','comparison');details.appendChild(createElement('summary','','Compare with party equipment'));for(const cmp of item.comparisons)details.appendChild(createElement('p','',compareDescription(cmp)));c.appendChild(details);}
     const controls=createElement('div','v4-controls');controls.append(v4Button('Buy 1',{type:'buy',market,itemId:item.id,quantity:1},item.stock<1||view.player.gold<item.price));
     if(!item.comparisons.length)controls.append(v4Button('Buy 2',{type:'buy',market,itemId:item.id,quantity:2},item.stock<2||view.player.gold<item.price*2));

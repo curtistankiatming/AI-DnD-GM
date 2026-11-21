@@ -2,6 +2,7 @@
 const { ITEMS } = require('./content');
 const { abilityModifier, proficiencyBonus, deepClone } = require('./rules');
 const P = require('./progression');
+const Gear = require('./gear');
 const slots=['mainHand','offHand','armor','accessory'];
 const finiteInt=(x,f=0)=>Number.isFinite(Number(x))?Math.max(0,Math.floor(Number(x))):f;
 function inventory(entries=[]){
@@ -52,6 +53,7 @@ function derive(a){
   }
   if(a.personalStyle==='watchful')ac+=1;
   if(a.personalStyle==='decisive'){a.gearAttackBonus+=1;a.gearSpellAttack+=1;a.gearSpellDc+=1;}
+  const gs=Gear.stats(a);a.gearDealt=gs.dealt;a.gearTaken=gs.taken;
   a.ac=Math.max(1,ac);return a;
 }
 function weaponProfile(a){
@@ -66,6 +68,7 @@ function weaponProfile(a){
 function equip(state,id,actorId='player'){
   const a=actor(state,actorId),item=ITEMS[id];if(!a||!item?.slot)return {ok:false,error:'Select an existing party member and an equippable item.'};
   if(a.equipment[item.slot]===id)return {ok:false,error:`${a.name} already has that item equipped.`};
+  const unmet=Gear.unmet(a,item);if(unmet)return {ok:false,error:`${a.name} can't use ${item.name}. ${unmet}`};
   if(available(state,id)<1)return {ok:false,error:'No unallocated copy is available. Unequip it from the other party member first.'};
   if(item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded'))return {ok:false,error:'A shield cannot be equipped with a two-handed weapon.'};
   if(item.slot==='mainHand'&&item.weapon?.properties?.includes('twoHanded'))a.equipment.offHand=null;
@@ -82,7 +85,7 @@ function comparison(state,id,actorId='player'){
   if(clearsOffHand)preview.equipment.offHand=null;
   derive(preview);
   const before=weaponProfile(a),after=weaponProfile(preview);
-  return {actorId:a.id,name:a.name,replaces:old?.name||'Empty slot',acBefore:a.ac,acAfter:preview.ac,attackBefore:before.attackBonus,attackAfter:after.attackBonus,damageBefore:before.damageFormula,damageAfter:after.damageFormula,spellAttackBefore:a.gearSpellAttack||0,spellAttackAfter:preview.gearSpellAttack||0,spellDcBefore:a.gearSpellDc||0,spellDcAfter:preview.gearSpellDc||0,clearsOffHand,blocked:item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded')?'Unequip the two-handed weapon first.':null};
+  return {actorId:a.id,name:a.name,replaces:old?.name||'Empty slot',acBefore:a.ac,acAfter:preview.ac,attackBefore:before.attackBonus,attackAfter:after.attackBonus,damageBefore:before.damageFormula,damageAfter:after.damageFormula,spellAttackBefore:a.gearSpellAttack||0,spellAttackAfter:preview.gearSpellAttack||0,spellDcBefore:a.gearSpellDc||0,spellDcAfter:preview.gearSpellDc||0,clearsOffHand,blocked:Gear.unmet(a,item)||(item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded')?'Unequip the two-handed weapon first.':null)};
 }
 function normalizeEquipment(state){
   const used={};

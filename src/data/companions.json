@@ -40,7 +40,8 @@
       "forest-edge": "Main road is fastest and easiest to trap. I would choose certainty over speed.",
       "bell-vault": "Give me a chain to break or a doorway to hold. Do not ask me to out-sing a ghost."
     },
-    "signature": "athletics"
+    "signature": "athletics",
+    "gearClass": "fighter"
   },
   "maren": {
     "id": "maren",
@@ -85,7 +86,8 @@
       "old-shrine": "This shrine remembers the bell before it became a weapon. We should listen before touching anything.",
       "bell-vault": "The spirit is furious, but fury is not always malice. Its true name may still reach it."
     },
-    "signature": "insight"
+    "signature": "insight",
+    "gearClass": "cleric"
   },
   "nessa": {
     "id": "nessa",
@@ -129,6 +131,7 @@
       "root-gate": "Seals, locks, guards—I prefer problems with hinges.",
       "bell-vault": "The robed one carries a bronze key. Give me ten breaths and a distraction."
     },
-    "signature": "stealth"
+    "signature": "stealth",
+    "gearClass": "ranger"
   }
 }
