@@ -30,7 +30,11 @@
       "chain-shirt",
       "studded-leather",
       "steel-shield",
-      "ash-wand"
+      "ash-wand",
+      "mirefang-dagger",
+      "veilstep-cloak",
+      "woodcutters-axe",
+      "hunting-spear"
     ],
     "rumor": "The missing caravans did not simply vanish. A western tollhouse has been ringing the wrong road signal."
   },
@@ -67,7 +71,12 @@
       "warbow",
       "ward-staff",
       "duelist-buckler",
-      "wayfarer-boots"
+      "wayfarer-boots",
+      "hexwood-rod",
+      "bulwark-shield",
+      "riverguard-spear",
+      "toll-ledger",
+      "marsh-leather"
     ],
     "rumor": "Sabotage at the western span, and ward ash in the Fenmere marsh. Someone is getting rid of old wards downstream, and does not care who drinks them."
   },
@@ -104,7 +113,13 @@
       "scholars-lens",
       "resonant-blade",
       "warbow",
-      "ward-staff"
+      "ward-staff",
+      "ember-brand",
+      "warden-signet",
+      "glasswind-bow",
+      "signal-charm",
+      "watch-brigandine",
+      "warded-tome"
     ],
     "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command."
   },
@@ -144,7 +159,11 @@
       "ward-staff",
       "field-plate",
       "sentinel-charm",
-      "scholars-lens"
+      "scholars-lens",
+      "harbour-cutlass",
+      "lens-goggles",
+      "tidecaller-staff",
+      "sallows-coat"
     ],
     "rumor": "The harbour bell is to be sold. The lantern guilds say it is the only sensible thing; a bell that big should belong to people who can afford to ring it."
   },
@@ -185,7 +204,13 @@
       "field-plate",
       "sentinel-charm",
       "scholars-lens",
-      "wayfarer-boots"
+      "wayfarer-boots",
+      "oathbound-mail",
+      "ember-brand",
+      "forgeheart-maul",
+      "slag-plate",
+      "bellwright-chime",
+      "emberward-shield"
     ],
     "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
   },
@@ -220,7 +245,9 @@
       "warbow",
       "field-plate",
       "wayfarer-boots",
-      "sentinel-charm"
+      "sentinel-charm",
+      "saltwick-harpoon",
+      "roofrunner-boots"
     ],
     "rumor": "Saltwick's echo-stone went dead last year in the middle of supper. Every lamp in town burns oil the town can no longer buy, and Vell's ration office sends oil only to towns that send names."
   },
@@ -258,7 +285,10 @@
       "field-plate",
       "duelist-buckler",
       "scholars-lens",
-      "sentinel-charm"
+      "sentinel-charm",
+      "commandery-halberd",
+      "vell-casting-mail",
+      "drillmaster-baton"
     ],
     "rumor": "Every night at dusk High Warden Corvane reads the names of the lost aloud from the wall walk. He begins on the second page. Nobody has ever heard him read the first.",
     "emptied": {

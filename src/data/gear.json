@@ -1,0 +1,1169 @@
+[
+  {
+    "id": "ember-brand",
+    "name": "Ember Brand",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 160,
+    "description": "A forge-blackened sword whose fuller still glows when it is drawn.",
+    "purpose": "Strength, 1d8 slashing, +1 to hit, +2 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 1,
+    "requires": {
+      "level": 8,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Kindle",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "damageBonus": 2
+  },
+  {
+    "id": "mirefang-dagger",
+    "name": "Mirefang Dagger",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 70,
+    "description": "A marsh-hunter's knife with a hooked, serrated back.",
+    "purpose": "Finesse, 1d6 piercing.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "requires": {
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Hamstring",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "hexwood-rod",
+    "name": "Hexwood Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 150,
+    "description": "Pale hexwood bound in silver wire that unpicks a ward's knots.",
+    "purpose": "Equip: +2 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 2,
+    "spellDcBonus": 2,
+    "requires": {
+      "level": 4,
+      "classes": [
+        "wizard",
+        "bard",
+        "cleric"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    }
+  },
+  {
+    "id": "bulwark-shield",
+    "name": "Bulwark Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Rare",
+    "value": 140,
+    "description": "A tall, iron-rimmed shield that needs a strong arm to hold steady.",
+    "purpose": "Equip in your off hand for +3 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 3,
+    "requires": {
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "warden-signet",
+    "name": "Warden's Signet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 180,
+    "description": "The roadwardens' seal ring, given to those who have kept the road.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 10
+    },
+    "story": {
+      "skill": "insight",
+      "text": "Advantage on the first Insight check after each long rest."
+    }
+  },
+  {
+    "id": "veilstep-cloak",
+    "name": "Veilstep Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 90,
+    "description": "Grey wool that takes on the colour of whatever wall it brushes.",
+    "purpose": "Equip in the accessory slot for +1 AC.",
+    "acBonus": 1,
+    "requires": {
+      "classes": [
+        "rogue",
+        "ranger",
+        "bard"
+      ]
+    },
+    "story": {
+      "skill": "stealth",
+      "text": "Advantage on the first Stealth check after each long rest."
+    }
+  },
+  {
+    "id": "oathbound-mail",
+    "name": "Oathbound Mail",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 320,
+    "description": "Plate links stamped with the oaths of the wardens who wore it before you.",
+    "purpose": "Base AC 19, no Dexterity bonus.",
+    "armor": {
+      "base": 19,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "woodcutters-axe",
+    "name": "Woodcutter's Axe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 18,
+    "description": "A broad-bitted axe from the Briarwatch lumber yards.",
+    "purpose": "Strength, 1d8 slashing.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "exclusive": {
+      "town": "briarwatch"
+    }
+  },
+  {
+    "id": "hunting-spear",
+    "name": "Hunting Spear",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Common",
+    "value": 14,
+    "description": "Ash shaft, leaf blade, a crossbar to stop a boar.",
+    "purpose": "Finesse, 1d6 piercing. +1 Survival.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "skillBonuses": {
+      "survival": 1
+    }
+  },
+  {
+    "id": "riverguard-spear",
+    "name": "Riverguard Spear",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 75,
+    "description": "The bridge guard's long spear, balanced for holding a span.",
+    "purpose": "Strength, 1d8 piercing, +2 to hit, +1 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "str",
+      "properties": []
+    },
+    "damageBonus": 1,
+    "requires": {
+      "level": 4,
+      "abilities": {
+        "str": 12
+      }
+    },
+    "exclusive": {
+      "town": "ashford"
+    },
+    "attackBonus": 2
+  },
+  {
+    "id": "toll-ledger",
+    "name": "Toll-keeper's Ledger",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 85,
+    "description": "Every debt on the western road, in a careful hand.",
+    "purpose": "Equip in the accessory slot: +2 Persuasion and Insight.",
+    "skillBonuses": {
+      "persuasion": 2,
+      "insight": 2
+    },
+    "requires": {
+      "level": 4
+    },
+    "story": {
+      "skill": "persuasion"
+    }
+  },
+  {
+    "id": "marsh-leather",
+    "name": "Marsh Leather",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Uncommon",
+    "value": 80,
+    "description": "Oiled eel-skin over leather; it neither soaks nor creaks.",
+    "purpose": "Base AC 13 plus your full Dexterity. +1 Stealth.",
+    "armor": {
+      "base": 13,
+      "dexCap": null
+    },
+    "skillBonuses": {
+      "stealth": 1
+    },
+    "requires": {
+      "level": 4
+    }
+  },
+  {
+    "id": "glasswind-bow",
+    "name": "Glasswind Bow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 150,
+    "description": "A recurve of horn and glass-ash that sings in a crosswind.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +1 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "requires": {
+      "level": 7,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy in place until your next turn: 2 less armour."
+    },
+    "exclusive": {
+      "town": "highpass"
+    },
+    "damageBonus": 1
+  },
+  {
+    "id": "signal-charm",
+    "name": "Signal-keeper's Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 95,
+    "description": "A polished mirror-disc from the old signal tower.",
+    "purpose": "Equip in the accessory slot: +2 Perception.",
+    "skillBonuses": {
+      "perception": 2
+    },
+    "requires": {
+      "level": 6
+    },
+    "story": {
+      "skill": "perception"
+    }
+  },
+  {
+    "id": "watch-brigandine",
+    "name": "Watch-captain's Brigandine",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Rare",
+    "value": 170,
+    "description": "Riveted plates inside a red Highpass coat.",
+    "purpose": "Base AC 16 and up to +1 from Dexterity.",
+    "armor": {
+      "base": 16,
+      "dexCap": 1
+    },
+    "requires": {
+      "level": 8,
+      "classes": [
+        "fighter",
+        "cleric",
+        "ranger"
+      ],
+      "abilities": {
+        "str": 11
+      }
+    }
+  },
+  {
+    "id": "warded-tome",
+    "name": "Warded Tome",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 175,
+    "description": "A spellbook whose margins hold a second, defensive grammar.",
+    "purpose": "Equip: +3 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 2,
+    "requires": {
+      "level": 8,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Ward Echo",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    }
+  },
+  {
+    "id": "harbour-cutlass",
+    "name": "Harbour Cutlass",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 210,
+    "description": "Short, heavy and curved: a boarding sword from the lantern-works quay.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit and damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 2,
+    "requires": {
+      "level": 11,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Disarming Cut",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "town": "merrowgate"
+    }
+  },
+  {
+    "id": "lens-goggles",
+    "name": "Lantern-works Goggles",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 200,
+    "description": "Brass goggles with lenses ground for reading a flame.",
+    "purpose": "Equip in the accessory slot: +2 Investigation and Arcana.",
+    "skillBonuses": {
+      "investigation": 2,
+      "arcana": 2
+    },
+    "requires": {
+      "level": 11
+    },
+    "story": {
+      "skill": "investigation"
+    }
+  },
+  {
+    "id": "tidecaller-staff",
+    "name": "Tidecaller Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 230,
+    "description": "Driftwood bound in harbour chain, cold to the touch.",
+    "purpose": "Equip: +3 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 2,
+    "requires": {
+      "level": 12,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Undertow",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Drag at an enemy's feet for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "sallows-coat",
+    "name": "Sallows Shadowcoat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 320,
+    "description": "A lower-town coat cut to vanish in fog and alleys.",
+    "purpose": "Base AC 14 plus your full Dexterity.",
+    "armor": {
+      "base": 14,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 12,
+      "classes": [
+        "rogue",
+        "ranger",
+        "bard"
+      ],
+      "abilities": {
+        "dex": 14
+      }
+    },
+    "story": {
+      "skill": "stealth"
+    }
+  },
+  {
+    "id": "forgeheart-maul",
+    "name": "Forgeheart Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 380,
+    "description": "A two-handed maul with a core that never quite cools.",
+    "purpose": "Strength, 2d6 bludgeoning, +1 to hit, +2 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 1,
+    "damageBonus": 2,
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Crack an enemy's guard until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "town": "cinderfold"
+    }
+  },
+  {
+    "id": "slag-plate",
+    "name": "Slag Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 420,
+    "description": "Plate cast from the first forge's slag, black and pitted.",
+    "purpose": "Base AC 20, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 20,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 16,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "bellwright-chime",
+    "name": "Bellwright's Chime",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 360,
+    "description": "A hand-chime tuned to the note of Cinder Fold's casting bells.",
+    "purpose": "Equip in the accessory slot: +2 Wisdom and Charisma saving throws.",
+    "saveBonuses": {
+      "wis": 2,
+      "cha": 2
+    },
+    "requires": {
+      "level": 15,
+      "classes": [
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Ring True",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Empowered for two rounds: deal 25% more damage."
+    }
+  },
+  {
+    "id": "emberward-shield",
+    "name": "Emberward Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Epic",
+    "value": 350,
+    "description": "A kite shield faced with heat-blued steel.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "saltwick-harpoon",
+    "name": "Saltwick Harpoon",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 460,
+    "description": "A roof-hunter's harpoon, barbed and roped.",
+    "purpose": "Strength, 1d10 piercing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "piercing",
+      "ability": "str",
+      "properties": []
+    },
+    "damageBonus": 3,
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Haul",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Hook and drag an enemy for two rounds: 2 less armour."
+    },
+    "exclusive": {
+      "town": "saltwick"
+    },
+    "attackBonus": 2
+  },
+  {
+    "id": "roofrunner-boots",
+    "name": "Roofrunner Boots",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Soft-soled boots for running Saltwick's roofs in the wind.",
+    "purpose": "Equip in the accessory slot: +3 Athletics and Acrobatics.",
+    "skillBonuses": {
+      "athletics": 3,
+      "acrobatics": 3
+    },
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "story": {
+      "skill": "athletics"
+    }
+  },
+  {
+    "id": "commandery-halberd",
+    "name": "Commandery Halberd",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 620,
+    "description": "The drill-yard's long axe, issued to Commandery sergeants; the quartermaster sells the surplus.",
+    "purpose": "Strength, 1d12 slashing, +2 to hit and damage. Two-handed.",
+    "weapon": {
+      "damage": "1d12",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 2,
+    "requires": {
+      "level": 23,
+      "classes": [
+        "fighter"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Sweep",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Knock an enemy off its stance for two rounds: it deals 25% less damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "vell-casting-mail",
+    "name": "Vell Armoury Mail",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "Heavy, plain mail from the Commandery armoury at Vell.",
+    "purpose": "Base AC 21, no Dexterity bonus.",
+    "armor": {
+      "base": 21,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 24,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "drillmaster-baton",
+    "name": "Drillmaster's Baton",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 650,
+    "description": "A black baton that has ended more arguments than wars.",
+    "purpose": "Equip in the accessory slot: +3 Intimidation.",
+    "skillBonuses": {
+      "intimidation": 3
+    },
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 23
+    },
+    "story": {
+      "skill": "intimidation"
+    }
+  },
+  {
+    "id": "roadwarden-badge",
+    "name": "Roadwarden's Badge",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 60,
+    "description": "A tin badge the roadwardens give to people who brought a caravan home.",
+    "purpose": "Equip in the accessory slot: +1 Insight and Perception.",
+    "skillBonuses": {
+      "insight": 1,
+      "perception": 1
+    },
+    "exclusive": {
+      "quest": "road"
+    }
+  },
+  {
+    "id": "fenmere-reed-pipe",
+    "name": "Fenmere Reed-pipe",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 65,
+    "description": "A marsh guide's pipe; three notes mean follow me.",
+    "purpose": "Equip in the accessory slot: +1 Survival.",
+    "skillBonuses": {
+      "survival": 1
+    },
+    "story": {
+      "skill": "survival"
+    },
+    "exclusive": {
+      "quest": "marsh"
+    }
+  },
+  {
+    "id": "drowned-codex",
+    "name": "Drowned Codex",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 130,
+    "description": "A waterlogged book that still remembers every word written in it.",
+    "purpose": "Equip: +2 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 2,
+    "spellDcBonus": 2,
+    "requires": {
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "archive"
+    }
+  },
+  {
+    "id": "glasswind-cloak",
+    "name": "Glasswind Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 150,
+    "description": "Spun from summit wool; the wind seems to go round it.",
+    "purpose": "Equip in the accessory slot: +1 AC and +1 Dexterity saving throws.",
+    "acBonus": 1,
+    "saveBonuses": {
+      "dex": 1
+    },
+    "requires": {
+      "level": 5
+    },
+    "story": {
+      "skill": "acrobatics"
+    },
+    "exclusive": {
+      "quest": "summit"
+    }
+  },
+  {
+    "id": "beacon-shard-blade",
+    "name": "Beacon-shard Blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 170,
+    "description": "A short blade around a sliver of the first ward beacon.",
+    "purpose": "Finesse, 1d8 radiant, +2 to hit, +1 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "radiant",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "requires": {
+      "level": 7
+    },
+    "skill": {
+      "name": "Flare",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Flare the shard: an enemy is Vulnerable until your next turn."
+    },
+    "exclusive": {
+      "quest": "beacon"
+    },
+    "damageBonus": 1
+  },
+  {
+    "id": "echo-court-ring",
+    "name": "Echo-court Ring",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 180,
+    "description": "The guild's ring for those who passed the echo court.",
+    "purpose": "Equip in the accessory slot: +1 to every saving throw.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 8
+    },
+    "exclusive": {
+      "quest": "trial"
+    }
+  },
+  {
+    "id": "lantern-works-lamp",
+    "name": "Lantern-works Lamp",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 210,
+    "description": "A hooded lamp that throws one hard, white beam.",
+    "purpose": "Equip in the accessory slot: +2 Investigation.",
+    "skillBonuses": {
+      "investigation": 2
+    },
+    "requires": {
+      "level": 11
+    },
+    "skill": {
+      "name": "Flash",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Dazzle an enemy until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "quest": "harbour"
+    }
+  },
+  {
+    "id": "first-forge-hammer",
+    "name": "First-forge Hammer",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 360,
+    "description": "A smith's hammer from the deep galleries, still warm.",
+    "purpose": "Strength, 1d10 bludgeoning, +1 to hit, +2 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 1,
+    "damageBonus": 2,
+    "requires": {
+      "level": 14,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Kindle",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "exclusive": {
+      "quest": "cinderfold"
+    }
+  },
+  {
+    "id": "motherbell-fragment",
+    "name": "Casting-hall Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 380,
+    "description": "Bronze filings swept from the floor of the great casting hall, sewn into a leather charm.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 16
+    },
+    "skill": {
+      "name": "Toll",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Empowered until your next turn: deal 25% more damage."
+    },
+    "exclusive": {
+      "quest": "motherbell"
+    }
+  },
+  {
+    "id": "oathkeeper-mantle",
+    "name": "Oathkeeper's Mantle",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 520,
+    "description": "A council mantle from the Second Oath, given to the one who stood up and spoke for the road.",
+    "purpose": "Equip in the accessory slot: +1 AC.",
+    "acBonus": 1,
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 17
+    },
+    "exclusive": {
+      "quest": "oath"
+    }
+  },
+  {
+    "id": "volunteers-ribbon",
+    "name": "Volunteer's Ribbon",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 600,
+    "description": "The ribbon the Vell volunteers pin on those who stood with them in the casting yard.",
+    "purpose": "Equip in the accessory slot: +2 Persuasion and Intimidation.",
+    "skillBonuses": {
+      "persuasion": 2,
+      "intimidation": 2
+    },
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 22
+    },
+    "story": {
+      "skill": "persuasion"
+    },
+    "exclusive": {
+      "quest": "b3-vell"
+    }
+  },
+  {
+    "id": "bounty-cord",
+    "name": "Bounty-hunter's Cord",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 55,
+    "description": "A knotted cord, one knot for every claimed bounty.",
+    "purpose": "Equip in the accessory slot: +1 Perception and Intimidation.",
+    "skillBonuses": {
+      "perception": 1,
+      "intimidation": 1
+    },
+    "exclusive": {
+      "event": "bounty:briarwatch"
+    }
+  },
+  {
+    "id": "tollbridge-buckler",
+    "name": "Toll-bridge Buckler",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Uncommon",
+    "value": 70,
+    "description": "A small round shield stamped with the Ashford toll mark.",
+    "purpose": "Equip in your off hand for +2 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 2,
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    },
+    "exclusive": {
+      "event": "bounty:ashford"
+    }
+  },
+  {
+    "id": "ridge-stalker-hood",
+    "name": "Ridge-stalker's Hood",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 140,
+    "description": "Grey felt that matches Highpass scree.",
+    "purpose": "Equip in the accessory slot: +2 Stealth.",
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "requires": {
+      "level": 6,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "event": "bounty:highpass"
+    }
+  },
+  {
+    "id": "wrecker-gaff",
+    "name": "Wrecker's Gaff",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 200,
+    "description": "A hooked pole from the wreckers who work Merrowgate's shoals.",
+    "purpose": "Strength, 1d8 piercing, +1 to hit, +2 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "str",
+      "properties": []
+    },
+    "damageBonus": 2,
+    "requires": {
+      "level": 11
+    },
+    "skill": {
+      "name": "Hook",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Hook an enemy for two rounds: 2 less armour."
+    },
+    "exclusive": {
+      "event": "bounty:merrowgate"
+    },
+    "attackBonus": 1
+  },
+  {
+    "id": "slagcaller-gauntlets",
+    "name": "Slagcaller Gauntlets",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 340,
+    "description": "Heavy gauntlets that make every swing land like a hammer.",
+    "purpose": "Equip in the accessory slot: +1 to hit and +1 damage with weapons.",
+    "attackBonus": 1,
+    "damageBonus": 1,
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "exclusive": {
+      "event": "bounty:cinderfold"
+    }
+  }
+]

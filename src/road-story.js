@@ -2,6 +2,7 @@
 const M=require('./chat-memory');
 const S=require('./road-state');
 const R=require('./rules');
+const Gear=require('./gear');
 const TITLE='Lantern Road: A Promise in the Rain';
 const NODES={
   wagon:{id:'lantern-road-wagon',title:'A Wheel in the Mud',location:'Briarwatch east gate',objective:'Get Tamsin’s medicine wagon moving. Decide whether to carry her sealed letter.',opening:'Tamsin Reed kneels beside a broken wagon wheel. Medicine for the old mill infirmary is packed under a tarpaulin. She can lend a repair tool, hire a wheelwright for 8 gold, or wait for the civic crew. A sealed letter rests in her hand. The delivery is urgent, but taking the slower route never blocks the adventure.'},
@@ -90,7 +91,7 @@ function apply(state,id,rng,events,api){
   if(choice.plan){
     const p=choice.plan,roll=R.rollD20(rng,p);success=roll.natural+p.bonus>=p.dc;
     if(p.usesInspiration){state.player.inspiration=Math.max(0,state.player.inspiration-1);state.player.inspirationPrepared=false;}
-    if(p.usesCloak)p.actor.used.cloakReady=false;
+    Gear.spendStory(state,p);
     events.push({type:'roll',text:`${choice.label}: ${roll.rolls.join('/')} ${R.formatSigned(p.bonus)} = ${roll.natural+p.bonus} vs DC ${p.dc}: ${success?'success':'setback'}.`});
     if(!success)r.delay=Math.min(8,r.delay+1);
   }

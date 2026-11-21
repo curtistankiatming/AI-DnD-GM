@@ -17,6 +17,7 @@ const Chronicle = require("./chronicle");
 const { dialogueText, liveLines, playLines, lineApplies, nodeLocation } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
+const Gear = require("./gear");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, checkActor, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
 const Combat = require("./combat");
 const startCombat = (...args) => Combat.startCombat(...args);
@@ -185,6 +186,8 @@ function normalizeIncomingState(raw) {
   if (!raw || typeof raw !== "object") return createNewGame();
   if (![3, 4].includes(Number(raw.schemaVersion))) { if (Number(raw.schemaVersion) > SCHEMA_VERSION) throw new Error("This save needs a newer game version."); return migrateLegacyState(raw); }
   const state = deepClone(raw);
+  // Items found in AI adventures are rebuilt from their templates first, so the inventory keeps them.
+  Gear.register(state);
   // How far this session may read is the server's to say, never the save's.
   Book.grant(state, raw[Book.ACCESS]);
   state.schemaVersion = SCHEMA_VERSION;
@@ -492,9 +495,10 @@ function checkPlan(state, choice, forced = null) {
     reasons.push(`missing ${ITEMS[check.toolsRequiredOrPenalty]?.name || "required tools"}`);
   }
   if (actor.id==='player' && actor.level>=6 && check.tools?.some(id=>hasItem(state,id))) { bonus+=2;reasons.push('Fieldcraft +2 with the listed tools'); }
-  const cloak=ITEMS[actor.equipment?.accessory];
-  const usesCloak=skillId==='survival' && cloak?.id==='thornward-cloak' && actor.used?.cloakReady;
-  if(usesCloak){advantage=true;reasons.push('Thornward Cloak: first Survival check after a long rest');}
+  // A worn item's story ability (src/gear.js), such as the Thornward Cloak's.
+  const story=Gear.storyItem(state,actor,skillId);
+  const usesCloak=Boolean(story);
+  if(story){advantage=true;reasons.push(`${story.name}: first ${SKILLS[skillId].name} check after a long rest`);}
   const usesInspiration=state.player.inspirationPrepared && actor.id==='player' && !advantage;
   if(usesInspiration){advantage=true;reasons.push('Prepared Inspiration improves this check');}
   let dc=Number(check.dc||10);
@@ -509,13 +513,13 @@ function checkPlan(state, choice, forced = null) {
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
   const effectiveAdvantage = advantage && !disadvantage;
   const effectiveDisadvantage = disadvantage && !advantage;
-  return { actor, skillId, abilityId, bonus, helper, advantage: effectiveAdvantage, disadvantage: effectiveDisadvantage, dc, reasons, usesInspiration, usesCloak };
+  return { actor, skillId, abilityId, bonus, helper, advantage: effectiveAdvantage, disadvantage: effectiveDisadvantage, dc, reasons, usesInspiration, usesCloak, storyItemId: story?.id || null };
 }
 
 function resolveStoryCheck(state, choice, rng, events) {
   const plan = checkPlan(state, choice);
   if (!plan) return { success: true, text: "" };
-  if (plan.usesCloak) plan.actor.used.cloakReady=false;
+  Gear.spendStory(state, plan);
   if (plan.usesInspiration) {
     state.player.inspirationPrepared = false;
     state.player.inspiration = Math.max(0, state.player.inspiration - 1);
@@ -859,7 +863,7 @@ function resolveFreeform(state,text,rng,events) {
   if(/^(return|go back) to (town|the town)/.test(normalized))return W.handle(state,{type:'return-town'},rng,events,extensionApi());
   if(/^(buy|purchase|sell|equip|use)\b/.test(normalized)){
     const aliases={'healing-potion':['healing potion','potion of healing'],'greater-healing':['greater healing'],'healers-kit':["healer's kit",'healers kit'],'antitoxin':['antitoxin','antidote'],'holy-water':['holy water'],'iron-longsword':['iron longsword','longsword']};
-    const candidates=Object.values(ITEMS).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length);
+    const candidates=Object.values(ITEMS).filter(i=>!i.forged||state.player.inventory.some(e=>e.itemId===i.id)).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length);
     const item=candidates[0];if(!item)return invalidResult(state,events,'Name an item shown in the inventory or current shop. No action was taken.');
     const namedTarget=state.party.find(m=>normalized.includes(m.id)||normalized.includes(m.name.toLowerCase()));
     const explicitTarget=normalized.match(/\b(?:on|for)\s+(.+)$/)?.[1];

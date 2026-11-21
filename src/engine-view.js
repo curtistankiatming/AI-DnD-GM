@@ -4,6 +4,7 @@ const { ABILITIES, SKILLS, ITEMS, CLASSES, CLUES, CAMPAIGN } = require("./conten
 const { abilityModifier, proficiencyBonus, actorSkillBonus } = require("./rules");
 const P = require("./progression");
 const G = require("./equipment");
+const Gear = require("./gear");
 const W = require("./world");
 const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
@@ -92,7 +93,8 @@ function itemView(state, entry) {
     quantity: entry.quantity,
     charges: entry.charges,
     description: item.description,
-    purpose: item.purpose,
+    purpose: Gear.purpose(item),
+    requires: Gear.requirementText(item) || null,
     slot: item.slot || null,
     equippedSlots,
     allocated:G.allocated(state,item.id),
@@ -119,7 +121,7 @@ function playerSheetView(state) {
     nextLevelXp: XP_THRESHOLDS[state.player.level] || null,
     gold:state.player.gold,
     temporaryHp:state.player.temporaryHp||0,
-    cloakReady:state.player.used?.cloakReady!==false,
+    cloakReady:Gear.storyReady(state,'thornward-cloak'),
     hp: state.player.hp,
     maxHp: state.player.maxHp,
     ac: state.player.ac,
