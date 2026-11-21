@@ -89,6 +89,9 @@ function createPlayer(setup = {}) {
   return applyEquipmentDerivedStats(player);
 }
 
+// A companion's authored identity: refreshed from companions.json on every load.
+const AUTHORED = (base) => Object.fromEntries(["name", "role", "pronouns", "summary", "personality", "dialogue", "signature", "gearClass"].filter((k) => base[k] !== undefined).map((k) => [k, deepClone(base[k])]));
+
 function createCompanion(id) {
   const definition = COMPANIONS[id];
   if (!definition) return null;
@@ -239,6 +242,9 @@ function normalizeIncomingState(raw) {
       return {
         ...createCompanion(base.id),
         ...member,
+        // Who a companion is comes from companions.json, never the save, so a
+        // save from before a character rewrite gets the current voice.
+        ...AUTHORED(base),
         abilities: normalizeAbilities(member.abilities, base.abilities),
         skills: Array.isArray(member.skills) ? member.skills.filter((id) => SKILLS[id]) : base.skills,
         conditions: Array.isArray(member.conditions) ? member.conditions : [],
