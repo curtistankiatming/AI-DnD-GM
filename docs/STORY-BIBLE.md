@@ -100,7 +100,7 @@ becomes the Second Oath at level 20.
 | Warden Sable | Book One's villain. | Bound the bell spirit in secret to keep the village safe "properly". His case should almost convince you. In Book Two, if he lived, he is a prisoner at Highpass whose advice you need and hate needing. |
 | Lysa | The cult lookout you can spare. | If spared, she works for the guilds in Book Two and can be turned again. |
 | Quartermaster Iona | Ashford's contracts officer. | Practical to a fault. Will help save the world, then send an invoice for the bridge. |
-| Lieutenant Hal | The bridge officer. | Owes Orin. In Book Two she leads the out-of-work soldiers who crewed the Single Voice's beacons: Orin's story. |
+| Lieutenant Hal | The bridge officer. | Went back for the farmers at Calder when Orin did not, and has never held it over him. In Book Two she leads the out-of-work soldiers who crewed the Single Voice's beacons: Orin's story. |
 | Captain Sorrel | Commander at Highpass. | Out of patience, beds and failed expeditions. Warms up only when you bring people back alive. |
 | Provost Elske Marrow (new) | Merrowgate's delegate; Book Two's antagonist. | Wrote the design the Single Voice was built from after her town burned, then watched Central Command turn it cruel. Wants to build it properly, in public, with limits. Right that councils are too slow. Her secret: at Hollin's Reach she argued for waiting. |
 | Brannagh of Fenmere (new) | Fenmere's delegate. | Seventy, blunt, the council's conscience. Brings her goat to every meeting and never explains why: there is nobody left in Fenmere's lower village to mind it. |

@@ -322,7 +322,7 @@
           { "say": "Iona", "text": "No, you weren't, and I didn't expect you to. That's not the point. The point is, I've added a line." },
           { "narrate": "She tears out the page and puts it on the table. Under the beer and the cart, in the same neat hand, there is a new entry." },
           { "say": "maren", "text": "'To retrieval of the quartermaster from the lantern-works, at the hero's expense: one evening. Credit.' And then the total." },
-          { "say": "Iona", "text": "We're square, as of tonight. I'd like it noted that I don't do that often." },
+          { "say": "Iona", "text": "We're square, as of tonight. I don't do that often. Don't tell Ashford." },
           { "say": "maren", "text": "What are you going to do about Elske's proposal?" },
           { "say": "Iona", "text": "Vote for it, probably. I was tied to a chair for a day because five towns couldn't decide who held the purse. Somebody should be able to say 'stop' faster than that." },
           { "narrate": "She goes. Orin looks at the invoice for a while, then folds it and puts it in his pack." }
@@ -633,8 +633,8 @@
           { "say": "Dera", "text": "That'll do it." },
           { "narrate": "Tovin rings the hours. Pim rings them with him, exactly on time, every time, and has been told to breathe so often that he now does it without being asked. Aveline sleeps, people say, for a week." },
           { "narrate": "Brannagh has her fence. The goat ignores it entirely." },
-          { "narrate": "Maren's list is gone; she let it go in Merrowgate harbour. She has started a new one. It is the names of the people in the Sallows long room, and beside each one is something true about them.", "when": { "flag": "keeper-list-done", "party": "maren" } },
-          { "narrate": "Maren still has her list, with one empty space on it. She has stopped looking at it every night. She is waiting, she says, for the right word to turn up.", "when": { "notFlag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Maren's list is gone; she let it go in Merrowgate harbour. She has started a new one. It is the names of the people in the Sallows long room, and beside each one is something true about them. The last name on it is Elske Marrow's. Beside it Maren has written: comes every week, and reads to them.", "when": { "flag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Maren still has her list, with one empty space on it. She has stopped looking at it every night. She is waiting, she says, for the right word to turn up. Below the space, in newer ink, there is one more name: Elske Marrow. Beside it she has written nothing yet, either. When you ask, she says Elske isn't finished.", "when": { "notFlag": "keeper-list-done", "party": "maren" } },
           { "narrate": "Orin has the quartermaster's invoice in his pack. Sometimes, when he thinks nobody is looking, he reads it.", "when": { "party": "orin" } }
         ],
         "choices": [
