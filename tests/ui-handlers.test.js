@@ -113,3 +113,11 @@ test('AI tuning controls sit under Advanced settings, which opens itself for a l
   for(const name of ['enabled','provider','narration','base','model'])assert.ok(!line.includes(name+'.closest('),name+' stays in view');
   assert.match(chat,/if\(local\)adv\.open=true/);
 });
+// Gameplay review 2026-11-21: "Set out" on the story screen skipped the
+// Normal/Hard/Heroic choice that only Prepare showed.
+test("What's next offers an AI adventure's difficulty before Set out",()=>{
+  const js=fs.readFileSync(path.join(__dirname,'../public/whats-next.js'),'utf8');
+  assert.match(js,/type: 'adventure-tier', questId: q\.id, tier: t\.id/);
+  assert.match(js,/q\.canChangeTier/);
+  assert.match(js,/fixed for a trial/);
+});

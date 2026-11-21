@@ -79,6 +79,17 @@
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', q.name), el('span', 'muted', ` · Level ${q.level}${q.generated ? ' · written for you' : ''}`), el('p', 'muted', q.brief));
+      // An AI-written adventure's difficulty is picked before setting out, here as on Prepare.
+      if (q.trial) text.append(el('p', 'muted', `Difficulty: ${q.trialTier} (fixed for a trial)`));
+      else if (q.tiers?.length) {
+        const tiers = el('div', 'whats-next-tier adventure-tier'); tiers.setAttribute('role', 'group'); tiers.setAttribute('aria-label', `Difficulty for ${q.name}`);
+        tiers.append(el('span', 'muted', q.canChangeTier ? 'Difficulty:' : `Difficulty: ${q.tierName}`));
+        if (q.canChangeTier) for (const t of q.tiers) {
+          const chosen = t.id === q.tier, b = action(t.name, `btn btn-secondary btn-small${chosen ? ' is-selected' : ''}`, { type: 'adventure-tier', questId: q.id, tier: t.id }, chosen);
+          b.title = t.description; b.setAttribute('aria-pressed', String(chosen)); tiers.append(b);
+        }
+        text.append(tiers);
+      }
       row.append(text, q.canDepart ? action(q.returning ? 'Continue' : 'Set out', 'btn btn-secondary btn-small', { type: 'depart', questId: q.id })
         : el('span', 'muted whats-next-blocked', `Leaves from ${q.townName} at level ${q.level}`));
       if (q.generated && (w.director?.open || []).some(o => o.id === q.id && !o.started)) row.append(action('Dismiss', 'text-button', { type: 'director-dismiss', questId: q.id }));

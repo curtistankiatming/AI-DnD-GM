@@ -4,6 +4,17 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Gameplay review fixes (21 November 2026)
+
+- Book One story text is told in the order it happened: the roll and what it
+  did, then the new place. The chapter heading is no longer repeated in the
+  paragraph, and a choice card's hint ("Commit to the trail...") is no longer
+  told as if it had happened.
+- The "What's next?" card on the story screen now shows the Normal / Hard /
+  Heroic picker for an AI-written adventure before "Set out" (it was only on
+  Prepare). A trial shows its fixed difficulty.
+- Review: [docs/reviews/claude-gameplay-2026-11-21.md](docs/reviews/claude-gameplay-2026-11-21.md).
+
 ## Paid books on the hosted game (groundwork for Book Three)
 
 - The game now knows which books a session may play. The open-source game
