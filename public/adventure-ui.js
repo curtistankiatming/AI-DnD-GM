@@ -223,10 +223,10 @@
    chip.dataset.health=a.hp<=0?'down':ratio<=.5?'hurt':'ok';fill.style.width=Math.round(ratio*100)+'%';bar.append(fill);
    chip.title=a.name;chip.append(el('strong','',a.id==='player'?a.name:String(a.name).replace(/^Sister /,'').split(' ')[0]),el('span','party-chip-hp',`${a.hp}/${a.maxHp}`),bar);return chip;}));
   const rows=(view.chat?.history||[]).slice(-8),duplicate=U.duplicateLast(rows,dom.narrationText.textContent);
-  // A rules line only answers something the player typed. Lines echoed from a button
-  // (a story choice, a combat action) already show as the story or the board, so they stay out.
-  const nodes=[...conversation.children];
-  nodes.forEach((node,i)=>{node.hidden=i===duplicate||node.classList.contains('chat-rules')&&!nodes[i-1]?.classList.contains('chat-player');});
+  // A rules line belongs to a typed exchange (after the player's message or the game master's reply).
+  // Lines echoed from a button (a story choice, a combat action) already show as the story or the board.
+  const nodes=[...conversation.children],typed=n=>n&&(n.classList.contains('chat-player')||n.classList.contains('chat-guide'));
+  nodes.forEach((node,i)=>{node.hidden=i===duplicate||node.classList.contains('chat-rules')&&!typed(nodes[i-1]);});
   historyLabel.hidden=!nodes.some(n=>!n.hidden);
   dom.choicePanel.hidden=Boolean(view.chat?.road?.present||view.chat?.courier?.active&&view.chat?.courierAvailable);
   byId('roadScenario').hidden=!view.chat?.road;

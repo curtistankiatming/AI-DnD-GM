@@ -653,7 +653,11 @@ function renderCombat() {
     button.disabled = busy || action.disabled;
     const head = createElement("div", "combat-action-head");
     head.append(createElement("strong", "", action.name), createElement("span", `cost-badge cost-${action.cost}`, action.cost));
-    button.append(head, createElement("p", "", action.disabled ? `${action.description} ${action.disabledReason}` : action.description));
+    // The description and, for an unavailable action, the reason, as separate parts so a phone can show just the reason.
+    const about = createElement("p", "");
+    about.append(createElement("span", "action-desc", action.description));
+    if (action.disabled && action.disabledReason) about.append(" ", createElement("span", "action-reason", action.disabledReason));
+    button.append(head, about);
     button.dataset.actionId = action.id;
     button.addEventListener("click", () => chooseCombatAction(action));
     dom.combatActions.appendChild(button);
@@ -718,7 +722,7 @@ function requirementLine(item) {
   const hero = (item.comparisons || []).find((c) => c?.actorId === "player");
   const line = createElement("p", "item-requires");
   line.append(createElement("span", "item-requires-label", "Requires"), ` ${item.requires}`);
-  if (hero?.blocked && !/two-handed/.test(hero.blocked)) { line.classList.add("is-unmet"); line.title = hero.blocked; line.append(createElement("span", "item-requires-note", " · not yet for you")); }
+  if (hero?.blocked && !/two-handed/.test(hero.blocked)) { line.classList.add("is-unmet"); line.title = hero.blocked; line.append(createElement("span", "item-requires-note", /^Only a/.test(hero.blocked) ? " · not for your class" : " · not yet for you")); }
   return line;
 }
 
@@ -799,7 +803,8 @@ function renderInventory() {
       equip.disabled = busy || Boolean(view.combat?.active);
       equip.title = view.combat?.active ? "Equipment changes are locked during initiative." : "Equip this item.";
       // Nobody in the party meets the requirements: say so on the button instead of offering a dead end.
-      const nobody = item.requires && (item.comparisons || []).length && item.comparisons.every((c) => c?.blocked);
+      const fixed = (c) => c?.blocked && !/two-handed/.test(c.blocked); // An unequip-first block is the player's to clear.
+      const nobody = item.requires && (item.comparisons || []).length && item.comparisons.every(fixed);
       if (nobody && !item.equippedSlots.length) { equip.textContent = "Locked"; equip.disabled = true; equip.dataset.disabled = "true"; equip.title = `Nobody in the party can use this yet. Requires: ${item.requires}.`; }
       equip.addEventListener("click", () => chooseEquipmentOwner(item));
       actions.appendChild(equip);

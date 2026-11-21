@@ -602,7 +602,8 @@ body.in-combat #howToPlay { display:none; }
 .in-combat #adventureScroll > * { margin-inline:auto; }
 .in-combat #workspace-adventure > .adventure-overview,.in-combat #workspace-adventure > .adventure-composer { justify-self:center; }
 /* A fight has no use for the AI tip or campaign instructions under the message box. */
-body.in-combat #promptIdeas,body.in-combat .adventure-composer .composer-meta { display:none; }
+body.in-combat #promptIdeas,body.in-combat #editInstructionsBtn,body.in-combat #howToPlayBtn { display:none; }
+body.in-combat .adventure-composer #chatStatus:empty { display:none; }
 @media(min-width:761px){ .combat-armed-note { display:none; } }
 @media(max-width:760px){
  /* Act / Say / Ask: a small switch on the same row as the message box, not a row of its own. */
@@ -616,7 +617,6 @@ body.in-combat #promptIdeas,body.in-combat .adventure-composer .composer-meta { 
  #promptIdeas[data-ai=off] { display:none; }
  /* ---- Shorter combat board on phones ---- */
  .in-combat .adventure-composer { padding:6px 8px; }
- .in-combat .composer-row .message-modes { display:none; }
  .combat-order { gap:4px; margin-bottom:8px; font-size:.76rem; }
  .order-token { padding:1px 8px; }
  .combat-board-ui #combatPanel { min-width:0; max-width:100%; }
@@ -626,7 +626,10 @@ body.in-combat #promptIdeas,body.in-combat .adventure-composer .composer-meta { 
  .fighter-line strong { font-size:.88rem; }
  .fighter-line small,.fighter-pill { font-size:.76rem; }
  .combat-board-ui #combatActions .combat-action { flex:1 1 40%; min-height:44px; padding:6px 8px; }
- .combat-board-ui #combatActions .combat-action p { display:none; }
+ /* One line of what it does; an unavailable action shows why instead. */
+ .combat-board-ui #combatActions .combat-action p { font-size:.74rem; -webkit-line-clamp:1; }
+ .combat-board-ui #combatActions .combat-action.is-disabled p { -webkit-line-clamp:2; }
+ .combat-board-ui #combatActions .combat-action.is-disabled .action-desc { display:none; }
  .combat-board-ui #combatActions .combat-action strong { font-size:.88rem; }
  .combat-footer { min-width:0; max-width:100%; }
  .combat-board-ui .combat-footer [data-combat-group=party] { flex:1 1 100%; min-width:0; gap:6px; }

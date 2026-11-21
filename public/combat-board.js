@@ -29,12 +29,12 @@
   if(!a){a=actions.find(x=>x.id==='weapon-attack'&&targeted(x))||null;armed=a?a.id:null;}
   return a;
  }
- const GOOD=new Set(['empowered','fortified','guarded','hidden','inspired','intercept','taunting','covered','blessed','sanctuary','protected','dodging','braced','encouraged','warded','shielded','packready','shadowstrike','outclassing']);
- const BAD=new Set(['burning','weakened','vulnerable','slowed','guiding','mocked','stunned','surprised','poisoned','prone','restrained','frightened','bleeding','deafened','blinded','marked','exposed','snared','cursed']);
+ const GOOD=new Set(['empowered','fortified','guarded','hidden','inspired','intercept','taunting','covered','blessed','sanctuary','protected','dodging','braced','encouraged','warded','shielded','packready','shadowstrike','outclassing','poisonward','disengaged']);
+ const BAD=new Set(['burning','weakened','vulnerable','slowed','guiding','mocked','stunned','surprised','poisoned','prone','restrained','frightened','bleeding','deafened','blinded','marked','exposed','snared','cursed','sleeping']);
  // Coloured by what it means for your side: a buff on an enemy is a threat (red), a debuff on an enemy helps you (green).
  function effectTone(x,actor){const id=String(x.id||'').toLowerCase(),kind=GOOD.has(id)?1:BAD.has(id)?-1:0;if(!kind)return'neutral';return (actor.team==='enemy'?-kind:kind)>0?'good':'bad';}
  // Rounds left, shown on the chip because phones have no tooltips.
- function roundsLeft(x){const r=view?.combat?.round;if(!x.expiresRound||!Number.isFinite(r))return'';const n=Math.max(1,x.expiresRound-r+1);return ` · ${n}`;}
+ function roundsLeft(x){const r=view?.combat?.round;if(!x.expiresRound||!Number.isFinite(r))return'';const n=Math.max(1,x.expiresRound-r);return ` · ${n} rd`;}
  function card(actor,action){
   const target=action?.targets?.find(t=>t.id===actor.id&&!t.disabled),down=actor.hp<=0;
   const ratio=actor.maxHp?Math.max(0,Math.min(1,actor.hp/actor.maxHp)):0;

@@ -142,7 +142,9 @@ test('UI review: rarity, requirements, effect chips, bounty card and Town tab',(
   assert.doesNotMatch(exp,/Bounty board · \$\{w\.bounty\.reward/);
   assert.match(ui,/\['prepare','Town'\]/);
   for(const r of ['uncommon','rare','epic','legendary'])assert.match(css,new RegExp(`data-rarity=${r}`));
-  assert.match(css,/\.in-combat \.composer-row \.message-modes \{ display:none; \}/);
+  // Say and Ask are the modes that work in a fight, so the switch stays visible there.
+  assert.doesNotMatch(css,/\.in-combat \.composer-row \.message-modes \{ display:none; \}/);
+  assert.match(css,/body\.in-combat #promptIdeas,body\.in-combat #editInstructionsBtn/);
 });
 test('Combine actions use a companion\'s first name, not a title',()=>{
   const src=fs.readFileSync(path.join(__dirname,'../src/combat.js'),'utf8');
