@@ -10,6 +10,7 @@ const Road = require("./road-story");
 const Journal = require("./journal");
 const Improvise = require("./improvise");
 const Director = require("./director");
+const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
@@ -468,6 +469,8 @@ function checkPlan(state, choice) {
   let dc=Number(check.dc||10);
   const quest=currentNode(state).questId;
   if(quest && state.story.flags[`prepared:${quest}`]){dc-=2;reasons.push('Established evidence lowers DC by 2');}
+  const under=quest?XP.underSteps(state.player.level,Director.quest(state,quest)?.level):0;
+  if(under){dc+=under;reasons.push(`More than ${XP.UNDER_FREE} levels under this adventure raises DC by ${under}`);}
   if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
   if(quest==='beacon'){const n=['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length;dc-=Math.min(3,n);if(n)reasons.push(`Independent allies lower DC by ${Math.min(3,n)}`);}

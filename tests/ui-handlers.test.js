@@ -121,3 +121,12 @@ test("What's next offers an AI adventure's difficulty before Set out",()=>{
   assert.match(js,/q\.canChangeTier/);
   assert.match(js,/fixed for a trial/);
 });
+// Combat plan step 2: the bounty board and the under-level warning are on the
+// story screen and on Prepare, and send the engine's own 'bounty' action.
+test("What's next and Prepare offer the bounty board and warn when under-levelled",()=>{
+  const next=fs.readFileSync(path.join(__dirname,'../public/whats-next.js'),'utf8');
+  assert.match(next,/\{ type: 'bounty' \}/);
+  assert.match(next,/q\.underSteps/);
+  const prep=fs.readFileSync(path.join(__dirname,'../public/expedition.js'),'utf8');
+  assert.match(prep,/\{type:'bounty'\}/);
+});

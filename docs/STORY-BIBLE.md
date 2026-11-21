@@ -190,14 +190,15 @@ in its town while one stretch of the story is open:
 The main story never assumes a job was done; two chapters mention one if it
 was (the shared room at the Chair Problem, Ada Rusk at Kell's Bridge).
 
-**XP, levels 11 to 20:** a chapter pays about one level (105% of the level it
-is written for), as Book One's chapters do, so the free story reaches level 20
-at the end of Book Two without grinding. A side job pays gold, and XP of up to
-12% of a level; in practice the chapters leave only about 1,000 XP to spare
-before level 20 must wait for the Second Oath, so that spare XP is shared over
-the jobs (about 130 each) and the rest of a job's reward is gold. Written
-chapters' battles pay no extra XP, as in Book One. (Changed on 19 November 2026
-from "30% of a level", which would have needed grinding between chapters.)
+**XP, levels 1 to 20:** since 21 November 2026 (Curtis's choice) a chapter
+pays about 70% of the level it is written for. Side jobs (up to 12% of a level
+each), the town bounty board (a repeatable fight, about 10% of a level, 15%
+while behind the chapter) and AI side quests make up the rest. A player who
+skips all of it ends Book Two at about level 17; a careful one at 19, reaching
+20 and the 2nd job with a bounty or two after the Second Oath. A chapter can be
+started up to 10 levels under its level; more than 5 under, it gets harder.
+Written chapters' battles pay no extra XP. (Before: 105% per chapter, so the
+story reached level 20 at the end of Book Two without side content.)
 
 ### Book Three: The Names in the Bronze (levels 20 to 40, being written)
 

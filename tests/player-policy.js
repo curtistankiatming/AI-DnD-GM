@@ -74,8 +74,14 @@ function chooseAction(v,m={},style='prepared'){
       if(q.knownThreat&&style!=='direct'){
         const tools=['climbing-kit','storm-grounder','antitoxin'];for(const id of tools){const offer=w.shop.find(i=>i.id===id&&i.stock>0);const mentioned=(id==='climbing-kit'&&/climb|rope|crossing/i.test(q.knownThreat))||(id==='storm-grounder'&&/storm|ground/i.test(q.knownThreat))||(id==='antitoxin'&&/poison/i.test(q.knownThreat));if(offer&&mentioned&&!v.inventory.some(i=>i.id===id)&&hero.gold>offer.price+15)return done('buy',{market:'town',itemId:id,quantity:1});}
       }
+      // Behind the chapter: a careful player takes bounties until caught up;
+      // a direct one only to stay clear of the under-level penalty.
+      const behind=q.level-hero.level,b=w.bounty;
+      if(b?.available&&b.reward.xp>0&&style!=='skip'&&(style==='direct'?behind>3:behind>0))return done('bounty');
       return done('depart',{questId:q.id});
     }
+    // Nothing can start yet (a level checkpoint such as the Oath of the Road): any player takes bounties.
+    if(w.bounty?.available&&w.bounty.reward.xp>0&&w.quests.some(q=>!q.available&&q.level>hero.level))return done('bounty');
     if(w.activeQuest==='bell')return done('resume');
   }
   // Prioritize investigation and assistance based on visible choices; no hidden outcomes.

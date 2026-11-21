@@ -9,6 +9,7 @@ const W = require("./world");
 const Director = require("./director");
 const XP = require("./xp");
 const Power = require("./power");
+const Bounty = require("./bounty");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
 const Expansion = require("./expansion");
@@ -146,10 +147,11 @@ function startCombat(state, encounterId, rng, events) {
   const encounter = written.introLines ? { ...written, intro: Expansion.dialogueText(Expansion.liveLines(state, written.introLines)) } : written;
   if(!encounter.practice && state.story.flags[`won:${encounter.id}`]){enterNode(state,encounter.victoryNode,events);return true;}
   state.world.combatOrigin=state.story.nodeId;
-  if(!encounter.questId&&!encounter.practice)state.world.activeQuest="bell";
+  if(!encounter.questId&&!encounter.practice&&!encounter.bounty)state.world.activeQuest="bell";
   const allies = [combatActorFromPlayer(state.player), ...state.party.map(combatActorFromCompanion)];
-  const scale = encounterScale(state, encounter) * (encounter.questId ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
+  const scale = encounterScale(state, encounter) * (encounter.questId || encounter.bounty ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
   const enemies = encounter.enemies.map((enemyId, index) => combatActorFromEnemy(enemyId, index, scale, encounter));
+  if (encounter.bounty) Bounty.shape(state, enemies, scale);
   const actors = [...allies, ...enemies];
   for (const actor of actors) {
     actor.initiative = rollD20(rng).natural + abilityModifier(actor.abilities.dex);
@@ -178,8 +180,14 @@ function startCombat(state, encounterId, rng, events) {
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
     if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }
+  // More than 5 levels under the adventure: enemies hit harder and more often (src/xp.js).
+  const under=encounter.questId?XP.underSteps(state.player.level,Director.quest(state,encounter.questId)?.level):0;
+  if(under){
+    for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
+    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage.`});
+  }
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
-  if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice) {
+  if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
     const orin = actors.find((actor) => actor.refId === "orin");
     if (orin) addCondition(orin, { id: "dodging", name: "Guarding Stance", expiresRound: 1 });
   }
@@ -1052,6 +1060,14 @@ function finishCombat(state,result,rng,events){
   }
   // Effects with combat-only timing must never leak into later encounters.
   for(const a of G.actors(state))a.conditions=(a.conditions||[]).filter(x=>['poisoned','poisonWard','blessed','coating'].includes(x.id));
+  // A bounty settles on its own and never touches the story (src/bounty.js).
+  if(encounter.bounty){
+    for(const a of G.actors(state))if(a.hp<=0){a.hp=1;a.deathSaves={successes:0,failures:0,stable:false};}
+    state.story.lastOutcome={kind:result==='defeat'||result==='retreat'?'combatDefeat':'combatVictory',title:name,text:result==='defeat'||result==='retreat'?`The party gives up on ${name}.`:`The party wins ${name}.`};
+    recordHistory(state,`Bounty ${result==='defeat'||result==='retreat'?'abandoned':'claimed'}: ${name}.`,{kind:'combat',result});
+    Bounty.finish(state,result,events,{awardXp,enterNode,actors:G.actors});
+    return;
+  }
   if(result==='defeat'||result==='retreat'){
     state.world.failedEncounter=encounter.id;
     state.story.lastOutcome={kind:'combatDefeat',title:name,text:result==='retreat'?`The party withdraws from ${name}.`:`The party is overcome in ${name}; rescuers can bring them home.`};
@@ -1197,7 +1213,7 @@ function combatActionView(state) {
     actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
   }
   if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use.',disabled:actor.actionUsed||actorResourceCurrent(actor,'advancement')<1});
-  actions.push({id:'retreat',name:'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
+  actions.push({id:'retreat',name:'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
   actions.push({ id: "end-turn", name: "End Turn", cost: "free", targetKind: "none", description: "Resolve all companion and enemy turns until your next initiative." });
 
   for(const action of actions){

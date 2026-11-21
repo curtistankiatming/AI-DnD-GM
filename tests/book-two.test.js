@@ -41,10 +41,12 @@ test('Book Two follows Book One in order, from Highpass to Merrowgate', () => {
   assert.equal(Book.bookOf('road').title, 'The Bell Beneath Briarwatch');
 });
 
-test('each chapter pays about one level, like Book One, so the free story reaches level 20', () => {
-  for (const q of TWO) {
+// Curtis, 21 November 2026: chapters pay about 70% of a level; side jobs,
+// bounties and battles make up the rest (src/xp.js CHAPTER_SHARE).
+test('each chapter pays about 70% of its level, like Book One', () => {
+  for (const q of TWO.filter((x) => x.xp > 0)) {
     const band = P.levelBand(q.level);
-    assert.ok(q.xp >= band && q.xp <= band * 1.1, `${q.id}: ${q.xp} XP for a ${band} XP level`);
+    assert.ok(q.xp >= band * 0.65 && q.xp <= band * 0.75, `${q.id}: ${q.xp} XP for a ${band} XP level`);
   }
 });
 
@@ -92,11 +94,11 @@ test('a chapter plays through to its camp scene, then to the next town', () => {
   s = act(s, { type: 'story-choice', choiceId: 'careful' }).state;
   s = act(s, { type: 'story-choice', choiceId: 'resolve' }).state;
   assert.equal(s.story.nodeId, 'q-fenmere-after');
-  const level = s.player.level;
+  const xp = s.player.xp;
   const r = act(s, { type: 'story-choice', choiceId: 'above' });
   s = r.state;
   assert.ok(s.world.completed.fenmere); assert.equal(s.story.flags.fen_build_above, true);
-  assert.equal(s.player.level, level + 1, 'The chapter levels the hero.');
+  assert.ok(s.player.xp >= xp + QUESTS.fenmere.xp, 'The chapter pays its XP.');
   assert.equal(s.story.nodeId, 'scene-fenmere-bakery-shop');
   assert.match(E.buildView(s).scene.opening, /The baker's ward: We open at six\./);
   s = act(s, { type: 'story-choice', choiceId: 'tell' }).state;
