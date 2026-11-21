@@ -29,12 +29,9 @@ function init(state){
   G.normalizeEquipment(state);
   return w;
 }
-// A town that only a later book's chapters reach (Book Three's Saltwick and
-// Vell) is shown, and can be travelled to, only while one of those chapters
-// is playable for this save: not before its book is released, nor on a hosted
-// account without that book.
-const TOWN_CHAPTERS={};for(const q of Object.values(QUESTS))for(const id of new Set([q.town,q.nextTown]))if(id)(TOWN_CHAPTERS[id] ||= []).push(q.id);
-function townOpen(state,id){return Boolean(TOWNS[id])&&(!TOWN_CHAPTERS[id]||TOWN_CHAPTERS[id].some(q=>Book.playable(state,q)));}
+// A town that only a later book's chapters reach (Saltwick, Vell) is shown
+// and reachable only while one of them is playable (src/book.js townOpen).
+const townOpen=Book.townOpen;
 function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !state.combat?.active&&TOWNS[id]?TOWNS[id]:null;}
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of TOWNS[id].stock)if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
@@ -125,7 +122,11 @@ const JOB_SHARE=0.12;
 // a paid book on a free hosted account) is never offered.
 const jobInBooks=(state,job)=>[job.from,job.until].filter(Boolean).every(id=>Book.playable(state,id));
 function jobOpen(state,job){return Boolean(job&&jobInBooks(state,job)&&completed(state,job.from)&&!(job.until&&completed(state,job.until))&&!state.world.jobs[job.id]);}
-function jobXp(job){const L=Math.max(2,job.level);return Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));}
+// From Book Three a chapter pays exactly one level, so a job pays mostly gold
+// and about 130 XP (docs/book-three/DESIGN.md, "Side jobs and camp scenes").
+const BOOK_THREE_JOB_XP=130;
+const jobBook=job=>Math.max(1,...[job.from,job.until].filter(Boolean).map(id=>Number(QUESTS[id]?.book)||1));
+function jobXp(job){const L=Math.max(2,job.level);const share=Math.round(JOB_SHARE*((P.XP_NEXT[L]||0)-(P.XP_NEXT[L-1]||0)));return jobBook(job)>=3?Math.min(BOOK_THREE_JOB_XP,share):share;}
 function completeJob(state,id,events,api,reward){
   const job=SIDE_JOBS[id],w=state.world;if(!job||w.jobs[id])return false;
   const gold=Math.max(0,Number.isFinite(reward)?reward:job.gold||0);

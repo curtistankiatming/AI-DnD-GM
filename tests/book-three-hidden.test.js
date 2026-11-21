@@ -40,7 +40,8 @@ test('a hero who has finished Book Two cannot take a Book Three chapter or its s
   assert.equal(E.resolveAction(s, { type: 'side-job', jobId: 'apprentice' }, high).result.ok, false);
 });
 
-test('Saltwick and Vell are neither shown nor reachable while Book Three is hidden, even on a save that has them', () => {
+const PREVIEW = /^(1|true|yes|on)$/i.test(String(process.env.BRIARWATCH_PREVIEW_BOOKS || ''));
+test('Saltwick and Vell are neither shown nor reachable while Book Three is hidden, even on a save that has them', { skip: PREVIEW && 'Runs only as a player would, without the preview.' }, () => {
   const { TOWNS } = require('../src/expansion');
   assert.ok(TOWNS.saltwick && TOWNS.vell, 'The towns are written.');
   const s = ready('b3-letter');
@@ -54,4 +55,13 @@ test('Saltwick and Vell are neither shown nor reachable while Book Three is hidd
     assert.equal(E.resolveAction(s, { type: 'travel-town', townId: id }, high).result.ok, false, `${id} cannot be travelled to`);
   }
   assert.equal(W.townOpen(s, 'merrowgate'), true, 'Book Two\'s towns stay open.');
+});
+
+test('without the preview, the AI storyteller is never offered Saltwick or Vell', { skip: PREVIEW && 'Runs only without the preview.' }, () => {
+  const Director = require('../src/director');
+  const schema = JSON.stringify(Director.SCHEMA);
+  assert.ok(!schema.includes('"saltwick"') && !schema.includes('"vell"'));
+  assert.ok(schema.includes('"merrowgate"'));
+  const s = ready('b3-letter'); s.world.unlockedTowns.push('saltwick', 'vell');
+  assert.equal(Director.destination(s, 'vell', 'highpass'), 'highpass');
 });

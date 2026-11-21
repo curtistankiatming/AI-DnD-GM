@@ -409,7 +409,7 @@ test('Saltwick and Vell are new towns on the road: the pass leads to Saltwick, S
 });
 
 test('each new chapter can be fought to its end, and the ending is told the way it was won', () => {
-  for (const [id, decision, foughtLine] of [['b3-saltwick', 'seized', /grey to the shoulder/], ['b3-vell', 'refuse', /lieutenant sent to a post/], ['b3-witness', 'unwitness', /four more days/]]) {
+  for (const [id, decision, foughtLine] of [['b3-saltwick', 'seized', /grey to the shoulder/], ['b3-vell', 'refuse', /lieutenant sent to a post/], ['b3-witness', 'unwitness', /three more days/]]) {
     let s = act(at(id, 'crisis'), { type: 'story-choice', choiceId: 'confront' }).state;
     assert.ok(s.combat?.active, id);
     s = winFight(s);
@@ -438,16 +438,22 @@ test('the last roof: Orin\'s captain is Varn, and Mags says she will think about
   const bought = at('b3-saltwick', 'after'); const gold = bought.player.gold;
   const b = act(bought, { type: 'story-choice', choiceId: 'bought' }).state;
   assert.equal(b.player.gold, gold - 120 + QUESTS['b3-saltwick'].gold);
-  assert.match(told(b), /Davin Peller/);
+  assert.match(told(b), /Ella Marsh/); assert.match(told(b), /Mags takes it out of his hand/);
+  assert.doesNotMatch(told(b), /Davin Peller go/);
 });
 
-test('the oil run is told for a Saltwick still waiting, one gone to Vell, and one holding on bought or seized oil', () => {
-  const start = (flags) => { const s = ready('b3-saltwick', { flags }); s.world.townId = 'saltwick'; s.story.nodeId = 'town-saltwick'; return opening(act(s, { type: 'side-job', jobId: 'oil' }).state); };
-  const waiting = start({}), moved = start({ b3_saltwick_moved: true }), bought = start({ b3_saltwick_bought: true }), seized = start({ b3_saltwick_seized: true });
-  assert.match(waiting, /sold the last of the salt/); assert.doesNotMatch(waiting, /three hundred people gone|ration office|sword-point/);
-  assert.match(moved, /three hundred people gone to Vell/); assert.doesNotMatch(moved, /sold the last of the salt to a trader/);
+test('the oil run opens only after the last roof, and is told for a Saltwick gone to Vell, or holding on bought or seized oil', () => {
+  const offered = (id) => { const s = ready(id); s.world.townId = 'saltwick'; s.story.nodeId = 'town-saltwick'; return E.buildView(s).world.sideJobs.some((j) => j.id === 'oil'); };
+  assert.ok(!offered('b3-saltwick'), 'Not before the reunion on the ladder.');
+  assert.ok(offered('b3-vell'));
+  const start = (flags, party) => { const s = ready('b3-vell', { flags, party }); s.world.townId = 'saltwick'; s.story.nodeId = 'town-saltwick'; return opening(act(s, { type: 'side-job', jobId: 'oil' }).state); };
+  const moved = start({ b3_saltwick_moved: true }), bought = start({ b3_saltwick_bought: true }), seized = start({ b3_saltwick_seized: true });
+  assert.match(moved, /three hundred people gone to Vell/); assert.doesNotMatch(moved, /ration office|sword-point/);
   assert.match(bought, /off the ration office/); assert.match(seized, /sword-point/);
-  for (const t of [waiting, moved, bought, seized]) assert.equal((t.match(/^Mags Peller:/gm) || []).length, 2, 'One way of telling, never two.');
+  for (const t of [moved, bought, seized]) { assert.equal((t.match(/^Mags Peller:/gm) || []).length, 2, 'One way of telling, never two.'); assert.match(t, /Take Davin/); }
+  assert.match(start({ b3_saltwick_moved: true }, ['maren']), /^Mags Peller: Take Davin\. He knows the road\.$/m);
+  const raw = JSON.stringify(RAWJ.oil);
+  assert.doesNotMatch(raw, /Tam brings|forty-eight/);
 });
 
 test('at Vell, who meets you, who is with you and what Corvane asks first follow the earlier chapters and the Second Oath', () => {
@@ -464,7 +470,7 @@ test('at Vell, who meets you, who is with you and what Corvane asks first follow
   assert.match(start({ b3_to_council: true }), /Quartermaster Iona is a step behind you/);
   assert.doesNotMatch(start({}), /Iona/);
   assert.match(start({ b3_saltwick_moved: true }), /Saltwick comes down the last ridge behind you/);
-  assert.match(start({ b3_saltwick_bought: true }), /Davin Peller, 14, Saltwick/);
+  assert.match(start({ b3_saltwick_bought: true }), /Ella Marsh, 31, Saltwick/); assert.doesNotMatch(start({ b3_saltwick_bought: true }), /Davin Peller, 14/);
   for (const t of [answered, unanswered, old]) assert.match(t, /I will cast on the ninth day with your blessing or without it/);
   // Talks that need an earlier choice.
   const talks = (flags) => E.buildView(act(ready('b3-vell', { flags }), { type: 'depart', questId: 'b3-vell' }).state).scene.choices.map((c) => c.id);
@@ -574,9 +580,9 @@ test('the side jobs of chapters 4 to 6 open and close with their windows, and Be
   };
   const upTo = (id) => IDS.slice(0, IDS.indexOf(id) + 1);
   assert.deepEqual(['beds', 'oil', 'census', 'brothers'].map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [
-    ['highpass', 'b3-pass', 'b3-saltwick'], ['saltwick', 'b3-pass', 'b3-witness'], ['vell', 'b3-saltwick', 'b3-witness'], ['vell', 'b3-vell', 'b3-witness']]);
+    ['highpass', 'b3-pass', 'b3-saltwick'], ['saltwick', 'b3-saltwick', 'b3-witness'], ['vell', 'b3-saltwick', 'b3-witness'], ['vell', 'b3-vell', 'b3-witness']]);
   assert.ok(!offered('beds', upTo('b3-rite'), 'highpass')); assert.ok(offered('beds', upTo('b3-pass'), 'highpass')?.canStart); assert.ok(!offered('beds', upTo('b3-saltwick'), 'highpass'));
-  assert.ok(offered('oil', upTo('b3-vell'), 'saltwick')?.canStart); assert.ok(!offered('oil', upTo('b3-witness'), 'saltwick'));
+  assert.ok(!offered('oil', upTo('b3-pass'), 'saltwick')); assert.ok(offered('oil', upTo('b3-saltwick'), 'saltwick')?.canStart); assert.ok(!offered('oil', upTo('b3-witness'), 'saltwick'));
   assert.ok(!offered('census', upTo('b3-pass'), 'vell')); assert.ok(offered('census', upTo('b3-saltwick'), 'vell')?.canStart);
   assert.ok(!offered('brothers', upTo('b3-saltwick'), 'vell')); assert.ok(offered('brothers', upTo('b3-vell'), 'vell')?.canStart);
   for (const id of ['beds', 'oil', 'census', 'brothers']) assert.equal(SIDE_JOBS[id].level, QUESTS[during(SIDE_JOBS[id])].level, `${id} is at its chapter's level`);
@@ -593,4 +599,61 @@ test('on the hosted game, a free account does not see Saltwick or Vell, though t
   Book.grant(s, Book.FREE_BOOKS);
   assert.ok(!E.buildView(s).world.towns.some((t) => ['saltwick', 'vell'].includes(t.id)));
   assert.equal(E.resolveAction(s, { type: 'travel-town', townId: 'vell' }, high).result.ok, false);
+});
+
+test('Book Three side jobs pay mostly gold and 130 XP; Book Two jobs keep their share of a level', () => {
+  for (const job of B3_JOB_IDS.map((id) => SIDE_JOBS[id])) assert.equal(W.jobXp(job), 130, job.id);
+  for (const job of Object.values(SIDE_JOBS).filter((j) => !B3_JOB_IDS.includes(j.id))) assert.equal(W.jobXp(job), Math.round(0.12 * P.levelBand(Math.max(2, job.level))), job.id);
+  const s = ready('b3-vell'); s.world.townId = 'vell'; s.story.nodeId = 'town-vell';
+  assert.equal(E.buildView(s).world.sideJobs.find((j) => j.id === 'census').reward.xp, 130);
+});
+
+test('review fixes: lines that answer an absent companion, or a step not taken, are not told', () => {
+  // The crossing follows the night round (the approach), not the investigation.
+  const cross = (flags) => told(peaceAt('b3-saltwick', flags));
+  assert.match(cross({ 'approach:b3-saltwick': true }), /you have walked the round/); assert.doesNotMatch(cross({ 'approach:b3-saltwick': true }), /did not learn it in time/);
+  assert.match(cross({ 'prepared:b3-saltwick': true }), /did not learn it in time/);
+  // "As the letter said" only if the letter was read.
+  assert.match(opening(peaceAt('b3-saltwick', { 'prepared:b3-saltwick': true })), /exactly as the letter said/);
+  assert.doesNotMatch(opening(peaceAt('b3-saltwick')), /exactly as the letter said/);
+  // Saltwick without Orin: no reunion on the ladder, no answer to him.
+  const noOrin = opening(act(ready('b3-saltwick', { party: ['maren', 'nessa'] }), { type: 'depart', questId: 'b3-saltwick' }).state);
+  assert.doesNotMatch(noOrin, /looking at Orin|Orin stops|^Maren: Orin\.$|takes the end of the hook|Orin walks at the front/m);
+  assert.match(noOrin, /She does not find it/); assert.match(noOrin, /Come up, then/);
+  const talk = (id, opts) => told(act(act(ready(id === 'davin' ? 'b3-saltwick' : 'b3-vell', opts), { type: 'depart', questId: id === 'davin' ? 'b3-saltwick' : 'b3-vell' }).state, { type: 'story-choice', choiceId: `talk-${id}` }).state);
+  assert.match(talk('davin', { party: ['maren'] }), /You tell him no\. Nobody has got to\.\nDavin: Then how is it\?/);
+  assert.match(talk('davin', { party: ['maren'] }), /Nobody answers him/);
+  assert.doesNotMatch(talk('davin', {}), /Nobody answers him|You tell him no/);
+  const ysolde = talk('ysolde', { party: ['orin', 'maren'] });
+  assert.match(ysolde, /You ask her why she is on the wall\.\nYsolde: The High Warden's promise/);
+  assert.match(ysolde, /You ask her whether that is a choice at all/);
+  assert.doesNotMatch(talk('ysolde', {}), /You ask her/);
+  // Maren's three sittings need Maren.
+  const witnessTalks = (party) => E.buildView(act(ready('b3-witness', { party }), { type: 'depart', questId: 'b3-witness' }).state).scene.choices.map((c) => c.id);
+  assert.ok(['talk-bertil', 'talk-abel', 'talk-kit'].every((t) => witnessTalks(['orin', 'maren']).includes(t)));
+  assert.ok(!['talk-bertil', 'talk-abel', 'talk-kit'].some((t) => witnessTalks(['orin', 'nessa']).includes(t)));
+  // Exposing the trade after a fight does not cite what the volunteers said in a yard that never heard you.
+  const fought = winFight(act(at('b3-witness', 'crisis'), { type: 'story-choice', choiceId: 'objective' }).state);
+  const exposed = told(act(fought, { type: 'story-choice', choiceId: 'expose' }).state);
+  assert.doesNotMatch(exposed, /what the volunteers told you in the yard/); assert.match(exposed, /what you saw at the barracks door/);
+  assert.match(told(act(at('b3-witness', 'after', { flags: { 'method:b3-witness': 'peace' } }), { type: 'story-choice', choiceId: 'expose' }).state), /what the volunteers told you in the yard/);
+  // Waiting costs Corvane the free wards' bronze.
+  assert.match(told(act(at('b3-vell', 'after'), { type: 'story-choice', choiceId: 'wait' }).state), /Every day you spend looking/);
+  assert.deepEqual(QUESTS['b3-vell'].decisions.find((d) => d.id === 'wait').rep, { wardens: 1 });
+  // Saltwick moved gets half rations from regulation fourteen.
+  assert.match(talk('saltwick', { flags: { b3_saltwick_moved: true } }), /half card/);
+  // Names and canon.
+  const all = JSON.stringify([RAWQ['b3-saltwick'], RAWQ['b3-vell'], RAWQ['b3-witness'], RAWJ.oil, RAWJ.census, RAWJ.brothers, RAWJ.beds]);
+  assert.doesNotMatch(all, /Pell Brennick|Agathe|Nine pages|nine pages|Davin Peller, 14/);
+  assert.match(all, /Anwen Holt/); assert.match(all, /Eleven pages/);
+});
+
+test('the AI storyteller is offered, and may send the party to, only towns this save can play', () => {
+  const Director = require('../src/director');
+  assert.ok(Director.SCHEMA.properties?.destination?.enum?.includes('vell') || JSON.stringify(Director.SCHEMA).includes('"vell"'), 'With the preview, Vell is a destination.');
+  const s = ready('b3-vell');
+  assert.equal(Director.destination(s, 'vell', 'highpass'), 'vell');
+  Book.grant(s, Book.FREE_BOOKS);
+  assert.equal(Director.destination(s, 'vell', 'highpass'), 'highpass', 'A free hosted account is never sent to Vell.');
+  assert.equal(Director.destination(s, 'merrowgate', 'highpass'), 'merrowgate');
 });

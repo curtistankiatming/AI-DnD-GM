@@ -180,6 +180,13 @@ function chapter(state) {
 const playable = (state, id) => !QUESTS[id] || QUESTS[id].sideJob || chapters(state).some(q => q.id === id);
 // The `access` line condition: book n is released and open to this session.
 const reads = (state, n) => books(state).some(b => b.n === Number(n));
+// A town that only a later book's chapters reach (Book Three's Saltwick and
+// Vell) is shown, travelled to, or offered to the AI storyteller only while
+// one of those chapters is playable for this save: not before its book is
+// released, nor on a hosted account without that book.
+const TOWN_CHAPTERS = {};
+for (const q of ALL) for (const id of new Set([q.town, q.nextTown])) if (id) (TOWN_CHAPTERS[id] ||= []).push(q.id);
+const townOpen = (state, id) => Boolean(TOWNS[id]) && (!TOWN_CHAPTERS[id] || TOWN_CHAPTERS[id].some(q => playable(state, q)));
 
 // The level the current chapter is written for. AI XP may bring the hero up to
 // this level but never into the next one.
@@ -254,4 +261,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

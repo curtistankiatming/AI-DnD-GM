@@ -865,7 +865,7 @@
         "lines": [
           { "narrate": "The first night on the Iron Road to Vell, Saltwick camps along a mile of the road in a long line of small fires, each family round its own. At the far end of the line, the last fire, Orin sits by himself with the salt-hall lamp, which he has cleaned and filled and not lit.", "when": { "flag": "b3_saltwick_moved" } },
           { "narrate": "On Saltwick's roofs, the night after the tide, every lamp is lit. The town sits out on the slates to look at them. At the very edge of the town, on the cooper's yard roof where the planks run out, Orin sits by himself with the salt-hall lamp, which he has cleaned and filled and not lit.", "when": { "anyFlag": ["b3_saltwick_bought", "b3_saltwick_seized"] } },
-          { "narrate": "Davin has gone with the convoy to Vell. There is a space on the salt-hall roof where Mags usually sits, because tonight Mags is sitting somewhere else, on her own.", "when": { "flag": "b3_saltwick_bought" } },
+          { "narrate": "Bram Tolley and Ella Marsh have gone with the convoy to Vell. Davin is sitting on the salt-hall roof in the place where his grandmother usually sits, because tonight Mags is sitting somewhere else, on her own.", "when": { "flag": "b3_saltwick_bought" } },
           { "narrate": "Maren has a pot on your fire. She has been watching Orin's back for an hour." },
           { "say": "maren", "text": "Someone should go and sit with him. I don't think it should be nobody. I'm not sure it should be me." }
         ],
@@ -894,7 +894,9 @@
           { "narrate": "That is all he says. After a while he picks up the lamp and turns it in his hands, and you understand that he has said as much as he can tonight, and that it is more than he has said to anyone before.", "when": { "bondBelow": { "orin": 4 } } },
           { "say": "orin", "text": "Varn's still alive. Captain Odell Varn. Last I heard he had a company on the coast road, guarding grain. Good pay. He'd do the same again tomorrow and sleep after. He told me once that's what a captain is: someone who can.", "when": { "bondAtLeast": { "orin": 4 } } },
           { "say": "orin", "text": "I went to the guild at Ashford the next winter and asked to be posted where nobody would ask me to walk away from anyone. They laughed. Then they sent me to the bridge. Then I met Maren, and then I met you.", "when": { "bondAtLeast": { "orin": 4 } } },
-          { "say": "orin", "text": "Tonight I was at the back with the lantern, and everyone came up the road. Everyone. I counted twice in my head and then Maren counted out loud and I couldn't hear her for a bit because of my own heart.", "when": { "bondAtLeast": { "orin": 4 } } },
+          { "say": "orin", "text": "Last night I was at the back with the lantern, and everyone came up the road. Everyone. I counted twice in my head and then Maren counted out loud and I couldn't hear her for a bit because of my own heart.", "when": { "flag": "method:b3-saltwick", "is": "peace", "bondAtLeast": { "orin": 4 } } },
+          { "say": "orin", "text": "Last night I was at the back with the lantern, and everyone came up the road. Some of them grey to the shoulder. But everyone. I counted them twice in my head and couldn't hear myself for a bit because of my own heart.", "when": { "flag": "method:b3-saltwick", "is": "objective", "bondAtLeast": { "orin": 4 } } },
+          { "say": "orin", "text": "Last night I was at the back with the lantern, and everyone came up the road. Some of them grey to the shoulder. But everyone. I counted them twice in my head and couldn't hear myself for a bit because of my own heart.", "when": { "flag": "method:b3-saltwick", "is": "force", "bondAtLeast": { "orin": 4 } } },
           { "say": "orin", "text": "I'd like to come back here one day. When it's over. Whatever it is. Not to be forgiven. To be some use to her for a season, and let her decide what that's worth.", "when": { "bondAtLeast": { "orin": 4 } } }
         ],
         "choices": [
@@ -1019,11 +1021,11 @@
     "nodes": {
       "evening": {
         "title": "Something New",
-        "objective": "An evening in Vell, eight days from the casting.",
+        "objective": "An evening in Vell, seven days from the casting.",
         "lines": [
           { "narrate": "The guest-house Fennick has assigned you (form nine, \"accommodation, visiting, distinguished\") has one fire and four chairs and a window onto the drill-yard. Maren has pulled her chair round so she does not have to look at the casting wall." },
-          { "narrate": "Nessa is not in her chair. She is out on the barracks steps with Biscuit, a little way from Ysolde, not talking to her.", "when": { "flag": "b3_ysolde_pressed" } },
-          { "narrate": "Nessa is not in her chair. She is out on the barracks steps with Biscuit and Ysolde and the two boys, teaching Wil to whistle.", "when": { "flag": "b3_ysolde_respected" } },
+          { "narrate": "Nessa is not in her chair. She is out on the barracks steps with Biscuit, a little way from Ysolde, not talking to her.", "when": { "flag": "b3_ysolde_pressed", "party": "nessa" } },
+          { "narrate": "Nessa is not in her chair. She is out on the barracks steps with Biscuit and Ysolde and the two boys, teaching Wil to whistle.", "when": { "flag": "b3_ysolde_respected", "party": "nessa" } },
           { "narrate": "This morning Hesk's drill-guard asked the free wards' hero for a practice bout in the yard, in front of the barracks, by way of saying nothing at all about the night at the vault. You gave them one. It is Orin who brings it up, the way he notices a strap that has been re-buckled." },
           { "say": "orin", "text": "This morning in the bout you took a pike-butt on the shield that should have put you on the flags. You didn't move. I've stood in shield walls twenty years and I felt that one land from across the yard.", "when": { "spec": "guardian" } },
           { "say": "maren", "text": "Shield Wall, the old guild books call it. When you stop being a person holding a shield and start being a wall that happens to breathe.", "when": { "spec": "guardian" } },
@@ -1049,8 +1051,10 @@
           { "say": "maren", "text": "Hallowed strikes. Every blow a small prayer, and the prayer lands. In a city that's forgotten what a ward sounds like.", "when": { "spec": "exorcist" } },
           { "say": "orin", "text": "In the bout you took a pike-butt under the arm and walked through it like rain. I looked for the bruise after. There isn't one.", "when": { "spec": "battlepriest" } },
           { "say": "maren", "text": "Templar's mail. The faith holds where the iron doesn't. I've seen it twice in my life. Now three times.", "when": { "spec": "battlepriest" } },
-          { "say": "orin", "text": "The drill-guard's dogs. They were meant to be in the bout too. They wouldn't go for you. They went and lay down by Biscuit instead.", "when": { "spec": "beastwarden" } },
-          { "say": "maren", "text": "Beast bond, the wardens call it. Biscuit's been sleeping on your feet. He's never slept on anyone's feet but Nessa's.", "when": { "spec": "beastwarden" } },
+          { "say": "orin", "text": "The drill-guard's dogs. They were meant to be in the bout too. They wouldn't go for you. They went and lay down by Biscuit instead.", "when": { "spec": "beastwarden", "party": "nessa" } },
+          { "say": "maren", "text": "Beast bond, the wardens call it. Biscuit's been sleeping on your feet. He's never slept on anyone's feet but Nessa's.", "when": { "spec": "beastwarden", "party": "nessa" } },
+          { "say": "orin", "text": "The drill-guard's dogs. They were meant to be in the bout too. They wouldn't go for you. They sat down in a row in front of you, and waited to be told what to do.", "when": { "spec": "beastwarden", "absent": "nessa" } },
+          { "say": "maren", "text": "Beast bond, the wardens call it. The cat in Fennick's office has started following you about the census hall. Fennick has not decided which form it goes on.", "when": { "spec": "beastwarden", "absent": "nessa" } },
           { "say": "orin", "text": "In the bout they set you a mark at the far end of the yard. You hit it, and then you hit the peg it hung on. I paced it after. Sixty paces.", "when": { "spec": "deadeye" } },
           { "say": "maren", "text": "Your breathing's changed when you draw. It goes very slow. I hear a lot of breathing. I've never heard anyone's go that slow and stay awake.", "when": { "spec": "deadeye" } },
           { "say": "orin", "text": "You took us over Saltwick's roofs in the dark and through Vell's back streets since and never once stopped to think which way. I've been here a week and I still get lost going to the well.", "when": { "spec": "pathfinder" } },
@@ -1077,7 +1081,7 @@
           },
           {
             "id": "wall",
-            "label": "“Eight days. I'd give it back for a way to stop the casting.”",
+            "label": "“Seven days. I'd give it back for a way to stop the casting.”",
             "lines": [
               { "say": "maren", "text": "I know you would. That's why I'm glad it's you that has it." },
               { "narrate": "Out in the drill-yard, the furnace under the casting wall breathes up through the iron door, one day hotter. Nobody says anything else for a while." }
@@ -1103,7 +1107,7 @@
           { "narrate": "The first night out of Vell you camp at a dead echo-stone on the Iron Road, number sixty, with the pass a grey shape against the stars ahead of you. Everyone else is asleep. Maren is not. She is sitting with her back against the stone's post and Ysolde's button tin in her lap." },
           { "say": "maren", "text": "Sixty-three. I gave him sixty-three. And Ysolde, and three hundred and thirty-six others, I said \"true\".", "when": { "flag": "b3_witnessed" } },
           { "say": "maren", "text": "I burned it. Four hundred lines. Ysolde's was the last line in it. I wrote \"true\" beside her name before I burned it. I don't know why. I suppose so that it had been written down once.", "when": { "flag": "b3_unwitnessed" } },
-          { "say": "maren", "text": "A hundred and ninety stayed, when nobody made them. And I said \"true\" to every one, and every one was. Ysolde first.", "when": { "flag": "b3_quotas_exposed" } },
+          { "say": "maren", "text": "A hundred and ninety stayed, when nobody made them. And I said \"true\" to every one, and I heard nothing under any of it. Ysolde first.", "when": { "flag": "b3_quotas_exposed" } },
           { "say": "maren", "text": "She was the one I couldn't hear. Not because there was nothing there. Because there was everything there, and all of it was true. She's thought about it every night since her mother died. She's made it true the way you make a path: by walking it until it's there." },
           { "say": "maren", "text": "And I sat across the table from her and said \"true\", and she smiled at me as if I'd given her something. I'd given her the only thing I had. It wasn't what she needed. I don't know what she needed. I don't think anyone in Vell has ever had it to give." },
           { "narrate": "She turns the button tin over. It rattles." },

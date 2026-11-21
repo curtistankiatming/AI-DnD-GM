@@ -485,3 +485,14 @@ test('Hal takes her guild coat off on the recall night if she joined the guild',
   assert.doesNotMatch(guild, /Hal's company comes up the road/);
   assert.match(council, /Hal's company comes up the road/);
 });
+
+test('in the epilogue, the question about Wren\'s post is not offered without Nessa', () => {
+  let s = ready('oath', { nessa: false });
+  s.story.nodeId = 'q-oath-after'; s.world.activeQuest = 'oath'; s.world.onExpedition = true;
+  s = act(s, { type: 'story-choice', choiceId: 'seat' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'council' }).state;
+  assert.equal(s.story.nodeId, 'scene-oath-epilogue-forge');
+  assert.deepEqual(E.buildView(s).scene.choices.map((c) => c.id), ['fire']);
+  assert.equal(E.resolveAction(s, { type: 'story-choice', choiceId: 'nessa-post' }, () => 0.5).result.ok, false);
+  assert.equal(s.story.flags.nessa_keeper, undefined);
+});

@@ -2186,8 +2186,8 @@
     "id": "oil",
     "name": "The Oil Run",
     "town": "saltwick",
-    "level": 23,
-    "from": "b3-pass",
+    "level": 24,
+    "from": "b3-saltwick",
     "until": "b3-witness",
     "gold": 85,
     "giver": "Mags Peller",
@@ -2197,27 +2197,6 @@
       "barrels": {
         "title": "One cart of oil",
         "lines": [
-          {
-            "narrate": "Mags Peller is in the salt-hall loft with her dip-stick, going from barrel to barrel. None of them takes long.",
-            "when": {
-              "noneFlag": [
-                "b3_saltwick_moved",
-                "b3_saltwick_bought",
-                "b3_saltwick_seized"
-              ]
-            }
-          },
-          {
-            "say": "Mags Peller",
-            "text": "We sold the last of the salt to a trader down at the Grey Step for one cart of oil. One cart. It's sitting at the waystation now, and the carter won't bring it up. Says the tide's due and he's got children. Well. So have we.",
-            "when": {
-              "noneFlag": [
-                "b3_saltwick_moved",
-                "b3_saltwick_bought",
-                "b3_saltwick_seized"
-              ]
-            }
-          },
           {
             "narrate": "Saltwick is empty: three hundred people gone to Vell, every roof bare, the hen-coop gone from the chandler's. But the lamps are lit. Mags Peller has come back over the ridge with four of her lamplighters to keep them lit, at every corner, every night.",
             "when": {
@@ -2261,7 +2240,7 @@
           },
           {
             "say": "Mags Peller",
-            "text": "Take Tam. He knows the road.",
+            "text": "Take Davin. He knows the road.",
             "when": {
               "absent": "orin"
             }
@@ -2281,7 +2260,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You go down the Iron Road at a run, past the dead stones, forty-eight, forty-seven, forty-six, and reach the Grey Step with the sun still high. The waystation is a stone barn with a trader's yard. The cart is in the yard, six barrels under canvas. The carter, Joss Brennick, is sitting on the shaft with his arms folded."
+                  "narrate": "You go down the Iron Road at a run, past the dead stones, forty-one, forty-two, forty-three, and reach the Grey Step with the sun still high. The waystation is a stone barn with a trader's yard. The cart is in the yard, six barrels under canvas. The carter, Joss Brennick, is sitting on the shaft with his arms folded."
                 }
               ],
               "next": "carter"
@@ -2341,7 +2320,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "The mules will not go past the dead stone at forty-one with the dusk coming down. You lose an hour at it, and in the end you unload three barrels and carry them the last mile on your backs, with the mist at your knees and the cold coming up through your boots, while Tam brings the mules on behind."
+                  "narrate": "The mules will not go past the dead stone at forty-three with the dusk coming down. You lose an hour at it, and in the end you unload three barrels and carry them the last mile on your backs, with the mist at your knees and the cold coming up through your boots, while Davin brings the mules on behind."
                 },
                 {
                   "narrate": "You come into Saltwick in the dark. Mill Street's lamps have gone out. The lamplighters relight them from your barrels, one by one, and the mist lies down again, sulkily, in the lanes."
@@ -2366,7 +2345,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "You don't tell him the road is safe. It isn't. You tell him you'll be on it with him, the whole way, and that you'll walk him home at dawn yourself, and that there are children on Saltwick's roofs too."
+                  "narrate": "You don't tell him the road is safe. It isn't. You tell him you'll be on it with him, the whole way, and that you'll walk him home at dawn yourself, and that Saltwick has nothing to light its lamps with tonight but what is on his cart."
                 },
                 {
                   "say": "Joss Brennick",
@@ -2380,7 +2359,7 @@
                   }
                 },
                 {
-                  "narrate": "Joss brings the cart up the road at dusk with his jaw set, and talks to his mules the whole way, and when you come into Saltwick with the barrels the whole town is out on the roofs, cheering, and he goes red to the ears. You walk him home at dawn. His wife does not kill him. She gives him a look that suggests she is saving it."
+                  "narrate": "Joss brings the cart up the road at dusk with his jaw set, and talks to his mules the whole way, and when you come into Saltwick with the barrels the lamplighters come down the ladders to shake his hand, and he goes red to the ears. You walk him home at dawn. His wife does not say anything at all. She holds on to him for a long time."
                 }
               ]
             },

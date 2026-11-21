@@ -93,7 +93,7 @@ const SCHEMA = Object.freeze({
         required: ['label', 'text', 'favors', 'also']
       }
     },
-    destination: { type: 'string', enum: Object.keys(TOWNS), description: 'The town the party returns to afterwards.' },
+    destination: { type: 'string', enum: Object.keys(TOWNS).filter(id => Book.townOpen(null, id)), description: 'The town the party returns to afterwards.' },
     arc: { type: 'string', description: 'The updated running throughline of the whole campaign after this adventure is offered: open threads, recurring people, where the story is heading. Under 120 words.' },
     cast: {
       type: 'array', description: 'Up to five named people in this adventure, new or returning from the chronicle (same spelling), with who they are now.',
@@ -205,7 +205,7 @@ const TRIALS = Object.freeze({
 // cannot open a locked region early.
 function destination(state, id, fallback) {
   const known = Array.isArray(state.world?.unlockedTowns) ? state.world.unlockedTowns : Object.keys(TOWNS);
-  return TOWNS[id] && known.includes(id) ? id : fallback;
+  return TOWNS[id] && known.includes(id) && Book.townOpen(state, id) ? id : fallback;
 }
 
 // Turn Claude's draft into an expedition definition the engine can install.
@@ -443,7 +443,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player), job: P.jobView(state.player)?.title, branchStyle: P.branchOf(state.player)?.style || null },
     ...(trial ? { trial: trialBrief(state) } : {}),
     party: state.party.map(m => ({ name: m.name, bond: m.bond })),
-    day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.map(id => TOWNS[id].name),
+    day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.filter(id => Book.townOpen(state, id)).map(id => TOWNS[id].name),
     reputation: w.reputation,
     completedAdventures: completed.slice(-15),
     book: Book.facts(state),
@@ -477,4 +477,4 @@ function view(state) {
   };
 }
 
-module.exports = { SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };
+module.exports = { destination, SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };
