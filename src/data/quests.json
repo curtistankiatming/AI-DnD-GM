@@ -3930,7 +3930,7 @@
           },
           {
             "say": "Iona",
-            "text": "I'd like that noted as a success. Also, the council owes me for breakfast."
+            "text": "A success. Put it in the minutes in those words. Also, the council owes me for breakfast."
           }
         ],
         "rep": {
@@ -4060,7 +4060,7 @@
         "lines": [
           {
             "say": "Iona",
-            "text": "Ashford is for it. Don't look like that. I was tied to a chair for a day because five towns couldn't agree on who should hold a purse. I'd like somebody to be able to say 'stop' faster than that."
+            "text": "Ashford is for it. Don't look like that. I've read her proposal four times, which is three more than anyone else in this city. The recall clause is better drafted than Ashford's own charter, and I drafted Ashford's own charter."
           },
           {
             "say": "Aveline",
@@ -4682,7 +4682,7 @@
       },
       {
         "say": "nessa",
-        "text": "Wren. You're here. I thought you were at the signal tower. I wrote you about six letters, I just never sent them, I was going to—",
+        "text": "Wren. They said the forge had a new signal-keeper with a bad leg and a stick, and I knew it was you, and I still didn't— I wrote you about six letters, I just never sent them, I was going to—",
         "when": {
           "party": "nessa"
         }
@@ -4781,6 +4781,14 @@
           },
           {
             "narrate": "Then Wren puts both hands flat on the table, which is plainly the thing she has been working up to."
+          },
+          {
+            "say": "Wren",
+            "text": "Before I say it. I pulled you out of a drain culvert under the Highpass road when you were nine, with a stolen lamp and no boots. You've spent twenty years paying me back for it. You can stop. This isn't a bill."
+          },
+          {
+            "say": "nessa",
+            "text": "I'm not paying anything back. I just— fine. Some of it."
           },
           {
             "say": "Wren",
@@ -5223,7 +5231,17 @@
       },
       {
         "say": "Elske",
-        "text": "Merrowgate: yes. And Merrowgate agrees with Highpass. I didn't know. I should have."
+        "text": "Merrowgate: yes. And Merrowgate agrees with Highpass. I didn't know. I should have.",
+        "when": {
+          "notFlag": "keeper_told_elske"
+        }
+      },
+      {
+        "say": "Elske",
+        "text": "Merrowgate: yes. And Merrowgate agrees with Highpass. I knew what he did to the Sallows lamps, and I kept him on because I needed his money for this vote. That was mine, not the council's. Write it down.",
+        "when": {
+          "flag": "keeper_told_elske"
+        }
       },
       {
         "say": "Aveline",
@@ -5500,7 +5518,7 @@
       },
       {
         "say": "maren",
-        "text": "She means it. Every word. That's the worst of it."
+        "text": "She means it. Every word. I've listened for the lie all year. There was never going to be one."
       },
       {
         "say": "orin",
@@ -5689,6 +5707,20 @@
       {
         "say": "orin",
         "text": "Terrible. I'd like to do it again."
+      },
+      {
+        "say": "nessa",
+        "text": "I had your back the whole time, you know. You never looked round once.",
+        "when": {
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Didn't need to.",
+        "when": {
+          "party": "nessa"
+        }
       },
       {
         "narrate": "Pell Haverick is found the next morning, at the bottom of the mountain, in a coach with a great deal of money and no driver. The miners hand him to the council. The council, for once, agrees on something immediately."

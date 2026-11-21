@@ -4,8 +4,8 @@
     "name": "Orin Stoneward",
     "role": "Guardian",
     "pronouns": "he/him",
-    "summary": "A plain-spoken shield veteran who treats retreat as a tool, not a shame.",
-    "personality": "Practical, protective, suspicious of needless cruelty, and dryly humorous under pressure.",
+    "summary": "A plain-spoken shield veteran who once fell back from a ford and left farmers behind, and means never to do it again.",
+    "personality": "Short sentences, dry. Says the uncomfortable thing plainly, then offers to carry something. Cannot bluff, takes logistics and knots very seriously, and always takes the door.",
     "abilities": {
       "str": 15,
       "dex": 10,
@@ -45,7 +45,7 @@
     "role": "Healer",
     "pronouns": "she/her",
     "summary": "A travelling shrine-keeper who hears lies as changes in a speaker's breathing.",
-    "personality": "Compassionate without being naive, attentive to ritual, and openly opposed to intimidation of the helpless.",
+    "personality": "Warm, precise, a little formal. Asks questions she already knows the answer to, hears lies in a calm person's breathing, and will not stand by cruelty to the helpless. Ruthless at cards; will not admit her stew is bad.",
     "abilities": {
       "str": 10,
       "dex": 12,
@@ -88,7 +88,7 @@
     "role": "Scout",
     "pronouns": "she/her",
     "summary": "A Briarwatch outrider with quick eyes, quicker arrows, and unfinished business below the wood.",
-    "personality": "Restless, observant, protective of villagers, and impatient with ceremonial caution.",
+    "personality": "Fast, interrupting, half-finished sentences. Acts first and apologises never, hates making anyone wait for help, writes letters she does not send, and talks to Biscuit the dog as one of the party.",
     "abilities": {
       "str": 9,
       "dex": 16,
