@@ -69,12 +69,12 @@ The problems found were small, and most were fixed in this branch:
 
 ## Left open (not fixed here)
 
-- **Haverick is only on stage once** (the Lantern Hall at noon). He is the hand
-  behind three chapters but the player never faces him. The plot review owns
-  whether he gets a scene; noted in the storyline review as "Haverick on stage".
-- **Wren's map** ("Bring it back better") is never brought back. It needs a flag
-  for whether Nessa or the hero was given it at the signal tower, because Nessa
-  can join after that chapter. Noted in the storyline review.
+- **Haverick is only on stage once** in this branch's text (the Lantern Hall at
+  noon), and **Wren's map** ("Bring it back better") is never brought back.
+  Both are being handled by the story review (branch
+  `claude/project-thread-h460xs`: a Haverick scene in the oath chapter, and
+  `wren_map_nessa` / `wren_map_hero` flags with a payoff at Wren's table). That
+  branch and this one merge without conflicts.
 - **Nessa's epilogue choice has one answer** ("yes, but not yet"). The bible
   allows a permanent parting only in the epilogue; adding a second answer would
   change Book Three's cast, so it is left for Curtis.
