@@ -83,11 +83,11 @@ Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 | Smoke-glass Rapier | Main hand | Epic | 390 | Level 16 · Dexterity 14 | Cinder Fold |
 | Bellmetal Rod | Main hand | Epic | 400 | Level 16 · Wizard, Cleric or Bard | Cinder Fold |
 | Ward-thread Robe | Armour | Epic | 360 | Level 15 · Wizard, Cleric or Bard | Cinder Fold |
-| Wavecutter Sabre | Main hand | Epic | 480 | Level 20 · Dexterity 15 | Saltwick |
-| Gullwing Bow | Main hand | Epic | 470 | Level 20 · Dexterity 15 | Saltwick |
+| Plankwalker Sabre | Main hand | Epic | 480 | Level 20 · Dexterity 15 | Saltwick |
+| Mistwatch Bow | Main hand | Epic | 470 | Level 20 · Dexterity 15 | Saltwick |
 | Saltwick Oilskin | Armour | Epic | 460 | Level 20 · Rogue, Ranger or Bard · Dexterity 15 | Saltwick |
-| Lamp-keeper's Staff | Main hand | Epic | 480 | Level 21 · Wizard, Cleric or Bard | Saltwick |
+| Lamplighter's Staff | Main hand | Epic | 480 | Level 21 · Wizard, Cleric or Bard | Saltwick |
 | Commandery Longbow | Main hand | Legendary | 640 | Level 23 · Dexterity 15 | Vell only |
 | Vell Duelling Sword | Main hand | Legendary | 660 | Level 24 · Dexterity 15 | Vell only |
-| Chancery Rod | Main hand | Legendary | 680 | Level 24 · Wizard, Cleric or Bard | Vell only |
+| Chancery Rod | Main hand | Legendary | 680 | Level 24 · Wizard or Bard | Vell only |
 | Vell Courier Leathers | Armour | Legendary | 680 | Level 24 · Rogue, Ranger or Bard · Dexterity 15 | Vell only |

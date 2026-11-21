@@ -1264,13 +1264,13 @@
     }
   },
   {
-    "id": "wavecutter-sabre",
-    "name": "Wavecutter Sabre",
+    "id": "plankwalker-sabre",
+    "name": "Plankwalker Sabre",
     "category": "weapon",
     "slot": "mainHand",
     "rarity": "Epic",
     "value": 480,
-    "description": "A Saltwick boarding sabre, its edge kept bright by salt and use.",
+    "description": "A short, light sabre the Saltwick roof-watch carry on the planks, where there is no room to swing anything longer.",
     "purpose": "Finesse, 1d8 slashing, +2 to hit, +3 damage.",
     "weapon": {
       "damage": "1d8",
@@ -1292,7 +1292,7 @@
       }
     },
     "skill": {
-      "name": "Riptide Cut",
+      "name": "Sweep the Footing",
       "effect": "slowed",
       "target": "enemy",
       "rounds": 2,
@@ -1300,13 +1300,13 @@
     }
   },
   {
-    "id": "gullwing-bow",
-    "name": "Gullwing Bow",
+    "id": "mistwatch-bow",
+    "name": "Mistwatch Bow",
     "category": "weapon",
     "slot": "mainHand",
     "rarity": "Epic",
     "value": 470,
-    "description": "A long, pale bow strung for shooting across water into a wind.",
+    "description": "A long, pale bow strung for shooting from the roofs down into the mist, at shapes that move in it.",
     "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
@@ -1340,7 +1340,7 @@
     "slot": "armor",
     "rarity": "Epic",
     "value": 460,
-    "description": "A roofrunner's coat of waxed sailcloth over thin plates of horn.",
+    "description": "A roofrunner's coat of waxed cloth over thin plates of horn, made to keep the mist off and a fall short.",
     "purpose": "Base AC 15 plus your full Dexterity.",
     "armor": {
       "base": 15,
@@ -1363,12 +1363,12 @@
   },
   {
     "id": "lamplighter-staff",
-    "name": "Lamp-keeper's Staff",
+    "name": "Lamplighter's Staff",
     "category": "focus",
     "slot": "mainHand",
     "rarity": "Epic",
     "value": 480,
-    "description": "The long hooked pole of the Saltwick lamp-keepers, its brass cap full of a little steady light.",
+    "description": "The long hook of the Saltwick lamplighters, its brass cap holding a little steady light.",
     "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
     "spellAttackBonus": 3,
     "spellDcBonus": 3,
@@ -1488,7 +1488,6 @@
       "level": 24,
       "classes": [
         "wizard",
-        "cleric",
         "bard"
       ]
     },
