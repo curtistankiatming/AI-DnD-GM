@@ -202,6 +202,8 @@ function buildView(state) {
       lastOutcome: state.story.lastOutcome,
       choices: storyChoicesView(state),
       heroRolls: state.story.heroRolls === true,
+      // Whether any companion could roll a check (standing, bond 0 or more).
+      companionsCanRoll: state.party.some((m) => m.hp > 0 && m.bond >= 0),
       canShortRest: Boolean(node.safeRest && !state.story.shortRestsUsed[node.id] && !state.combat?.active && (state.player.hitDice.current > 0 || state.player.hp < state.player.maxHp)),
       endingSummary: endingSummary(state)
     },

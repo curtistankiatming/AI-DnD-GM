@@ -453,9 +453,13 @@ function checkPlan(state, choice, forced = null) {
   if (!check) return null;
   if (!forced && !check.companion) {
     const hero = checkPlan(state, choice, state.player);
-    if (state.story.heroRolls) return hero;
+    // The hero always rolls their own declared actions (check.hero) and when
+    // the player chose to. A companion who would disapprove of the choice
+    // never takes it on for the hero.
+    if (state.story.heroRolls || check.hero) return hero;
+    const objects = (m) => [choice.success, choice.failure].some((o) => Number(o?.approval?.[m.id]) < 0);
     let best = hero, top = planChance(hero);
-    for (const m of checkers(state).slice(1)) { const p = checkPlan(state, choice, m), c = planChance(p); if (c > top + 1e-9) { best = p; top = c; } }
+    for (const m of checkers(state).slice(1).filter((m) => !objects(m))) { const p = checkPlan(state, choice, m), c = planChance(p); if (c > top + 1e-9) { best = p; top = c; } }
     return best;
   }
   const actor = forced || findCompanion(state, check.companion) || state.player;
@@ -512,6 +516,7 @@ function resolveStoryCheck(state, choice, rng, events) {
     state.player.inspiration = Math.max(0, state.player.inspiration - 1);
     events.push({ type: "resource", tone: "neutral", text: "Inspiration spent for advantage." });
   }
+  if (plan.actor.id !== "player" && !choice.check.companion) events.push({ type: "party", tone: "neutral", text: `${plan.actor.name} is best placed for this and takes it on.` });
   const d20 = rollD20(rng, { advantage: plan.advantage, disadvantage: plan.disadvantage });
   const total = d20.natural + plan.bonus;
   const success = total >= plan.dc;
@@ -519,7 +524,7 @@ function resolveStoryCheck(state, choice, rng, events) {
   const modeText = d20.mode === "normal" ? "" : ` (${d20.mode}: ${d20.rolls.join(", ")})`;
   const helperText = plan.helper ? ` ${plan.helper.name} helped.` : "";
   const rollText = `${plan.actor.name} rolled ${d20.natural}${modeText} ${formatSigned(plan.bonus)} = ${total} vs DC ${plan.dc} ${checkName}: ${success ? "success" : "failure"}.${helperText}`;
-  events.push({ type: "roll", tone: success ? "good" : "bad", text: rollText, roll: { ...d20, bonus: plan.bonus, total, dc: plan.dc, checkName } });
+  events.push({ type: "roll", tone: success ? "good" : "bad", text: rollText, roll: { ...d20, bonus: plan.bonus, total, dc: plan.dc, checkName, actorId: plan.actor.id, actor: plan.actor.name } });
   pushLog(state, "Dice", rollText, "roll", { success });
   return { success, plan, d20, total, text: rollText };
 }
@@ -812,7 +817,7 @@ function previewImprovised(state, raw) {
   const v=Improvise.validate(raw);if(!v.ok)return v;
   const plan=Improvise.bound(state,v.proposal,state.story.nodeId);if(!plan.ok)return plan;
   if(plan.dc===null)return {...plan,check:null};
-  const p=plan.proposal,check=checkPlan(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:plan.dc}});
+  const p=plan.proposal,check=checkPlan(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:plan.dc,hero:true}});
   const mode=check.advantage?'advantage':check.disadvantage?'disadvantage':'normal';
   const name=check.skillId?SKILLS[check.skillId].name:ABILITIES[check.abilityId]?.name||'Check';
   return {...plan,check:{actor:check.actor.name,name,bonus:check.bonus,dc:check.dc,mode,chance:Math.round(successProbability(check.dc,check.bonus,mode)*100),reasons:check.reasons}};
@@ -822,7 +827,7 @@ function resolveImprovised(state, raw, rng, events) {
   const preview=previewImprovised(state,raw);if(!preview.ok)return invalidResult(state,events,preview.error);
   const sceneId=state.story.nodeId,p=preview.proposal;
   let success=true;
-  if(preview.dc!==null)success=resolveStoryCheck(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:preview.dc}},rng,events).success;
+  if(preview.dc!==null)success=resolveStoryCheck(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:preview.dc,hero:true}},rng,events).success;
   const text=Improvise.apply(state,preview,success,sceneId,rng,events,{rollFormula,awardXp,applyDamage:applyDamageToEntity});
   recordHistory(state,`Improvised: ${p.intent} (${success?'success':'failure'}). ${text}`);
   state.story.lastOutcome={kind:'improvise',title:currentNode(state).title,text};
@@ -871,7 +876,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='courier')result=Courier.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
   else if(action.type==='road')result=Road.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
   else if(action.type==='set-tactic')result=setTactic(state,action.companionId,action.tactic,events);
-  else if(action.type==='check-roller'){if(action.roller==='hero')state.story.heroRolls=true;else delete state.story.heroRolls;result={ok:true,kind:'party',outcomeText:state.story.heroRolls?'You will roll every story check yourself.':'The party member best suited to each story check will roll it.'};}
+  else if(action.type==='check-roller'){if(action.roller==='hero')state.story.heroRolls=true;else delete state.story.heroRolls;result={ok:true,kind:'setting',outcomeText:state.story.heroRolls?'You will roll every story check yourself.':'The party member best suited to each story check will roll it.'};}
   else if(state.combat?.active){
     result=action.type==='combat'?resolveCombatAction(state,action,rng,events):invalidResult(state,events,'Use combat controls while initiative is active.');
   } else if(action.type==='confirm-intent'){

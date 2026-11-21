@@ -56,7 +56,7 @@ function options(state,api){
     add({id:'care',label:'Help Iona sort and prepare the medicine',detail:`Medicine DC ${readyHelper(state,'maren')?9:11}. ${readyHelper(state,'maren')?'Maren’s expertise lowers DC by 2. ':''}Success earns 1 trust; failure adds one delay. Delivering remains available.`,skill:'medicine',dc:readyHelper(state,'maren')?9:11});
     add({id:'deliver',label:'Deliver the medicine and report to Iona',detail:'Complete once: 120 objective XP. Payment is 25 gold, or 15 if delay reached 3. An intact accepted letter keeps the promise and adds 1 trust. Return to Briarwatch.'});
   }
-  return o.map(d=>{const plan=d.skill?api.checkPlan(state,{check:{skill:d.skill,dc:d.dc,tools:d.tools}}):null;
+  return o.map(d=>{const plan=d.skill?api.checkPlan(state,{check:{skill:d.skill,dc:d.dc,tools:d.tools,hero:true}}):null;
     return {...d,plan,description:(d.detail||d.description)+(plan?` Roll d20 ${R.formatSigned(plan.bonus)} vs DC ${plan.dc}${plan.advantage?' with advantage':''}${plan.disadvantage?' with disadvantage':''}.`:'')};});
 }
 function note(state,line,events){const r=current(state);r.history.push(line);r.history=r.history.slice(-24);events.push({type:'story',text:line});}

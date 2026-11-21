@@ -111,7 +111,7 @@ function installQuest(q){
   const approach=`approach:${q.id}`;
   // The best-suited party member rolls each check (21 November 2026), so the
   // chapters to level 10, where Help is almost always on hand, are 2 harder
-  // to keep the odds near 50-70% (docs/BALANCE-2026-11-21-CHECKS.md).
+  // to keep the average odds near 60-70% (docs/BALANCE-2026-11-21-CHECKS.md).
   const D=Math.floor(A/2)+(q.level<=10?2:0);
   const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools};
   const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools};

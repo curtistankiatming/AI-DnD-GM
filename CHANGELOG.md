@@ -8,9 +8,14 @@ the pull requests that made them.
 
 - The party member with the best chance rolls each story check, counting Help,
   tools and preparation. The hero wins ties and can now Help a companion.
-- "Story checks: Best suited rolls / I roll them" above a scene's choices lets
+- "Story checks: Best person rolls / I roll every check" above a scene's choices lets
   you roll every check yourself. A companion's roll shows what you would have.
 - Companions cover more skills, and the party card lists what each is best at.
+- You always roll your own typed actions and the Lantern Road and courier
+  crossings, and a companion who would object to a choice never rolls it for
+  you. When a companion steps in, the story log says so.
+- A short rest is offered only when someone can use it (hit dice left or
+  missing HP).
 - Generated chapters to level 10 are DC +2. Average check odds are now 60-70%
   at every level band (late checks were 36%). Report:
   [docs/BALANCE-2026-11-21-CHECKS.md](docs/BALANCE-2026-11-21-CHECKS.md).
