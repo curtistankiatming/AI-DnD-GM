@@ -195,9 +195,11 @@ function startCombat(state, encounterId, rng, events) {
   // and the fight's objective is harder, as story checks are (src/xp.js).
   const under=encounter.questId?XP.underSteps(state.player.level,Director.quest(state,encounter.questId)?.level):0;
   if(under){
-    if(state.combat.objective)state.combat.objective.dc+=under;
+    // The objective is a check: it takes the unweighted steps (src/xp.js underChecks).
+    const checks=XP.underChecks(state.player.level,Director.quest(state,encounter.questId)?.level);
+    if(state.combat.objective)state.combat.objective.dc+=checks;
     for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
-    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${under} higher`:''}.`});
+    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
   }
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
   if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
@@ -1019,7 +1021,7 @@ function processCompanionTurn(state, actor, rng, events) {
     actor.actionUsed=true;return;
   }
   const hit=resolveWeaponAttack(state,actor,target,rng,events);
-  if(hit.hit&&target.hp>0&&actor.aiRole==='scout'&&actor.resources.trickShot>0&&(actor.tactic==='aggressive'||target.aiRole==='boss')){actor.resources.trickShot--;applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d6':'1d6').total,'piercing',events,`${actor.name}'s Trick Shot`);}
+  if(hit.hit&&target.hp>0&&actor.aiRole==='scout'&&actor.resources.trickShot>0&&(actor.tactic==='aggressive'||target.aiRole==='boss')){actor.resources.trickShot--;applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d6':'1d6').total+Power.statDamage(actor,'dex'),'piercing',events,`${actor.name}'s Trick Shot`);}
 }
 
 function enemySaveAttack(state,actor,target,rng,events,profile){

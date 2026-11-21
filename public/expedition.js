@@ -69,7 +69,7 @@ function renderExpansion(){
       if(q.knownThreat)c.appendChild(createElement('p','briefing',q.knownThreat));else c.appendChild(v4Button('Tavern briefing · 5 gold',{type:'rumor',questId:q.id},hero.gold<5));
       const prep=w.preparation.find(x=>x.questId===q.id);for(const warning of prep?.warnings||[])c.appendChild(createElement('p','prep-warning',warning));
       // Falling behind (src/xp.js): the same warning as on the story screen.
-      if(q.underSteps)c.appendChild(createElement('p','prep-warning',`You are ${q.underBy} levels under this chapter. In its deciding fight the enemies get +${q.underSteps} to hit and ${q.underSteps*10}% more damage, and its checks are ${q.underSteps} harder. Bounties help you catch up.`));
+      if(q.underSteps)c.appendChild(createElement('p','prep-warning',`You are ${q.underBy} levels under this chapter. In its deciding fight the enemies get +${q.underSteps} to hit and ${q.underSteps*10}% more damage, and its checks are ${q.underChecks??q.underSteps} harder. Bounties help you catch up.`));
       else if(q.underBy>0)c.appendChild(createElement('p','muted',`You are ${q.underBy} level${q.underBy===1?'':'s'} under this chapter, so its fights are harder. More than 5 under adds a penalty.`));
       const need=q.minLevel||q.level;
       c.appendChild(v4Button(q.returning?'Continue expedition':'Depart',{type:'depart',questId:q.id},!q.canDepart,`Departure point: ${q.townName}. ${need<q.level?`Can start from level ${need}; written for level ${q.level}.`:`Level ${q.level} required.`}`));

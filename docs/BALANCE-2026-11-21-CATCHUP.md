@@ -21,6 +21,9 @@ worth doing, and chose chapters that pay about 70% of a level.
   Each step gives the chapter's enemies +1 to hit and +10% damage (shown as
   "Outclasses you" on the combat board) and raises its story checks by 1.
   The "What's next?" card says so before you set out.
+  Since the gameplay playtest (21 November), each missing level past 20 counts
+  three times in the deciding fight (not in checks), up to 9 steps, because a
+  level there adds little raw power.
 - **The bounty board** (`src/bounty.js`). Every town has a repeatable fight at
   the hero's level: a regional leader and two followers built like an
   adventure battle. A win pays battle XP by the usual rating (a standard one
