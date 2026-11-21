@@ -534,6 +534,7 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 .whats-next-quest .btn, .whats-next-row .btn { min-height:44px; }
 .whats-next-blocked { font-size:.85rem; }
 .whats-next-under { color:var(--bad); font-size:.9rem; margin-top:4px; }
+.whats-next-end { margin:0; padding-left:.65rem; border-left:2px solid var(--accent, #ab8753); }
 .whats-next-tier { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
 .whats-next-tier .btn { min-height:36px; }
 .roller-toggle { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 8px; }

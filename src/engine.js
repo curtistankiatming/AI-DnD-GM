@@ -317,10 +317,10 @@ function applyApproval(state, changes = {}, events = []) {
     if (!member) continue;
     const delta = Number(deltaRaw || 0);
     member.bond = clamp(Number(member.bond || 0) + delta, -5, 5);
-    // The chapter's count is of what happened, not of the capped bond.
-    Away.count(state, id, delta);
     const direction = delta > 0 ? "approved" : delta < 0 ? "disapproved" : "was unaffected";
     if (delta) events.push({ type: "party", tone: delta > 0 ? "good" : "warning", text: `${member.name} ${direction} (${delta > 0 ? "+" : ""}${delta} bond).` });
+    // The chapter's count is of what happened, not of the capped bond.
+    Away.count(state, id, delta, events);
   }
 }
 

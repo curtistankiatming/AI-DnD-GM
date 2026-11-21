@@ -51,6 +51,8 @@
     }
     if (!d?.canCommission) { card.append(el('p', 'muted', d?.reason || 'A new adventure is not available right now.')); return card; }
     card.append(el('p', '', side ? 'The written story comes first. Claude writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
+    // A free hosted account: the first adventure of its own closes the paid book to this save (src/book.js).
+    if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `Before you ask: once this save starts an adventure of its own, it follows that story and will not go back to Book ${w.paidBook.n}, ${w.paidBook.title}, even after an upgrade.`));
     const label = el('label', 'whats-next-field', 'Your wish (optional)'), input = el('input');
     input.id = 'wishInput'; input.type = 'text'; input.maxLength = 200; input.placeholder = 'something in the marshes, or a rival from my past'; input.value = wish; input.disabled = busy;
     input.addEventListener('input', () => { wish = input.value; });
@@ -76,6 +78,10 @@
     const list = el('div', 'whats-next-list');
     if (w.activeQuest) list.append(action(w.pendingBattle ? 'Resume the interrupted fight' : 'Resume your expedition', 'btn btn-primary btn-small', { type: 'resume' }));
     if (!w.bellComplete) list.append(el('p', '', 'Follow the story choices above to finish the bell investigation. More roads open after that.'));
+    // After the last written chapter this save can play: say so every time, not only once in the story.
+    if (w.booksComplete && !w.activeQuest) list.append(el('p', 'whats-next-end', w.paidBook
+      ? (w.paidBook.closed ? `The written books open here are complete, and this save carries on with its own AI story.` : `The written books open here are complete. Book ${w.paidBook.n}, ${w.paidBook.title}, goes on for paid accounts; upgrade, and this save carries straight on into it.`)
+      : 'The written story is complete. New adventures come from the AI game master; the bounty board stays open.'));
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', q.name), el('span', 'muted', ` · Level ${q.level}${q.generated ? ' · written for you' : ''}`), el('p', 'muted', q.brief));
@@ -104,6 +110,13 @@
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', 'Bounty board'), el('span', 'muted', ` · Level ${b.level}`), el('p', 'muted', `${b.name}, out in ${b.place}. ${b.reward.xp ? `Pays ${b.reward.xp} XP${b.catchUp ? ' (more while you are behind the story)' : ''}${b.capped ? ' (capped)' : ''} and ${b.reward.gold} gold` : `Pays ${b.reward.gold} gold (no XP: you are at the most a bounty can give here)`}. Losing or giving up costs ${b.loss} gold. Repeat as often as you like.`));
       row.append(text, action('Take a bounty', 'btn btn-secondary btn-small', { type: 'bounty' }));
+      list.append(row);
+    }
+    // Side jobs you can take in this town (src/data/side-jobs.json); the rest are listed on Prepare.
+    for (const j of (w.sideJobs || []).filter(j => j.canStart).slice(0, 2)) {
+      const row = el('div', 'whats-next-quest'), text = el('div');
+      text.append(el('strong', '', `Side job: ${j.name}`), el('span', 'muted', ` · from ${j.giver.replace(/^The /, 'the ')}`), el('p', 'muted', `${j.brief} Optional; pays ${j.reward.gold} gold and a little XP.`));
+      row.append(text, action(j.started ? 'Continue the job' : 'Take the job', 'btn btn-secondary btn-small', { type: 'side-job', jobId: j.id }));
       list.append(row);
     }
     const more = el('button', 'text-button', 'Rest, shop and see everything in Prepare'); more.type = 'button'; more.dataset.readOnly = 'true';

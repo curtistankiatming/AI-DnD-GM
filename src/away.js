@@ -52,12 +52,38 @@ function ensure(state) {
   return w;
 }
 
-// Every approval change counts toward the chapter in progress.
-function count(state, id, delta) {
+// Whether the chapter being counted now can end in a walkout: a Book Two
+// chapter with another Book Two chapter after it (the same rule as pending).
+// Between a chapter's end and the walk into town (its camp scene), the count
+// is still that chapter's (awayCheck).
+function walkoutsOn(state) {
+  const w = state?.world;
+  if (!w?.completed) return false;
+  const open = Book.chapters(state).filter((q) => !w.completed[q.id]);
+  const [now, next] = w.awayCheck && QUESTS[w.awayCheck] ? [QUESTS[w.awayCheck], open[0]] : open;
+  return Boolean(now && next && (now.book || 1) === 2 && (next.book || 1) === 2);
+}
+
+// A companion whose count for this chapter is already at the walkout line.
+function uneasy(state, id) {
+  return Boolean(SCENES[id] && walkoutsOn(state) && (state.world.approvalWindow?.[id] || 0) <= -LIMIT);
+}
+
+const pronoun = (id) => COMPANIONS[id]?.pronouns?.startsWith('he') ? { he: 'he', his: 'his' } : { he: 'she', his: 'her' };
+
+// Every approval change counts toward the chapter in progress. Crossing the
+// walkout line, either way, is said out loud, so a walkout never comes as a
+// surprise and the player knows it can still be turned round.
+function count(state, id, delta, events = null) {
   const w = state.world;
   if (!w || !delta) return;
   w.approvalWindow ||= {};
-  w.approvalWindow[id] = (w.approvalWindow[id] || 0) + delta;
+  const before = w.approvalWindow[id] || 0, after = before + delta;
+  w.approvalWindow[id] = after;
+  if (!events || !SCENES[id] || !walkoutsOn(state)) return;
+  const name = COMPANIONS[id].name, p = pronoun(id);
+  if (before > -LIMIT && after <= -LIMIT) events.push({ type: 'party', tone: 'warning', text: `${name} is unhappy with how this chapter is going. If it ends like this, ${p.he} may leave the party for a while. Choices ${p.he} agrees with can still change ${p.his} mind.` });
+  else if (before <= -LIMIT && after > -LIMIT) events.push({ type: 'party', tone: 'good', text: `${name} seems easier about how this chapter is going.` });
 }
 
 // A written chapter is done: the walk into town settles the count.
@@ -97,7 +123,7 @@ function leave(state, id, events) {
   w.away[id] = { member, left: w.awayCheck, until: next.id, day: w.day };
   state.story.flags[`away:${id}`] = next.id;
   state.story.flags[`walked:${id}`] = (Number(state.story.flags[`walked:${id}`]) || 0) + 1;
-  const text = `${member.name} has left the party for now. ${COMPANIONS[id].pronouns?.startsWith('he') ? 'He' : 'She'} will be back once ${next.name} is done.`;
+  const p = pronoun(id), text = `${member.name} has left the party for now. ${p.he[0].toUpperCase() + p.he.slice(1)} will be back once ${next.name} is done.`;
   events.push({ type: 'party', tone: 'warning', text });
   return true;
 }
@@ -134,4 +160,4 @@ function view(state) {
   return Object.entries(w.away || {}).map(([id, a]) => ({ id, name: COMPANIONS[id].name, role: COMPANIONS[id].role, until: a.until, untilName: QUESTS[a.until]?.name || a.until }));
 }
 
-module.exports = { LIMIT, SCENES, ensure, count, chapterDone, pending, apply, view, nodeId };
+module.exports = { LIMIT, SCENES, ensure, count, uneasy, walkoutsOn, chapterDone, pending, apply, view, nodeId };

@@ -150,3 +150,43 @@ test('lines that answer an away companion are told another way', () => {
   const told = liveLines(s, sable).map((l) => l.narration || `${l.speaker}: ${l.text}`).join('\n');
   assert.match(told, /You ask whether he thinks she should lose\.\nSable: I think she'll win/);
 });
+
+test('the party is told when a companion reaches the walk-out line, and when they come round', () => {
+  let s = ready('keeper');
+  s = act(s, { type: 'side-job', jobId: 'afterdark' }).state;
+  let r = act(s, { type: 'story-choice', choiceId: 'roof' }); // Orin -1
+  assert.ok(!r.events.some((e) => /unhappy with how this chapter/.test(e.text)), 'One disapproval is no warning.');
+  s = r.state;
+  // A second thing he could not stand behind, in the same chapter.
+  const events = []; Away.count(s, 'orin', -1, events);
+  assert.match(events[0].text, /^Orin Stoneward is unhappy with how this chapter is going\. If it ends like this, he may leave the party for a while\. Choices he agrees with can still change his mind\.$/);
+  assert.equal(Away.uneasy(s, 'orin'), true);
+  assert.equal(E.buildView(s).party.find((m) => m.id === 'orin').uneasy, true);
+  assert.equal(E.buildView(s).party.find((m) => m.id === 'maren').uneasy, false);
+  const back = []; Away.count(s, 'orin', 1, back);
+  assert.equal(back[0].text, 'Orin Stoneward seems easier about how this chapter is going.');
+  assert.equal(Away.uneasy(s, 'orin'), false);
+
+  // In play: a choice that costs Orin's approval lists the bond change, then the warning.
+  let t = ready('keeper');
+  t.world.approvalWindow = { orin: -1 };
+  t = act(t, { type: 'side-job', jobId: 'afterdark' }).state;
+  const played = act(t, { type: 'story-choice', choiceId: 'roof' }).events.map((e) => e.text);
+  const bond = played.findIndex((x) => /Orin Stoneward disapproved/.test(x)), warn = played.findIndex((x) => /Orin Stoneward is unhappy/.test(x));
+  assert.ok(bond >= 0 && warn > bond, played.join('\n'));
+
+  // Book One never ends in a walk-out, so it never warns of one.
+  const one = ready('beacon'), quiet = [];
+  Away.count(one, 'maren', -3, quiet);
+  assert.deepEqual(quiet, []);
+  assert.equal(Away.uneasy(one, 'maren'), false);
+});
+
+test('no walk-out warning in the camp after the last chapter of Book One', () => {
+  let s = ready('aftermath');
+  s = atEnd(s, 'aftermath');
+  s.world.awayCheck = 'aftermath';
+  const events = []; Away.count(s, 'orin', -3, events);
+  assert.deepEqual(events, []);
+  assert.equal(Away.uneasy(s, 'orin'), false);
+});
