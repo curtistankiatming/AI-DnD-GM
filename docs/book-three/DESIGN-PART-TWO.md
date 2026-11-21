@@ -273,7 +273,8 @@ the convoy left behind. He is trying to pay a debt with their lives.
 **Decision (the verdict you argue for).** Orin asks to be tried with Varn.
 - Both are tried: `b3_orin_tried`. The roof council gives both men the same
   sentence, lamp duty for a season, served after the book. The families think
-  Varn got off lightly, so Saltwick's reputation drops by 1. Orin +1, Nessa -1.
+  Varn got off lightly, so Saltwick's reputation drops by 1. Orin +1. Nessa -1:
+  "He left a town to die and he gets the same lamps as you?"
 - Varn alone: `b3_varn_judged`. Saltwick's own verdict is that the captain
   gave the order and the soldier did not. Varn is exiled to the Iron Road and
   Saltwick is satisfied, so its reputation rises by 1. Orin -1: he has to live
@@ -498,7 +499,9 @@ than any bell. The guild's chalk marks are beside them.
 **Decision (the ones who turned back).**
 - Take them up yourselves: `b3_turned_escorted`. Every one gets home (the
   epilogue's count is whole). Cost: a day lost, so in chapter 19 the circle is
-  half-lit and the peaceful check is harder.
+  half-lit and the peaceful check is harder. With `b3_door_closed`, you take
+  them up to the foot of Cinder Fold's lid, where the miners lower ropes, and
+  come back down. It is two days, not one, and the lines say so.
 - Send them up with Fennick: `b3_turned_fennick`. Most get home. With
   `b3_door_closed`, it is the long way to the lid.
 - Go on: `b3_turned_left`. You reach the circle in good time. Some are lost,
@@ -540,7 +543,7 @@ drawn at full size.
 **Crisis.** Reach the three hundred before the circle closes.
 - Peaceful: tell them what the floor is (persuasion, alt. performance). It is
   harder with `b3_turned_escorted`.
-- Fight: the thirty-one, if they came, or Hesk's officers.
+- Fight: the thirty-one, if they came, or Hesk's hired captains.
 
 **Decision (the three hundred).**
 - Tell them and let each choose: `b3_three_told`. Most step out. The ones who
@@ -636,7 +639,11 @@ two endings, node 1 is a single "go on" line.
 Under Hesk's way or the sealed stair, each bound voice has one line instead,
 and nobody rests.
 
-### Epilogue (b3-epilogue scene, after b3-firstbell, level 40, Dera's forge, early spring)
+### Epilogue (node 3 of the firstbell scene, level 40, Dera's forge, early spring)
+
+The epilogue is the last node of chapter 20's one scene, after the bound
+voices, because a chapter can have only one scene. Its title and location are
+Dera's forge in early spring.
 
 **The way home.** With `b3_door_kept`, up the stair. With `b3_door_closed`, up
 through Cinder Fold's lid, under the nine. Then the road to Briarwatch.
