@@ -55,7 +55,8 @@ is never wasted on an enemy that resists fire.
 long rest, for whoever wears it and rolls. Uses are counted per item for the
 whole party, so handing the item to someone else doesn't give a second use;
 a second copy does. The Thornward Cloak now uses this rule, and old saves keep
-its spent or ready state.
+its spent or ready state. The item's card says whether its story ability is ready or used
+until the next long rest.
 
 ## The first seven items
 

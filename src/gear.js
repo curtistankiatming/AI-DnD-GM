@@ -154,7 +154,10 @@ function forge(spec) {
   const template = TEMPLATES.includes(spec?.template) ? spec.template : 'charm';
   const h = hash(`${template}|${level}`);
   const plus = Math.min(2, 1 + Math.floor(level / 12)), dmg = Math.min(3, Math.floor(level / 8));
-  const name = `${ADJECTIVES[h % ADJECTIVES.length]} ${NOUNS[template][h % NOUNS[template].length]}`;
+  // The name steps with the level, so one template's items have different
+  // names for at least 16 levels in a row (a bow) and 24 (the others).
+  const nouns = NOUNS[template], a = (level + hash(template)) % ADJECTIVES.length;
+  const name = `${ADJECTIVES[a]} ${nouns[Math.floor(level / ADJECTIVES.length) % nouns.length]}`;
   const base = { id: `forged-${template}-${level}`, name, rarity: rarityFor(level), description: 'Recovered on an AI adventure.', requires: { level }, forged: { template, level } };
   let item;
   if (template === 'blade') item = { ...base, category: 'weapon', slot: 'mainHand', weapon: { damage: '1d8', damageType: 'slashing', ability: 'str', properties: [] }, attackBonus: plus, damageBonus: dmg, purpose: `Strength, 1d8 slashing, +${plus} to hit${dmg ? `, +${dmg} damage` : ''}.` };
@@ -205,10 +208,12 @@ function forgeReward(state, quest, events) {
 }
 
 // The item's purpose with its extra rules and requirement, for every card.
-function purpose(item) {
+// With a state, a story item also says whether its use is ready now.
+function purpose(item, state) {
   if (!item) return '';
   const extra = describe(item), req = requirementText(item);
-  return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : ''].filter(Boolean).join(' ');
+  const ready = state?.player && item.story ? (storyReady(state, item.id) ? 'Story ability ready.' : 'Story ability used; ready again after a long rest.') : '';
+  return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
 module.exports = { specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };

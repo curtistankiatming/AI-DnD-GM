@@ -93,7 +93,7 @@ function itemView(state, entry) {
     quantity: entry.quantity,
     charges: entry.charges,
     description: item.description,
-    purpose: Gear.purpose(item),
+    purpose: Gear.purpose(item, state),
     requires: Gear.requirementText(item) || null,
     slot: item.slot || null,
     equippedSlots,

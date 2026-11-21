@@ -21,7 +21,7 @@ ITEMS.antitoxin.purpose='Action: cure Poisoned, or prepare advantage on the next
 ITEMS['healers-kit'].value=12;
 ITEMS['healers-kit'].purpose='Three uses per kit. Outside combat each use heals 1d6+2 HP. In combat it only stabilizes an unconscious, unstable ally (0 HP); it does not revive them.';
 ITEMS['thornward-cloak'].story={skill:'survival'};
-ITEMS['thornward-cloak'].purpose='Equip for +1 AC. Its charge is shown on the character sheet.';
+ITEMS['thornward-cloak'].purpose='Equip for +1 AC.';
 ITEMS['smoke-bomb'].value=18;
 ITEMS['holy-water'].value=15;
 const newItems = require('./data/region-items.json');
@@ -36,7 +36,9 @@ ITEMS.greatsword.requires={abilities:{str:13}};
 const UPGRADE_BASES=Object.values(ITEMS).filter(i=>['weapon','armor','shield','focus'].includes(i.category));
 for(const base of UPGRADE_BASES){
   const item=deepClone(base);item.id=`${base.id}-fine`;item.name=`Fine ${base.name}`;item.baseId=base.id;item.upgradeTier=1;
-  item.value=base.value+50;item.rarity='Uncommon';
+  item.value=base.value+50;
+  // A Fine item is at least Uncommon and never rarer-looking than its base: Fine Field Plate stays Rare.
+  const R=['Common','Uncommon','Rare','Epic','Legendary'];item.rarity=R[Math.max(1,R.indexOf(base.rarity))];
   let effect='';
   if(item.weapon){item.attackBonus=(item.attackBonus||0)+1;item.damageBonus=(item.damageBonus||0)+1;effect='+1 to hit and damage.';}
   if(item.armor){item.armor.base+=1;effect='+1 base AC.';}
