@@ -56,3 +56,37 @@ test('valid narrative actions still use the configured adapter without changing 
   assert.equal(result.source, 'ai');
   assert.equal(JSON.stringify({ player: state.player, party: state.party, world: state.world }), before);
 });
+
+// Gameplay review 2026-11-21: Book One narration told the new scene before the
+// roll that led there, repeated the "Act: Title" heading, and read a choice
+// card's hint ("Commit to the trail...") as if it had happened.
+test('a story choice is told in order: the roll and its result, then the new scene', () => {
+  const { createSeededRng } = require('../src/rules');
+  const rng = createSeededRng(7);
+  let state = E.createNewGame({ classId: 'wizard' });
+  const play = (choiceId) => {
+    const r = E.resolveAction(state, { type: 'story-choice', choiceId }, rng);
+    assert.equal(r.result.ok, true, `${choiceId}: ${r.result.error}`);
+    state = r.state;
+    return { text: N.deterministicFallback(r.state, r.view, { type: 'story-choice', choiceId }, r.events), view: r.view };
+  };
+  for (const id of ['inspect-rope', 'visit-tovin', 'calm-tovin', 'return-square']) play(id);
+  const leave = play('leave-village');
+  assert.doesNotMatch(leave.text, /Commit to the trail/);
+  assert.doesNotMatch(leave.text, /Act II — Roads That Remember: Three Ways/);
+  assert.match(leave.text, /^The north road divides/);
+  const path = play('pilgrim-path');
+  assert.match(path.text, /rolled/);
+  assert.ok(path.text.indexOf('rolled') < path.text.indexOf('Roots split the shrine'), path.text);
+  assert.ok(path.text.indexOf('toward a forgotten shrine') < path.text.indexOf('Roots split the shrine'), path.text);
+});
+
+test('a choice that stays in its scene keeps its own text ahead of its effects', () => {
+  const { createSeededRng } = require('../src/rules');
+  const rng = createSeededRng(7);
+  const state = E.createNewGame({ classId: 'wizard' });
+  const r = E.resolveAction(state, { type: 'story-choice', choiceId: 'inspect-rope' }, rng);
+  const text = N.deterministicFallback(r.state, r.view, { type: 'story-choice', choiceId: 'inspect-rope' }, r.events);
+  assert.doesNotMatch(text, /^\S+ rolled/);
+  assert.ok(text.indexOf('rolled') > 0, text);
+});

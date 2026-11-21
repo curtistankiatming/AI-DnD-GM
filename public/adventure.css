@@ -533,6 +533,8 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 .whats-next-quest > div { flex:1 1 240px; min-width:0; }
 .whats-next-quest .btn, .whats-next-row .btn { min-height:44px; }
 .whats-next-blocked { font-size:.85rem; }
+.whats-next-tier { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.whats-next-tier .btn { min-height:36px; }
 .whats-next-wish { padding:12px; border:1px dashed var(--accent); border-radius:var(--radius-small); display:grid; gap:8px; min-width:0; }
 .whats-next-wish[data-locked=true] { border-color:var(--border); opacity:.9; }
 .whats-next-row { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; }
