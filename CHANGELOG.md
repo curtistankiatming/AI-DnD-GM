@@ -4,6 +4,14 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Books that come out in parts
+
+- A book can now be released one part at a time. Book Three runs from level
+  20 to 40 in two parts; each part stays hidden until all of its chapters are
+  written, and heroes wait at "to be continued" between parts. Book Three's
+  chapters must pay exactly one level each (a test checks every chapter as it
+  lands), so the book ends at level 40 and the 3rd job.
+
 ## Gameplay review fixes (21 November 2026)
 
 - Book One story text is told in the order it happened: the roll and what it
@@ -24,7 +32,7 @@ the pull requests that made them.
 - A free hosted save that finishes Book Two is told where the story goes on
   and carries straight into Book Three on an upgrade. A save inside a paid
   book whose account lapses is kept untouched and waits.
-- Book Three, The Names in the Bronze (levels 20 to 30), is on the shelf but
+- Book Three, The Names in the Bronze (then planned as levels 20 to 30), is on the shelf but
   hidden until its chapters are written.
 
 ## Side jobs in every Book Two town, and companions who walk out

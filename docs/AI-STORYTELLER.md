@@ -119,9 +119,11 @@ and Two are free and Book Three onward needs a paid account.
   is never marked finished or handed to the AI storyteller, the AI writes only
   small side stories that leave the book alone, and it carries on when access
   returns. An expedition already under way may be played to its end.
-- A book still being written is marked `ready: false` in `src/book.js` and is
-  shown to no one until its last chapter lands. Tests and agent playtests can
-  see it with `BRIARWATCH_PREVIEW_BOOKS=1`.
+- A book may come out in parts (`parts` and `out` in `src/book.js`; each
+  chapter's `part` in quests.json). Only released parts are played. A part is
+  shown to no one until all of its chapters are written; between parts, heroes
+  wait at "to be continued" and are never handed to the AI storyteller. Tests
+  and agent playtests see every written part with `BRIARWATCH_PREVIEW_BOOKS=1`.
 - Written lines can depend on access with `"when": { "access": 3 }` or
   `{ "notAccess": 3 }`.
 
