@@ -1555,5 +1555,436 @@
         ]
       }
     }
+  },
+  "apprentice": {
+    "id": "apprentice",
+    "name": "Pim's Apprenticeship",
+    "town": "briarwatch",
+    "level": 20,
+    "from": "oath",
+    "until": "b3-pass",
+    "gold": 60,
+    "giver": "Tovin, the bell-keeper",
+    "brief": "Tovin wants Pim apprenticed to Dera at the forge for a season, away from bells. Pim does not want to go, and nobody has asked Dera yet.",
+    "start": "tovin",
+    "nodes": {
+      "tovin": {
+        "title": "Tovin, away from the tower",
+        "lines": [
+          {
+            "narrate": "Tovin catches you at the far end of the square, by the trough, where the tower windows do not look."
+          },
+          {
+            "say": "Tovin",
+            "text": "I want Pim at the forge. A season. With Dera. Away from the bell."
+          },
+          {
+            "say": "Tovin",
+            "text": "He's good. He's the best apprentice I've ever had, and I've had two. And all winter he's been reading everything he can find about the old keepers who stayed in their bells. Last week he asked me whether a person would need to be dead for it, or only willing."
+          },
+          {
+            "say": "Tovin",
+            "text": "And since the letter from Vell he's stopped asking me anything about it at all. Which is worse.",
+            "when": {
+              "anyFlag": [
+                "b3_answered",
+                "b3_to_council",
+                "b3_asked_aster"
+              ]
+            }
+          },
+          {
+            "say": "Tovin",
+            "text": "I told him he's going to the forge. He says a keeper doesn't leave his bell. I said he isn't a keeper yet, and he said that's exactly what they tell keepers, right up until they stay."
+          },
+          {
+            "say": "Tovin",
+            "text": "And I haven't asked Dera. Because Dera will say yes, and then it'll be real."
+          },
+          {
+            "say": "orin",
+            "text": "You want someone else to tell him."
+          },
+          {
+            "say": "Tovin",
+            "text": "I want someone he'll listen to.",
+            "when": {
+              "party": "orin"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "table",
+            "label": "Get Tovin, Pim and Dera round one table and talk them all round",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "performance"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You get all three of them into the forge at the end of the day, with the door shut: Tovin on the stool, Pim on the anvil step with his arms folded, Dera at the bellows because she will not sit down in her own forge."
+                },
+                {
+                  "narrate": "You don't argue for the forge, or for the tower. You ask Dera a question instead: who cast the Briarwatch bell?"
+                },
+                {
+                  "say": "Dera",
+                  "text": "A smith. Who did you think? Bells are made in forges, lad. Every bell you've ever rung came out of a fire like this one, poured by somebody with burns on their arms. Your keepers ring them. We make them."
+                },
+                {
+                  "narrate": "Pim unfolds his arms."
+                },
+                {
+                  "say": "Pim",
+                  "text": "You could teach me to cast one?"
+                },
+                {
+                  "say": "Dera",
+                  "text": "I could teach you to make nails. Four hundred of them. Then hinges. Then, in about four years, if you're not useless, a bell the size of a bucket."
+                },
+                {
+                  "say": "Tovin",
+                  "text": "Mornings at the forge. Afternoons in the tower. I ring the nights on my own."
+                },
+                {
+                  "say": "Pim",
+                  "text": "And the hours? In the mornings?"
+                },
+                {
+                  "say": "Dera",
+                  "text": "You can stop and listen to the hours. You don't stop hammering."
+                },
+                {
+                  "narrate": "Pim thinks about it for a long time, with the seriousness he gives everything. Then he holds out his hand to Dera, like a man signing a contract, and she shakes it like one."
+                },
+                {
+                  "say": "maren",
+                  "text": "Well done, all of you."
+                }
+              ],
+              "setFlags": {
+                "job:apprentice-shared": true
+              },
+              "approval": {
+                "maren": 1,
+                "nessa": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You get all three of them into the forge at the end of the day, and it goes wrong almost at once. Tovin says forge. Pim says tower. Dera says nobody has asked her, and that she would like to be asked in her own forge, thank you."
+                },
+                {
+                  "say": "Pim",
+                  "text": "You're frightened. You told me so. So am I. That's why I'm staying. Somebody who's frightened should be up there, so they're careful."
+                },
+                {
+                  "narrate": "Tovin has nothing to say to that. Nobody does."
+                },
+                {
+                  "say": "Dera",
+                  "text": "Door's open, lad. When you want it. I'll save you the nails."
+                },
+                {
+                  "narrate": "Pim stays in the tower. Tovin lets him. On the way out, Tovin pays you for your trouble, and says it was worth hearing, even if he didn't like it."
+                }
+              ],
+              "setFlags": {
+                "job:apprentice-stayed": true
+              }
+            }
+          },
+          {
+            "id": "choose",
+            "label": "Tell Tovin it has to be Pim's choice",
+            "lines": [
+              {
+                "say": "Tovin",
+                "text": "His choice. He's fifteen."
+              },
+              {
+                "say": "maren",
+                "text": "Aster Vey didn't get a choice. Everything since has been about that.",
+                "when": {
+                  "party": "maren"
+                }
+              },
+              {
+                "narrate": "Tovin goes up the tower stair. You hear them talking through the floor, for a long time, and not all of it is quiet."
+              },
+              {
+                "narrate": "When Pim comes down he has made his choice: the tower. But he has asked Tovin for something in return, and Tovin has said yes."
+              },
+              {
+                "say": "Pim",
+                "text": "He's going to teach me everything he knows about what was done to her. And about the keepers who stayed. So I know what I'm saying no to."
+              },
+              {
+                "say": "Tovin",
+                "text": "I didn't want him knowing any of it."
+              },
+              {
+                "say": "Pim",
+                "text": "You can't say no properly to something you don't know about. You told me that. About the council."
+              },
+              {
+                "say": "nessa",
+                "text": "He's got you there."
+              }
+            ],
+            "setFlags": {
+              "job:apprentice-chose": true
+            },
+            "approval": {
+              "maren": 1
+            }
+          },
+          {
+            "id": "forge",
+            "label": "Back Tovin, and walk Pim to the forge yourself",
+            "lines": [
+              {
+                "narrate": "You walk Pim to the forge in the morning. He does not say a word the whole way, and he does not go slowly either, because a keeper is never late."
+              },
+              {
+                "say": "Dera",
+                "text": "Tovin told me. I said yes, before you ask. Apron's on the hook. Nails are in the bin. Make me forty that are straight."
+              },
+              {
+                "narrate": "By evening Pim is still furious, and he has made forty-one nails, and thirty-eight of them are straight. At the sixth hour he stops with the hammer raised and looks out of the forge door at the tower, and listens to Tovin ring it alone."
+              },
+              {
+                "narrate": "Then he brings the hammer down."
+              },
+              {
+                "say": "orin",
+                "text": "He'll be all right. He'll be angry for a season. It's not the worst thing to be, at fifteen."
+              },
+              {
+                "say": "nessa",
+                "text": "He'll hate you. For a while.",
+                "when": {
+                  "party": "nessa"
+                }
+              }
+            ],
+            "setFlags": {
+              "job:apprentice-forge": true
+            },
+            "approval": {
+              "orin": 1,
+              "nessa": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "library": {
+    "id": "library",
+    "name": "Sable's Library",
+    "town": "highpass",
+    "level": 21,
+    "from": "b3-letter",
+    "until": "b3-pass",
+    "gold": 70,
+    "giver": "Warden Sable, by way of Captain Sorrel",
+    "brief": "Sable wants his borrowed books returned to the Ashford archive, every one with his notes in the margins. Captain Sorrel wants them out of her prison. Read the notes first.",
+    "start": "cell",
+    "nodes": {
+      "cell": {
+        "title": "Forty-one books",
+        "lines": [
+          {
+            "say": "Sorrel",
+            "text": "He's asked for you. Not for himself. For the books."
+          },
+          {
+            "narrate": "Sable has stacked forty-one books by his cell door, spines out, in order. There are slips of paper sticking out of every one of them."
+          },
+          {
+            "say": "Sable",
+            "text": "All of these belong to the Ashford archive. Scholars borrowed them over two years, to send to me, because they wanted my opinion. They have it. Sister Ilse will want her books back, and she will want to know what I wrote in them. I would like them to go back as they are."
+          },
+          {
+            "say": "Sorrel",
+            "text": "And I would like a prisoner with fewer books. For once we agree."
+          },
+          {
+            "say": "maren",
+            "text": "Every one of them has his hand in it."
+          }
+        ],
+        "choices": [
+          {
+            "id": "read",
+            "label": "Read the margins before anything leaves the prison",
+            "check": {
+              "skill": "investigation",
+              "alt": [
+                "history",
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "It takes you two days, at the table in the guardroom, with Sorrel's lamp. Most of it is scholarship: dates corrected, dead authors argued with, a recipe for ink that does not fade."
+                },
+                {
+                  "narrate": "Two notes are not scholarship. In the Ashford ward-register, beside a column of keepers \"taken for service\" by Central Command sixty years ago, he has written: \"Not all of them were melted. Ask Vell what it keeps under the drill-yard.\""
+                },
+                {
+                  "narrate": "And in a book of children's hymns, beside the hymn for the third hour, in smaller writing: \"Aster Vey rang this flat. Keep it flat.\""
+                }
+              ],
+              "next": "margins"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "It takes you two days, at the table in the guardroom, and by the end of it Sable's small hand is swimming in front of your eyes. Most of it is scholarship: dates corrected, dead authors argued with."
+                },
+                {
+                  "narrate": "You almost miss the last one. In a book of children's hymns, beside the hymn for the third hour: \"Aster Vey rang this flat. Keep it flat.\" If there is anything else, it is in some other book, in some margin you read too fast."
+                }
+              ],
+              "next": "margins"
+            }
+          },
+          {
+            "id": "carry",
+            "label": "Pack the books as they are and send them to Ashford",
+            "lines": [
+              {
+                "narrate": "You pack the forty-one books into two crates with straw and send them down the mountain on the Ashford cart, slips and all."
+              },
+              {
+                "say": "Sable",
+                "text": "Thank you. Sister Ilse will be furious with half of what I wrote. It will do her good."
+              },
+              {
+                "say": "maren",
+                "text": "You didn't read any of it."
+              },
+              {
+                "say": "nessa",
+                "text": "They're books. He's in a cell. What's he going to do, argue someone to death from Ashford?",
+                "when": {
+                  "party": "nessa"
+                }
+              }
+            ],
+            "setFlags": {
+              "job:library-unread": true
+            }
+          }
+        ]
+      },
+      "margins": {
+        "title": "What is in the margins",
+        "lines": [
+          {
+            "say": "Sable",
+            "text": "You read them. Good. Most people don't read the margins. That's where everything is."
+          },
+          {
+            "say": "Sorrel",
+            "text": "I'd like them gone by the end of the week, however they go."
+          }
+        ],
+        "choices": [
+          {
+            "id": "send",
+            "label": "Send them to Sister Ilse with every note left in",
+            "lines": [
+              {
+                "narrate": "The crates go down to Ashford with every slip in place. You write a letter of your own to go with them, telling Sister Ilse which two notes to read first."
+              },
+              {
+                "say": "Sable",
+                "text": "Thank you. You have let me be what I am, which is a scholar. I don't expect it to make you like me."
+              },
+              {
+                "say": "maren",
+                "text": "It doesn't. It's still right."
+              }
+            ],
+            "setFlags": {
+              "job:library-sent": true
+            },
+            "approval": {
+              "maren": 1
+            }
+          },
+          {
+            "id": "cut",
+            "label": "Cut out every note that touches on bells or binding, and send the rest",
+            "lines": [
+              {
+                "narrate": "You go through all forty-one with a knife, and cut out every slip and every margin that touches on bells, binding, keepers or rites. It comes to eleven pages. Sorrel burns them in the guardroom stove."
+              },
+              {
+                "say": "Sable",
+                "text": "You've cut out the best of me."
+              },
+              {
+                "say": "orin",
+                "text": "Good."
+              },
+              {
+                "say": "Sable",
+                "text": "You know I remember all of it."
+              },
+              {
+                "say": "orin",
+                "text": "Then it can stay in there with you."
+              }
+            ],
+            "setFlags": {
+              "job:library-cut": true
+            },
+            "approval": {
+              "orin": 1
+            }
+          },
+          {
+            "id": "add",
+            "label": "Send them as they are, and add a note of your own beside his",
+            "lines": [
+              {
+                "narrate": "Beside Sable's note in the hymn-book, you write one word in your own hand: \"Kept.\""
+              },
+              {
+                "narrate": "Sable reads it when you show him. He looks at it for longer than he looked at anything else in the cell."
+              },
+              {
+                "say": "Sable",
+                "text": "She'll read that. Ilse will show it to her, if she ever goes to Ashford. You know that."
+              },
+              {
+                "say": "nessa",
+                "text": "That's the point.",
+                "when": {
+                  "party": "nessa"
+                }
+              }
+            ],
+            "setFlags": {
+              "job:library-noted": true
+            },
+            "approval": {
+              "nessa": 1
+            }
+          }
+        ]
+      }
+    }
   }
 }

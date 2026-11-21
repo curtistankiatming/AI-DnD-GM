@@ -667,5 +667,188 @@
         ]
       }
     }
+  },
+  "letter-camp": {
+    "id": "letter-camp",
+    "after": "b3-letter",
+    "cast": ["orin", "maren", "nessa"],
+    "act": "Camp",
+    "location": "Dera's forge, the night after the cart",
+    "start": "forge",
+    "nodes": {
+      "forge": {
+        "title": "What They Know of the Commandery",
+        "objective": "Sit with your companions by the forge.",
+        "lines": [
+          { "narrate": "Roke is asleep in Dera's back room. The forge fire is banked. Corvane's letter lies on the anvil, where nobody has to look at it unless they want to." },
+          { "say": "nessa", "text": "Has anyone actually been there? The Commandery. Not the beacon. There." },
+          { "say": "maren", "text": "Once. When I was a novice. The shrine at Upper Morrow had a keeper who had been taken for service, and I was sent to ask after her. They gave me tea and a receipt." },
+          { "say": "maren", "text": "Upper Morrow is on his list." },
+          { "narrate": "Nessa looks at the letter, and then away from it." },
+          { "say": "nessa", "text": "I know the echo-stones. From the signal tower. Wren used to read their pulses off the mirror, every hour on the hour, Central Command's relays all down the Iron Road. She said you could tell when an officer was in a bad mood by the rhythm." },
+          { "say": "nessa", "text": "She said you couldn't tell anything else. That was the point of them. Everyone sounded the same." },
+          { "narrate": "Orin is turning the lid of the tea-tin over in his hands." },
+          { "say": "maren", "text": "Orin. You worked the Iron Road. You told me once, at Ashford, years ago. Escort work." },
+          { "say": "orin", "text": "One season. Salt carts, over the pass and down to the coast. Commandery money. Good pay." },
+          { "say": "nessa", "text": "And Saltwick? Roke said Saltwick, and you went—" },
+          { "say": "orin", "text": "I know what I did." },
+          { "narrate": "He puts the lid back on the tin, carefully, and presses it down all the way round." },
+          { "say": "orin", "text": "Not tonight." }
+        ],
+        "choices": [
+          {
+            "id": "wait",
+            "label": "“Then not tonight. When you're ready.”",
+            "lines": [
+              { "say": "orin", "text": "Thank you." },
+              { "narrate": "Nessa opens her mouth, and Maren puts a hand on her knee, and she shuts it again." },
+              { "say": "nessa", "text": "He'd better, though. Eventually." },
+              { "say": "maren", "text": "He will. He always does, in the end. It's the end that takes the time." }
+            ],
+            "approval": { "orin": 1 }
+          },
+          {
+            "id": "ask",
+            "label": "“Orin. What happened at Saltwick?”",
+            "lines": [
+              { "say": "orin", "text": "We left. That's the whole of it. It isn't the whole of it, and I'm not telling the rest by a forge with that letter on the anvil." },
+              { "say": "nessa", "text": "That's not fair, you can't just say \"we left\" and—" },
+              { "say": "maren", "text": "Nessa." },
+              { "narrate": "Orin gets up and goes out into the yard to check on Roke's horse, which does not need checking." }
+            ],
+            "approval": { "orin": -1, "nessa": 1 }
+          },
+          {
+            "id": "maren",
+            "label": "Ask Maren what became of the keeper at Upper Morrow",
+            "lines": [
+              { "say": "maren", "text": "Sister Hesper. She went for service when I was nineteen. The receipt said \"released to duty\". I asked what duty, and the officer said the Commandery's, and gave me more tea." },
+              { "say": "maren", "text": "I never found out. I don't suppose he'd know. I don't suppose anyone wrote it down." },
+              { "say": "orin", "text": "Someone always writes it down. That's what the Commandery is." },
+              { "say": "maren", "text": "Then I'd like to read it." }
+            ],
+            "approval": { "maren": 1 }
+          }
+        ]
+      }
+    }
+  },
+  "rite-camp": {
+    "id": "rite-camp",
+    "after": "b3-rite",
+    "cast": ["maren"],
+    "act": "Camp",
+    "location": "The wall walk at Highpass, before dawn",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "Under the Roots",
+        "objective": "Sit with Aster Vey and Maren on the wall.",
+        "lines": [
+          { "narrate": "Before dawn you take the hand-bell up to the wall walk, because Aster Vey asked to hear the wind. Maren comes up after you with a blanket, and sits down on the other side of the little bell, and does not say why." },
+          { "say": "Aster Vey", "text": "Do you want to know what it was like? Nobody has asked. I think they think it would be rude." },
+          { "say": "maren", "text": "I want to know if you want to tell it." },
+          { "say": "Aster Vey", "text": "It was under the roots. That's how I think of it. The bell was in the vault, and the vault is under the Briarwood, and I could feel the roots growing. Very slowly. The way you would feel a clock, if you were inside it." },
+          { "say": "Aster Vey", "text": "I knew I was something. I didn't know what. The name went first. Then the town. Then whether I had ever been a person at all, or had always been a bell that dreamed it had a sister." },
+          { "say": "Aster Vey", "text": "The last thing to go was the third hour, rung flat. I kept that longest. I didn't know whose it was. I just knew it was wrong, and that I liked it wrong." },
+          { "say": "maren", "text": "And tonight? With him?" },
+          { "say": "Aster Vey", "text": "That's what I wanted to tell someone. I thought I would be angry. I sat on his books and listened to him say my sister's name, and I wasn't angry. I was tired." },
+          { "say": "Aster Vey", "text": "I want to know if that is a kind of forgiving, or a kind of giving up." }
+        ],
+        "choices": [
+          {
+            "id": "yours",
+            "label": "“Neither. It's yours. It doesn't have to be a kind of anything.”",
+            "lines": [
+              { "narrate": "The bell is quiet. Down in the lower camp, someone is starting a fire for the morning." },
+              { "say": "Aster Vey", "text": "I like that. Nobody has let me have anything that wasn't a kind of something for a long time." },
+              { "say": "maren", "text": "Then have it." }
+            ],
+            "approval": { "maren": 1 }
+          },
+          {
+            "id": "angry",
+            "label": "“It's giving up. Don't. Stay angry.”",
+            "lines": [
+              { "say": "Aster Vey", "text": "Perhaps. I'll try, if you think I should." },
+              { "say": "maren", "text": "She doesn't owe him her anger. She doesn't owe us it, either." },
+              { "narrate": "Maren tucks the blanket round the little bell, which cannot feel it, and leaves her hand there." }
+            ],
+            "approval": { "maren": -1 }
+          },
+          {
+            "id": "ask-maren",
+            "label": "Ask Maren what she thinks",
+            "lines": [
+              { "say": "maren", "text": "I think a man told you the truth tonight, about yourself, for the first time. That is tiring. It's meant to be." },
+              { "say": "maren", "text": "Ask yourself again when you've slept." },
+              { "say": "Aster Vey", "text": "I don't sleep." },
+              { "say": "maren", "text": "Then ask me again when I have." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "pass-camp": {
+    "id": "pass-camp",
+    "after": "b3-pass",
+    "cast": ["nessa", "orin"],
+    "act": "Camp",
+    "location": "The night after the pass",
+    "start": "children",
+    "nodes": {
+      "children": {
+        "title": "Biscuit and the Children from Cask",
+        "objective": "Sit with Nessa and the children, then decide who goes to Vell.",
+        "lines": [
+          { "narrate": "In the mess at Highpass sixty children are asleep on the floor in rows, under soldiers' cloaks. Three of them are not asleep. They are sitting by the hearth with Nessa and Biscuit.", "when": { "flag": "b3_pass_all" } },
+          { "narrate": "In the barracks at Highpass the children from the pass are asleep in the bunks, two and three to a bunk. Three of them are not asleep. They are sitting by the stove with Nessa and Biscuit.", "when": { "flag": "b3_pass_some" } },
+          { "narrate": "At the first night's camp on the road east to Fenmere, the children from the pass are asleep in the carts Fenmere sent. Three of them are not asleep. They are sitting by the fire with Nessa and Biscuit.", "when": { "flag": "b3_pass_fenmere" } },
+          { "say": "nessa", "text": "...and then he ate the whole thing. The whole pie, off the baker's sill. And the baker came out and said, whose dog is this? And Biscuit looked at me, and I looked at Biscuit, and I said, I've never seen this dog in my life." },
+          { "narrate": "A girl of about seven, from Cask, considers this with great seriousness." },
+          { "say": "The girl", "text": "Is that true?" },
+          { "say": "nessa", "text": "Most of it." },
+          { "narrate": "Biscuit has his chin on the smallest boy's foot, and the boy has stopped shivering." },
+          { "say": "The girl", "text": "Do you have a stone where you live?" },
+          { "say": "nessa", "text": "We have a bell. It's old. It rings every hour, and a boy called Pim rings it too, a breath after, and he's never once been late." },
+          { "say": "The girl", "text": "Our stone stopped." },
+          { "say": "nessa", "text": "I know. I know it did." },
+          { "narrate": "Later, when the three of them are asleep against the dog, Orin sits down on Nessa's other side with two cups." },
+          { "say": "orin", "text": "Vell, then. Who goes." },
+          { "narrate": "The council's answer has come by its own rider: the council asks the hero of the free wards to go to Vell for it, with its letter in your pack, and to come back.", "when": { "flag": "second_oath", "is": "council" } },
+          { "say": "orin", "text": "That's the council's answer. You swore to it. It's a good answer.", "when": { "flag": "second_oath", "is": "council" } },
+          { "narrate": "A letter has come up from Briarwatch by the morning rider, in Tovin's hand. Briarwatch says go, and come home. Tovin says to keep the hand-bell by you. Pim has written something underneath, crossed it out, and written \"good luck\" instead.", "when": { "flag": "second_oath", "is": "town" } },
+          { "say": "orin", "text": "You swore to them. They've said.", "when": { "flag": "second_oath", "is": "town" } },
+          { "say": "orin", "text": "You swore to us. So we're the ones who say. I say we go. All of us.", "when": { "flag": "second_oath", "is": "companions" } },
+          { "say": "nessa", "text": "Obviously.", "when": { "flag": "second_oath", "is": "companions" } },
+          { "say": "orin", "text": "You swore to no one. So it's your call, nobody else's. I'll tell you what I think, if you want it. I think you've already decided.", "when": { "flag": "second_oath", "is": "none" } },
+          { "narrate": "Word has come by the council's rider: the council would like the hero of the free wards to go to Vell, and to come back.", "when": { "notFlag": "second_oath" } },
+          { "say": "nessa", "text": "I'm going. Whatever anyone says. Someone who isn't him has to see those nurseries." }
+        ],
+        "choices": [
+          {
+            "id": "together",
+            "label": "“We go together. All of us.”",
+            "lines": [
+              { "say": "nessa", "text": "Good." },
+              { "say": "orin", "text": "I'll pack the rope." },
+              { "narrate": "Nessa looks down at the children asleep against Biscuit, and doesn't move, so as not to wake them, until the fire is nearly out." }
+            ],
+            "approval": { "nessa": 1 }
+          },
+          {
+            "id": "slow",
+            "label": "“We go. But we take the road slowly, and see what's on it.”",
+            "lines": [
+              { "say": "orin", "text": "Good. Corvane wants us there quickly. That's reason enough to be slow." },
+              { "say": "nessa", "text": "That's not a reason. That's a mood." },
+              { "say": "orin", "text": "It's served me well." }
+            ],
+            "approval": { "orin": 1 }
+          }
+        ]
+      }
+    }
   }
 }

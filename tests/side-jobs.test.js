@@ -23,9 +23,14 @@ function ready(job, { party = ['orin', 'maren', 'nessa'], flags = {} } = {}) {
   return s;
 }
 const said = (s) => (s.story.lastOutcome?.dialogue || []).map((l) => l.narration || `${l.speaker}: ${l.text}`).join('\n');
+// Jobs in the books a player can open now; later books' jobs (Book Three's,
+// while it is hidden) are tested with their book (tests/book-three.test.js).
+const OPEN_JOBS = Object.values(SIDE_JOBS).filter((j) => [j.from, j.until].filter(Boolean).every((id) => Book.playable(null, id)));
+// The Book Two shape: two jobs per town. Later books add their own jobs on top.
+const BOOK_TWO_JOBS = OPEN_JOBS.filter((j) => [j.from, j.until].filter(Boolean).every((id) => Book.bookOf(id).n <= 2));
 
 test('two side jobs in each Book Two town, each tied to a stretch of the story', () => {
-  const jobs = Object.values(SIDE_JOBS);
+  const jobs = BOOK_TWO_JOBS;
   const towns = {};
   for (const j of jobs) (towns[j.town] ||= []).push(j.id);
   assert.deepEqual(Object.keys(towns).sort(), ['briarwatch', 'cinderfold', 'highpass', 'merrowgate']);
@@ -73,7 +78,7 @@ function paths(job) {
   return out;
 }
 test('every way through every side job ends in town, paid once, with or without companions', () => {
-  for (const job of Object.values(SIDE_JOBS)) for (const party of [['orin', 'maren', 'nessa'], []]) for (const path of paths(job)) {
+  for (const job of OPEN_JOBS) for (const party of [['orin', 'maren', 'nessa'], []]) for (const path of paths(job)) {
     const flags = { harbour_keepers: true };
     let s = ready(job, { party, flags });
     const before = { xp: s.player.xp, gold: s.player.gold };
