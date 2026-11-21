@@ -102,7 +102,7 @@
     const b = w.bounty;
     if (b?.available && w.bellComplete) {
       const row = el('div', 'whats-next-quest'), text = el('div');
-      text.append(el('strong', '', 'Bounty board'), el('span', 'muted', ` · Level ${b.level}`), el('p', 'muted', `${b.name}, out in ${b.place}. Pays ${b.reward.xp} XP${b.catchUp ? ' (more while you are behind the story)' : ''} and ${b.reward.gold} gold${b.capped ? ' (XP capped)' : ''}. Losing or giving up costs ${b.loss} gold. Repeat as often as you like.`));
+      text.append(el('strong', '', 'Bounty board'), el('span', 'muted', ` · Level ${b.level}`), el('p', 'muted', `${b.name}, out in ${b.place}. ${b.reward.xp ? `Pays ${b.reward.xp} XP${b.catchUp ? ' (more while you are behind the story)' : ''}${b.capped ? ' (capped)' : ''} and ${b.reward.gold} gold` : `Pays ${b.reward.gold} gold (no XP: you are at the most a bounty can give here)`}. Losing or giving up costs ${b.loss} gold. Repeat as often as you like.`));
       row.append(text, action('Take a bounty', 'btn btn-secondary btn-small', { type: 'bounty' }));
       list.append(row);
     }

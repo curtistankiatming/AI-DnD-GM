@@ -104,7 +104,7 @@ function finish(state, result, events, api) {
   const r = reward(state), xp = Math.max(0, Math.min(r.xp, room(state)));
   state.player.gold += r.gold;
   if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
-  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${AFTER_BOOKS_LEVEL}; AI adventures go further.`) : ''}` });
+  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${AFTER_BOOKS_LEVEL}; AI adventures or the next book go further.`) : ''}` });
   api.enterNode(state, b.nodeId, events);
 }
 
