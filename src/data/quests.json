@@ -8068,7 +8068,7 @@
           "narrate": "{You walk|@ walks} down the line and {ask|asks}, and nobody much wants to talk to a stranger from the free wards with a sword. {They} {learn|learns} that the towns had echo-stones, and that the stones stopped, and that is all anyone will say."
         },
         {
-          "narrate": "On the way back up the line, {you put your hand|@ puts a hand} on a cradle blanket. It is colder than the morning. The white at the fold moves under {your} fingers."
+          "narrate": "On the way back up the line, {you put your hand|@ puts a hand} on a cradle blanket. It is colder than the morning. The white at the fold moves under {their} fingers."
         }
       ]
     },
@@ -10561,7 +10561,15 @@
         {
           "narrate": "You don't have the wardens' rolls, only what you saw at the barracks door. So {you ask|@ asks}. {They} {ask|asks} everyone in the yard who came to Maren's table with a district warden at their back to put up their hand. Nobody does. {They} {ask|asks} again. Bertil Mosk puts his hand up. Then a girl beside him. Then eleven more, slowly, all over the yard.",
           "when": {
-            "notFlag": "prepared:b3-witness"
+            "notFlag": "prepared:b3-witness",
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "You don't have the wardens' rolls, only what you saw at the barracks door. So Maren asks. She asks everyone in the yard who came to her table with a district warden at their back to put up their hand. Nobody does. {They} {ask|asks} again. Bertil Mosk puts his hand up. Then a girl beside him. Then eleven more, slowly, all over the yard.",
+          "when": {
+            "notFlag": "prepared:b3-witness",
+            "roller": "maren"
           }
         },
         {
@@ -10591,7 +10599,16 @@
       ],
       "failure": [
         {
-          "narrate": "{You climb|@ climbs} up on Maren's table and {start|starts} to speak, and a district warden shouts {them} down from the back of the yard: {the free wards' hero, who broke their stones|a friend of the free wards' hero, the one who broke their stones}, telling Vell's poor what they are worth."
+          "narrate": "{You climb|@ climbs} up on Maren's table and {start|starts} to speak, and a district warden shouts {them} down from the back of the yard: {the free wards' hero, who broke their stones|a friend of the free wards' hero, the one who broke their stones}, telling Vell's poor what they are worth.",
+          "when": {
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "Maren climbs up on her own table and starts to speak, and a district warden shouts her down from the back of the yard: a friend of the free wards' hero, the one who broke their stones, telling Vell's poor what they are worth.",
+          "when": {
+            "roller": "maren"
+          }
         },
         {
           "narrate": "It goes through the yard like a draught. Somebody throws something. The wardens' men come forward with their cudgels out to clear the table, and the volunteers scatter in every direction, and {you are|@ is} standing between the men with the cudgels and Maren's empty chair.",
