@@ -1,8 +1,8 @@
 "use strict";
 // Shared state helpers for the rules engine: inventory, logs, XP and levels.
 // No story or combat logic lives here, so every engine module can use it.
-const { ITEMS, CLASSES } = require("./content");
-const { clamp, abilityModifier } = require("./rules");
+const { ITEMS, CLASSES, COMPANIONS, SKILLS } = require("./content");
+const { clamp, abilityModifier, actorSkillBonus } = require("./rules");
 const P = require("./progression");
 const G = require("./equipment");
 const SCHEMA_VERSION = 4;
@@ -157,4 +157,19 @@ function invalidResult(state, events, message) {
   return { ok: false, error: message };
 }
 
-Object.assign(module.exports, { SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats });
+// A companion's story skills: the trained skills of their data (old saves may
+// predate some) and, from level 21 (past the written books), expertise in
+// their signature skill. At 11 it pushed late checks to 75%+.
+const EXPERTISE_LEVEL = 21;
+function checkActor(actor) {
+  const def = actor?.id && actor.id !== "player" ? COMPANIONS[actor.id] : null;
+  if (!def) return actor;
+  const skills = [...new Set([...(actor.skills || []), ...(def.skills || [])])];
+  const expertise = def.signature && (actor.level || 1) >= EXPERTISE_LEVEL ? [...new Set([...(actor.expertise || []), def.signature])] : actor.expertise || [];
+  return { ...actor, skills, expertise };
+}
+// What a companion is best at, for the party card: their three best trained
+// skills with the bonus they roll.
+const strengths = (actor) => { const a = checkActor(actor); return (a.skills || []).filter((id) => SKILLS[id]).map((id) => ({ id, name: SKILLS[id].name, bonus: actorSkillBonus(a, id), signature: COMPANIONS[actor.id]?.signature === id })).sort((x, y) => y.bonus - x.bonus || x.name.localeCompare(y.name)).slice(0, 3); };
+
+Object.assign(module.exports, { SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats, checkActor, strengths, EXPERTISE_LEVEL });

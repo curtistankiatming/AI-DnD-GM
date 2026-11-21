@@ -4,6 +4,17 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Story checks step 3: the best-suited party member rolls (21 November 2026)
+
+- The party member with the best chance rolls each story check, counting Help,
+  tools and preparation. The hero wins ties and can now Help a companion.
+- "Story checks: Best suited rolls / I roll them" above a scene's choices lets
+  you roll every check yourself. A companion's roll shows what you would have.
+- Companions cover more skills, and the party card lists what each is best at.
+- Generated chapters to level 10 are DC +2. Average check odds are now 60-70%
+  at every level band (late checks were 36%). Report:
+  [docs/BALANCE-2026-11-21-CHECKS.md](docs/BALANCE-2026-11-21-CHECKS.md).
+
 ## Combat step 2: falling behind and catching up (21 November 2026)
 
 - Chapters of Books One and Two pay about 70% of a level instead of a full

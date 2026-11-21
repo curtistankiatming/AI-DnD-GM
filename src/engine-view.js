@@ -9,7 +9,7 @@ const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
 const Road = require("./road-story");
 const Journal = require("./journal");
-const { titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
+const { titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
 const { dialogueText, liveLines } = require("./expansion");
 const currentNode = (...args) => Engine.currentNode(...args);
@@ -56,6 +56,9 @@ function storyChoicesView(state) {
       check: plan
         ? {
             actor: plan.actor.name,
+            actorId: plan.actor.id,
+            // When a companion rolls, what the hero would have instead.
+            ...(plan.actor.id !== "player" && !choice.check.companion ? (() => { const h = checkPlan(state, choice, state.player); const hm = h.advantage ? "advantage" : h.disadvantage ? "disadvantage" : "normal"; return { hero: { bonus: h.bonus, probability: Math.round(successProbability(h.dc, h.bonus, hm) * 100) } }; })() : {}),
             skill: plan.skillId ? SKILLS[plan.skillId].name : ABILITIES[plan.abilityId]?.name,
             bonus: plan.bonus,
             dc: plan.dc,
@@ -146,6 +149,7 @@ function partyView(state) {
       temporaryHp:actor?.temporaryHp??member.temporaryHp??0,
       summary: member.summary,
       personality: member.personality,
+      strengths: strengths(member),
       hp: actor?.hp ?? member.hp,
       maxHp: actor?.maxHp ?? member.maxHp,
       ac: actor?.ac ?? member.ac,
@@ -197,7 +201,8 @@ function buildView(state) {
       defeat: Boolean(node.defeat),
       lastOutcome: state.story.lastOutcome,
       choices: storyChoicesView(state),
-      canShortRest: Boolean(node.safeRest && !state.story.shortRestsUsed[node.id] && !state.combat?.active),
+      heroRolls: state.story.heroRolls === true,
+      canShortRest: Boolean(node.safeRest && !state.story.shortRestsUsed[node.id] && !state.combat?.active && (state.player.hitDice.current > 0 || state.player.hp < state.player.maxHp)),
       endingSummary: endingSummary(state)
     },
     player: playerSheetView(state),

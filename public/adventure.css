@@ -536,6 +536,10 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 .whats-next-under { color:var(--bad); font-size:.9rem; margin-top:4px; }
 .whats-next-tier { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
 .whats-next-tier .btn { min-height:36px; }
+.roller-toggle { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 8px; }
+.roller-toggle .btn { min-height:36px; }
+.roller-toggle .btn.is-selected, .roller-toggle .btn.is-selected:disabled { opacity:1; cursor:default; color:var(--text); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); font-weight:700; }
+.roller-toggle .btn:not(.is-selected) { opacity:.85; }
 .whats-next-wish { padding:12px; border:1px dashed var(--accent); border-radius:var(--radius-small); display:grid; gap:8px; min-width:0; }
 .whats-next-wish[data-locked=true] { border-color:var(--border); opacity:.9; }
 .whats-next-row { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; }

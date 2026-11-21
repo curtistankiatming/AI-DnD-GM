@@ -16,7 +16,9 @@
     },
     "skills": [
       "athletics",
-      "perception"
+      "perception",
+      "intimidation",
+      "history"
     ],
     "maxHp": 15,
     "ac": 16,
@@ -37,7 +39,8 @@
       "briarwatch-square": "Someone wanted that bell silent. Bells do not cut their own ropes.",
       "forest-edge": "Main road is fastest and easiest to trap. I would choose certainty over speed.",
       "bell-vault": "Give me a chain to break or a doorway to hold. Do not ask me to out-sing a ghost."
-    }
+    },
+    "signature": "athletics"
   },
   "maren": {
     "id": "maren",
@@ -57,7 +60,8 @@
     "skills": [
       "insight",
       "medicine",
-      "religion"
+      "religion",
+      "persuasion"
     ],
     "maxHp": 12,
     "ac": 14,
@@ -80,7 +84,8 @@
       "briarwatch-square": "The silence feels made, not natural. There is a ritual shape to it.",
       "old-shrine": "This shrine remembers the bell before it became a weapon. We should listen before touching anything.",
       "bell-vault": "The spirit is furious, but fury is not always malice. Its true name may still reach it."
-    }
+    },
+    "signature": "insight"
   },
   "nessa": {
     "id": "nessa",
@@ -100,7 +105,8 @@
     "skills": [
       "perception",
       "stealth",
-      "survival"
+      "survival",
+      "investigation"
     ],
     "maxHp": 11,
     "ac": 14,
@@ -122,6 +128,7 @@
       "mist-hollow": "I was following the bell's echo. It doubled back like a hunter covering tracks.",
       "root-gate": "Seals, locks, guards—I prefer problems with hinges.",
       "bell-vault": "The robed one carries a bronze key. Give me ten breaths and a distraction."
-    }
+    },
+    "signature": "stealth"
   }
 }
