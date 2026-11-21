@@ -816,14 +816,14 @@
           { "say": "nessa", "text": "I know. I know it did." },
           { "narrate": "Later, when the three of them are asleep against the dog, Orin sits down on Nessa's other side with two cups." },
           { "say": "orin", "text": "Vell, then. Who goes." },
-          { "narrate": "Aveline has brought the council's answer down from the delegates' fire: the council asks the hero of the free wards to go to Vell for it, with its letter in your pack, and to come back.", "when": { "flag": "second_oath", "is": "council" } },
+          { "narrate": "The council's answer has come by its own rider: the council asks the hero of the free wards to go to Vell for it, with its letter in your pack, and to come back.", "when": { "flag": "second_oath", "is": "council" } },
           { "say": "orin", "text": "That's the council's answer. You swore to it. It's a good answer.", "when": { "flag": "second_oath", "is": "council" } },
-          { "narrate": "A letter has come up from Briarwatch by the morning rider, in Aveline's square hand. Briarwatch says go, and come home. Tovin says to take the hand-bell. Pim has written something underneath, crossed it out, and written \"good luck\" instead.", "when": { "flag": "second_oath", "is": "town" } },
+          { "narrate": "A letter has come up from Briarwatch by the morning rider, in Tovin's hand. Briarwatch says go, and come home. Tovin says to keep the hand-bell by you. Pim has written something underneath, crossed it out, and written \"good luck\" instead.", "when": { "flag": "second_oath", "is": "town" } },
           { "say": "orin", "text": "You swore to them. They've said.", "when": { "flag": "second_oath", "is": "town" } },
           { "say": "orin", "text": "You swore to us. So we're the ones who say. I say we go. All of us.", "when": { "flag": "second_oath", "is": "companions" } },
           { "say": "nessa", "text": "Obviously.", "when": { "flag": "second_oath", "is": "companions" } },
           { "say": "orin", "text": "You swore to no one. So it's your call, nobody else's. I'll tell you what I think, if you want it. I think you've already decided.", "when": { "flag": "second_oath", "is": "none" } },
-          { "narrate": "Aveline has brought word down from the delegates' fire: the council would like the hero of the free wards to go to Vell, and to come back.", "when": { "notFlag": "second_oath" } },
+          { "narrate": "Word has come by the council's rider: the council would like the hero of the free wards to go to Vell, and to come back.", "when": { "notFlag": "second_oath" } },
           { "say": "nessa", "text": "I'm going. Whatever anyone says. Someone who isn't him has to see those nurseries." }
         ],
         "choices": [

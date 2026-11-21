@@ -5456,6 +5456,9 @@
           },
           {
             "say": "Roke",
+            "when": {
+              "party": "nessa"
+            },
             "text": "Roof folk don't love the iron badge. You don't get a plank put out for you wearing it. I can sew it back on in Vell, if I get back to Vell."
           }
         ]
@@ -5491,7 +5494,17 @@
           },
           {
             "say": "Dera",
+            "when": {
+              "party": "nessa"
+            },
             "text": "That's the whole square's news. I want something for me."
+          },
+          {
+            "say": "Dera",
+            "when": {
+              "absent": "nessa"
+            },
+            "text": "And don't tell me about the towns that've gone. That's the whole square's news. I want something for me."
           },
           {
             "narrate": "So you tell her about the nurseries: eleven hundred children, under the casting yard, where it is warmest. Dera listens with the blade across her knees."
@@ -5589,14 +5602,14 @@
         "say": "Tovin",
         "text": "The bell-books say two bells. Ours and a second, rung together, to call it back into one place. I can ring the tower. I can't ring both.",
         "when": {
-          "clue": "b3-letter-evidence"
+          "flag": "prepared:b3-letter"
         }
       },
       {
         "say": "Aster Vey",
         "text": "Tovin. Ring with me. I don't know why. I know it wants two.",
         "when": {
-          "notClue": "b3-letter-evidence"
+          "notFlag": "prepared:b3-letter"
         }
       },
       {
@@ -5626,13 +5639,13 @@
         {
           "narrate": "You stand at the foot of the tower and give them the beat, the way the old bell-books mark it: tower, hand-bell, tower, hand-bell, and a breath between.",
           "when": {
-            "clue": "b3-letter-evidence"
+            "flag": "prepared:b3-letter"
           }
         },
         {
           "narrate": "You stand at the foot of the tower and give them the beat, because somebody has to: tower, hand-bell, tower, hand-bell, and a breath between. You find it by ear, and they follow you.",
           "when": {
-            "notClue": "b3-letter-evidence"
+            "notFlag": "prepared:b3-letter"
           }
         },
         {
@@ -5770,7 +5783,7 @@
             }
           },
           {
-            "narrate": "Aveline copies the letter out twice in her small square hand and sends the copies to Highpass by the morning rider. The council answers in four days, which is fast for the council."
+            "narrate": "Aveline copies the letter out twice in her small square hand and sends the copies to Highpass by the morning rider. The council answers in four days."
           },
           {
             "narrate": "It sends Quartermaster Iona to go with you to Vell: to observe, to record, and where necessary to object. She writes to say that she will meet you at Highpass and is bringing paper."
@@ -5966,7 +5979,7 @@
           },
           {
             "say": "Sable",
-            "text": "He asked politely. Nobody had asked me anything in a year. Every book in this room came with a question in it except his, and his was the only one that mattered."
+            "text": "He asked politely. Nobody had asked me anything in a year. Every book in this room came with a question. His was the only one that mattered."
           },
           {
             "say": "Sable",
@@ -6071,7 +6084,7 @@
           "narrate": "The ledger room is a cupboard under the north stair, with one lamp and a clerk called Abernathy who has been copying prisoners' letters for nine years and has never once been asked about them."
         },
         {
-          "narrate": "The entry is in his hand: \"Second week of autumn. One letter, to Vell, eleven pages. Carried by the Lantern Hall's courier, under seal. Copied in full.\" The copy is bound into the ledger between a request for socks and a complaint about the soup. Eleven pages of Sable's small hand, with the old words and the new words side by side, and a note in the margin: \"This is the line that matters.\""
+          "narrate": "The entry is in his hand: \"Second week of autumn. One letter, to Vell, eleven pages. Carried by the Lantern Hall's courier, under seal. Copied in full.\" The copy is bound into the ledger. Eleven pages of Sable's small hand, with the old words and the new words side by side, and a note in the margin: \"This is the line that matters.\""
         },
         {
           "say": "Iona",
@@ -6096,7 +6109,7 @@
       ],
       "failure": [
         {
-          "narrate": "The ledger room is a cupboard under the north stair, with one lamp and a clerk who does not want to be asked anything. You find the entry: one letter, to Vell, eleven pages, carried by the Lantern Hall's courier, copied in full. The copy is bound into the ledger, between a request for socks and a complaint about the soup."
+          "narrate": "The ledger room is a cupboard under the north stair, with one lamp and a clerk who does not want to be asked anything. You find the entry: one letter, to Vell, eleven pages, carried by the Lantern Hall's courier, copied in full. The copy is bound into the ledger."
         },
         {
           "narrate": "There is something else on the page, a second mark beside the courier's, but the clerk closes the ledger before you can read it, and says the ledger room shuts at dark."
@@ -6818,13 +6831,13 @@
         {
           "narrate": "You climb up on the gate's mounting step, where the whole line can see you, and tell them the first thing first, because it is true: you broke the Single Voice. You did it because it had to be broken, and when you did, every stone in their towns went dead. Nobody told you that would happen. Nobody told them either.",
           "when": {
-            "clue": "b3-pass-evidence"
+            "flag": "prepared:b3-pass"
           }
         },
         {
           "narrate": "You climb up on the gate's mounting step, where the whole line can see you. You don't know their towns. You don't know what they have walked through. You tell them so, and then you tell them what the white in their blankets is, and what it will do.",
           "when": {
-            "notClue": "b3-pass-evidence"
+            "notFlag": "prepared:b3-pass"
           }
         },
         {
@@ -6877,14 +6890,14 @@
           "say": "Hanne Ostrow",
           "text": "No. No. You don't get to break our stones and then burn our cradles. Not you.",
           "when": {
-            "clue": "b3-pass-evidence"
+            "flag": "prepared:b3-pass"
           }
         },
         {
           "say": "Hanne Ostrow",
           "text": "No. We've given enough. Let us in with what's ours, or don't.",
           "when": {
-            "notClue": "b3-pass-evidence"
+            "notFlag": "prepared:b3-pass"
           }
         },
         {
@@ -6914,7 +6927,7 @@
     "retainerName": "Frost-Bound Bundle",
     "after": [
       {
-        "narrate": "By evening there are six hundred people inside the lower gate of Highpass, in what they are wearing, around the braziers. The braziers are full of ash. The white on the pass road has gone back to being mist, and the mist is thinning."
+        "narrate": "By evening there are six hundred people at the lower gate of Highpass, in what they are wearing, around the braziers. The braziers are full of ash. The white on the pass road has gone back to being mist, and the mist is thinning."
       },
       {
         "narrate": "Hanne Ostrow sits with her back to the palisade and the two children and the baby, wrapped in a soldier's cloak. Somebody has given her a bowl of something hot. She has not eaten it. She is holding it for the warmth."
@@ -7064,7 +7077,7 @@
             }
           },
           {
-            "narrate": "Fenmere's families come over the fell to meet the line on the second day: the people who walked out of the lower village two winters ago, with their own carts, to carry the children the last miles. Nobody has to explain anything to anybody."
+            "narrate": "Fenmere's families come over the fell to meet the line on the second day: the people who walked out of the lower village before the winter, with their own carts, to carry the children the last miles. Nobody has to explain anything to anybody."
           },
           {
             "narrate": "Hanne Ostrow walks beside Brannagh the whole way. The goat walks between them. On the second evening the baby is asleep on Brannagh's shoulder, and Brannagh is holding her as if she has done it all her life."

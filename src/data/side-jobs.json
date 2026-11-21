@@ -1723,7 +1723,7 @@
               },
               {
                 "say": "Pim",
-                "text": "He's going to teach me everything about the rite. Sable's. All of it, what it does, how it's done. So I know what I'm saying no to."
+                "text": "He's going to teach me everything he knows about what was done to her. And about the keepers who stayed. So I know what I'm saying no to."
               },
               {
                 "say": "Tovin",
@@ -1835,7 +1835,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "It takes you two days, at the table in the guardroom, with Sorrel's lamp. Most of it is scholarship: dates corrected, dead authors argued with, a recipe for ink that does not fade. Sable is a very good reader, and a very rude one."
+                  "narrate": "It takes you two days, at the table in the guardroom, with Sorrel's lamp. Most of it is scholarship: dates corrected, dead authors argued with, a recipe for ink that does not fade."
                 },
                 {
                   "narrate": "Two notes are not scholarship. In the Ashford ward-register, beside a column of keepers \"taken for service\" by Central Command sixty years ago, he has written: \"Not all of them were melted. Ask Vell what it keeps under the drill-yard.\""
