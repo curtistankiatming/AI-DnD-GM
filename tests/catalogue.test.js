@@ -124,3 +124,10 @@ test('typed commands never match another save\'s found item', () => {
   const out = E.resolveAction(b, { type: 'freeform', text: 'buy healing potion' });
   assert.doesNotMatch(String(out.result.error || ''), /stocked item/);
 });
+
+test('found items are a template and a level, so there are at most 500 and they never change', () => {
+  const a = Gear.forge({ template: 'blade', level: 12 }), b = Gear.forge({ template: 'blade', level: 12, name: 'Anything', from: 'Elsewhere' });
+  assert.deepEqual(a, b);
+  assert.equal(a.id, 'forged-blade-12');
+  assert.equal(Gear.TEMPLATES.length * 100, 500);
+});

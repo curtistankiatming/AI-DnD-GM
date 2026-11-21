@@ -227,7 +227,7 @@
     "rarity": "Uncommon",
     "value": 75,
     "description": "The bridge guard's long spear, balanced for holding a span.",
-    "purpose": "Strength, 1d8 piercing, +1 to hit and damage.",
+    "purpose": "Strength, 1d8 piercing, +2 to hit, +1 damage.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -244,7 +244,7 @@
     "exclusive": {
       "town": "ashford"
     },
-    "attackBonus": 1
+    "attackBonus": 2
   },
   {
     "id": "toll-ledger",
@@ -363,7 +363,7 @@
         "ranger"
       ],
       "abilities": {
-        "str": 13
+        "str": 11
       }
     }
   },
@@ -375,8 +375,8 @@
     "rarity": "Rare",
     "value": 175,
     "description": "A spellbook whose margins hold a second, defensive grammar.",
-    "purpose": "Equip: +2 spell attack bonus and +2 spell save DC.",
-    "spellAttackBonus": 2,
+    "purpose": "Equip: +3 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 3,
     "spellDcBonus": 2,
     "requires": {
       "level": 8,
@@ -400,7 +400,7 @@
     "rarity": "Rare",
     "value": 210,
     "description": "Short, heavy and curved: a boarding sword from the lantern-works quay.",
-    "purpose": "Finesse, 1d8 slashing, +2 to hit, +1 damage.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit and damage.",
     "weapon": {
       "damage": "1d8",
       "damageType": "slashing",
@@ -410,7 +410,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 1,
+    "damageBonus": 2,
     "requires": {
       "level": 11,
       "abilities": {
@@ -579,7 +579,7 @@
     "slot": "accessory",
     "rarity": "Epic",
     "value": 360,
-    "description": "A hand-chime tuned to the note of the great bell.",
+    "description": "A hand-chime tuned to the note of Cinder Fold's casting bells.",
     "purpose": "Equip in the accessory slot: +2 Wisdom and Charisma saving throws.",
     "saveBonuses": {
       "wis": 2,
@@ -635,14 +635,14 @@
     "rarity": "Epic",
     "value": 460,
     "description": "A roof-hunter's harpoon, barbed and roped.",
-    "purpose": "Strength, 1d10 piercing, +1 to hit, +2 damage.",
+    "purpose": "Strength, 1d10 piercing, +2 to hit, +3 damage.",
     "weapon": {
       "damage": "1d10",
       "damageType": "piercing",
       "ability": "str",
       "properties": []
     },
-    "damageBonus": 2,
+    "damageBonus": 3,
     "requires": {
       "level": 20,
       "abilities": {
@@ -659,7 +659,7 @@
     "exclusive": {
       "town": "saltwick"
     },
-    "attackBonus": 1
+    "attackBonus": 2
   },
   {
     "id": "roofrunner-boots",
@@ -691,7 +691,7 @@
     "slot": "mainHand",
     "rarity": "Legendary",
     "value": 620,
-    "description": "The drill-yard's long axe, issued only to sergeants.",
+    "description": "The drill-yard's long axe, issued to Commandery sergeants; the quartermaster sells the surplus.",
     "purpose": "Strength, 1d12 slashing, +2 to hit and damage. Two-handed.",
     "weapon": {
       "damage": "1d12",
@@ -709,7 +709,7 @@
         "fighter"
       ],
       "abilities": {
-        "str": 16
+        "str": 15
       }
     },
     "skill": {
@@ -725,12 +725,12 @@
   },
   {
     "id": "vell-casting-mail",
-    "name": "Vell Casting-mail",
+    "name": "Vell Armoury Mail",
     "category": "armor",
     "slot": "armor",
     "rarity": "Legendary",
     "value": 700,
-    "description": "Mail cast, not forged, on the Commandery's casting wall.",
+    "description": "Heavy, plain mail from the Commandery armoury at Vell.",
     "purpose": "Base AC 21, no Dexterity bonus.",
     "armor": {
       "base": 21,
@@ -742,7 +742,7 @@
     "requires": {
       "level": 24,
       "abilities": {
-        "str": 16
+        "str": 15
       }
     }
   },
@@ -754,12 +754,13 @@
     "rarity": "Legendary",
     "value": 650,
     "description": "A black baton that has ended more arguments than wars.",
-    "purpose": "Equip in the accessory slot: +2 Intimidation.",
+    "purpose": "Equip in the accessory slot: +3 Intimidation.",
     "skillBonuses": {
-      "intimidation": 2
+      "intimidation": 3
     },
     "stats": {
-      "dealt": 0.1
+      "dealt": 0.15,
+      "taken": -0.05
     },
     "requires": {
       "level": 23
@@ -847,7 +848,7 @@
       "dex": 1
     },
     "requires": {
-      "level": 7
+      "level": 5
     },
     "story": {
       "skill": "acrobatics"
@@ -875,7 +876,7 @@
     },
     "attackBonus": 2,
     "requires": {
-      "level": 9
+      "level": 7
     },
     "skill": {
       "name": "Flare",
@@ -897,7 +898,7 @@
     "rarity": "Rare",
     "value": 180,
     "description": "The guild's ring for those who passed the echo court.",
-    "purpose": "Equip in the accessory slot: +5% damage dealt and +1 to every saving throw.",
+    "purpose": "Equip in the accessory slot: +1 to every saving throw.",
     "stats": {
       "dealt": 0.05
     },
@@ -910,7 +911,7 @@
       "cha": 1
     },
     "requires": {
-      "level": 10
+      "level": 8
     },
     "exclusive": {
       "quest": "trial"
@@ -929,7 +930,7 @@
       "investigation": 2
     },
     "requires": {
-      "level": 13
+      "level": 11
     },
     "skill": {
       "name": "Flash",
@@ -960,7 +961,7 @@
     "attackBonus": 1,
     "damageBonus": 2,
     "requires": {
-      "level": 16,
+      "level": 14,
       "abilities": {
         "str": 13
       }
@@ -978,18 +979,18 @@
   },
   {
     "id": "motherbell-fragment",
-    "name": "Motherbell Fragment",
+    "name": "Casting-hall Charm",
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Epic",
     "value": 380,
-    "description": "A shard of the great bell, worn on a cord.",
-    "purpose": "Equip in the accessory slot: 10% less damage taken.",
+    "description": "Bronze filings swept from the floor of the great casting hall, sewn into a leather charm.",
+    "purpose": "Equip in the accessory slot.",
     "stats": {
       "taken": -0.1
     },
     "requires": {
-      "level": 18
+      "level": 16
     },
     "skill": {
       "name": "Toll",
@@ -1009,38 +1010,39 @@
     "slot": "accessory",
     "rarity": "Legendary",
     "value": 520,
-    "description": "The council's mantle, given to the one who held the oath together.",
-    "purpose": "Equip in the accessory slot: +1 AC, +10% damage dealt, 5% less damage taken.",
+    "description": "A council mantle from the Second Oath, given to the one who stood up and spoke for the road.",
+    "purpose": "Equip in the accessory slot: +1 AC.",
     "acBonus": 1,
     "stats": {
       "dealt": 0.1,
       "taken": -0.05
     },
     "requires": {
-      "level": 19
+      "level": 17
     },
     "exclusive": {
       "quest": "oath"
     }
   },
   {
-    "id": "commandery-seal",
-    "name": "Commandery Seal",
+    "id": "volunteers-ribbon",
+    "name": "Volunteer's Ribbon",
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
     "value": 600,
-    "description": "The seal of Vell's Commandery, which opens most doors and closes the rest.",
-    "purpose": "Equip in the accessory slot: +2 Persuasion and Intimidation, +10% damage dealt.",
+    "description": "The ribbon the Vell volunteers pin on those who stood with them in the casting yard.",
+    "purpose": "Equip in the accessory slot: +2 Persuasion and Intimidation.",
     "skillBonuses": {
       "persuasion": 2,
       "intimidation": 2
     },
     "stats": {
-      "dealt": 0.1
+      "dealt": 0.15,
+      "taken": -0.05
     },
     "requires": {
-      "level": 24
+      "level": 22
     },
     "story": {
       "skill": "persuasion"
@@ -1074,13 +1076,8 @@
     "rarity": "Uncommon",
     "value": 70,
     "description": "A small round shield stamped with the Ashford toll mark.",
-    "purpose": "Equip in your off hand for +1 Armor Class. Cannot be used with a two-handed weapon.",
-    "acBonus": 1,
-    "requires": {
-      "abilities": {
-        "str": 11
-      }
-    },
+    "purpose": "Equip in your off hand for +2 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 2,
     "skill": {
       "name": "Brace",
       "effect": "fortified",
