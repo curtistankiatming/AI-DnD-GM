@@ -80,6 +80,8 @@ function chooseAction(v,m={},style='prepared'){
       if(b?.available&&b.reward.xp>0&&style!=='skip'&&(style==='direct'?behind>3:behind>0))return done('bounty');
       return done('depart',{questId:q.id});
     }
+    // Nothing can start yet (a level checkpoint such as the Oath of the Road): any player takes bounties.
+    if(w.bounty?.available&&w.bounty.reward.xp>0&&w.quests.some(q=>!q.available&&q.level>hero.level))return done('bounty');
     if(w.activeQuest==='bell')return done('resume');
   }
   // Prioritize investigation and assistance based on visible choices; no hidden outcomes.

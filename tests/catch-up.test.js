@@ -91,11 +91,11 @@ test('bounty XP never takes the hero past the chapter\'s level', () => {
 });
 
 test('giving up a bounty costs a tenth of your gold and leaves an expedition untouched', () => {
-  let s = ready('marsh', 3); s.player.gold = 200;
+  let s = ready('marsh', 3); s.player.gold = 160;
   s.world.activeQuest = 'marsh'; s.world.progress.marsh = { node: 'q-marsh-approach' };
   s = act(s, { type: 'bounty' }).state;
   s = act(s, { type: 'combat', actionId: 'retreat' }).state;
-  assert.equal(s.combat, null); assert.equal(s.player.gold, 180);
+  assert.equal(s.combat, null); assert.equal(s.player.gold, 144);
   assert.equal(s.story.nodeId, `town-${QUESTS.marsh.town}`);
   assert.equal(s.world.activeQuest, 'marsh'); assert.ok(!s.world.pendingBattle);
   assert.equal(s.world.progress.marsh.setback, undefined); assert.equal(s.world.setbacks, 0);
@@ -107,4 +107,55 @@ test('a bounty fight is shaped for the hero\'s level and the town', () => {
   const main = s.combat.actors.find((a) => a.refId === 'bounty-main'), f = XP.foeStats(XP.challenge({ level: 8 }));
   assert.equal(main.name, Bounty.board(QUESTS.marsh.town).main);
   assert.equal(main.attack.bonus, f.main.attackBonus); assert.equal(main.ac, f.main.ac);
+});
+
+test('the Oath of the Road and other no-XP chapters keep their exact level', () => {
+  for (const id of ['trial', 'aftermath']) {
+    const q = QUESTS[id];
+    assert.equal(W.unlocked(ready(id, q.level - 1), q), false, `${id} below its level`);
+    assert.equal(E.buildView(ready(id, q.level - 1)).world.quests.find((c) => c.id === id)?.minLevel ?? q.level, q.level);
+  }
+});
+
+test('a bounty loss never costs more than a win pays', () => {
+  const s = ready('marsh', 3); s.player.gold = 5000;
+  assert.equal(Bounty.lossCost(s), Bounty.gold(3));
+  assert.equal(E.buildView(s).world.bounty.loss, Bounty.gold(3));
+});
+
+test('a bounty pays more while the hero is behind the chapter', () => {
+  const behind = ready('harbour', QUESTS.harbour.level - 3), even = ready('harbour', QUESTS.harbour.level);
+  even.player.xp = P.XP_NEXT[QUESTS.harbour.level - 1];
+  const share = (s) => Bounty.reward(s);
+  assert.equal(share(behind).behind, true); assert.equal(share(even).behind, false);
+  const L = behind.player.level, f = XP.foeStats(XP.challenge({ level: L }));
+  const base = XP.battleXp(L, [f.main, f.retainer, f.retainer], 'normal', L).xp;
+  assert.ok(base > 0);
+  assert.equal(share(behind).xp, Math.round(base * Bounty.CATCH_UP / 10) * 10);
+});
+
+test('after the written story, bounties stop at level 20', () => {
+  const s = hero(20); s.world.completed.bell = { xp: 0, gold: 0 };
+  for (const q of Object.values(QUESTS)) if ((q.book || 1) <= 2) s.world.completed[q.id] = { xp: 0, gold: 0 };
+  s.world.townId = 'briarwatch'; s.story.nodeId = 'town-briarwatch'; W.init(s);
+  const room = Bounty.room(s);
+  assert.equal(room, P.XP_NEXT[20] - 1 - s.player.xp);
+  s.player.xp = P.XP_NEXT[20] - 1;
+  assert.equal(E.buildView(s).world.bounty.reward.xp, 0);
+});
+
+test('a bounty lost mid-expedition survives a save round trip and leaves the expedition alone', () => {
+  let s = ready('marsh', 3); s.player.gold = 100;
+  s.world.activeQuest = 'marsh'; s.world.progress.marsh = { node: 'q-marsh-approach' }; s.world.pendingBattle = 'quest:marsh';
+  s = act(s, { type: 'bounty' }).state;
+  s = JSON.parse(JSON.stringify(s));
+  for (const a of s.combat.actors) if (a.team === 'party') a.hp = 0;
+  for (const a of s.party) a.hp = 0;
+  s.player.hp = 0;
+  const out = E.resolveAction(s, { type: 'combat', actionId: 'end-turn' }, createSeededRng(4));
+  s = out.state;
+  if (s.combat?.active) s = act(s, { type: 'combat', actionId: 'retreat' }).state;
+  assert.equal(s.combat, null); assert.equal(s.world.bounty, undefined);
+  assert.equal(s.world.activeQuest, 'marsh'); assert.equal(s.world.pendingBattle, 'quest:marsh');
+  assert.equal(s.story.nodeId, `town-${QUESTS.marsh.town}`); assert.ok(s.player.hp >= 1);
 });

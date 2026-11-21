@@ -59,8 +59,10 @@ function refreshStock(state){for(const id of state.world.unlockedTowns){const st
 function completed(state,id){return Boolean(state.world.completed[id]);}
 // A written chapter may be started below its level (up to XP.UNDER_FREE +
 // XP.UNDER_MAX under; more than UNDER_FREE under makes it harder). AI
-// adventures and trials are written for the hero's level and keep their gate.
-function minLevel(q){return QUESTS[q.id]&&!q.generated&&!q.trial?Math.max(1,q.level-XP.UNDER_FREE-XP.UNDER_MAX):q.level;}
+// adventures, job trials, the level-10 Oath of the Road and any other chapter
+// that pays no XP keep their exact level: they are checkpoints, not stories to
+// fall behind on.
+function minLevel(q){return QUESTS[q.id]&&!q.generated&&!q.trial&&!q.requiresAdvancement&&Number(q.xp)>0?Math.max(1,q.level-XP.UNDER_FREE-XP.UNDER_MAX):q.level;}
 function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=minLevel(q)&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
@@ -75,7 +77,7 @@ function awardBattleXp(state,id,events,api,peaceful=false){
   // AI-written XP never takes the hero past the written chapter (src/book.js).
   const xp=Book.capXp(state,full);
   state.story.flags[`battleXp:${id}`]=true;
-  if(xp<full)emit(events,'Battle XP is capped: you are at the level this chapter of the story is written for. The story itself levels you from here.','reward');
+  if(xp<full)emit(events,'Battle XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
   if(xp)api.awardXp(state,xp,events,peaceful?`Overcame the threat without a fight (${rating})`:`Won a ${rating} battle`);
   return xp;
 }
@@ -104,7 +106,7 @@ function completeQuest(state,id,events,api){
   refreshStock(state);
   if(state.story.flags[`method:${id}`]==='peace')awardBattleXp(state,id,events,api,true);
   const gain=q?.generated?Book.capXp(state,xp):xp;state.world.completed[id].xp=gain;
-  if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. The story itself levels you from here.','reward');
+  if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
   api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
   Book.finished(state);
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The costly outcome reduced payment, not experience. ':''}Town stock refreshed after new progress, not after opening a menu.`,'reward','good');

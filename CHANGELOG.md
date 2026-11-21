@@ -11,9 +11,13 @@ the pull requests that made them.
 - A chapter can be started up to 10 levels under its level. More than 5 under,
   its enemies get +1 to hit and +10% damage per extra level (up to +5 and
   +50%) and its checks get harder. The "What's next?" card warns you first.
+- The level-10 Oath of the Road (and other chapters that pay no XP) still
+  needs its exact level.
 - The bounty board: a repeatable fight at your level in every town, on the
-  story screen and on Prepare. It pays battle XP and gold, never past the
-  chapter's level. Report:
+  story screen and on Prepare. It pays battle XP (more while you are behind)
+  and gold, never past the chapter's level, and up to level 20 after the
+  written story. Losing costs a tenth of your gold, never more than a win
+  pays. Report:
   [docs/BALANCE-2026-11-21-CATCHUP.md](docs/BALANCE-2026-11-21-CATCHUP.md).
 
 ## Combat step 1: stat damage, buffs and debuffs, chain attacks (21 November 2026)

@@ -383,7 +383,7 @@ function commission(state, draft, events) {
   if (out.arc) d.arc = out.arc;
   prune(state);
   const room = Book.xpRoom(state);
-  const capNote = side && room < q.xp ? ` ${room ? `Only ${room} XP of it counts` : 'It pays no XP'}: you are at the level this chapter of the story is written for, and the story itself levels you from here.` : '';
+  const capNote = side && room < q.xp ? ` ${room ? `Only ${room} XP of it counts` : 'It pays no XP'}: you are at the level this chapter of the story is written for, and finishing the chapter raises the limit.` : '';
   const text = side
     ? `New side quest on the expedition board: ${q.name} (level ${q.level}). ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.${capNote}`
     : `New adventure on the expedition board: ${q.name} (${q.power ? `renown challenge ${q.power}` : `level ${q.level}`}).${q.storyArc ? ` Story arc: ${q.storyArc.title}, part ${q.storyArc.chapter} of ${q.storyArc.of}.` : ''} ${q.brief} Reward: ${q.xp} XP and ${q.gold} gold.`;

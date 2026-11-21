@@ -107,7 +107,7 @@ function bound(state, proposal, sceneId) {
   if (p.reward === 'xp' && !XP_SHARE[p.difficulty]) { p.reward = 'insight'; notes.push('Only moderate or harder attempts earn XP.'); }
   if (p.reward === 'xp' && s.xpGranted) { p.reward = 'insight'; notes.push('This scene has already granted improvised XP.'); }
   if (p.reward === 'xp' && !xpFor(level, p.difficulty)) { p.reward = 'insight'; notes.push('You are at the level cap.'); }
-  if (p.reward === 'xp' && !xpGain(state, p.difficulty)) { p.reward = 'insight'; notes.push('You are at the level this chapter of the story is written for. The story itself levels you from here.'); }
+  if (p.reward === 'xp' && !xpGain(state, p.difficulty)) { p.reward = 'insight'; notes.push('You are at the level this chapter of the story is written for. Finishing the chapter raises the limit.'); }
   if (p.reward === 'inspiration' && state.player.inspiration >= 3) { p.reward = 'insight'; notes.push('Inspiration is already full.'); }
   if (!['none', 'insight'].includes(p.reward) && s.rewards >= MAX_REWARDS_PER_SCENE) { p.reward = 'insight'; notes.push('This scene has no more material rewards to give.'); }
   if (p.risk === 'cost' && !state.player.gold) p.risk = 'setback';
