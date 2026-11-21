@@ -14,7 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines, lineApplies, nodeLocation } = require("./expansion");
+const { dialogueText, liveLines, playLines, lineApplies, nodeLocation } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, checkActor, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
@@ -356,7 +356,8 @@ function enterNode(state, nodeId, events = [], lead = null) {
   // A node may have a short "revisit" line for coming back to it.
   const spoken = Array.isArray(lead) ? lead : [];
   const opening = !firstVisit && node.revisit ? node.revisit : node.opening;
-  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : liveLines(state, node.dialogue) || [{ narration: opening }];
+  // Told here, so a line's setFlag is set (playLines).
+  const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : playLines(state, node.dialogue) || [{ narration: opening }];
   const dialogue = node.dialogue || spoken.length ? [...spoken, ...own] : null;
   state.story.lastOutcome = {
     kind: "node",
@@ -556,7 +557,7 @@ function healEntity(entity, amount, events, source = "Healing") {
 }
 
 function applyOutcome(state, written = {}, rng, events) {
-  const dialogue = written.dialogue && liveLines(state, written.dialogue);
+  const dialogue = written.dialogue && playLines(state, written.dialogue);
   const outcome = dialogue ? { ...written, dialogue, text: written.text !== undefined ? dialogueText(dialogue) : undefined } : written;
   if (outcome.recover) { W.recover(state, events, extensionApi()); return; }
   const booksOpen = !state.story.flags[Book.FINISHED];

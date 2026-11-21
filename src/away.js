@@ -4,7 +4,7 @@
 //
 // Approval is counted over one chapter at a time: every change from the end
 // of the last chapter (its camp scene included) through this one, side jobs
-// and all. In Book Two, a companion who ends a chapter LIMIT or more down
+// and all. In Book Two and Book Three, Part Two, a companion who ends a chapter LIMIT or more down
 // leaves for the next chapter and comes back when it is done. A chapter may
 // list companions it "needs" (their own story, the last chapters); before one
 // of those they stay and say so instead. Book One only closes the count.
@@ -65,6 +65,10 @@ function chapterDone(state, questId) {
   if (state.world && QUESTS[questId]) state.world.awayCheck = questId;
 }
 
+// Walkouts run in Book Two and in Book Three, Part Two (both the chapter
+// just done and the next one in that stretch); a chapter's "needs" are its
+// own companions (docs/book-three/DESIGN-PART-TWO.md, "Walkouts").
+const walkouts = (q) => { const book = Number(q?.book) || 1; return book === 2 || (book === 3 && (Number(q.part) || 1) === 2); };
 const nextChapter = (state) => Book.chapters(state).find((q) => !state.world.completed[q.id]) || null;
 
 // The scene to play before the town, or null once everything is settled
@@ -77,7 +81,7 @@ function pending(state, events = []) {
   // Someone coming back is in the party for their own scene.
   for (const [id, a] of Object.entries(w.away)) if (a.until === done) { back(state, id, events); w.awayHandled.push(id); return nodeId(id, 'back'); }
   const next = nextChapter(state);
-  if ((QUESTS[done].book || 1) === 2 && next && (next.book || 1) === 2) {
+  if (walkouts(QUESTS[done]) && next && walkouts(next)) {
     for (const member of state.party) {
       if (!SCENES[member.id] || w.awayHandled.includes(member.id) || (w.approvalWindow[member.id] || 0) > -LIMIT) continue;
       if ((next.needs || []).includes(member.id)) { state.story.flags[`away:stay-${member.id}`] = next.id; return nodeId(member.id, 'stay'); }

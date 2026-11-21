@@ -32,6 +32,7 @@
         {"say": "orin", "text": "But it's Kell's Bridge next. If it's who I think it is on that bridge, I'm the one at the front. So I'm staying. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "southroad"}},
         {"say": "orin", "text": "But it's the Mother Bell next, and there'll be a door to hold. I don't walk away from doors. After, we talk. If there's an after.", "when": {"flag": "away:stay-orin", "is": "motherbell"}},
         {"say": "orin", "text": "But they're deciding about Elske next, and I'll stand in that hall whatever I think of you this week. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "oath"}},
+        {"say": "orin", "text": "But it's Saltwick next. Mags sent word: they've caught my old captain, and the roof council's going to try him. If they're trying that night, I'm in the room. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-order"}},
         {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}
       ],
       "choices": [
@@ -158,6 +159,7 @@
         {"say": "nessa", "text": "But Wren's at Cinder Fold. Wren. So I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "cinderfold"}},
         {"say": "nessa", "text": "But it's the Mother Bell. Everyone's going to be there. I'm not missing that to sulk on a road.", "when": {"flag": "away:stay-nessa", "is": "motherbell"}},
         {"say": "nessa", "text": "But they're deciding about Elske, and I want to see your face when you answer her.", "when": {"flag": "away:stay-nessa", "is": "oath"}},
+        {"say": "nessa", "text": "But Wren's written. From Cinder Fold. The committee's voted, and she's said yes, and I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b3-wren"}},
         {"narrate": "She folds the letter and puts it in her pocket. The one for later."}
       ],
       "choices": [

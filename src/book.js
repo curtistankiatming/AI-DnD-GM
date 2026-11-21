@@ -40,7 +40,10 @@ const partNo = q => Number(q?.part) || 1;
 const DEFS = [
   { n: 1, title: 'The Bell Beneath Briarwatch' },
   { n: 2, title: 'The Council of Small Voices' },
-  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0 }
+  // finale: the book's last chapter. Until it is written the book is still
+  // being written, even when every part has some chapters (Part Two is
+  // written a few chapters at a time), so the hero waits after the last one.
+  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell' }
 ];
 function buildShelf(defs, chapters, preview = false) {
   return Object.freeze(defs.map(b => {
@@ -49,7 +52,8 @@ function buildShelf(defs, chapters, preview = false) {
     // Preview shows every written part, and still waits if the last part has
     // no chapters yet, so playtests can reach the "to be continued".
     const written = Math.max(0, ...chapters.filter(q => bookNo(q) === b.n).map(partNo));
-    const writing = Boolean(b.parts) && open > 0 && (preview ? written < b.parts : open < b.parts);
+    const unfinished = Boolean(b.finale) && !chapters.some(q => q.id === b.finale);
+    const writing = Boolean(b.parts) && open > 0 && ((preview ? written < b.parts : open < b.parts) || (open >= b.parts && unfinished));
     return Object.freeze({ ...b, open, last, writing });
   }));
 }

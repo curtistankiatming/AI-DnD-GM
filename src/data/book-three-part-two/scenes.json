@@ -1,0 +1,586 @@
+{
+  "_note": "Book Three, Part Two camp scenes (docs/book-three/DESIGN-PART-TWO.md), merged into scenes.json's table by src/expansion.js. One scene per chapter, with an empty cast: companions' parts are lines gated on when.party, each with an absent version. Nodes are chained by 'next', and the camp beat is the last node. A line may be {oneOf: [...]} (the first that applies is told) and may setFlag when it is told.",
+  "price-camp": {
+    "id": "price-camp",
+    "after": "b3-price",
+    "cast": [],
+    "act": "Camp",
+    "location": "The Gull and Lantern, on the north quay, the evening after",
+    "start": "fish",
+    "nodes": {
+      "fish": {
+        "title": "Fish",
+        "objective": "Bett Garrow comes to the inn.",
+        "lines": [
+          {
+            "narrate": "In the evening there is a knock at the back door of the inn, and it is Bett Garrow with a basket. In the basket, on wet sacking, are six mackerel, cleaned, and a crab that has not yet decided whether it is alive."
+          },
+          {
+            "say": "Bett",
+            "text": "Dad says thank you. These are for you."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Bett",
+                "text": "He's up at the Hall. They're paying him to load the coaches going inland. He says it's honest work. He says he doesn't know what he thinks about it.",
+                "when": {
+                  "flag": "b3_market_shut"
+                }
+              },
+              {
+                "say": "Bett",
+                "text": "He's gone up to the Hall to have the new rule on the board read to him. He can't read. He wants it read to him twice.",
+                "when": {
+                  "flag": "b3_market_ruled"
+                }
+              },
+              {
+                "say": "Bett",
+                "text": "He's gone to Chandlery Row to look at the shelf where his paper was. He says he wants to see it with nothing on it.",
+                "when": {
+                  "flag": "b3_debts_bought"
+                }
+              },
+              {
+                "say": "Bett",
+                "text": "He's gone up to the Hall. He didn't say why."
+              }
+            ]
+          },
+          {
+            "narrate": "Nobody is quite sure how to take it. It is six mackerel and a crab, and it is plainly everything the Garrows caught today, and the girl is holding the basket out at arm's length and will not lower it until somebody takes it."
+          },
+          {
+            "say": "orin",
+            "text": "That's too much. You'll want some of that for yourselves."
+          },
+          {
+            "say": "Bett",
+            "text": "We've got ours. These are yours. Dad said you'd say that, and I was to say we've got ours.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Then thank you, Bett. We'll eat every one of them."
+          },
+          {
+            "say": "nessa",
+            "text": "Not the crab. The crab's looking at me."
+          }
+        ],
+        "choices": [
+          {
+            "id": "take",
+            "label": "Take the basket, and thank her",
+            "lines": [
+              {
+                "narrate": "You take it. It is heavier than it looks. Bett lets go and puts her hands behind her back, as if they might take it back on their own."
+              },
+              {
+                "say": "Bett",
+                "text": "He's all right. Dad. He isn't all right, but he's all right."
+              },
+              {
+                "narrate": "She goes back out into the dark before anyone can give her anything."
+              }
+            ]
+          },
+          {
+            "id": "pay",
+            "label": "Try to pay her for it",
+            "lines": [
+              {
+                "say": "Bett",
+                "text": "No. That's what the Hall does."
+              },
+              {
+                "narrate": "She says it without any anger, as a plain fact about the world, and puts the basket down on the step, and goes."
+              }
+            ]
+          },
+          {
+            "id": "stay",
+            "label": "Ask her to stay and eat with you",
+            "lines": [
+              {
+                "narrate": "She stays. She eats two mackerel and none of the crab, and tells you about her mother's brother on the whaling ships, who was gone four years and came back with a tooth as long as her arm. When she has finished she says she has to go, because her dad will be home soon and he shouldn't come home to nobody."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "wren-nessa": {
+    "id": "wren-nessa",
+    "after": "b3-wren",
+    "cast": [],
+    "act": "Cinder Fold",
+    "location": "Wren's kitchen, and the forge wall outside it, that night",
+    "start": "letter",
+    "nodes": {
+      "letter": {
+        "title": "The Letter",
+        "objective": "Nessa and Wren, alone.",
+        "lines": [
+          {
+            "narrate": "That night Nessa goes up to Wren's kitchen alone and shuts the door, and you sit on the forge wall outside with Biscuit and do not listen. You can see them through the window, at the table, with the rolled maps between them and the lamp.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Nessa takes a letter out of her pocket. Not the long yes, which Wren already has: the other one, folded small, that she has carried since the spring. She puts it on the table. Wren does not open it. She puts her hand flat on it and keeps it there.",
+            "when": {
+              "party": "nessa",
+              "flag": "nessa_keeper"
+            }
+          },
+          {
+            "narrate": "Nessa takes a letter out of her pocket, the one folded small that she has carried since the spring, and puts it on the table. Wren does not open it. She puts her hand flat on it and keeps it there.",
+            "when": {
+              "party": "nessa",
+              "notFlag": "nessa_keeper"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "They sit like that for a long time. Then Wren reads it, and laughs once, and folds it up again, and puts it inside her coat against her chest, and buttons the coat over it. In the morning, when Wren walks to the mould, she is still wearing that coat.",
+                "when": {
+                  "party": "nessa",
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "narrate": "They sit like that for a long time. Once Wren stands up and shouts something you cannot hear through the glass, and Nessa shouts something back, and then they are both sitting down again. Then Wren reads it, and does not laugh, and puts it on the shelf by the fire, next to the hearth bell, where she will see it every day.",
+                "when": {
+                  "party": "nessa",
+                  "flag": "b3_wren_refused"
+                }
+              },
+              {
+                "narrate": "They sit like that for a long time. Then Wren reads it, and nods, and takes a pencil from behind her ear and writes something at the bottom, and pushes it back across the table. Nessa reads what she wrote. She does not tell you what it says, then or afterwards.",
+                "when": {
+                  "party": "nessa"
+                }
+              }
+            ]
+          },
+          {
+            "say": "nessa",
+            "text": "She said it was a very good letter. She said they always were."
+          },
+          {
+            "narrate": "That night Wren comes down to the forge wall where you are sitting, slowly, on her stick, and sits beside you with a letter in her hand, folded small and sealed with candle wax.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "For Reed, when you see her. Don't read it. You'll want to. Don't.",
+            "when": {
+              "absent": "nessa"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Wren",
+                "text": "I'll not be up here to know if you did. So I'm trusting you. That's the last thing I'm doing up here, trusting somebody. It's not a bad last thing.",
+                "when": {
+                  "absent": "nessa",
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "say": "Wren",
+                "text": "And tell her I'm angry. She'll know that isn't all of it.",
+                "when": {
+                  "absent": "nessa",
+                  "flag": "b3_wren_refused"
+                }
+              },
+              {
+                "say": "Wren",
+                "text": "And tell her I'm waiting. She'll laugh. Let her.",
+                "when": {
+                  "absent": "nessa"
+                }
+              }
+            ]
+          }
+        ],
+        "choices": [
+          {
+            "id": "wall",
+            "label": "Stay on the forge wall a while longer",
+            "next": "door"
+          }
+        ]
+      },
+      "door": {
+        "title": "The Forge Door",
+        "objective": "Camp at the first forge.",
+        "lines": [
+          {
+            "narrate": "Biscuit will not leave the forge door. He lies across the top of the stair down to the pit with his nose on his paws, and when Nessa calls him he looks at her and does not come, and when she goes and sits beside him he puts his head in her lap and stays there.",
+            "when": {
+              "party": "nessa",
+              "flag": "b3_wren_cast"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "He can hear her. Can you? I can't. He can.",
+            "when": {
+              "flag": "b3_wren_cast"
+            }
+          },
+          {
+            "narrate": "At the turn of the hour the ten ring, one after another, in time. The small one rings first.",
+            "when": {
+              "flag": "b3_wren_cast"
+            }
+          },
+          {
+            "narrate": "Biscuit will not leave the forge door. He lies across the top of the stair down to the pit with his nose on his paws, listening to the nine, and every time one of them rings out of time he lifts his head.",
+            "when": {
+              "party": "nessa",
+              "notFlag": "b3_wren_cast"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "He's counting. He does count. Don't laugh. He does.",
+            "when": {
+              "notFlag": "b3_wren_cast"
+            }
+          },
+          {
+            "narrate": "At midnight the first of the hand-ringers comes down the stair to take the ropes: Wren, on her stick, an hour early for her turn. Biscuit gets up and goes down with her, and Nessa goes after him, and nobody calls either of them back.",
+            "when": {
+              "party": "nessa",
+              "flag": "b3_wren_waits"
+            }
+          },
+          {
+            "narrate": "The forge door stands open all night. The miners keep it open now, so that whoever is down on the stair can hear the town above. At the turn of the hour Hew comes past with his family's hearth bell on his way home, and rings it once at the top of the stair, and goes on.",
+            "when": {
+              "absent": "nessa"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Turn in"
+          }
+        ]
+      }
+    }
+  },
+  "order-mags": {
+    "id": "order-mags",
+    "after": "b3-order",
+    "cast": [],
+    "act": "Saltwick",
+    "location": "Saltwick's lamp round, at dusk after the trial",
+    "start": "round",
+    "nodes": {
+      "round": {
+        "title": "The Lamp Round",
+        "objective": "Mags Peller's answer.",
+        "lines": [
+          {
+            "narrate": "At dusk Mags goes round the lamps as she always does, and Orin goes with her, a step behind, carrying the oil.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "At dusk Mags goes round the lamps as she always does, and you go with her and carry the oil.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Mags Peller",
+                "text": "Stoneward. You asked to be tried, and you were, and you'll walk my lamps for a season beside the man who gave you the order. I said I'd not forgive a man who'd been let off. You weren't.",
+                "when": {
+                  "party": "orin",
+                  "flag": "b3_orin_tried"
+                },
+                "setFlag": "b3_mags_forgives"
+              },
+              {
+                "say": "Mags Peller",
+                "text": "Stoneward. You asked them to try you. I heard you ask. They didn't.",
+                "when": {
+                  "party": "orin"
+                },
+                "setFlag": "b3_mags_not_hers"
+              },
+              {
+                "say": "Mags Peller",
+                "text": "Your friend. Tell him I've an answer for him, and he can come and get it himself. I'll not send it in somebody else's pocket.",
+                "when": {
+                  "absent": "orin"
+                }
+              }
+            ]
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I forgive you. There. I've been carrying that eight years as well, the not saying it. It's heavier than you'd think.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_forgives"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Come back in the spring, for the lamps. Not for the council's sentence. For me. I'll want a hand on the far roofs, and you've opinions about knots.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_forgives"
+            }
+          },
+          {
+            "narrate": "Orin does not say anything for a long time. Then he takes the hook from her, very carefully, and lights the next lamp, and gets it right the first time.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_forgives"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "Spring.",
+            "when": {
+              "flag": "b3_mags_forgives"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "And I've been thinking all through that trial what I'd say to you after. It's this. It was never mine to forgive. It was theirs. The fourteen. They're not here, and they can't, and I can't do it for them.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_not_hers"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I'm not angry with you, Stoneward. I was. I'm not. That's not the same as forgiving, and I'll not pretend it is, for your sake or for mine.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_not_hers"
+            }
+          },
+          {
+            "narrate": "Orin nods. He goes on carrying the oil. At the next corner he holds the ladder for her without being asked, and she lets him.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_not_hers"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "That's fair.",
+            "when": {
+              "flag": "b3_mags_not_hers"
+            }
+          },
+          {
+            "narrate": "She goes on round the lamps without saying anything else, and you go on carrying the oil.",
+            "when": {
+              "absent": "orin"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "round",
+            "label": "Walk the rest of the lamp round",
+            "next": "knots"
+          },
+          {
+            "id": "leave",
+            "label": "Leave the oil with Orin, and let the two of them finish the round",
+            "requires": {
+              "companion": "orin"
+            },
+            "lines": [
+              {
+                "narrate": "You put the oil down by the ladder and go back along the planks. When you look back from the far roof they are at the next lamp, Mags on the ladder and Orin holding it, and neither of them is talking."
+              }
+            ],
+            "next": "knots"
+          }
+        ]
+      },
+      "knots": {
+        "title": "Knots",
+        "objective": "Camp.",
+        "lines": [
+          {
+            "narrate": "That night, in the room the roof council has given you, Orin unties every knot on every pack the party has, one after another, and ties it again.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Orin. It's past midnight.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "I know.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Nobody stops him. He does every pack in the room, and his own last, very slowly: a round turn and two half-hitches and a stopper on the tail. When he has finished he sits with his hands on his knees and looks at them.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Then he lies down and goes to sleep at once, the way a man does who has put something heavy down.",
+            "when": {
+              "party": "orin",
+              "flag": "b3_mags_forgives"
+            }
+          },
+          {
+            "narrate": "Then he sits up a long while by the window, watching the lamps, and you can see him counting them.",
+            "when": {
+              "party": "orin",
+              "notFlag": "b3_mags_forgives"
+            }
+          },
+          {
+            "narrate": "That night Davin brings you a short length of rope with a knot in it: a round turn, two half-hitches and a stopper on the tail. He says it is for Orin, when you see him, so that Orin will know somebody here was paying attention. It is a good knot.",
+            "when": {
+              "absent": "orin"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Sleep"
+          }
+        ]
+      }
+    }
+  },
+  "ashford-camp": {
+    "id": "ashford-camp",
+    "after": "b3-ashford",
+    "cast": [],
+    "act": "Camp",
+    "location": "The old wall of Ashford Crossing, at night",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "What It Was Called",
+        "objective": "Sit with Reeve Brede.",
+        "lines": [
+          {
+            "narrate": "That night Brede comes up onto the old wall where you are sitting, and sits down beside you on the cold stone, and says nothing."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "She says nothing for an hour. Below the wall the lower town stands wet in the dark, every roof of it, and the fulling mill is turning. Behind you the upper town is quiet. There is a new bell in the north gateway, and it rings the hours a little late.",
+                "when": {
+                  "flag": "b3_ashford_cast"
+                }
+              },
+              {
+                "narrate": "She says nothing for an hour. Below the wall the lower town lies under the white. Behind you the upper town is too full to sleep, and somebody is playing a fiddle, badly, and somebody else asks them to stop, and they stop."
+              }
+            ]
+          },
+          {
+            "narrate": "Maren brings her a cup of something hot and goes away again without being asked. Brede holds it in both hands and does not drink it.",
+            "when": {
+              "party": "maren"
+            }
+          },
+          {
+            "narrate": "Then, at last, she speaks."
+          },
+          {
+            "say": "Hollis Brede",
+            "text": "Ashford. That's what it was called. The lower town. The ford's down there, under the mill. The ash trees were along the bank. This, up here, inside the wall, was only ever the Crossing: the toll-house and the bridge, and a few houses for the bridge-keepers."
+          },
+          {
+            "say": "Hollis Brede",
+            "text": "Three hundred years ago they gave up Ashford to keep the Crossing. Then they built Ashford again in the same place, and called the whole of it Ashford Crossing, and forgot which half was which."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Hollis Brede",
+                "text": "And it's standing. All of it. Because Ansel Wick said yes and we said no, and his yes won. I'll walk past that gate every day for the rest of my life. I'll say good morning to him. I don't know what else you say.",
+                "when": {
+                  "flag": "b3_ashford_cast"
+                }
+              },
+              {
+                "say": "Hollis Brede",
+                "text": "And the children are at Highpass. My grandson's at Highpass. I didn't send him. You took him. I'll be angry about that for the rest of my life, and glad of it every night, and I don't know how to stop either.",
+                "when": {
+                  "flag": "b3_ashford_children"
+                }
+              },
+              {
+                "say": "Hollis Brede",
+                "text": "And I've given it up again. Me. With a vote and a board on the bridge. I'd do it again. I'll be doing it every day this winter, every time I look down there."
+              }
+            ]
+          },
+          {
+            "say": "Hollis Brede",
+            "text": "Tell your council what it was called, when they write down what happened here. I'd like it written down properly, this time."
+          }
+        ],
+        "choices": [
+          {
+            "id": "tell",
+            "label": "Tell her you will write it down yourself",
+            "lines": [
+              {
+                "say": "Hollis Brede",
+                "text": "Spell it right. One word. Ashford. Not the Crossing."
+              },
+              {
+                "narrate": "She gets up, using your shoulder to do it, and goes down the steps into the full, cold town."
+              }
+            ]
+          },
+          {
+            "id": "sit",
+            "label": "Sit with her until it is light",
+            "lines": [
+              {
+                "narrate": "You sit with her until it is light. Neither of you says anything else. When the sun comes up over the valley she finishes the cold cup at last, and nods to you, as if a meeting had been closed, and goes down to open the market."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

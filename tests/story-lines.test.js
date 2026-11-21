@@ -14,7 +14,9 @@ test('every written line compiles to a speaker or narration, and to text', () =>
   for (const node of Object.values(STORY_NODES)) {
     if (node.lines) {
       assert.ok(node.dialogue.length && node.opening.length, `${node.id} has dialogue and text`);
-      for (const l of node.dialogue) assert.ok(l.narration || (l.speaker && l.text), `${node.id} line`);
+      // A group ({oneOf}) is a list of alternative lines, each one a line.
+      const each = (ls) => ls.flatMap((l) => (l.oneOf ? each(l.oneOf) : [l]));
+      for (const l of each(node.dialogue)) assert.ok(l.narration || (l.speaker && l.text), `${node.id} line`);
     }
     for (const c of node.choices || []) for (const key of ['success', 'failure', 'result']) {
       const o = c[key];

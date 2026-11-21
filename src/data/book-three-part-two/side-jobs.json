@@ -1,0 +1,527 @@
+{
+  "_note": "Book Three, Part Two side jobs (docs/book-three/DESIGN-PART-TWO.md), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold, and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP). The Debt Book opens after b3-paid, Part One's last chapter, which is still being written (quests.json '_awaits').",
+  "debtbook": {
+    "id": "debtbook",
+    "name": "The Debt Book",
+    "town": "merrowgate",
+    "level": 30,
+    "from": "b3-paid",
+    "until": "b3-wren",
+    "gold": 100,
+    "giver": "Ida Ferris, a moneylender's clerk on Chandlery Row",
+    "brief": "A clerk on Chandlery Row wants to burn the book of debts her master is selling to the Lantern Hall, and needs someone at the door while she does it.",
+    "start": "row",
+    "nodes": {
+      "row": {
+        "title": "Chandlery Row",
+        "lines": [
+          {
+            "narrate": "Ida Ferris is a clerk at a moneylender's on Chandlery Row: twenty-six, ink to the wrist, her hair held up with a pencil. She finds you at the inn and talks very fast and very quietly, without sitting down."
+          },
+          {
+            "say": "Ida Ferris",
+            "text": "My master sells paper to the Lantern Hall. Debts. Folk on the north quay and in the Tanneries who owe him more than they've got. The Hall buys the paper, and then the Hall owns them, and then a clerk comes round being kind."
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Ida Ferris",
+                "text": "The fund bought the Hall's paper and burned it on the quay. I watched. I cried, if you want to know. And the next Monday the Hall came back to my master and bought what he had left. The Tanneries this time. Forty-six names. A new book.",
+                "when": {
+                  "flag": "b3_debts_bought"
+                }
+              },
+              {
+                "say": "Ida Ferris",
+                "text": "Two hundred and eighty names in one book. My master's copying it out fair for the Hall tonight, so they can collect it in the morning."
+              }
+            ]
+          },
+          {
+            "say": "Ida Ferris",
+            "text": "I keep the key to the strongroom. I'm going to burn the book tonight. The real one. Without it the Hall's copy is only a list; nobody can be made to pay a list. I need someone at the door while I do it, because my master's son sleeps over the shop, and he's large."
+          },
+          {
+            "say": "orin",
+            "text": "Burning a man's books is theft."
+          },
+          {
+            "say": "Ida Ferris",
+            "text": "Yes. It is. I've thought about that. I'm going to do it anyway.",
+            "when": {
+              "party": "orin"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "door",
+            "label": "Stand at the strongroom door while she burns it",
+            "next": "strongroom"
+          },
+          {
+            "id": "other",
+            "label": "Ask her whether there is another way than fire",
+            "next": "other"
+          }
+        ]
+      },
+      "strongroom": {
+        "title": "The Strongroom Door",
+        "lines": [
+          {
+            "narrate": "The strongroom is at the back of the shop, behind an iron door, and the book lies on a lectern inside: a fat ledger bound in red, with a brass clasp. Ida opens it at the first page. Her hands are shaking. She lights a candle."
+          },
+          {
+            "narrate": "Upstairs a floorboard creaks. Then the stair."
+          },
+          {
+            "say": "Dorrit's son",
+            "text": "Ida? Who's down there? Who's that at the door?"
+          }
+        ],
+        "choices": [
+          {
+            "id": "talk",
+            "label": "Talk the moneylender's son back up the stairs",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "deception",
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You tell him the truth, or most of it: that Ida is working late, that you are a friend come to walk her home, that it is cold and he should go back to bed. He looks at you for a long time, and at Ida's candle, and at the book."
+                },
+                {
+                  "say": "Dorrit's son",
+                  "text": "My mother's name is in that book. From before. Dad bought her debt when they married. Did you know that, Ida?"
+                },
+                {
+                  "say": "Ida Ferris",
+                  "text": "I know."
+                },
+                {
+                  "say": "Dorrit's son",
+                  "text": "Burn it, then. I slept through it."
+                },
+                {
+                  "narrate": "He goes back up the stairs. Ida burns the book in the strongroom grate, a page at a time. It takes an hour, and she reads every name before it goes in."
+                }
+              ],
+              "setFlags": {
+                "job:debtbook-burned": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "He does not go back up. He comes down, large, in his nightshirt, with the poker from the kitchen, and you stand in the door and do not let him past. It is a long, ugly ten minutes before he gives up and goes for the watch."
+                },
+                {
+                  "narrate": "By the time the watch comes the book is ash in the grate, and Ida is sitting on the strongroom floor with her hands in her lap, waiting for them."
+                },
+                {
+                  "say": "Ida Ferris",
+                  "text": "I'll tell them it was me. It was me. You held a door."
+                }
+              ],
+              "setFlags": {
+                "job:debtbook-burned": true
+              }
+            }
+          },
+          {
+            "id": "hold",
+            "label": "Stand in the door, and do not let him past",
+            "check": {
+              "skill": "intimidation",
+              "alt": [
+                "athletics"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "He comes down the stair with a poker and finds you in the strongroom door, and stops on the bottom step, and looks at you, and does the sum. He goes back up. You hear him sit down on his bed, heavily, and stay there."
+                },
+                {
+                  "narrate": "Ida burns the book in the grate, a page at a time. It takes an hour, and she reads every name before it goes in."
+                }
+              ],
+              "setFlags": {
+                "job:debtbook-burned": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "He comes down the stair with a poker and does not stop. It is a long, ugly ten minutes in the doorway before he gives up and goes for the watch, and you have a bruise the shape of the poker on your forearm."
+                },
+                {
+                  "narrate": "By the time the watch comes the book is ash in the grate, and Ida is sitting on the strongroom floor with her hands in her lap, waiting for them."
+                },
+                {
+                  "say": "Ida Ferris",
+                  "text": "I'll tell them it was me. It was me. You held a door."
+                }
+              ],
+              "setFlags": {
+                "job:debtbook-burned": true
+              }
+            }
+          }
+        ]
+      },
+      "other": {
+        "title": "Another Way",
+        "lines": [
+          {
+            "narrate": "Ida stops. It is the first time she has stopped since she found you."
+          },
+          {
+            "say": "Ida Ferris",
+            "text": "There's one. I give it back. Page by page, to the people whose names are on them. Then it's theirs to burn, or keep, or frame. It'll take all night, and I'll be out of a place by morning either way."
+          },
+          {
+            "say": "nessa",
+            "text": "All night. Every door on the quay. Yes. Let's do that one."
+          }
+        ],
+        "choices": [
+          {
+            "id": "return",
+            "label": "Help her take every page back to the name on it",
+            "lines": [
+              {
+                "narrate": "You take the book out of the strongroom while the moneylender's son sleeps, and you and Ida walk the north quay and the Tanneries until dawn, knocking. She tears each page out at the door and hands it over."
+              },
+              {
+                "narrate": "People do different things with them. A net-maker burns hers on the step, there and then. A carter folds his into his hat. An old woman on Rope Lane reads hers twice and gives it back to Ida, and asks her to keep it, because it has her husband's name on it as well as hers, and it is the last thing she has with his name written on it."
+              },
+              {
+                "say": "Ida Ferris",
+                "text": "I'll keep it. I'll keep it safe."
+              }
+            ],
+            "setFlags": {
+              "job:debtbook-returned": true
+            },
+            "approval": {
+              "nessa": 1
+            }
+          },
+          {
+            "id": "fire",
+            "label": "Tell her that fire is quicker",
+            "next": "strongroom"
+          }
+        ]
+      }
+    }
+  },
+  "mould": {
+    "id": "mould",
+    "name": "The Tenth Mould",
+    "town": "cinderfold",
+    "level": 31,
+    "from": "b3-price",
+    "until": "b3-ashford",
+    "gold": 110,
+    "giver": "Rafe and Tilda Coppin, a miner's children",
+    "brief": "Two miners' children have found a bell-mould the founders never used, in a gallery closed before they were born, and mean to sell it to the Lantern Hall.",
+    "start": "gallery",
+    "nodes": {
+      "gallery": {
+        "title": "The Old Gallery",
+        "lines": [
+          {
+            "narrate": "Rafe Coppin is thirteen and his sister Tilda is eleven, and their mother works the north galleries, and they have found something they should not have. They take you to it by a back way, through a gallery closed before either of them was born, with a lamp each and a great deal of whispering."
+          },
+          {
+            "narrate": "It is a bell-mould: clay and iron, the height of two men, sitting on a rotten cradle in a chamber cut to fit it, with its core still in it, never poured. The dust on it is a finger thick. Scratched into the iron band round its foot, very small, there is a line of old writing. Five words. Not this way. Ask them all."
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Above you, through the rock, you can hear the ten ringing the hour, the small one first.",
+                "when": {
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "narrate": "Above you, through the rock, you can hear the nine ringing the hour by hand, a little ragged. Someone on the ropes is tired.",
+                "when": {
+                  "flag": "b3_wren_waits"
+                }
+              },
+              {
+                "narrate": "Above you, through the rock, you can hear the nine ringing the hour, out of time."
+              }
+            ]
+          },
+          {
+            "say": "Tilda Coppin",
+            "text": "The Hall's man at the inn says it's the founders' own. He says Merrowgate would give five hundred gold for it, for the front hall of the Lantern Hall, to show people. Five hundred."
+          },
+          {
+            "say": "Rafe Coppin",
+            "text": "Mam's chest is bad from the galleries. Five hundred is the coast, and a house, and her not breathing dust."
+          },
+          {
+            "say": "Rafe Coppin",
+            "text": "We're not stealing it. We found it. Finding isn't stealing."
+          },
+          {
+            "say": "maren",
+            "text": "How bad is her chest, Rafe?"
+          },
+          {
+            "say": "Rafe Coppin",
+            "text": "She coughs all night. She says she doesn't.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "persuade",
+            "label": "Persuade them the mould belongs to Cinder Fold, and take it to the committee with them",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "history"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You tell them what the words on the band mean, as far as anyone knows: that the founders could have cast a tenth and chose not to, and wrote down why. That it is the one thing in Cinder Fold that says no to the Hall in the founders' own hand, and that it would stand in the Hall's front hall with its writing turned to the wall."
+                },
+                {
+                  "narrate": "Tilda listens. Rafe argues. Then they take you to Agnes Tallis together, and Agnes looks at the mould for a long time, and pays them a finder's fee out of the committee's box: enough for a physician from Highpass for their mother, and the coal for her room all winter."
+                },
+                {
+                  "say": "Tilda Coppin",
+                  "text": "It's not five hundred."
+                },
+                {
+                  "say": "Agnes Tallis",
+                  "text": "No. It's what we've got. And it's ours, and so's the mould, and so are you."
+                }
+              ],
+              "setFlags": {
+                "job:mould-kept": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "Rafe will not hear it. Five hundred is five hundred. In the end Tilda says she will go to the committee whatever her brother does, and he follows her because he will not let her go alone."
+                },
+                {
+                  "narrate": "Agnes Tallis pays them a finder's fee out of the committee's box. It is not five hundred. Rafe takes it without saying thank you, and then comes back an hour later and says it."
+                }
+              ],
+              "setFlags": {
+                "job:mould-kept": true
+              }
+            }
+          },
+          {
+            "id": "buy",
+            "label": "Buy it from them yourself, with what you can spare, and give it to the town",
+            "gold": -60,
+            "lines": [
+              {
+                "narrate": "You count out sixty gold on the dusty cradle. It is not five hundred. It is a physician from Highpass, and coal for their mother's room, and Rafe looks at it for a long time before he picks it up."
+              },
+              {
+                "narrate": "You give the mould to the committee the same afternoon. Agnes Tallis has it carried up and stood in the old casting hall, where the council sat, with its writing turned outwards."
+              },
+              {
+                "say": "Agnes Tallis",
+                "text": "Not this way. Ask them all. I'll ask. I don't know what I'm asking, but I'll ask."
+              }
+            ],
+            "setFlags": {
+              "job:mould-bought": true
+            }
+          },
+          {
+            "id": "sell",
+            "label": "Let them sell it: they found it, and their mother is ill",
+            "lines": [
+              {
+                "narrate": "You tell them it is theirs to sell. The Hall's man pays them five hundred gold at the inn, in front of everyone, and has the mould dug out and carted down the mountain within the week."
+              },
+              {
+                "narrate": "Their mother goes to the coast in the spring. By then the mould stands in the front hall of the Lantern Hall in Merrowgate, behind a rope, with a painted card beside it: the founders' own. It stands with its writing to the wall."
+              },
+              {
+                "say": "nessa",
+                "text": "They needed it. They needed it more than a hall needs a mould. Didn't they?"
+              },
+              {
+                "say": "orin",
+                "text": "Yes. And now the Hall has it."
+              }
+            ],
+            "setFlags": {
+              "job:mould-sold": true
+            },
+            "approval": {
+              "nessa": 1,
+              "orin": -1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "lamps": {
+    "id": "lamps",
+    "name": "Lamps for the Roofs",
+    "town": "saltwick",
+    "level": 32,
+    "from": "b3-wren",
+    "until": "b3-ashford",
+    "gold": 105,
+    "giver": "Mags Peller, who keeps the lamps",
+    "brief": "Mags Peller's lamp roster has no names for the far roofs. Find her three people who will walk the long planks at night.",
+    "start": "roster",
+    "nodes": {
+      "roster": {
+        "title": "Mags's Roster",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Saltwick is empty, its people gone to Vell in the spring, but its lamps are lit. Mags comes back over the ridge every week with six of her lamplighters to keep them lit, so that there is a town for Saltwick to come back to. The mist lies in the lanes under the lamps, flat, waiting.",
+                "when": {
+                  "flag": "b3_saltwick_moved"
+                }
+              },
+              {
+                "narrate": "Saltwick is still on its roofs, and its lamps still burn on every corner all night. Mags has her roster chalked on the slates of the salt-hall roof, a column of names for every stretch of planks."
+              }
+            ]
+          },
+          {
+            "say": "Mags Peller",
+            "text": "The far roofs. Past the tannery, where the planks are longest. I've nobody for them at night. My lamplighters are on the near roofs until dawn, and the far ones go dark at two, and the white comes up there first."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Three. I need three who'll walk the far planks at night with a hook, from midnight to dawn, all winter. Not lamplighters. I've no time to train lamplighters. People who'll do as they're told and not look down."
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Davin's put his name down. I've rubbed it off. He's fifteen, and they're the long planks."
+          }
+        ],
+        "choices": [
+          {
+            "id": "ask",
+            "label": "Go round and ask who will walk the far planks",
+            "next": "asking"
+          }
+        ]
+      },
+      "asking": {
+        "title": "Who Will Walk",
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "You go round Saltwick's people with Mags's slate, asking who will come back over the ridge with her and walk the far planks of the empty town. Two say yes before supper.",
+                "when": {
+                  "flag": "b3_saltwick_moved"
+                }
+              },
+              {
+                "narrate": "You go round the roofs with Mags's slate. Two people say yes before supper."
+              }
+            ]
+          },
+          {
+            "narrate": "Peg Halloran, who is eighty-one, says she has walked those planks since before the tannery was built and does not intend to stop for a little mist. Mags writes her name down without arguing, which Peg says is the first time in sixty years."
+          },
+          {
+            "narrate": "Corry Marl, a carter, says yes before you have finished asking. He drove salt for the Commandery the spring after the tide, on the same road, and nobody here knew him then. He has felt it ever since, he says, and has never known what to do about it. He would like to be told what to do about it."
+          },
+          {
+            "narrate": "You need a third. Davin's name is on the slate again, in letters a hand high."
+          }
+        ],
+        "choices": [
+          {
+            "id": "davin",
+            "label": "Leave Davin's name on the slate, and walk the first night with him",
+            "lines": [
+              {
+                "narrate": "You leave it. Mags looks at it for a long time, and at you, and does not rub it off."
+              },
+              {
+                "say": "Mags Peller",
+                "text": "First night, you walk it with him. Every plank. And if he looks down once, he's off the roster."
+              },
+              {
+                "narrate": "He does not look down once. At four in the morning, on the longest plank, past the tannery, he stops and relights a lamp the wind has put out, with one turn of the hook, the way his grandmother does it, and checks it, and goes on."
+              }
+            ],
+            "setFlags": {
+              "job:lamps-davin": true
+            }
+          },
+          {
+            "id": "third",
+            "label": "Find a third who is not Davin",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "intimidation"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You find Ivo Sefton, a widower who has not slept a whole night since the tide took his wife, and who sits up with a candle anyway. He says he might as well be holding a hook as a candle, and that he has always been good at not looking down."
+                },
+                {
+                  "narrate": "Mags writes his name on the slate. Then she rubs out Davin's, again, and Davin, from the next roof, watches her do it and does not write it back. Not tonight."
+                }
+              ],
+              "setFlags": {
+                "job:lamps-ivo": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You go round every roof again, and nobody else will take the long planks at night. In the end Mags looks at the slate, and at Davin's name on it, and sighs."
+                },
+                {
+                  "say": "Mags Peller",
+                  "text": "Fine. Him. I'll walk it with him myself, the first week. If he looks down once, he's off."
+                },
+                {
+                  "narrate": "He does not look down once."
+                }
+              ],
+              "setFlags": {
+                "job:lamps-davin": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

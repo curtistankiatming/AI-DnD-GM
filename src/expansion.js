@@ -48,6 +48,17 @@ const PERSONAL=require('./data/personal.json');
 // Numerical rewards are objective-based: social and combat solutions pay the same XP.
 // "aftermath" is the post-advancement mission, so the level-10 reward is not a dead end.
 const QUESTS=require('./data/quests.json');
+// Book Three, Part Two (chapters 11 to 20) is written in its own files under
+// src/data/book-three-part-two/ and merged here, after the main tables, so it
+// follows Part One in story order. It is merged into the same objects, so
+// anything that reads the JSON tables after this module sees one set. "_"
+// keys are notes. "_awaits" in its quests.json names Part One chapters it
+// follows that are still being written (b3-paid): a Part Two chapter or job
+// may name one of those before it exists (AWAITED), and nothing else.
+const PART_TWO={quests:require('./data/book-three-part-two/quests.json'),scenes:require('./data/book-three-part-two/scenes.json'),jobs:require('./data/book-three-part-two/side-jobs.json')};
+function mergeTable(into,from,what){for(const [id,v]of Object.entries(from)){if(id.startsWith('_'))continue;if(Object.prototype.hasOwnProperty.call(into,id))throw new Error(`${what} ${id} is written twice`);into[id]=v;}return into;}
+mergeTable(QUESTS,PART_TWO.quests,'Chapter');
+const AWAITED=new Set((PART_TWO.quests._awaits||[]).filter(id=>!QUESTS[id]));
 // Books One and Two pay a share of each chapter's level (src/xp.js
 // CHAPTER_SHARE), so side content matters there. A chapter written to pay
 // nothing (the trial, an aftermath) still pays nothing. Book Three on keeps
@@ -58,9 +69,15 @@ for(const q of Object.values(QUESTS))if(Number(q.xp)>0&&!q.sideJob&&(Number(q.bo
 // optional "when" that the engine checks as the line is told (see liveLines in
 // src/engine.js). Lines spoken by a companion who is not in the party are
 // skipped there too.
+// A line may also be a group, {"oneOf": [lines]}: the first line in it that
+// applies is told, and no other (an optional "when" on the group is checked
+// first). A line's "setFlag" (a flag name, or {flag: value}) is set when the
+// line is told (playLines), so later lines can read it.
 const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{})});
-function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
+const storyLine=l=>l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
+// The written text keeps every line, every alternative of a group included.
+const everyLine=lines=>lines.flatMap(l=>l.oneOf?everyLine(l.oneOf):[l]);
+function dialogueText(lines){return everyLine(lines).map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
 // party, and its optional "when" holds (flag / is, notFlag, anyFlag, noneFlag,
 // party, absent, class, spec, bondAtLeast, bondBelow, item, notItem, clue,
@@ -97,9 +114,32 @@ function lineApplies(state, line) {
   if (w.notAccess !== undefined && require('./book').reads(state, w.notAccess)) return false;
   return true;
 }
-function liveLines(state, lines) {
-  return Array.isArray(lines) ? lines.filter((line) => lineApplies(state, line)).map(({ when, ...line }) => line) : lines;
+// The line a written line or group tells now, or null.
+function pickLine(state, line) {
+  if (!line.oneOf) return lineApplies(state, line) ? line : null;
+  if (line.when && !lineApplies(state, { when: line.when })) return null;
+  for (const alt of line.oneOf) { const picked = pickLine(state, alt); if (picked) return picked; }
+  return null;
 }
+const lineFlags = (set) => typeof set === 'string' ? { [set]: true } : set && typeof set === 'object' ? set : {};
+// Lines are read in order, so a line's setFlag counts for the lines after it.
+// liveLines only looks (on a copy of the flags); playLines, used where the
+// lines are told, sets them on the save.
+function liveLines(state, lines, play = false) {
+  if (!Array.isArray(lines)) return lines;
+  const flags = play ? (state.story.flags ||= {}) : { ...(state.story.flags || {}) };
+  const seen = play ? state : { ...state, story: { ...state.story, flags } };
+  const out = [];
+  for (const line of lines) {
+    const picked = pickLine(seen, line);
+    if (!picked) continue;
+    const { when, setFlag, ...told } = picked;
+    if (setFlag) Object.assign(flags, lineFlags(setFlag));
+    out.push(told);
+  }
+  return out;
+}
+const playLines = (state, lines) => liveLines(state, lines, true);
 // A written quest field is plain text or a list of lines.
 const told=v=>Array.isArray(v)?{lines:v}:{text:v};
 const toldOpening=v=>Array.isArray(v)?{lines:v}:{opening:v};
@@ -161,7 +201,7 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // not all in the party is skipped (engine enterNode follows skipTo).
 // A scene may also follow another scene ("after" names that scene): it plays
 // straight after it, as the second choice of a chapter runs before its camp.
-const SCENES=require('./data/scenes.json');
+const SCENES=mergeTable(require('./data/scenes.json'),PART_TWO.scenes,'Scene');
 const sceneNode=(scene,key)=>`scene-${scene.id}-${key}`;
 const chapterOf=scene=>{for(let s=scene,i=0;s&&i<10;s=SCENES[s.after],i++)if(QUESTS[s.after])return QUESTS[s.after];return null;};
 function installScene(scene){
@@ -182,10 +222,10 @@ for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scen
 // finishes the job, which pays it (src/world.js completeJob) and goes back to
 // the job's town. Checks use a DC by the job's level. A choice that costs gold
 // needs that much in the purse.
-const SIDE_JOBS=Object.fromEntries(Object.entries(require('./data/side-jobs.json')).filter(([,j])=>j&&j.nodes));
+const SIDE_JOBS=Object.fromEntries(Object.entries(mergeTable(require('./data/side-jobs.json'),PART_TWO.jobs,'Side job')).filter(([,j])=>j&&j.nodes));
 function installJob(job){
   const town=TOWNS[job.town];if(!town)throw new Error(`Side job ${job.id} is in unknown town ${job.town}`);
-  for(const id of [job.from,job.until])if(id&&!QUESTS[id])throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
+  for(const id of [job.from,job.until])if(id&&!QUESTS[id]&&!AWAITED.has(id))throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
   const nodeId=key=>`job-${job.id}-${key}`;
   const dc=10+Math.floor(XP.challenge({level:job.level}).accuracy/2);
   const ends=o=>({lines:o.lines,...(o.approval?{approval:o.approval}:{}),...(o.setFlags?{setFlags:o.setFlags}:{}),...(Number.isFinite(o.gold)?{gold:o.gold}:{}),
@@ -238,4 +278,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,lineApplies,nodeLocation};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,AWAITED,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};
