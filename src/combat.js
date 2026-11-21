@@ -676,18 +676,18 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
     case 'weaponControl':{const r=resolveWeaponAttack(state,actor,target,rng,events);connected=r.hit;if(r.hit&&target.hp>0)addCondition(target,{id:'mocked',name:'Off balance: next attack disadvantaged'});break;}
     case 'snare':{
       const r=rollAttack(state,actor,target,{name:def.name,attackBonus:spellAttackBonus(actor,'int',state)},rng,events);connected=r.hit;
-      if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage,'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
+      if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage+Power.statDamage(actor,'int'),'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
     }
     case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(P.accuracyLevel(actor.level)/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
     case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3*n+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
     case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8*n);ward(a);}break;
     case 'precisionBurst':for(let n=0;n<Math.max(2,attacksPerAction(actor))&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
     case 'shadow':actor.temporaryHp=Math.max(actor.temporaryHp||0,8*n);addCondition(actor,{id:'hidden',name:'Hidden'});addCondition(actor,{id:'shadowStrike',name:'Shadow strike: next hit +2d6'});break;
-    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,dice('3d6')).total,actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
-    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,dice('4d6')).total;applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
+    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,dice('3d6')).total+Power.statDamage(actor,primary),actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
+    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,dice('4d6')).total+Power.statDamage(actor,primary);applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
     case 'timeWard':combatHeal(state,target,10*n+P.stats(state.player).healing,events,def.name);guard(target);if(actor.resources.technique)actor.resources.technique.current=Math.min(actor.resources.technique.max,actor.resources.technique.current+1);break;
     case 'massHeal':for(const a of all){combatHeal(state,a,rollFormula(rng,dice('2d6')).total+mod+P.stats(state.player).healing,events,def.name);removeCondition(a,'poisoned');}break;
-    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,dice(target.tags?.includes('undead')?'6d6':'4d6')).total,'radiant',events,def.name);break;
+    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,dice(target.tags?.includes('undead')?'6d6':'4d6')).total+Power.statDamage(actor,primary),'radiant',events,def.name);break;
     case 'pack':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,6);addCondition(a,{id:'packReady',name:'Pack Instinct: next attack advantaged'});}break;
   }
   if(connected&&P.ensure(state.player).choices['5']==='control'&&target.hp>0)addCondition(target,{id:'guiding',name:'Exposed by Technique'});
@@ -1017,7 +1017,7 @@ function processCompanionTurn(state, actor, rng, events) {
     actor.actionUsed=true;return;
   }
   const hit=resolveWeaponAttack(state,actor,target,rng,events);
-  if(hit.hit&&target.hp>0&&actor.aiRole==='scout'&&actor.resources.trickShot>0&&(actor.tactic==='aggressive'||target.aiRole==='boss')){actor.resources.trickShot--;applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d6':'1d6').total,'piercing',events,`${actor.name}'s Trick Shot`);}
+  if(hit.hit&&target.hp>0&&actor.aiRole==='scout'&&actor.resources.trickShot>0&&(actor.tactic==='aggressive'||target.aiRole==='boss')){actor.resources.trickShot--;applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d6':'1d6').total+Power.statDamage(actor,'dex'),'piercing',events,`${actor.name}'s Trick Shot`);}
 }
 
 function enemySaveAttack(state,actor,target,rng,events,profile){

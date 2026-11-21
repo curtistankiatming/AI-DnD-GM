@@ -26,8 +26,19 @@ const UNDER_DAMAGE = 0.1;   // per step: +10% enemy damage
 function underBy(heroLevel, level) {
   return Math.max(0, Math.floor(Number(level) || 1) - Math.floor(Number(heroLevel) || 1));
 }
-function underSteps(heroLevel, level) {
+// Past level 20 a level adds little raw power (the jobs carry the growth), so
+// being far behind a Book Three chapter barely mattered: each step counts
+// UNDER_LATE_WEIGHT times for adventures written past UNDER_LATE_LEVEL.
+const UNDER_LATE_LEVEL = 20, UNDER_LATE_WEIGHT = 3;
+// Steps for story checks: one per level past UNDER_FREE, never weighted (a
+// check 15 harder would be impossible).
+function underChecks(heroLevel, level) {
   return Math.min(UNDER_MAX, Math.max(0, underBy(heroLevel, level) - UNDER_FREE));
+}
+// Steps for the deciding fight: +1 to hit and UNDER_DAMAGE more damage each.
+function underSteps(heroLevel, level) {
+  const steps = underChecks(heroLevel, level);
+  return Math.floor(Number(level) || 1) > UNDER_LATE_LEVEL ? steps * UNDER_LATE_WEIGHT : steps;
 }
 
 // Difficulty a player picks for an AI-written adventure before departing.
@@ -68,13 +79,24 @@ function vigor(level) {
 // The boss and retainer of an adventure's deciding battle.
 // Enemies hit harder by power tier, as the party does from its stats (src/power.js):
 // nothing below power 5, then ENEMY_TIER_DAMAGE more per hit for each tier.
-const ENEMY_TIER_DAMAGE = 3;
+// The health trim below adds up to ENEMY_TRIM_DAMAGE more per tier as it eases
+// in (3 + 3 = 6 from power 8), so shorter fights stay as dangerous.
+const ENEMY_TIER_DAMAGE = 3, ENEMY_TRIM_DAMAGE = 3;
 const foeTier = p => Math.max(0, Math.floor((p + 1) / 6));
+// Enemy health is trimmed as the party's stat damage arrives, so fights by
+// force last about 4 to 7 rounds (playtest 21 November 2026): none up to
+// power 4, easing in to HP_TRIM from power 8.
+const HP_TRIM = 0.75, HP_TRIM_FROM = 4, HP_TRIM_FULL = 8;
+function hpTrim(p) {
+  if (p <= HP_TRIM_FROM) return 1;
+  return 1 - (1 - HP_TRIM) * Math.min(1, (p - HP_TRIM_FROM) / (HP_TRIM_FULL - HP_TRIM_FROM));
+}
 function foeStats({ accuracy: a, power: p, vigor: v = 1 }) {
-  const extra = ENEMY_TIER_DAMAGE * foeTier(p);
+  const trim = hpTrim(p), hp = v * trim;
+  const extra = Math.floor(foeTier(p) * (ENEMY_TIER_DAMAGE + ENEMY_TRIM_DAMAGE * (1 - trim) / (1 - HP_TRIM)));
   return {
-    main: { maxHp: Math.round((22 + p * 6) * v), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3) + extra}` },
-    retainer: { maxHp: Math.round((10 + p * 4) * v), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3) + extra}` }
+    main: { maxHp: Math.round((22 + p * 6) * hp), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3) + extra}` },
+    retainer: { maxHp: Math.round((10 + p * 4) * hp), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3) + extra}` }
   };
 }
 
@@ -112,4 +134,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, underBy, underSteps, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };

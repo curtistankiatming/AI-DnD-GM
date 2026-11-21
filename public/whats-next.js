@@ -91,7 +91,7 @@
         text.append(tiers);
       }
       // Falling behind (src/xp.js): a little under is a note, more than 5 under is harder.
-      if (q.underSteps) text.append(el('p', 'whats-next-under', `You are ${q.underBy} levels under this chapter. In its deciding fight the enemies get +${q.underSteps} to hit and ${q.underSteps * 10}% more damage, and its checks are ${q.underSteps} harder. Bounties help you catch up.`));
+      if (q.underSteps) text.append(el('p', 'whats-next-under', `You are ${q.underBy} levels under this chapter. In its deciding fight the enemies get +${q.underSteps} to hit and ${q.underSteps * 10}% more damage, and its checks are ${q.underChecks??q.underSteps} harder. Bounties help you catch up.`));
       else if (q.underBy > 0) text.append(el('p', 'muted', `You are ${q.underBy} level${q.underBy === 1 ? '' : 's'} under this chapter, so its fights are harder. More than 5 under adds a penalty. Bounties and side jobs help you catch up.`));
       row.append(text, q.canDepart ? action(q.returning ? 'Continue' : 'Set out', 'btn btn-secondary btn-small', { type: 'depart', questId: q.id })
         : el('span', 'muted whats-next-blocked', q.minLevel && q.minLevel < q.level ? `Leaves from ${q.townName}; can start from level ${q.minLevel} (written for ${q.level})` : `Leaves from ${q.townName} at level ${q.level}${w.bounty?.available && q.level > (view.player?.level || 0) ? '. Bounties help you get there.' : ''}`));
