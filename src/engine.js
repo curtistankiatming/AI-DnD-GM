@@ -17,7 +17,7 @@ const Chronicle = require("./chronicle");
 const { dialogueText, liveLines, lineApplies } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
-const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
+const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, checkActor, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
 const Combat = require("./combat");
 const startCombat = (...args) => Combat.startCombat(...args);
 const normalizeCombat = (...args) => Combat.normalizeCombat(...args);
@@ -258,7 +258,9 @@ function normalizeIncomingState(raw) {
     clues: Array.isArray(state.story?.clues) ? [...new Set(state.story.clues.filter((id) => CLUES[id]))] : [],
     history: Array.isArray(state.story?.history) ? state.story.history.slice(-MAX_HISTORY) : [],
     shortRestsUsed: state.story?.shortRestsUsed && typeof state.story.shortRestsUsed === "object" ? state.story.shortRestsUsed : {},
-    lastOutcome: state.story?.lastOutcome || null
+    lastOutcome: state.story?.lastOutcome || null,
+    // Set only when the player rolls every story check themselves.
+    ...(state.story?.heroRolls === true ? { heroRolls: true } : {})
   };
   state.logs = Array.isArray(state.logs) ? state.logs.slice(-MAX_LOGS) : [];
   state.difficulty = ["story", "standard", "gritty"].includes(state.difficulty) ? state.difficulty : "standard";
@@ -423,24 +425,49 @@ function bestCheckSkill(actor, check) {
     .sort((a, b) => b.bonus - a.bonus)[0];
 }
 
+// Who in the party can take a story check: the hero, and every companion who
+// is standing and still on speaking terms (bond 0 or more). A companion who has
+// walked out is not in the party at all.
+const checkers = (state) => [state.player, ...state.party.filter((m) => m.hp > 0 && m.bond >= 0)];
+function checkBonus(actor, check) {
+  const view = checkActor(actor);
+  const skillPlan = bestCheckSkill(view, check);
+  const skillId = skillPlan?.skillId || null;
+  const abilityId = check.ability || (skillId ? SKILLS[skillId].ability : null);
+  return { skillId, abilityId, bonus: skillId ? skillPlan.bonus : actorAbilityBonus(view, abilityId, false) };
+}
+
 function companionHelper(state, skillId, leadId) {
   if (!skillId) return null;
-  const candidates = state.party
-    .filter((member) => member.id !== leadId && member.hp > 0 && member.bond >= 0 && member.skills.includes(skillId))
-    .map((member) => ({ member, bonus: actorSkillBonus(member, skillId) }))
+  const candidates = checkers(state)
+    .filter((member) => member.id !== leadId && checkActor(member).skills.includes(skillId))
+    .map((member) => ({ member, bonus: actorSkillBonus(checkActor(member), skillId) }))
     .sort((a, b) => b.bonus - a.bonus);
   return candidates[0]?.member || null;
 }
 
-function checkPlan(state, choice) {
+const planChance = (plan) => successProbability(plan.dc, plan.bonus, plan.advantage ? "advantage" : plan.disadvantage ? "disadvantage" : "normal");
+
+// The party member best suited to a check rolls it (Curtis, 21 November 2026):
+// whoever has the best chance once help, tools and the rest are counted. The
+// player may choose to roll every check themselves. The hero wins ties.
+function checkPlan(state, choice, forced = null) {
   const check = choice.check;
   if (!check) return null;
-  let actor = state.player;
-  if (check.companion) actor = findCompanion(state, check.companion) || state.player;
-  const skillPlan = bestCheckSkill(actor, check);
-  const skillId = skillPlan?.skillId || null;
-  const abilityId = check.ability || (skillId ? SKILLS[skillId].ability : null);
-  let bonus = skillId ? skillPlan.bonus : actorAbilityBonus(actor, abilityId, false);
+  if (!forced && !check.companion) {
+    const hero = checkPlan(state, choice, state.player);
+    // The hero always rolls their own declared actions (check.hero) and when
+    // the player chose to. A companion who would disapprove of the choice
+    // never takes it on for the hero.
+    if (state.story.heroRolls || check.hero) return hero;
+    const objects = (m) => [choice.success, choice.failure].some((o) => Number(o?.approval?.[m.id]) < 0);
+    let best = hero, top = planChance(hero);
+    for (const m of checkers(state).slice(1).filter((m) => !objects(m))) { const p = checkPlan(state, choice, m), c = planChance(p); if (c > top + 1e-9) { best = p; top = c; } }
+    return best;
+  }
+  const actor = forced || findCompanion(state, check.companion) || state.player;
+  const { skillId, abilityId, bonus: base } = checkBonus(actor, check);
+  let bonus = base;
   const helper = check.companion ? null : companionHelper(state, skillId, actor.id);
   let advantage = Boolean(helper);
   let disadvantage = false;
@@ -492,6 +519,7 @@ function resolveStoryCheck(state, choice, rng, events) {
     state.player.inspiration = Math.max(0, state.player.inspiration - 1);
     events.push({ type: "resource", tone: "neutral", text: "Inspiration spent for advantage." });
   }
+  if (plan.actor.id !== "player" && !choice.check.companion) events.push({ type: "party", tone: "neutral", text: `${plan.actor.name} is best placed for this and takes it on.` });
   const d20 = rollD20(rng, { advantage: plan.advantage, disadvantage: plan.disadvantage });
   const total = d20.natural + plan.bonus;
   const success = total >= plan.dc;
@@ -499,7 +527,7 @@ function resolveStoryCheck(state, choice, rng, events) {
   const modeText = d20.mode === "normal" ? "" : ` (${d20.mode}: ${d20.rolls.join(", ")})`;
   const helperText = plan.helper ? ` ${plan.helper.name} helped.` : "";
   const rollText = `${plan.actor.name} rolled ${d20.natural}${modeText} ${formatSigned(plan.bonus)} = ${total} vs DC ${plan.dc} ${checkName}: ${success ? "success" : "failure"}.${helperText}`;
-  events.push({ type: "roll", tone: success ? "good" : "bad", text: rollText, roll: { ...d20, bonus: plan.bonus, total, dc: plan.dc, checkName } });
+  events.push({ type: "roll", tone: success ? "good" : "bad", text: rollText, roll: { ...d20, bonus: plan.bonus, total, dc: plan.dc, checkName, actorId: plan.actor.id, actor: plan.actor.name } });
   pushLog(state, "Dice", rollText, "roll", { success });
   return { success, plan, d20, total, text: rollText };
 }
@@ -792,7 +820,7 @@ function previewImprovised(state, raw) {
   const v=Improvise.validate(raw);if(!v.ok)return v;
   const plan=Improvise.bound(state,v.proposal,state.story.nodeId);if(!plan.ok)return plan;
   if(plan.dc===null)return {...plan,check:null};
-  const p=plan.proposal,check=checkPlan(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:plan.dc}});
+  const p=plan.proposal,check=checkPlan(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:plan.dc,hero:true}});
   const mode=check.advantage?'advantage':check.disadvantage?'disadvantage':'normal';
   const name=check.skillId?SKILLS[check.skillId].name:ABILITIES[check.abilityId]?.name||'Check';
   return {...plan,check:{actor:check.actor.name,name,bonus:check.bonus,dc:check.dc,mode,chance:Math.round(successProbability(check.dc,check.bonus,mode)*100),reasons:check.reasons}};
@@ -802,7 +830,7 @@ function resolveImprovised(state, raw, rng, events) {
   const preview=previewImprovised(state,raw);if(!preview.ok)return invalidResult(state,events,preview.error);
   const sceneId=state.story.nodeId,p=preview.proposal;
   let success=true;
-  if(preview.dc!==null)success=resolveStoryCheck(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:preview.dc}},rng,events).success;
+  if(preview.dc!==null)success=resolveStoryCheck(state,{check:{skill:p.skill||undefined,ability:p.skill?undefined:p.ability,dc:preview.dc,hero:true}},rng,events).success;
   const text=Improvise.apply(state,preview,success,sceneId,rng,events,{rollFormula,awardXp,applyDamage:applyDamageToEntity});
   recordHistory(state,`Improvised: ${p.intent} (${success?'success':'failure'}). ${text}`);
   state.story.lastOutcome={kind:'improvise',title:currentNode(state).title,text};
@@ -851,6 +879,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   else if(action.type==='courier')result=Courier.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
   else if(action.type==='road')result=Road.apply(state,action.optionId,rng,events,{...extensionApi(),hasItem,checkPlan});
   else if(action.type==='set-tactic')result=setTactic(state,action.companionId,action.tactic,events);
+  else if(action.type==='check-roller'){if(action.roller==='hero')state.story.heroRolls=true;else delete state.story.heroRolls;result={ok:true,kind:'setting',outcomeText:state.story.heroRolls?'You will roll every story check yourself.':'The party member best suited to each story check will roll it.'};}
   else if(state.combat?.active){
     result=action.type==='combat'?resolveCombatAction(state,action,rng,events):invalidResult(state,events,'Use combat controls while initiative is active.');
   } else if(action.type==='confirm-intent'){

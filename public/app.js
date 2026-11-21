@@ -528,7 +528,9 @@ function renderParty() {
     talk.title = view.combat?.active ? "Companion conversations resume after initiative ends." : "Ask for this companion's current perspective.";
     talk.addEventListener("click", () => sendAction({ type: "talk", companionId: member.id }));
     controls.append(select, talk);
-    card.append(head, createElement("p", "party-summary", member.summary), hpLine, meter, conditionRow, controls);
+    const good = (member.strengths || []).map(s => `${s.name} ${signed(s.bonus)}`).join(", ");
+    const strengthLine = good ? createElement("p", "party-strengths muted", `Best at: ${good}`) : null;
+    card.append(head, createElement("p", "party-summary", member.summary), ...(strengthLine ? [strengthLine] : []), hpLine, meter, conditionRow, controls);
     dom.partyCards.appendChild(card);
   }
   // A companion who walked out for a chapter (src/away.js).
@@ -548,6 +550,8 @@ function checkSummary(check) {
   const parts = [`${check.actor} rolls ${check.skill} ${signed(check.bonus)} against ${check.dc}`];
   if (check.mode !== "normal") parts.push(`with ${check.mode}`);
   if (check.helper) parts.push(`${check.helper} helps`);
+  if (check.hero) parts.push(`you would have ${check.hero.probability}%`);
+  if (check.actorId === "player") parts[0] = `You roll ${check.skill} ${signed(check.bonus)} against ${check.dc}`;
   return parts.join(" · ");
 }
 
@@ -558,6 +562,22 @@ function renderStoryChoices() {
     const message = window.BriarwatchSession.emptyChoices(view);
     dom.storyChoices.appendChild(createElement("p", "empty-state", message));
     return;
+  }
+  // Who rolls story checks: the best-suited party member, or always the hero.
+  if (view.scene.companionsCanRoll && choices.some(c => c.check && !c.completed && !c.locked)) {
+    const row = createElement("div", "roller-toggle");
+    row.setAttribute("role", "group"); row.setAttribute("aria-label", "Who rolls story checks");
+    row.appendChild(createElement("span", "muted", "Story checks:"));
+    for (const [id, label] of [["best", "Best person rolls"], ["hero", "I roll every check"]]) {
+      const on = (id === "hero") === Boolean(view.scene.heroRolls);
+      const b = createElement("button", `btn btn-secondary btn-small${on ? " is-selected" : ""}`, label);
+      // The selected button stays focusable so keyboards and screen readers find the current choice.
+      b.type = "button"; b.dataset.roller = id; b.setAttribute("aria-pressed", String(on)); b.disabled = busy;
+      if (on) b.setAttribute("aria-disabled", "true");
+      b.addEventListener("click", async () => { if (on || busy) return; await sendAction({ type: "check-roller", roller: id }); document.querySelector(`.roller-toggle [data-roller="${id}"]`)?.focus(); });
+      row.appendChild(b);
+    }
+    dom.storyChoices.appendChild(row);
   }
   for (const choice of choices) {
     const card = createElement("button", `choice-card ${choice.locked ? "is-locked" : ""} ${choice.completed ? "is-completed" : ""}`);

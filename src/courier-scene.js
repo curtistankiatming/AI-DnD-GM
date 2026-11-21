@@ -18,7 +18,7 @@ function options(state,api){
     {id:'aid',label:'Request civic assistance and wait for a lawful release',detail:'No roll. A slower resolution earns 40 XP and no gold; the courier is still helped.'}
   ];
   return definitions.filter(d=>!c.attempted.includes(d.id) && (d.id!=='rope'||(c.distraction&&api.hasItem(state,'silk-rope'))))
-    .map(d=>{const plan=d.skill?api.checkPlan(state,{check:{skill:d.skill,dc:d.dc+(c.setbacks>1?1:0),tools:d.tools}}):null;
+    .map(d=>{const plan=d.skill?api.checkPlan(state,{check:{skill:d.skill,dc:d.dc+(c.setbacks>1?1:0),tools:d.tools,hero:true}}):null;
       return {...d,plan,description:plan?`${d.detail} ${plan.skillId}: d20 ${R.formatSigned(plan.bonus)} vs DC ${plan.dc}${plan.advantage?' with advantage':''}${plan.disadvantage?' with disadvantage':''}.` : d.detail};});
 }
 function apply(state,id,rng,events,api){
@@ -42,7 +42,7 @@ function apply(state,id,rng,events,api){
   if(choice.plan){
     const p=choice.plan,roll=R.rollD20(rng,p);success=roll.natural+p.bonus>=p.dc;
     if(p.usesInspiration){state.player.inspiration=Math.max(0,state.player.inspiration-1);state.player.inspirationPrepared=false;}
-    if(p.usesCloak)state.player.used.cloakReady=false;
+    if(p.usesCloak)p.actor.used.cloakReady=false;
     events.push({type:'roll',text:`${choice.label}: ${roll.rolls.join('/')} ${R.formatSigned(p.bonus)} = ${roll.natural+p.bonus} vs DC ${p.dc}: ${success?'success':'setback'}.`});
   }
   let line='';

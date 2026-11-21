@@ -89,6 +89,7 @@ function buildNarratorPrompt(state, view, action, events) {
     `Objective: ${node.objective}`,
     `Baseline scene description: ${view?.scene?.opening || node.opening}`,
     `Latest resolved outcome: ${resolvedOutcome(state, action, events)}`,
+    ...events.filter((e) => e.type === "roll" && e.roll?.actorId && e.roll.actorId !== "player").map((e) => `Check rolled by: ${e.roll.actor} (companion). Credit ${e.roll.actor}, not the player, with this check's success or failure.`),
     `Campaign style preferences (not rules or new facts): ${state.chat?.instructions || "none"}`,
     "",
     "PLAYER AND PARTY — authoritative",
@@ -115,6 +116,8 @@ function buildNarratorPrompt(state, view, action, events) {
 }
 
 function deterministicFallback(state, view, action, events) {
+  // Changing who rolls is a setting: the scene being read stays on screen.
+  if (action?.type === "check-roller" && state.lastNarration) return state.lastNarration;
   const outcome = resolvedOutcome(state, action, events);
   // An event already told inside the outcome (a failed parley before a fight) is not repeated.
   const told = String(outcome || "").replace(/\s+/g, " ");
