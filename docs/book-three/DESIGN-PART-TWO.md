@@ -270,7 +270,10 @@ the convoy left behind. He is trying to pay a debt with their lives.
   (intimidation, alt. persuasion).
 - Fight: the hired men on the planks.
 
-**Decision (the verdict you argue for).** Orin asks to be tried with Varn.
+**Decision (the verdict you argue for).** Orin asks to be tried with Varn. Mags
+is in the room, and says before the verdict that she will not forgive a man
+who was let off. That is the only way to her forgiveness, and the player hears
+it first.
 - Both are tried: `b3_orin_tried`. The roof council gives both men the same
   sentence, lamp duty for a season, served after the book. The families think
   Varn got off lightly, so Saltwick's reputation drops by 1. Orin +1. Nessa -1:
@@ -607,8 +610,8 @@ the circle.
   a generation, and their yes was bought.
 - With `b3_three_told`, only those who stayed are cast. Their yes was real, the
   ward is partial (fewer towns, a shorter time), and the epilogue says so.
-- With `b3_three_taken`, this choice is unavailable (`requires notFlag
-  b3_three_taken`). Nobody would be cast unless you pushed them back in, and
+- With `b3_three_taken`, this choice is unavailable (`requires: { flagsNone:
+  ["b3_three_taken"] }`). Nobody would be cast unless you pushed them back in, and
   the book does not offer that.
 
 *Seal the stair* (`b3_stair_sealed`). Nobody gives now. The nine carry it alone
@@ -633,8 +636,9 @@ two endings, node 1 is a single "go on" line.
 - Wren, with `b3_wren_cast`: she stays one more generation.
 - Sable, with `b3_sable_cast`: he stays. "I have something to answer for."
 - The thirty-one, if still bound: they rest.
-- The nine: with `wards_seat`, the wards vote and the nine rest; otherwise they
-  stay, tired.
+- The nine: with `wards_seat`, the wards vote and the nine rest, and from then
+  on the free wards' giving holds the lid, which is why the asking cannot stop.
+  Otherwise they stay, tired.
 
 Under Hesk's way or the sealed stair, each bound voice has one line instead,
 and nobody rests.
