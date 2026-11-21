@@ -623,6 +623,10 @@ function resolveStoryChoice(state, choiceId, rng, events) {
     outcome = choice.result;
   } else {
     outcome = { ...outcome, nextNode: outcome.nextNode || choice.nextNode, combat: outcome.combat || choice.combat };
+    // A plain move to another scene has no written result of its own: its
+    // description is a hint on the choice card ("Commit to the trail. More
+    // evidence may make later choices easier."), not something that happened.
+    if (!choice.result && outcome.nextNode && !outcome.combat) delete outcome.text;
   }
   if (choice.dynamicCombat) outcome = { text: "The party enters together and the final battle begins.", combat: resolveDynamicFinalCombat(state) };
   markChoiceCompleted(state, node.id, choice.id);

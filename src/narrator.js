@@ -118,7 +118,9 @@ function deterministicFallback(state, view, action, events) {
   const outcome = resolvedOutcome(state, action, events);
   // An event already told inside the outcome (a failed parley before a fight) is not repeated.
   const told = String(outcome || "").replace(/\s+/g, " ");
-  const seen = new Set([outcome]);
+  // The "Act: Title" marker of the scene just entered is already the page heading.
+  const heading = view?.scene?.act && view?.scene?.title ? `${view.scene.act}: ${view.scene.title}` : null;
+  const seen = new Set([outcome, heading]);
   const mechanics = events
     .filter((event) => ["story", "roll", "damage", "heal", "combat", "condition", "clue", "item", "party", "level", "world", "rest", "reward", "objective", "feature", "practice", "warning"].includes(event.type))
     .map((event) => String(event.text || "").trim())
@@ -127,7 +129,12 @@ function deterministicFallback(state, view, action, events) {
     .join(" ");
   const companionBeat = '';
   const actionLead = action?.type === "freeform" && action.text ? `You attempt: ${action.text}. ` : "";
-  const body = `${actionLead}${outcome}${mechanics ? ` ${mechanics}` : ""}${companionBeat}`.replace(/\s+/g, " ").trim();
+  // A story choice that moves to a new scene is told in the order it happened:
+  // the roll and what it did, then the place it leads to. A choice that stays
+  // (a clue, a fight starting) keeps its own text ahead of its effects.
+  const moved = action?.type === "story-choice" && state.story.lastOutcome?.kind === "node";
+  const ordered = moved ? `${mechanics} ${outcome}` : `${outcome}${mechanics ? ` ${mechanics}` : ""}`;
+  const body = `${actionLead}${ordered}${companionBeat}`.replace(/\s+/g, " ").trim();
   return body || "The party pauses as the consequences of the last decision settle into place.";
 }
 
