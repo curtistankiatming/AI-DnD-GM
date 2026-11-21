@@ -268,6 +268,11 @@
       "scholars-lens",
       "sentinel-charm"
     ],
-    "rumor": "Every night at dusk High Warden Corvane reads the names of the lost aloud from the wall walk. He begins on the second page. Nobody has ever heard him read the first."
+    "rumor": "Every night at dusk High Warden Corvane reads the names of the lost aloud from the wall walk. He begins on the second page. Nobody has ever heard him read the first.",
+    "emptied": {
+      "flag": "b3_bell_evacuate",
+      "subtitle": "The Empty City",
+      "description": "Vell is empty. Its iron gates stand open, and the fifty gate-bells ring the hours over streets with nobody in them. The white lies in the lanes to the sills and in the drill-yard to the knee, and the casting wall is still chalked from top to bottom with names. There is nothing to buy and nobody to sell it. Somewhere off the drill-yard a single lamp is burning."
+    }
   }
 }

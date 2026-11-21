@@ -14,7 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines, lineApplies } = require("./expansion");
+const { dialogueText, liveLines, lineApplies, nodeLocation } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const Gear = require("./gear");
@@ -363,7 +363,7 @@ function enterNode(state, nodeId, events = [], lead = null) {
     kind: "node",
     title: node.title,
     text: dialogue ? dialogueText(dialogue) : opening,
-    location: node.location,
+    location: nodeLocation(state, node),
     act: node.act,
     ...(dialogue ? { dialogue } : {})
   };
@@ -616,10 +616,22 @@ function applyOutcome(state, written = {}, rng, events) {
     if (outcome.nextNode && STORY_NODES[outcome.nextNode]?.scene) state.story.flags["books:ending-due"] = true;
     else events.push({ type: "story", tone: "good", text: Book.ending(state) });
   }
-  else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest, state)) events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest, state) });
+  // A book still being written whose last written chapter leads into a scene
+  // (Book Three's end of Part One) says "to be continued" after the scene, back
+  // in town. A finished book says it is complete on the decision itself.
+  else if (outcome.completeQuest && state.world.completed[outcome.completeQuest] && Book.bookEnd(outcome.completeQuest, state)) {
+    if (outcome.nextNode && STORY_NODES[outcome.nextNode]?.scene && Book.SHELF.find(b => b.last === outcome.completeQuest)?.writing) state.story.flags["books:part-end-due"] = outcome.completeQuest;
+    else events.push({ type: "story", tone: "good", text: Book.bookEnd(outcome.completeQuest, state) });
+  }
   // toTown: back to whichever town the party is in (nextNode names one only for checks).
   const next = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
   if (next) enterNode(state, next, events, outcome.dialogue);
+  if (state.story.flags["books:part-end-due"] && STORY_NODES[state.story.nodeId]?.townId) {
+    const id = state.story.flags["books:part-end-due"];
+    delete state.story.flags["books:part-end-due"];
+    const text = Book.bookEnd(id, state);
+    if (text) events.push({ type: "story", tone: "good", text });
+  }
   if (state.story.flags["books:ending-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     delete state.story.flags["books:ending-due"];
     events.push({ type: "story", tone: "good", text: Book.ending(state) });

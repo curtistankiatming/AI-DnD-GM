@@ -135,6 +135,12 @@ function encounterScale(state, encounter) {
   const key = `${state.difficulty}Scale`;
   return Number(encounter[key] || 1);
 }
+// A written fight may be harder or easier after an earlier story choice:
+// "flagScale" is {story flag: multiplier} on the enemies' health (Book Three's
+// great bell is harder if the vault's bells were let go).
+function flagScale(state, encounter) {
+  return Object.entries(encounter?.flagScale || {}).reduce((n, [flag, x]) => (state.story?.flags?.[flag] && Number(x) > 0 ? n * Number(x) : n), 1);
+}
 
 // Weapon attacks per Attack action: fighters and rangers gain a second at
 // level 5; fighters a third with the 2nd job (balance pass, job step 6).
@@ -154,7 +160,7 @@ function startCombat(state, encounterId, rng, events) {
   state.world.combatOrigin=state.story.nodeId;
   if(!encounter.questId&&!encounter.practice&&!encounter.bounty)state.world.activeQuest="bell";
   const allies = [combatActorFromPlayer(state.player), ...state.party.map(combatActorFromCompanion)];
-  const scale = encounterScale(state, encounter) * (encounter.questId || encounter.bounty ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
+  const scale = encounterScale(state, encounter) * flagScale(state, encounter) * (encounter.questId || encounter.bounty ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
   const enemies = encounter.enemies.map((enemyId, index) => combatActorFromEnemy(enemyId, index, scale, encounter));
   if (encounter.bounty) Bounty.shape(state, enemies, scale);
   const actors = [...allies, ...enemies];
@@ -1302,4 +1308,4 @@ function combatView(state) {
   };
 }
 
-Object.assign(module.exports, { currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan });
+Object.assign(module.exports, { currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan, flagScale });
