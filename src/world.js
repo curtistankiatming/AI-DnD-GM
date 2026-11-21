@@ -8,7 +8,7 @@ const Book=require('./book');
 const XP=require('./xp');
 const G=require('./equipment');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
-const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job']);
+const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job','bounty']);
 function init(state){
   const w=state.world ||= {};
   w.day=Number.isInteger(w.day)&&w.day>0?w.day:1;
@@ -57,7 +57,11 @@ function charge(state,gold,events){if(!Number.isInteger(gold)||gold<0||state.pla
 function reputation(state,changes){for(const [id,amount]of Object.entries(changes||{}))if(id in state.world.reputation)state.world.reputation[id]=Math.max(-10,Math.min(20,state.world.reputation[id]+Number(amount||0)));}
 function refreshStock(state){for(const id of state.world.unlockedTowns){const stock=ensureStock(state,id);for(const itemId of TOWNS[id].stock)stock[itemId]=maxStock(itemId);}}
 function completed(state,id){return Boolean(state.world.completed[id]);}
-function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=q.level&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
+// A written chapter may be started below its level (up to XP.UNDER_FREE +
+// XP.UNDER_MAX under; more than UNDER_FREE under makes it harder). AI
+// adventures and trials are written for the hero's level and keep their gate.
+function minLevel(q){return QUESTS[q.id]&&!q.generated&&!q.trial?Math.max(1,q.level-XP.UNDER_FREE-XP.UNDER_MAX):q.level;}
+function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=minLevel(q)&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
 }
@@ -112,8 +116,8 @@ function completeQuest(state,id,events,api){
 }
 // Side jobs (src/data/side-jobs.json): offered in their town while their
 // chapter window is open. A job pays about 12% of a level, never past the
-// level the next chapter will take the hero to (Book.capJobXp), so the story
-// still reaches level 20 at the Second Oath.
+// level the next chapter will take the hero to (Book.capJobXp). With chapters
+// paying about 70% of a level, jobs are one way to catch up.
 const JOB_SHARE=0.12;
 // A job whose window runs into a book this save cannot play (not released, or
 // a paid book on a free hosted account) is never offered.
@@ -126,9 +130,8 @@ function completeJob(state,id,events,api,reward){
   w.jobs[id]={day:w.day,gold};delete w.jobProgress[id];w.day+=1;
   state.story.flags[`job:${id}`]=true;
   if(gold)state.player.gold+=gold;
-  // The written chapters leave only a little XP to spare before level 20 must
-  // wait for the Second Oath; it is shared out over the jobs still to come, so
-  // every job pays some and the first ones taken do not use it all.
+  // Whatever XP the story leaves to spare is shared out over the jobs still to
+  // come, so every job pays some and the first ones taken do not use it all.
   const left=Object.values(SIDE_JOBS).filter(j=>!w.jobs[j.id]&&jobInBooks(state,j)&&!(j.until&&completed(state,j.until))).length+1;
   const full=jobXp(job),xp=Math.min(full,Math.floor(Book.jobRoom(state)/left));
   if(xp)api.awardXp(state,xp,events,`Side job: ${job.name}`);
@@ -358,6 +361,11 @@ function handle(state,action,rng,events,api){
     const told=(def.resolutionIf||[]).find(r=>state.story.flags[r.flag])?.text||def.resolution;
     return emit(events,`${told?`${told} `:''}${a.name} resolves ${def.name}. ${action.choice==='watchful'?'Watchful: +1 AC.':'Decisive: +1 attack bonus and spell save DC.'} ${def.reward}`,'party','good');
   }
+  if(action.type==='bounty'){
+    if(!town(state))return fail(events,'Take a bounty from a town.');
+    const r=require('./bounty').start(state,rng,events,api);
+    return r.ok?r:fail(events,r.error);
+  }
   if(action.type==='practice'){
     if(w.practiceSnapshot)return fail(events,'A practice session is already active.');
     w.practiceSnapshot={player:deepClone(state.player),party:deepClone(state.party),nodeId:state.story.nodeId};
@@ -383,7 +391,7 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,...o,cost:45+Math.floor(item.value/2),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),minLevel:minLevel(q),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];
@@ -401,7 +409,7 @@ function view(state){
     upgrades:t?eq:[],recipes:t?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
     storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:ITEMS[e.itemId].purpose})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
-    quests:questCards,preparation:prep,director:Director.view(state),
+    quests:questCards,preparation:prep,director:Director.view(state),bounty:t?require('./bounty').view(state):null,
     sideJobs:Object.values(SIDE_JOBS).filter(j=>jobOpen(state,j)).map(j=>({id:j.id,name:j.name,brief:j.brief,giver:j.giver,town:j.town,townName:TOWNS[j.town].name,level:j.level,reward:{gold:j.gold,xp:jobXp(j)},started:Boolean(w.jobProgress[j.id]),canStart:Boolean(t&&t.id===j.town&&!state.combat?.active)})),
     jobsDone:Object.keys(w.jobs).filter(id=>SIDE_JOBS[id]).map(id=>({id,name:SIDE_JOBS[id].name})),
     away:Away.view(state),

@@ -11,6 +11,24 @@ const BATTLE_SHARE = Object.freeze({ trivial: 0, easy: 0.03, normal: 0.06, hard:
 const MISSION_SHARE = 0.12;
 const QUEST_SHARE = 0.25;
 const TRIAL_SHARE = 0.5;   // A job trial (40, 70), once.
+// A written chapter pays about 70% of its level (Curtis, 21 November 2026).
+// Its battles, side jobs, bounties and AI side quests make up the rest, so a
+// player who skips all side content falls a few levels behind.
+const CHAPTER_SHARE = 0.7;
+const chapterXp = level => share(level, CHAPTER_SHARE);
+
+// Falling behind: a hero more than UNDER_FREE levels under an adventure's
+// level faces enemies that hit harder and more often, and harder checks. Each
+// level further behind adds one step, up to UNDER_MAX. A written chapter can be
+// started up to UNDER_FREE + UNDER_MAX levels under its level.
+const UNDER_FREE = 5, UNDER_MAX = 5;
+const UNDER_DAMAGE = 0.1;   // per step: +10% enemy damage
+function underBy(heroLevel, level) {
+  return Math.max(0, Math.floor(Number(level) || 1) - Math.floor(Number(heroLevel) || 1));
+}
+function underSteps(heroLevel, level) {
+  return Math.min(UNDER_MAX, Math.max(0, underBy(heroLevel, level) - UNDER_FREE));
+}
 
 // Difficulty a player picks for an AI-written adventure before departing.
 // `power` adds levels to enemy health and damage, `accuracy` to AC, enemy
@@ -94,4 +112,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, underBy, underSteps, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };

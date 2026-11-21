@@ -90,9 +90,20 @@
         }
         text.append(tiers);
       }
+      // Falling behind (src/xp.js): a little under is a note, more than 5 under is harder.
+      if (q.underSteps) text.append(el('p', 'whats-next-under', `You are ${q.underBy} levels under this chapter. Its enemies get +${q.underSteps} to hit and ${q.underSteps * 10}% more damage, and its checks are ${q.underSteps} harder. Bounties help you catch up.`));
+      else if (q.underBy > 0) text.append(el('p', 'muted', `You are ${q.underBy} level${q.underBy === 1 ? '' : 's'} under this chapter. Bounties and side jobs help you catch up; more than 5 under makes it harder.`));
       row.append(text, q.canDepart ? action(q.returning ? 'Continue' : 'Set out', 'btn btn-secondary btn-small', { type: 'depart', questId: q.id })
-        : el('span', 'muted whats-next-blocked', `Leaves from ${q.townName} at level ${q.level}`));
+        : el('span', 'muted whats-next-blocked', `Leaves from ${q.townName} at level ${q.minLevel || q.level}`));
       if (q.generated && (w.director?.open || []).some(o => o.id === q.id && !o.started)) row.append(action('Dismiss', 'text-button', { type: 'director-dismiss', questId: q.id }));
+      list.append(row);
+    }
+    // The bounty board: a repeatable fight at your level (src/bounty.js).
+    const b = w.bounty;
+    if (b?.available && w.bellComplete) {
+      const row = el('div', 'whats-next-quest'), text = el('div');
+      text.append(el('strong', '', 'Bounty board'), el('span', 'muted', ` · Level ${b.level}`), el('p', 'muted', `${b.name}, out in ${b.place}. Pays ${b.reward.xp} XP and ${b.reward.gold} gold${b.capped ? ' (XP capped at this chapter\'s level)' : ''}. Repeat as often as you like.`));
+      row.append(text, action('Take a bounty', 'btn btn-secondary btn-small', { type: 'bounty' }));
       list.append(row);
     }
     const more = el('button', 'text-button', 'Rest, shop and see everything in Prepare'); more.type = 'button'; more.dataset.readOnly = 'true';

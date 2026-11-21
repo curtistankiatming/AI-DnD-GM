@@ -48,6 +48,11 @@ const PERSONAL=require('./data/personal.json');
 // Numerical rewards are objective-based: social and combat solutions pay the same XP.
 // "aftermath" is the post-advancement mission, so the level-10 reward is not a dead end.
 const QUESTS=require('./data/quests.json');
+// Books One and Two pay a share of each chapter's level (src/xp.js
+// CHAPTER_SHARE), so side content matters there. A chapter written to pay
+// nothing (the trial, an aftermath) still pays nothing. Book Three on keeps
+// one level per chapter, so it ends at the 3rd job at level 40.
+for(const q of Object.values(QUESTS))if(Number(q.xp)>0&&!q.sideJob&&(Number(q.book)||1)<=2)q.xp=XP.chapterXp(q.level);
 
 // Written lines: {"say": companion id or name, "text"} or {"narrate"}, with an
 // optional "when" that the engine checks as the line is told (see liveLines in

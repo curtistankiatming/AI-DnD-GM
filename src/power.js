@@ -42,6 +42,8 @@ function damageFactor(attacker, target) {
     if (e.dealt && has(attacker, id)) f += e.dealt;
     if (e.taken && has(target, id)) f += e.taken;
   }
+  // Under-level penalty (src/xp.js): the condition carries its own share.
+  for (const c of attacker?.conditions || []) if (c.id === 'outclassing') f += Number(c.dealt) || 0;
   return Math.max(0.25, f);
 }
 

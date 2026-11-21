@@ -197,8 +197,8 @@ function xpRoom(state) {
 const capXp = (state, amount) => Math.max(0, Math.min(Math.floor(Number(amount) || 0), xpRoom(state)));
 // Written side jobs are stricter: after each chapter still to come, with its
 // own reward, the hero must be no further than the level after that chapter,
-// never two levels on. So the story keeps its pace and level 20 still comes
-// with the Second Oath, however many jobs were done.
+// never two levels on. Chapters pay about 70% of a level (src/xp.js), so jobs
+// help a hero catch up but never carry them past the story.
 function jobRoom(state) {
   if (!chapter(state)) return Infinity;
   const xp = Math.max(0, Number(state.player?.xp) || 0);

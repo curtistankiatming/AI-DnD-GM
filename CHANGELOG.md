@@ -4,6 +4,18 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Combat step 2: falling behind and catching up (21 November 2026)
+
+- Chapters of Books One and Two pay about 70% of a level instead of a full
+  level. Side jobs, the new bounty board and AI side quests make up the rest.
+- A chapter can be started up to 10 levels under its level. More than 5 under,
+  its enemies get +1 to hit and +10% damage per extra level (up to +5 and
+  +50%) and its checks get harder. The "What's next?" card warns you first.
+- The bounty board: a repeatable fight at your level in every town, on the
+  story screen and on Prepare. It pays battle XP and gold, never past the
+  chapter's level. Report:
+  [docs/BALANCE-2026-11-21-CATCHUP.md](docs/BALANCE-2026-11-21-CATCHUP.md).
+
 ## Combat step 1: stat damage, buffs and debuffs, chain attacks (21 November 2026)
 
 - Hits now grow with the attacker's stat: every party hit adds its attacking
