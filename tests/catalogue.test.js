@@ -95,3 +95,32 @@ test('no new item is weaker than the Fine version of a cheaper item in the same 
     }
   }
 });
+
+test("one save's found items never reach another save", () => {
+  const a = makeSandbox({ classId: 'fighter', level: 8 });
+  const item = Gear.forgeReward(a, { id: 'gen-leak', generated: true, level: 8, name: 'The Leak' }, []);
+  E.normalizeIncomingState(JSON.parse(JSON.stringify(a)));
+  const b = makeSandbox({ classId: 'wizard', level: 3 });
+  b.player.inventory.push({ itemId: item.id, quantity: 1 });
+  const loaded = E.normalizeIncomingState(JSON.parse(JSON.stringify(b)));
+  assert.equal(loaded.player.inventory.some(e => e.itemId === item.id), false, 'B has no record of it, so it is dropped');
+});
+
+test('an edited found-item record no longer matches its id and is dropped', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 8 });
+  const item = Gear.forgeReward(s, { id: 'gen-edit', generated: true, level: 8, name: 'The Edit' }, []);
+  const raw = JSON.parse(JSON.stringify(s));
+  raw.world.forged[0].level = 100;
+  const loaded = E.normalizeIncomingState(raw);
+  assert.equal(loaded.player.inventory.some(e => e.itemId === item.id), false);
+  assert.equal(loaded.world.forged.length, 0);
+});
+
+test('typed commands never match another save\'s found item', () => {
+  const a = makeSandbox({ classId: 'fighter', level: 8 });
+  Gear.forgeReward(a, { id: 'gen-name', generated: true, level: 8, name: 'Healing Potion Hall' }, []);
+  const b = makeSandbox({ classId: 'fighter', level: 3 });
+  b.world.townId = 'briarwatch'; b.story.nodeId = 'town-briarwatch';
+  const out = E.resolveAction(b, { type: 'freeform', text: 'buy healing potion' });
+  assert.doesNotMatch(String(out.result.error || ''), /stocked item/);
+});

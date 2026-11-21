@@ -20,7 +20,9 @@ from 30. The 38 new ones are in `src/data/gear.json`.
 - **AI adventures.** Finishing an AI adventure gives one item made from a
   template (blade, bow, focus, mail or charm) at the adventure's level. The
   storyteller never sets the numbers: a save keeps only the template, level,
-  name and where it was found, and the item is rebuilt from those on load.
+  where it was found and an id made from those, and the item is rebuilt on
+  load. An edited record no longer matches its id and is dropped, and on a
+  shared server one player's found items never appear in another's game.
   Bonuses stop at +2 to hit, +3 damage, +2 spell attack and DC, AC 15 armour
   and +3 to a skill, however high the level.
 

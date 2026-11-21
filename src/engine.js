@@ -861,7 +861,7 @@ function resolveFreeform(state,text,rng,events) {
   if(/^(return|go back) to (town|the town)/.test(normalized))return W.handle(state,{type:'return-town'},rng,events,extensionApi());
   if(/^(buy|purchase|sell|equip|use)\b/.test(normalized)){
     const aliases={'healing-potion':['healing potion','potion of healing'],'greater-healing':['greater healing'],'healers-kit':["healer's kit",'healers kit'],'antitoxin':['antitoxin','antidote'],'holy-water':['holy water'],'iron-longsword':['iron longsword','longsword']};
-    const candidates=Object.values(ITEMS).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length);
+    const candidates=Object.values(ITEMS).filter(i=>!i.forged||state.player.inventory.some(e=>e.itemId===i.id)).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length);
     const item=candidates[0];if(!item)return invalidResult(state,events,'Name an item shown in the inventory or current shop. No action was taken.');
     const namedTarget=state.party.find(m=>normalized.includes(m.id)||normalized.includes(m.name.toLowerCase()));
     const explicitTarget=normalized.match(/\b(?:on|for)\s+(.+)$/)?.[1];

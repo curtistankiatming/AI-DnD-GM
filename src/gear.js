@@ -126,11 +126,14 @@ const minValue = (item) => (RARITY_FLOOR[item.rarity] || 0) + 10 * (item.require
 
 // Exclusive rewards: a quest's item when it is finished, a town's bounty item
 // for the first bounty claimed there. Each is given once per save.
+// Reward items by key ("quest:summit", "bounty:ashford"), built once.
+let rewardMap = null;
+const REWARDS = () => rewardMap ||= Object.fromEntries(Object.values(ITEMS).filter((i) => !i.forged && (i.exclusive?.quest || i.exclusive?.event)).map((i) => [i.exclusive.quest ? `quest:${i.exclusive.quest}` : i.exclusive.event, i]));
 function award(state, key, events) {
   const w = state.world, given = (w.gearAwarded ||= {});
   if (given[key]) return null;
   const [kind, id] = key.split(/:(.*)/s);
-  const item = Object.values(ITEMS).find((i) => kind === 'quest' ? i.exclusive?.quest === id : i.exclusive?.event === key);
+  const item = REWARDS()[kind === 'quest' ? `quest:${id}` : key];
   if (!item) return null;
   given[key] = true;
   require('./equipment').addTo(state.player.inventory, item.id, 1);
@@ -140,8 +143,8 @@ function award(state, key, events) {
 
 // Items from AI adventures come only from these templates (21 November 2026
 // plan, step 5): the storyteller never sets numbers. A save stores just the
-// template, the level, the name and where it was found; the item is rebuilt
-// from those on every load, so an edited save can't make it stronger.
+// template, the level and where it was found, with an id hashed from them;
+// the item is rebuilt on every load and an edited record is dropped.
 const NOUNS = { blade: ['Blade', 'Sword', 'Edge'], bow: ['Bow', 'Longbow'], focus: ['Rod', 'Staff', 'Wand'], mail: ['Mail', 'Hauberk', 'Coat'], charm: ['Charm', 'Token', 'Pendant'] };
 const ADJECTIVES = ['Weathered', 'Lantern-lit', 'Oathmarked', 'Rimecut', 'Emberbright', 'Saltworn', 'Hollow-forged', 'Wardsung'];
 const CHARM_SKILLS = ['perception', 'insight', 'athletics', 'stealth', 'persuasion', 'investigation', 'survival', 'arcana'];
@@ -166,23 +169,49 @@ function forge(spec) {
   item.value = minValue(item) + 20;
   return item;
 }
-// Put a save's found items back into the item list (before its inventory is read).
+// A found item's id is a hash of everything it is made from, so the same id
+// always means the same item, and an edited spec no longer matches its id.
+const cleanSpec = (s) => ({ template: TEMPLATES.includes(s?.template) ? s.template : 'charm', level: Math.max(1, Math.min(100, Math.floor(Number(s?.level) || 1))), from: String(s?.from || 'an adventure').replace(/[^\p{L}\p{N} ,'\-]/gu, '').slice(0, 60), ...(s?.name ? { name: String(s.name).replace(/[^\p{L}\p{N} '\-]/gu, '').slice(0, 40) } : {}) });
+const specId = (s) => `forged-${hash(JSON.stringify(cleanSpec(s))).toString(36)}`;
+// Found items live in the shared item list only while a save that owns them is
+// in use. The list keeps at most FORGED_CACHE of them; a save puts its own back
+// every time it loads, so dropping old ones never loses anything.
+const FORGED_CACHE = 2000, FORGED_KEEP = 1000, cached = new Map();
+function cache(id, item) {
+  cached.delete(id); cached.set(id, true); ITEMS[id] = item;
+  while (cached.size > FORGED_CACHE) { const old = cached.keys().next().value; cached.delete(old); if (ITEMS[old]?.forged) delete ITEMS[old]; }
+}
+// Put a save's found items back into the item list (before its inventory is
+// read), and drop any found item the save doesn't own a record of.
 function register(state) {
-  if (!state?.world || !('forged' in state.world)) return;
-  const list = Array.isArray(state.world.forged) ? state.world.forged : [];
-  state.world.forged = list.filter((s) => /^forged-[a-z0-9-]{1,40}$/.test(String(s?.id))).slice(0, 200);
-  for (const spec of state.world.forged) if (!ITEMS[spec.id] || ITEMS[spec.id].forged) ITEMS[spec.id] = forge(spec);
+  if (!state?.world || !state.player) return;
+  const owned = new Set();
+  for (const e of [...(state.player.inventory || []), ...(state.world.storage || [])]) owned.add(e?.itemId || e?.id);
+  for (const a of [state.player, ...(state.party || [])]) for (const id of Object.values(a?.equipment || {})) owned.add(id);
+  const list = (Array.isArray(state.world.forged) ? state.world.forged : []).filter((s) => s && s.id === specId(s)).map((s) => ({ id: s.id, ...cleanSpec(s) }));
+  const seen = new Set(), keep = [];
+  for (const s of list) if (!seen.has(s.id)) { seen.add(s.id); keep.push(s); }
+  const mine = keep.filter((s) => owned.has(s.id)), rest = keep.filter((s) => !owned.has(s.id));
+  if ('forged' in state.world || keep.length) state.world.forged = [...mine, ...rest.slice(-Math.max(0, FORGED_KEEP - mine.length))].slice(-FORGED_KEEP);
+  const ids = new Set((state.world.forged || []).map((s) => s.id));
+  for (const s of state.world.forged || []) cache(s.id, forge(s));
+  const foreign = (id) => /^forged-/.test(String(id)) && !ids.has(id);
+  if (Array.isArray(state.player.inventory)) state.player.inventory = state.player.inventory.filter((e) => !foreign(e?.itemId || e?.id));
+  if (Array.isArray(state.world.storage)) state.world.storage = state.world.storage.filter((e) => !foreign(e?.itemId || e?.id));
+  for (const a of [state.player, ...(state.party || [])]) for (const [slot, id] of Object.entries(a?.equipment || {})) if (foreign(id)) a.equipment[slot] = null;
 }
 // Finishing an AI adventure gives one templated item at its level.
 function forgeReward(state, quest, events) {
   if (!quest?.generated) return null;
   const w = state.world, given = (w.gearAwarded ||= {}), key = `forged:${quest.id}`;
   if (given[key]) return null;
-  const id = `forged-${String(quest.id).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 30)}-${hash(quest.id).toString(36).slice(0, 6)}`;
-  const spec = { id, template: TEMPLATES[hash(quest.id) % TEMPLATES.length], level: quest.level, from: quest.name || 'an adventure' };
-  (w.forged ||= []).push(spec);
+  const spec = cleanSpec({ template: TEMPLATES[hash(quest.id) % TEMPLATES.length], level: quest.level, from: quest.name || 'an adventure' });
+  const id = specId(spec);
+  (w.forged ||= []).push({ id, ...spec });
+  if (w.forged.length > FORGED_KEEP) w.forged = w.forged.slice(-FORGED_KEEP);
   given[key] = true;
-  const item = ITEMS[id] = forge(spec);
+  const item = forge({ id, ...spec });
+  cache(id, item);
   require('./equipment').addTo(state.player.inventory, id, 1);
   events.push({ type: 'item', tone: 'good', text: `You find ${item.name} (${item.rarity}). ${purpose(item)}` });
   return item;
@@ -195,4 +224,4 @@ function purpose(item) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : ''].filter(Boolean).join(' ');
 }
 
-module.exports = { purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };
+module.exports = { specId, FORGED_KEEP, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };
