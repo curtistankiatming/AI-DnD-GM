@@ -559,7 +559,7 @@
       ],
       "success": [
         {
-          "narrate": "You don't argue with Hal. You show her the order with a dead man's name on it. Then you ask her what she did at Calder, the crossing she and Orin both left people behind at."
+          "narrate": "You don't argue with Hal. You show her the order with a dead man's name on it. Then you ask her what she did at Calder, the crossing where their company left people behind."
         },
         {
           "narrate": "Hal looks at Orin for a long moment. Then she turns and bellows down the span: every cart onto the bridge, the company to march out behind them, nobody left behind as a diversion."
@@ -670,7 +670,26 @@
     "threat": "Rising water, undead wardens and fragile records. A lantern helps navigation; holy water or radiant weapons affect the undead.",
     "faction": "wardens",
     "brief": "Maren’s missing shrine keepers sent their last letters here. Find the archive’s ward diagram and recover what remains before the reservoir rises again.",
-    "opening": "Desks drift at the foot of a flooded stair. Above them, a spectral archivist keeps sorting ruined pages into dry drawers that no longer exist.",
+    "opening": [
+      {
+        "narrate": "The drowned archive was the wardens' record-house once, built into the side of the reservoir. Then the dam was raised, and now the water comes into it every season and goes out again a little slower each time."
+      },
+      {
+        "narrate": "Desks drift at the foot of a flooded stair. Above them, a grey figure in an archivist's sleeves goes on sorting ruined pages into dry drawers that are not there any more, one page at a time, very carefully."
+      },
+      {
+        "say": "maren",
+        "text": "Six of my keepers sent their last letters here. If they're anywhere, they're in those drawers."
+      },
+      {
+        "say": "orin",
+        "text": "And if the water comes up while we're looking?"
+      },
+      {
+        "say": "maren",
+        "text": "Then we look faster."
+      }
+    ],
     "clue": "The ward network was built as a council of independent voices. A single central command would bind every keeper as Sable tried to bind the bell spirit.",
     "investigate": {
       "label": "Read the surviving correspondence with Maren",
@@ -682,8 +701,23 @@
       "tools": [
         "lantern"
       ],
-      "success": "Maren reads the names aloud. The letters reveal both the network’s design and the location of its missing keystone.",
-      "failure": "Most ink is gone, but Maren identifies the final dispatch mark: all roads in the correspondence lead to Highpass."
+      "success": [
+        {
+          "narrate": "Maren reads the letters aloud by lantern-light, one after another, the way you read names at a funeral: slowly, so nobody is skipped."
+        },
+        {
+          "narrate": "Between them they show you two things. The ward network was built on purpose as a council of separate voices, each keeper answerable to their own village. And the keystone that ties it together was sent up to Highpass, which is exactly what anybody wanting one voice would need."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Most of the ink has run to nothing. But Maren finds the dispatch mark on the last bundle, the same on every letter: all of them were sent on to Highpass."
+        },
+        {
+          "say": "maren",
+          "text": "They were writing to somebody up there. Somebody who never answered."
+        }
+      ]
     },
     "route": {
       "label": "Navigate the flooded stacks without breaking the seals",
@@ -695,10 +729,25 @@
         "lantern",
         "silk-rope"
       ],
-      "success": "You find a service stair and preserve the dry alcoves along the route.",
+      "success": [
+        {
+          "narrate": "You find the archivists' service stair behind a fallen shelf and go up it in single file, with the water lapping one step behind you. The dry alcoves on the way are still sealed. Orin closes each one again after you pass, as if somebody might come back for them."
+        }
+      ],
       "failure": "A shelf collapses beneath you. You reach the central record chamber with water rising behind your boots."
     },
-    "crisis": "The archivist will not release the ward diagram until every keeper has been accounted for. Some never returned. Destroying it would be easier than admitting the truth.",
+    "crisis": [
+      {
+        "narrate": "The record chamber is the one dry room in the building. The archivist stands in front of the diagram cabinet with its arms spread, the way a clerk stands in front of a counter at closing time."
+      },
+      {
+        "say": "The Unfinished Archivist",
+        "text": "Every keeper is to be accounted for before the record is closed. Every keeper. I cannot close the drawer. I have been trying for six years."
+      },
+      {
+        "narrate": "Some of the keepers in its drawers never came back. Destroying the archivist would be easier than admitting that. It would also be quicker, and the water is still rising."
+      }
+    ],
     "peaceful": {
       "label": "Read the keepers’ names and acknowledge the unfinished record",
       "skill": "religion",
@@ -706,7 +755,29 @@
         "performance",
         "persuasion"
       ],
-      "success": "The archivist stops sorting. It gathers the last letters from the one dry drawer and holds them out, not to you, but to Maren. Then it opens the diagram cabinet and lets the party pass.",
+      "success": [
+        {
+          "narrate": "You don't fight the archivist. You help it finish."
+        },
+        {
+          "narrate": "Maren reads the names from her list, and you read the names from its drawers, and between you, for every one, you say what happened: delivered, buried, lost, unknown. The archivist writes each answer down in a hand that leaves no ink."
+        },
+        {
+          "say": "The Unfinished Archivist",
+          "text": "Anwen Holt. Lowmere. No last letter."
+        },
+        {
+          "say": "maren",
+          "text": "No. There isn't one."
+        },
+        {
+          "say": "The Unfinished Archivist",
+          "text": "Then she is not finished either."
+        },
+        {
+          "narrate": "It stops sorting. It gathers the last letters out of the one dry drawer and holds them out, not to you, but to Maren. Then it opens the diagram cabinet and steps aside."
+        }
+      ],
       "failure": "The unfinished names catch in the ward. The archivist turns hostile, but the cabinet remains close enough to reach."
     },
     "objective": {
@@ -771,7 +842,34 @@
         "flag": "archive_guarded"
       }
     ],
-    "approach": "The flooded stacks run in long aisles toward the record chamber. Some shelves still hold their seals, and one wrong step brings a whole wall of them down. The main stair is clear, loud, and in full view."
+    "approach": "The flooded stacks run in long aisles toward the record chamber. Some shelves still hold their seals, and one wrong step brings a whole wall of them down. The main stair is clear, loud, and in full view.",
+    "talks": [
+      {
+        "id": "list",
+        "label": "Ask Maren about her list",
+        "lines": [
+          {
+            "narrate": "Maren takes out a single sheet of paper, folded so often it has gone soft as cloth."
+          },
+          {
+            "say": "maren",
+            "text": "When Central Command took the wards, the shrine keepers who said no went missing. Not all at once. One a season, so nobody would notice. These are the ones I trained with, or knew, or owed something."
+          },
+          {
+            "say": "maren",
+            "text": "I don't expect to find them alive. I'd like to find out where they stopped. People should know where to put the flowers."
+          },
+          {
+            "say": "orin",
+            "text": "How many?"
+          },
+          {
+            "say": "maren",
+            "text": "Nineteen. Fourteen when I started writing them down. I keep adding."
+          }
+        ]
+      }
+    ]
   },
   "signal": {
     "id": "signal",
@@ -785,7 +883,21 @@
     "threat": "Charged ward machinery and exposed climbing. A Storm Grounder opens a protected approach; a climbing kit aids the ascent.",
     "faction": "wilds",
     "brief": "The tower above Highpass repeats a distress signal in Nessa’s old code. Restore its beacon before the mountain caravans enter the storm blind.",
-    "opening": "Lightning crawls sideways across the tower’s bronze rings. Someone has tied a scout’s scarf around the lowest signal arm, where it cannot be seen from the road.",
+    "opening": [
+      {
+        "narrate": "Highpass Watch sits across the top of the pass like a cork in a bottle, and every refugee from the high villages has come up against it this year. Its captain has found room for all of them. She has not found room for anything else."
+      },
+      {
+        "narrate": "Above the fort, the old signal tower is flashing a distress code into a sky full of lightning. The bolts crawl sideways along its bronze rings instead of coming down. Someone has tied a scout's scarf round the lowest signal arm, where nobody on the road can see it."
+      },
+      {
+        "say": "nessa",
+        "text": "That's my scarf. That's Wren's code. That's... she's up there.",
+        "when": {
+          "party": "nessa"
+        }
+      }
+    ],
     "clue": "The tower is broadcasting a warning, not summoning the storm. Its keeper diverted the lightning to prevent a central command from taking control.",
     "investigate": {
       "label": "Decode the interrupted signal sequence",
@@ -821,10 +933,33 @@
         "storm-grounder",
         "climbing-kit"
       ],
-      "success": "You earth the nearest ring and reach the control platform through a quiet pocket in the storm.",
+      "success": [
+        {
+          "narrate": "You earth the lowest ring with the grounding rod and climb through the quiet it leaves, one ring at a time, with the storm hissing on every side. At the top, the control platform is dark and the rain is coming in sideways."
+        }
+      ],
       "failure": "The rings arc across your route. You reach the platform, but the tower’s bound sentinels awaken."
     },
-    "crisis": "The keeper lies under a fallen signal arm, still shielding the manual release. A storm sentinel orders you to surrender the beacon to the central ward command.",
+    "crisis": [
+      {
+        "narrate": "The keeper lies under a fallen signal arm, pinned at the leg, with one hand still holding the manual release so the warning keeps going out. She is grey-haired and furious, mostly with the arm."
+      },
+      {
+        "say": "Wren",
+        "text": "Don't just stand there. Either lift it or hold the release. Not both. You'll drop one."
+      },
+      {
+        "narrate": "Behind her, the tower's storm sentinel turns its head of bronze toward you. Its voice comes out of every ring at once."
+      },
+      {
+        "say": "Stormbound Sentinel",
+        "text": "Surrender the beacon to Central Command. The local keeper is relieved of duty."
+      },
+      {
+        "say": "Wren",
+        "text": "The local keeper is not relieved of anything. The local keeper is lying on the floor."
+      }
+    ],
     "peaceful": {
       "label": "Transmit the keeper’s independent recall sequence",
       "skill": "arcana",
@@ -832,7 +967,18 @@
         "performance",
         "survival"
       ],
-      "success": "The sentinel accepts the local keeper’s authority. It braces the arm while you pull the keeper clear and restore the beacon.",
+      "success": [
+        {
+          "narrate": "Wren shouts the old recall sequence up at you from under the arm, a line at a time, and you send it out through the rings: the keeper's own code, the one the tower was built to obey before there was any such thing as Central Command."
+        },
+        {
+          "narrate": "The sentinel listens. Then, very slowly, it lowers its head, sets its bronze shoulder under the fallen arm and lifts it, so that you can drag the keeper clear and turn the beacon back toward the road."
+        },
+        {
+          "say": "Wren",
+          "text": "Good. About time somebody remembered whose tower this is."
+        }
+      ],
       "failure": "The sentinel recognizes only part of the code. It hesitates long enough for you to reach the manual releases.",
       "labelNoLead": "Help the trapped keeper send her own recall signal"
     },
@@ -931,7 +1077,42 @@
         "flag": "signal_supply"
       }
     ],
-    "approach": "The charged rings turn above the climb, throwing sparks onto the rock. The tower’s front stair is open and lit, and every sentinel on the platform can see it."
+    "approach": "The charged rings turn above the climb, throwing sparks onto the rock. The tower’s front stair is open and lit, and every sentinel on the platform can see it.",
+    "talks": [
+      {
+        "id": "sorrel",
+        "label": "Report to Captain Sorrel",
+        "lines": [
+          {
+            "narrate": "Captain Sorrel receives you in a storeroom she is using as an office because the office is full of blankets. She is counting something on a slate when you come in and finishes before she looks up."
+          },
+          {
+            "say": "Sorrel",
+            "text": "Three hundred and twelve refugees. Two hundred blankets. Eleven beds. One signal tower, shouting for help in a code nobody in this fort can read. I did the sum twice."
+          },
+          {
+            "say": "Sorrel",
+            "text": "The tower keeper is a woman called Wren. She's been up there twenty years. If she's calling for help, it's real. I can't spare a single soldier to go and find out. I can spare you."
+          },
+          {
+            "say": "orin",
+            "text": "Captain."
+          },
+          {
+            "say": "Sorrel",
+            "text": "Stoneward. I heard you were dead."
+          },
+          {
+            "say": "orin",
+            "text": "Not yet."
+          },
+          {
+            "say": "Sorrel",
+            "text": "Good. I haven't got a bed for you either."
+          }
+        ]
+      }
+    ]
   },
   "summit": {
     "id": "summit",
@@ -942,11 +1123,30 @@
     "xp": 3200,
     "gold": 215,
     "region": "Glasswind summit",
-    "threat": "Rival claimants, fragile bridges and exposed negotiations. Climbing gear helps travel; information and reputation may prevent a fight.",
+    "threat": "Three claimants on a ledge too narrow for a fight, fragile bridges, and somebody who would like to end the argument for everyone. Climbing gear helps travel; knowing what each claimant left out may prevent a fight.",
     "faction": "trade",
-    "brief": "A courier carries the ward keystone toward Glasswind. Three factions have promised to protect the region if you hand it to them. Find the courier and decide who can be trusted with power.",
-    "opening": "Three camps share a ledge too narrow for a battle. The courier sits between them, protecting a wrapped object while representatives argue over whose banner it belongs beneath.",
-    "clue": "Each claimant has omitted a condition from its offer. The courier’s oath permits a shared custody agreement witnessed by independent ward keepers.",
+    "brief": "A young courier is carrying the ward keystone over the pass to the shrine at Glasswind. Three parties have promised to protect the region if you hand it to them instead. Find the courier and decide who can be trusted with it.",
+    "opening": [
+      {
+        "narrate": "The courier is called Bek. He is seventeen, he has been carrying the keystone for a week, and he is sitting on it. Around him, on a ledge too narrow for anybody to start a fight without falling off, three camps are waiting for him to stand up."
+      },
+      {
+        "narrate": "Each camp has a banner and a spokesman. Lieutenant Garrow of the Highpass Watch, who wants it kept behind the fort's walls. Factor Tolliver of the Ashford merchant houses, who wants it kept in a bank. And Mother Orla of the Glasswind shrine, where the keepers were meant to meet and name its custodian, who wants it kept there whether they meet or not."
+      },
+      {
+        "say": "Bek",
+        "text": "I'm not moving. My oath says I take it to whoever the keepers name. Nobody's asked the keepers. Everybody's asked me."
+      },
+      {
+        "say": "orin",
+        "text": "Has anyone fed you?"
+      },
+      {
+        "say": "Bek",
+        "text": "Mr Tolliver offered. I didn't sign anything."
+      }
+    ],
+    "clue": "Each claimant has left one condition out of their offer: the Watch can declare an emergency and take command of it, the merchant houses can sell the custody on, and Glasswind would seal it where no keeper could use it. Bek's oath allows shared custody, witnessed by independent ward keepers.",
     "investigate": {
       "label": "Compare all three custody agreements",
       "skill": "insight",
@@ -954,8 +1154,26 @@
         "investigation",
         "history"
       ],
-      "success": "You expose the missing clauses without humiliating their authors. A common agreement becomes possible.",
-      "failure": "The promises blur together, but the courier points to the part none of them read aloud: custody can be shared."
+      "success": [
+        {
+          "narrate": "You read all three agreements twice, and then you read out, quietly, to each spokesman in turn, the line they hadn't read out themselves."
+        },
+        {
+          "narrate": "The Watch's offer lets the Watch declare an emergency and take command of the stone, and the Watch decides what counts as an emergency. The merchant houses' offer lets them sell the custody on, at a fair market rate. Glasswind's lets the shrine seal it under the mountain, where it is perfectly safe and no keeper can ever use it."
+        },
+        {
+          "narrate": "Nobody is humiliated. A common agreement starts to look possible."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The three agreements blur into one long promise. But Bek, who has had a week to read them, points to the line none of the spokesmen read aloud: custody can be shared."
+        },
+        {
+          "say": "Bek",
+          "text": "I've been trying to tell them that since Tuesday."
+        }
+      ]
     },
     "route": {
       "label": "Secure a neutral meeting place beyond the cracked bridge",
@@ -971,7 +1189,22 @@
       "success": "You establish a safe crossing and invite one witness from each camp.",
       "failure": "A support cracks during the crossing. No one is lost, but accusations fly and hired guards draw weapons."
     },
-    "crisis": "An agent of the central command offers to end the argument by binding the keystone to one keeper. The courier refuses, and the agent reaches for the wrapped stone.",
+    "crisis": [
+      {
+        "narrate": "A fourth person steps onto the ledge, and the three camps go quiet. She wears no banner, only a plain grey coat with the badge of Central Command, and she speaks very gently, like someone talking a child down off a roof."
+      },
+      {
+        "say": "Agent of the Single Voice",
+        "text": "The High Warden sends his regards, and an offer. Bind the stone to one keeper, and the argument ends today. Nobody needs to trust anybody. That's rather the point of it."
+      },
+      {
+        "say": "Bek",
+        "text": "No."
+      },
+      {
+        "narrate": "The agent sighs, as if Bek has said something sad, and reaches for the wrapped stone."
+      }
+    ],
     "peaceful": {
       "label": "Bind the claimants to a witnessed shared-custody oath",
       "skill": "persuasion",
@@ -979,7 +1212,25 @@
         "insight",
         "religion"
       ],
-      "success": "Each representative signs in front of their own people. The agent loses the authority it used to demand obedience.",
+      "success": [
+        {
+          "narrate": "You put the three agreements down on the rock in front of everybody and ask each spokesman to read their whole agreement aloud, with their own people watching, and strike out anything they would not say in front of them."
+        },
+        {
+          "narrate": "Garrow does it first, because he is a soldier and would rather lose quickly. Tolliver does it second, with a face like a man paying a bill. Mother Orla does it last, slowly, and then signs the shared oath under the other two."
+        },
+        {
+          "narrate": "With three signatures against her and Bek's oath behind them, the agent has nothing left to command anybody with. She takes her hand back from the stone."
+        },
+        {
+          "say": "Agent of the Single Voice",
+          "text": "You'll have the same argument next year. And the year after. We'll still be here."
+        },
+        {
+          "say": "orin",
+          "text": "So will we."
+        }
+      ],
       "failure": "Two representatives agree; the third panics as the agent seizes a witness. You must break the coercive seals before anyone is bound."
     },
     "objective": {
@@ -999,12 +1250,35 @@
     "foe": "command-agent",
     "foeName": "Agent of the Single Voice",
     "enemyTheme": "caster",
-    "after": "The keystone is yours to carry, but not necessarily yours to own. Its custody will shape who answers the final beacon.",
+    "after": [
+      {
+        "narrate": "Bek stands up at last, very stiffly, and hands the keystone to you. He does not let go straight away."
+      },
+      {
+        "say": "Bek",
+        "text": "It's not yours. You know that. You're just carrying it."
+      },
+      {
+        "say": "orin",
+        "text": "That's the only safe way to carry anything."
+      },
+      {
+        "narrate": "Who holds the stone from here will shape who answers at the final beacon."
+      }
+    ],
     "decisions": [
       {
         "id": "shared",
         "label": "Keep custody shared among the local wards",
-        "text": "The local keepers trust you to carry the keystone without claiming it.",
+        "text": [
+          {
+            "narrate": "You carry the keystone, and the local wards share its custody, with one witness from each of the three camps. Bek goes home to sleep for a week."
+          },
+          {
+            "say": "Bek",
+            "text": "If anybody asks, I didn't sit on it the whole time."
+          }
+        ],
         "rep": {
           "wilds": 2,
           "wardens": 2
@@ -1014,7 +1288,11 @@
       {
         "id": "council",
         "label": "Place custody with an accountable regional council",
-        "text": "The council names witnesses and accepts public responsibility for the stone.",
+        "text": [
+          {
+            "narrate": "Custody goes to an accountable regional council, with named witnesses and a public record of every hand the stone passes through. Garrow, Tolliver and Orla all sign as witnesses, which none of them enjoys."
+          }
+        ],
         "rep": {
           "trade": 2,
           "wardens": 1
@@ -1022,7 +1300,52 @@
         "flag": "keystone_council"
       }
     ],
-    "approach": "A cracked footbridge leads round to a neutral ledge above the three camps. The main path runs straight through all of them, past every banner."
+    "approach": "A cracked footbridge leads round to a neutral ledge above the three camps. The main path runs straight through all of them, past every banner.",
+    "talks": [
+      {
+        "id": "orla",
+        "label": "Talk to Mother Orla of Glasswind",
+        "lines": [
+          {
+            "say": "Orla",
+            "text": "Glasswind has kept the high shrine for four hundred years. We would keep the stone the same way. Safely. Quietly. In the dark, where nobody can use it for anything."
+          },
+          {
+            "say": "maren",
+            "text": "Not even the keepers who need it?"
+          },
+          {
+            "say": "Orla",
+            "text": "Especially not them. Keepers are how these things go wrong, Sister. Ask Briarwatch."
+          },
+          {
+            "say": "maren",
+            "text": "She means it kindly. That's the frightening part.",
+            "when": {
+              "party": "maren"
+            }
+          }
+        ]
+      },
+      {
+        "id": "tolliver",
+        "label": "Talk to Factor Tolliver of Ashford",
+        "lines": [
+          {
+            "say": "Tolliver",
+            "text": "The merchant houses would hold it in trust. Insured. Audited. Every quarter, a statement to every ward on the network. What could be more responsible?"
+          },
+          {
+            "say": "orin",
+            "text": "Who pays for the insurance?"
+          },
+          {
+            "say": "Tolliver",
+            "text": "Well. The wards. Naturally. Per ring, per year. It's in the schedule."
+          }
+        ]
+      }
+    ]
   },
   "breach": {
     "id": "breach",
