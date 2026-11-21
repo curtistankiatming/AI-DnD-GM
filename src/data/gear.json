@@ -1165,5 +1165,2908 @@
     "exclusive": {
       "event": "bounty:cinderfold"
     }
+  },
+  {
+    "id": "lamplighter-hookknife",
+    "name": "Lamplighter's Hook-knife",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 400,
+    "description": "The short hooked knife Saltwick's lamplighters cut wicks and lines with, and use on whatever climbs the planks.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 21,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Catch the Eaves",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Hook an enemy off its footing until your next turn: 2 less armour."
+    },
+    "exclusive": {
+      "town": "saltwick"
+    }
+  },
+  {
+    "id": "iron-road-longbow",
+    "name": "Iron Road Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 400,
+    "description": "A salt-cart guard's longbow, waxed against the mist on the road over the pass.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 21,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "stormlamp-lens",
+    "name": "Storm-lamp Lens",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "The thick glass from a Saltwick storm-lamp, ground into a lens and set in a brass ring.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "requires": {
+      "level": 20,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Hold the Mist",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Hold an enemy in the lamp's beam for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "plankwalker-leathers",
+    "name": "Plankwalker's Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "Salt-stiffened leathers, cut close so nothing catches on a plank edge in the dark.",
+    "purpose": "Base AC 15 plus your full Dexterity. +1 Acrobatics.",
+    "armor": {
+      "base": 15,
+      "dexCap": null
+    },
+    "skillBonuses": {
+      "acrobatics": 1
+    },
+    "requires": {
+      "level": 20
+    }
+  },
+  {
+    "id": "lamp-oil-flask",
+    "name": "Lamp-oil Flask",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A lamplighter's flask of the oil Saltwick can no longer buy, stoppered with wax.",
+    "purpose": "Equip in the accessory slot: +2 Sleight of Hand.",
+    "skillBonuses": {
+      "sleightOfHand": 2
+    },
+    "requires": {
+      "level": 20
+    },
+    "skill": {
+      "name": "Spill and Light",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Splash lamp oil and light it: an enemy is Burning for two rounds."
+    },
+    "exclusive": {
+      "town": "saltwick"
+    }
+  },
+  {
+    "id": "passwarden-greataxe",
+    "name": "Pass-warden's Greataxe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A Highpass watch axe, broad enough to chop a cart in half at the palisade.",
+    "purpose": "Strength, 2d6 slashing, +2 to hit, +3 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "passguard-plate",
+    "name": "Pass-guard Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 400,
+    "description": "Plate from the Highpass watch's armoury, refitted for the spring the refugees came over.",
+    "purpose": "Base AC 20, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 20,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 21,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "commandery-brigandine",
+    "name": "Commandery Brigandine",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 410,
+    "description": "Grey Commandery brigandine, sold at the gate by soldiers who walked over the pass with nothing else.",
+    "purpose": "Base AC 16 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 16,
+      "dexCap": 2
+    },
+    "requires": {
+      "level": 22
+    }
+  },
+  {
+    "id": "ironroad-guide-cord",
+    "name": "Iron Road Guide's Cord",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A guide's knotted cord: one knot for every mile-post on the Iron Road, and every dead echo-stone on them.",
+    "purpose": "Equip in the accessory slot: +2 Survival and Animal Handling.",
+    "skillBonuses": {
+      "survival": 2,
+      "animalHandling": 2
+    },
+    "requires": {
+      "level": 20
+    },
+    "story": {
+      "skill": "survival"
+    }
+  },
+  {
+    "id": "ledger-room-lens",
+    "name": "Ledger-room Lens",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A reading lens from the prison ledger room under Highpass, where Sable's letters were copied.",
+    "purpose": "Equip in the accessory slot: +2 History and Arcana.",
+    "skillBonuses": {
+      "history": 2,
+      "arcana": 2
+    },
+    "requires": {
+      "level": 20
+    },
+    "story": {
+      "skill": "history"
+    }
+  },
+  {
+    "id": "watch-chaplain-mace",
+    "name": "Watch Chaplain's Mace",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A flanged mace carried by the Highpass watch's chaplain on the palisade the spring the refugees came.",
+    "purpose": "Strength, 1d8 bludgeoning, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Hallow",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Strike with a blessing: an enemy is Vulnerable until your next turn."
+    }
+  },
+  {
+    "id": "echo-stone-rod",
+    "name": "Dead Echo-stone Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 580,
+    "description": "A rod of iron echo-stone, dead since the Single Voice broke. It still hums when a ward is near.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 24,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "drill-yard-pavise",
+    "name": "Drill-yard Pavise",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 570,
+    "description": "A tall Commandery shield from the drill-yard, made to lock with the next man's.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 23,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Lock Shields",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "ration-ledger",
+    "name": "Ration-office Ledger",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 570,
+    "description": "A ledger from Vell's ration office: oil sent out on one side, names sent in on the other.",
+    "purpose": "Equip in the accessory slot: +2 Insight and Investigation.",
+    "skillBonuses": {
+      "insight": 2,
+      "investigation": 2
+    },
+    "requires": {
+      "level": 23
+    },
+    "story": {
+      "skill": "investigation"
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "tide-hunter-bolas",
+    "name": "Tide-hunter's Bolas",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "Weighted lines the roof folk throw to tangle what climbs out of the mist.",
+    "purpose": "Equip in the accessory slot: +2 Athletics.",
+    "skillBonuses": {
+      "athletics": 2
+    },
+    "requires": {
+      "level": 20
+    },
+    "skill": {
+      "name": "Tangle",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Tangle an enemy for two rounds: 2 less armour."
+    },
+    "exclusive": {
+      "event": "bounty:saltwick"
+    }
+  },
+  {
+    "id": "drill-guard-sabre",
+    "name": "Drill-guard Sabre",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 570,
+    "description": "A Commandery drill-guard's sabre, taken from a deserter working the Vell road.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 23,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Disarming Cut",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "event": "bounty:vell"
+    }
+  },
+  {
+    "id": "courier-frost-cloak",
+    "name": "Courier's Frost-cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 370,
+    "description": "Sergeant Ama Roke's courier cloak, white with frost when she came up the Briarwood road. She gave it to you once she could walk again.",
+    "purpose": "Equip in the accessory slot: +1 AC and +1 Constitution saving throws.",
+    "acBonus": 1,
+    "saveBonuses": {
+      "con": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 18
+    },
+    "exclusive": {
+      "quest": "b3-letter"
+    }
+  },
+  {
+    "id": "keepers-handbell",
+    "name": "Old Keepers' Hand-bell",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 380,
+    "description": "A keeper's hand-bell from before Sable changed the rite, when the keeper was asked first. Aster Vey asked you to carry it.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "requires": {
+      "level": 19,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Ask by Name",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Call an enemy by what it was: it deals 25% less damage until your next turn."
+    },
+    "exclusive": {
+      "quest": "b3-rite"
+    }
+  },
+  {
+    "id": "sorrel-gate-shield",
+    "name": "Sorrel's Gate Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "Captain Sorrel's spare shield from the Highpass palisade, scored from the night the carts came to the gate.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 20,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    },
+    "exclusive": {
+      "quest": "b3-pass"
+    }
+  },
+  {
+    "id": "lamplighters-line",
+    "name": "Lamplighters' Knotted Line",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 400,
+    "description": "A lamplighter's safety line from Saltwick's planks, knotted the way Mags Peller's people tie them.",
+    "purpose": "Equip in the accessory slot: +1 to hit and +1 damage with weapons and +2 Athletics.",
+    "attackBonus": 1,
+    "damageBonus": 1,
+    "skillBonuses": {
+      "athletics": 2
+    },
+    "requires": {
+      "level": 21
+    },
+    "story": {
+      "skill": "athletics"
+    },
+    "exclusive": {
+      "quest": "b3-saltwick"
+    }
+  },
+  {
+    "id": "witness-stole",
+    "name": "Witness's Stole",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 570,
+    "description": "The plain grey stole Vell gives the one it asks to sit with each volunteer and hear their yes.",
+    "purpose": "Equip in the accessory slot: +2 Insight and Medicine and +1 Wisdom saving throws.",
+    "skillBonuses": {
+      "insight": 2,
+      "medicine": 2
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 23
+    },
+    "story": {
+      "skill": "insight"
+    },
+    "exclusive": {
+      "quest": "b3-witness"
+    }
+  },
+  {
+    "id": "bellmetal-longsword",
+    "name": "Bellmetal Longsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Dera's work: a long blade with bell-bronze run into the fuller, so it rings when it parries.",
+    "purpose": "Strength, 1d10 slashing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25,
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "bramblewood-longbow",
+    "name": "Bramblewood Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Briarwood yew, cut the winter the Gloam came to the edge of the wood.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy in place until your next turn: 2 less armour."
+    }
+  },
+  {
+    "id": "bellkeeper-staff",
+    "name": "Bell-keeper's Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "An ash staff of the kind the old keepers carried, with a bell-rope grip.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Still the Frost",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Ring the cold out of an enemy: it deals 25% less damage until your next turn."
+    }
+  },
+  {
+    "id": "bellbronze-plate",
+    "name": "Bell-bronze Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 450,
+    "description": "Plate from Dera's forge, its edges faced with bronze from a cracked Briarwatch hand-bell.",
+    "purpose": "Base AC 21, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 21,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 26,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "hollow-oak-leathers",
+    "name": "Hollow-oak Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Leathers stained in hollow-oak bark, for walking the Briarwood edge at night.",
+    "purpose": "Base AC 15 plus your full Dexterity. +1 Stealth.",
+    "armor": {
+      "base": 15,
+      "dexCap": null
+    },
+    "skillBonuses": {
+      "stealth": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25
+    }
+  },
+  {
+    "id": "bellrim-shield",
+    "name": "Bell-rim Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Epic",
+    "value": 460,
+    "description": "A round shield rimmed with bell-bronze; struck hard, it rings like the hour.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 27,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "nightwatch-cloak",
+    "name": "Night-watch Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Heavy Briarwatch wool for the night watch the village has started to keep.",
+    "purpose": "Equip in the accessory slot: +1 AC and +2 Perception.",
+    "acBonus": 1,
+    "skillBonuses": {
+      "perception": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 25
+    },
+    "story": {
+      "skill": "perception"
+    }
+  },
+  {
+    "id": "keepers-prayer-beads",
+    "name": "Keeper's Prayer-beads",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "A string of small bronze beads, each cast with a keeper's name. The village shrine sells them.",
+    "purpose": "Equip in the accessory slot: +2 Religion and History and +1 Wisdom saving throws.",
+    "skillBonuses": {
+      "religion": 2,
+      "history": 2
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 25
+    },
+    "story": {
+      "skill": "religion"
+    }
+  },
+  {
+    "id": "gloamcutter-greatsword",
+    "name": "Gloam-cutter Greatsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 450,
+    "description": "A Highpass greatsword with a pitch-soaked grip, made to be set alight against the frost.",
+    "purpose": "Strength, 2d6 slashing, +2 to hit, +3 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 26,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Kindle",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    }
+  },
+  {
+    "id": "passrunner-blade",
+    "name": "Pass-runner's Blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "A light thrusting blade carried by the runners who bring word over the pass ahead of the Gloam.",
+    "purpose": "Finesse, 1d8 piercing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Hamstring",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "watch-scale",
+    "name": "Watch-captain's Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Scale over a red Highpass coat, of the kind Captain Sorrel's officers wear.",
+    "purpose": "Base AC 16 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 16,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 25
+    }
+  },
+  {
+    "id": "watchfire-brooch",
+    "name": "Watch-fire Brooch",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 450,
+    "description": "An iron brooch shaped like the palisade fires, given to those who kept them lit.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 26
+    },
+    "skill": {
+      "name": "Rally",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Empowered until your next turn: deal 25% more damage."
+    }
+  },
+  {
+    "id": "delegate-seal",
+    "name": "Delegate's Seal",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "A council delegate's seal from Highpass, carried by those who speak for a town.",
+    "purpose": "Equip in the accessory slot: +3 Persuasion and +2 Deception.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "deception": 2
+    },
+    "requires": {
+      "level": 25
+    },
+    "story": {
+      "skill": "deception"
+    }
+  },
+  {
+    "id": "passguide-horn",
+    "name": "Pass-guide's Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "A goat-horn the pass guides blow to bring a lost column back to the path.",
+    "purpose": "Equip in the accessory slot: +3 Survival and +2 Animal Handling.",
+    "skillBonuses": {
+      "survival": 3,
+      "animalHandling": 2
+    },
+    "requires": {
+      "level": 25
+    },
+    "story": {
+      "skill": "survival"
+    }
+  },
+  {
+    "id": "smuggler-gloves",
+    "name": "Smuggler's Gloves",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 440,
+    "description": "Soft gloves taken off a smuggler at the Highpass gate, who was moving frost-white goods past the watch.",
+    "purpose": "Equip in the accessory slot: +2 Sleight of Hand and Stealth.",
+    "skillBonuses": {
+      "sleightOfHand": 2,
+      "stealth": 2
+    },
+    "requires": {
+      "level": 25
+    },
+    "story": {
+      "skill": "stealth"
+    }
+  },
+  {
+    "id": "furnace-iron-maul",
+    "name": "Furnace-iron Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 590,
+    "description": "A maul forged at the casting-pit furnace under the drill-yard.",
+    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +3 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 25,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Crack an enemy's guard until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "hour-rope",
+    "name": "Briarwatch Hour-rope",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 580,
+    "description": "A length of the old bell-rope Tovin and Pim ring the hours with, kept when the new one went up.",
+    "purpose": "Equip in the accessory slot: +2 Performance.",
+    "skillBonuses": {
+      "performance": 2
+    },
+    "requires": {
+      "level": 24
+    },
+    "skill": {
+      "name": "Ring the Hour",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Empowered until your next turn: deal 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b3-home"
+    }
+  },
+  {
+    "id": "vault-clapper",
+    "name": "Vault Bell Clapper",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 590,
+    "description": "The iron clapper of one of the thirty-one bells in Vell's vault, wrapped in the page of its keeper's record.",
+    "purpose": "Strength, 1d8 bludgeoning, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 25,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Last Toll",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Strike the note the bound remember: an enemy is Vulnerable until your next turn."
+    },
+    "exclusive": {
+      "quest": "b3-vault"
+    }
+  },
+  {
+    "id": "gate-bell-staff",
+    "name": "Gate-bell Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 600,
+    "description": "An iron-shod Vell watch staff hung with one of the city's fifty gate-bells, carried on the night of the great surge.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 26,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Ring the Gates",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Ring the gate-bell at an enemy for two rounds: 2 less armour."
+    },
+    "exclusive": {
+      "quest": "b3-greatbell"
+    }
+  },
+  {
+    "id": "hesk-drill-coat",
+    "name": "Hesk's Drill-coat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 610,
+    "description": "Commander Idris Hesk's plated drill-coat, given up on the Iron Road when he was taken into the council's custody.",
+    "purpose": "Base AC 17 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 17,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 27
+    },
+    "exclusive": {
+      "quest": "b3-paid"
+    }
+  },
+  {
+    "id": "gallery-warhammer",
+    "name": "Gallery Warhammer",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 500,
+    "description": "A miner's long-hafted hammer from the cold galleries, its head stamped with the nine bells.",
+    "purpose": "Strength, 1d10 bludgeoning, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "requires": {
+      "level": 31,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Crack an enemy's guard until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "town": "cinderfold"
+    }
+  },
+  {
+    "id": "signal-staff",
+    "name": "Miners' Signal-staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "A staff from the forge-signal tower, topped with a mirror-iron disc.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 3,
+    "requires": {
+      "level": 30,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Signal",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Flash the gallery signal: an enemy deals 25% less damage until your next turn."
+    }
+  },
+  {
+    "id": "lidforge-plate",
+    "name": "Lid-forge Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 500,
+    "description": "Plate forged on the iron lid itself, where the founders cast the first bells.",
+    "purpose": "Base AC 21, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 21,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "requires": {
+      "level": 31,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "town": "cinderfold"
+    }
+  },
+  {
+    "id": "foundry-ring",
+    "name": "Foundry Brand-ring",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 500,
+    "description": "An iron ring branded with a foundry mark, worn by those who work the casting floor.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 31
+    },
+    "skill": {
+      "name": "Bank the Fire",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Empowered until your next turn: deal 25% more damage."
+    }
+  },
+  {
+    "id": "rope-chime",
+    "name": "Miners' Rope-chime",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 500,
+    "description": "A small chime from a bell-rope in the galleries, rung to keep a team pulling together.",
+    "purpose": "Equip in the accessory slot: +3 Performance.",
+    "skillBonuses": {
+      "performance": 3
+    },
+    "requires": {
+      "level": 31
+    },
+    "skill": {
+      "name": "Every Rope at Once",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Empowered for two rounds: deal 25% more damage."
+    }
+  },
+  {
+    "id": "seawall-greatsword",
+    "name": "Seawall Greatsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "A heavy Merrowgate blade from the seawall watch, edged for cutting rope and worse.",
+    "purpose": "Strength, 2d6 slashing, +2 to hit, +4 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "requires": {
+      "level": 30,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "guild-smallsword",
+    "name": "Lantern Hall Smallsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "A Lantern Hall officer's smallsword, sold off when the guild re-armed its guards.",
+    "purpose": "Finesse, 1d8 piercing, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "requires": {
+      "level": 30,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Disarming Cut",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "town": "merrowgate"
+    }
+  },
+  {
+    "id": "dockrunner-jerkin",
+    "name": "Dock-runner's Jerkin",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "Tarred leather from the harbour, light enough to run the dock ropes in.",
+    "purpose": "Base AC 15 plus your full Dexterity.",
+    "armor": {
+      "base": 15,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 30
+    }
+  },
+  {
+    "id": "factor-ring",
+    "name": "Harbour Factor's Ring",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "A factor's ring from the harbour exchange, where the guild's bought debts change hands.",
+    "purpose": "Equip in the accessory slot: +3 Persuasion and Deception.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "deception": 3
+    },
+    "requires": {
+      "level": 30
+    },
+    "story": {
+      "skill": "deception"
+    }
+  },
+  {
+    "id": "hospice-censer",
+    "name": "Harbour Hospice Censer",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 490,
+    "description": "A little brass censer from the harbour hospice, where the names of the dying are said aloud.",
+    "purpose": "Equip in the accessory slot: +3 Medicine and +2 Religion and +1 Wisdom saving throws.",
+    "skillBonuses": {
+      "medicine": 3,
+      "religion": 2
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 30
+    },
+    "story": {
+      "skill": "medicine"
+    }
+  },
+  {
+    "id": "roof-council-coat",
+    "name": "Roof-council Coat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 510,
+    "description": "A lamplighter's long coat with iron plates sewn in, worn by the roof council's watch.",
+    "purpose": "Base AC 17 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 17,
+      "dexCap": 2
+    },
+    "requires": {
+      "level": 32
+    }
+  },
+  {
+    "id": "saltward-charm",
+    "name": "Salt-ward Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 510,
+    "description": "A twist of salt sewn into lamp-wick, hung over Saltwick doors since the echo-stone failed.",
+    "purpose": "Equip in the accessory slot: +1 AC and +1 to every saving throw.",
+    "acBonus": 1,
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 32
+    }
+  },
+  {
+    "id": "plankhook-gloves",
+    "name": "Plank-hook Gloves",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 510,
+    "description": "Thin gloves with hooked palms for crossing the far roofs without a sound.",
+    "purpose": "Equip in the accessory slot: +3 Sleight of Hand and Stealth.",
+    "skillBonuses": {
+      "sleightOfHand": 3,
+      "stealth": 3
+    },
+    "requires": {
+      "level": 32
+    },
+    "story": {
+      "skill": "stealth"
+    },
+    "exclusive": {
+      "town": "saltwick"
+    }
+  },
+  {
+    "id": "ashford-wallbow",
+    "name": "Ashford Wall-bow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 500,
+    "description": "A longbow from the racks on Ashford's old walls, kept oiled for three hundred years.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "requires": {
+      "level": 31,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy in place until your next turn: 2 less armour."
+    }
+  },
+  {
+    "id": "archive-grammar",
+    "name": "Archive Grammar",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 510,
+    "description": "A spellbook copied in the Ashford archive from older books nobody else will read.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 32,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    }
+  },
+  {
+    "id": "wall-shield",
+    "name": "Ashford Wall-shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Epic",
+    "value": 520,
+    "description": "A tall shield painted with the toll mark, made for holding a gap in the old walls.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 33,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Hold the Wall",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "exclusive": {
+      "town": "ashford"
+    }
+  },
+  {
+    "id": "scout-horn",
+    "name": "Valley Scout's Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 520,
+    "description": "The horn Ashford's valley scouts blow when the white is coming up the road.",
+    "purpose": "Equip in the accessory slot: +3 Survival and Perception.",
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3
+    },
+    "requires": {
+      "level": 33
+    },
+    "story": {
+      "skill": "perception"
+    }
+  },
+  {
+    "id": "archive-spectacles",
+    "name": "Archive Reader's Spectacles",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 520,
+    "description": "Wire spectacles from the Ashford archive, for the oldest and faintest hands.",
+    "purpose": "Equip in the accessory slot: +3 Arcana and History.",
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3
+    },
+    "requires": {
+      "level": 33
+    },
+    "story": {
+      "skill": "history"
+    }
+  },
+  {
+    "id": "wrecker-spyglass",
+    "name": "Wrecker Captain's Spyglass",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 640,
+    "description": "A brass spyglass from a wrecker captain who watched the harbour lights for ships to lure.",
+    "purpose": "Equip in the accessory slot: +3 Perception.",
+    "skillBonuses": {
+      "perception": 3
+    },
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 30
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "event": "bounty:merrowgate:30"
+    }
+  },
+  {
+    "id": "slag-core",
+    "name": "Slag Golem's Core",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 650,
+    "description": "A fist-sized lump of golem core that has not cooled since the forge wastes.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 31
+    },
+    "skill": {
+      "name": "Molten Core",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Throw the core's heat at an enemy: it is Burning for two rounds."
+    },
+    "exclusive": {
+      "event": "bounty:cinderfold:30"
+    }
+  },
+  {
+    "id": "raider-axe",
+    "name": "Raider Chief's Axe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 670,
+    "description": "The road axe of the raider chief who worked the three roads while Ashford shut its gates.",
+    "purpose": "Strength, 1d8 slashing, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "requires": {
+      "level": 33,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Sweep",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Knock an enemy off its stance for two rounds: it deals 25% less damage."
+    },
+    "exclusive": {
+      "event": "bounty:ashford:30"
+    }
+  },
+  {
+    "id": "watch-blade",
+    "name": "Briarwood Watch-blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A long blade Dera made for the night watch on the Briarwood edge, plain and very sharp.",
+    "purpose": "Strength, 1d10 slashing, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 35,
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "watchline-longbow",
+    "name": "Watch-line Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A yew longbow for the watch line, strung against midwinter cold.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 35,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "winterwatch-staff",
+    "name": "Winter-watch Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A staff topped with a watch lantern's iron cage, carried along the Briarwood edge.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 35,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Hold the Line",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Hold an enemy at the watch line for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "night-leathers",
+    "name": "Briarwood Night-leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "Dark leathers lined with fleece for the long watches of the second winter.",
+    "purpose": "Base AC 16 plus your full Dexterity. +1 Stealth.",
+    "armor": {
+      "base": 16,
+      "dexCap": null
+    },
+    "skillBonuses": {
+      "stealth": 1
+    },
+    "requires": {
+      "level": 35
+    }
+  },
+  {
+    "id": "snowguide-scale",
+    "name": "Snow-guide's Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "Light scale under white wool, worn by the guides who walk the watch line in snow.",
+    "purpose": "Base AC 17 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 17,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 35
+    }
+  },
+  {
+    "id": "watch-horn",
+    "name": "Watch-captain's Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "The horn that calls the Briarwatch watch to the line. Pim has asked to carry it.",
+    "purpose": "Equip in the accessory slot: +3 Performance.",
+    "skillBonuses": {
+      "performance": 3
+    },
+    "stats": {
+      "dealt": 0.15
+    },
+    "requires": {
+      "level": 35
+    },
+    "skill": {
+      "name": "Sound the Watch",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Empowered for two rounds: deal 25% more damage."
+    }
+  },
+  {
+    "id": "tracker-cloak",
+    "name": "Winter Tracker's Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A white cloak for following tracks in the snow without leaving many of your own.",
+    "purpose": "Equip in the accessory slot: +3 Survival and Stealth.",
+    "skillBonuses": {
+      "survival": 3,
+      "stealth": 3
+    },
+    "requires": {
+      "level": 35
+    },
+    "story": {
+      "skill": "survival"
+    }
+  },
+  {
+    "id": "book-of-hours",
+    "name": "Book of Hours",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "The Briarwatch shrine's book of the hours, with a keeper's name against every one.",
+    "purpose": "Equip in the accessory slot: +3 Religion, History and Medicine.",
+    "skillBonuses": {
+      "religion": 3,
+      "history": 3,
+      "medicine": 3
+    },
+    "requires": {
+      "level": 36
+    },
+    "story": {
+      "skill": "religion"
+    }
+  },
+  {
+    "id": "frost-edge-knife",
+    "name": "Frost-edge Knife",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A long knife quenched in snow-melt at the Highpass forge; frost does not cling to it.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 35,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Hamstring",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "margin-grammar",
+    "name": "Margin-noted Grammar",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 710,
+    "description": "A spellbook from Sable's library, its margins full of his notes. Read them first.",
+    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 4,
+    "requires": {
+      "level": 37,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    },
+    "exclusive": {
+      "town": "highpass"
+    }
+  },
+  {
+    "id": "winterwatch-plate",
+    "name": "Winter-watch Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "Heavy plate from the Highpass armoury, padded for the cold of the second winter.",
+    "purpose": "Base AC 22, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 22,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 36,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "envoy-chain",
+    "name": "Council Envoy's Chain",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "The chain the council gives its envoys to the free wards, a link for every town.",
+    "purpose": "Equip in the accessory slot: +3 Persuasion and Insight.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "insight": 3
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 35
+    },
+    "story": {
+      "skill": "persuasion"
+    }
+  },
+  {
+    "id": "ninefold-greathammer",
+    "name": "Ninefold Greathammer",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "A two-handed hammer with nine bands on the haft, one for each of the bells on the lid.",
+    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +4 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 36,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Crack an enemy's guard until your next turn: it takes 25% more damage."
+    }
+  },
+  {
+    "id": "hearthbell-shield",
+    "name": "Hearth-bell Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A shield with a hearth bell set in its boss, like the one every Cinder Fold house keeps.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
+    "acBonus": 4,
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 35,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    }
+  },
+  {
+    "id": "hearthbell-charm",
+    "name": "Hearth-bell Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A hearth bell no bigger than a thumbnail. Nobody in Cinder Fold remembers why every house keeps one.",
+    "purpose": "Equip in the accessory slot: +1 AC.",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 35
+    },
+    "exclusive": {
+      "town": "cinderfold"
+    }
+  },
+  {
+    "id": "stalker-pelt",
+    "name": "Ridge Stalker's Pelt",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "The grey pelt of a ridge stalker that hunted the high passes for three winters.",
+    "purpose": "Equip in the accessory slot: +1 AC and +3 Stealth.",
+    "acBonus": 1,
+    "skillBonuses": {
+      "stealth": 3
+    },
+    "requires": {
+      "level": 35
+    },
+    "story": {
+      "skill": "stealth"
+    },
+    "exclusive": {
+      "event": "bounty:highpass:35"
+    }
+  },
+  {
+    "id": "bellward-longsword",
+    "name": "Bellward Longsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "Dera's best longsword, forged the spring after the stair, with a ward-mark on the ricasso.",
+    "purpose": "Strength, 1d10 slashing, +3 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Kindle",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    }
+  },
+  {
+    "id": "briarwatch-greatsword",
+    "name": "Briarwatch Greatsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A greatsword Dera made from iron carried up out of the deep.",
+    "purpose": "Strength, 2d6 slashing, +3 to hit, +4 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Crack an enemy's guard until your next turn: it takes 25% more damage."
+    }
+  },
+  {
+    "id": "bramblesteel-rapier",
+    "name": "Bramble-steel Rapier",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A rapier with a briar-twist guard, light enough to forget you are holding it.",
+    "purpose": "Finesse, 1d8 piercing, +3 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Disarming Cut",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    }
+  },
+  {
+    "id": "briar-yew-greatbow",
+    "name": "Briar-yew Greatbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A tall bow of Briarwood yew, backed with horn from the high passes.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +4 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy in place until your next turn: 2 less armour."
+    }
+  },
+  {
+    "id": "hourbell-staff",
+    "name": "Hour-bell Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A staff with a small bell cast from the same bronze as Briarwatch's own.",
+    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Toll the Hour",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Toll the hour at an enemy: it deals 25% less damage until your next turn."
+    }
+  },
+  {
+    "id": "wardsmith-plate",
+    "name": "Wardsmith's Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "Full plate from Dera's forge, every rivet set by hand over one winter.",
+    "purpose": "Base AC 22, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 22,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "wardsmith-scale",
+    "name": "Wardsmith's Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "Scale Dera fits to the wearer on the bench, link by link.",
+    "purpose": "Base AC 18 and up to +2 from Dexterity.",
+    "armor": {
+      "base": 18,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 40
+    }
+  },
+  {
+    "id": "briar-leather-coat",
+    "name": "Briar-leather Coat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A long coat of briar-tanned leather that turns thorn and blade alike.",
+    "purpose": "Base AC 16 plus your full Dexterity. +2 Stealth.",
+    "armor": {
+      "base": 16,
+      "dexCap": null
+    },
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40
+    }
+  },
+  {
+    "id": "bell-iron-shield",
+    "name": "Bell-iron Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A heavy shield of bell-iron, faced with the Briarwatch ward-mark.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
+    "acBonus": 4,
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 40,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    }
+  },
+  {
+    "id": "ward-captain-signet",
+    "name": "Ward-captain's Signet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "The free wards' signet for those who led others down the stair and back.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.2,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 40
+    },
+    "story": {
+      "skill": "insight"
+    }
+  },
+  {
+    "id": "second-winter-charm",
+    "name": "Second-winter Charm",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A charm of Briarwood holly and bell-bronze, made the spring after the second winter.",
+    "purpose": "Equip in the accessory slot: +1 AC and +1 to every saving throw.",
+    "acBonus": 1,
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 40
+    }
+  },
+  {
+    "id": "envoy-seal",
+    "name": "Free Wards' Envoy Seal",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A seal that every free ward's council recognises, and none of them owns.",
+    "purpose": "Equip in the accessory slot: +3 Persuasion, Deception and Insight.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "deception": 3,
+      "insight": 3
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40
+    },
+    "story": {
+      "skill": "persuasion"
+    }
+  },
+  {
+    "id": "warden-horn",
+    "name": "Briarwood Warden's Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "The horn of the Briarwood wardens, heard from one edge of the wood to the other.",
+    "purpose": "Equip in the accessory slot: +3 Survival, Perception and Nature.",
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3,
+      "nature": 3
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 40
+    },
+    "story": {
+      "skill": "survival"
+    }
+  },
+  {
+    "id": "keepers-daybook",
+    "name": "Keeper's Day-book",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A keeper's day-book with room for one line a day for a lifetime.",
+    "purpose": "Equip in the accessory slot: +3 Arcana, History and Religion.",
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3,
+      "religion": 3
+    },
+    "requires": {
+      "level": 40
+    },
+    "story": {
+      "skill": "arcana"
+    }
+  },
+  {
+    "id": "bramble-silk-gloves",
+    "name": "Bramble-silk Gloves",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "Gloves woven with bramble-silk that grip a wire or a lock pin in the dark.",
+    "purpose": "Equip in the accessory slot: +3 Stealth and Sleight of Hand.",
+    "skillBonuses": {
+      "stealth": 3,
+      "sleightOfHand": 3
+    },
+    "requires": {
+      "level": 40
+    },
+    "skill": {
+      "name": "Snare",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Snare an enemy for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "hour-chime",
+    "name": "Hour Chime",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "A hand-chime tuned to Briarwatch's hour, so whoever hears it knows where home is.",
+    "purpose": "Equip in the accessory slot: +3 Performance and +2 Wisdom and Charisma saving throws.",
+    "skillBonuses": {
+      "performance": 3
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "cha": 2
+    },
+    "requires": {
+      "level": 40
+    },
+    "skill": {
+      "name": "Ring True",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Empowered for two rounds: deal 25% more damage."
+    }
+  },
+  {
+    "id": "poacher-king-bow",
+    "name": "Poacher-king's Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "The longbow of the poacher who ran the briar woods for twenty years.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +4 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 40,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "exclusive": {
+      "event": "bounty:briarwatch:40"
+    }
+  },
+  {
+    "id": "debt-tally",
+    "name": "Docker's Debt-tally",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 620,
+    "description": "A docker's split tally-stick, notched once for every harbour debt the Lantern Hall bought.",
+    "purpose": "Equip in the accessory slot: +3 Insight and +2 Investigation.",
+    "skillBonuses": {
+      "insight": 3,
+      "investigation": 2
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 28
+    },
+    "story": {
+      "skill": "insight"
+    },
+    "exclusive": {
+      "pending": "b3-price"
+    }
+  },
+  {
+    "id": "forge-signal-longbow",
+    "name": "Forge-signal Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 630,
+    "description": "The longbow from the forge-signal keeper's rack at Cinder Fold, kept strung for thirty years by Wren.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 29,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Signal Shot",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Mark an enemy for the others: it is Vulnerable until your next turn."
+    },
+    "exclusive": {
+      "pending": "b3-wren"
+    }
+  },
+  {
+    "id": "long-plank-shield",
+    "name": "Long-plank Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 640,
+    "description": "The shield Saltwick's roof council keeps for whoever holds the long plank on a tide night.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 30,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Hold the Plank",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "exclusive": {
+      "pending": "b3-order"
+    }
+  },
+  {
+    "id": "old-wall-mail",
+    "name": "Old Wall Mail",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 650,
+    "description": "Mail from the armoury in Ashford's old walls, built the last time the town refused. Reeve Brede had it brought out.",
+    "purpose": "Base AC 17 and up to +2 from Dexterity. +1 Constitution saving throws.",
+    "armor": {
+      "base": 17,
+      "dexCap": 2
+    },
+    "saveBonuses": {
+      "con": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 31
+    },
+    "exclusive": {
+      "pending": "b3-ashford"
+    }
+  },
+  {
+    "id": "witness-staff",
+    "name": "Witness's Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 660,
+    "description": "A plain ash staff of the kind given to witnesses in the council hall at Highpass, with no seal on it.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC. +1 Wisdom saving throws.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 3,
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 32,
+      "classes": [
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Hear the Lie",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Name an enemy's lie aloud: it deals 25% less damage until your next turn."
+    },
+    "exclusive": {
+      "pending": "b3-seal"
+    }
+  },
+  {
+    "id": "watchline-lantern",
+    "name": "Watch-line Lantern",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 670,
+    "description": "One of the night watch's lanterns from the Briarwood edge, carried the night the council met.",
+    "purpose": "Equip in the accessory slot: +1 AC and +2 Perception.",
+    "acBonus": 1,
+    "skillBonuses": {
+      "perception": 2
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 33
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "pending": "b3-winter"
+    }
+  },
+  {
+    "id": "hired-captain-sabre",
+    "name": "Hired Captain's Sabre",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 680,
+    "description": "A sabre from one of Hesk's hired captains at the iron door, who had no more use for it.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +4 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 34,
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Disarming Cut",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "pending": "b3-company"
+    }
+  },
+  {
+    "id": "surveyor-lamp",
+    "name": "Surveyor's Lamp",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 690,
+    "description": "A guild surveyor's lamp, handed over on the stair by the surveyor who had forgotten his own name.",
+    "purpose": "Equip in the accessory slot: +3 Survival and Investigation.",
+    "skillBonuses": {
+      "survival": 3,
+      "investigation": 3
+    },
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 35
+    },
+    "story": {
+      "skill": "survival"
+    },
+    "exclusive": {
+      "pending": "b3-deep"
+    }
+  },
+  {
+    "id": "circle-edge-plate",
+    "name": "Circle-edge Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "Plate one of Hesk's hired captains left at the edge of the circle, when he walked away from it.",
+    "purpose": "Base AC 22, no Dexterity bonus. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 22,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 36,
+      "abilities": {
+        "str": 15
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    },
+    "exclusive": {
+      "pending": "b3-promise"
+    }
+  },
+  {
+    "id": "first-note-iron",
+    "name": "First-note Tuning Iron",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 710,
+    "description": "An iron fork the founders tuned the first bells by, from the circle's heart. It rings only the one note.",
+    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
+    "spellAttackBonus": 4,
+    "spellDcBonus": 4,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 37,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "First Note",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Ring the founders' first note: an enemy is Vulnerable until your next turn."
+    },
+    "exclusive": {
+      "pending": "b3-firstbell"
+    }
   }
 ]

@@ -115,7 +115,7 @@ function source(item) {
   const x = item.exclusive;
   if (x?.town) return `Only sold in ${placeName(x.town)}`;
   if (x?.quest) { const q = require('./expansion').QUESTS?.[x.quest]; return `Reward for finishing ${q?.name || x.quest}`; }
-  if (x?.event?.startsWith('bounty:')) return `Reward for the first bounty claimed in ${placeName(x.event.slice(7))}`;
+  if (x?.event?.startsWith('bounty:')) { const [town, level] = x.event.slice(7).split(':'); return `Reward for the first bounty claimed in ${placeName(town)}${level ? ` at level ${level} or above` : ''}`; }
   return '';
 }
 
@@ -138,6 +138,16 @@ function award(state, key, events) {
   require('./equipment').addTo(state.player.inventory, item.id, 1);
   events.push({ type: 'item', tone: 'good', text: `You receive ${item.name} (${item.rarity}). ${purpose(item)}` });
   return item;
+}
+
+// A town's level bounties ("bounty:<town>:<level>" in gear.json): a claimed
+// bounty there gives the highest one the hero has reached and not yet had, so
+// a hero who comes back later still collects the rest, one bounty at a time.
+function bountyReward(state, townId, level, events) {
+  const given = state.world.gearAwarded || {};
+  const keys = Object.keys(REWARDS()).filter((k) => k.startsWith(`bounty:${townId}:`) && !given[k])
+    .map((k) => [k, Number(k.split(':')[2])]).filter(([, at]) => Number.isFinite(at) && at <= level).sort((x, y) => y[1] - x[1]);
+  return keys.length ? award(state, keys[0][0], events) : null;
 }
 
 // Items from AI adventures come only from these templates (21 November 2026
@@ -211,4 +221,4 @@ function purpose(item) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : ''].filter(Boolean).join(' ');
 }
 
-module.exports = { specId, purpose, source, minValue, RARITY_FLOOR, award, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };
+module.exports = { specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe };

@@ -43,7 +43,10 @@ function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !st
 function emptied(state,id){const gone=TOWNS[id]?.emptied;return Boolean(gone&&state.story?.flags?.[gone.flag]);}
 const asNow=(state,t)=>t&&emptied(state,t.id)?{...t,subtitle:t.emptied.subtitle,description:t.emptied.description,services:['storage'],stock:[],emptied:true}:t;
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
-function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of TOWNS[id].stock)if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
+// What a town sells now: its stock, plus each stockByLevel list (towns.json)
+// once the hero has reached that level (Book Three's gear for levels 20 to 40).
+function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)).flatMap(([,ids])=>ids)];}
+function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
   const q=state.world?.activeQuest;const node=STORY_NODES[state.story.nodeId];
   if(!state.world?.onExpedition||state.combat?.active||node?.phase!=='start')return null;
@@ -67,7 +70,7 @@ function emit(events,text,type='world',tone='neutral'){events.push({type,tone,te
 function fail(events,text){events.push({type:'warning',tone:'warning',text});return {ok:false,error:text};}
 function charge(state,gold,events){if(!Number.isInteger(gold)||gold<0||state.player.gold<gold){fail(events,'Not enough gold. No items or resources were changed.');return false;}state.player.gold-=gold;return true;}
 function reputation(state,changes){for(const [id,amount]of Object.entries(changes||{}))if(id in state.world.reputation)state.world.reputation[id]=Math.max(-10,Math.min(20,state.world.reputation[id]+Number(amount||0)));}
-function refreshStock(state){for(const id of state.world.unlockedTowns){const stock=ensureStock(state,id);for(const itemId of TOWNS[id].stock)stock[itemId]=maxStock(itemId);}}
+function refreshStock(state){for(const id of state.world.unlockedTowns){const stock=ensureStock(state,id);for(const itemId of townStock(state,id))stock[itemId]=maxStock(itemId);}}
 function completed(state,id){return Boolean(state.world.completed[id]);}
 // A written chapter may be started below its level (up to XP.UNDER_FREE +
 // XP.UNDER_MAX under; more than UNDER_FREE under makes it harder). AI
@@ -497,4 +500,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={below,goOn,backDown,restore,init,town,townOpen,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={below,goOn,backDown,restore,init,town,townOpen,townStock,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

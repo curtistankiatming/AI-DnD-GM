@@ -3,8 +3,10 @@
 Step 5 of the gameplay review plan. The equipment rules are in
 [EQUIPMENT.md](EQUIPMENT.md); this is what uses them.
 
-The game now has 68 pieces of equipment (87 items with potions and tools), up
-from 30. The 38 new ones are in `src/data/gear.json`.
+The game now has 173 pieces of equipment (192 items with potions and tools).
+Step 5 took it from 30 to 68; Book Three's gear for levels 20 to 40 adds 105
+more (see [Book Three gear](#book-three-gear-levels-20-to-40) below). All of
+them are in `src/data/gear.json`.
 
 ## Where items come from
 
@@ -13,13 +15,26 @@ from 30. The 38 new ones are in `src/data/gear.json`.
   Cinder Fold (15-19), and in Book Three Saltwick (20-23) and Vell (23-26).
   Vell's shop closes for good when the city is evacuated late in Book Three,
   so its exclusives can be missed.
+- **Shops that grow with the hero.** A town can also have `stockByLevel` in
+  `src/data/towns.json`: lists of items that join its shop once the hero
+  reaches that level. Book Three uses it for levels 20 to 40, so Highpass,
+  Briarwatch and the Part Two towns sell gear for the chapters that come back
+  to them.
 - **Region exclusives.** One or two items per town are sold nowhere else. The
   card says "Only sold in …".
-- **Chapter rewards.** Eleven chapters give their own item when finished, once
-  per save. They are never sold, and each can be worn from two levels below
-  its chapter, so a hero who skipped side content can still use it.
+- **Chapter rewards.** Twenty chapters (all ten of Book Three, Part One among
+  them) give their own item when finished, once per save. They are never
+  sold, and each can be worn from two levels below its chapter, so a hero who
+  skipped side content can still use it.
 - **Bounty rewards.** The first bounty claimed in Briarwatch, Ashford,
-  Highpass, Merrowgate and Cinder Fold gives that town's bounty item.
+  Highpass, Merrowgate, Cinder Fold, Saltwick and Vell gives that town's bounty
+  item. A **level bounty** (`bounty:<town>:<level>`) is given by a bounty
+  claimed there at that level or above; each claim gives at most one, the
+  highest the hero has reached, so a hero who comes back later collects the
+  rest one bounty at a time.
+- **Rewards waiting for a chapter.** An item with `exclusive.pending` names a
+  chapter that is not in the game yet (Book Three, Part Two). It is never sold
+  or given until that chapter is wired by changing `pending` to `quest`.
 - **AI adventures.** Finishing an AI adventure gives one item made from a
   template (blade, bow, focus, mail or charm) at the adventure's level. The
   storyteller never sets the numbers: an item is just a template and a level
@@ -35,7 +50,7 @@ from 30. The 38 new ones are in `src/data/gear.json`.
 An item costs at least a floor for its rarity (Uncommon 30, Rare 70, Epic 150,
 Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 
-## The new items
+## The step 5 items
 
 | Item | Slot | Rarity | Gold | Requires | Where |
 |---|---|---|---|---|---|
@@ -77,3 +92,196 @@ Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 | Ridge-stalker's Hood | Accessory | Rare | 140 | Level 6 · Dexterity 13 | First bounty, Highpass Watch |
 | Wrecker's Gaff | Main hand | Rare | 200 | Level 11 | First bounty, Merrowgate |
 | Slagcaller Gauntlets | Accessory | Epic | 340 | Level 15 · Strength 13 | First bounty, Cinder Fold |
+
+## Book Three gear (levels 20 to 40)
+
+The items review found no gear past level 25. Book Three now has 105 more
+pieces in five tiers, each in the places its chapters go back to. Book Three
+itself stays hidden (`out: 0` in `src/book.js`); a hero who reaches these levels
+another way, such as on AI adventures, finds the same shops.
+
+**The curve.** Past level 20 enemy armour and attack stop rising (bounded
+accuracy), and power comes from job skills, so gear rises slowly:
+
+| | Tier 20 | Tier 25 | Tier 30 | Tier 35 | Tier 40 |
+|---|---|---|---|---|---|
+| Weapons (to hit / damage) | +2/+3 | +2/+3, 5% more dealt | +2/+4 | +2/+4, 5% more dealt | +3/+4, 5% more dealt |
+| Spell focus (attack / DC) | +3/+3 | +3/+3, 5% more dealt | +4/+3 | +4/+3 to +4/+4 | +4/+4, 5% more dealt |
+| Heavy armour (AC) | 20, 10% less taken | 21, 10% less taken | 21, 15% less taken | 22, 10% less taken | 22, 15% less taken |
+| Medium armour (AC + Dex up to 2) | 16 | 16 to 17 | 17 | 17 | 18 |
+| Light armour (AC + Dex) | 15 | 15 | 15 | 16 | 16 |
+| Shield | +4 | +4, 10% less taken | +4, 10% less taken | +4, +1 saves | +4, +1 saves |
+
+Accessories reach 20% more damage dealt only at 40 (15% from level 22 on), and
+skill bonuses stop at +3, as AI adventure items do. No requirement asks for
+more than 15 in a score, since a hero's scores barely rise: Strength 15 for
+heavy armour and two-handed weapons, and mostly 13 for one-handed weapons,
+shields and Dexterity weapons.
+
+**Who it is for.** A test (`tests/book-three-gear.test.js`) checks that at each
+tier every class has a weapon or focus and armour it can wear (and a shield for
+Fighters and Clerics), every 2nd job branch has its own kind of upgrade, and
+Orin, Maren and Nessa each have upgrades they can wear. Only places that can't
+be missed count: Vell's shop and Part Two's chapter rewards don't.
+
+| Branch | What it gets at each tier |
+|---|---|
+| Guardian, Battle Priest | Shields and heavy armour (Battle Priests: one-handed Strength 13 weapons and shields) |
+| Duelist, Warlord | One- and two-handed Strength weapons; damage accessories for the Warlord |
+| Shadow Agent, Saboteur | Finesse weapons, Stealth and Sleight of Hand accessories, items with a debuff skill |
+| Grifter, Envoy | Persuasion, Deception and Insight accessories |
+| Evoker, Chronist, Binder | A spell focus each tier, damage or defence accessories |
+| Lifewarden, Exorcist | Foci for Clerics, Religion and Medicine accessories, debuff skills |
+| Wild Warden, Deadeye, Pathfinder | Bows, Survival, Perception, Nature and Animal Handling accessories |
+| Lorekeeper, Battle Cantor | Foci for Bards, Arcana and History accessories, Performance and Empowered items |
+
+**Chapter rewards.** Every Part One chapter now gives an item (b3-vell's
+Volunteer's Ribbon was the only one). Part Two's ten chapters each have their
+item already, marked `pending` until those chapters are in:
+
+| Part Two chapter | Item | Requires |
+|---|---|---|
+| 11, The Price of a Yes (b3-price) | Docker's Debt-tally | Level 28 |
+| 12, Wren's Bell (b3-wren) | Forge-signal Longbow | Level 29 · Dexterity 13 |
+| 13, The Order (b3-order) | Long-plank Shield | Level 30 · Fighter or Cleric · Strength 13 |
+| 14, The Town That Said No (b3-ashford) | Old Wall Mail | Level 31 |
+| 15, The Witness's Seal (b3-seal) | Witness's Staff | Level 32 · Cleric or Bard |
+| 16, The Winter Watch (b3-winter) | Watch-line Lantern | Level 33 |
+| 17, Hesk's Company (b3-company) | Hired Captain's Sabre | Level 34 · Dexterity 13 |
+| 18, The Deep (b3-deep) | Surveyor's Lamp | Level 35 |
+| 19, The First Promise (b3-promise) | Circle-edge Plate | Level 36 · Strength 15 |
+| 20, The First Bell (b3-firstbell) | First-note Tuning Iron | Level 37 · Wizard, Cleric or Bard |
+
+To wire one, change its `"exclusive": { "pending": "b3-…" }` to `"quest"`; the
+chapter's completion then gives it (`src/world.js` already calls
+`Gear.award(state, 'quest:<id>')` for every chapter).
+
+### Tier 20: levels 20 to 24 (Part One): 22 items
+
+| Item | Slot | Rarity | Gold | Stats | Special | Requires | Where |
+|---|---|---|---|---|---|---|---|
+| Courier's Frost-cloak | Accessory | Epic | 370 | +1 AC, +1 CON save | 5% less taken | Level 18 | Chapter: The Letter from Vell (b3-letter) |
+| Old Keepers' Hand-bell | Main hand | Epic | 380 | +3 spell attack, +3 DC | Ask by Name (weakened) | Level 19 · Wizard, Cleric or Bard | Chapter: Sable's Rite (b3-rite) |
+| Iron Road Guide's Cord | Accessory | Epic | 390 | +2 Survival, +2 Animal Handling | story: Survival | Level 20 | Highpass Watch (from 20) |
+| Lamp-oil Flask | Accessory | Epic | 390 | +2 Sleight of Hand | Spill and Light (burning) | Level 20 | Saltwick only |
+| Ledger-room Lens | Accessory | Epic | 390 | +2 History, +2 Arcana | story: History | Level 20 | Highpass Watch (from 20) |
+| Pass-warden's Greataxe | Main hand | Epic | 390 | 2d6, Str, two-handed, +2/+3 |  | Level 20 · Strength 15 | Highpass Watch (from 20) |
+| Plankwalker's Leathers | Armour | Epic | 390 | AC 15 + Dex |  | Level 20 | Highpass Watch (from 20), Saltwick |
+| Sorrel's Gate Shield | Off hand | Epic | 390 | +4 AC | 5% less taken; Brace (fortified) | Level 20 · Fighter or Cleric · Strength 13 | Chapter: The Pass in Spring (b3-pass) |
+| Storm-lamp Lens | Main hand | Epic | 390 | +3 spell attack, +3 DC | Hold the Mist (slowed) | Level 20 · Wizard, Cleric or Bard | Highpass Watch (from 20), Saltwick |
+| Tide-hunter's Bolas | Accessory | Epic | 390 | +2 Athletics | Tangle (slowed) | Level 20 | First bounty, Saltwick |
+| Watch Chaplain's Mace | Main hand | Epic | 390 | 1d8, Str, +2/+3 | Hallow (vulnerable) | Level 20 · Strength 13 | Highpass Watch (from 20) |
+| Iron Road Longbow | Main hand | Epic | 400 | 1d8, bow, +2/+3 |  | Level 21 · Dexterity 13 | Highpass Watch (from 20), Saltwick |
+| Lamplighter's Hook-knife | Main hand | Epic | 400 | 1d8, finesse, +2/+3 | Catch the Eaves (slowed) | Level 21 · Dexterity 13 | Saltwick only |
+| Lamplighters' Knotted Line | Accessory | Epic | 400 | +1/+1 with weapons, +2 Athletics | story: Athletics | Level 21 | Chapter: The Last Roof (b3-saltwick) |
+| Pass-guard Plate | Armour | Epic | 400 | AC 20, heavy | 10% less taken | Level 21 · Strength 15 | Highpass Watch (from 20) |
+| Commandery Brigandine | Armour | Epic | 410 | AC 16 + Dex (max 2) |  | Level 22 | Highpass Watch (from 20), Vell |
+| Drill-guard Sabre | Main hand | Legendary | 570 | 1d8, finesse, +2/+3 | Disarming Cut (weakened) | Level 23 · Dexterity 13 | First bounty, Vell |
+| Drill-yard Pavise | Off hand | Legendary | 570 | +4 AC | 5% less taken; Lock Shields (fortified) | Level 23 · Fighter or Cleric · Strength 13 | Vell only |
+| Ration-office Ledger | Accessory | Legendary | 570 | +2 Insight, +2 Investigation | story: Investigation | Level 23 | Vell only |
+| Witness's Stole | Accessory | Legendary | 570 | +2 Insight, +2 Medicine, +1 WIS save | 5% less taken; story: Insight | Level 23 | Chapter: The Witness (b3-witness) |
+| Briarwatch Hour-rope | Accessory | Legendary | 580 | +2 Performance | Ring the Hour (empowered) | Level 24 | Chapter: Home for Help (b3-home) |
+| Dead Echo-stone Rod | Main hand | Legendary | 580 | +3 spell attack, +3 DC | 5% more dealt; Unravel (vulnerable) | Level 24 · Wizard | Vell only |
+
+### Tier 25: levels 25 to 29 (Part One): 21 items
+
+| Item | Slot | Rarity | Gold | Stats | Special | Requires | Where |
+|---|---|---|---|---|---|---|---|
+| Bell-keeper's Staff | Main hand | Epic | 440 | +3 spell attack, +3 DC | 5% more dealt; Still the Frost (weakened) | Level 25 · Wizard, Cleric or Bard | Briarwatch (from 25) |
+| Bellmetal Longsword | Main hand | Epic | 440 | 1d10, Str, +2/+3 | 5% more dealt | Level 25 · Strength 13 | Briarwatch (from 25) |
+| Bramblewood Longbow | Main hand | Epic | 440 | 1d8, bow, +2/+3 | 5% more dealt; Pinning Shot (slowed) | Level 25 · Dexterity 13 | Briarwatch (from 25) |
+| Delegate's Seal | Accessory | Epic | 440 | +3 Persuasion, +2 Deception | story: Deception | Level 25 | Highpass Watch (from 25) |
+| Furnace-iron Maul | Main hand | Legendary | 590 | 2d6, Str, two-handed, +2/+3 | Shatter (vulnerable) | Level 25 · Strength 15 | Vell only |
+| Hollow-oak Leathers | Armour | Epic | 440 | AC 15 + Dex | 5% more dealt | Level 25 | Briarwatch (from 25) |
+| Keeper's Prayer-beads | Accessory | Epic | 440 | +2 Religion, +2 History, +1 WIS save | story: Religion | Level 25 | Briarwatch (from 25) |
+| Night-watch Cloak | Accessory | Epic | 440 | +1 AC, +2 Perception | 5% less taken; story: Perception | Level 25 | Briarwatch (from 25) |
+| Pass-guide's Horn | Accessory | Epic | 440 | +3 Survival, +2 Animal Handling | story: Survival | Level 25 | Highpass Watch (from 25) |
+| Pass-runner's Blade | Main hand | Epic | 440 | 1d8, finesse, +2/+3 | 5% more dealt; Hamstring (slowed) | Level 25 · Dexterity 13 | Highpass Watch (from 25) |
+| Smuggler's Gloves | Accessory | Epic | 440 | +2 Sleight of Hand, +2 Stealth | story: Stealth | Level 25 | Highpass Watch (from 25) |
+| Vault Bell Clapper | Main hand | Legendary | 590 | 1d8, Str, +2/+3 | 5% more dealt; Last Toll (vulnerable) | Level 25 · Strength 13 | Chapter: The Quiet Bells (b3-vault) |
+| Watch-captain's Scale | Armour | Epic | 440 | AC 16 + Dex (max 2) | 5% less taken | Level 25 | Highpass Watch (from 25) |
+| Bell-bronze Plate | Armour | Epic | 450 | AC 21, heavy | 10% less taken; Brace (fortified) | Level 26 · Strength 15 | Briarwatch (from 25) |
+| Gate-bell Staff | Main hand | Legendary | 600 | +4 spell attack, +3 DC | 5% more dealt; Ring the Gates (slowed) | Level 26 · Wizard, Cleric or Bard | Chapter: The Great Bell of Vell (b3-greatbell) |
+| Gloam-cutter Greatsword | Main hand | Epic | 450 | 2d6, Str, two-handed, +2/+3 | 5% more dealt; Kindle (burning) | Level 26 · Strength 15 | Highpass Watch (from 25) |
+| Watch-fire Brooch | Accessory | Epic | 450 |  | 15% more dealt; 5% less taken; Rally (empowered) | Level 26 | Highpass Watch (from 25) |
+| Bell-rim Shield | Off hand | Epic | 460 | +4 AC | 10% less taken; Brace (fortified) | Level 27 · Fighter or Cleric · Strength 13 | Briarwatch (from 25) |
+| Hesk's Drill-coat | Armour | Legendary | 610 | AC 17 + Dex (max 2) | 5% less taken | Level 27 | Chapter: What Was Paid (b3-paid) |
+| Docker's Debt-tally | Accessory | Legendary | 620 | +3 Insight, +2 Investigation | 10% more dealt; 5% less taken; story: Insight | Level 28 | Part Two: b3-price (not wired yet) |
+| Forge-signal Longbow | Main hand | Legendary | 630 | 1d8, bow, +2/+4 | 5% more dealt; Signal Shot (vulnerable) | Level 29 · Dexterity 13 | Part Two: b3-wren (not wired yet) |
+
+### Tier 30: levels 30 to 34 (Part Two): 26 items
+
+| Item | Slot | Rarity | Gold | Stats | Special | Requires | Where |
+|---|---|---|---|---|---|---|---|
+| Dock-runner's Jerkin | Armour | Epic | 490 | AC 15 + Dex | 5% more dealt; 5% less taken | Level 30 | Merrowgate (from 30) |
+| Harbour Factor's Ring | Accessory | Epic | 490 | +3 Persuasion, +3 Deception | story: Deception | Level 30 | Merrowgate (from 30) |
+| Harbour Hospice Censer | Accessory | Epic | 490 | +3 Medicine, +2 Religion, +1 WIS save | story: Medicine | Level 30 | Merrowgate (from 30) |
+| Lantern Hall Smallsword | Main hand | Epic | 490 | 1d8, finesse, +2/+4 | Disarming Cut (weakened) | Level 30 · Dexterity 13 | Merrowgate only (from 30) |
+| Long-plank Shield | Off hand | Legendary | 640 | +4 AC | 10% less taken; Hold the Plank (fortified) | Level 30 · Fighter or Cleric · Strength 13 | Part Two: b3-order (not wired yet) |
+| Miners' Signal-staff | Main hand | Epic | 490 | +4 spell attack, +3 DC | Signal (weakened) | Level 30 · Wizard, Cleric or Bard | Highpass Watch (from 30), Cinder Fold (from 30) |
+| Seawall Greatsword | Main hand | Epic | 490 | 2d6, Str, two-handed, +2/+4 |  | Level 30 · Strength 15 | Ashford Crossing (from 30), Merrowgate (from 30) |
+| Wrecker Captain's Spyglass | Accessory | Legendary | 640 | +3 Perception | 10% more dealt; story: Perception | Level 30 | First bounty, Merrowgate at level 30+ |
+| Ashford Wall-bow | Main hand | Epic | 500 | 1d8, bow, +2/+4 | Pinning Shot (slowed) | Level 31 · Dexterity 13 | Ashford Crossing (from 30), Highpass Watch (from 30) |
+| Foundry Brand-ring | Accessory | Epic | 500 |  | 15% more dealt; 10% less taken; Bank the Fire (empowered) | Level 31 | Cinder Fold (from 30) |
+| Gallery Warhammer | Main hand | Epic | 500 | 1d10, Str, +2/+4 | Shatter (vulnerable) | Level 31 · Strength 13 | Cinder Fold only (from 30) |
+| Lid-forge Plate | Armour | Epic | 500 | AC 21, heavy | 15% less taken | Level 31 · Strength 15 | Cinder Fold only (from 30) |
+| Miners' Rope-chime | Accessory | Epic | 500 | +3 Performance | Every Rope at Once (empowered) | Level 31 | Cinder Fold (from 30) |
+| Old Wall Mail | Armour | Legendary | 650 | AC 17 + Dex (max 2) | 5% less taken | Level 31 | Part Two: b3-ashford (not wired yet) |
+| Slag Golem's Core | Accessory | Legendary | 650 |  | 5% less taken; Molten Core (burning) | Level 31 | First bounty, Cinder Fold at level 30+ |
+| Archive Grammar | Main hand | Epic | 510 | +4 spell attack, +3 DC | 5% more dealt; Unravel (vulnerable) | Level 32 · Wizard | Ashford Crossing (from 30) |
+| Plank-hook Gloves | Accessory | Epic | 510 | +3 Sleight of Hand, +3 Stealth | story: Stealth | Level 32 | Saltwick only (from 30) |
+| Roof-council Coat | Armour | Epic | 510 | AC 17 + Dex (max 2) |  | Level 32 | Highpass Watch (from 30), Saltwick (from 30) |
+| Salt-ward Charm | Accessory | Epic | 510 | +1 AC, +1 saves | 5% less taken | Level 32 | Saltwick (from 30) |
+| Witness's Staff | Main hand | Legendary | 660 | +4 spell attack, +3 DC | Hear the Lie (weakened) | Level 32 · Cleric or Bard | Part Two: b3-seal (not wired yet) |
+| Archive Reader's Spectacles | Accessory | Epic | 520 | +3 Arcana, +3 History | story: History | Level 33 | Ashford Crossing (from 30) |
+| Ashford Wall-shield | Off hand | Epic | 520 | +4 AC | 10% less taken; Hold the Wall (fortified) | Level 33 · Fighter or Cleric · Strength 13 | Ashford Crossing only (from 30) |
+| Raider Chief's Axe | Main hand | Legendary | 670 | 1d8, Str, +2/+4 | Sweep (weakened) | Level 33 · Strength 13 | First bounty, Ashford Crossing at level 30+ |
+| Valley Scout's Horn | Accessory | Epic | 520 | +3 Survival, +3 Perception | story: Perception | Level 33 | Ashford Crossing (from 30) |
+| Watch-line Lantern | Accessory | Legendary | 670 | +1 AC, +2 Perception | 5% less taken; story: Perception | Level 33 | Part Two: b3-winter (not wired yet) |
+| Hired Captain's Sabre | Main hand | Legendary | 680 | 1d8, finesse, +2/+4 | 5% more dealt; Disarming Cut (weakened) | Level 34 · Dexterity 13 | Part Two: b3-company (not wired yet) |
+
+### Tier 35: levels 35 to 39 (Part Two): 19 items
+
+| Item | Slot | Rarity | Gold | Stats | Special | Requires | Where |
+|---|---|---|---|---|---|---|---|
+| Briarwood Night-leathers | Armour | Legendary | 690 | AC 16 + Dex |  | Level 35 | Briarwatch (from 35) |
+| Briarwood Watch-blade | Main hand | Legendary | 690 | 1d10, Str, +2/+4 | 5% more dealt | Level 35 · Strength 13 | Briarwatch (from 35) |
+| Council Envoy's Chain | Accessory | Legendary | 690 | +3 Persuasion, +3 Insight | 5% more dealt; story: Persuasion | Level 35 | Highpass Watch (from 35) |
+| Frost-edge Knife | Main hand | Legendary | 690 | 1d8, finesse, +2/+4 | 5% more dealt; Hamstring (slowed) | Level 35 · Dexterity 13 | Highpass Watch (from 35) |
+| Hearth-bell Charm | Accessory | Legendary | 690 | +1 AC | 10% less taken | Level 35 | Cinder Fold only (from 35) |
+| Hearth-bell Shield | Off hand | Legendary | 690 | +4 AC | 10% less taken; Brace (fortified) | Level 35 · Fighter or Cleric · Strength 13 | Cinder Fold (from 35) |
+| Ridge Stalker's Pelt | Accessory | Legendary | 690 | +1 AC, +3 Stealth | story: Stealth | Level 35 | First bounty, Highpass Watch at level 35+ |
+| Snow-guide's Scale | Armour | Legendary | 690 | AC 17 + Dex (max 2) | 5% less taken | Level 35 | Briarwatch (from 35), Highpass Watch (from 35) |
+| Surveyor's Lamp | Accessory | Legendary | 690 | +3 Survival, +3 Investigation | 10% more dealt; story: Survival | Level 35 | Part Two: b3-deep (not wired yet) |
+| Watch-captain's Horn | Accessory | Legendary | 690 | +3 Performance | 15% more dealt; Sound the Watch (empowered) | Level 35 | Briarwatch (from 35) |
+| Watch-line Longbow | Main hand | Legendary | 690 | 1d8, bow, +2/+4 | 5% more dealt | Level 35 · Dexterity 13 | Briarwatch (from 35) |
+| Winter Tracker's Cloak | Accessory | Legendary | 690 | +3 Survival, +3 Stealth | story: Survival | Level 35 | Briarwatch (from 35) |
+| Winter-watch Staff | Main hand | Legendary | 690 | +4 spell attack, +3 DC | 5% more dealt; Hold the Line (slowed) | Level 35 · Wizard, Cleric or Bard | Briarwatch (from 35) |
+| Book of Hours | Accessory | Legendary | 700 | +3 Religion, +3 History, +3 Medicine | story: Religion | Level 36 | Briarwatch (from 35) |
+| Circle-edge Plate | Armour | Legendary | 700 | AC 22, heavy | 10% less taken; Brace (fortified) | Level 36 · Strength 15 | Part Two: b3-promise (not wired yet) |
+| Ninefold Greathammer | Main hand | Legendary | 700 | 2d6, Str, two-handed, +2/+4 | 5% more dealt; Shatter (vulnerable) | Level 36 · Strength 15 | Cinder Fold (from 35) |
+| Winter-watch Plate | Armour | Legendary | 700 | AC 22, heavy | 10% less taken | Level 36 · Strength 15 | Highpass Watch (from 35), Cinder Fold (from 35) |
+| First-note Tuning Iron | Main hand | Legendary | 710 | +4 spell attack, +4 DC | 5% more dealt; First Note (vulnerable) | Level 37 · Wizard, Cleric or Bard | Part Two: b3-firstbell (not wired yet) |
+| Margin-noted Grammar | Main hand | Legendary | 710 | +4 spell attack, +4 DC | Unravel (vulnerable) | Level 37 · Wizard | Highpass Watch only (from 35) |
+
+### Tier 40: level 40 (after the book): 17 items
+
+| Item | Slot | Rarity | Gold | Stats | Special | Requires | Where |
+|---|---|---|---|---|---|---|---|
+| Bell-iron Shield | Off hand | Legendary | 740 | +4 AC | 10% less taken; Brace (fortified) | Level 40 · Fighter or Cleric · Strength 13 | Briarwatch (from 40) |
+| Bellward Longsword | Main hand | Legendary | 740 | 1d10, Str, +3/+4 | 5% more dealt; Kindle (burning) | Level 40 · Strength 13 | Briarwatch (from 40), Highpass Watch (from 40) |
+| Bramble-silk Gloves | Accessory | Legendary | 740 | +3 Stealth, +3 Sleight of Hand | Snare (slowed) | Level 40 | Briarwatch (from 40) |
+| Bramble-steel Rapier | Main hand | Legendary | 740 | 1d8, finesse, +3/+4 | 5% more dealt; Disarming Cut (weakened) | Level 40 · Dexterity 13 | Briarwatch (from 40), Highpass Watch (from 40) |
+| Briar-leather Coat | Armour | Legendary | 740 | AC 16 + Dex | 5% more dealt | Level 40 | Briarwatch (from 40) |
+| Briar-yew Greatbow | Main hand | Legendary | 740 | 1d8, bow, +3/+4 | 5% more dealt; Pinning Shot (slowed) | Level 40 · Dexterity 13 | Briarwatch (from 40), Highpass Watch (from 40) |
+| Briarwatch Greatsword | Main hand | Legendary | 740 | 2d6, Str, two-handed, +3/+4 | 5% more dealt; Shatter (vulnerable) | Level 40 · Strength 15 | Briarwatch (from 40) |
+| Briarwood Warden's Horn | Accessory | Legendary | 740 | +3 Survival, +3 Perception, +3 Nature | 5% more dealt; story: Survival | Level 40 | Briarwatch (from 40) |
+| Free Wards' Envoy Seal | Accessory | Legendary | 740 | +3 Persuasion, +3 Deception, +3 Insight | 5% more dealt; story: Persuasion | Level 40 | Briarwatch (from 40) |
+| Hour Chime | Accessory | Legendary | 740 | +3 Performance, +2 WIS save, +2 CHA save | Ring True (empowered) | Level 40 | Briarwatch (from 40) |
+| Hour-bell Staff | Main hand | Legendary | 740 | +4 spell attack, +4 DC | 5% more dealt; Toll the Hour (weakened) | Level 40 · Wizard, Cleric or Bard | Briarwatch (from 40), Highpass Watch (from 40) |
+| Keeper's Day-book | Accessory | Legendary | 740 | +3 Arcana, +3 History, +3 Religion | story: Arcana | Level 40 | Briarwatch (from 40) |
+| Poacher-king's Longbow | Main hand | Legendary | 740 | 1d8, bow, +3/+4 | 10% more dealt | Level 40 · Dexterity 13 | First bounty, Briarwatch at level 40+ |
+| Second-winter Charm | Accessory | Legendary | 740 | +1 AC, +1 saves | 10% less taken | Level 40 | Briarwatch (from 40) |
+| Ward-captain's Signet | Accessory | Legendary | 740 |  | 20% more dealt; 5% less taken; story: Insight | Level 40 | Briarwatch (from 40) |
+| Wardsmith's Plate | Armour | Legendary | 740 | AC 22, heavy | 15% less taken; Brace (fortified) | Level 40 · Strength 15 | Briarwatch (from 40) |
+| Wardsmith's Scale | Armour | Legendary | 740 | AC 18 + Dex (max 2) | 5% less taken | Level 40 | Briarwatch (from 40), Highpass Watch (from 40) |
