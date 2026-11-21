@@ -2,7 +2,7 @@
 
 const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
 const Journal = require("./journal");
-const { dialogueText, liveLines } = require("./expansion");
+const { dialogueText, liveLines, nodeLocation } = require("./expansion");
 
 // The scene's written opening, with only the lines that apply to this save.
 function liveOpening(state) {
@@ -84,7 +84,7 @@ function buildNarratorPrompt(state, view, action, events) {
     "",
     "CURRENT SCENE — authoritative",
     `Act: ${node.act}`,
-    `Location: ${node.location}`,
+    `Location: ${nodeLocation(state, node)}`,
     `Scene: ${node.title}`,
     `Objective: ${node.objective}`,
     `Baseline scene description: ${view?.scene?.opening || node.opening}`,

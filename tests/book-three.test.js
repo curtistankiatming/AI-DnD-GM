@@ -26,8 +26,9 @@ function ready(id, { cls = 'fighter', party = ['orin', 'maren', 'nessa'], flags 
   s.world.completed.bell = { xp: 0, gold: 0 };
   for (const other of Object.values(QUESTS)) { if (other.id === id) break; s.world.completed[other.id] = { xp: 0, gold: 0 }; }
   s.world.unlockedTowns = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold', 'saltwick', 'vell']; s.world.townId = q.town; s.story.nodeId = `town-${q.town}`;
-  Object.assign(s.story.flags, flags); W.init(s);
+  W.init(s);
   if (party.includes('nessa')) s = act(s, { type: 'recruit' }).state;
+  Object.assign(s.story.flags, flags);
   s.party = s.party.filter((m) => party.includes(m.id));
   return s;
 }
@@ -87,6 +88,9 @@ test('the Second Oath epilogue hands the hero straight on to the letter from Vel
   let s = at('oath', 'after');
   const r = act(s, { type: 'story-choice', choiceId: 'seat' });
   assert.equal(r.state.story.flags[Book.FINISHED], undefined, 'Not handed to the AI storyteller.');
+  // Book Two is finished, so it says so on the decision itself, as before Part One.
+  assert.equal(r.events.filter((e) => /Book 2, .* is complete\. Book 3, .* begins\./.test(e.text || '')).length, 1, 'Book Two ends on the oath decision.');
+  assert.equal(r.state.story.flags['books:part-end-due'], undefined);
   s = act(r.state, { type: 'story-choice', choiceId: 'town' }).state;
   s = toTown(s);
   assert.equal(s.story.nodeId, 'town-briarwatch');
@@ -818,7 +822,7 @@ test('the end of Part One: Corvane is decided, Dera names the level-30 skill, an
   assert.match(fen, /Clerk-Major Fennick/);
   assert.match(fen, /It was not forced\. It was unlocked\./);
   assert.match(fen, /Someone has opened the iron door under the vault, and gone down\./);
-  assert.match(fen, /To be continued\./);
+  assert.doesNotMatch(fen, /To be continued/, "The engine says it once, back in town.");
   assert.match(opening(letter({}, 'keeper')), /Keeper of the Names/);
   assert.match(opening(letter({}, 'judged')), /being held at Highpass/);
   assert.doesNotMatch(opening(letter({}, 'vell')), /Fennick|Keeper of the Names|held at Highpass/);
@@ -882,4 +886,105 @@ test('review nits: "you have seen that road" needs the night round, and in the O
     assert.match(oil({ b3_saltwick_bought: true }, party), /Take Davin\. He knows the road/);
     assert.doesNotMatch(oil({ b3_saltwick_bought: true }, party), /to keep the lamps\. He knows/);
   }
+});
+
+// PR #67 review fixes.
+test('PR #67: the end of Part One cannot be left half-played, and "to be continued" never sticks', () => {
+  const s = decideAt('b3-paid', 'law');
+  assert.equal(s.story.nodeId, 'scene-b3-partone-end-corvane');
+  assert.equal(E.buildView(s).world.canReturn, false);
+  assert.equal(E.resolveAction(s, { type: 'return-town' }, high).result.ok, false);
+  const forge = pick(s, 'keeper');
+  assert.equal(E.resolveAction(forge, { type: 'return-town' }, high).result.ok, false, 'Not from a later node of the scene either.');
+  // A camp scene that only changes approval can still be left.
+  const camp = pick(decideAt('b3-home', 'help'), 'go');
+  assert.equal(camp.story.nodeId, `scene-home-camp-${SCENES['home-camp'].start}`);
+  assert.equal(E.resolveAction(camp, { type: 'return-town' }, high).result.ok, true);
+});
+
+test('PR #67: the Empty City has no bounty board, recruit, practice or AI work, and is called what it is', () => {
+  const s = decideAt('b3-greatbell', 'evacuate', {}, { party: ['orin', 'maren'] });
+  const v = E.buildView(s);
+  assert.equal(v.scene.location, 'The Empty City');
+  assert.equal(v.world.bounty, null); assert.equal(v.world.canRecruit, false); assert.equal(v.world.canPractice, false);
+  for (const type of ['recruit', 'practice', 'bounty']) assert.equal(E.resolveAction(s, { type }, high).result.ok, false, type);
+  assert.equal(v.world.director.canCommission, false); assert.match(v.world.director.reason, /nobody left in Vell/);
+  assert.equal(require('../src/data/towns.json').vell.emptied.rumor, undefined);
+  const cast = decideAt('b3-greatbell', 'cast');
+  assert.notEqual(E.buildView(cast).scene.location, 'The Empty City');
+  assert.equal(E.buildView(cast).world.canPractice, true);
+});
+
+test('PR #67: the numbers on the wall follow the witness everywhere they are said', () => {
+  const aster = (flags) => opening(decideAt('b3-home', 'help', flags));
+  assert.match(aster({}), /Three hundred and fifty people/);
+  assert.match(aster({ b3_witnessed: true }), /Two hundred and eighty-seven/);
+  assert.match(aster({ b3_quotas_exposed: true }), /A hundred and forty/);
+  assert.doesNotMatch(aster({ b3_witnessed: true }), /four hundred|Three hundred and fifty/);
+  const peace = (flags) => told(peaceAt('b3-greatbell', flags));
+  assert.match(peace({}), /that four hundred people said yes/);
+  assert.match(peace({ b3_witnessed: true }), /that three hundred and thirty-seven people said yes/);
+  assert.match(peace({ b3_quotas_exposed: true }), /that a hundred and ninety people said yes/);
+  assert.match(told(decideAt('b3-greatbell', 'cast')), /Almost all of it/);
+  const sorrel = (flags) => opening(decideAt('b3-paid', 'law', flags));
+  assert.match(sorrel({ b3_bell_evacuate: true }), /cast fifty living people/);
+  assert.match(sorrel({ b3_bell_cast: true }), /cast three hundred and ninety-one living people/);
+  assert.match(sorrel({ b3_bell_cast: true, b3_witnessed: true }), /cast three hundred and thirty living people/);
+  assert.match(sorrel({ b3_bell_cast: true, b3_quotas_exposed: true }), /cast a hundred and eighty-six living people/);
+  assert.equal((sorrel({ b3_bell_cast: true, b3_witnessed: true }).match(/^Sorrel: Him I can hold/gm) || []).length, 1);
+});
+
+test('PR #67: where the rest of Vell goes is told by the council\'s vote, on the cast and Aster routes too', () => {
+  for (const d of ['cast', 'aster']) {
+    const go = (flags) => told(decideAt('b3-greatbell', d, { b3_aster_may_go: true, b3_quotas_exposed: true, ...flags }));
+    assert.match(go({ b3_council_take: true }), /which promised to take them/, d);
+    assert.match(go({ b3_council_help: true }), /oil and seed, sent to a city/, d);
+    assert.match(go({ b3_council_refuse: true }), /a council that promised them nothing/, d);
+    assert.match(go({}), /with whatever she can find/, d);
+  }
+});
+
+test('PR #67: lines that answer or name a companion are told only with them there', () => {
+  // Tovin points back to the tower talk only if it was had.
+  const tower = act(ready('b3-home'), { type: 'depart', questId: 'b3-home' }).state;
+  assert.equal(pick(tower, 'talk-tower').story.flags.b3_tower_talk, true);
+  assert.doesNotMatch(opening(decideAt('b3-home', 'help')), /I told you on the stair/);
+  assert.match(opening(decideAt('b3-home', 'help', { b3_tower_talk: true })), /I told you on the stair/);
+  // Nessa and Maren answer Aster, and are missed when away.
+  assert.match(opening(decideAt('b3-home', 'help', { b3_ysolde_respected: true })), /If I let Ysolde choose/);
+  assert.match(opening(decideAt('b3-home', 'help', { b3_ysolde_pressed: true })), /I told Ysolde she couldn't/);
+  const alone = opening(decideAt('b3-home', 'help', { b3_ysolde_pressed: true }, { party: ['orin'] }));
+  assert.match(alone, /Nessa is not here/); assert.match(alone, /Maren is not here/); assert.doesNotMatch(alone, /I told Ysolde/);
+  // Tovin's hours are not lost without Nessa; her letter is.
+  const camp = pick(decideAt('b3-home', 'help', {}, { party: ['orin', 'maren'] }), 'go');
+  assert.equal(camp.story.nodeId, `scene-home-camp-${SCENES['home-camp'].start}`);
+  assert.match(opening(camp), /Tovin rings the hours/); assert.doesNotMatch(opening(camp), /Biscuit/);
+  assert.ok(!E.buildView(camp).scene.choices.some((c) => c.id === 'write'));
+  // The square after a fight, with Maren away.
+  const square = (party) => opening(at('b3-home', 'after', { flags: { 'method:b3-home': 'force' }, party }));
+  assert.match(square(['maren']), /Maren has stitched/); assert.match(square(['orin']), /shrine-sister has stitched/); assert.doesNotMatch(square(['orin']), /Maren/);
+  // Orin's question in the vault, unanswered only if he asked it.
+  assert.doesNotMatch(told(decideAt('b3-vault', 'held', {}, { party: ['maren'] })), /Nobody answers him/);
+  assert.match(told(decideAt('b3-vault', 'held', {}, { party: ['orin', 'maren'] })), /Nobody answers him/);
+  const roofs = RAWQ['b3-greatbell'].route.failure.filter((l) => /Tanner's Row/.test(l.narrate));
+  assert.deepEqual(roofs.map((l) => l.when), [{ party: 'orin' }, { absent: 'orin' }]);
+  assert.doesNotMatch(roofs[1].narrate, /Orin/);
+});
+
+test('PR #67: Dera\'s level-30 lines hold on every route, and Corvane learns of the satchel from the gate log', () => {
+  const forge = RAWS['b3-partone-end'].nodes.forge.lines.filter((l) => l.say === 'Dera' && l.when?.spec);
+  for (const l of forge) assert.doesNotMatch(l.text, /echo-stone|stone one|Hesk|Vell|Hollins/, l.when.spec);
+  const chron = forge.filter((l) => l.when.spec === 'chronist');
+  assert.deepEqual(chron.map((l) => [l.when.party, l.when.absent]), [['maren', undefined], [undefined, 'maren']]);
+  assert.doesNotMatch(chron[1].text, /Maren/);
+  const o = opening(depart('b3-paid'));
+  assert.match(o, /I didn't know what I'd seen until Fennick read me the gate log/); assert.doesNotMatch(o, /I watched him/);
+  assert.match(o, /out by the east gate/); assert.match(o, /the morning after the great bell/);
+  const out = opening(depart('b3-paid', { flags: { b3_bell_evacuate: true } }));
+  assert.match(out, /waiting at the Second Gate when you carry him out/); assert.doesNotMatch(out, /Two nights ago|the morning after the great bell/);
+  assert.match(told(decideAt('b3-paid', 'law')), /the only caster left who will still do it/);
+  assert.match(told(decideAt('b3-paid', 'law')), /I won't\. Not again\./);
+  const all = JSON.stringify([RAWQ['b3-home'], RAWQ['b3-vault'], RAWQ['b3-greatbell'], RAWQ['b3-paid'], RAWS['vault-camp'], RAWS['b3-partone-end']]);
+  assert.doesNotMatch(all, /south gate|congregation|Nobody makes a joke|fourteenth|only trained caster|The last nineteen years|for the harvest, and stayed/);
+  assert.doesNotMatch(JSON.stringify(RAWS['b3-partone-end']), /"To be continued\."/);
 });
