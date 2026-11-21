@@ -48,10 +48,15 @@ function vigor(level) {
 }
 
 // The boss and retainer of an adventure's deciding battle.
+// Enemies hit harder by power tier, as the party does from its stats (src/power.js):
+// nothing below power 5, then ENEMY_TIER_DAMAGE more per hit for each tier.
+const ENEMY_TIER_DAMAGE = 3;
+const foeTier = p => Math.max(0, Math.floor((p + 1) / 6));
 function foeStats({ accuracy: a, power: p, vigor: v = 1 }) {
+  const extra = ENEMY_TIER_DAMAGE * foeTier(p);
   return {
-    main: { maxHp: Math.round((22 + p * 6) * v), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3)}` },
-    retainer: { maxHp: Math.round((10 + p * 4) * v), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3)}` }
+    main: { maxHp: Math.round((22 + p * 6) * v), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3) + extra}` },
+    retainer: { maxHp: Math.round((10 + p * 4) * v), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3) + extra}` }
   };
 }
 

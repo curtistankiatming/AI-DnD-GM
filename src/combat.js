@@ -8,6 +8,7 @@ const G = require("./equipment");
 const W = require("./world");
 const Director = require("./director");
 const XP = require("./xp");
+const Power = require("./power");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
 const Expansion = require("./expansion");
@@ -250,6 +251,7 @@ function effectiveAc(actor) {
   let ac = Number(actor.ac || 10);
   if (hasCondition(actor, "guarded")) ac += 2;
   if (hasCondition(actor, "disengaged")) ac += 2;
+  ac += Power.acShift(actor);
   return ac;
 }
 
@@ -263,6 +265,12 @@ function startActorTurn(state, actor, rng, events) {
     const bleed = condition(actor, "bleeding");
     bleed.rounds = Number(bleed.rounds || 1) - 1;
     if (bleed.rounds <= 0) removeCondition(actor, "bleeding");
+  }
+  const burn = condition(actor, "burning");
+  if (burn && actor.hp > 0) {
+    applyCombatDamage(state, actor, Number(burn.damage || 3), "fire", events, "Burning");
+    burn.rounds = Number(burn.rounds || 1) - 1;
+    if (burn.rounds <= 0) removeCondition(actor, "burning");
   }
   for(const other of state.combat.actors)other.conditions=other.conditions.filter(c=>!(c.expiresRound && c.expiresRound<=state.combat.round && (c.sourceId ? c.sourceId===actor.id : other.id===actor.id)));
   if (actor.kind === "player" && actor.hp <= 0 && !actor.deathSaves.stable) {
@@ -310,6 +318,9 @@ function syncCombatBack(state) {
 
 function applyCombatDamage(state, target, rawAmount, damageType, events, source = "Attack") {
   let amount = Math.max(0, Math.floor(Number(rawAmount || 0)));
+  // Buffs and debuffs on the attacker and the target (src/power.js).
+  const attacker = state.combat ? (combatActor(state, state.combat.damageSourceId) || currentCombatActor(state)) : null;
+  if (amount > 0) amount = Math.floor(amount * Power.damageFactor(attacker && attacker.id !== target.id ? attacker : null, target));
   if (target.resistances?.includes(damageType)) amount = Math.floor(amount / 2);
   if (state.difficulty === "story" && target.team === "party") amount = Math.floor(amount * 0.82);
   if (state.difficulty === "gritty" && target.team === "party") amount = Math.ceil(amount * 1.12);
@@ -329,6 +340,7 @@ function applyCombatDamage(state, target, rawAmount, damageType, events, source 
   if (applied > 0 && hasCondition(target, "sleeping")) removeCondition(target, "sleeping");
   if (previous > 0 && target.hp === 0) {
     target.deathSaves = { successes: 0, failures: 0, stable: false };
+    if (target.team === "enemy") removeCondition(target, "burning");
     events.push({ type: "condition", tone: target.team === "enemy" ? "good" : "bad", text: `${target.name} fell unconscious.` });
     pushLog(state, "Combat", `${target.name} fell unconscious.`, "combat");
   }
@@ -396,11 +408,22 @@ function damageRoll(rng, formula, critical = false) {
   return { formula: `${formula} critical`, total: diceOnly + extra + flat, parts: first.parts };
 }
 
+// A party hit on the same enemy as the last party hit this round builds a chain.
+function chained(state, attacker, target, damage, events) {
+  const bonus = Power.chainHit(state.combat, attacker, target);
+  if (!bonus) return damage;
+  const extra = Math.round(damage * bonus);
+  events.push({ type: "feature", tone: "good", text: `${attacker.name} chains on ${target.name} (hit ${state.combat.chain.count} this round): +${extra} damage.` });
+  return damage + extra;
+}
+
 function resolveWeaponAttack(state, attacker, target, rng, events, options = {}) {
   const profile = attacker.attack;
   const attack = rollAttack(state, attacker, target, profile, rng, events, options);
   attacker.actionUsed = true;
   if (!attack.hit) return { hit: false, damage: 0 };
+  // Every damage line of this hit (Ward Oil too) counts this attacker's buffs.
+  state.combat.damageSourceId=attacker.id;
   let damage = damageRoll(rng, profile.damageFormula || profile.damage, attack.critical).total;
   if (attacker.kind === "player" && attacker.classId === "rogue" && !attacker.used.sneakAttackTurn) {
     const allyEngaged = livingActors(state, "party").some((actor) => actor.id !== attacker.id);
@@ -418,6 +441,8 @@ function resolveWeaponAttack(state, attacker, target, rng, events, options = {})
   }
   if (attacker.kind === "companion" && attacker.tactic === "aggressive") damage += 1;
   if(attacker.kind === "player")damage+=P.stats(state.player).damage;
+  damage+=Power.statDamage(attacker,profile.ability||CLASSES[attacker.classId]?.primaryAbility||"str");
+  damage=chained(state,attacker,target,damage,events);
   const oil=condition(attacker,"coating");if(oil){const extra=rollFormula(rng,"1d4").total;applyCombatDamage(state,target,extra,"radiant",events,"Ward Oil");oil.uses-=1;if(oil.uses<=0)removeCondition(attacker,"coating");}
   if(hasCondition(attacker,"shadowStrike")){damage+=rollFormula(rng,"2d6").total;removeCondition(attacker,"shadowStrike");}
   state.combat.damageSourceId=attacker.id;
@@ -534,10 +559,13 @@ function resolveTacticalAction(state,actor,action,rng,events) {
     spendActorResource(actor,'technique');actor.bonusUsed=true;state.combat.comboUsed=true;
     if(cid==='maren'){
       combatHeal(state,target,rollFormula(rng,'2d6').total+P.accuracyLevel(state.player.level),events,'Shared Renewal');removeCondition(target,'poisoned');
+      if(target.hp>0){addCondition(target,{id:'empowered',name:'Empowered by Shared Renewal',sourceId:actor.id,expiresRound:state.combat.round+2});events.push({type:'condition',tone:'good',text:`${target.name} is Empowered: 25% more damage for two rounds.`});}
     }else{
+      // A combination opens a chain on its target (src/power.js).
+      Power.startChain(state.combat,target);
       const used=comp.actionUsed;resolveWeaponAttack(state,comp,target,rng,events,{advantage:true});comp.actionUsed=used;
-      if(cid==='orin')for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});
-      else if(target.hp>0)addCondition(target,{id:'guiding',name:'Exposed by Crossfire'});
+      if(cid==='orin'){for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});if(target.hp>0){addCondition(target,{id:'weakened',name:'Weakened by Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Weakened: 25% less damage until your next turn.`});}}
+      else if(target.hp>0){addCondition(target,{id:'guiding',name:'Exposed by Crossfire'});addCondition(target,{id:'vulnerable',name:'Vulnerable to Crossfire',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Vulnerable: 25% more damage until your next turn.`});}
     }
     events.push({type:'party',tone:'good',text:`${actor.name} and ${comp.name} execute their personal-quest combination.`});return {ok:true,kind:'combat',outcomeText:'The party turns a shared experience into coordinated action.'};
   }
@@ -568,16 +596,16 @@ function resolveJobAction(state,actor,def,target,rng,events){
       }
     }else if(e.do==='spell'&&target?.hp>0){
       const r=rollAttack(state,actor,target,{name:def.name,attackBonus:spellAttackBonus(actor,def.ability||primary,state)},rng,events);
-      if(r.hit){applyCombatDamage(state,target,damageRoll(rng,f(e.damage),r.critical).total+st.damage,e.type||'force',events,def.name);if(e.onHit)condition(target,e.onHit);}
+      if(r.hit){applyCombatDamage(state,target,chained(state,actor,target,damageRoll(rng,f(e.damage),r.critical).total+st.damage+Power.statDamage(actor,def.ability||primary),events),e.type||'force',events,def.name);if(e.onHit)condition(target,e.onHit);}
     }else if(e.do==='save'){
       const dc=spellSaveDc(actor,primary);
       for(const foe of e.area?enemies():pick('target').filter(a=>a.team==='enemy'&&a.hp>0)){
         const saved=savingThrow(state,foe,e.save||'dex',dc,rng,events).success;
-        if(e.damage){const amount=rollFormula(rng,f(e.damage)).total+st.damage;const dealt=saved?(e.half?Math.floor(amount/2):0):amount;if(dealt)applyCombatDamage(state,foe,dealt,e.type||'force',events,def.name);}
+        if(e.damage){const amount=rollFormula(rng,f(e.damage)).total+st.damage+Power.statDamage(actor,def.ability||primary);const dealt=saved?(e.half?Math.floor(amount/2):0):amount;if(dealt)applyCombatDamage(state,foe,dealt,e.type||'force',events,def.name);}
         if(!saved&&e.onFail)condition(foe,e.onFail);
       }
     }else if(e.do==='damage'){
-      for(const foe of pick(e.on).filter(a=>a.team==='enemy'&&a.hp>0))applyCombatDamage(state,foe,rollFormula(rng,f(e.damage)).total+st.damage,e.type||'force',events,def.name);
+      for(const foe of pick(e.on).filter(a=>a.team==='enemy'&&a.hp>0))applyCombatDamage(state,foe,rollFormula(rng,f(e.damage)).total+st.damage+Power.statDamage(actor,def.ability||primary),e.type||'force',events,def.name);
     }else if(e.do==='heal'){
       for(const a of pick(e.on).filter(a=>a.team==='party'))combatHeal(state,a,Math.max(1,rollFormula(rng,f(e.amount)).total)+st.healing,events,def.name);
     }else if(e.do==='tempHp'){
@@ -657,14 +685,15 @@ function resolveClassAction(state, actor, actionDef, target, rng, events) {
     };
     const result = rollAttack(state, actor, target, profile, rng, events);
     if (result.hit) {
-      const damage = damageRoll(rng, actionDef.damage, result.critical).total+P.stats(state.player).damage;
+      const damage = chained(state, actor, target, damageRoll(rng, actionDef.damage, result.critical).total+P.stats(state.player).damage+Power.statDamage(actor, actionDef.ability), events);
       applyCombatDamage(state, target, damage, actionDef.damageType, events, actionDef.name);
       if (actionDef.onHit === "guiding" && target.hp > 0) addCondition(target, { id: "guiding", name: "Guiding Light" });
+      if (actionDef.damageType === "fire" && target.hp > 0 && !target.resistances?.includes("fire")) { addCondition(target, { id: "burning", name: "Burning", rounds: 1, damage: Power.burnDamage(actor.level) }); events.push({ type: "condition", tone: "good", text: `${target.name} is Burning.` }); }
     }
     return { ok: true, outcomeText: `${actor.name} casts ${actionDef.name}.` };
   }
   if (actionDef.kind === "autoDamage") {
-    const amount = rollFormula(rng, actionDef.damage).total+P.stats(state.player).damage;
+    const amount = rollFormula(rng, actionDef.damage).total+P.stats(state.player).damage+Power.statDamage(actor, actionDef.ability || CLASSES[actor.classId]?.primaryAbility);
     applyCombatDamage(state, target, amount, actionDef.damageType, events, actionDef.name);
     return { ok: true, outcomeText: `${actionDef.name} strikes ${target.name} without an attack roll.` };
   }
@@ -682,7 +711,7 @@ function resolveClassAction(state, actor, actionDef, target, rng, events) {
     const failed = total < dc;
     events.push({ type: "roll", tone: failed ? "good" : "bad", text: `${target.name} ${ABILITIES[actionDef.saveAbility].name} save: ${d20.natural} ${formatSigned(saveBonus)} = ${total} vs DC ${dc} — ${failed ? "failed" : "saved"}.` });
     if (failed) {
-      const amount = rollFormula(rng, actionDef.damage).total+P.stats(state.player).damage;
+      const amount = rollFormula(rng, actionDef.damage).total+P.stats(state.player).damage+Power.statDamage(actor, actionDef.ability);
       applyCombatDamage(state, target, amount, actionDef.damageType, events, actionDef.name);
       if (actionDef.onFail === "mocked" && target.hp > 0) addCondition(target, { id: "mocked", name: "Mocked" });
     }
@@ -938,8 +967,8 @@ function processCompanionTurn(state, actor, rng, events) {
   }
   const target=companionAttackTarget(state,actor);if(!target)return;
   if(actor.aiRole==='healer'&&actor.equippedFocus){
-    if(actor.tactic==='aggressive'&&actor.resources.guidingBolt>0){actor.resources.guidingBolt--;const r=rollAttack(state,actor,target,{name:'Guiding Bolt',attackBonus:spellAttackBonus(actor,'wis',state)},rng,events);if(r.hit){applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'4d6':'3d6',r.critical).total,'radiant',events,`${actor.name}'s Guiding Bolt`);if(target.hp>0)addCondition(target,{id:'guiding',name:'Guiding Light'});}}
-    else{const saved=savingThrow(state,target,'dex',spellSaveDc(actor,'wis'),rng,events).success;if(!saved)applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d8':'1d8').total,'radiant',events,`${actor.name}'s Sacred Flame`);}
+    if(actor.tactic==='aggressive'&&actor.resources.guidingBolt>0){actor.resources.guidingBolt--;const r=rollAttack(state,actor,target,{name:'Guiding Bolt',attackBonus:spellAttackBonus(actor,'wis',state)},rng,events);if(r.hit){applyCombatDamage(state,target,chained(state,actor,target,damageRoll(rng,actor.level>=5?'4d6':'3d6',r.critical).total+Power.statDamage(actor,'wis'),events),'radiant',events,`${actor.name}'s Guiding Bolt`);if(target.hp>0)addCondition(target,{id:'guiding',name:'Guiding Light'});}}
+    else{const saved=savingThrow(state,target,'dex',spellSaveDc(actor,'wis'),rng,events).success;if(!saved)applyCombatDamage(state,target,rollFormula(rng,actor.level>=5?'2d8':'1d8').total+Power.statDamage(actor,'wis'),'radiant',events,`${actor.name}'s Sacred Flame`);}
     actor.actionUsed=true;return;
   }
   const hit=resolveWeaponAttack(state,actor,target,rng,events);
@@ -971,6 +1000,12 @@ function processEnemyTurn(state, actor, rng, events) {
       actor.actionUsed = true;
       return;
     }
+  }
+  // From level 5, a wounded leader rallies once: Empowered for two rounds (src/power.js).
+  if ((actor.aiRole === "boss" || actor.aiRole === "leader") && state.player.level >= 5 && !actor.enraged && actor.hp <= actor.maxHp / 2) {
+    actor.enraged = true;
+    addCondition(actor, { id: "empowered", name: "Empowered: wounded and furious", expiresRound: state.combat.round + 2 });
+    events.push({ type: "condition", tone: "warning", text: `${actor.name} is wounded and furious: Empowered, 25% more damage for two rounds.` });
   }
   const target = enemyPriorityTarget(state, actor, rng);
   if (!target) return;
@@ -1210,7 +1245,7 @@ function combatView(state) {
       maxHp: actor.maxHp,
       ac: effectiveAc(actor),
       initiative: actor.initiative,
-      conditions: actor.conditions,
+      conditions: (actor.conditions || []).map(c => Power.EFFECTS[c.id] ? { ...c, effect: Power.EFFECTS[c.id].text } : c),
       current: actor.id === current?.id,
       unconscious: actor.hp <= 0
     })),

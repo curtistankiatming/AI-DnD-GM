@@ -135,7 +135,7 @@ test('the browser build bundles every module its sources require', () => {
   const { SOURCES } = require('../scripts/build-public');
   for (const id of SOURCES) {
     const text = fs.readFileSync(path.join(__dirname, '..', 'src', `${id}.js`), 'utf8');
-    for (const [, dep] of text.matchAll(/require\('\.\/([^']+)'\)/g)) {
+    for (const [, dep] of text.matchAll(/require\(['"]\.\/([^'"]+)['"]\)/g)) {
       if (dep.startsWith('data/')) continue;
       assert.ok(SOURCES.includes(dep), `src/${id}.js needs ./${dep}, which the browser build leaves out`);
     }
