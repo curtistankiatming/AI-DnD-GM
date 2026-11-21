@@ -4,6 +4,13 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Books that come out in parts
+
+- A book can now be released one part at a time. Book Three runs from level
+  20 to 40 in two parts; each part stays hidden until all of its chapters are
+  written, and heroes wait at "to be continued" between parts. Book Three's
+  chapters pay exactly one level each, so it ends at level 40 and the 3rd job.
+
 ## Paid books on the hosted game (groundwork for Book Three)
 
 - The game now knows which books a session may play. The open-source game
