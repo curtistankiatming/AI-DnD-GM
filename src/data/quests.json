@@ -1355,12 +1355,34 @@
     "unlock": "summit",
     "xp": 3800,
     "gold": 245,
-    "region": "The abandoned ward district",
-    "threat": "Sleep-binding constructs and sealed evacuation gates. Ward oil and tools help, but choosing an evacuation route matters most.",
+    "region": "Tallowmarket, the old ward district below Highpass",
+    "threat": "Iron bell-wardens that walk sleepers back to bed, and evacuation gates locked from the inside. Ward oil and tools help, but the way you lead people out matters most.",
     "faction": "wardens",
-    "brief": "An entire district has stopped sending messengers. Its residents still move through familiar routines, but none can choose to leave. Break the command relays without turning the streets into a battlefield.",
-    "opening": "A baker kneads the same empty board. A child opens and closes a school gate. Every movement pauses when the bell in the central square clicks rather than rings.",
-    "clue": "The relays use remembered routines to replace decisions. Interrupting their shared rhythm will release the residents without damaging the wards that keep them safe.",
+    "brief": "Tallowmarket, the old ward district below Highpass, has not sent a messenger in a month. Its people are still there, going about their days, and none of them can choose to leave. Silence the echo-stones that hold them without turning their streets into a battlefield.",
+    "opening": [
+      {
+        "narrate": "Tallowmarket is very clean. Somebody has swept the steps this morning, and yesterday, and every morning for a month."
+      },
+      {
+        "narrate": "Old Hobb the baker kneads an empty board, floured to the elbows, with nothing in the bowl. A girl in a school pinafore opens the school gate, steps through, steps back, and closes it again. Every so often the bell in the square gives a small dry click instead of ringing, and the whole street stops between one breath and the next, and then goes on."
+      },
+      {
+        "say": "nessa",
+        "text": "That's not sleeping. Sleeping, you get to dream.",
+        "when": {
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "They're not unhappy. Listen to them. They're not anything."
+      },
+      {
+        "say": "orin",
+        "text": "Then we don't break anything we can't put back. Not a window."
+      }
+    ],
+    "clue": "Three echo-stones replay the district's old routines so that nobody has to decide anything. Break their shared rhythm and the people come back to themselves, without harming the wards that keep the Gloam off the streets.",
     "investigate": {
       "label": "Find the break between remembered routine and living choice",
       "skill": "insight",
@@ -1368,11 +1390,33 @@
         "arcana",
         "medicine"
       ],
-      "success": "You ask a resident a question with no familiar answer. For a moment they wake and point out the three relay anchors.",
-      "failure": "Your questions fail to wake anyone, but Maren notices that their pauses do not align with the street clock. The command is external."
+      "success": [
+        {
+          "narrate": "You kneel by the school gate and ask the girl a question nobody has asked her in a month: what she would do today, if she could do anything."
+        },
+        {
+          "narrate": "She stops, with her hand on the latch. Her face does something complicated."
+        },
+        {
+          "say": "Posy",
+          "text": "I'd go and see if Mr Hobb's got any crusts. And then... there's three stones. Under the clock, the chapel and the well. They hum. I don't like them."
+        },
+        {
+          "narrate": "Then the bell clicks, and she opens the gate again. But you know where to go."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "Your questions slide off them. But Maren, standing in the square with her eyes shut, counts the pauses against the clock tower and frowns."
+        },
+        {
+          "say": "maren",
+          "text": "They're not stopping on the hour. They're stopping when something tells them to. It's not in them. It's coming from outside."
+        }
+      ]
     },
     "route": {
-      "label": "Reach the relays through the service courtyards",
+      "label": "Reach the echo-stones through the service courtyards",
       "skill": "stealth",
       "alt": [
         "investigation",
@@ -1382,10 +1426,36 @@
         "thieves-tools",
         "lantern"
       ],
-      "success": "The routines conceal your movement. You wedge the evacuation gate before the relay notices.",
-      "failure": "A service door rings against a guard’s route. Sentinels arrive, but the evacuation gate is within reach."
+      "success": [
+        {
+          "narrate": "You move through the back courtyards behind the routines, where everyone is too busy doing what they did yesterday to see you. Orin wedges the evacuation gate with a bread paddle from Hobb's yard before anything thinks to lock it."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "A service door bangs against the path of a bell-warden on its rounds. Iron feet turn towards you down the alley. But the evacuation gate is close, and it is still open."
+        }
+      ]
     },
-    "crisis": "The district’s bound magistrate begs you not to destroy the protective wards. The command construct uses her voice to order the sentinels to keep everyone safely inside.",
+    "crisis": [
+      {
+        "narrate": "In the square the magistrate is waiting for you: Magistrate Imelda Abernathy, in her chain of office, standing very straight under the clicking bell. Her mouth moves. The voice that comes out of it belongs to every echo-stone at once."
+      },
+      {
+        "say": "The Borrowed Magistrate",
+        "text": "Residents are to remain indoors for their safety. The Gloam is near. The wards are holding. Nobody needs to go anywhere. Nobody needs to decide."
+      },
+      {
+        "narrate": "Then, under it, so quietly you nearly miss it, her own voice."
+      },
+      {
+        "say": "Abernathy",
+        "text": "Don't break the wards. Please. The mist is right there, past the wall. Get them out, but don't break the wards."
+      },
+      {
+        "narrate": "The iron bell-wardens step out of their doorways, polite as ushers, to walk everyone safely home."
+      }
+    ],
     "peaceful": {
       "label": "Give the residents a new, voluntary signal to follow",
       "skill": "performance",
@@ -1393,13 +1463,24 @@
         "persuasion",
         "religion"
       ],
-      "success": "An unfamiliar song moves from window to window. The residents choose to answer it; the command loses its borrowed voices.",
-      "failure": "A few residents wake, enough to begin an evacuation. The construct tightens its remaining hold and sends the sentinels after you."
+      "success": [
+        {
+          "narrate": "Nessa starts it, because somebody has to: a skipping song from the road, the first one she ever learned. Maren takes up the tune from the next window. Then, from his doorway, very hoarse, Old Hobb."
+        },
+        {
+          "narrate": "It is not a routine. Nobody in Tallowmarket has heard it before. One by one, all down the street, people stop what they did yesterday and choose to answer it, and the voice in the bell runs out of mouths to borrow."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "A handful of people wake, blinking in their doorways. It is enough to start getting them out. It is not enough to stop the bell, which tightens its hold on everyone else and sends the bell-wardens after you."
+        }
+      ]
     },
     "objective": {
-      "name": "Disconnect the command without destroying the wards",
-      "label": "Free a command relay",
-      "description": "Four successful actions release the district. Complete the objective before round seven to preserve all three local wards.",
+      "name": "Silence the echo-stones without breaking the wards",
+      "label": "Silence an echo-stone",
+      "description": "Four successful actions free the district. Finish before round seven to keep all three of Tallowmarket's wards standing.",
       "skill": "arcana",
       "alt": [
         "sleightOfHand",
@@ -1407,18 +1488,37 @@
       ],
       "target": 4,
       "deadline": 7,
-      "failText": "The emergency mechanism burns out one local ward. The residents still need release, and later repairs will be unavoidable.",
-      "successText": "The last relay goes quiet. People begin making small, uncertain choices of their own."
+      "failText": "The last echo-stone burns out one of the district's wards on its way down. Tallowmarket still needs freeing, and somebody will have to rebuild that ward before winter.",
+      "successText": "The last stone goes quiet. All down the street people begin to make small, uncertain choices of their own. Old Hobb sits down on his step and cries, and then gets up and asks who has any flour."
     },
     "foe": "relay-construct",
     "foeName": "The Borrowed Magistrate",
     "enemyTheme": "construct",
-    "after": "The magistrate asks who should decide when a ward may override a person’s wishes. The answer will travel with you to the final beacon.",
+    "after": [
+      {
+        "narrate": "Magistrate Abernathy takes her chain of office off and holds it in both hands, as if it has got heavier."
+      },
+      {
+        "say": "Abernathy",
+        "text": "The wards did that to us for our own good. They did keep the mist out. I want you to understand that. Nobody here was hurt."
+      },
+      {
+        "say": "Abernathy",
+        "text": "So you tell me. When is a ward allowed to overrule the people it's guarding? Because somebody is going to ask the next town that question, and I'd like the answer written down before they do."
+      },
+      {
+        "narrate": "Whatever you answer, it will go with you to the first beacon."
+      }
+    ],
     "decisions": [
       {
         "id": "consent",
         "label": "Require the keeper’s and community’s consent",
-        "text": "The district adopts a double-consent rule. Independence now has a practical safeguard.",
+        "text": [
+          {
+            "narrate": "Tallowmarket adopts a double-consent rule: a ward may only hold people with its keeper's word and the district's together, and either can take it back. Abernathy writes it on the wall of the square in whitewash, where the bell can read it."
+          }
+        ],
         "rep": {
           "wilds": 2,
           "wardens": 2
@@ -1428,7 +1528,11 @@
       {
         "id": "oversight",
         "label": "Create a public emergency oversight council",
-        "text": "Emergency powers require named, reviewable votes and a fixed expiry.",
+        "text": [
+          {
+            "narrate": "Tallowmarket sets up a public oversight council. Emergency powers need named votes, a record anyone can read, and a date when they run out. Old Hobb is elected first, because he was the first to answer the song."
+          }
+        ],
         "rep": {
           "trade": 2,
           "wardens": 1
@@ -1436,7 +1540,33 @@
         "flag": "district_oversight"
       }
     ],
-    "approach": "The service courtyards run behind the bakery and the school, where the routines are loudest. The main street is empty, clicking, and watched by the relay sentinels."
+    "approach": "The service courtyards run behind the bakery and the school, where the routines are loudest. The main street is empty except for the clicking, and the iron bell-wardens walking their rounds.",
+    "talks": [
+      {
+        "id": "hobb",
+        "label": "Talk to Old Hobb the baker",
+        "lines": [
+          {
+            "narrate": "Hobb does not stop kneading. But when you ask him what he is making, his hands slow, as if the question has caught on something."
+          },
+          {
+            "say": "Hobb",
+            "text": "Bread. For the morning. I always... the morning's when they come in. Posy from the school, she has the end crust."
+          },
+          {
+            "say": "Hobb",
+            "text": "There's no flour. Did I say? There's been no flour for... it doesn't matter. The bell says it doesn't matter. It's very kind about it."
+          },
+          {
+            "narrate": "The bell clicks. Hobb's face smooths out like a sheet, and his hands go on kneading the empty board."
+          },
+          {
+            "say": "maren",
+            "text": "He knew. For a moment he knew. That's the thread we pull."
+          }
+        ]
+      }
+    ]
   },
   "beacon": {
     "id": "beacon",
@@ -1447,11 +1577,33 @@
     "xp": 4400,
     "gold": 300,
     "region": "The first ward beacon",
-    "threat": "A command engine protected by bound echoes. The keystone, your allies, and the decisions recorded on the road determine how it can be stopped.",
+    "threat": "The iron chorus at the first beacon, guarded by bound echoes. The keystone, your friends, and the choices you made on the road decide how it can be stopped.",
     "faction": "wardens",
-    "brief": "The central command is preparing its final signal. Carry the keystone to the first beacon and decide whether the ward network will become a shield shared by many or a command held by one.",
-    "opening": "The first beacon stands above the cloud line. Voices from the towns you visited echo through its open rings, each clipped into a single obedient note.",
-    "clue": "The command has no voice of its own. It can be severed by making the wards answer independently, or destroyed at the cost of burning the central lens.",
+    "brief": "Central Command is preparing its final signal. Carry the keystone to the first beacon, and decide whether the ward network will be a shield shared by many people or a command held by one.",
+    "opening": [
+      {
+        "narrate": "The first beacon stands above the cloud line, on a stair cut into the mountain before anyone now alive was born. Its bronze rings are open to the sky, and something is singing in them."
+      },
+      {
+        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh, telling somebody not to expect her to be pleasant. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
+      },
+      {
+        "say": "orin",
+        "text": "That's everyone we've met."
+      },
+      {
+        "say": "maren",
+        "text": "That's everyone we've helped. It's learned them from the wards we mended."
+      },
+      {
+        "say": "nessa",
+        "text": "Then we know the words better than it does.",
+        "when": {
+          "party": "nessa"
+        }
+      }
+    ],
+    "clue": "The iron chorus has no voice of its own: only the borrowed ones. Let the wards answer for themselves and it falls apart. Or break it by force, and burn the great lens with it.",
     "investigate": {
       "label": "Listen for the separate voices beneath the command",
       "skill": "perception",
@@ -1459,8 +1611,37 @@
         "religion",
         "arcana"
       ],
-      "success": "You recognize the people behind the notes. Their choices along the road give you a sequence the command cannot predict.",
-      "failure": "The chorus overwhelms you, but your companions each find one familiar voice. You can still reach the keystone cradle."
+      "success": [
+        {
+          "narrate": "You stop trying to hear the chorus and listen for the people inside it instead. Each one, once you know them, is a little off the beat."
+        },
+        {
+          "narrate": "The drivers you paid back are in there, every family still keeping its own count, and no two counts the same.",
+          "when": {
+            "flag": "road_restitution"
+          }
+        },
+        {
+          "narrate": "The sluice-house keepers are in there, still bickering about who opens which gate. The council you left in the marsh has never once agreed on time.",
+          "when": {
+            "flag": "marsh_council"
+          }
+        },
+        {
+          "narrate": "The demolition crew from the bridge are in there, singing a work song they learned beside the refugees, and none of them can carry a tune.",
+          "when": {
+            "flag": "bridge_amnesty"
+          }
+        },
+        {
+          "narrate": "Their choices on the road give you a rhythm the chorus cannot predict, because none of them would ever have chosen it."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The chorus swallows you whole. But one by one your companions each pick out a voice they know, and hold onto it, and you can follow them to the keystone cradle."
+        }
+      ]
     },
     "route": {
       "label": "Carry the keystone through the resonant rings",
@@ -1472,8 +1653,16 @@
       "tools": [
         "storm-grounder"
       ],
-      "success": "You ground the nearest rings and reach the cradle before the command finishes tuning them.",
-      "failure": "A peal throws the party against the stone. The cradle remains reachable, but the bound echoes gather around it."
+      "success": [
+        {
+          "narrate": "You earth the nearest rings with the grounding rod, as you did on Wren's tower, and climb through the quiet patch it leaves. You reach the cradle before the chorus has finished tuning them."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "A peal goes through the stair like a hammer through a plate, and the whole party is thrown against the stone. The cradle is still in reach. But the bound echoes have gathered round it, waiting."
+        }
+      ]
     },
     "crisis": [
       {
@@ -1500,7 +1689,7 @@
         "text": "He believes it. Every word."
       },
       {
-        "narrate": "The Single Voice offers perfect safety at the cost of every keeper’s choice. It sounds less convincing now that you have seen whom such safety leaves behind."
+        "narrate": "The Single Voice offers perfect safety, and asks only for every keeper's choice in return. It would have sounded better before Tallowmarket. You have seen what that kind of safety looks like from the inside: a clean street, and a man kneading bread with no flour."
       }
     ],
     "peaceful": {
@@ -1510,13 +1699,28 @@
         "performance",
         "religion"
       ],
-      "success": "The keepers answer in different rhythms. The command cannot make them agree without choosing for them; its central note falls apart.",
-      "failure": "The first voices answer, then falter under the pressure. Your companions hold the echoes back while you open the remaining channels."
+      "success": [
+        {
+          "narrate": "You set the keystone in its cradle and do not tell it anything. Instead you call the keepers, one at a time, by name: the ones you met, the ones on Maren's list, the ones who were never asked."
+        },
+        {
+          "narrate": "They answer in different rhythms, out of time with each other and badly out of tune. The chorus cannot make them agree without choosing for them, and the moment it tries to choose, the note it has been holding all year comes apart in its hands."
+        },
+        {
+          "say": "maren",
+          "text": "Listen to that. It's dreadful. It's wonderful."
+        }
+      ],
+      "failure": [
+        {
+          "narrate": "The first voices answer, and then falter under the weight of the note. Your companions put their backs to the cradle and hold the echoes off while you open the rest, one channel at a time."
+        }
+      ]
     },
     "objective": {
       "name": "Restore a chorus of independent wards",
       "label": "Open an independent ward channel",
-      "description": "Four successful actions sever the command. Your earlier community decisions lower the difficulty; the change is shown before rolling.",
+      "description": "Four successful actions break the iron chorus. Choices you made earlier on the road lower the difficulty, and the change is shown before you roll.",
       "skill": "arcana",
       "alt": [
         "persuasion",
@@ -1524,18 +1728,37 @@
       ],
       "target": 4,
       "deadline": 7,
-      "failText": "The central lens cracks while the command continues. Break the command to free the roads; rebuilding the lens will take longer.",
-      "successText": "Separate voices fill the rings. The region’s wards become a chorus, not a chain."
+      "failText": "The great lens cracks with the chorus still singing in it. Break the chorus to free the roads; mending the lens will take years.",
+      "successText": "Separate voices fill the rings, all out of step. The region's wards become a chorus, not a chain."
     },
     "foe": "single-voice",
     "foeName": "The Single Voice",
     "enemyTheme": "boss",
-    "after": "Dawn reaches the roads below. Your party has earned the right to define what its strength is for. The guild has prepared the first advancement trial—not as a reward for obedience, but as a question.",
+    "after": [
+      {
+        "narrate": "Dawn comes up over the cloud and goes down the mountain to the roads, one village at a time. Somewhere below, a bell rings properly, then another, nowhere near in time."
+      },
+      {
+        "say": "orin",
+        "text": "That's the worst bell-ringing I've ever heard."
+      },
+      {
+        "say": "maren",
+        "text": "That's all of them. Ringing for themselves."
+      },
+      {
+        "narrate": "Your party has earned the right to say what its strength is for. Back in Highpass, the guild has prepared the first advancement trial. Not a reward for obedience, but a question."
+      }
+    ],
     "decisions": [
       {
         "id": "distributed",
         "label": "Leave the wards in independent, cooperating hands",
-        "text": "Every settlement keeps its own voice. Your party becomes a link between them, not a ruler above them.",
+        "text": [
+          {
+            "narrate": "Every settlement keeps its own voice and its own keeper. Your party becomes the road between them, not a throne above them. Nobody will ever be told what to do by the first beacon again. They will have to argue, which is the point."
+          }
+        ],
         "rep": {
           "wilds": 3,
           "wardens": 2
@@ -1545,7 +1768,11 @@
       {
         "id": "charter",
         "label": "Found a public charter for the ward network",
-        "text": "A shared charter limits the network’s power and names the people who must answer for its use.",
+        "text": [
+          {
+            "narrate": "A public charter for the ward network: what it may do, what it may never do, and the names of the people who must answer when it is used. It is nailed to the beacon door. Within a week somebody has written a complaint in the margin, which is how you know it is working."
+          }
+        ],
         "rep": {
           "trade": 3,
           "wardens": 2
@@ -1553,7 +1780,41 @@
         "flag": "ending_charter"
       }
     ],
-    "approach": "The rings hum between you and the keystone cradle, close enough to feel in your teeth. The pilgrims’ stair goes straight up the middle, where the command will hear every step."
+    "approach": "The rings hum between you and the keystone cradle, close enough to feel in your teeth. The pilgrims’ stair goes straight up the middle, where the command will hear every step.",
+    "talks": [
+      {
+        "id": "stair",
+        "label": "Stop on the stair and talk",
+        "lines": [
+          {
+            "narrate": "Halfway up, where the stair turns, you all stop at once without anybody saying so. The keystone is warm through its wrappings."
+          },
+          {
+            "say": "orin",
+            "text": "Before we go up. If it goes wrong up there, I take the front. That's not a discussion."
+          },
+          {
+            "say": "maren",
+            "text": "It's never a discussion with you. That's why it's always a discussion."
+          },
+          {
+            "say": "nessa",
+            "text": "If it goes wrong up there, I'm running. Just so everyone knows. Towards it, probably. But running.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "maren",
+            "text": "Whatever's at the top, it thinks it's right. Somebody built it because they were frightened. Don't forget that when you're angry with it."
+          },
+          {
+            "say": "orin",
+            "text": "And don't forget the angry part either."
+          }
+        ]
+      }
+    ]
   },
   "trial": {
     "id": "trial",
@@ -1844,11 +2105,18 @@
     "xp": 0,
     "gold": 240,
     "region": "The returning caravan road",
-    "threat": "An isolated command engine is holding a relief caravan. Ward Oil can affect its guards; a climbing kit offers access to the emergency channel.",
+    "threat": "One of the iron chorus's last bell-wardens is holding a relief caravan at a gate. Ward Oil can affect its guards; a climbing kit reaches the emergency channel above the gate.",
     "faction": "trade",
-    "brief": "Take your new mastery onto the road. A surviving command engine has mistaken a relief convoy for an invading army; the first free towns need its medicine.",
-    "opening": "Children have painted the convoy’s crates with the symbols of their towns. Ahead, a gate of pale metal repeats an obsolete evacuation order. The driver has stopped arguing and started counting the sick.",
-    "clue": "The engine still accepts the old roadwardens’ responsibility oath. Its own emergency channel can release the gate without restoring the network’s central command.",
+    "brief": "Take your new mastery onto the road. A bell-warden left over from the iron chorus has mistaken a relief convoy for an invading army, and the first free towns need the convoy's medicine.",
+    "opening": [
+      {
+        "narrate": "Children have painted the convoy's crates with the signs of their towns. Ahead, at a gate of pale metal, a tall iron bell-warden is repeating an evacuation order that has been out of date since the beacon fell. Nobody told it. Nobody was left whose job it was to tell it."
+      },
+      {
+        "narrate": "The lead driver, a broad woman called Oda, has stopped arguing with it and started counting the sick."
+      }
+    ],
+    "clue": "The bell-warden still accepts the old roadwardens' oath of responsibility. Its own emergency channel can open the gate without waking anything else that answered to the chorus.",
     "investigate": {
       "label": "Read the obsolete evacuation orders with the drivers",
       "skill": "investigation",
@@ -1857,7 +2125,7 @@
         "history"
       ],
       "success": "The contradictory commands reveal an emergency channel. It was designed for a keeper who would take personal responsibility for admitting the convoy.",
-      "failure": "The exact wording is damaged, but the drivers remember a keeper’s oath. You know enough to challenge the command, though not how to make it easy."
+      "failure": "The exact wording is damaged, but the drivers remember a keeper’s oath. You know enough to challenge its orders, though not how to make it easy."
     },
     "route": {
       "label": "Reach the emergency channel above the gate",
@@ -1873,7 +2141,7 @@
       "success": "The party reaches the channel before the guards can close the gallery. Your new training makes the opening feel usable, not merely lucky.",
       "failure": "A guard breaks the gallery brace. The party reaches the channel with injuries and without surprise."
     },
-    "crisis": "The engine asks who will answer for the people beyond its gate. Its guards advance. You may offer a binding promise, disable the engine, or work the channel while your companions keep the road open.",
+    "crisis": "The bell-warden asks who will answer for the people beyond its gate. Its guards advance. You may offer a binding promise, disable the bell-warden, or work the channel while your companions keep the road open.",
     "peaceful": {
       "label": "Take responsibility for the convoy under the keepers’ oath",
       "skill": "persuasion",
@@ -1883,7 +2151,7 @@
       ],
       "success": [
         {
-          "narrate": "The engine asks for a keeper who will answer for the people beyond its gate. You have already sworn to something like that, out loud, in front of witnesses."
+          "narrate": "The bell-warden asks for a keeper who will answer for the people beyond its gate. You have already sworn to something like that, out loud, in front of witnesses."
         },
         {
           "narrate": "You give it the words you gave the guild: the people who cannot hold the road themselves.",
@@ -1904,10 +2172,10 @@
           }
         },
         {
-          "narrate": "The engine accepts a responsible keeper in place of a distant master. It opens the gate and records the convoy’s destination, not its obedience."
+          "narrate": "The bell-warden accepts a responsible keeper in place of a distant master. It opens the gate and records the convoy’s destination, not its obedience."
         }
       ],
-      "failure": "The damaged engine refuses the oath. You must make room for the convoy before its guards enforce the old order."
+      "failure": "The damaged bell-warden refuses the oath. You must make room for the convoy before its guards enforce the old order."
     },
     "objective": {
       "name": "Open the relief convoy’s route",
@@ -1926,7 +2194,7 @@
       "successText": "The convoy passes between lowered weapons. People see what your new title means before anyone announces it."
     },
     "foe": "last-command",
-    "foeName": "The Last Command Engine",
+    "foeName": "The Last Bell-Warden",
     "enemyTheme": "construct",
     "after": "The convoy reaches the first settlement before dusk. Your mastery has faced something more demanding than a title ceremony: people depending on the way you choose to act.",
     "decisions": [

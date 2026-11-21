@@ -34,7 +34,7 @@ test('a failed parley that starts a fight is told once', () => {
   const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'resolve' }, low);
   assert.ok(r.state.combat?.active, 'The failed parley starts the fight.');
   const text = deterministicFallback(r.state, r.view, { type: 'story-choice' }, r.events);
-  const line = 'A few residents wake, enough to begin an evacuation.';
+  const line = 'A handful of people wake, blinking in their doorways.';
   assert.equal(text.split(line).length - 1, 1, text);
 });
 
