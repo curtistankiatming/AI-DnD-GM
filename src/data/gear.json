@@ -3774,7 +3774,7 @@
       "skill": "insight"
     },
     "exclusive": {
-      "pending": "b3-price"
+      "quest": "b3-price"
     }
   },
   {
@@ -3814,7 +3814,7 @@
       "text": "Mark an enemy for the others: it is Vulnerable until your next turn."
     },
     "exclusive": {
-      "pending": "b3-wren"
+      "quest": "b3-wren"
     }
   },
   {
@@ -3848,7 +3848,7 @@
       "text": "Become Fortified for two rounds: take 25% less damage."
     },
     "exclusive": {
-      "pending": "b3-order"
+      "quest": "b3-order"
     }
   },
   {
@@ -3874,7 +3874,7 @@
       "level": 31
     },
     "exclusive": {
-      "pending": "b3-ashford"
+      "quest": "b3-ashford"
     }
   },
   {
@@ -3906,7 +3906,7 @@
       "text": "Name an enemy's lie aloud: it deals 25% less damage until your next turn."
     },
     "exclusive": {
-      "pending": "b3-seal"
+      "quest": "b3-seal"
     }
   },
   {
@@ -3932,7 +3932,7 @@
       "skill": "perception"
     },
     "exclusive": {
-      "pending": "b3-winter"
+      "quest": "b3-winter"
     }
   },
   {
@@ -3971,7 +3971,7 @@
       "text": "Weaken an enemy until your next turn: it deals 25% less damage."
     },
     "exclusive": {
-      "pending": "b3-company"
+      "quest": "b3-company"
     }
   },
   {
@@ -3997,7 +3997,7 @@
       "skill": "survival"
     },
     "exclusive": {
-      "pending": "b3-deep"
+      "quest": "b3-deep"
     }
   },
   {
@@ -4033,7 +4033,7 @@
       "text": "Become Fortified until your next turn: take 25% less damage."
     },
     "exclusive": {
-      "pending": "b3-promise"
+      "quest": "b3-promise"
     }
   },
   {
@@ -4066,7 +4066,7 @@
       "text": "Ring the founders' first note: an enemy is Vulnerable until your next turn."
     },
     "exclusive": {
-      "pending": "b3-firstbell"
+      "quest": "b3-firstbell"
     }
   }
 ]

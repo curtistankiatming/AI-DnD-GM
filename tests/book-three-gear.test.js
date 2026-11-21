@@ -22,8 +22,7 @@ const PART_TWO = { 'b3-price': 30, 'b3-wren': 31, 'b3-order': 32, 'b3-ashford': 
 const allStock = (t) => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()];
 // Where an item can be had today without missing it: a town that is never
 // emptied, a Part One chapter, or a bounty. Vell's shop closes if the city is
-// evacuated, and Part Two's rewards are not given until its chapters are in,
-// so neither counts.
+// evacuated, so it does not count. Part Two's rewards count once given.
 function obtainable(item) {
   const x = item.exclusive;
   if (x?.pending) return false;
@@ -202,13 +201,14 @@ test('every Part One chapter gives its own item, wearable from two levels below 
   }
 });
 
-test('Part Two rewards wait for their chapters: never sold, never given, and each names a chapter of the design', () => {
-  const pending = GEAR.filter((i) => i.exclusive?.pending);
-  assert.deepEqual(pending.map((i) => i.exclusive.pending).sort(), Object.keys(PART_TWO).sort(), 'one for each Part Two chapter');
-  for (const item of pending) {
-    assert.equal(item.requires.level, PART_TWO[item.exclusive.pending] - 2, item.id);
+test('Part Two rewards are given when their chapters finish: never sold, and one for each chapter', () => {
+  const rewards = GEAR.filter((i) => PART_TWO[i.exclusive?.quest]);
+  assert.deepEqual(rewards.map((i) => i.exclusive.quest).sort(), Object.keys(PART_TWO).sort(), 'one for each Part Two chapter');
+  for (const item of rewards) {
+    assert.ok(QUESTS[item.exclusive.quest], `${item.exclusive.quest} exists`);
+    assert.equal(item.requires.level, PART_TWO[item.exclusive.quest] - 2, item.id);
     const s = JSON.parse(JSON.stringify(hero('fighter', 40)));
-    assert.equal(Gear.award(s, `quest:${item.exclusive.pending}`, []), null, `${item.id} is not given yet`);
+    assert.equal(Gear.award(s, `quest:${item.exclusive.quest}`, [])?.id, item.id, `${item.id} is given`);
     assert.ok(!Object.values(TOWNS).some((t) => allStock(t).includes(item.id)), item.id);
   }
 });

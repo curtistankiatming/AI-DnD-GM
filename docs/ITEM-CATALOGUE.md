@@ -33,8 +33,9 @@ them are in `src/data/gear.json`.
   highest the hero has reached, so a hero who comes back later collects the
   rest one bounty at a time.
 - **Rewards waiting for a chapter.** An item with `exclusive.pending` names a
-  chapter that is not in the game yet (Book Three, Part Two). It is never sold
-  or given until that chapter is wired by changing `pending` to `quest`.
+  chapter that is not in the game yet. It is never sold or given until that
+  chapter is wired by changing `pending` to `quest`. (Book Three's Part Two
+  rewards used this until their chapters went in; none are pending now.)
 - **AI adventures.** Finishing an AI adventure gives one item made from a
   template (blade, bow, focus, mail or charm) at the adventure's level. The
   storyteller never sets the numbers: an item is just a template and a level
@@ -136,8 +137,7 @@ be missed count: Vell's shop and Part Two's chapter rewards don't.
 | Lorekeeper, Battle Cantor | Foci for Bards, Arcana and History accessories, Performance and Empowered items |
 
 **Chapter rewards.** Every Part One chapter now gives an item (b3-vell's
-Volunteer's Ribbon was the only one). Part Two's ten chapters each have their
-item already, marked `pending` until those chapters are in:
+Volunteer's Ribbon was the only one). Part Two's ten chapters each give one too:
 
 | Part Two chapter | Item | Requires |
 |---|---|---|
@@ -152,8 +152,7 @@ item already, marked `pending` until those chapters are in:
 | 19, The First Promise (b3-promise) | Circle-edge Plate | Level 36 · Strength 15 |
 | 20, The First Bell (b3-firstbell) | First-note Tuning Iron | Level 37 · Wizard, Cleric or Bard |
 
-To wire one, change its `"exclusive": { "pending": "b3-…" }` to `"quest"`; the
-chapter's completion then gives it (`src/world.js` already calls
+Each is given when its chapter is completed (`src/world.js` calls
 `Gear.award(state, 'quest:<id>')` for every chapter).
 
 ### Tier 20: levels 20 to 24 (Part One): 22 items
