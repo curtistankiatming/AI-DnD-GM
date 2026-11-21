@@ -3,8 +3,10 @@
 Step 5 of the gameplay review plan. The equipment rules are in
 [EQUIPMENT.md](EQUIPMENT.md); this is what uses them.
 
-The game now has 68 pieces of equipment (87 items with potions and tools), up
-from 30. The 38 new ones are in `src/data/gear.json`.
+The game now has 80 pieces of equipment (99 items with potions and tools), up
+from 30. The 50 new ones are in `src/data/gear.json`. Twelve of them came from
+the items review ([report](reviews/claude-items-2026-11-21.md)), so archers,
+finesse fighters and casters keep finding better gear up to level 24.
 
 ## Where items come from
 
@@ -77,3 +79,15 @@ Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 | Ridge-stalker's Hood | Accessory | Rare | 140 | Level 6 · Dexterity 13 | First bounty, Highpass Watch |
 | Wrecker's Gaff | Main hand | Rare | 200 | Level 11 | First bounty, Merrowgate |
 | Slagcaller Gauntlets | Accessory | Epic | 340 | Level 15 · Strength 13 | First bounty, Cinder Fold |
+| Cinderglass Longbow | Main hand | Epic | 380 | Level 15 · Dexterity 14 | Cinder Fold |
+| Smoke-glass Rapier | Main hand | Epic | 390 | Level 16 · Dexterity 14 | Cinder Fold |
+| Bellmetal Rod | Main hand | Epic | 400 | Level 16 · Wizard, Cleric or Bard | Cinder Fold |
+| Ward-thread Robe | Armour | Epic | 360 | Level 15 · Wizard, Cleric or Bard | Cinder Fold |
+| Plankwalker Sabre | Main hand | Epic | 480 | Level 20 · Dexterity 15 | Saltwick |
+| Mistwatch Bow | Main hand | Epic | 470 | Level 20 · Dexterity 15 | Saltwick |
+| Saltwick Oilskin | Armour | Epic | 460 | Level 20 · Rogue, Ranger or Bard · Dexterity 15 | Saltwick |
+| Lamplighter's Staff | Main hand | Epic | 480 | Level 21 · Wizard, Cleric or Bard | Saltwick |
+| Commandery Longbow | Main hand | Legendary | 640 | Level 23 · Dexterity 15 | Vell only |
+| Vell Duelling Sword | Main hand | Legendary | 660 | Level 24 · Dexterity 15 | Vell only |
+| Chancery Rod | Main hand | Legendary | 680 | Level 24 · Wizard or Bard | Vell only |
+| Vell Courier Leathers | Armour | Legendary | 680 | Level 24 · Rogue, Ranger or Bard · Dexterity 15 | Vell only |

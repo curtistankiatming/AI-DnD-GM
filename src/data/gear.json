@@ -1165,5 +1165,404 @@
     "exclusive": {
       "event": "bounty:cinderfold"
     }
+  },
+  {
+    "id": "cinderglass-longbow",
+    "name": "Cinderglass Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 380,
+    "description": "Ash-wood laminated with a ribbon of furnace glass. The string never quite cools.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit and damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 2,
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "dex": 14
+      }
+    },
+    "skill": {
+      "name": "Kindle Shot",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy alight for two rounds."
+    }
+  },
+  {
+    "id": "smokeglass-rapier",
+    "name": "Smoke-glass Rapier",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 390,
+    "description": "A slender blade quenched in slag-smoke, dark as a forge window at night.",
+    "purpose": "Finesse, 1d8 piercing, +2 to hit and damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 2,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 16,
+      "abilities": {
+        "dex": 14
+      }
+    },
+    "skill": {
+      "name": "Smoke Feint",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Open an enemy's guard until your next turn: it takes more damage."
+    }
+  },
+  {
+    "id": "bellmetal-rod",
+    "name": "Bellmetal Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 400,
+    "description": "Cast from the off-cuts of a ward-bell. It hums when a spell is close.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "requires": {
+      "level": 16,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Resonance",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Ring an enemy's ward loose until your next turn: it takes more damage."
+    }
+  },
+  {
+    "id": "plankwalker-sabre",
+    "name": "Plankwalker Sabre",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 480,
+    "description": "A short, light sabre the Saltwick roof-watch carry on the planks, where there is no room to swing anything longer.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "skill": {
+      "name": "Sweep the Footing",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Cut at an enemy's footing for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "mistwatch-bow",
+    "name": "Mistwatch Bow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 470,
+    "description": "A long, pale bow strung for shooting from the roofs down into the mist, at shapes that move in it.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "requires": {
+      "level": 20,
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy in place until your next turn: 2 less armour."
+    }
+  },
+  {
+    "id": "saltwick-oilskin",
+    "name": "Saltwick Oilskin",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 460,
+    "description": "A roofrunner's coat of waxed cloth over thin plates of horn, made to keep the mist off and a fall short.",
+    "purpose": "Base AC 15 plus your full Dexterity.",
+    "armor": {
+      "base": 15,
+      "dexCap": null
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 20,
+      "classes": [
+        "rogue",
+        "ranger",
+        "bard"
+      ],
+      "abilities": {
+        "dex": 15
+      }
+    }
+  },
+  {
+    "id": "lamplighter-staff",
+    "name": "Lamplighter's Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Epic",
+    "value": 480,
+    "description": "The long hook of the Saltwick lamplighters, its brass cap holding a little steady light.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 21,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Steady Light",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Steady your casting for two rounds: you deal more damage."
+    }
+  },
+  {
+    "id": "commandery-longbow",
+    "name": "Commandery Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 640,
+    "description": "A yew war-bow from the Vell commandery racks, stamped with a company number.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 23,
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "skill": {
+      "name": "Volley Call",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Pin an enemy under covering fire until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "vell-duelling-sword",
+    "name": "Vell Duelling Sword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 660,
+    "description": "An officer's sword from the commandery fencing hall, light and very exact.",
+    "purpose": "Finesse, 1d8 piercing, +2 to hit, +3 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 2,
+    "damageBonus": 3,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 24,
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "skill": {
+      "name": "Opening",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Find the gap in an enemy's guard until your next turn: it takes more damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "chancery-rod",
+    "name": "Chancery Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 680,
+    "description": "The black rod a Vell chancery clerk carried to seal the city's ward-rolls.",
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC.",
+    "spellAttackBonus": 3,
+    "spellDcBonus": 3,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 24,
+      "classes": [
+        "wizard",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Sealing Word",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Bind an enemy with a written word until your next turn: it deals 25% less damage."
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "vell-courier-leathers",
+    "name": "Vell Courier Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 680,
+    "description": "The quilted leathers of the commandery's dispatch riders, cut to run in.",
+    "purpose": "Base AC 16 plus your full Dexterity.",
+    "armor": {
+      "base": 16,
+      "dexCap": null
+    },
+    "stats": {
+      "taken": -0.05,
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 24,
+      "classes": [
+        "rogue",
+        "ranger",
+        "bard"
+      ],
+      "abilities": {
+        "dex": 15
+      }
+    },
+    "story": {
+      "skill": "acrobatics"
+    },
+    "exclusive": {
+      "town": "vell"
+    }
+  },
+  {
+    "id": "wardthread-robe",
+    "name": "Ward-thread Robe",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 360,
+    "description": "A Cinder Fold casting-robe with fine bell-wire woven through the lining. It is warm, and it turns a blade more often than cloth should.",
+    "purpose": "Base AC 13 plus your full Dexterity.",
+    "armor": {
+      "base": 13,
+      "dexCap": null
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 15,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "story": {
+      "skill": "arcana"
+    }
   }
 ]
