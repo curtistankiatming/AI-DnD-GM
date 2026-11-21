@@ -1073,7 +1073,25 @@
           "wilds": 2,
           "wardens": 1
         },
-        "flag": "signal_refugees"
+        "flag": "signal_refugees",
+        "flagsIf": [
+          {
+            "when": {
+              "party": "nessa"
+            },
+            "setFlags": {
+              "wren_map_nessa": true
+            }
+          },
+          {
+            "when": {
+              "absent": "nessa"
+            },
+            "setFlags": {
+              "wren_map_hero": true
+            }
+          }
+        ]
       },
       {
         "id": "supply",
@@ -1083,7 +1101,25 @@
           "trade": 2,
           "wilds": 1
         },
-        "flag": "signal_supply"
+        "flag": "signal_supply",
+        "flagsIf": [
+          {
+            "when": {
+              "party": "nessa"
+            },
+            "setFlags": {
+              "wren_map_nessa": true
+            }
+          },
+          {
+            "when": {
+              "absent": "nessa"
+            },
+            "setFlags": {
+              "wren_map_hero": true
+            }
+          }
+        ]
       }
     ],
     "approach": "The charged rings turn above the climb, throwing sparks onto the rock. The tower’s front stair is open and lit, and every sentinel on the platform can see it.",
@@ -1603,7 +1639,7 @@
         "narrate": "The first beacon stands above the cloud line, on a stair cut into the mountain before anyone now alive was born. Its bronze rings are open to the sky, and something is singing in them."
       },
       {
-        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh, who never said a word to you in Fenmere, saying one now. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
+        "narrate": "Every so often you catch a voice you know. Old Hobb. Captain Sorrel. Brannagh, who barely said a word to you in Fenmere, saying one now. Each one is cut off after one word, filed down to a single obedient note, and fitted into the chorus with the rest."
       },
       {
         "say": "orin",
@@ -2219,7 +2255,14 @@
     "foe": "last-command",
     "foeName": "The Last Bell-Warden",
     "enemyTheme": "construct",
-    "after": "The convoy reaches the first settlement before dusk. Your mastery has faced something more demanding than a title ceremony: people depending on the way you choose to act.",
+    "after": [
+      {
+        "narrate": "The convoy reaches the first settlement before dusk. Your mastery has faced something more demanding than a title ceremony: people depending on the way you choose to act."
+      },
+      {
+        "narrate": "The drivers have news from over the mountains. High Warden Corvane has gone home to Vell, to the Commandery, which melted down its own wards a generation ago to feed the Single Voice, and has none now. Nobody on the convoy knows what he will do there. Nobody is sorry he has gone."
+      }
+    ],
     "decisions": [
       {
         "id": "keepers",
@@ -2330,6 +2373,18 @@
       },
       {
         "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. Brannagh has come up from Fenmere, white-haired, in a mud-stiff cloak, with the same brown goat on a rope. She nods to you once, which from her is a long conversation. Nobody has asked about the goat."
+      },
+      {
+        "narrate": "On the door is Lieutenant Garrow of the Watch, who signed the keystone's shared oath on the summit ledge. He nods to you the way people nod at someone they have signed something with.",
+        "when": {
+          "flag": "keystone_shared"
+        }
+      },
+      {
+        "narrate": "On the door is Lieutenant Garrow of the Watch, who signed as a witness when the keystone went to the regional council. He carries his copy of the custody record inside his coat, in case anybody asks. Nobody has.",
+        "when": {
+          "flag": "keystone_council"
+        }
       },
       {
         "narrate": "And there is the delegate from Merrowgate: Provost Elske Marrow, grey-eyed, ink on two fingers, with a guild clerk at her elbow who writes down everything, including the weather."
@@ -2570,7 +2625,19 @@
         "text": "Mist in the lower pass. It followed the Fenmere rider up the valley. The camp's below the line of the ward."
       },
       {
-        "narrate": "The ward itself hangs in Highpass's gate arch, and it is answering the mist in a thin, uncertain voice. Since the beacon, no single keeper may ring it to full strength alone."
+        "narrate": "The ward itself hangs in Highpass's gate arch, and it is answering the mist in a thin, uncertain voice."
+      },
+      {
+        "narrate": "Since the beacon, no single keeper may ring it to full strength alone. The charter you nailed to the beacon door says so, and somebody has already written a complaint about it in the margin.",
+        "when": {
+          "flag": "ending_charter"
+        }
+      },
+      {
+        "narrate": "Since the beacon, no single keeper may ring it to full strength alone. Nobody wrote that down. The keepers agreed it among themselves, after the beacon, and they have kept to it, which is more than most written rules manage.",
+        "when": {
+          "flag": "ending_distributed"
+        }
       },
       {
         "say": "Iona",
@@ -3153,6 +3220,18 @@
         }
       },
       {
+        "narrate": "Oda, the convoy driver, is the keeper of the Briarwatch road now, chosen by the towns after the convoy. She stops you at the crossroads to tell you everything that is wrong with the south road. It takes a while.",
+        "when": {
+          "flag": "epilogue_keepers"
+        }
+      },
+      {
+        "narrate": "The road patrol you set up after the convoy has a hut at the crossroads now, with a rota nailed to the door. Two of the names have been crossed out and written back in, which the patrol says is how you know it works.",
+        "when": {
+          "flag": "epilogue_patrol"
+        }
+      },
+      {
         "narrate": "Tovin is at the bell tower with his apprentice, Pim, who is fourteen and has read every book on bell-keeping in Briarwatch, both of them, several times."
       },
       {
@@ -3526,10 +3605,10 @@
       },
       {
         "say": "maren",
-        "text": "'To repairs, Ashford span, following the hero's intervention: ninety-one crowns. To one cart, mislaid by the hero's party: four crowns. To refreshment of the hero's party at the quartermaster's expense, the night after: two crowns, eleven pence.' She's itemised the beer."
+        "text": "'To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold, eleven pence.' She's itemised the beer."
       },
       {
-        "narrate": "It is itemised. To repairs, Ashford span, following the hero's intervention: ninety-one crowns. To one cart, mislaid by the hero's party: four crowns. To refreshment of the hero's party at the quartermaster's expense, the night after: two crowns, eleven pence. She has itemised the beer.",
+        "narrate": "It is itemised. To repairs, Ashford span, following the hero's intervention: ninety-one gold. To one cart, mislaid by the hero's party: four gold. To refreshment of the hero's party at the quartermaster's expense, the night after: two gold, eleven pence. She has itemised the beer.",
         "when": {
           "absent": "maren"
         }
@@ -3549,7 +3628,7 @@
         }
       },
       {
-        "narrate": "The something more important is posted on every door in the city. The harbour ward, the great bell in the tower on the mole that has kept the Gloam off the water for two hundred years, is to be sold at public auction tomorrow night by the Lantern Guilds of Merrowgate, its lawful owners. Bidding opens at ten thousand crowns."
+        "narrate": "The something more important is posted on every door in the city. The harbour ward, the great bell in the tower on the mole that has kept the Gloam off the water for two hundred years, is to be sold at public auction tomorrow night by the Lantern Guilds of Merrowgate, its lawful owners. Bidding opens at ten thousand gold."
       },
       {
         "say": "Aveline",
@@ -3947,7 +4026,7 @@
         "label": "Ask that the bell go to the harbour's own keepers, the fishers and pilots",
         "text": [
           {
-            "narrate": "It is not in the rules, but by now nobody in the hall cares about the rules. The fishers' and pilots' guild, who ring the bell every night and have never owned it, are given it for one crown, which Brannagh pays."
+            "narrate": "It is not in the rules, but by now nobody in the hall cares about the rules. The fishers' and pilots' guild, who ring the bell every night and have never owned it, are given it for one gold piece, which Brannagh pays."
           },
           {
             "say": "Brannagh",
@@ -4681,6 +4760,21 @@
         }
       },
       {
+        "narrate": "You take out the map she pressed on you under the signal arm, every safe line through the pass, and put it on her table. Wren unfolds it, runs one finger down the north gully, and folds it up again.",
+        "when": {
+          "flag": "wren_map_hero",
+          "absent": "nessa"
+        }
+      },
+      {
+        "say": "Wren",
+        "text": "You kept it dry. That's something. Nobody's kept it honest, mind. Leave it with me.",
+        "when": {
+          "flag": "wren_map_hero",
+          "absent": "nessa"
+        }
+      },
+      {
         "say": "nessa",
         "text": "Wren. You're here. I thought you were at the signal tower. I wrote you about six letters, I just never sent them, I was going to—",
         "when": {
@@ -4735,6 +4829,10 @@
       },
       {
         "say": "Aster Vey",
+        "text": "My bell is still Briarwatch's, in the tower. I answer when Tovin rings at six. But a bell is a door, if you know how, and I can step through into a smaller one and keep you company."
+      },
+      {
+        "say": "Aster Vey",
         "text": "You are over the first forge. All of us were made here. The oldest ones are under your feet. They are cold. They are frightened. They are ringing because nobody has asked them anything for nine hundred years."
       },
       {
@@ -4778,6 +4876,58 @@
           {
             "say": "Wren",
             "text": "And now I've got a stick."
+          },
+          {
+            "narrate": "Halfway through, Nessa takes a folded map out of her coat and puts it on the table between them without a word: Wren's map of the pass, from the signal tower. There are new lines on it, in a different pencil.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "narrate": "Wren puts on a pair of spectacles you did not know she owned and reads every one.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "You've moved the north gully.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "It moved. After the thaw. I went and looked.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "Hm.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "narrate": "She folds the map along its old creases and pushes it back across the table. 'Better,' she says, and that is all, and Nessa looks at the table for some time.",
+            "when": {
+              "flag": "wren_map_nessa"
+            }
+          },
+          {
+            "narrate": "Halfway through, you get out the pass map Wren gave you at the signal tower and put it in front of Nessa. She has it corrected in three places before anyone asks her to, and Wren watches her do it.",
+            "when": {
+              "flag": "wren_map_hero"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "Better. Keep it.",
+            "when": {
+              "flag": "wren_map_hero"
+            }
           },
           {
             "narrate": "Then Wren puts both hands flat on the table, which is plainly the thing she has been working up to."
@@ -4918,7 +5068,7 @@
         "text": "When the council votes at Briarwatch, will you speak for us?"
       },
       {
-        "narrate": "The council is to vote on Elske's Warden at Briarwatch, at midwinter. Aveline sent word while you were underground. Everyone is going home."
+        "narrate": "The council is to vote on Elske's Warden at Briarwatch, at the first snow. Aveline sent word while you were underground. Everyone is going home."
       }
     ],
     "decisions": [
@@ -4978,13 +5128,13 @@
     "nextTown": "cinderfold",
     "xp": 6300,
     "gold": 460,
-    "region": "Briarwatch, at midwinter",
+    "region": "Briarwatch, in the first snow",
     "threat": "The council votes on Elske's Warden of the Chorus at Briarwatch. Somebody is paying people to make sure Briarwatch's own town meeting never gets to decide how its delegate votes.",
     "faction": "wardens",
     "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs two-thirds of the towns that vote: four, if all five do. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
     "opening": [
       {
-        "narrate": "Briarwatch at midwinter is the same as ever, only more so. There is snow on the bell tower. Dera's forge is the warmest place in the village, so the whole village is in it."
+        "narrate": "Briarwatch in the first snow is the same as ever, only more so. There is snow on the bell tower. Dera's forge is the warmest place in the village, so the whole village is in it."
       },
       {
         "say": "Dera",
@@ -5028,6 +5178,10 @@
           {
             "say": "Sable",
             "text": "She'll fail the same way I did. Not because she's cruel. Because she'll be tired, and the bell will be right there, and nobody will be in the room to say no. One year. You know what a year is, when the mist is at the door? It's for ever."
+          },
+          {
+            "say": "Sable",
+            "text": "Corvane went home to Vell, you know. People send me books, and the books come with gossip. A province that melted every ward it had for his Voice, and you broke the Voice. It will be a cold winter there. He'll be thinking. Corvane always thinks when he's cold."
           },
           {
             "say": "orin",
@@ -5084,7 +5238,7 @@
           },
           {
             "say": "Sorrel",
-            "text": "I'm still voting for Elske. She didn't do this. But I'll be standing up tonight to say what he did, and that whatever the council decides, Pell Haverick doesn't get to pay for it."
+            "text": "I'm still voting for Elske. She didn't do this. But I'll be standing up at the council to say what he did, and that whatever the council decides, Pell Haverick doesn't get to pay for it."
           }
         ],
         "setFlags": {
@@ -5105,7 +5259,7 @@
       ],
       "success": [
         {
-          "narrate": "Twelve carters came in on Tuesday with empty carts and full purses. They have bought every round in the inn since. They have no cargo and no reason to be in Briarwatch at midwinter, and their purses are stitched with the Lantern Hall's mark, because Haverick's people are thorough about everything except the things that matter."
+          "narrate": "Twelve carters came in on Tuesday with empty carts and full purses. They have bought every round in the inn since. They have no cargo and no reason to be in Briarwatch in the first snow, and their purses are stitched with the Lantern Hall's mark, because Haverick's people are thorough about everything except the things that matter."
         },
         {
           "say": "orin",
@@ -5148,6 +5302,18 @@
       },
       {
         "narrate": "Briarwatch has a great deal to say. Dera thinks the council is too slow. Tovin says he has seen what one voice does to a bell and will not see it again. Pim says something about the hourly ringing that nobody follows. A farmer says a year is a long time. A widow from the Ashford road, whose village burned in the summer, says it is not long enough."
+      },
+      {
+        "narrate": "Aveline reads a letter from Magistrate Rook of Tallowmarket, who could not come. 'In Tallowmarket a ward may hold people only with its keeper's word and the district's together, and either can take it back. Ask whether a Warden would ask twice. I do not know the answer. I would like you to.'",
+        "when": {
+          "flag": "district_consent"
+        }
+      },
+      {
+        "narrate": "Aveline reads a letter from Magistrate Rook of Tallowmarket, who could not come. 'In Tallowmarket emergency powers need named votes, a record anyone can read, and a date when they run out. This Warden has all three. I would vote yes. Old Hobb, who sits on our council, says to tell you he would vote no, and that he has flour now.'",
+        "when": {
+          "flag": "district_oversight"
+        }
       },
       {
         "narrate": "Then the carters at the back start shouting. Not arguments, just noise. Somebody throws a snowball with a stone in it. A torch goes over. People start to back away toward their houses, and Aveline's voice cannot be heard over the din."
@@ -5484,7 +5650,7 @@
         "narrate": "Then, one by one, the other bells stop."
       },
       {
-        "narrate": "You feel it before you hear it. The first wards under the forge go quiet. Somewhere far away, Fenmere's ward-song falters in the middle of the third verse. Merrowgate's harbour bell stops in mid-stroke. In Briarwatch, the bell in the tower, Aster Vey's bell, goes silent; the little bell in your pack goes cold. Every ward in the land has been made to agree, and so none of them is saying anything at all."
+        "narrate": "You feel it before you hear it. The first wards under the forge go quiet. Somewhere far away, Fenmere's ward-song falters in the middle of the third verse. Merrowgate's harbour bell stops in mid-stroke. In Briarwatch, the bell in the tower, Aster Vey's own bell, goes silent, and the little bell in your pack that she travels in goes cold. Every ward in the land has been made to agree, and so none of them is saying anything at all."
       },
       {
         "say": "Aster Vey",
@@ -5899,6 +6065,81 @@
         ]
       },
       {
+        "id": "haverick",
+        "label": "Look in on Pell Haverick in the miners' lock-up",
+        "lines": [
+          {
+            "narrate": "The miners have put Pell Haverick in their lock-up by the gate, a stone room meant for drunks on pay night. He has been given a chair, a blanket and a lamp, and he has turned the lamp down low to save the oil, out of habit."
+          },
+          {
+            "narrate": "Iona sits outside the grille with a writing desk across her knees, reading to him from a list. She does not stop when you come in."
+          },
+          {
+            "say": "Iona",
+            "text": "Item: half a pane of ward-glass short on every lamp in the Sallows, sold at the full price. Item: one quartermaster, taken on her way to breakfast. Item: twelve carters, paid to shout. Item: bravos, sent up a mountain, thirty-eight. Your office says forty. I counted."
+          },
+          {
+            "say": "Haverick",
+            "text": "You make it all sound so deliberate."
+          },
+          {
+            "say": "Iona",
+            "text": "It was deliberate. You signed it. You sign everything. It's the one thing I admire about you."
+          },
+          {
+            "narrate": "Haverick turns to you, delighted, exactly as he was in the room with forty lamps."
+          },
+          {
+            "say": "Haverick",
+            "text": "The hero! You'll understand, I think. I never made anybody buy anything. The Sallows wanted lamps it could afford, and I sold it lamps it could afford. The council wanted time to argue, and I sold it time. A bell that answers to one person is a thing people want. Somebody was always going to sell it."
+          },
+          {
+            "say": "Haverick",
+            "text": "You named me to the whole auction hall, you know. Without a hearing. I took that very personally. I'd like it noted, Quartermaster.",
+            "when": {
+              "flag": "harbour_exposed"
+            }
+          },
+          {
+            "say": "Iona",
+            "text": "It's noted. Under 'complaints, the prisoner's'.",
+            "when": {
+              "flag": "harbour_exposed"
+            }
+          },
+          {
+            "say": "Haverick",
+            "text": "And Elske replaced every lamp in the Sallows out of her own salary, and never said one word to me about it. That's when I knew. People who stop arguing with you have stopped needing you.",
+            "when": {
+              "flag": "keeper_told_elske"
+            }
+          },
+          {
+            "say": "Haverick",
+            "text": "Those receipts of the lamp-man's. I'd have bought them back from you at a very fair price. Nobody asked me.",
+            "when": {
+              "flag": "keeper_kept_receipts"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "Somebody's always going to sell it. That's not a defence. That's a description of you."
+          },
+          {
+            "narrate": "You tell him that somebody always being ready to sell a thing is not a defence. It is a description of him.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "narrate": "Iona writes that down. Haverick smiles, without any malice at all, the way he has smiled at everyone. Then he asks her, politely, whether there is a total."
+          },
+          {
+            "narrate": "There is. She turns the desk round so he can read it. For the first time since you met him, Pell Haverick has nothing to say."
+          }
+        ]
+      },
+      {
         "id": "aster",
         "label": "Ask Aster Vey what the wards think",
         "lines": [
@@ -6077,7 +6318,7 @@
         "narrate": "In the end, the council decides. Slowly. With a great deal of argument, and three adjournments, and one long silence while Iona finds the right page."
       },
       {
-        "narrate": "But first they ask you to answer Elske's question for the record. Who does the hero answer to? Aveline has her pen ready. She has, for once, only one bag."
+        "narrate": "Aveline has her pen ready for when they do, because before the council rises somebody is going to want your answer to Elske's question written down. She has, for once, only one bag."
       }
     ],
     "decisions": [
