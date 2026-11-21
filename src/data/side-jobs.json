@@ -30,7 +30,7 @@
           },
           {
             "say": "Iona",
-            "text": "'Reserved for officers and accredited visitors of the Watch.' I'm accredited. I have the seal. I'd like that noted before anybody calls me heartless."
+            "text": "'Reserved for officers and accredited visitors of the Watch.' I'm accredited. I have the seal. I'm saying so now, before anybody calls me heartless."
           },
           {
             "say": "Old Mother Farrow",
@@ -1165,7 +1165,7 @@
                 "text": "That's the Long Seam talking. That's exactly what they said."
               },
               {
-                "narrate": "But you have just come over the hill from Hollin's Reach, and it shows, and in a room that has been stuck for nine days somebody who sounds certain is very hard to vote against. The fifteenth vote is eight to six, to open the galleries. Nobody thanks you. Ottilie writes in the minutes, in a large plain hand: Opened at the visitors' insistence. Noted."
+                "narrate": "But you have just come over the hill from Hollin's Reach, and it shows, and in a room that has been stuck for nine days somebody who sounds certain is very hard to vote against. The fifteenth vote is eight to six, to open the galleries. Nobody thanks you. Ottilie writes in the minutes, in a large plain hand: Opened at the visitors' insistence."
               },
               {
                 "say": "nessa",
