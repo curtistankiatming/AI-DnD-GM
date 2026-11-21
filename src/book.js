@@ -150,8 +150,15 @@ function ending(state) {
   const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
   const count = ['', 'the first book', 'both books', 'all three books'][titles.length] || `all ${titles.length} books`;
   const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
-  return next ? `${base} The story goes on in Book ${next.n}, ${next.title}, for paid accounts; this save opens it straight away on an upgrade, as long as it has not begun an AI adventure of its own.` : base;
+  return next ? paidEnding(count, list, next) : base;
 }
+// A free hosted account at the end of its open books. The paid book comes
+// first, and so does the one trade-off: an AI adventure of the save's own
+// closes the paid book to that save for good (aiStory, finished).
+function paidEnding(count, list, next) {
+  return `You have finished ${count}, ${list}. The story goes on in Book ${next.n}, ${next.title}, for paid accounts: upgrade, and this save carries straight on into it. ${paidChoice(next)}`;
+}
+const paidChoice = (next) => `If you would rather keep going now, the AI storyteller can write adventures from the choices you made (this needs the Claude AI game master). But once this save starts one, it follows its own story and will not go back to Book ${next.n}. Your hero, party and choices stay saved either way.`;
 // Told when a book that is not the last one this save can play ends.
 function bookEnd(id, state = null) {
   const b = SHELF.find(x => x.last === id), next = b && books(state).find(x => x.n === b.n + 1);
@@ -261,4 +268,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

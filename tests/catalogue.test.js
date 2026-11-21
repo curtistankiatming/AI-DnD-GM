@@ -7,9 +7,9 @@ const { TOWNS, QUESTS } = require('../src/expansion');
 const { makeSandbox } = require('../src/public-preview');
 const GEAR = require('../src/data/gear.json');
 
-test('the catalogue holds 60 to 80 pieces of equipment', () => {
+test('the catalogue holds 60 to 90 pieces of equipment', () => {
   const n = Object.values(ITEMS).filter(i => i.slot && !i.upgradeTier && !i.forged).length;
-  assert.ok(n >= 60 && n <= 80, `${n} equippable items`);
+  assert.ok(n >= 60 && n <= 90, `${n} equippable items`);
 });
 
 test('prices rise with rarity and with the level an item needs', () => {
@@ -130,4 +130,110 @@ test('found items are a template and a level, so there are at most 500 and they 
   assert.deepEqual(a, b);
   assert.equal(a.id, 'forged-blade-12');
   assert.equal(Gear.TEMPLATES.length * 100, 500);
+});
+
+// Items review (21 November 2026): every kind of fighter keeps finding better gear.
+test('every weapon style, focus and armour type has gear for Book Three levels', () => {
+  const sold = new Set(Object.values(TOWNS).flatMap(t => t.stock));
+  const late = GEAR.filter(i => sold.has(i.id) && (i.requires?.level || 0) >= 20);
+  const kinds = {
+    strength: i => i.weapon?.ability === 'str',
+    finesse: i => i.weapon?.ability === 'finesse',
+    bow: i => i.weapon?.properties?.includes('ranged'),
+    focus: i => i.category === 'focus',
+    'light armour': i => i.armor && i.armor.dexCap === null,
+    'heavy armour': i => i.armor && i.armor.dexCap === 0,
+  };
+  for (const [kind, is] of Object.entries(kinds)) assert.ok(late.some(is), `no ${kind} item needs level 20 or more`);
+  for (const kind of ['finesse', 'bow', 'focus']) assert.ok(GEAR.some(i => kinds[kind](i) && (i.requires?.level || 0) >= 15 && (i.requires?.level || 0) < 20 && sold.has(i.id)), `no ${kind} item for levels 15-19`);
+});
+
+test('a caster who is not strong still has armour past level 12', () => {
+  const maren = { id: 'maren', refId: 'maren', name: 'Maren', level: 16, abilities: require('../src/content').COMPANIONS.maren.abilities };
+  assert.equal(Gear.unmet(maren, ITEMS['wardthread-robe']), null);
+  assert.equal(Gear.unmet({ id: 'player', kind: 'player', classId: 'wizard', level: 15, abilities: { str: 8, dex: 14 } }, ITEMS['wardthread-robe']), null);
+});
+
+test('a Fine item is never shown as less rare than its base item', () => {
+  const order = Gear.RARITIES;
+  for (const fine of Object.values(ITEMS).filter(i => i.upgradeTier)) {
+    const base = ITEMS[fine.baseId];
+    assert.ok(order.indexOf(fine.rarity) >= Math.max(1, order.indexOf(base.rarity)), `${fine.id} is ${fine.rarity}, ${base.id} is ${base.rarity}`);
+  }
+  assert.equal(ITEMS['field-plate-fine'].rarity, 'Rare');
+});
+
+test('an item card says whether its story ability is ready', () => {
+  const s = makeSandbox({ classId: 'rogue', level: 6 });
+  G.addTo(s.player.inventory, 'signal-charm', 1);
+  const card = () => E.buildView(s).inventory.find(i => i.id === 'signal-charm').purpose;
+  assert.match(card(), /Story ability ready\./);
+  Gear.spendStory(s, { storyItemId: 'signal-charm' });
+  assert.match(card(), /Story ability used; ready again after a long rest\./);
+  Gear.refreshStory(s);
+  assert.match(card(), /Story ability ready\./);
+  assert.doesNotMatch(ITEMS['thornward-cloak'].purpose, /character sheet/);
+});
+
+test('found items of one template have different names at nearby levels', () => {
+  for (const template of Gear.TEMPLATES) {
+    const names = new Set();
+    for (let level = 1; level <= 16; level++) names.add(Gear.forge({ template, level }).name);
+    assert.equal(names.size, 16, template);
+  }
+});
+
+test('typed "equip" picks the found item you own and can wear when two share a name', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 3 });
+  s.world.forged = [{ id: 'forged-blade-25', template: 'blade', level: 25 }, { id: 'forged-blade-1', template: 'blade', level: 1 }];
+  Gear.register(s);
+  G.addTo(s.player.inventory, 'forged-blade-25', 1); G.addTo(s.player.inventory, 'forged-blade-1', 1);
+  const low = ITEMS['forged-blade-1'], high = ITEMS['forged-blade-25'];
+  assert.equal(low.name, high.name, 'the names repeat 24 levels apart');
+  const out = E.resolveAction(s, { type: 'freeform', text: `equip ${low.name.toLowerCase()}` });
+  assert.equal(out.state.player.equipment.mainHand, 'forged-blade-1', 'the level 1 one, which a level 3 hero can wear');
+});
+
+// Gold sink (21 November 2026): the smith refines special gear into Masterwork.
+test('the smith refines Epic and Legendary gear into Masterwork for twice its price', () => {
+  const mw = ITEMS['commandery-halberd-fine'], base = ITEMS['commandery-halberd'];
+  assert.equal(mw.name, 'Masterwork Commandery Halberd');
+  assert.ok(mw.masterwork && mw.rarity === 'Legendary' && !mw.exclusive);
+  assert.equal(mw.attackBonus, base.attackBonus, 'a refine adds one number');
+  assert.equal(mw.damageBonus, base.damageBonus + 1);
+  assert.equal(Gear.upgradeCost(base), 2 * base.value);
+  assert.equal(ITEMS['forgeheart-maul-fine'].rarity, 'Legendary', 'one step rarer');
+  assert.equal(ITEMS['chancery-rod-fine'].spellDcBonus, ITEMS['chancery-rod'].spellDcBonus + 1);
+  assert.equal(ITEMS['chancery-rod-fine'].spellAttackBonus, ITEMS['chancery-rod'].spellAttackBonus);
+  assert.equal(ITEMS['drillmaster-baton-fine'].stats.dealt, 0.2);
+  for (const id of ['mirefang-dagger', 'glasswind-bow', 'warded-tome', 'harbour-cutlass']) assert.equal(ITEMS[`${id}-fine`], undefined, `${id}: Uncommon and Rare special items have no upgrade`);
+  assert.equal(Gear.upgradeCost(ITEMS['iron-longsword']), 45 + Math.floor(ITEMS['iron-longsword'].value / 2), 'basic upgrades cost what they did');
+  // A refined chapter reward is not a second reward.
+  const s = makeSandbox({ classId: 'fighter', level: 8 }), events = [];
+  assert.equal(Gear.award(s, 'quest:summit', events)?.id, 'glasswind-cloak');
+});
+
+test('refining a story item does not give a fresh story use', () => {
+  const s = makeSandbox({ classId: 'rogue', level: 10 });
+  G.addTo(s.player.inventory, 'sallows-coat', 1);
+  Gear.spendStory(s, { storyItemId: 'sallows-coat' });
+  G.removeLoose(s, 'sallows-coat', 1); G.addTo(s.player.inventory, 'sallows-coat-fine', 1);
+  assert.equal(Gear.storyReady(s, 'sallows-coat-fine'), false);
+  Gear.refreshStory(s);
+  assert.equal(Gear.storyReady(s, 'sallows-coat-fine'), true);
+});
+
+test('refining an equipped item charges twice its price and keeps it worn', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 10 }); s.player.level = 24;
+  s.world.townId = 'briarwatch'; s.story.nodeId = 'town-briarwatch';
+  G.addTo(s.player.inventory, 'commandery-halberd', 1);
+  s.player.equipment.offHand = null; s.player.equipment.mainHand = 'commandery-halberd'; G.derive(s.player);
+  s.player.gold = 2000;
+  const card = E.buildView(s).world.upgrades.find(u => u.itemId === 'commandery-halberd' && u.actorId === 'player');
+  assert.equal(card.cost, 1240);
+  const out = E.resolveAction(s, { type: 'upgrade', itemId: 'commandery-halberd', actorId: 'player' });
+  assert.equal(out.state.player.gold, 760);
+  assert.equal(out.state.player.equipment.mainHand, 'commandery-halberd-fine');
+  const again = E.resolveAction(out.state, { type: 'upgrade', itemId: 'commandery-halberd-fine', actorId: 'player' });
+  assert.equal(again.state.player.gold, 760, 'only one upgrade');
 });

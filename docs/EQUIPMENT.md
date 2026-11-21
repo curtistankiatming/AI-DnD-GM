@@ -55,7 +55,8 @@ is never wasted on an enemy that resists fire.
 long rest, for whoever wears it and rolls. Uses are counted per item for the
 whole party, so handing the item to someone else doesn't give a second use;
 a second copy does. The Thornward Cloak now uses this rule, and old saves keep
-its spent or ready state.
+its spent or ready state. The item's card says whether its story ability is ready or used
+until the next long rest.
 
 ## The first seven items
 
@@ -71,3 +72,8 @@ its spent or ready state.
 
 They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
 (brand, signet) and Cinder Fold (mail, brand).
+
+## Masterwork
+
+The smith refines an Epic or Legendary item once for twice its price;
+see [ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#masterwork-what-late-gold-is-for).

@@ -14,7 +14,7 @@
  let active='adventure',filter='all',lastSignature='',campaignKey='',follow=true,previousTop=0,lastFocused=null,ownAction=false,pendingDid='',shownDid='',foes=[];
  const panes={},tabs={};
  const nav=el('nav','workspace-nav');nav.id='workspaceNav';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Game sections');
- for(const [id,label]of [['adventure','Adventure'],['party','Party'],['journal','Journal'],['prepare','Prepare'],['settings','Settings']]){
+ for(const [id,label]of [['adventure','Adventure'],['party','Party'],['journal','Journal'],['prepare','Town'],['settings','Settings']]){
   const b=button(label,()=>navigate(id));b.id='nav-'+id;b.dataset.section=id;b.setAttribute('role','tab');b.setAttribute('aria-controls','workspace-'+id);
   const pane=el('section','workspace-pane');pane.id='workspace-'+id;pane.setAttribute('role','tabpanel');pane.setAttribute('aria-labelledby',b.id);pane.tabIndex=0;
   panes[id]=pane;tabs[id]=b;nav.append(b);
@@ -24,7 +24,7 @@
  const heading=(pane,text,description)=>{pane.append(el('h2','workspace-title',text));if(description)pane.append(el('p','muted',description));};
  heading(panes.party,'Party & pack','Your hero, your companions and everything you carry.');
  heading(panes.journal,'Journal','What you know, who you know and what you have promised.');
- heading(panes.prepare,'Prepare','Rest, shop, grow your party and choose the next expedition.');
+ heading(panes.prepare,'Town','Rest, shop, take a bounty, grow your party and choose the next expedition.');
  heading(panes.settings,'Saves & settings','Save or load a game and set up the AI game master.');
  const storyCard=dom.narrationText.closest('.scene-card');
  const objective=dom.sceneObjective.closest('.objective-box');
@@ -53,14 +53,16 @@
   // The engine marks any hit as good. An enemy's hit on the party is bad news for the player.
   const foe=typeof r.hit==='boolean'&&foes.some(n=>e.text.startsWith(n+' '));
   c.dataset.tone=foe?(r.hit?'bad':'good'):(e.tone||'neutral');
-  let body=tidy(e.text),outcome='';
+  let body=tidy(e.text),outcome='',roller='',rollerFull='';
   const m=body.match(/^(.*?)(?::| —) ([A-Za-z][A-Za-z ]{1,28})$/);if(m){body=m[1];outcome=m[2];}
   if(r.checkName&&Number.isFinite(r.natural)&&Number.isFinite(r.total)&&Number.isFinite(r.dc)){
    const who=e.text.match(/^(.{1,40}?) rolled /);
-   body=`${who?who[1]+' · ':''}${r.checkName} ${r.natural} ${sign(r.bonus)} = ${r.total} against ${r.dc}`;
+   body=`${r.checkName} ${r.natural} ${sign(r.bonus)} = ${r.total} against ${r.dc}`;
+   // Who rolled comes first and in bold, so a companion's roll is plain at a glance.
+   if(who){rollerFull=who[1];roller=String(who[1]).replace(/^Sister /,'').split(' ')[0];}
   }
   if(Number.isFinite(r.natural)){const die=el('span','roll-die',String(r.natural));if(r.rolls?.length>1)die.title='Dice rolled: '+r.rolls.join(' and ');c.append(die);}
-  const line=el('span','roll-body',body);c.append(line);
+  const line=el('span','roll-body');if(roller){const name=el('strong','roll-who',roller+' rolls');name.title=rollerFull;line.append(name,' · ');}line.append(body);c.append(line);
   if(!outcome&&Number.isFinite(r.dc)&&['good','bad'].includes(e.tone))outcome=e.tone==='good'?'success':'failure';
   if(outcome)line.append(' ',el('strong','roll-outcome',outcome[0].toUpperCase()+outcome.slice(1)));
   return c;
@@ -167,7 +169,7 @@
  topbar.querySelector('.brand-block').after(nav);topActions.prepend(byId('saveStatus'));
  panes.settings.append(dom.narratorBadge);
  const announcement=el('p','workspace-sr-only');announcement.id='workspaceAnnouncement';announcement.setAttribute('role','status');announcement.setAttribute('aria-live','polite');main.append(announcement);
- const mobileDraft=button('Back to your message',()=>{navigate('adventure');dom.actionInput.focus();});mobileDraft.id='returnToMessage';mobileDraft.classList.add('return-to-message');
+ const mobileDraft=button('Back to adventure',()=>{navigate('adventure');dom.actionInput.focus();});mobileDraft.id='returnToMessage';mobileDraft.classList.add('return-to-message');
  main.append(mobileDraft);
  const skip=el('a','workspace-skip','Skip to adventure');skip.href='#workspace-adventure';skip.addEventListener('click',e=>{e.preventDefault();navigate('adventure');panes.adventure.focus();});document.body.prepend(skip);
  setActiveTab=function(id){navigate(U.section(id));}; // Compatibility for existing callers; original controls were moved, not copied.
@@ -219,10 +221,13 @@
   partyStrip.replaceChildren(...[view.player,...(view.party||[])].map(a=>{
    const ratio=a.maxHp?Math.max(0,Math.min(1,a.hp/a.maxHp)):0,chip=el('span','party-chip'),bar=el('span','party-chip-bar'),fill=el('span');
    chip.dataset.health=a.hp<=0?'down':ratio<=.5?'hurt':'ok';fill.style.width=Math.round(ratio*100)+'%';bar.append(fill);
-   chip.append(el('strong','',a.name),el('span','party-chip-hp',`${a.hp}/${a.maxHp}`),bar);return chip;}));
+   chip.title=a.name;chip.append(el('strong','',a.id==='player'?a.name:String(a.name).replace(/^Sister /,'').split(' ')[0]),el('span','party-chip-hp',`${a.hp}/${a.maxHp}`),bar);return chip;}));
   const rows=(view.chat?.history||[]).slice(-8),duplicate=U.duplicateLast(rows,dom.narrationText.textContent);
-  [...conversation.children].forEach((node,i)=>{node.hidden=i===duplicate;});
-  historyLabel.hidden=!rows.length||rows.length===1&&duplicate===0;
+  // A rules line belongs to a typed exchange (after the player's message or the game master's reply).
+  // Lines echoed from a button (a story choice, a combat action) already show as the story or the board.
+  const nodes=[...conversation.children],typed=n=>n&&(n.classList.contains('chat-player')||n.classList.contains('chat-guide'));
+  nodes.forEach((node,i)=>{node.hidden=i===duplicate||node.classList.contains('chat-rules')&&!typed(nodes[i-1]);});
+  historyLabel.hidden=!nodes.some(n=>!n.hidden);
   dom.choicePanel.hidden=Boolean(view.chat?.road?.present||view.chat?.courier?.active&&view.chat?.courierAvailable);
   byId('roadScenario').hidden=!view.chat?.road;
   byId('chatScenario').hidden=!view.chat?.courier;

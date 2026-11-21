@@ -133,6 +133,7 @@ const SYSTEM = [
   'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
   'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
   'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.',
+  'Companions (party) keep their own voice (party[].voice) in every line of dialogue you write for them, before and after the books end.',
   'Beyond the books, every adventure is one chapter of a story arc (storyArc in the request). The game sets which chapter and beat it is; follow storyArc.guidance for that beat, continue from storyArc.lastHook and the earlier chapters of the arc, and fill the storyArc field. Each chapter is still a complete adventure with its own crisis and decisions.'
 ].join('\n');
 
@@ -445,14 +446,17 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     preferences: clean(instructions, 1200),
     hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player), job: P.jobView(state.player)?.title, branchStyle: P.branchOf(state.player)?.style || null },
     ...(trial ? { trial: trialBrief(state) } : {}),
-    party: state.party.map(m => ({ name: m.name, bond: m.bond })),
+    // The companions' voices, so they sound like themselves after the books end.
+    party: state.party.map(m => ({ name: m.name, role: m.role, pronouns: m.pronouns, voice: m.personality, bond: m.bond })),
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.filter(id => Book.townOpen(state, id)).map(id => TOWNS[id].name),
     reputation: w.reputation,
     completedAdventures: completed.slice(-15),
     book: Book.facts(state),
     chronicle: Chronicle.forPrompt(state),
     ...(!trial && !Book.running(state) ? { storyArc: Chronicle.arcBrief(state) } : {}),
-    upcomingAuthoredAdventures: Object.values(QUESTS).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
+    // Only chapters this save can play: never an unreleased book or part, a
+    // paid book on a free hosted account, or a side job.
+    upcomingAuthoredAdventures: Book.chapters(state).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
     journal
   });

@@ -630,6 +630,15 @@ p:last-child {
   line-height: 1.45;
 }
 
+.party-uneasy {
+  margin: 0 0 8px;
+  padding-left: .65rem;
+  border-left: 2px solid #ab8753;
+  color: #ddbd83;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
 .party-hp-line {
   margin-bottom: 5px;
   color: #c9d2cd;

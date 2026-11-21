@@ -3,8 +3,10 @@
 Step 5 of the gameplay review plan. The equipment rules are in
 [EQUIPMENT.md](EQUIPMENT.md); this is what uses them.
 
-The game now has 68 pieces of equipment (87 items with potions and tools), up
-from 30. The 38 new ones are in `src/data/gear.json`.
+The game now has 80 pieces of equipment (99 items with potions and tools), up
+from 30. The 50 new ones are in `src/data/gear.json`. Twelve of them came from
+the items review ([report](reviews/claude-items-2026-11-21.md)), so archers,
+finesse fighters and casters keep finding better gear up to level 24.
 
 ## Where items come from
 
@@ -34,6 +36,29 @@ from 30. The 38 new ones are in `src/data/gear.json`.
 
 An item costs at least a floor for its rarity (Uncommon 30, Rare 70, Epic 150,
 Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
+
+## Masterwork: what late gold is for
+
+From mid Book Two, heroes earned far more gold than shops could take: a
+playtest of 144 campaigns ended Book Three Part One with 10,000 to 12,000
+gold unspent. So any smith can now refine an Epic or Legendary item, once,
+into a **Masterwork** item one rarity higher. A refine adds one number:
+
+- Weapon: +1 damage. Armour: +1 base AC. Shield: +1 AC.
+- Focus: +1 spell save DC. Accessory: 5% more damage dealt.
+- Price: **twice the item's price** (Commandery Halberd: 1,240 gold).
+
+Refining the best Epic and Legendary gear of the hero and all three companions
+late in Book Three Part One costs up to about 14,000 gold, more than a player
+has spare, so gold buys real choices again: who to refine first, and whether
+to refine now or wait for the next town's gear. Each item is refined once, so
+this is not an endless sink. Basic items, and the two Common catalogue
+weapons (Woodcutter's Axe, Hunting Spear), keep their Fine upgrade at the old
+price (45 gold plus half the item's price). Uncommon and Rare special items
+have no upgrade, because a cheap refine of early gear would beat the next
+towns' items. A Masterwork item is never in a shop or given as a reward; it
+sells for 30% of its value, like everything else, which is less than it cost.
+A refined item shares its base item's story use.
 
 ## The new items
 
@@ -77,3 +102,15 @@ Legendary 300 gold) plus 10 gold per level it needs. A test checks every item.
 | Ridge-stalker's Hood | Accessory | Rare | 140 | Level 6 · Dexterity 13 | First bounty, Highpass Watch |
 | Wrecker's Gaff | Main hand | Rare | 200 | Level 11 | First bounty, Merrowgate |
 | Slagcaller Gauntlets | Accessory | Epic | 340 | Level 15 · Strength 13 | First bounty, Cinder Fold |
+| Cinderglass Longbow | Main hand | Epic | 380 | Level 15 · Dexterity 14 | Cinder Fold |
+| Smoke-glass Rapier | Main hand | Epic | 390 | Level 16 · Dexterity 14 | Cinder Fold |
+| Bellmetal Rod | Main hand | Epic | 400 | Level 16 · Wizard, Cleric or Bard | Cinder Fold |
+| Ward-thread Robe | Armour | Epic | 360 | Level 15 · Wizard, Cleric or Bard | Cinder Fold |
+| Plankwalker Sabre | Main hand | Epic | 480 | Level 20 · Dexterity 15 | Saltwick |
+| Mistwatch Bow | Main hand | Epic | 470 | Level 20 · Dexterity 15 | Saltwick |
+| Saltwick Oilskin | Armour | Epic | 460 | Level 20 · Rogue, Ranger or Bard · Dexterity 15 | Saltwick |
+| Lamplighter's Staff | Main hand | Epic | 480 | Level 21 · Wizard, Cleric or Bard | Saltwick |
+| Commandery Longbow | Main hand | Legendary | 640 | Level 23 · Dexterity 15 | Vell only |
+| Vell Duelling Sword | Main hand | Legendary | 660 | Level 24 · Dexterity 15 | Vell only |
+| Chancery Rod | Main hand | Legendary | 680 | Level 24 · Wizard or Bard | Vell only |
+| Vell Courier Leathers | Armour | Legendary | 680 | Level 24 · Rogue, Ranger or Bard · Dexterity 15 | Vell only |

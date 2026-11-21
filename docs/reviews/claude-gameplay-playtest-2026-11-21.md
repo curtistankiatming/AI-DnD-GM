@@ -123,7 +123,7 @@ spare. Gold is tight in Book One (under 500 by the beacon) and stops mattering
 from about level 14; the dearest item costs 700. This is an economy question
 for the items review, not changed here.
 
-### 5. Five skills skipped stat damage (minor, fixed)
+### 5. Five skills skipped stat damage (minor, fixed; see the merge note below)
 
 Arcane Snare, the bard and rogue Sabotage, the wizard Nova, the cleric
 Banishment and Nessa's Trick Shot added no stat damage while every other attack
@@ -213,6 +213,16 @@ after; Gritty 0.57 before, 0.42 after.
 
 Standard and Story force fights now sit inside 4 to 7 rounds (4.5 to 6.4);
 Gritty, the hard setting, runs 6.3 to 7.8 past level 5 and loses far less. The objective route is unchanged at 4 to 5 rounds.
+
+## After merging the other area reviews (#71 to #75)
+
+The systems review (#72) had already given the older skills stat damage (with
+gear damage and chains too), so this PR keeps its version and adds only Trick
+Shot. #72's under-level objective DC now uses the unweighted check steps.
+Re-checked on the merged code: fight tests by force at the right level take 4.6
+to 6.1 rounds on Standard and 5.3 to 7.3 on Gritty (94-100% wins); AI
+adventures 5.5 / 6.1 / 6.6 rounds (Normal / Hard / Heroic), 100% / 98% / 94%
+wins. 861 tests pass.
 
 ## Left for later
 

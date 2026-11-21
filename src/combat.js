@@ -191,11 +191,15 @@ function startCombat(state, encounterId, rng, events) {
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
     if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }
-  // More than 5 levels under the adventure: enemies hit harder and more often (src/xp.js).
+  // More than 5 levels under the adventure: enemies hit harder and more often,
+  // and the fight's objective is harder, as story checks are (src/xp.js).
   const under=encounter.questId?XP.underSteps(state.player.level,Director.quest(state,encounter.questId)?.level):0;
   if(under){
+    // The objective is a check: it takes the unweighted steps (src/xp.js underChecks).
+    const checks=XP.underChecks(state.player.level,Director.quest(state,encounter.questId)?.level);
+    if(state.combat.objective)state.combat.objective.dc+=checks;
     for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
-    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage.`});
+    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
   }
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
   if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
@@ -562,7 +566,7 @@ function resolveTacticalAction(state,actor,action,rng,events) {
     const target=kind==='focus'?validateCombatTarget(state,action.targetId,'enemy'):kind==='protect'?validateCombatTarget(state,action.targetId,'ally'):actor;
     if(!target)return invalidResult(state,events,'Choose a valid order target.');
     state.combat.order={kind,targetId:target.id,round:state.combat.round};state.combat.orderRound=state.combat.round;
-    const text=kind==='focus'?`Companions focus their attacks on ${target.name}.`:kind==='protect'?`Companions prioritize protection and healing for ${target.name}.`:'Companions provide covering help for the hero’s next objective check instead of attacking when help is still needed.';
+    const text=kind==='focus'?`Companions focus their attacks on ${target.name}.`:kind==='protect'?`Companions prioritize protection and healing for ${target.name}.`:'Companions help with the objective instead of attacking, giving your next objective check advantage.';
     events.push({type:'party',tone:'good',text});return {ok:true,kind:'combat',outcomeText:text};
   }
   if(id==='objective'||id==='spec-objective'){
@@ -579,7 +583,7 @@ function resolveTacticalAction(state,actor,action,rng,events) {
       if(success)o.progress+=1;
       events.push({type:'roll',tone:success?'good':'warning',text:`${o.label}: d20 ${d20.natural} ${formatSigned(plan.bonus)} = ${total} vs DC ${plan.dc} — ${success?'progress made':'no progress this turn'}. ${o.progress}/${o.target}.`,roll:{...d20,total,bonus:plan.bonus,dc:plan.dc,success}});
     }
-    return {ok:true,kind:'combat',outcomeText:`${actor.name} works toward ${o.name.toLowerCase()}: ${o.progress}/${o.target}.`};
+    return {ok:true,kind:'combat',outcomeText:`${actor.name} works to ${o.name.charAt(0).toLowerCase()+o.name.slice(1)}: ${o.progress}/${o.target}.`};
   }
   if(id.startsWith('combo:')){
     const cid=id.slice(6),comp=state.combat.actors.find(a=>a.refId===cid&&a.kind==='companion'&&a.hp>0);
@@ -676,18 +680,18 @@ function resolveAdvancedAction(state,actor,def,target,rng,events) {
     case 'weaponControl':{const r=resolveWeaponAttack(state,actor,target,rng,events);connected=r.hit;if(r.hit&&target.hp>0)addCondition(target,{id:'mocked',name:'Off balance: next attack disadvantaged'});break;}
     case 'snare':{
       const r=rollAttack(state,actor,target,{name:def.name,attackBonus:spellAttackBonus(actor,'int',state)},rng,events);connected=r.hit;
-      if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage+Power.statDamage(actor,'int'),'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
+      if(r.hit){state.combat.usedActions[`snared:${target.id}`]=true;applyCombatDamage(state,target,chained(state,actor,target,damageRoll(rng,actor.level>=5?'3d6':'2d6',r.critical).total+P.stats(state.player).damage+Power.statDamage(actor,'int'),events),'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Snared: lose next action'});}break;
     }
     case 'sanctuary':combatHeal(state,target,rollFormula(rng,'1d6').total+mod+Math.floor(P.accuracyLevel(actor.level)/2)+P.stats(state.player).healing,events,def.name);guard(target);if(P.ensure(state.player).choices['5']==='control')addCondition(target,{id:'packReady',name:'Sanctuary: next attack advantaged'});break;
     case 'rally':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,3*n+mod);if(P.ensure(state.player).choices['5']==='control')addCondition(a,{id:'packReady',name:'Refined Rally: next attack advantaged'});}state.combat.rallyReady=P.ensure(state.player).choices['5']!=='control';break;
     case 'bastion':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,8*n);ward(a);}break;
     case 'precisionBurst':for(let n=0;n<Math.max(2,attacksPerAction(actor))&&target.hp>0;n++)resolveWeaponAttack(state,actor,target,rng,events,{advantage:true});break;
     case 'shadow':actor.temporaryHp=Math.max(actor.temporaryHp||0,8*n);addCondition(actor,{id:'hidden',name:'Hidden'});addCondition(actor,{id:'shadowStrike',name:'Shadow strike: next hit +2d6'});break;
-    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,dice('3d6')).total+Power.statDamage(actor,primary),actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
-    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,dice('4d6')).total+Power.statDamage(actor,primary);applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
+    case 'sabotage':applyCombatDamage(state,target,rollFormula(rng,dice('3d6')).total+P.stats(state.player).damage+Power.statDamage(actor,def.ability||primary),actor.classId==='bard'?'psychic':'force',events,def.name);if(target.hp>0)addCondition(target,{id:'stunned',name:'Disabled: lose next action'});break;
+    case 'nova':for(const foe of livingActors(state,'enemy')){const saved=savingThrow(state,foe,'dex',spellSaveDc(actor,primary),rng,events).success;const amount=rollFormula(rng,dice('4d6')).total+P.stats(state.player).damage+Power.statDamage(actor,def.ability||primary);applyCombatDamage(state,foe,saved?Math.floor(amount/2):amount,'fire',events,def.name);}break;
     case 'timeWard':combatHeal(state,target,10*n+P.stats(state.player).healing,events,def.name);guard(target);if(actor.resources.technique)actor.resources.technique.current=Math.min(actor.resources.technique.max,actor.resources.technique.current+1);break;
     case 'massHeal':for(const a of all){combatHeal(state,a,rollFormula(rng,dice('2d6')).total+mod+P.stats(state.player).healing,events,def.name);removeCondition(a,'poisoned');}break;
-    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,dice(target.tags?.includes('undead')?'6d6':'4d6')).total+Power.statDamage(actor,primary),'radiant',events,def.name);break;
+    case 'banish':target.resistances=[];applyCombatDamage(state,target,rollFormula(rng,dice(target.tags?.includes('undead')?'6d6':'4d6')).total+P.stats(state.player).damage+Power.statDamage(actor,def.ability||primary),'radiant',events,def.name);break;
     case 'pack':for(const a of all.filter(a=>a.hp>0)){a.temporaryHp=Math.max(a.temporaryHp||0,6);addCondition(a,{id:'packReady',name:'Pack Instinct: next attack advantaged'});}break;
   }
   if(connected&&P.ensure(state.player).choices['5']==='control'&&target.hp>0)addCondition(target,{id:'guiding',name:'Exposed by Technique'});
@@ -1248,7 +1252,7 @@ function combatActionView(state) {
   }
   if(state.player.level>=7)for(const member of state.party.filter(m=>state.world.personal[m.id]?.rewarded)){
     const targetKind=member.id==='maren'?'ally':'enemy';const disabled=actor.bonusUsed||state.combat.comboUsed||actorResourceCurrent(actor,'technique')<1||combatActor(state,`companion:${member.id}`)?.hp<=0;
-    actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
+    actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.replace(/^Sister /,'').split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
   }
   if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use.',disabled:actor.actionUsed||actorResourceCurrent(actor,'advancement')<1});
   actions.push({id:'retreat',name:'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});

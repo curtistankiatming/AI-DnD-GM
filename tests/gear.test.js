@@ -32,6 +32,9 @@ test('the comparison explains why someone cannot wear it, and who can', () => {
   const byId = Object.fromEntries(view.comparisons.map(c => [c.actorId, c]));
   assert.equal(byId.orin.blocked, null, 'Orin is a fighter with the strength for it');
   assert.match(byId.maren.blocked || '', /Needs/);
+  // The shop card says who can use it from these, before anyone pays.
+  assert.equal(byId.orin.unmet, null);
+  assert.match(byId.maren.unmet || '', /Needs/);
   assert.match(view.purpose, /Requires: Fighter or Cleric · Strength 13\./);
   assert.match(view.purpose, /Skill, Brace/);
 });

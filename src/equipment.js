@@ -85,7 +85,7 @@ function comparison(state,id,actorId='player'){
   if(clearsOffHand)preview.equipment.offHand=null;
   derive(preview);
   const before=weaponProfile(a),after=weaponProfile(preview);
-  return {actorId:a.id,name:a.name,replaces:old?.name||'Empty slot',acBefore:a.ac,acAfter:preview.ac,attackBefore:before.attackBonus,attackAfter:after.attackBonus,damageBefore:before.damageFormula,damageAfter:after.damageFormula,spellAttackBefore:a.gearSpellAttack||0,spellAttackAfter:preview.gearSpellAttack||0,spellDcBefore:a.gearSpellDc||0,spellDcAfter:preview.gearSpellDc||0,clearsOffHand,blocked:Gear.unmet(a,item)||(item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded')?'Unequip the two-handed weapon first.':null)};
+  return {actorId:a.id,name:a.name,replaces:old?.name||'Empty slot',acBefore:a.ac,acAfter:preview.ac,attackBefore:before.attackBonus,attackAfter:after.attackBonus,damageBefore:before.damageFormula,damageAfter:after.damageFormula,spellAttackBefore:a.gearSpellAttack||0,spellAttackAfter:preview.gearSpellAttack||0,spellDcBefore:a.gearSpellDc||0,spellDcAfter:preview.gearSpellDc||0,clearsOffHand,unmet:Gear.unmet(a,item),blocked:Gear.unmet(a,item)||(item.slot==='offHand'&&ITEMS[a.equipment.mainHand]?.weapon?.properties?.includes('twoHanded')?'Unequip the two-handed weapon first.':null)};
 }
 function normalizeEquipment(state){
   const used={};
