@@ -75,5 +75,5 @@ They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
 
 ## Masterwork
 
-The smith refines a Rare, Epic or Legendary item once for twice its price;
+The smith refines an Epic or Legendary item once for twice its price;
 see [ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#masterwork-what-late-gold-is-for).

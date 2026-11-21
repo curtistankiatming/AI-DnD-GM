@@ -74,8 +74,10 @@ const skills = (a) => worn(a).filter((i) => i.skill && Power.EFFECTS[i.skill.eff
 // owned gives one use. The Thornward Cloak also keeps its old save flag,
 // player.used.cloakReady, for the character sheet and old saves.
 const copies = (state, id) => state.player.inventory.filter((e) => e.itemId === id).reduce((n, e) => n + (e.quantity || 0), 0);
+// A refined copy shares its base item's story use, so refining doesn't give a fresh one.
+const storyKey = (id) => ITEMS[id]?.baseId || id;
 function spent(state, id) {
-  const n = state.world?.storySpent?.[id];
+  const n = state.world?.storySpent?.[storyKey(id)];
   if (Number.isInteger(n)) return n;
   return id === 'thornward-cloak' && state.player.used?.cloakReady === false ? 1 : 0;
 }
@@ -87,7 +89,7 @@ function storyItem(state, actor, skillId) {
 function spendStory(state, plan) {
   if (!plan?.storyItemId) return;
   const id = plan.storyItemId;
-  (state.world.storySpent ||= {})[id] = spent(state, id) + 1;
+  (state.world.storySpent ||= {})[storyKey(id)] = spent(state, id) + 1;
   if (id === 'thornward-cloak') (state.player.used ||= {}).cloakReady = false;
 }
 // After a long rest every story ability is ready again.

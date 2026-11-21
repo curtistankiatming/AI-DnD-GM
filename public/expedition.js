@@ -88,7 +88,7 @@ function renderExpansion(){
       expeditions.appendChild(c);}
     const towns=createElement('div','v4-controls');for(const t of w.towns)towns.appendChild(v4Button(`Travel: ${t.name}`,{type:'travel-town',townId:t.id},t.current));expeditions.appendChild(towns);
     const shop=v4Section(root,'shop','Outfitter & apothecary — buy supplies and equipment');v4Shop(shop,w.shop,'town');
-    const smith=v4Section(root,'smith','Blacksmith & workshop','One meaningful quality upgrade per weapon, armor, shield or focus; no endless upgrade ladder.');
+    const smith=v4Section(root,'smith','Blacksmith & workshop','One quality upgrade per item: Fine for basic gear, Masterwork for Epic and Legendary gear. No endless upgrade ladder.');
     for(const u of w.upgrades){const c=v4Card(`${u.name} → ${u.newName}`,`${u.owner} · ${u.cost} gold. ${u.purpose}`);c.appendChild(v4Button('Commission upgrade',{type:'upgrade',itemId:u.itemId,actorId:u.actorId},hero.gold<u.cost));smith.appendChild(c);}
     for(const r of w.recipes){const c=v4Card(r.name,`${r.ingredients.map(i=>`${i.quantity} × ${titleCase(i.itemId)}`).join(', ')} + ${r.gold} gold. ${r.description||''}`);c.appendChild(v4Button('Craft',{type:'craft',recipeId:r.id},!r.ready));smith.appendChild(c);}
     const companions=v4Section(root,'personal','Companion stories & equipment');
