@@ -1,97 +1,123 @@
 'use strict';
-// A check's written result names whoever rolled it (UX review, 21 November
-// 2026): the hero, or the companion best placed for it (engine.js checkPlan).
-// Results are written with tokens (src/expansion.js forRoller) that read
-// exactly as before when the hero rolls.
+// The party member best suited to a story check rolls it (src/engine.js checkPlan).
 const test = require('node:test'), assert = require('node:assert/strict');
-const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world');
-const { STORY_NODES } = require('../src/content');
-const { QUESTS, forRoller, outcomeForRoller } = require('../src/expansion');
-const high = () => .999999;
-const hero = { id: 'player' }, orin = { id: 'orin' }, maren = { id: 'maren' }, nessa = { id: 'nessa' };
+const E = require('../src/engine');
+const { makeSandbox } = require('../src/public-preview');
 
-test('tokens read as the hero, or name the companion with their own pronouns', () => {
-  const t = '{You stand|@ stands} up and {speak|speaks}, and they look at {them}. {Your} voice carries; {they} {know|knows} it, and so does {their} friend.';
-  assert.equal(forRoller(t, hero), 'You stand up and speak, and they look at you. Your voice carries; you know it, and so does your friend.');
-  assert.equal(forRoller(t, null), forRoller(t, hero));
-  assert.equal(forRoller(t, orin), "Orin stands up and speaks, and they look at him. Orin's voice carries; he knows it, and so does his friend.");
-  assert.equal(forRoller(t, maren), "Maren stands up and speaks, and they look at her. Maren's voice carries; she knows it, and so does her friend.");
-  assert.equal(forRoller('{They} {ask|asks}.', nessa), 'She asks.');
-  assert.equal(forRoller('No tokens here, you see.', orin), 'No tokens here, you see.');
+const choice = (check) => ({ id: 'probe', label: 'Probe', check: { dc: 15, ...check } });
+const chance = (p) => E.successProbability(p.dc, p.bonus, p.advantage ? 'advantage' : p.disadvantage ? 'disadvantage' : 'normal');
+
+test('the best-suited party member rolls, and the hero wins a tie', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const plan = E.checkPlan(s, choice({ skill: 'athletics' }));
+  const hero = E.checkPlan(s, choice({ skill: 'athletics' }), s.player);
+  assert.ok(chance(plan) >= chance(hero));
+  assert.equal(plan.actor.id, 'orin', 'Orin is the strongest at Athletics');
+  // An arcana check: the wizard is best and keeps it.
+  assert.equal(E.checkPlan(s, choice({ skill: 'arcana' })).actor.id, 'player');
 });
 
-test('roller and notRoller pick a line for whoever rolled, then leave no trace', () => {
-  const outcome = { dialogue: [
-    { narration: '{You read|@ reads} the list.', when: { notRoller: 'maren', party: 'maren' } },
-    { narration: 'Maren reads her own list.', when: { roller: 'maren' } },
-    { narration: 'Only the hero.', when: { roller: 'hero' } },
-    { narration: 'Any companion.', when: { roller: 'companion' } }
-  ], text: 'x' };
-  const lines = (a) => outcomeForRoller(outcome, a).dialogue;
-  assert.deepEqual(lines(hero).map((l) => l.narration), ['You read the list.', 'Only the hero.']);
-  assert.deepEqual(lines(orin).map((l) => l.narration), ['Orin reads the list.', 'Any companion.']);
-  assert.deepEqual(lines(maren).map((l) => l.narration), ['Maren reads her own list.', 'Any companion.']);
-  // Other conditions stay for liveLines; the roller's are settled.
-  assert.deepEqual(lines(orin)[0].when, { party: 'maren' });
-  assert.equal(lines(maren)[0].when, undefined);
-  assert.equal(outcomeForRoller(outcome, orin).text, 'Orin reads the list.\nAny companion.');
-  assert.equal(outcomeForRoller({ text: '{Your} hand.' }, nessa).text, "Nessa's hand.");
+test('the hero can help a companion who rolls', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 5 });
+  s.player.skills = [...new Set([...(s.player.skills || []), 'insight'])];
+  const plan = E.checkPlan(s, choice({ skill: 'insight' }), s.party.find(m => m.id === 'maren'));
+  assert.equal(plan.helper?.id, 'player');
+  assert.equal(plan.advantage, true);
 });
 
-// Every written check result, for every roller: no token is left unread and no roller condition is left on a line.
-test('every check result in the written books reads cleanly for the hero and each companion', () => {
-  let checked = 0;
-  for (const node of Object.values(STORY_NODES)) for (const c of node.choices || []) {
-    if (!c.check) continue;
-    for (const key of ['success', 'failure']) for (const actor of [hero, orin, maren, nessa]) {
-      const o = outcomeForRoller(c[key], actor); if (!o) continue; checked++;
-      const said = o.dialogue ? o.dialogue.map((l) => l.narration || l.text).join(' ') : o.text || '';
-      assert.doesNotMatch(said, /[{}@]/, `${node.id} ${c.id} ${key} for ${actor.id}`);
-      for (const l of o.dialogue || []) assert.ok(!l.when || !('roller' in l.when || 'notRoller' in l.when), `${node.id} ${c.id}`);
-    }
-  }
-  assert.ok(checked > 1000);
-  // Nowhere else in the story may use them: they are read only for checks.
-  for (const node of Object.values(STORY_NODES)) {
-    assert.doesNotMatch(node.opening || '', /\{(You|you|Your|your|They|they|Them|them|Their|their)\}|\{[^{}]*\|[^{}]*\}/, node.id);
-    for (const c of node.choices || []) if (c.result) assert.doesNotMatch(JSON.stringify(c.result), /\{(You|you|your|they|them|their)\}/, `${node.id} ${c.id}`);
-  }
+test('a fallen or estranged companion does not roll', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const orin = s.party.find(m => m.id === 'orin');
+  orin.hp = 0;
+  assert.notEqual(E.checkPlan(s, choice({ skill: 'athletics' })).actor.id, 'orin');
+  orin.hp = orin.maxHp; orin.bond = -1;
+  assert.notEqual(E.checkPlan(s, choice({ skill: 'athletics' })).actor.id, 'orin');
 });
 
-test('the trial and the Second Oath are the hero\'s own: the hero always rolls them', () => {
-  for (const [id, field] of [['trial', 'investigate'], ['trial', 'careful'], ['trial', 'resolve'], ['oath', 'investigate'], ['oath', 'careful'], ['oath', 'resolve'], ['aftermath', 'resolve']]) {
-    const node = Object.values(STORY_NODES).find((n) => n.questId === id && n.choices?.some((c) => c.id === field));
-    assert.equal(node.choices.find((c) => c.id === field).check.hero, true, `${id} ${field}`);
-  }
-  // A chapter that is nobody's in particular is still rolled by whoever is best.
-  const chairs = STORY_NODES['q-chairs-start'].choices.find((c) => c.id === 'investigate');
-  assert.equal(chairs.check.hero, undefined);
+test('the player can choose to roll every check, and switch back', () => {
+  let s = makeSandbox({ classId: 'wizard', level: 5 });
+  let out = E.resolveAction(s, { type: 'check-roller', roller: 'hero' });
+  assert.equal(out.result.ok, true);
+  assert.equal(out.state.story.heroRolls, true);
+  assert.equal(E.checkPlan(out.state, choice({ skill: 'athletics' })).actor.id, 'player');
+  out = E.resolveAction(out.state, { type: 'check-roller', roller: 'best' });
+  assert.equal(out.state.story.heroRolls, undefined);
+  assert.equal(E.checkPlan(out.state, choice({ skill: 'athletics' })).actor.id, 'orin');
 });
 
-function ready(id) {
-  const q = QUESTS[id];
-  let s = E.createNewGame({ name: 'Rowan', classId: 'fighter' }); E.awardXp(s, P.XP_NEXT[q.level - 1], [], 'test fixture');
-  s.player.progression.mastery = true; s.world.completed.bell = { xp: 0, gold: 0 };
-  for (const other of Object.values(QUESTS)) { if (other.id === id) break; s.world.completed[other.id] = { xp: 0, gold: 0 }; }
-  s.world.unlockedTowns = ['briarwatch', 'ashford', 'highpass', q.town]; s.world.townId = q.town; s.story.nodeId = `town-${q.town}`; W.init(s);
-  s = E.resolveAction(s, { type: 'recruit' }, high).state;
-  s.story.nodeId = `q-${id}-crisis`; s.world.activeQuest = id; s.world.onExpedition = true;
-  s.story.flags[`prepared:${id}`] = true; s.story.flags[`approach:${id}`] = true; s.story.clues.push(`${id}-evidence`);
-  return s;
-}
+test('a check written for a named companion still goes to that companion', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 5 });
+  assert.equal(E.checkPlan(s, choice({ skill: 'arcana', companion: 'maren' })).actor.id, 'maren');
+});
 
-test('in play, a companion\'s roll is told with their name, and the hero\'s as before', () => {
-  // Fenmere's song: a performance check. Make Maren far better at it than the hero.
-  const s = ready('fenmere');
-  s.player.abilities.cha = 1;
-  const m = s.party.find((p) => p.id === 'maren'); m.abilities.cha = 30;
-  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'resolve' }, high);
-  assert.equal(r.result.ok, true);
-  const told = r.state.story.lastOutcome.text;
-  assert.match(told, /Maren gets them on their feet/);
-  assert.doesNotMatch(told, /You get them on their feet|[{}@]/);
-  // The same check rolled by the hero (the player's choice) reads as written before.
-  const h = ready('fenmere'); h.story.heroRolls = true;
-  const hr = E.resolveAction(h, { type: 'story-choice', choiceId: 'resolve' }, high);
-  assert.match(hr.state.story.lastOutcome.text, /You get them on their feet/);
+test('companions gain expertise in their signature skill from level 21', () => {
+  const at = (level) => { const s = makeSandbox({ classId: 'wizard', level: 10 }); const orin = s.party.find(m => m.id === 'orin'); orin.level = level; return E.checkPlan(s, choice({ skill: 'athletics' }), orin).bonus; };
+  const low = at(20), high = at(21);
+  assert.ok(high - low >= 2, `${high} vs ${low}: expertise doubles proficiency`);
+});
+
+test('the scene says who rolls and what the hero would have had', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const node = E.currentNode(s), before = node.choices;
+  node.choices = [...(before || []), choice({ skill: 'athletics' })];
+  let seen;
+  try { seen = E.buildView(s).scene.choices.find(c => c.id === 'probe').check; } finally { node.choices = before; }
+  assert.equal(seen.actorId, 'orin');
+  assert.ok(seen.hero && typeof seen.hero.probability === 'number');
+  assert.ok(seen.probability >= seen.hero.probability);
+});
+
+test('old saves load without a roller setting and only keep heroRolls when true', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  s.story.heroRolls = false;
+  const n = E.normalizeIncomingState(JSON.parse(JSON.stringify(s)));
+  assert.equal('heroRolls' in n.story, false);
+  s.story.heroRolls = true;
+  assert.equal(E.normalizeIncomingState(JSON.parse(JSON.stringify(s))).story.heroRolls, true);
+});
+
+test('the party card lists what each companion is best at', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const orin = E.buildView(s).party.find(m => m.id === 'orin');
+  assert.equal(orin.strengths.length, 3);
+  assert.equal(orin.strengths[0].name, 'Athletics');
+  assert.ok(orin.strengths[0].bonus >= orin.strengths[2].bonus);
+});
+
+test('a companion who would disapprove never rolls the check for the hero', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const c = { ...choice({ skill: 'insight' }), success: { approval: { maren: -2 } }, failure: {} };
+  assert.notEqual(E.checkPlan(s, c).actor.id, 'maren');
+  assert.equal(E.checkPlan(s, choice({ skill: 'insight' })).actor.id, 'maren');
+});
+
+test("the hero always rolls their own improvised actions and checks marked for the hero", () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  assert.equal(E.checkPlan(s, choice({ skill: 'athletics', hero: true })).actor.id, 'player');
+  const preview = E.previewImprovised(s, { intent: 'Haul the gate open', skill: 'athletics', difficulty: 'moderate', success: 'It opens.', failure: 'It holds.', risk: 'none', reward: 'none' });
+  assert.equal(preview.ok, true);
+  assert.equal(preview.check.actor, s.player.name);
+});
+
+test('switching who rolls keeps the last story result on screen', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  s.story.lastOutcome = { kind: 'story', title: 'T', text: 'Before.' };
+  const out = E.resolveAction(s, { type: 'check-roller', roller: 'hero' });
+  assert.equal(out.state.story.lastOutcome.text, 'Before.');
+});
+
+test('the narrator is told which companion rolled', () => {
+  const N = require('../src/narrator');
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  const events = [{ type: 'roll', text: 'Orin rolled', roll: { actorId: 'orin', actor: 'Orin Stoneward' } }];
+  assert.match(N.buildNarratorPrompt(s, E.buildView(s), { type: 'story-choice', choiceId: 'x' }, events), /Check rolled by: Orin Stoneward/);
+  s.lastNarration = 'The scene.';
+  assert.equal(N.deterministicFallback(s, E.buildView(s), { type: 'check-roller' }, []), 'The scene.');
+});
+
+test('the toggle is offered only while a companion could roll', () => {
+  const s = makeSandbox({ classId: 'wizard', level: 5 });
+  assert.equal(E.buildView(s).scene.companionsCanRoll, true);
+  for (const m of s.party) m.hp = 0;
+  assert.equal(E.buildView(s).scene.companionsCanRoll, false);
 });

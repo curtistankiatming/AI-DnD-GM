@@ -731,7 +731,7 @@
       ],
       "success": [
         {
-          "narrate": "{You find|@ finds} the archivists' service stair behind a fallen shelf, and you all go up it in single file, with the water lapping one step behind you. The dry alcoves on the way are still sealed. Orin closes each one again after you pass, as if somebody might come back for them."
+          "narrate": "{You find|@ finds} the archivists' service stair behind a fallen shelf, and you all go up it in single file, with the water lapping one step behind you. The dry alcoves on the way are still sealed. Orin closes each one again after the party passes, as if somebody might come back for them."
         }
       ],
       "failure": "A shelf collapses beneath {you}. You reach the central record chamber with water rising behind your boots."
@@ -1491,7 +1491,7 @@
       ],
       "success": [
         {
-          "narrate": "{You lead|@ leads} the way through the back courtyards behind the routines, where everyone is too busy doing what they did yesterday to see you. Orin wedges the evacuation gate with a bread paddle from Hobb's yard before anything thinks to lock it."
+          "narrate": "{You lead|@ leads} the way through the back courtyards behind the routines, where everyone is too busy doing what they did yesterday to see you. At the end of it Orin wedges the evacuation gate with a bread paddle from Hobb's yard before anything thinks to lock it."
         }
       ],
       "failure": [
@@ -1685,7 +1685,7 @@
       ],
       "success": [
         {
-          "narrate": "{You stop|@ stops} trying to hear the chorus and {listen|listens} for the people inside it instead. Each one, once {you know|@ knows} them, is a little off the beat."
+          "narrate": "{You stop|@ stops} trying to hear the chorus and {listen|listens} for the people inside it instead. Each one, once {they} {know|knows} them, is a little off the beat."
         },
         {
           "narrate": "The drivers you paid back are in there, every family still keeping its own count, and no two counts the same.",
@@ -1782,7 +1782,16 @@
       ],
       "success": [
         {
-          "narrate": "{You set|@ sets} the keystone in its cradle and {do|does} not tell it anything. Instead {they} {call|calls} the keepers, one at a time, by name: the ones you met, the ones on Maren's list, the ones who were never asked."
+          "narrate": "{You set|@ sets} the keystone in its cradle and {do|does} not tell it anything. Instead {they} {call|calls} the keepers, one at a time, by name: the ones you met, the ones on Maren's list, the ones who were never asked.",
+          "when": {
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "Maren sets the keystone in its cradle and does not tell it anything. Instead she calls the keepers, one at a time, by name: the ones you met, the ones on her own list, the ones who were never asked.",
+          "when": {
+            "roller": "maren"
+          }
         },
         {
           "narrate": "They answer in different rhythms, out of time with each other and badly out of tune. The chorus cannot make them agree without choosing for them, and the moment it tries to choose, the note it has been holding all year comes apart in its hands."
@@ -3962,7 +3971,7 @@
       ],
       "success": [
         {
-          "narrate": "{You tell|@ tells} Coyle the truth: half the council knows where you are, the city will hear about this before the hammer falls whether Iona is there or not, and Haverick will need someone to blame. {They} {ask|asks} him who he thinks that will be."
+          "narrate": "{You tell|@ tells} Coyle the truth: half the council knows where you are, the city will hear about this before the hammer falls whether Iona is there or not, and Haverick will need someone to blame. {You ask|@ asks} Coyle who he thinks that will be."
         },
         {
           "narrate": "Coyle closes his pocket-watch. He is a professional, and professionals know when a job has stopped paying."
@@ -6876,7 +6885,7 @@
       "safe": true,
       "success": [
         {
-          "narrate": "{You go|@ goes} down every lane in Briarwatch before the light goes. Doors shut, shutters up, hearths built high. Old Mother Tanner wants to know who put {you|@} in charge. Then she builds up her fire."
+          "narrate": "{You go|@ goes} down every lane in Briarwatch before the light goes. Doors shut, shutters up, hearths built high. Old Mother Tanner wants to know who put {them} in charge. Then she builds up her fire."
         },
         {
           "say": "Dera",
@@ -6958,7 +6967,7 @@
           }
         },
         {
-          "narrate": "{You stand|@ stands} at the foot of the tower and {give|gives} them the beat, because somebody has to: tower, hand-bell, tower, hand-bell, and a breath between. {They} {find|finds} it by ear, and they follow {you|@}.",
+          "narrate": "{You stand|@ stands} at the foot of the tower and {give|gives} them the beat, because somebody has to: tower, hand-bell, tower, hand-bell, and a breath between. {They} {find|finds} it by ear, and they follow {them}.",
           "when": {
             "notFlag": "prepared:b3-letter"
           }
@@ -7448,7 +7457,7 @@
           }
         },
         {
-          "narrate": "Nessa puts the lamp out and sits in the dark on the north stair, above the loose third step, where anyone going down to the ledger room has to pass under her. You take the drain-grate at the bottom, because she says everyone forgets drains.",
+          "narrate": "Nessa puts the lamp out and sits in the dark on the north stair, above the loose third step, where anyone going down to the ledger room has to pass under her. You take the drain-grate at the bottom; she says everyone forgets drains.",
           "when": {
             "party": "nessa",
             "roller": "nessa"
@@ -8051,12 +8060,12 @@
           "narrate": "He does not say which night of the beacon. He does not need to. He knows who you are."
         },
         {
-          "narrate": "On the way back up the line, {you put your hand|@ puts a hand} on a cradle blanket. It is colder than the morning. The white at the fold moves under {your} fingers."
+          "narrate": "On the way back up the line, {you put your hand|@ puts a hand} on a cradle blanket. It is colder than the morning. The white at the fold moves under {their} fingers."
         }
       ],
       "failure": [
         {
-          "narrate": "{You walk|@ walks} down the line and {ask|asks}, and nobody much wants to talk to a stranger from the free wards. {They} {learn|learns} that the towns had echo-stones, and that the stones stopped, and that is all anyone will say."
+          "narrate": "{You walk|@ walks} down the line and {ask|asks}, and nobody much wants to talk to a stranger from the free wards with a sword. {They} {learn|learns} that the towns had echo-stones, and that the stones stopped, and that is all anyone will say."
         },
         {
           "narrate": "On the way back up the line, {you put your hand|@ puts a hand} on a cradle blanket. It is colder than the morning. The white at the fold moves under {your} fingers."
@@ -8168,14 +8177,14 @@
           }
         },
         {
-          "narrate": "{You} climbs up on the gate's mounting step, where the whole line can see {them}, and you stand beside {them} while {they} tells them the first thing first, because it is true: you broke the Single Voice. You did it because it had to be broken, and when you did, every stone in their towns went dead. Nobody told you that would happen. Nobody told them either.",
+          "narrate": "{You} climbs up on the gate's mounting step with you, where the whole line can see you both. You tell them the first thing first, because it is true: you broke the Single Voice. You did it because it had to be broken, and when you did, every stone in their towns went dead. Nobody told you that would happen. Nobody told them either.",
           "when": {
             "flag": "prepared:b3-pass",
             "roller": "companion"
           }
         },
         {
-          "narrate": "{You climb|@ climbs} up on the gate's mounting step, where the whole line can see {them}. {You don't|@ doesn't} know their towns, or what they have walked through. {They} {tell|tells} them so, and then {they} {tell|tells} them what the white in their blankets is, and what it will do.",
+          "narrate": "{You climb|@ climbs} up on the gate's mounting step, where the whole line can see {them}. {They} {don't|doesn't} know their towns, or what they have walked through. {They} {tell|tells} them so, and then {they} {tell|tells} them what the white in their blankets is, and what it will do.",
           "when": {
             "notFlag": "prepared:b3-pass"
           }
@@ -8830,7 +8839,7 @@
       ],
       "failure": [
         {
-          "narrate": "{You go|@ goes} round with Tam and Davin on the second night. Halfway along Mill Street a board gives under {their} heel and {they} {go|goes} through to the waist, legs in the mist. It is like stepping into a river in winter, if the river could think. It has {your} warmth before Tam has {their} collar. For a while afterwards {they} cannot remember the name of the lane {they} {are|is} on, or why it matters."
+          "narrate": "{You go|@ goes} round with Tam and Davin on the second night. Halfway along Mill Street a board gives under {their} heel and {they} {go|goes} through to the waist, legs in the mist. It is like stepping into a river in winter, if the river could think. It has {their} warmth before Tam has {their} collar. For a while afterwards {they} cannot remember the name of the lane {they} {are|is} on, or why it matters."
         },
         {
           "narrate": "{You come|@ comes} home shaking, by a way {they} will not remember tomorrow."
@@ -8953,19 +8962,27 @@
         {
           "narrate": "Orin is at the back. He has the salt-hall's lamp. He holds it up, high over his head, the whole way, so that the last family in the line can always see the family in front. Every time someone stops, he is there. Every time the line breaks at a gap, he closes it. Twice he goes back along a plank into the edge of the white for someone who has sat down, and comes out with them, grey to the knees, and keeps going.",
           "when": {
-            "party": "orin"
+            "party": "orin",
+            "notRoller": "orin"
           }
         },
         {
           "narrate": "Maren walks in the middle of the line, where the old people are, and counts them out loud, every one, so that they can hear their own names.",
           "when": {
-            "party": "maren"
+            "party": "maren",
+            "notRoller": "maren"
           }
         },
         {
           "narrate": "Mags is at the back. She has the salt-hall's lamp. She holds it up high the whole way, so the last family in the line can always see the family in front, and you can hear her shouting at people, as she shouted eight years ago, except that this time they can hear where she is.",
           "when": {
             "absent": "orin"
+          }
+        },
+        {
+          "narrate": "Mags is at the back. She has the salt-hall's lamp. She holds it up high the whole way, so the last family in the line can always see the family in front, and you can hear her shouting at people, as she shouted eight years ago, except that this time they can hear where she is.",
+          "when": {
+            "roller": "orin"
           }
         },
         {
@@ -8978,7 +8995,14 @@
         {
           "narrate": "Maren counts. It takes a long time. It is all of them.",
           "when": {
-            "party": "maren"
+            "party": "maren",
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "Maren counts. She has been counting since the first roof. It is all of them.",
+          "when": {
+            "roller": "maren"
           }
         },
         {
@@ -9833,10 +9857,10 @@
           "narrate": "{You do|@ does} not fight them. {They} {go|goes} and {get|gets} Corvane."
         },
         {
-          "narrate": "He is not asleep. He is sitting at his table in his shirt with the ledger open and the lamp turned low, and he looks up when {you come|@ comes} in without knocking, and {they} can see that he knows already, or has been afraid of it for a long time. {They} {tell|tells} him what is happening at the vault. {They} {tell|tells} him that it does not matter what he says to {you|them} about it tomorrow; it matters what he says to his officers tonight, in the yard, where the volunteers can see."
+          "narrate": "He is not asleep. He is sitting at his table in his shirt with the ledger open and the lamp turned low, and he looks up when {you come|@ comes} in without knocking, and {you see|@ sees} that Corvane knows already, or has been afraid of it for a long time. {You tell|@ tells} him what is happening at the vault, and that it does not matter what he says to any of you about it tomorrow; it matters what he says to his officers tonight, in the yard, where the volunteers can see."
         },
         {
-          "narrate": "And {they} {tell|tells} him what the old keepers' rite says: that a door can open from inside or from out, and that this one is his to keep shut or not.",
+          "narrate": "And {you tell|@ tells} Corvane what the old keepers' rite says: that a door can open from inside or from out, and that this one is his to keep shut or not.",
           "when": {
             "flag": "b3_rite_carried"
           }
@@ -10406,7 +10430,16 @@
       ],
       "success": [
         {
-          "narrate": "{You sit|@ sits} at the end of the barracks and {watch|watches} the door instead of the table. The volunteers come in ones and twos, and some of them come alone, and some of them come with a district warden in a good coat who stands by the door with a list, and does not leave until they have sat down and said it."
+          "narrate": "{You sit|@ sits} at the end of the barracks and {watch|watches} the door instead of the table. The volunteers come in ones and twos, and some of them come alone, and some of them come with a district warden in a good coat who stands by the door with a list, and does not leave until they have sat down and said it.",
+          "when": {
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "Maren keeps her table, and watches the door over the volunteers' heads. They come in ones and twos, and some of them come alone, and some of them come with a district warden in a good coat who stands by the door with a list, and does not leave until they have sat down and said it.",
+          "when": {
+            "roller": "maren"
+          }
         },
         {
           "narrate": "The ones who come with a warden all say it the same way. Word for word. The words over the iron door."
@@ -10508,7 +10541,16 @@
       ],
       "success": [
         {
-          "narrate": "{You do|@ does} not argue with Hesk. {They} {climb|climbs} up on the table in the middle of the yard, and {talk|talks} to the volunteers."
+          "narrate": "{You do|@ does} not argue with Hesk. {They} {climb|climbs} up on Maren's table, in the middle of the yard, and {talk|talks} to the volunteers.",
+          "when": {
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "Maren does not argue with Hesk. She climbs up on her own table, in the middle of the yard, and talks to the volunteers.",
+          "when": {
+            "roller": "maren"
+          }
         },
         {
           "narrate": "You have the Fourth District warden's roll. {You read|@ reads} it out. Not the quota: the names. The struck ones, and the sums beside them, twelve gold, twenty, forty, and then the names that went on in their place. Bertil Mosk, for the chandler's son. A girl called Ruth Callan, fifteen, for a grain-factor's daughter. {They} {read|reads} every line, and the wardens' men stop moving, and the yard gets very quiet, because half of the people in it are hearing their own names read out beside a price.",
@@ -10517,7 +10559,7 @@
           }
         },
         {
-          "narrate": "You don't have the wardens' rolls, only what you saw at the barracks door. So {you ask|@ asks}. {They} {ask|asks} everyone in the yard who came to the table with a district warden at their back to put up their hand. Nobody does. {They} {ask|asks} again. Bertil Mosk puts his hand up. Then a girl beside him. Then eleven more, slowly, all over the yard.",
+          "narrate": "You don't have the wardens' rolls, only what you saw at the barracks door. So {you ask|@ asks}. {They} {ask|asks} everyone in the yard who came to Maren's table with a district warden at their back to put up their hand. Nobody does. {They} {ask|asks} again. Bertil Mosk puts his hand up. Then a girl beside him. Then eleven more, slowly, all over the yard.",
           "when": {
             "notFlag": "prepared:b3-witness"
           }
@@ -10549,10 +10591,19 @@
       ],
       "failure": [
         {
-          "narrate": "{You climb|@ climbs} up on the table and {start|starts} to speak, and a district warden shouts {them} down from the back of the yard: {the free wards' hero, who broke their stones|one of the free wards' hero's people}, telling Vell's poor what they are worth."
+          "narrate": "{You climb|@ climbs} up on Maren's table and {start|starts} to speak, and a district warden shouts {them} down from the back of the yard: {the free wards' hero, who broke their stones|a friend of the free wards' hero, the one who broke their stones}, telling Vell's poor what they are worth."
         },
         {
-          "narrate": "It goes through the yard like a draught. Somebody throws something. The wardens' men come forward with their cudgels out to clear the table, and the volunteers scatter in every direction, and {you are|@ is} standing between the men with the cudgels and the empty chair."
+          "narrate": "It goes through the yard like a draught. Somebody throws something. The wardens' men come forward with their cudgels out to clear the table, and the volunteers scatter in every direction, and {you are|@ is} standing between the men with the cudgels and Maren's empty chair.",
+          "when": {
+            "notRoller": "maren"
+          }
+        },
+        {
+          "narrate": "It goes through the yard like a draught. Somebody throws something. The wardens' men come forward with their cudgels out to clear the table, and the volunteers scatter in every direction, and Maren is standing between the men with the cudgels and her own empty chair.",
+          "when": {
+            "roller": "maren"
+          }
         }
       ]
     },
@@ -11177,7 +11228,7 @@
       ],
       "failure": [
         {
-          "narrate": "Nobody on the Briarwood road wants to talk about it. Doors close politely. A farmer's wife gives {them} cider and talks about the weather. {You come|@ comes} back with nothing but the smell of smoke from three yards where something has been burned lately, and the same word in every mouth: Thursday. There is a Vell cart due on Thursday, for the market."
+          "narrate": "Nobody on the Briarwood road wants to talk about it. Doors close politely. A farmer's wife gives {you|@} cider and talks about the weather. {They} {come|comes} back with nothing but the smell of smoke from three yards where something has been burned lately, and the same word in every mouth: Thursday. There is a Vell cart due on Thursday, for the market."
         }
       ]
     },
@@ -11800,7 +11851,7 @@
           "narrate": "The vault guard are Hesk's best: older men, Fourth and Fifth District, who have served with him since the beacon. They do not want to be down here. You can see it in the way none of them will stand with his back to a bell."
         },
         {
-          "narrate": "{You do|@ does} not argue with them. {They} {ask|asks} the sergeant which district he is from, and whether his street has a bell yet, and he tells {them}, and by the time he has finished telling {them}, you are all past him and at the end of the rows, near enough to Hesk's table to read the pages upside down."
+          "narrate": "{You do|@ does} not argue with them. {They} {ask|asks} the sergeant which district he is from, and whether his street has a bell yet, and the sergeant tells {them}, and by the time he has finished, you are all past him and at the end of the rows, near enough to Hesk's table to read the pages upside down."
         }
       ],
       "failure": [
@@ -12498,7 +12549,7 @@
           }
         },
         {
-          "narrate": "{You do|@ does} not know how many of them would still say yes. {They} {tell|tells} him that {they} would like to find out, and that so, {they} {think|thinks}, would he.",
+          "narrate": "{You do|@ does} not know how many of them would still say yes. {They} {tell|tells} Corvane {they} would like to find out, and that {they} {think|thinks} he would too.",
           "when": {
             "notFlag": "prepared:b3-greatbell"
           }
@@ -12520,7 +12571,7 @@
           "narrate": "{You tell|@ tells} him yes. That is what asking is."
         },
         {
-          "narrate": "He closes the ledger. He comes up the stair past {them}, one step at a time, like a man much older than sixty, and at the top he tells his guard to unbar the barracks door. They do it before he has finished saying it."
+          "narrate": "He closes the ledger. He comes up the stair past {you|@}, one step at a time, like a man much older than sixty, and at the top he tells his guard to unbar the barracks door. They do it before he has finished saying it."
         },
         {
           "say": "Corvane",

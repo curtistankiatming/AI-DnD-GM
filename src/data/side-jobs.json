@@ -320,7 +320,7 @@
                   "text": "Not yet. I can't. Not with this on my hands."
                 },
                 {
-                  "narrate": "She writes something on the back of one of his old notes, with a stub of pencil from her pocket, and gives it to {them}. Then she goes back to the pit."
+                  "narrate": "She writes something on the back of one of his old notes, with a stub of pencil from her pocket, and gives it to {you}. Then she goes back to the pit."
                 },
                 {
                   "narrate": "In the morning, under Tib's note, there is an answer pencilled in a hand he knows: Alive. Working. Ashamed. Coming. Not yet. He reads it nine times, and then he goes round the stables to look."
@@ -2085,7 +2085,7 @@
                   "narrate": "{You put|@ puts} the two sheets of paper side by side and the two of them on the same side of the table, and within ten minutes they are arguing about whether a hammock is a bed. Iona says a hammock is furniture. Fennick says a hammock is a bed if it is slept in, and has a regulation that says so."
                 },
                 {
-                  "narrate": "In the end {you split it down the middle yourself|@ splits it down the middle}: his roster for the fort, her carts for the rest. It works, mostly. It is not as cheap as it could have been, and both of them tell {you|@} so, separately."
+                  "narrate": "In the end {you split it down the middle yourself|@ splits it down the middle}: his roster for the fort, her carts for the rest. It works, mostly. It is not as cheap as it could have been, and both of them tell {them} so, separately."
                 }
               ],
               "next": "night"
@@ -2129,7 +2129,7 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "{You take|@ takes} the roster round the barracks in person, bunk by bunk, and {ask|asks} each soldier to give up half a bed. {You don't|@ doesn't} order it. {They} {ask|asks}. Most of them have been on the gate all week, watching the line come up the road."
+                  "narrate": "{You take|@ takes} the roster round the barracks in person, bunk by bunk, and {ask|asks} each soldier to give up half a bed. {They} {don't|doesn't} order it. {They} {ask|asks}. Most of them have been on the gate all week, watching the line come up the road."
                 },
                 {
                   "narrate": "By dark there are four hundred and thirty mattresses and pallets stacked in the lower yard, and every soldier in the fort is sharing a bunk by roster, in shifts. A sergeant from Sorrel's north company gives up his own cot as well, and sleeps on the guardroom floor, and pretends it was his idea."
@@ -2710,10 +2710,10 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "{You sit|@ sits} on the step with him, and {don't|doesn't} tell him he's too young, because he knows, and that's why he came. {They} {ask|asks} him instead what Ysolde said to him when she put her name up. He tells {them}. She said she'd hear everyone. She said that was the point of a bell."
+                  "narrate": "{You sit|@ sits} on the step with him, and {don't|doesn't} tell him he's too young, because he knows, and that's why he came. {You ask|@ asks} Jory instead what Ysolde said to him when she put her name up. Jory tells {them}. She said she'd hear everyone. She said that was the point of a bell."
                 },
                 {
-                  "narrate": "So {they} {ask|asks} him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then he gives {them} the chalk."
+                  "narrate": "So {they} {ask|asks} him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then Jory gives {them} the chalk."
                 },
                 {
                   "say": "Jory",
@@ -2732,7 +2732,7 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "{You tell|@ tells} him he's too young, and it is the wrong thing to say. He tells {them} that he's twelve and he carries coal for the Second District every morning and he can carry anything. He tells {them} that {you're from the free wards and you don't know anything|@'s from the free wards and knows nothing}. He's right about the second part."
+                  "narrate": "{You tell|@ tells} him he's too young, and it is the wrong thing to say. He tells {them} that he's twelve and he carries coal for the Second District every morning and he can carry anything. Jory says {you're from the free wards and you don't know anything|@'s from the free wards and doesn't know anything}. He's right about the second part."
                 },
                 {
                   "narrate": "In the end it is Wil who stops it. He takes the chalk out of his brother's hand and puts it in his own pocket, and holds Jory's sleeve, and won't let go. Jory lets him."
