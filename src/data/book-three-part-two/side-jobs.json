@@ -1,5 +1,5 @@
 {
-  "_note": "Book Three, Part Two side jobs (docs/book-three/DESIGN-PART-TWO.md), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold, and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP). The Debt Book opens after b3-paid, Part One's last chapter, which is still being written (quests.json '_awaits').",
+  "_note": "Book Three, Part Two side jobs (docs/book-three/DESIGN-PART-TWO.md), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold, and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP). The Debt Book opens after b3-paid, Part One's last chapter, the chapter before it.",
   "debtbook": {
     "id": "debtbook",
     "name": "The Debt Book",

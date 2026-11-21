@@ -8,15 +8,13 @@ process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
 // order and the town that said no, their scenes and side jobs, and the engine
 // work they need (oneOf line groups, line setFlag, walkouts in Part Two).
 //
-// Part One's chapters 7 to 10 are still being written. These tests start
-// each chapter from a scripted state with every chapter before it, written or
-// still to come, marked done, so they hold when b3-vault, b3-greatbell and
-// b3-paid are added.
+// These tests start each chapter from a scripted state with every chapter
+// before it marked done.
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Book = require('../src/book'), Away = require('../src/away');
 const { STORY_NODES, ENEMIES, ENCOUNTERS, COMPANIONS, CLUES } = require('../src/content');
 const X = require('../src/expansion');
-const { QUESTS, SCENES, SIDE_JOBS, AWAITED, liveLines, playLines, storyLine, dialogueText } = X;
+const { QUESTS, SCENES, SIDE_JOBS, liveLines, playLines, storyLine, dialogueText } = X;
 const RAWQ = require('../src/data/book-three-part-two/quests.json'), RAWS = require('../src/data/book-three-part-two/scenes.json'), RAWJ = require('../src/data/book-three-part-two/side-jobs.json');
 const high = () => .999999, low = () => 0;
 
@@ -28,13 +26,12 @@ const ALL_TOWNS = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfol
 function hero(cls = 'fighter', level = 1) { const s = E.createNewGame({ name: 'Rowan', classId: cls }); if (level > 1) E.awardXp(s, P.XP_NEXT[level - 1], [], 'test fixture'); return s; }
 function act(s, a, rng = high) { const r = E.resolveAction(s, a, rng); assert.equal(r.result.ok, true, `${JSON.stringify(a)} at ${s.story.nodeId}: ${r.result.error}`); return r; }
 // A hero in the town where a chapter starts, with every chapter before it
-// done, including Part One's chapters that are not written yet.
+// done.
 function ready(id, { cls = 'fighter', party = ['orin', 'maren', 'nessa'], flags = {}, town } = {}) {
   const q = QUESTS[id];
   let s = hero(cls, q.level); s.player.gold = 1000; s.player.progression.mastery = true;
   s.world.completed.bell = { xp: 0, gold: 0 };
   for (const other of Object.values(QUESTS)) { if (other.id === id) break; s.world.completed[other.id] = { xp: 0, gold: 0 }; }
-  for (const awaited of AWAITED) s.world.completed[awaited] = { xp: 0, gold: 0 };
   s.world.unlockedTowns = [...ALL_TOWNS]; s.world.townId = town || q.town; s.story.nodeId = `town-${town || q.town}`;
   Object.assign(s.story.flags, { b3_partone_done: true }, flags); W.init(s);
   if (party.includes('nessa')) s = act(s, { type: 'recruit' }).state;
@@ -130,7 +127,7 @@ test('Part Two follows Part One: four chapters, one level each, in their own fil
   ]);
   for (const q of PART_TWO) {
     assert.equal(q.xp, P.levelBand(q.level), `${q.id} pays exactly one level`);
-    assert.ok(RAWQ[q.id] && !require('../src/data/quests.json')._awaits, `${q.id} is written in the Part Two file`);
+    assert.ok(RAWQ[q.id] && !require('../src/data/quests.json')._note, `${q.id} is written in the Part Two file`);
     for (const key of ['opening', 'crisis', 'after', 'approach']) assert.ok(Array.isArray(q[key]) && q[key].length, `${q.id}.${key}`);
     assert.ok(q.talks.length >= 3 && q.decisions.length === 3, q.id);
     assert.ok(STORY_NODES[`q-${q.id}-start`] && STORY_NODES[`q-${q.id}-after`], q.id);
@@ -140,10 +137,10 @@ test('Part Two follows Part One: four chapters, one level each, in their own fil
   assert.deepEqual(QUESTS['b3-wren'].needs, ['nessa']); assert.deepEqual(QUESTS['b3-order'].needs, ['orin']);
   // Story order: after every Part One chapter, written now or later.
   const order = Book.CHAPTERS.map((q) => q.id);
-  for (const id of PART_ONE_IDS.filter((x) => QUESTS[x])) assert.ok(order.indexOf(id) < order.indexOf('b3-price'), `${id} comes before b3-price`);
+  for (const id of PART_ONE_IDS) assert.ok(order.indexOf(id) < order.indexOf('b3-price'), `${id} comes before b3-price`);
   assert.deepEqual(order.slice(-4), IDS);
-  // The chapters it follows that are not written yet are Part One's, and only those.
-  for (const id of AWAITED) { assert.ok(PART_ONE_IDS.includes(id) && !QUESTS[id], id); }
+  // Every Part One chapter it follows is written.
+  for (const id of PART_ONE_IDS) assert.ok(QUESTS[id], id);
   // Book Three stays hidden from players; the preview shows it waiting after chapter 14.
   assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0);
   assert.equal(Book.SHELF.find((b) => b.n === 3).writing, true, 'Chapters 15 to 20 are still to come.');
@@ -155,7 +152,7 @@ test('every consumer sees one set of tables: the Part Two files are merged into 
     for (const id of Object.keys(part).filter((k) => !k.startsWith('_'))) { assert.ok(table[id], `${file} ${id}`); assert.equal(raw[id], table[id], `${file}: whoever reads the table sees ${id}`); }
   }
   assert.ok(STORY_NODES['scene-price-camp-fish'] && STORY_NODES['job-debtbook-row'] && ENCOUNTERS['quest:b3-ashford']);
-  assert.ok(!QUESTS._awaits && !QUESTS._note && !SCENES._awaits);
+  assert.ok(!QUESTS._note, 'Part Two notes are not merged as chapters');
 });
 
 test('the browser build carries the Part Two files', () => {

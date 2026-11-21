@@ -3,6 +3,9 @@
 // "out"). These tests read it the way agent playtests do. node --test runs
 // each file in its own process, so this reaches no other test file.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
+// Part Two is held back, so Part One ends at "To be continued" as it will for
+// players; tests/book-three-part-two.test.js shows Part Two following it.
+process.env.BRIARWATCH_PREVIEW_PARTS = '3:1';
 // Book Three, "The Names in the Bronze", Part One, chapters 1 to 10
 // (docs/book-three/DESIGN.md): the letter, Sable's rite, the pass in spring,
 // Saltwick, the casting yard, the witness, home for help, the quiet bells, the
@@ -253,7 +256,9 @@ function lineArrays(owner, value, out = []) {
 // The chapter a scene belongs to: the one it follows, or the one the scene before it follows.
 const chapterOf = (s) => { for (let x = s, i = 0; x && i < 10; x = RAWS[x.after], i++) if (RAWQ[x.after]) return x.after; return null; };
 const B3_SCENES = Object.values(RAWS).filter((x) => x?.nodes && IDS.includes(chapterOf(x)));
-const B3_JOBS = Object.values(RAWJ).filter((j) => j?.nodes && [j.from, j.until].some((id) => IDS.includes(id)));
+// Part One's jobs: a job that runs on into Part Two is tested there.
+const partTwo = (id) => (RAWQ[id]?.book || 1) === 3 && (RAWQ[id]?.part || 1) === 2;
+const B3_JOBS = Object.values(RAWJ).filter((j) => j?.nodes && [j.from, j.until].some((id) => IDS.includes(id)) && ![j.from, j.until].some(partTwo));
 const order = (id) => IDS.indexOf(id);
 // Flags set by each Book Three chapter, its camp scene or a job, and every flag
 // Books One and Two can set.

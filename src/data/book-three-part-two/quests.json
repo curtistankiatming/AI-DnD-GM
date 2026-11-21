@@ -1,8 +1,5 @@
 {
-  "_note": "Book Three, Part Two, The Stair (docs/book-three/DESIGN-PART-TWO.md). Written in its own files and merged after quests.json by src/expansion.js, so these chapters follow Part One in story order. Each chapter has book 3 and part 2, and pays exactly one level (P.levelBand). A line may be {oneOf: [...]}: the first line in it that applies is told. A line's setFlag is set when it is told. '_awaits' names the Part One chapters still being written that these chapters and jobs follow.",
-  "_awaits": [
-    "b3-paid"
-  ],
+  "_note": "Book Three, Part Two, The Stair (docs/book-three/DESIGN-PART-TWO.md). Written in its own files and merged after quests.json by src/expansion.js, so these chapters follow Part One in story order. Each chapter has book 3 and part 2, and pays exactly one level (P.levelBand). A line may be {oneOf: [...]}: the first line in it that applies is told. A line's setFlag is set when it is told.",
   "b3-price": {
     "id": "b3-price",
     "book": 3,

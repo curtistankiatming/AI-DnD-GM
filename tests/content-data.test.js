@@ -39,8 +39,7 @@ test('story, encounter, quest and shop references all resolve',()=>{
   for(const t of Object.values(X.TOWNS))for(const item of t.stock||[])if(!C.ITEMS[item])problems.push(`TOWNS.${t.id}: unknown item ${item}`);
   for(const m of Object.values(X.MERCHANTS))for(const item of m.stock||[])if(!C.ITEMS[item])problems.push(`MERCHANTS.${m.id}: unknown item ${item}`);
   for(const q of Object.values(X.QUESTS)){
-    // A Part Two chapter may follow a Part One chapter still being written (expansion.js AWAITED).
-    if(q.unlock!=='bell'&&!X.QUESTS[q.unlock]&&!X.AWAITED.has(q.unlock))problems.push(`QUESTS.${q.id}: unknown unlock ${q.unlock}`);
+    if(q.unlock!=='bell'&&!X.QUESTS[q.unlock])problems.push(`QUESTS.${q.id}: unknown unlock ${q.unlock}`);
     for(const town of [q.town,q.nextTown].filter(Boolean))if(!X.TOWNS[town])problems.push(`QUESTS.${q.id}: unknown town ${town}`);
   }
   for(const p of Object.values(X.PERSONAL))if(p.quest!=='bell'&&!X.QUESTS[p.quest])problems.push(`PERSONAL: unknown quest ${p.quest}`);

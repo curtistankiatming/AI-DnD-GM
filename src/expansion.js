@@ -52,13 +52,10 @@ const QUESTS=require('./data/quests.json');
 // src/data/book-three-part-two/ and merged here, after the main tables, so it
 // follows Part One in story order. It is merged into the same objects, so
 // anything that reads the JSON tables after this module sees one set. "_"
-// keys are notes. "_awaits" in its quests.json names Part One chapters it
-// follows that are still being written (b3-paid): a Part Two chapter or job
-// may name one of those before it exists (AWAITED), and nothing else.
+// keys are notes.
 const PART_TWO={quests:require('./data/book-three-part-two/quests.json'),scenes:require('./data/book-three-part-two/scenes.json'),jobs:require('./data/book-three-part-two/side-jobs.json')};
 function mergeTable(into,from,what){for(const [id,v]of Object.entries(from)){if(id.startsWith('_'))continue;if(Object.prototype.hasOwnProperty.call(into,id))throw new Error(`${what} ${id} is written twice`);into[id]=v;}return into;}
 mergeTable(QUESTS,PART_TWO.quests,'Chapter');
-const AWAITED=new Set((PART_TWO.quests._awaits||[]).filter(id=>!QUESTS[id]));
 // Books One and Two pay a share of each chapter's level (src/xp.js
 // CHAPTER_SHARE), so side content matters there. A chapter written to pay
 // nothing (the trial, an aftermath) still pays nothing. Book Three on keeps
@@ -225,7 +222,7 @@ for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scen
 const SIDE_JOBS=Object.fromEntries(Object.entries(mergeTable(require('./data/side-jobs.json'),PART_TWO.jobs,'Side job')).filter(([,j])=>j&&j.nodes));
 function installJob(job){
   const town=TOWNS[job.town];if(!town)throw new Error(`Side job ${job.id} is in unknown town ${job.town}`);
-  for(const id of [job.from,job.until])if(id&&!QUESTS[id]&&!AWAITED.has(id))throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
+  for(const id of [job.from,job.until])if(id&&!QUESTS[id])throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
   const nodeId=key=>`job-${job.id}-${key}`;
   const dc=10+Math.floor(XP.challenge({level:job.level}).accuracy/2);
   const ends=o=>({lines:o.lines,...(o.approval?{approval:o.approval}:{}),...(o.setFlags?{setFlags:o.setFlags}:{}),...(Number.isFinite(o.gold)?{gold:o.gold}:{}),
@@ -278,4 +275,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,AWAITED,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};
+module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};

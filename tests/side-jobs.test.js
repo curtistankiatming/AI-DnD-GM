@@ -5,7 +5,7 @@
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Book = require('../src/book');
 const { STORY_NODES } = require('../src/content');
-const { QUESTS, SIDE_JOBS, AWAITED } = require('../src/expansion');
+const { QUESTS, SIDE_JOBS } = require('../src/expansion');
 const high = () => .999999, low = () => 0;
 
 function act(s, a, rng = high) { const r = E.resolveAction(s, a, rng); assert.equal(r.result.ok, true, `${JSON.stringify(a)}: ${r.result.error}`); return r; }
@@ -16,8 +16,6 @@ function ready(job, { party = ['orin', 'maren', 'nessa'], flags = {} } = {}) {
   E.awardXp(s, P.XP_NEXT[q.level - 1], [], 'fixture');
   s.player.gold = 500; s.player.progression.mastery = true; s.world.completed.bell = { xp: 0, gold: 0 };
   for (const other of Object.values(QUESTS)) { if (other.id === job.until) break; s.world.completed[other.id] = { xp: 0, gold: 0 }; }
-  // A job may open after a chapter still being written (src/expansion.js AWAITED).
-  for (const id of AWAITED) s.world.completed[id] = { xp: 0, gold: 0 };
   s.world.unlockedTowns = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold']; s.world.townId = job.town; s.story.nodeId = `town-${job.town}`;
   Object.assign(s.story.flags, flags); W.init(s);
   if (party.includes('nessa')) s = act(s, { type: 'recruit' }).state;
