@@ -17,6 +17,7 @@ const Chronicle = require("./chronicle");
 const { dialogueText, liveLines, lineApplies, nodeLocation } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
+const Gear = require("./gear");
 const { nowIso, normalizeId, titleCase, mergeInventory, addItem, inventoryEntry, hasItem, consumeItemUse, buildClassResources, applyEquipmentDerivedStats, pushLog, recordHistory, findCompanion, checkActor, successProbability, awardXp, invalidResult, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS } = require("./engine-core");
 const Combat = require("./combat");
 const startCombat = (...args) => Combat.startCombat(...args);
@@ -491,9 +492,10 @@ function checkPlan(state, choice, forced = null) {
     reasons.push(`missing ${ITEMS[check.toolsRequiredOrPenalty]?.name || "required tools"}`);
   }
   if (actor.id==='player' && actor.level>=6 && check.tools?.some(id=>hasItem(state,id))) { bonus+=2;reasons.push('Fieldcraft +2 with the listed tools'); }
-  const cloak=ITEMS[actor.equipment?.accessory];
-  const usesCloak=skillId==='survival' && cloak?.id==='thornward-cloak' && actor.used?.cloakReady;
-  if(usesCloak){advantage=true;reasons.push('Thornward Cloak: first Survival check after a long rest');}
+  // A worn item's story ability (src/gear.js), such as the Thornward Cloak's.
+  const story=Gear.storyItem(state,actor,skillId);
+  const usesCloak=Boolean(story);
+  if(story){advantage=true;reasons.push(`${story.name}: first ${SKILLS[skillId].name} check after a long rest`);}
   const usesInspiration=state.player.inspirationPrepared && actor.id==='player' && !advantage;
   if(usesInspiration){advantage=true;reasons.push('Prepared Inspiration improves this check');}
   let dc=Number(check.dc||10);
@@ -507,13 +509,13 @@ function checkPlan(state, choice, forced = null) {
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
   const effectiveAdvantage = advantage && !disadvantage;
   const effectiveDisadvantage = disadvantage && !advantage;
-  return { actor, skillId, abilityId, bonus, helper, advantage: effectiveAdvantage, disadvantage: effectiveDisadvantage, dc, reasons, usesInspiration, usesCloak };
+  return { actor, skillId, abilityId, bonus, helper, advantage: effectiveAdvantage, disadvantage: effectiveDisadvantage, dc, reasons, usesInspiration, usesCloak, storyItemId: story?.id || null };
 }
 
 function resolveStoryCheck(state, choice, rng, events) {
   const plan = checkPlan(state, choice);
   if (!plan) return { success: true, text: "" };
-  if (plan.usesCloak) plan.actor.used.cloakReady=false;
+  Gear.spendStory(state, plan);
   if (plan.usesInspiration) {
     state.player.inspirationPrepared = false;
     state.player.inspiration = Math.max(0, state.player.inspiration - 1);

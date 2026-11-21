@@ -7,6 +7,7 @@ const Director=require('./director');
 const Book=require('./book');
 const XP=require('./xp');
 const G=require('./equipment');
+const Gear=require('./gear');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
 const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job','bounty']);
 function init(state){
@@ -165,10 +166,11 @@ function longRest(state,premium,events){
     a.conditions=(a.conditions||[]).filter(c=>['poisoned','blessed','poisonWard','coating'].includes(c.id));
     if(premium)a.temporaryHp=4+P.accuracyLevel(state.player.level);
     else a.temporaryHp=0;
-    a.used ||= {};a.used.cloakReady=true;
+    a.used ||= {};
     if(a.id==='player'){a.resources=P.resources(CLASSES[a.classId],a.level,a);a.hitDice.current=P.hitDiceMax(a.level);}
     else P.refreshCompanion(a,'long');
   }
+  Gear.refreshStory(state);
   state.world.day+=1;
   if(premium){state.world.servicesUsed[key]=true;state.player.inspiration=Math.min(3,state.player.inspiration+1);}
   return emit(events,premium?`The inn restores the party and grants ${4+P.accuracyLevel(state.player.level)} temporary HP each, plus one Inspiration (maximum 3). Cost ${cost} gold; one paid benefit per completed expedition.`:'Civic lodging restores HP, hit dice and class resources without cost. Poison requires treatment; existing protective coatings remain. No XP or stock refresh is granted.','rest','good');
@@ -270,7 +272,7 @@ function handle(state,action,rng,events,api){
     if(m.stock[id]<qty)return fail(events,'The merchant does not have that many. No gold was spent.');
     const cost=price(state,id,action.market)*qty;if(!charge(state,cost,events))return {ok:false,error:'Not enough gold.'};
     m.stock[id]-=qty;G.addTo(state.player.inventory,id,qty);
-    return emit(events,`Bought ${qty} × ${ITEMS[id].name} for ${cost} gold. ${ITEMS[id].purpose}`,'item','good');
+    return emit(events,`Bought ${qty} × ${ITEMS[id].name} for ${cost} gold. ${Gear.purpose(ITEMS[id])}`,'item','good');
   }
   if(action.type==='sell'){
     if(!market(state,action.market))return fail(events,'Sell items at an available town shop or traveling merchant.');
@@ -397,7 +399,7 @@ function handle(state,action,rng,events,api){
   }
   return fail(events,'That action is unavailable.');
 }
-function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:item.purpose,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
+function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:Gear.purpose(item),rarity:item.rarity||'Common',requires:Gear.requirementText(item)||null,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
 function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
   // A written chapter in a book this save cannot open (unreleased, or paid) is not on the board.
@@ -431,7 +433,7 @@ function view(state){
     shop:t&&!empty?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
     merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
     upgrades:t&&!empty?eq:[],recipes:t&&!empty?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
-    storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:ITEMS[e.itemId].purpose})),
+    storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:Gear.purpose(ITEMS[e.itemId])})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
     quests:questCards,preparation:prep,director:Director.view(state),bounty:t&&!empty?require('./bounty').view(state):null,
     sideJobs:Object.values(SIDE_JOBS).filter(j=>jobOpen(state,j)).map(j=>({id:j.id,name:j.name,brief:j.brief,giver:j.giver,town:j.town,townName:TOWNS[j.town].name,level:j.level,reward:{gold:j.gold,xp:jobXp(j)},started:Boolean(w.jobProgress[j.id]),canStart:Boolean(t&&t.id===j.town&&!state.combat?.active)})),

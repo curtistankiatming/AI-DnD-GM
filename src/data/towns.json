@@ -30,7 +30,9 @@
       "chain-shirt",
       "studded-leather",
       "steel-shield",
-      "ash-wand"
+      "ash-wand",
+      "mirefang-dagger",
+      "veilstep-cloak"
     ],
     "rumor": "The missing caravans did not simply vanish. A western tollhouse has been ringing the wrong road signal."
   },
@@ -67,7 +69,9 @@
       "warbow",
       "ward-staff",
       "duelist-buckler",
-      "wayfarer-boots"
+      "wayfarer-boots",
+      "hexwood-rod",
+      "bulwark-shield"
     ],
     "rumor": "Sabotage at the western span, and ward ash in the Fenmere marsh. Someone is getting rid of old wards downstream, and does not care who drinks them."
   },
@@ -104,7 +108,9 @@
       "scholars-lens",
       "resonant-blade",
       "warbow",
-      "ward-staff"
+      "ward-staff",
+      "ember-brand",
+      "warden-signet"
     ],
     "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command."
   },
@@ -185,7 +191,9 @@
       "field-plate",
       "sentinel-charm",
       "scholars-lens",
-      "wayfarer-boots"
+      "wayfarer-boots",
+      "oathbound-mail",
+      "ember-brand"
     ],
     "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
   },

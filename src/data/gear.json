@@ -1,0 +1,182 @@
+[
+  {
+    "id": "ember-brand",
+    "name": "Ember Brand",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 160,
+    "description": "A forge-blackened sword whose fuller still glows when it is drawn.",
+    "purpose": "Strength, 1d8 slashing, +1 to hit, +2 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 1,
+    "requires": {
+      "level": 8,
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Kindle",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "damageBonus": 2
+  },
+  {
+    "id": "mirefang-dagger",
+    "name": "Mirefang Dagger",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Uncommon",
+    "value": 70,
+    "description": "A marsh-hunter's knife with a hooked, serrated back.",
+    "purpose": "Finesse, 1d6 piercing.",
+    "weapon": {
+      "damage": "1d6",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "requires": {
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Hamstring",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    }
+  },
+  {
+    "id": "hexwood-rod",
+    "name": "Hexwood Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Rare",
+    "value": 150,
+    "description": "Pale hexwood bound in silver wire that unpicks a ward's knots.",
+    "purpose": "Equip: +2 spell attack bonus and +2 spell save DC.",
+    "spellAttackBonus": 2,
+    "spellDcBonus": 2,
+    "requires": {
+      "level": 4,
+      "classes": [
+        "wizard",
+        "bard",
+        "cleric"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    }
+  },
+  {
+    "id": "bulwark-shield",
+    "name": "Bulwark Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Rare",
+    "value": 140,
+    "description": "A tall, iron-rimmed shield that needs a strong arm to hold steady.",
+    "purpose": "Equip in your off hand for +3 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 3,
+    "requires": {
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified until your next turn: take 25% less damage."
+    }
+  },
+  {
+    "id": "warden-signet",
+    "name": "Warden's Signet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 180,
+    "description": "The roadwardens' seal ring, given to those who have kept the road.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 10
+    },
+    "story": {
+      "skill": "insight",
+      "text": "Advantage on the first Insight check after each long rest."
+    }
+  },
+  {
+    "id": "veilstep-cloak",
+    "name": "Veilstep Cloak",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Uncommon",
+    "value": 90,
+    "description": "Grey wool that takes on the colour of whatever wall it brushes.",
+    "purpose": "Equip in the accessory slot for +1 AC.",
+    "acBonus": 1,
+    "requires": {
+      "classes": [
+        "rogue",
+        "ranger",
+        "bard"
+      ]
+    },
+    "story": {
+      "skill": "stealth",
+      "text": "Advantage on the first Stealth check after each long rest."
+    }
+  },
+  {
+    "id": "oathbound-mail",
+    "name": "Oathbound Mail",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Epic",
+    "value": 320,
+    "description": "Plate links stamped with the oaths of the wardens who wore it before you.",
+    "purpose": "Base AC 19, no Dexterity bonus.",
+    "armor": {
+      "base": 19,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 15,
+      "abilities": {
+        "str": 15
+      }
+    }
+  }
+]
