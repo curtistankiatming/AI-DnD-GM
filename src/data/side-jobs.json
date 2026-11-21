@@ -1792,7 +1792,7 @@
     "town": "highpass",
     "level": 21,
     "from": "b3-letter",
-    "until": "b3-pass",
+    "until": "b3-witness",
     "gold": 70,
     "giver": "Warden Sable, by way of Captain Sorrel",
     "brief": "Sable wants his borrowed books returned to the Ashford archive, every one with his notes in the margins. Captain Sorrel wants them out of her prison. Read the notes first.",
@@ -1981,6 +1981,849 @@
             },
             "approval": {
               "nessa": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "beds": {
+    "id": "beds",
+    "name": "Beds for Six Hundred",
+    "town": "highpass",
+    "level": 23,
+    "from": "b3-pass",
+    "until": "b3-saltwick",
+    "gold": 80,
+    "giver": "Captain Sorrel",
+    "brief": "There is a hard frost coming down off the pass tonight, and six hundred people from the Commandery with nothing to sleep on but stone. Captain Sorrel needs beds by nightfall. Iona and Fennick each have a plan, and neither will speak to the other about it.",
+    "start": "frost",
+    "nodes": {
+      "frost": {
+        "title": "Six hundred, and a frost",
+        "lines": [
+          {
+            "say": "Sorrel",
+            "text": "There's a frost coming. A proper one, off the top of the pass. You can smell it. I've got six hundred people sleeping on my floors in what they were wearing at the gate, and the old ones and the babies won't see the morning on stone. I need beds. By dark.",
+            "when": {
+              "flag": "b3_pass_all"
+            }
+          },
+          {
+            "say": "Sorrel",
+            "text": "There's a frost coming. A proper one, off the top of the pass. I've got near four hundred people camped below my walls on the bare switchback, and the braziers won't keep that off them. I need beds, off the ground. By dark.",
+            "when": {
+              "flag": "b3_pass_some"
+            }
+          },
+          {
+            "say": "Sorrel",
+            "text": "Brannagh's sent a rider back from Fenmere's rise. There's a frost coming, there and here, and the rise has six hundred people on it and tents and nothing else. She wants beds. From me. On tonight's carts, which leave at dark.",
+            "when": {
+              "flag": "b3_pass_fenmere"
+            }
+          },
+          {
+            "narrate": "Quartermaster Iona and Clerk-Major Fennick are at opposite ends of the guardroom table, each with a sheet of paper, not looking at each other. They have each written a plan. They have each read the other's. They have, Sorrel says, each called the other's plan \"interesting\"."
+          },
+          {
+            "say": "Iona",
+            "text": "Ashford has a wool store. Ashford has a timber yard. I can have six hundred pallets and blankets bought and on carts by dark, if someone pays for them now and lets me invoice the council later. Speed costs money. That's all. It's not complicated."
+          },
+          {
+            "say": "Fennick",
+            "text": "Highpass has two hundred and eighteen beds, not forty. The captain counts the barracks. I count everything: officers' cots, the infirmary, the store-room hammocks, every straw mattress in every bunk. A soldier on night watch sleeps by day. Two to a bunk, in shifts, by roster, and half the fort's mattresses are free to go wherever the people are. It costs nothing. It costs a roster."
+          },
+          {
+            "say": "Sorrel",
+            "text": "Her plan costs money I haven't got. His plan costs my soldiers their beds. Pick one. Or make them talk to each other. I've tried. I'd rather fight the frost."
+          }
+        ],
+        "choices": [
+          {
+            "id": "both",
+            "label": "Sit Iona and Fennick down together and make one plan out of two",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "investigation",
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You put the two sheets of paper side by side in the middle of the table, and the two of them on the same side of it, and refuse to let either of them leave."
+                },
+                {
+                  "narrate": "It takes an hour. Fennick's roster frees two hundred and eighteen mattresses, and Iona's carts cover the rest, and between them they find that the rest is three hundred and eighty-two, not six hundred, which is a cheaper number. Iona corrects one of Fennick's sums. Fennick corrects one of hers. Neither of them says a word about it. They both write the correction in."
+                },
+                {
+                  "say": "Iona",
+                  "text": "That's tolerable."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "That's very nearly correct."
+                },
+                {
+                  "say": "Sorrel",
+                  "text": "From them, that's a wedding."
+                }
+              ],
+              "next": "night"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You put the two sheets of paper side by side and the two of them on the same side of the table, and within ten minutes they are arguing about whether a hammock is a bed. Iona says a hammock is furniture. Fennick says a hammock is a bed if it is slept in, and has a regulation that says so."
+                },
+                {
+                  "narrate": "In the end you split it down the middle yourself: his roster for the fort, her carts for the rest. It works, mostly. It is not as cheap as it could have been, and both of them tell you so, separately."
+                }
+              ],
+              "next": "night"
+            }
+          },
+          {
+            "id": "iona",
+            "label": "Pay for Iona's carts out of your own purse (60 gold)",
+            "gold": -60,
+            "lines": [
+              {
+                "narrate": "You count sixty gold onto the guardroom table. Iona sweeps it into her satchel, writes you a receipt in the same movement, and is out of the door before Fennick has looked up."
+              },
+              {
+                "narrate": "The carts come up from the Ashford road at the last of the light, loaded to the rails with straw pallets and grey wool blankets that smell of sheep and river. Every one of the six hundred has a blanket by the time the frost comes down. Fennick checks the count against his list, twice, and cannot find anything wrong with it."
+              },
+              {
+                "say": "Fennick",
+                "text": "She bought eleven too many."
+              },
+              {
+                "say": "Iona",
+                "text": "I bought eleven spare. There's a difference, Clerk-Major. Someone's always cold."
+              }
+            ],
+            "reward": 20,
+            "approval": {
+              "orin": 1
+            }
+          },
+          {
+            "id": "fennick",
+            "label": "Take Fennick's roster to the soldiers yourself, and ask them to share",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "intimidation",
+                "performance"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You take the roster round the barracks yourself, bunk by bunk, and ask each soldier to give up half a bed. You don't order it. You ask. Most of them have been on the gate all week, watching the line come up the road."
+                },
+                {
+                  "narrate": "By dark there are four hundred and thirty mattresses and pallets stacked in the lower yard, and every soldier in the fort is sharing a bunk by roster, in shifts. A sergeant from Sorrel's north company gives up his own cot as well, and sleeps on the guardroom floor, and pretends it was his idea."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "Everyone's on the list. Everyone's somewhere. That's all a census is, really. Everyone somewhere."
+                }
+              ],
+              "next": "night"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You take the roster round the barracks, and the soldiers have been on the gate all week and are tired and cold, and half of them say no. By dark Fennick's roster has freed a hundred and ninety mattresses. The rest of the six hundred sleep under every spare cloak in the fort."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "A hundred and ninety. I'll write it down. It's not nothing. I'll write that down too."
+                }
+              ],
+              "next": "night"
+            }
+          }
+        ]
+      },
+      "night": {
+        "title": "The frost",
+        "lines": [
+          {
+            "narrate": "The frost comes down off the pass at midnight, white and hard, the ordinary kind. In the morning Hanne Ostrow's baby is asleep in a hammock in the store-room with a grey Ashford blanket over her, and her breath is a small cloud above it.",
+            "when": {
+              "anyFlag": [
+                "b3_pass_all",
+                "b3_pass_some"
+              ]
+            }
+          },
+          {
+            "narrate": "The beds go east on the night carts, roped down under canvas, and the frost comes down behind them, white and hard, the ordinary kind. Two days later Brannagh's rider comes back from Fenmere's rise with a note in her big untidy hand: every bed arrived, and Hanne Ostrow's baby slept on Brannagh's shoulder anyway.",
+            "when": {
+              "flag": "b3_pass_fenmere"
+            }
+          },
+          {
+            "say": "Sorrel",
+            "text": "Nobody died of the cold last night on my account. I'd like that to be a habit."
+          }
+        ],
+        "choices": [
+          {
+            "id": "done",
+            "label": "Go and get some sleep yourself"
+          }
+        ]
+      }
+    }
+  },
+  "oil": {
+    "id": "oil",
+    "name": "The Oil Run",
+    "town": "saltwick",
+    "level": 23,
+    "from": "b3-pass",
+    "until": "b3-witness",
+    "gold": 85,
+    "giver": "Mags Peller",
+    "brief": "A cart of lamp oil is waiting at the Grey Step waystation, a half-day down the Iron Road, bought with the last of Saltwick's salt. Its carter won't bring it up the road with the tide due. Get it to the lamps before dark.",
+    "start": "barrels",
+    "nodes": {
+      "barrels": {
+        "title": "One cart of oil",
+        "lines": [
+          {
+            "narrate": "Mags Peller is in the salt-hall loft with her dip-stick, going from barrel to barrel. None of them takes long.",
+            "when": {
+              "noneFlag": [
+                "b3_saltwick_moved",
+                "b3_saltwick_bought",
+                "b3_saltwick_seized"
+              ]
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "We sold the last of the salt to a trader down at the Grey Step for one cart of oil. One cart. It's sitting at the waystation now, and the carter won't bring it up. Says the tide's due and he's got children. Well. So have we.",
+            "when": {
+              "noneFlag": [
+                "b3_saltwick_moved",
+                "b3_saltwick_bought",
+                "b3_saltwick_seized"
+              ]
+            }
+          },
+          {
+            "narrate": "Saltwick is empty: three hundred people gone to Vell, every roof bare, the hen-coop gone from the chandler's. But the lamps are lit. Mags Peller has come back over the ridge with four of her lamplighters to keep them lit, at every corner, every night.",
+            "when": {
+              "flag": "b3_saltwick_moved"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "If the lamps go out, the mist comes up into the houses and stays, and then there's no Saltwick to go home to. Only roofs. So we keep them lit. Somebody's got to. We've bought a cart of oil at the Grey Step with the salt we left in the hall loft, and the carter won't bring it up the road with the tide due.",
+            "when": {
+              "flag": "b3_saltwick_moved"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "The oil we got off the ration office goes faster than they said it would. Everything does. There's one more cart at the Grey Step waystation, bought with the last of the salt, and the carter won't bring it up the road with the tide due.",
+            "when": {
+              "flag": "b3_saltwick_bought"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "The oil off the convoy goes faster than it should. The lamps are hungry this month; the mist's higher. There's one more cart at the Grey Step waystation, bought with the last of the salt, and the carter won't bring it up the road with the tide due. And I'd rather not take another one off Hesk at sword-point. Once is a story. Twice is a habit.",
+            "when": {
+              "flag": "b3_saltwick_seized"
+            }
+          },
+          {
+            "say": "orin",
+            "text": "I'll go.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "I know you will. That's what I'm worried about. Take Davin. He knows the road.",
+            "when": {
+              "party": "orin"
+            }
+          },
+          {
+            "say": "Mags Peller",
+            "text": "Take Tam. He knows the road.",
+            "when": {
+              "absent": "orin"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "road",
+            "label": "Go down the Iron Road to the Grey Step, fast, to be back before the tide",
+            "check": {
+              "skill": "athletics",
+              "alt": [
+                "survival",
+                "acrobatics"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You go down the Iron Road at a run, past the dead stones, forty-eight, forty-seven, forty-six, and reach the Grey Step with the sun still high. The waystation is a stone barn with a trader's yard. The cart is in the yard, six barrels under canvas. The carter, Joss Brennick, is sitting on the shaft with his arms folded."
+                }
+              ],
+              "next": "carter"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You go down the Iron Road as fast as you can, and it is further than it looks, and the switchbacks are long. By the time you reach the Grey Step the sun is over the ridge. The cart is in the yard, six barrels under canvas, and the carter, Joss Brennick, is sitting on the shaft with his arms folded, looking at the sky."
+                }
+              ],
+              "next": "carter"
+            }
+          }
+        ]
+      },
+      "carter": {
+        "title": "The Grey Step",
+        "lines": [
+          {
+            "say": "Joss Brennick",
+            "text": "Not tonight. I've told her. I've told her boy. I'll tell you. The tide's due. I've three at home and a wife who'll kill me before the mist does, if I go up that road at dusk."
+          },
+          {
+            "say": "Joss Brennick",
+            "text": "It's paid for. It's theirs. I'm not keeping it. They can come and fetch it in daylight. Day after tomorrow, if the tide's done."
+          },
+          {
+            "say": "maren",
+            "text": "Day after tomorrow they'll have no lamps."
+          }
+        ],
+        "choices": [
+          {
+            "id": "drive",
+            "label": "Drive the cart up the road yourselves, with Joss's mules",
+            "check": {
+              "skill": "animalHandling",
+              "alt": [
+                "athletics",
+                "survival"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "Joss's mules do not want to go up the Iron Road at dusk any more than Joss does. You talk to them. You walk at the leader's head the whole way, with a lantern, and every time it baulks at a dead stone you stop and let it look, and then go on."
+                },
+                {
+                  "narrate": "You come into Saltwick with the last light going and the mist standing up at the corners, and the lamplighters come down the ladders for the barrels before the cart has stopped."
+                },
+                {
+                  "say": "Mags Peller",
+                  "text": "Every lamp. Tonight, every lamp. Look at that."
+                }
+              ]
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "The mules will not go past the dead stone at forty-one with the dusk coming down. You lose an hour at it, and in the end you unload three barrels and carry them the last mile on your backs, with the mist at your knees and the cold coming up through your boots, while Tam brings the mules on behind."
+                },
+                {
+                  "narrate": "You come into Saltwick in the dark. Mill Street's lamps have gone out. The lamplighters relight them from your barrels, one by one, and the mist lies down again, sulkily, in the lanes."
+                },
+                {
+                  "say": "Mags Peller",
+                  "text": "Late. But here. I'll take late."
+                }
+              ]
+            }
+          },
+          {
+            "id": "persuade",
+            "label": "Ask Joss to come with you, and promise he'll be home by morning",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "intimidation"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You don't tell him the road is safe. It isn't. You tell him you'll be on it with him, the whole way, and that you'll walk him home at dawn yourself, and that there are children on Saltwick's roofs too."
+                },
+                {
+                  "say": "Joss Brennick",
+                  "text": "You'll walk me home."
+                },
+                {
+                  "say": "orin",
+                  "text": "We'll walk you home.",
+                  "when": {
+                    "party": "orin"
+                  }
+                },
+                {
+                  "narrate": "Joss brings the cart up the road at dusk with his jaw set, and talks to his mules the whole way, and when you come into Saltwick with the barrels the whole town is out on the roofs, cheering, and he goes red to the ears. You walk him home at dawn. His wife does not kill him. She gives him a look that suggests she is saving it."
+                }
+              ]
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Joss Brennick",
+                  "text": "No. I'm sorry. No."
+                },
+                {
+                  "narrate": "He does give you the mules, though, and the cart, and a lantern, and stands in the yard watching you go. You come into Saltwick after dark with the barrels and two lamps out on Mill Street, and the lamplighters relight them, one by one."
+                }
+              ]
+            }
+          },
+          {
+            "id": "pay",
+            "label": "Pay Joss double to drive it up tonight (40 gold)",
+            "gold": -40,
+            "lines": [
+              {
+                "narrate": "Forty gold is a lot of money at the Grey Step. Joss looks at it for a long time. Then he looks at the sky, and then at you, and puts the gold in his boot."
+              },
+              {
+                "say": "Joss Brennick",
+                "text": "For my wife. So she's got something, if."
+              },
+              {
+                "narrate": "He drives. He drives well and fast, and never once looks at the dead stones. The barrels come into Saltwick with the last of the light, and every lamp in town is lit that night."
+              },
+              {
+                "say": "maren",
+                "text": "We paid a man to be brave. I suppose that's what Vell does too."
+              },
+              {
+                "say": "Mags Peller",
+                "text": "No. Vell pays people to go into bronze. You paid a man to drive a cart home. He's going home."
+              }
+            ],
+            "reward": 45
+          }
+        ]
+      }
+    }
+  },
+  "census": {
+    "id": "census",
+    "name": "Fennick's Census",
+    "town": "vell",
+    "level": 24,
+    "from": "b3-saltwick",
+    "until": "b3-witness",
+    "gold": 90,
+    "giver": "Clerk-Major Fennick",
+    "brief": "Iona has sent Fennick the list of the refugees at Highpass. One name on it may match a name in his census of the lost. Fennick has never struck a name out of the box. He would like to be sure before he does.",
+    "start": "box",
+    "nodes": {
+      "box": {
+        "title": "A name in the box",
+        "lines": [
+          {
+            "narrate": "Fennick's office is a cupboard off the census hall, with the wooden box on the desk and the lid open. He has a letter beside it, in Iona's sharp hand, and a list: every refugee who came over the pass to Highpass, by name, age and town. Three lines on the list are underlined in his pencil."
+          },
+          {
+            "say": "Fennick",
+            "text": "Three possible matches. Same name, near enough the same age, same town. All three of them are in my box, as lost. One of them is in the Quartermaster's list, as at Highpass, alive."
+          },
+          {
+            "say": "Fennick",
+            "text": "Twenty-two years in the census office. I have never once struck a name out of the box. I've added nine thousand, four hundred and six. I'd like to strike one out. I'd like very much to be sure it's the right one."
+          },
+          {
+            "narrate": "The three underlined names: Liss Marrin, 30, of Cask. Tobin Marrin, 8, of Cask. Ada Marrin, 61, of Cask."
+          },
+          {
+            "say": "Fennick",
+            "text": "The Quartermaster's list has one Marrin. \"Marrin, female, Cask. Age given as thirty or sixty, the clerk could not hear.\" The clerk could not hear. I ask you."
+          }
+        ],
+        "choices": [
+          {
+            "id": "compare",
+            "label": "Go through both lists, line by line, and find which Marrin it is",
+            "check": {
+              "skill": "investigation",
+              "alt": [
+                "history",
+                "insight"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "It takes the afternoon. The Highpass list has a woman from Cask in the store-room hammocks, with a cough, \"caring for one child, not hers\". Fennick's box has Liss Marrin's last known address: the tithe barn at Lindmoor, with her mother-in-law, Ada, and her son, Tobin. Hanne Ostrow's party came from Cask by way of Lindmoor's tithe barn, and walked over the pass together."
+                },
+                {
+                  "narrate": "You find it at the bottom of the Highpass list in Iona's own hand, added late: \"Marrin, A., widow, cough; came over in the Ostrow party; asks after her grandson.\" Sixty-one. Not thirty."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "Ada. It's Ada. Then Liss and the boy..."
+                },
+                {
+                  "narrate": "He does not finish. He takes his pencil, and in the box, beside the name Ada Marrin, 61, of Cask, he draws one small neat line. He does it very slowly. Then he sits looking at it."
+                }
+              ],
+              "next": "letter",
+              "setFlags": {
+                "job:census-found": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You go through both lists until the lamp needs filling, and you cannot make it come out. The ages are wrong, or the towns are written two ways, or the Highpass clerk could not hear. In the end there is only one way to be sure, and it is a letter over the pass, and a fortnight."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "Then we write. I'll write. Properly. Name, age, town, last known address, and a question. I'm good at questions. Nobody answers them."
+                }
+              ],
+              "next": "letter"
+            }
+          },
+          {
+            "id": "ask",
+            "label": "Ask in the Saltwick and Cask queues at the ration office who knew the Marrins",
+            "check": {
+              "skill": "insight",
+              "alt": [
+                "persuasion",
+                "investigation"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "A man from Cask in the ration queue knew all three. Liss was a dyer, with blue hands. Tobin was eight and frightened of geese. Ada was a widow with a cough who ran the Cask egg stall and charged soldiers double, and was right to."
+                },
+                {
+                  "narrate": "And Ada, he says, went over the pass with Hanne Ostrow's people, to look for her grandson in the free wards. Liss and Tobin stayed at Lindmoor. Lindmoor's stone stopped in the second week of the new year."
+                },
+                {
+                  "narrate": "Fennick listens to all of it, with his pencil in his hand, and then he draws one small neat line through Ada Marrin's name in the box. He does it very slowly."
+                }
+              ],
+              "next": "letter",
+              "setFlags": {
+                "job:census-found": true
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You ask in every queue in the ration office yard, and people from Cask shake their heads. They knew the Marrins, or they knew of them, or they knew a Marrin, a dyer, or an egg-woman, or a boy. Nobody knows where any of them went."
+                },
+                {
+                  "say": "Fennick",
+                  "text": "Then we write. Properly. Name, age, town, last known address, and a question. I'm good at questions."
+                }
+              ],
+              "next": "letter"
+            }
+          }
+        ]
+      },
+      "letter": {
+        "title": "The letter",
+        "lines": [
+          {
+            "narrate": "Fennick writes to Highpass in his neat hand, and lets you read it before he seals it."
+          },
+          {
+            "narrate": "\"To Mistress Ada Marrin, of Cask, at Highpass, by the kindness of Quartermaster Iona. From the census office at Vell. You are entered in the census of the lost. You asked after your grandson Tobin Marrin, eight. I am very sorry. He is entered too, with his mother, at Lindmoor, on the twelfth day of the new year. I am striking your name out of the box. It is the first name I have ever struck out. I wanted you to know that you are not lost, and that someone has written it down.\"",
+            "when": {
+              "flag": "job:census-found"
+            }
+          },
+          {
+            "narrate": "\"To the woman named Marrin, of Cask, at Highpass, by the kindness of Quartermaster Iona. From the census office at Vell. You are entered in the census of the lost, with your family. I do not know which of you you are. Please write back, and tell me your name and your age, so that I can strike it out of the box. It would be the first name I have ever struck out. I would like you to know that someone is waiting to write it down.\"",
+            "when": {
+              "notFlag": "job:census-found"
+            }
+          },
+          {
+            "say": "Fennick",
+            "text": "Is it too long? It's too long. The regulations say a notice of correction should be four lines."
+          }
+        ],
+        "choices": [
+          {
+            "id": "send",
+            "label": "“Send it as it is.”",
+            "lines": [
+              {
+                "narrate": "He seals it, and gives it to the courier himself, and then comes back and sits at his desk with the box, and does not do any work at all for the rest of the afternoon, which nobody in the census office has ever seen before."
+              },
+              {
+                "say": "maren",
+                "text": "Thank you, Clerk-Major. For writing it like that."
+              },
+              {
+                "say": "Fennick",
+                "text": "It's the correct form. I've decided. I'm writing the regulation tonight."
+              }
+            ],
+            "approval": {
+              "maren": 1
+            }
+          },
+          {
+            "id": "short",
+            "label": "“Keep the first line and the last. She'll want to read it more than once.”",
+            "lines": [
+              {
+                "narrate": "He crosses out the middle, carefully, and copies out what is left onto a clean sheet. \"You are not lost, or someone is waiting to find you. It will be written down.\" He looks at it for a long time."
+              },
+              {
+                "say": "Fennick",
+                "text": "Four lines. Within regulations. It's better. I don't like that it's better."
+              },
+              {
+                "say": "nessa",
+                "text": "Send her the long one as well. Separately. She can pick.",
+                "when": {
+                  "party": "nessa"
+                }
+              }
+            ],
+            "approval": {
+              "nessa": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "brothers": {
+    "id": "brothers",
+    "name": "Jory and Wil",
+    "town": "vell",
+    "level": 25,
+    "from": "b3-vell",
+    "until": "b3-witness",
+    "gold": 95,
+    "giver": "Jory Carr, twelve",
+    "brief": "Ysolde Carr's brothers, Jory and Wil, have walked up to the casting wall with a piece of chalk to put their own names on it in her place. Talk them out of it, or find them work that feeds them.",
+    "start": "chalk",
+    "nodes": {
+      "chalk": {
+        "title": "Two names in chalk",
+        "lines": [
+          {
+            "narrate": "The drill-guard at the foot of the casting wall have stopped two boys with a piece of chalk. The older one is twelve, thin, with his sister's quick plain face and a coat with a button newly sewn on, and he is furious. The younger one is nine, and holding the older one's sleeve, and has a bit of chalk dust on his nose."
+          },
+          {
+            "say": "Jory",
+            "text": "It says anyone can volunteer. It says it over the door. Anyone. It doesn't say over twelve. It doesn't say not if your sister already did."
+          },
+          {
+            "say": "Jory",
+            "text": "It's two for one. Me and Wil. That's more bells. That's a better deal. They'd take that. Anyone would take that."
+          },
+          {
+            "say": "Wil",
+            "text": "Then Ysolde can come home."
+          },
+          {
+            "narrate": "Up on the barracks step, Ysolde has seen them. She does not come down. She sits very still with her sewing in her lap, and watches you."
+          },
+          {
+            "say": "nessa",
+            "text": "Oh, no. No, no. Give me the chalk, Jory. Give it here.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Nessa doesn't look up at the barracks step at all.",
+            "when": {
+              "flag": "b3_ysolde_pressed",
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Nessa looks up at the barracks step, and Ysolde, very slightly, nods.",
+            "when": {
+              "flag": "b3_ysolde_respected",
+              "party": "nessa"
+            }
+          }
+        ],
+        "choices": [
+          {
+            "id": "talk",
+            "label": "Sit down with Jory on the drill-yard step and talk him out of it",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "insight",
+                "performance"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "narrate": "You sit on the step with him, and don't tell him he's too young, because he knows, and that's why he came. You ask him instead what Ysolde said to him when she put her name up. He tells you. She said she'd hear everyone. She said that was the point of a bell."
+                },
+                {
+                  "narrate": "So you ask him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then he gives you the chalk."
+                },
+                {
+                  "say": "Jory",
+                  "text": "She'd have nobody to hear. That's what you mean."
+                },
+                {
+                  "say": "Jory",
+                  "text": "I hate it. I hate all of it. I'm not going to stop hating it."
+                },
+                {
+                  "narrate": "Up on the barracks step, Ysolde puts her sewing down, and puts her face in her hands, and then picks the sewing up again."
+                }
+              ],
+              "next": "work"
+            },
+            "failure": {
+              "lines": [
+                {
+                  "narrate": "You tell him he's too young, and it is the wrong thing to say. He tells you that he's twelve and he carries coal for the Second District every morning and he can carry anything. He tells you that you're from the free wards and you don't know anything. He's right about the second part."
+                },
+                {
+                  "narrate": "In the end it is Wil who stops it. He takes the chalk out of his brother's hand and puts it in his own pocket, and holds Jory's sleeve, and won't let go. Jory lets him."
+                }
+              ],
+              "next": "work"
+            }
+          }
+        ]
+      },
+      "work": {
+        "title": "Something that feeds them",
+        "lines": [
+          {
+            "say": "Jory",
+            "text": "Fine. Fine. But she's only on the wall because of food. If we had work, real work, that paid in bread, she'd — she wouldn't have to. Would she? Would she?"
+          },
+          {
+            "narrate": "Ysolde has come down the barracks steps, and is standing behind him, with her hands folded, listening."
+          }
+        ],
+        "choices": [
+          {
+            "id": "fennick",
+            "label": "Ask Fennick to take the boys on as census runners, on a clerk's ration",
+            "check": {
+              "skill": "persuasion",
+              "alt": [
+                "history",
+                "investigation"
+              ]
+            },
+            "success": {
+              "lines": [
+                {
+                  "say": "Fennick",
+                  "text": "Runners. For the census. I have no runners. I have never had runners. There's no regulation for... There is a regulation for runners. Regulation forty. Nobody reads regulation forty."
+                },
+                {
+                  "narrate": "Jory and Wil Carr are entered in Fennick's books that afternoon as census runners, junior, on a clerk's half-ration each, which comes to one whole ration between them, which is what Ysolde's promise would have bought them, near enough."
+                },
+                {
+                  "narrate": "Ysolde stands in the doorway of the census office and watches them sign their names in Fennick's ledger. Jory's is very neat. Wil's is mostly a W."
+                },
+                {
+                  "say": "Ysolde",
+                  "text": "It's good. It's a good thing. Thank you. I'm still on the wall."
+                },
+                {
+                  "say": "Jory",
+                  "text": "Ysolde—"
+                },
+                {
+                  "say": "Ysolde",
+                  "text": "I know. I know. But now I'm on it because I chose it, and not only because of bread. That's better. You've made it better. That's not nothing, Jory."
+                }
+              ],
+              "approval": {
+                "nessa": 1
+              }
+            },
+            "failure": {
+              "lines": [
+                {
+                  "say": "Fennick",
+                  "text": "I have no budget for runners. I have no budget for anything. I'm very sorry."
+                },
+                {
+                  "narrate": "But the next morning there are two boys with satchels running census papers round the ration office yard, and when you ask Fennick about it he says that they are \"volunteers, unpaid\", and that he is feeding them out of his own ration, which is \"irregular, and nobody's business\"."
+                },
+                {
+                  "say": "Ysolde",
+                  "text": "He's thin enough. Tell him to stop. He won't. Thank you."
+                }
+              ]
+            }
+          },
+          {
+            "id": "pay",
+            "label": "Pay for the boys' bread for a season yourself, through the ration office (50 gold)",
+            "gold": -50,
+            "lines": [
+              {
+                "narrate": "You go to the ration office with Jory and Wil and pay a season's bread for both, in advance, in gold, and make the clerk write it in the ledger in front of you."
+              },
+              {
+                "say": "Jory",
+                "text": "A season. Then what?"
+              },
+              {
+                "narrate": "You don't have an answer. He nods, as if that is what he expected, and takes Wil home."
+              },
+              {
+                "say": "Ysolde",
+                "text": "Thank you. It's kind. It's a season. I'm still on the wall."
+              },
+              {
+                "say": "orin",
+                "text": "Kind isn't nothing.",
+                "when": {
+                  "party": "orin"
+                }
+              },
+              {
+                "say": "Ysolde",
+                "text": "No. It's a season.",
+                "when": {
+                  "party": "orin"
+                }
+              }
+            ],
+            "reward": 50,
+            "approval": {
+              "orin": 1
             }
           }
         ]

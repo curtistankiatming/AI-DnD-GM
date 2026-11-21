@@ -29,6 +29,12 @@ function init(state){
   G.normalizeEquipment(state);
   return w;
 }
+// A town that only a later book's chapters reach (Book Three's Saltwick and
+// Vell) is shown, and can be travelled to, only while one of those chapters
+// is playable for this save: not before its book is released, nor on a hosted
+// account without that book.
+const TOWN_CHAPTERS={};for(const q of Object.values(QUESTS))for(const id of new Set([q.town,q.nextTown]))if(id)(TOWN_CHAPTERS[id] ||= []).push(q.id);
+function townOpen(state,id){return Boolean(TOWNS[id])&&(!TOWN_CHAPTERS[id]||TOWN_CHAPTERS[id].some(q=>Book.playable(state,q)));}
 function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !state.combat?.active&&TOWNS[id]?TOWNS[id]:null;}
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of TOWNS[id].stock)if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
@@ -237,7 +243,7 @@ function handle(state,action,rng,events,api){
     return depart(state,w.activeQuest,rng,events,api);
   }
   if(action.type==='travel-town'){
-    if(!town(state)||!w.unlockedTowns.includes(action.townId)||!TOWNS[action.townId])return fail(events,'Travel is only available between discovered towns while out of combat.');
+    if(!town(state)||!w.unlockedTowns.includes(action.townId)||!TOWNS[action.townId]||!townOpen(state,action.townId))return fail(events,'Travel is only available between discovered towns while out of combat.');
     if(town(state).id===action.townId)return fail(events,'You are already there.');
     w.day+=1;w.townId=action.townId;w.onExpedition=false;api.enterNode(state,`town-${action.townId}`,events);return emit(events,`The party travels to ${TOWNS[action.townId].name}. Stock and progress are preserved.`);
   }
@@ -394,7 +400,7 @@ function view(state){
     return {questId:q.id,warnings,knownThreat:q.knownThreat};
   });
   return {day:w.day,cycle:w.cycle,town:t?{...t,rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!STORY_NODES[state.story.nodeId]?.defeat,
-    towns:w.unlockedTowns.map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
+    towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
     reputation:w.reputation,services,
     shop:t?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
     merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
@@ -413,4 +419,4 @@ function view(state){
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };
 }
-module.exports={init,town,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={init,town,townOpen,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
