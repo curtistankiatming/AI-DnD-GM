@@ -138,3 +138,7 @@ All 707 tests pass (one skipped, as before) and all 108 scripted playthroughs co
 Still open from Finding 8: Corvane's whereabouts (to agree with the Book Three plan), Haverick facing someone, where Aster Vey lives, Wren's map (it needs a flag to say Nessa received it), crowns against gold, and callbacks for the keystone, the Quiet District and the beacon ending.
 
 Tests: 706 pass, 1 skipped; 108 of 108 scripted playthroughs complete.
+
+## Chapter 10 rework (Finding 5, approved by Curtis on 21 November)
+
+Elske no longer grabs the rope or the forge hammer, and you no longer fight her. She asks the council openly ("I'd rather ask than take"), for somebody's single voice, not hers. As the delegates start to nod, the Mother Bell begins to hum the midwinter note on its own: it heard the request. If persuasion fails, Elske calls for a show of hands, the bell answers the room, Elske goes white ("That isn't me. I'm not touching it."), and the fight is against **The Single Note** in the bell, while the council finds its other voices. Both endings close with Elske withdrawing the proposal herself. The locked-rope route keeps its own version (the bell hums with no rope on it; you climb to the beam).

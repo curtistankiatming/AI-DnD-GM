@@ -4789,7 +4789,7 @@
     "xp": 6800,
     "gold": 500,
     "region": "The council in the casting hall at Cinder Fold",
-    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you.",
+    "threat": "Elske Marrow answers to the council for ringing the Mother Bell alone. She has one more thing to say before they decide, and it is about you. Then she has one more thing to ask, and the Mother Bell is listening.",
     "faction": "wardens",
     "brief": "The council sits at Cinder Fold to decide what to do with Elske Marrow. She has asked to speak first. Answer her, and decide who your oath answers to.",
     "opening": [
@@ -5001,16 +5001,16 @@
       },
       {
         "say": "Elske",
-        "text": "I'll go. Wherever you send me. But I'm going to ask the council to put the Mother Bell under one voice again. Mine or anyone's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it."
+        "text": "I'll go. Wherever you send me. But first I'm going to ask the council to put the Mother Bell under one voice again. Not mine; I've had my turn. Somebody's. Not because I want it. Because one day it will be Hollin's Reach again, and the council will be arguing, and someone has to be able to ring it. I'm asking now, in front of all of you, in daylight. I'd rather ask than take. I always would."
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. Somebody, in the end, has to answer her: with words, or by standing between her and the bell-rope, which she is now standing beside.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. And over everyone's heads the Mother Bell has begun, very faintly, to hum: the note from midwinter, the one that silenced every other ward. Nobody has touched the bell-rope. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by standing between the room and the bell-rope.",
         "when": {
           "notFlag": "mother_silenced"
         }
       },
       {
-        "narrate": "Some of the delegates are nodding. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. Elske has not asked for it. She does not need it. Two of the miners have brought a forge hammer up from the floor, and the ladder to the great beam stands open, and Elske is standing at the foot of it. Somebody, in the end, has to answer her: with words, or by getting to that ladder first.",
+        "narrate": "Some of the delegates are nodding. Sorrel is. Iona has her pen out. The miners at the back of the hall are not. The bell-rope is coiled in the forge-signal house, behind a lock, and the only key is in your pocket. It does not matter. Over everyone's heads the Mother Bell has begun, very faintly, to hum, with no rope on it at all: the note from midwinter, the one that silenced every other ward. The bell heard her, and it remembers being asked for one voice. Somebody, in the end, has to answer her before the room does: with words, or by getting up the ladder to the great beam and putting a hand on the bronze.",
         "when": {
           "flag": "mother_silenced"
         }
@@ -5028,19 +5028,19 @@
           "narrate": "You tell Elske the one thing nobody has said to her in eleven years. That the room in Hollin's Reach was not her fault. That seven people had the numbers wrong, not one. That the answer to a slow council is not a fast person but a council that has learned to look at the window. And that you would like her in this one, looking at it with them."
         },
         {
-          "narrate": "Elske stands by the rope for a long time.",
+          "narrate": "Elske looks up at the humming bell for a long time.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "Elske stands at the foot of the ladder for a long time, looking up at the beam, and at the hammer in the miner's hands.",
+          "narrate": "Elske looks up at the great beam for a long time, where the hum is coming from, with no rope on it at all.",
           "when": {
             "flag": "mother_silenced"
           }
         },
         {
-          "narrate": "Then she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
+          "narrate": "Then she says, very clearly, 'I withdraw it,' and the hum dies away to nothing, and she sits down in the chair somebody found for her, in the circle, between Brannagh and the goat."
         },
         {
           "say": "Elske",
@@ -5054,16 +5054,16 @@
       "failure": [
         {
           "say": "Elske",
-          "text": "You can't promise it won't happen again. Nobody can. So someone must hold the rope."
+          "text": "You can't promise it won't happen again. Nobody can. Then I'll ask the room. Hands, please. One voice for the Mother Bell."
         },
         {
-          "narrate": "She takes the rope. The Mother Bell stirs over your heads. You have to reach her before she rings it.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to quiet it before the vote is counted.",
           "when": {
             "notFlag": "mother_silenced"
           }
         },
         {
-          "narrate": "She takes the forge hammer from the miners and starts up the ladder to the beam. The Mother Bell does not need a rope if someone is willing to climb up and strike it. You have to reach her before she gets there.",
+          "narrate": "Sorrel's hand goes up. Then, slowly, Iona's. With every hand the hum above you grows, until the bronze is ringing on its own, one note, louder and louder, with no rope and nobody near it. Elske hears it and goes white. 'That isn't me,' she says. 'I'm not touching it.' It does not matter. The bell is answering the room. You have to get up the ladder and quiet it before the vote is counted.",
           "when": {
             "flag": "mother_silenced"
           }
@@ -5071,9 +5071,9 @@
       ]
     },
     "objective": {
-      "name": "Keep the Mother Bell from one voice",
-      "label": "Reach Elske before the bell is rung alone",
-      "description": "Three successful actions get you to Elske and keep the Mother Bell from being rung by one person again.",
+      "name": "Quiet the Mother Bell before the room rings it",
+      "label": "Quiet the bell's single note before the vote is counted",
+      "description": "Three successful actions reach the Mother Bell and quiet its single note while the council finds its other voices.",
       "skill": "athletics",
       "alt": [
         "persuasion",
@@ -5082,13 +5082,13 @@
       ],
       "target": 3,
       "deadline": 6,
-      "failText": "Before you reach her, the Mother Bell sounds one stroke under one voice. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it.",
-      "successText": "You reach her first. Your hand closes over hers. She lets go."
+      "failText": "Before you reach it, the Mother Bell sounds one stroke under one voice: the room's, this time, not anybody's hand. Every ward in the land goes quiet for the length of it. It is only a moment. Nobody who heard it will forget it, and Sorrel and Iona put their hands down.",
+      "successText": "Your hand is on the bronze. Below you, Elske says, very clearly, 'I withdraw it,' and the note dies under your palm."
     },
-    "foe": "elske-marrow",
-    "foeName": "Elske Marrow",
+    "foe": "single-note",
+    "foeName": "The Single Note",
     "enemyTheme": "boss",
-    "attackName": "The Single Note",
+    "attackName": "One Voice",
     "retainerName": "Echo of the Single Voice",
     "after": [
       {
