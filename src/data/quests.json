@@ -672,7 +672,7 @@
     "brief": "Maren’s missing shrine keepers sent their last letters here. Find the archive’s ward diagram and recover what remains before the reservoir rises again.",
     "opening": [
       {
-        "narrate": "The drowned archive was the wardens' record-house once, built into the side of the reservoir so the damp would keep the moths off. Then the dam was raised, and the water kept the moths off too, and everything else."
+        "narrate": "The drowned archive was the wardens' record-house once, built into the side of the reservoir. Then the dam was raised, and now the water comes into it every season and goes out again a little slower each time."
       },
       {
         "narrate": "Desks drift at the foot of a flooded stair. Above them, a grey figure in an archivist's sleeves goes on sorting ruined pages into dry drawers that are not there any more, one page at a time, very carefully."
@@ -706,7 +706,7 @@
           "narrate": "Maren reads the letters aloud by lantern-light, one after another, the way you read names at a funeral: slowly, so nobody is skipped."
         },
         {
-          "narrate": "Between them they show you two things. The ward network was built on purpose as a council of separate voices, each keeper answerable to their own village. And somewhere in Highpass is the keystone that ties it together, which is exactly what anybody wanting one voice would need."
+          "narrate": "Between them they show you two things. The ward network was built on purpose as a council of separate voices, each keeper answerable to their own village. And the keystone that ties it together was sent up to Highpass, which is exactly what anybody wanting one voice would need."
         }
       ],
       "failure": [
@@ -742,7 +742,7 @@
       },
       {
         "say": "The Unfinished Archivist",
-        "text": "Every keeper is to be accounted for before the record is closed. Every keeper. I cannot close the drawer. I have been trying for eleven years."
+        "text": "Every keeper is to be accounted for before the record is closed. Every keeper. I cannot close the drawer. I have been trying for six years."
       },
       {
         "narrate": "Some of the keepers in its drawers never came back. Destroying the archivist would be easier than admitting that. It would also be quicker, and the water is still rising."
@@ -885,14 +885,14 @@
     "brief": "The tower above Highpass repeats a distress signal in Nessa’s old code. Restore its beacon before the mountain caravans enter the storm blind.",
     "opening": [
       {
-        "narrate": "Highpass Watch sits across the top of the pass like a cork in a bottle, and every refugee from the high villages has come up against it this autumn. Its captain has found room for all of them. She has not found room for anything else."
+        "narrate": "Highpass Watch sits across the top of the pass like a cork in a bottle, and every refugee from the high villages has come up against it this year. Its captain has found room for all of them. She has not found room for anything else."
       },
       {
         "narrate": "Above the fort, the old signal tower is flashing a distress code into a sky full of lightning. The bolts crawl sideways along its bronze rings instead of coming down. Someone has tied a scout's scarf round the lowest signal arm, where nobody on the road can see it."
       },
       {
         "say": "nessa",
-        "text": "That's Wren's scarf. That's Wren's code. That's... she's up there.",
+        "text": "That's my scarf. That's Wren's code. That's... she's up there.",
         "when": {
           "party": "nessa"
         }
@@ -969,7 +969,7 @@
       ],
       "success": [
         {
-          "narrate": "Wren shouts the old recall sequence up at you from under the arm, a line at a time, and you send it out through the rings: the keeper's own code, the one the tower was built to obey before anyone in Highpass had heard of Central Command."
+          "narrate": "Wren shouts the old recall sequence up at you from under the arm, a line at a time, and you send it out through the rings: the keeper's own code, the one the tower was built to obey before there was any such thing as Central Command."
         },
         {
           "narrate": "The sentinel listens. Then, very slowly, it lowers its head, sets its bronze shoulder under the fallen arm and lifts it, so that you can drag the keeper clear and turn the beacon back toward the road."
@@ -1123,7 +1123,7 @@
     "xp": 3200,
     "gold": 215,
     "region": "Glasswind summit",
-    "threat": "Three claimants on a ledge too narrow for a fight, fragile bridges, and an agent of Central Command who would like to end the argument for everyone. Climbing gear helps travel; knowing what each claimant left out may prevent a fight.",
+    "threat": "Three claimants on a ledge too narrow for a fight, fragile bridges, and somebody who would like to end the argument for everyone. Climbing gear helps travel; knowing what each claimant left out may prevent a fight.",
     "faction": "trade",
     "brief": "A young courier is carrying the ward keystone over the pass to the shrine at Glasswind. Three parties have promised to protect the region if you hand it to them instead. Find the courier and decide who can be trusted with it.",
     "opening": [
@@ -1131,11 +1131,11 @@
         "narrate": "The courier is called Bek. He is seventeen, he has been carrying the keystone for a week, and he is sitting on it. Around him, on a ledge too narrow for anybody to start a fight without falling off, three camps are waiting for him to stand up."
       },
       {
-        "narrate": "Each camp has a banner and a spokesman. Lieutenant Garrow of the Highpass Watch, who wants it kept behind the fort's walls. Factor Tolliver of the Ashford merchant houses, who wants it kept in a bank. And Mother Orla of the Glasswind shrine, who wants it kept by the people it was being carried to in the first place."
+        "narrate": "Each camp has a banner and a spokesman. Lieutenant Garrow of the Highpass Watch, who wants it kept behind the fort's walls. Factor Tolliver of the Ashford merchant houses, who wants it kept in a bank. And Mother Orla of the Glasswind shrine, where the keepers were meant to meet and name its custodian, who wants it kept there whether they meet or not."
       },
       {
         "say": "Bek",
-        "text": "I'm not moving. My oath says I take it to whoever the keepers name. Nobody's asked the keepers. Everybody's asked me. I'm seventeen."
+        "text": "I'm not moving. My oath says I take it to whoever the keepers name. Nobody's asked the keepers. Everybody's asked me."
       },
       {
         "say": "orin",
@@ -1143,7 +1143,7 @@
       },
       {
         "say": "Bek",
-        "text": "Mr Tolliver offered. There was a contract with the biscuit."
+        "text": "Mr Tolliver offered. I didn't sign anything."
       }
     ],
     "clue": "Each claimant has left one condition out of their offer: the Watch can declare an emergency and take command of it, the merchant houses can sell the custody on, and Glasswind would seal it where no keeper could use it. Bek's oath allows shared custody, witnessed by independent ward keepers.",
@@ -1162,7 +1162,7 @@
           "narrate": "The Watch's offer lets the Watch declare an emergency and take command of the stone, and the Watch decides what counts as an emergency. The merchant houses' offer lets them sell the custody on, at a fair market rate. Glasswind's lets the shrine seal it under the mountain, where it is perfectly safe and no keeper can ever use it."
         },
         {
-          "narrate": "Nobody is humiliated. Everybody is a little embarrassed. A common agreement starts to look possible."
+          "narrate": "Nobody is humiliated. A common agreement starts to look possible."
         }
       ],
       "failure": [
@@ -1195,14 +1195,14 @@
       },
       {
         "say": "Agent of the Single Voice",
-        "text": "High Warden Corvane sends his regards, and an offer. Bind the stone to one keeper, and the argument ends today. Nobody needs to trust anybody. That's rather the point of it."
+        "text": "The High Warden sends his regards, and an offer. Bind the stone to one keeper, and the argument ends today. Nobody needs to trust anybody. That's rather the point of it."
       },
       {
         "say": "Bek",
         "text": "No."
       },
       {
-        "narrate": "The agent sighs, as if he has said something sad, and reaches for the wrapped stone."
+        "narrate": "The agent sighs, as if Bek has said something sad, and reaches for the wrapped stone."
       }
     ],
     "peaceful": {
@@ -1214,7 +1214,7 @@
       ],
       "success": [
         {
-          "narrate": "You put the three agreements down on the rock in front of everybody and ask each spokesman to strike out the line they left out, with their own people watching."
+          "narrate": "You put the three agreements down on the rock in front of everybody and ask each spokesman to read their whole agreement aloud, with their own people watching, and strike out anything they would not say in front of them."
         },
         {
           "narrate": "Garrow does it first, because he is a soldier and would rather lose quickly. Tolliver does it second, with a face like a man paying a bill. Mother Orla does it last, slowly, and then signs the shared oath under the other two."
@@ -1276,7 +1276,7 @@
           },
           {
             "say": "Bek",
-            "text": "If anybody asks, I didn't sit on it the whole time. Only most of it."
+            "text": "If anybody asks, I didn't sit on it the whole time."
           }
         ],
         "rep": {
