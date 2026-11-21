@@ -17,7 +17,7 @@
         "narrate": "Reeve Aveline gave you this job in the square with a list. Three wagons of winter seed, three drivers, and one of the drivers Jory Tanner, whose family has farmed the Ashford road since before the bell. 'If that seed is sold across the border,' she said, 'we eat the seed corn in February and go hungry in May. Bring it back. Bring Jory back first.'"
       },
       {
-        "narrate": "Now an empty wagon stands on the western road with its wheels chocked, not broken. Somebody stopped it on purpose, took the horses and left the seed. From the tollhouse beyond, a bell repeats three short notes: the old road signal for 'wait', rung backwards."
+        "narrate": "Now an empty wagon stands on the western road with its wheels chocked, not broken. Somebody stopped it on purpose, took the horses and left the seed. From the tollhouse beyond, where the new toll captain, Venn, keeps his office, a bell repeats three short notes: the old road signal for 'wait', rung backwards."
       },
       {
         "say": "orin",
@@ -139,11 +139,11 @@
     "enemyTheme": "road",
     "after": [
       {
-        "narrate": "The drivers get their horses back from a field behind the tollhouse, where Venn had been charging them for grazing. Jory Tanner counts the seed sacks twice, and then a third time, out loud, because Wat is watching."
+        "narrate": "The drivers get their horses back from a field behind the tollhouse, where Venn had been charging them for grazing. Jory Tanner counts the seed sacks twice, and then a third time, out loud, because his boy Wat is watching from the milestone."
       },
       {
         "say": "Jory",
-        "text": "Forty, forty, thirty-nine. One's gone. I know who's got it. I'm not going to ask."
+        "text": "Forty, forty, thirty-nine. One's gone. Venn's guards took it for their own fields, I'd bet. Let them have it. I've got my wagons and my boy."
       },
       {
         "narrate": "Venn's strongbox holds the illegal tolls, sorted by road and by week. It could go back to the households it was taken from, or pay for an escort on this road so it doesn't happen again."
@@ -184,7 +184,7 @@
           },
           {
             "say": "maren",
-            "text": "And the families who paid Venn get a road instead of their money. I hope they like roads."
+            "text": "And the families who paid Venn get a road instead of their money."
           }
         ],
         "rep": {
@@ -242,10 +242,7 @@
             "say": "orin",
             "text": "Same way as us. Faster."
           }
-        ],
-        "approval": {
-          "orin": 1
-        }
+        ]
       }
     ]
   },
@@ -266,21 +263,17 @@
         "narrate": "Fenmere is two villages pretending to be one: the upper bank on its rise, with the well and the church, and the lower bank down among the reeds, where the gatherers cut rushes and smoke eels. Between them stands the new sluice-house, which the upper bank paid for and the lower bank did not ask for."
       },
       {
-        "narrate": "Reeds lie flat around it. A sick heron watches from a dry pipe. On the upper bank, villagers stand holding pitchforks they are pretending are for hay. On the lower bank, the gatherers hold eel-spears and are not pretending anything."
+        "narrate": "Reeds lie flat around it. A sick heron watches from a dry pipe. On the upper bank, villagers stand holding pitchforks they are pretending are for hay. On the lower bank, the gatherers hold eel-spears behind their headwoman, old Sefa, and are not pretending anything."
       },
       {
         "narrate": "On the sluice-house steps in the middle, a young woman with a little bell on a cord round her neck is trying to make both sides listen to her, and neither is."
       },
       {
         "say": "Ilka",
-        "text": "I'm the keeper! It's the ward's water! If everybody would just... Nobody poisoned anybody! Probably!"
+        "text": "I'm the keeper! It's the ward's water! If everybody would just... Nobody poisoned anybody!"
       },
       {
-        "say": "maren",
-        "text": "'Probably' was a mistake."
-      },
-      {
-        "narrate": "Up on the rise, a white-haired woman with a brown goat on a rope watches the whole thing and says nothing at all."
+        "narrate": "At the edge of it all, a white-haired woman with a brown goat on a rope watches the whole thing and says nothing at all."
       }
     ],
     "clue": "The new sluice draws dissolved ward ash from a cracked jar dumped upstream. Both banks drink the same tainted water; neither poisoned the other.",
@@ -309,7 +302,7 @@
       ],
       "failure": [
         {
-          "narrate": "Your samples spoil in the jar. But the sick fish are all lying below the new sluice, belly-up, in a neat line, as if they had been asked to point."
+          "narrate": "Your samples spoil in the jar. But the sick fish are all lying below the new sluice, belly-up, in a line that points straight at it."
         },
         {
           "say": "Sefa",
@@ -390,7 +383,7 @@
         "text": "Somebody has to keep the sluice. It can't be me. I've got the ward."
       },
       {
-        "narrate": "The woman with the goat comes down from the rise at last, looks at the sluice-house, looks at both banks, and goes back up again without a word. Ilka says that was Brannagh, and that it means she approves. Probably."
+        "narrate": "The woman with the goat comes down from the rise at last, looks at the sluice-house, looks at both banks, and goes home again without a word. Ilka says that was Brannagh, and that it means she approves."
       }
     ],
     "decisions": [
@@ -399,7 +392,7 @@
         "label": "Establish a shared water council",
         "text": [
           {
-            "narrate": "Each bank appoints a keeper for the water. The lower bank sends Sefa. The upper bank sends Brannagh, who says she'll do it as long as nobody expects her to be pleasant. The first meeting lasts four hours. At the end of it, the water is still clean."
+            "narrate": "Each side appoints a keeper for the water. The gatherers send Sefa. The village sends Brannagh, who says she'll do it as long as nobody expects her to be pleasant. The first meeting lasts four hours. At the end of it, the water is still clean."
           }
         ],
         "rep": {
@@ -438,20 +431,12 @@
           },
           {
             "say": "maren",
-            "text": "Edric. Edric Moss?"
+            "text": "Edric Moss?"
           },
           {
-            "say": "Ilka",
-            "text": "You knew him?"
-          },
-          {
-            "say": "maren",
-            "text": "Once. He owed me some candles."
+            "narrate": "Maren takes out a soft, much-folded sheet of paper, runs her finger down it, and stops. She does not say anything else. She puts the paper away very carefully."
           }
-        ],
-        "approval": {
-          "maren": 1
-        }
+        ]
       },
       {
         "id": "sefa",
@@ -493,7 +478,7 @@
         "narrate": "Ashford's western span is the only bridge in thirty miles a loaded cart can cross. A bell on the gatehouse sounds once for each cart allowed through. It stopped ringing an hour ago."
       },
       {
-        "narrate": "On the far bank, people from the burned villages wait with everything they own on carts. On this side a company of soldiers holds the gate, under a banner that stops Orin in the middle of the road."
+        "narrate": "On the far bank, people from the burned villages wait with everything they own on carts. Between them and the bridge, a company of soldiers holds the far gate, under a banner that stops Orin in the middle of the road."
       },
       {
         "say": "orin",
@@ -563,7 +548,7 @@
         "text": "Stoneward."
       },
       {
-        "narrate": "Neither of them says anything else. Behind Hal, a girl of eight or so in the last cart, wrapped in a blanket too big for her, leans out and asks Orin whether soldiers always leave first."
+        "narrate": "Neither of them says anything else. Behind Hal, a girl of eight or so in the last cart leans out and asks Orin whether soldiers always leave first."
       }
     ],
     "peaceful": {
@@ -574,7 +559,7 @@
       ],
       "success": [
         {
-          "narrate": "You don't argue with Hal. You show her the order with a dead man's name on it. Then you ask her what she did at Calder."
+          "narrate": "You don't argue with Hal. You show her the order with a dead man's name on it. Then you ask her what she did at Calder, the crossing she and Orin both left people behind at."
         },
         {
           "narrate": "Hal looks at Orin for a long moment. Then she turns and bellows down the span: every cart onto the bridge, the company to march out behind them, nobody left behind as a diversion."
@@ -618,11 +603,11 @@
         "label": "Offer supervised repair work instead of punishment",
         "text": [
           {
-            "narrate": "The demolition crew spends a month re-hanging the cables they cut, beside the refugees they nearly drowned. By the second week they are eating together."
+            "narrate": "The demolition crew will spend the next month re-hanging the cables they cut, beside the refugees they nearly drowned. Tonight, for the first time, they eat at the same fire."
           },
           {
             "say": "orin",
-            "text": "That's how it should have gone at Calder."
+            "text": "I'd have had them in front of a tribunal. Maybe I'd have been wrong. Ask me in a year."
           }
         ],
         "rep": {
@@ -668,10 +653,7 @@
             "say": "orin",
             "text": "I didn't go back."
           }
-        ],
-        "approval": {
-          "orin": 1
-        }
+        ]
       }
     ]
   },
@@ -1733,7 +1715,7 @@
         "text": "Six delegates. Five good chairs. One that rocks. I did the sum twice."
       },
       {
-        "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. A white-haired woman in a mud-stiff cloak has come up from Fenmere with a brown goat on a rope. Nobody has asked about the goat."
+        "narrate": "Reeve Aveline has come for Briarwatch with a satchel of lists and the face of a woman who has not slept since the bell went quiet. Quartermaster Iona is here for Ashford, already reading the room's lease. Brannagh has come up from Fenmere, white-haired, in a mud-stiff cloak, with the same brown goat on a rope. She nods to you once, which from her is a long conversation. Nobody has asked about the goat."
       },
       {
         "narrate": "And there is the delegate from Merrowgate: Provost Elske Marrow, grey-eyed, ink on two fingers, with a guild clerk at her elbow who writes down everything, including the weather."
@@ -1861,14 +1843,14 @@
           },
           {
             "say": "Brannagh",
-            "text": "You've been to Fenmere before. The bitter well. You left us a water council, one keeper for each bank, and I'm the village side. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
+            "text": "You've been to Fenmere before. The bitter water at the sluice. You left us a water council, one keeper for each bank, and I'm the village side. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
             "when": {
               "flag": "marsh_council"
             }
           },
           {
             "say": "Brannagh",
-            "text": "You've been to Fenmere before. The bitter well. Ashford's engineers still come out every month to look at the pump, and send us the bill. Ashford is very reliable about bills.",
+            "text": "You've been to Fenmere before. The bitter water at the sluice. Ashford's engineers still come out every month to look at the sluice, and send us the bill. Ashford is very reliable about bills.",
             "when": {
               "flag": "marsh_engineers"
             }
@@ -2230,14 +2212,14 @@
       },
       {
         "say": "Ilka",
-        "text": "Since this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "text": "Since this morning. You remember me, from the sluice-house. I'm still the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
         "when": {
           "party": "orin"
         }
       },
       {
         "say": "Ilka",
-        "text": "The ward went quiet this morning. I'm the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
+        "text": "The ward went quiet this morning. You remember me, from the sluice-house. I'm still the keeper. I was ringing it all night, and then I couldn't remember the third verse. I can't remember it now. I've known it since I was nine.",
         "when": {
           "absent": "orin"
         }

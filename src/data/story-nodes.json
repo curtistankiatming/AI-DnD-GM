@@ -751,7 +751,16 @@
           },
           "lines": [
             {
-              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot and Tovin's half-remembered verse: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own."
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot and Tovin's half-remembered verse: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "when": {
+                "clue": "hushed-verse"
+              }
+            },
+            {
+              "narrate": "The dedication comes back a letter at a time, from the chisel marks and the soot: the bell's old name, Aster Vey, 'the star that answers'. When you say it aloud, the silver chime over the altar rings once on its own.",
+              "when": {
+                "notClue": "hushed-verse"
+              }
             },
             {
               "say": "maren",
@@ -1233,7 +1242,7 @@
             },
             {
               "say": "Lysa",
-              "text": "Because you stopped and asked my name."
+              "text": "Because you stopped."
             }
           ]
         },
@@ -1578,10 +1587,6 @@
       {
         "say": "maren",
         "text": "Charming."
-      },
-      {
-        "say": "orin",
-        "text": "I had a sergeant with that motto."
       }
     ]
   },
@@ -1628,7 +1633,7 @@
           "nextNode": "vault-antechamber",
           "lines": [
             {
-              "narrate": "You hear it in pieces, between the swings of the censers. Sable has changed the last verse of the rite. And he keeps the payment ledger under the cipher desk, in a false bottom, because he doesn't trust the acolytes, which the acolytes find very hurtful."
+              "narrate": "You hear it in pieces, between the swings of the censers. Sable has changed the last verse of the rite. And he keeps the payment ledger under the cipher desk, in a false bottom, because he doesn't trust the acolytes."
             },
             {
               "narrate": "You find the ledger exactly where they said. Most of the buyers are in cipher. One line is not, as if Sable were proud of it: 'Copy of the binding rite. Central Command, Highpass. Paid in full.'"
