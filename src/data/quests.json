@@ -1478,6 +1478,16 @@
             "text": "Fenmere has two halves. The upper village on the rise, the lower village by the water. The mist came into the lower fields four days ago. Our keeper says the ward will hold the lower village a week. Our keeper is an optimist. I've told her so."
           },
           {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter well. You left us a water council, one keeper for each bank, and I'm the upper bank. We've argued every week since, and the water has never been cleaner. That's what I'd like from this lot.",
+            "when": {"flag": "marsh_council"}
+          },
+          {
+            "say": "Brannagh",
+            "text": "You've been to Fenmere before. The bitter well. Ashford's engineers still come out every month to look at the pump, and send us the bill. Ashford is very reliable about bills. That's why I asked to sit next to it.",
+            "when": {"flag": "marsh_engineers"}
+          },
+          {
             "say": "nessa",
             "text": "What's the goat's name?",
             "when": {
@@ -3360,6 +3370,9 @@
         "narrate": "Hollin's Reach was a market town of four thousand people. It is black now: walls without roofs, chimneys without houses. In the middle of it, the council house still stands, and in its tower the ward-bell still hangs. A thin grey mist lies in the streets, not moving, the way water lies in a bowl."
       },
       {
+        "narrate": "The carters tell it the same way. The Gloam came up the river road first, and the fire came behind it: lamps and hearths left burning in houses whose people had forgotten they were there, and doors left open by people who had forgotten why you shut them."
+      },
+      {
         "say": "Elske",
         "text": "I'll go round by the pass. I don't go down there. I'll see you at the forge."
       },
@@ -4003,7 +4016,7 @@
     "region": "Briarwatch, at midwinter",
     "threat": "The council votes on Elske's Warden of the Chorus at Briarwatch. Somebody is paying people to make sure Briarwatch's own town meeting never gets to decide how its delegate votes.",
     "faction": "wardens",
-    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs four towns of five. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
+    "brief": "The council meets at Briarwatch to vote on Provost Marrow's Warden of the Chorus. It needs two-thirds of the towns that vote: four, if all five do. Three are for it. Briarwatch's town meeting decides tonight; Fenmere hasn't said.",
     "opening": [
       {
         "narrate": "Briarwatch at midwinter is the same as ever, only more so. There is snow on the bell tower. Dera's forge is the warmest place in the village, so the whole village is in it."
@@ -4017,11 +4030,11 @@
       },
       {
         "say": "Aveline",
-        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs four towns of five. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
+        "text": "Here's the arithmetic. The council's charter says anything that changes who rings the wards needs two-thirds of the towns that vote. All five voting, that's four. Merrowgate, Ashford and Highpass are for. Briarwatch votes how the town meeting tells me to; the meeting's tonight, in the square. Fenmere is Brannagh, and Brannagh hasn't said a word about it to anyone in a month."
       },
       {
         "say": "Aveline",
-        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her."
+        "text": "If Briarwatch says yes, it doesn't matter what Fenmere does. If Briarwatch says no, it all comes down to her. And if the meeting can't vote at all, Briarwatch doesn't count, three of four is two-thirds, and nobody needs to ask Fenmere anything."
       },
       {
         "say": "Brannagh",
@@ -4117,7 +4130,7 @@
         }
       }
     ],
-    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, and the council can pass the Warden on three towns' word plus Fenmere's. The carters' purse came from the Lantern Hall.",
+    "clue": "Somebody has paid a crew of out-of-town carters to break up Briarwatch's town meeting tonight. If the meeting cannot vote, Briarwatch abstains, the charter counts only the four towns that voted, and the three that are already for it carry the Warden without Fenmere. The carters' purse came from the Lantern Hall.",
     "investigate": {
       "label": "Ask around the inn about the strangers who arrived this week",
       "skill": "investigation",

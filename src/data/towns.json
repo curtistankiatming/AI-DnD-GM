@@ -112,7 +112,7 @@
     "id": "merrowgate",
     "name": "Merrowgate",
     "subtitle": "The Harbour of Lanterns",
-    "description": "A harbour city of steep streets and stone quays, lit at night by the lantern guilds' lamps, which everyone pays for. Gulls, rope-sellers, and a ward-bell in a tower on the harbour mole that has not rung in public since anyone can remember.",
+    "description": "A harbour city of steep streets and stone quays, lit at night by the lantern guilds' lamps, which everyone pays for. Gulls, rope-sellers, and a ward-bell in a tower on the harbour mole that the fishers and pilots ring every night, and the lantern guilds own.",
     "faction": "trade",
     "services": [
       "inn",
