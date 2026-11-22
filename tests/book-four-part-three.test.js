@@ -1,7 +1,7 @@
 'use strict';
 // Book Four, Part Three (docs/book-four/DESIGN.md, build steps 9 to 11), as far
-// as it is written: chapters 21 to 23 and their camps, and the Part Three
-// walkout lines. Every part is previewed, with fixture chapters standing in for
+// as it is written: chapters 21 to 24 and their camps, build step 9's side
+// jobs and chapter rewards, and the Part Three walkout lines. Every part is previewed, with fixture chapters standing in for
 // the ones not written yet (tests/fixtures/book-four.js). node --test runs each
 // file in its own process, so these settings reach no other file. Nothing here
 // calls the paid API. The lints that read the whole of Book Four's data
@@ -15,7 +15,7 @@ const { STORY_NODES, ENEMIES, ENCOUNTERS } = require('../src/content');
 const { QUESTS, SCENES, outcomeForRoller } = require('../src/expansion');
 const high = () => .999999, low = () => 0;
 
-const IDS = ['b4-knot', 'b4-invoice', 'b4-quietnight'];
+const IDS = ['b4-knot', 'b4-invoice', 'b4-quietnight', 'b4-gatehouse'];
 const RAWQ = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
 const RAWS = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/scenes.json'), 'utf8'));
 const RAWA = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/away.json'), 'utf8'));
@@ -84,15 +84,17 @@ const COMPANION_NAMES = { orin: /\b(Orin|Stoneward)\b/, maren: /\bMaren\b|\bSist
 const EXPECT = {
   'b4-knot': { open: ['b4_accused_open', { maren: 1 }, { wardens: 1 }], quiet: ['b4_accused_quiet', { maren: -1 }, { wilds: 1 }], sloe: ['b4_told_sloe', {}, { wold: 1 }] },
   'b4-invoice': { share: ['b4_vote_share', { nessa: 1 }, { wold: 1 }], rota: ['b4_rota_towns', {}, { wardens: 1 }], refuge: ['b4_vote_refuge', { maren: 1 }, { wold: 1 }] },
-  'b4-quietnight': { rings: ['b4_voice_rings', {}, { wardens: 1 }], quiet: ['b4_voice_quiet', { nessa: 1 }, { wold: 1 }], rests: ['b4_voice_rests', { maren: 1 }, { wilds: 1 }] }
+  'b4-quietnight': { rings: ['b4_voice_rings', {}, { wardens: 1 }], quiet: ['b4_voice_quiet', { nessa: 1 }, { wold: 1 }], rests: ['b4_voice_rests', { maren: 1 }, { wilds: 1 }] },
+  'b4-gatehouse': { ailith: ['b4_sable_ailith', { nessa: -1 }, { trade: 1 }], taught: ['b4_sable_taught', { maren: 1 }, { wold: 1 }], silent: ['b4_sable_silent', { orin: 1 }, { wardens: 1 }] }
 };
 
-test('chapters 21 to 23 follow Part Two: from Highpass to Briarwatch and back, not white, each paying exactly one level', () => {
+test('chapters 21 to 24 follow Part Two: from Highpass to Briarwatch and back, and on towards Ashford, not white, each paying exactly one level', () => {
   assert.deepEqual(FX.WRITTEN.slice(20), IDS);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown, q.faction, q.enemyTheme]; }), [
     ['b4-knot', 4, 3, 60, 'b4-northdoor', 'highpass', 'highpass', 'wardens', 'gloam'],
     ['b4-invoice', 4, 3, 61, 'b4-knot', 'highpass', 'briarwatch', 'wardens', 'soldier'],
-    ['b4-quietnight', 4, 3, 62, 'b4-invoice', 'briarwatch', 'highpass', 'wilds', 'gloam']
+    ['b4-quietnight', 4, 3, 62, 'b4-invoice', 'briarwatch', 'highpass', 'wilds', 'gloam'],
+    ['b4-gatehouse', 4, 3, 63, 'b4-quietnight', 'highpass', 'ashford', 'wardens', 'soldier']
   ]);
   for (const id of IDS) {
     const q = QUESTS[id];
@@ -117,7 +119,7 @@ test('chapters 21 to 23 follow Part Two: from Highpass to Briarwatch and back, n
 });
 
 test('each chapter has one camp scene: an empty cast, one node, the camp beat, and choices that change nothing', () => {
-  assert.deepEqual(entries(RAWS).filter(([, v]) => IDS.includes(v.after)).map(([k, v]) => [k, v.after]), [['knot-camp', 'b4-knot'], ['invoice-camp', 'b4-invoice'], ['quietnight-camp', 'b4-quietnight']]);
+  assert.deepEqual(entries(RAWS).filter(([, v]) => IDS.includes(v.after)).map(([k, v]) => [k, v.after]), [['knot-camp', 'b4-knot'], ['invoice-camp', 'b4-invoice'], ['quietnight-camp', 'b4-quietnight'], ['gatehouse-camp', 'b4-gatehouse']]);
   for (const id of IDS) {
     const scene = sceneOf(id);
     assert.deepEqual(scene.cast, [], scene.id);
@@ -156,7 +158,7 @@ test('a decision changes exactly the approval and the reputation listed for it',
 });
 
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won', () => {
-  for (const [id, fought] of [['b4-knot', /grey with frost at the gate end, where the fight was/], ['b4-invoice', /eight of the men from the yard in the cells/], ['b4-quietnight', /torn up at the mill lane, where the fight was\. The bell was rung/]]) {
+  for (const [id, fought] of [['b4-knot', /grey with frost at the gate end, where the fight was/], ['b4-invoice', /eight of the men from the yard in the cells/], ['b4-quietnight', /torn up at the mill lane, where the fight was\. The bell was rung/], ['b4-gatehouse', /torn up from the cell stair to the gate, where the fight was/]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -180,7 +182,7 @@ test('with no companions, and with each one away, every chapter and camp is told
     assert.doesNotMatch(text, /\n\s*\n|undefined|null|[{}@]/, `${where}: no empty line or token`);
     for (const who of ['orin', 'maren', 'nessa']) if (!party.includes(who)) assert.doesNotMatch(text, COMPANION_NAMES[who], `${where}: ${who} is away`);
   };
-  for (const flags of [{}, HALL, ENVOYS]) for (const id of IDS) for (const party of parties) {
+  for (const flags of [{}, HALL, ENVOYS, { b3_sable_cast: true, b4_accused_open: true }, { b3_sable_cast: true, b3_bell_aster: true, b4_told_sloe: true }]) for (const id of IDS) for (const party of parties) {
     const opts = { party, flags };
     clean(opening(departed(id, opts)), party, `${id} opening [${party}]`);
     for (const t of talkIds(id, opts)) clean(talk(id, t, opts), party, `${id}/${t} [${party}]`);
@@ -217,7 +219,7 @@ test('every check result reads for whoever rolls it: the hero, or Orin, Maren or
   assert.match(outcomeForRoller(lane, { id: 'nessa' }).text, /Nessa brings her up the lane on her arm/);
 });
 
-test('the flags chapters 21 and 22 set are read by the chapters after them', () => {
+test('the flags chapters 21 and 22 set are read by the chapters after them, and chapter 24 reads 21\'s', () => {
   assert.match(talk('b4-invoice', 'chair', { flags: { b4_accused_open: true } }), /Since the cut rope went on the clerk's table/);
   assert.match(talk('b4-invoice', 'chair', { flags: { b4_told_sloe: true } }), /Sloe looks at it every time/);
   assert.match(talk('b4-invoice', 'chair', { flags: { b4_accused_quiet: true } }), /Nobody in the hall looks at it but you/);
@@ -227,10 +229,10 @@ test('the flags chapters 21 and 22 set are read by the chapters after them', () 
   assert.match(night({ b4_vote_share: true }), /the first night the council voted to share/);
   assert.match(night({ b4_rota_towns: true }), /because Briarwatch asked to go first/);
   assert.match(night({ b4_vote_refuge: true }), /Briarwatch is keeping the night quiet anyway/);
-  // b4_voice_* is read by chapter 30 (build step 11).
+  // b4_voice_* is read by chapter 30 (build step 11), b4_sable_* by 28 to 30.
   const set = new Set(); for (const id of IDS) for (const d of RAWQ[id].decisions) set.add(d.flag);
   const later = JSON.stringify(IDS.slice(1).map((id) => RAWQ[id]).concat(entries(RAWS).map(([, s]) => s)));
-  for (const flag of [...set].filter((f) => !f.startsWith('b4_voice_'))) assert.ok(later.includes(`"flag":"${flag}"`) || later.includes(`"${flag}"`), `${flag} is read`);
+  for (const flag of [...set].filter((f) => !/^b4_(voice|sable)_/.test(f))) assert.ok(later.includes(`"flag":"${flag}"`) || later.includes(`"${flag}"`), `${flag} is read`);
 });
 
 test('chapter 21: who comes down follows chapter 20, the free wards\' winter follows Book Three, and the gate book names Ailith in every ending', () => {
@@ -313,7 +315,7 @@ test('the Telling tells chapters 21 to 23 in the Journal, by the answer\'s own l
   assert.equal(J.sync(s).telling.find((x) => x.id === 'told:b4-knot').ballad, QUESTS['b4-knot'].decisions.find((d) => d.id === 'sloe').told.ballad);
 });
 
-test('companions walk out again in Part Three, with Part Three\'s own leave and back lines, and nobody stays before chapters 22 to 24', () => {
+test('companions walk out again in Part Three, with Part Three\'s own leave and back lines, and only Orin stays, after chapter 24, because chapter 25 is his', () => {
   for (const [id, who, line] of [['b4-knot', 'orin', /Everything the Wold's people need has to be carried/], ['b4-invoice', 'nessa', /it's still waiting, at our own gate now/], ['b4-quietnight', 'maren', /Maren finds you after supper/]]) {
     let s = after(id);
     s.world.approvalWindow = { [who]: -3 };
@@ -331,4 +333,139 @@ test('companions walk out again in Part Three, with Part Three\'s own leave and 
   }
   const dog = RAWA.nessa.back.choices.find((c) => c.id === 'dog').lines[0].oneOf;
   assert.deepEqual(dog[0].when, { flag: 'b4_parttwo_done' }); assert.doesNotMatch(dog[0].text, /goat/);
+  // After chapter 24 the next chapter is Orin's (the ford), so he stays; Maren can still go.
+  let s = after('b4-gatehouse'); s.world.approvalWindow = { orin: -3 };
+  s = walkThrough(choose(s, 'taught'));
+  assert.equal(s.story.nodeId, 'away-orin-stay');
+  assert.match(opening(s), /But it's Ashford next, and the ford/);
+  s = after('b4-gatehouse'); s.world.approvalWindow = { maren: -3 };
+  assert.equal(walkThrough(choose(s, 'taught')).story.nodeId, 'away-maren-leave');
+});
+
+test('roller tokens inside a oneOf in a check result are told for whoever rolled, and roller gates inside it are settled', () => {
+  const { storyLine } = require('../src/expansion');
+  const lines = [{ oneOf: [{ narrate: '{You} {read|reads} the ledger and {you find|@ finds} {their} place.', when: { flag: 'x' } }, { narrate: 'Only the hero: {your} hands.', when: { roller: 'hero' } }, { narrate: '{They} {shut|shuts} it.' }] }].map(storyLine);
+  const outcome = { text: '', dialogue: lines };
+  const hero = outcomeForRoller(outcome, { id: 'player' }), maren = outcomeForRoller(outcome, { id: 'maren' });
+  assert.deepEqual(hero.dialogue[0].oneOf.map((l) => l.narration), ['You read the ledger and you find your place.', 'Only the hero: your hands.', 'You shut it.']);
+  assert.deepEqual(maren.dialogue[0].oneOf.map((l) => l.narration), ['Maren reads the ledger and Maren finds her place.', 'She shuts it.']);
+  assert.equal(maren.dialogue[0].oneOf[0].when.flag, 'x');
+  assert.equal(maren.dialogue[0].oneOf[1].when, undefined, 'a settled roller gate is dropped');
+  assert.doesNotMatch(maren.text, /[{}@]/);
+});
+
+test('chapter 24: Sable says how Ailith learned what the bell does, in his cell or in the bell, and Aster answers him unless she is at rest', () => {
+  const cast = { b3_sable_cast: true };
+  assert.match(talk('b4-gatehouse', 'sable'), /down the cell stair[^]*That is how she knows\. I told her/);
+  assert.match(talk('b4-gatehouse', 'sable', { flags: cast }), /stand under the bell[^]*That is how she knows/);
+  assert.match(opening(departed('b4-gatehouse', { flags: cast })), /Highpass's bell stands in its frame/);
+  assert.doesNotMatch(opening(departed('b4-gatehouse')), /bell stands in its frame/);
+  // Aster through the joined bells with Sable cast, by Tovin's letter otherwise, and Sable speaks of her when she is at rest.
+  assert.match(talk('b4-gatehouse', 'aster', { flags: cast }), /the bell in the yard answers instead[^]*Briarwatch's bell[^]*Aster Vey: Tell him I was asked/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { ...cast, b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true } }), /Vell's great bell[^]*Aster Vey: Tell him I was asked/);
+  assert.match(talk('b4-gatehouse', 'aster'), /in Tovin's careful hand[^]*Aster Vey:/);
+  const rest = talk('b4-gatehouse', 'aster', { flags: { b3_bell_aster: true, b3_promise_old: true } });
+  assert.match(rest, /Sable: She is at rest/); assert.doesNotMatch(rest, /Aster Vey:/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b4_voice_rests: true } }), /I'm going to rest after the harvest/);
+  // Hesk only from the next cell, Rue only if she stayed at Highpass in Part One.
+  assert.ok(talkIds('b4-gatehouse').includes('hesk') && !talkIds('b4-gatehouse', { flags: { b3_promise_old: false, b3_promise_hesk: true } }).includes('hesk'));
+  assert.ok(!talkIds('b4-gatehouse').includes('rue') && talkIds('b4-gatehouse', { flags: { b4_rue_watch: true } }).includes('rue'));
+  // Chapter 21's answer: who knows whose cart it is.
+  const open = (flags) => opening(departed('b4-gatehouse', { flags }));
+  assert.match(open({ b4_accused_open: true }), /Cinder Fold answered the council's letter/);
+  assert.match(open({ b4_told_sloe: true }), /whether the promise at the end of the lower watch's street still stands/);
+  assert.match(open({ b4_accused_quiet: true }), /Nobody on the council has asked about the bell/);
+  assert.match(opening(after('b4-gatehouse', { flags: { b4_accused_open: true } })), /nobody in the hall has to be told who sent them/);
+  assert.match(opening(after('b4-gatehouse', { flags: { b4_accused_quiet: true } })), /you can see her do the sum/);
+  // The cart is the bell's with Sable cast, and the after says which way the night went.
+  assert.match(opening(at('b4-gatehouse', { phase: 'crisis', flags: cast })), /the bell off its beam/);
+  assert.match(opening(after('b4-gatehouse', { flags: cast })), /Highpass's bell is on its beam in the frame with the dew on it/);
+  // The Other Invoice is read by how it was settled.
+  assert.match(open({ 'job:other-invoice-worked': true }), /Paid in wood/);
+  assert.doesNotMatch(open({}), /Iona's bill/);
+});
+
+test('gatehouse-camp: a companion names the hero\'s level 64 skill for every 2nd job, or it is told with them away, and the cell or the bell follows the answer', () => {
+  const JOBS = require('../src/data/jobs.json').classes;
+  const camp = RAWS['gatehouse-camp'].nodes.wall.lines;
+  const WHO = { orin: ['guardian', 'warlord', 'binder', 'battlepriest', 'pathfinder', 'battlecantor'], maren: ['grifter', 'chronist', 'lifewarden', 'exorcist', 'lorekeeper', 'envoy'] };
+  for (const c of Object.values(JOBS)) for (const b of c.branches) {
+    const skill = b.thirdSkills.find((x) => x.level === 64).name;
+    const who = Object.keys(WHO).find((k) => WHO[k].includes(b.id)) || 'nessa';
+    const said = camp.filter((l) => l.when?.spec === b.id);
+    assert.deepEqual(said.map((l) => [l.say, l.when.party || null, l.when.absent || null]), [[who, who, null], [undefined, null, who]], b.id);
+    for (const l of said) { assert.ok((l.text || l.narrate).includes(skill), `${b.id}: ${skill}`); assert.ok((l.text || l.narrate).includes(b.third.split(' ')[0]), `${b.id}: ${b.third}`); }
+  }
+  assert.ok(camp.some((l) => l.when?.spec === 'none'));
+  const night = (decision, flags) => opening(decide('b4-gatehouse', decision, { flags }));
+  assert.match(night('ailith'), /the end cell is dark/);
+  assert.match(night('ailith', { b3_sable_cast: true }), /the frame stands empty/);
+  assert.match(night('taught'), /writing out tomorrow's lesson/);
+  assert.match(night('silent', { b3_sable_cast: true }), /says nothing all night/);
+});
+
+test('step 9\'s jobs: Iona\'s Other Invoice on Highpass\'s board during chapters 22 to 24, The Wold Family on Briarwatch\'s once chapter 23 is done, each paying once', () => {
+  const { SIDE_JOBS } = require('../src/expansion');
+  assert.deepEqual(['other-invoice', 'wold-family'].map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [['highpass', 'b4-knot', 'b4-gatehouse'], ['briarwatch', 'b4-quietnight', 'b4-gatehouse']]);
+  const offered = (id, chapter, done = false, flags) => { const s = at(chapter, { flags }); if (done) s.world.completed[chapter] = { xp: 0, gold: 0 }; s.world.townId = SIDE_JOBS[id].town; s.story.nodeId = `town-${SIDE_JOBS[id].town}`; return (E.buildView(s).world.sideJobs || []).some((j) => j.id === id); };
+  assert.ok(!offered('other-invoice', 'b4-knot') && offered('other-invoice', 'b4-invoice') && offered('other-invoice', 'b4-gatehouse') && !offered('other-invoice', 'b4-gatehouse', true));
+  assert.ok(!offered('wold-family', 'b4-quietnight') && offered('wold-family', 'b4-gatehouse'));
+  const start = (id, chapter, flags = {}, party) => { const s = at(chapter, { flags, party }); s.world.townId = SIDE_JOBS[id].town; s.story.nodeId = `town-${s.world.townId}`; return act(s, { type: 'side-job', jobId: id }).state; };
+  // The offset needs chapter 22's invoice read in the hall.
+  const offset = (flags) => E.buildView(start('other-invoice', 'b4-invoice', flags)).scene.choices.find((c) => c.id === 'offset');
+  assert.ok((!offset({}) || offset({}).locked) && !offset({ b4_vote_share: true }).locked);
+  assert.match(opening(start('other-invoice', 'b4-invoice')), /Burdock has seen it/);
+  assert.match(opening(start('other-invoice', 'b4-invoice', HALL)), /Rue has seen it/);
+  assert.match(opening(start('wold-family', 'b4-gatehouse')), /the Wold's tents are still up/);
+  assert.match(opening(start('wold-family', 'b4-gatehouse', HALL)), /Two of the Wold's door-bearers stayed/);
+  const parties = [[], ['orin', 'maren', 'nessa'], ['orin', 'maren']];
+  for (const [id, chapter] of [['other-invoice', 'b4-invoice'], ['wold-family', 'b4-gatehouse']]) for (const party of parties) for (const flags of [{ b4_vote_share: true }, { ...HALL, b4_vote_share: true }]) {
+    for (const c of STORY_NODES[`job-${id}-${SIDE_JOBS[id].start}`].choices) for (const rng of c.check ? [high, low] : [high]) {
+      let s = start(id, chapter, flags, party);
+      const xp = s.player.xp, gold = s.player.gold, level = s.player.level;
+      assert.doesNotMatch(opening(s), /[{}@]|\n\s*\n/);
+      for (const who of ['orin', 'maren', 'nessa']) if (!party.includes(who)) assert.doesNotMatch(opening(s), COMPANION_NAMES[who], `${id}: ${who} away`);
+      s = act(s, { type: 'story-choice', choiceId: c.id }, rng).state;
+      assert.doesNotMatch(told(s), /[{}@]|\n\s*\n/, `${id}/${c.id}`);
+      assert.equal(s.story.nodeId, `town-${SIDE_JOBS[id].town}`, `${id}/${c.id}`);
+      assert.equal(s.story.flags[`job:${id}`], true);
+      assert.ok(s.player.xp - xp <= 130 && s.player.gold - gold >= 120 && s.player.gold - gold <= 180, `${id}/${c.id}`);
+      assert.equal(s.player.level, level, `${id}: never past the chapter`);
+      assert.ok(Object.keys(s.story.flags).some((f) => f.startsWith(`job:${id}-`)), `${id}/${c.id} sets its answer`);
+    }
+  }
+});
+
+test('chapters 21 to 24 each give their own Legendary reward on the tier 60 curve: better than the sold piece of its kind on something, never all of a tier 65 piece, never all of a warm one', () => {
+  const GEAR = require('../src/data/gear.json'), { ITEMS } = require('../src/content');
+  const rewards = GEAR.filter((i) => IDS.includes(i.exclusive?.quest));
+  assert.deepEqual(rewards.map((i) => [i.exclusive.quest, i.name, i.slot, i.requires.level]), [
+    ['b4-knot', "Founders' Rope-knot", 'accessory', 58], ['b4-invoice', 'Council Ledger-case', 'accessory', 59],
+    ['b4-quietnight', 'Quiet-night Lantern', 'accessory', 60], ['b4-gatehouse', 'Gatehouse Grammar', 'mainHand', 61]]);
+  for (const item of rewards) {
+    assert.equal(item.rarity, 'Legendary', item.id);
+    assert.equal(item.requires.level, QUESTS[item.exclusive.quest].level - 2, item.id);
+    assert.equal(item.value, 340 + 10 * item.requires.level, item.id);
+    assert.ok(!item.warm, `${item.id}: the free wards' white is the old one`);
+  }
+  assert.deepEqual(ITEMS['gatehouse-grammar'].requires.classes, ['wizard']);
+  assert.equal(ITEMS['gatehouse-grammar'].skill.name, 'Unravel');
+  assert.deepEqual(rewards.map((i) => i.story?.skill || null), ['athletics', 'investigation', 'perception', null]);
+  // No accessory or focus is sold at tier 60, so the sold piece of its kind at 60 is tier 55's.
+  const sold = (pred, level) => GEAR.filter((i) => !i.exclusive && i.requires?.level === level && pred(i));
+  assert.deepEqual(sold((i) => i.slot === 'accessory' || i.category === 'focus', 60), []);
+  const keys = (i) => [...Object.entries(i.skillBonuses || {}).map(([k, v]) => `skill:${k}:${v}`), ...Object.entries(i.saveBonuses || {}).map(([k, v]) => `save:${k}:${v}`), ...(i.skill ? [`effect:${i.skill.effect}`] : []), ...(i.story ? [`story:${i.story.skill}`] : []),
+    ...['dealt', 'taken'].filter((k) => i.stats?.[k]).map((k) => `${k}:${i.stats[k]}`), ...['acBonus', 'spellAttackBonus', 'spellDcBonus'].filter((k) => i[k]).map((k) => `${k}:${i[k]}`)];
+  const covers = (a, b) => keys(b).every((k) => keys(a).includes(k)) && !(b.warm && !a.warm);
+  // Better than the sold tier 55 piece on something real: a skill or save bonus it lacks, or a higher number.
+  for (const r of rewards.filter((i) => i.slot === 'accessory')) for (const w of sold((i) => i.slot === 'accessory', 55)) assert.ok(Object.keys(r.skillBonuses).some((k) => !w.skillBonuses?.[k]), `${r.id} has a skill bonus ${w.id} has not`);
+  const staff = ITEMS['lamplit-staff'], grammar = ITEMS['gatehouse-grammar'];
+  assert.ok(grammar.spellDcBonus > staff.spellDcBonus && grammar.spellAttackBonus === staff.spellAttackBonus && grammar.stats.dealt === staff.stats.dealt, 'one more DC than the Lamplit Staff, nothing else higher');
+  // Never everything a tier 65 piece of its kind has, nor everything a sold warm piece has.
+  for (const r of rewards) for (const t of sold((i) => i.slot === r.slot && i.category === r.category, 65)) assert.ok(!covers(r, t) && keys(t).some((k) => !keys(r).includes(k)), `${r.id} does not beat ${t.id} outright`);
+  for (const r of rewards) for (const w of GEAR.filter((i) => i.warm && !i.exclusive && i.slot === r.slot)) assert.ok(!covers(r, w), `${r.id} is not strictly better than ${w.id}`);
+  for (const r of rewards.filter((i) => i.slot === 'accessory')) assert.ok((r.stats.dealt || 0) < 0.2 && (r.stats.taken || 0) > -0.15, `${r.id} under the Long Hall Muffler's 20% and the Orme Hearthstone's 15%`);
+  // Given once, when the chapter is done.
+  const s = playPeaceful('b4-gatehouse', 'silent', { party: [] });
+  assert.equal(s.player.inventory.filter((e) => e.itemId === 'gatehouse-grammar').reduce((n, e) => n + e.quantity, 0), 1);
 });

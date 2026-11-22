@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 23 (build step 9, so far): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, and chapter 23 departs from Briarwatch and returns to Highpass. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves (src/data/away.json has the Part Three lines, gated b4_parttwo_done). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 24 (build step 9): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, chapter 23 departs from Briarwatch and returns to Highpass, and chapter 24 departs from Highpass with nextTown ashford. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves, and after chapter 24 Orin stays, because chapter 25 needs him (src/data/away.json has the Part Three lines, gated b4_parttwo_done, and his b4-ford stay line). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
   "b4-walker": {
     "id": "b4-walker",
     "book": 4,
@@ -6001,6 +6001,309 @@
         "rep": { "wilds": 1 },
         "approval": { "maren": 1 },
         "flag": "b4_voice_rests"
+      }
+    ]
+  },
+  "b4-gatehouse": {
+    "id": "b4-gatehouse",
+    "book": 4,
+    "part": 3,
+    "name": "Sable's Last Lesson",
+    "level": 63,
+    "town": "highpass",
+    "nextTown": "ashford",
+    "unlock": "b4-quietnight",
+    "xp": 17500,
+    "gold": 1300,
+    "region": "Highpass Watch: the gatehouse, the cells under it, and the gatehouse yard",
+    "threat": "Ailith Strake's rope-men are coming up the lower road with a cart for the one man in the free wards who knows how the Parting Bell is rung, and he has written to say he will go.",
+    "faction": "wardens",
+    "brief": "Ailith Strake has sent a cart to Highpass for Sable, the man who once bound a bell's voice in secret to keep a village safe properly. He knows how the Parting Bell is rung, both ways. He has said he will go with her men. Before the cart comes, somebody should ask him why.",
+    "told": {
+      "ballad": "Under Highpass's gatehouse the old warden who once bound a bell alone was asked, at last, who he would give the last note to.",
+      "tally": "Highpass. The south kept a prisoner who knew both notes. Written: they asked him who should have them."
+    },
+    "opening": [
+      { "narrate": "High summer at Highpass, a month after the quiet night. The pass is green to the snow-line, the north road is open to the top, and the gatehouse doors stand open all day for the air." },
+      { "oneOf": [
+        { "narrate": "In the gatehouse yard Highpass's bell stands in its frame with the sun on it: Sable, cast at his own asking in the first snow two winters ago. Sorrel's guard still reverse their pikes when they walk past it, and nobody has told them to.", "when": { "flag": "b3_sable_cast" } },
+        { "narrate": "Under the gatehouse, in the end cell, Sable has his brazier lit in high summer, and his books stacked to the ceiling, and a new pen." }
+      ] },
+      { "narrate": "Sorrel sends for you. On her table there is a letter that came up the lower road from Cinder Fold, in a large upright hand you last saw in the gate book, and a copy of the answer that went back down, made by the cell guard, because at Highpass every word Sable writes is copied." },
+      { "oneOf": [
+        { "say": "Sorrel", "text": "Ailith Strake wants Highpass's bell lent to Cinder Fold until midwinter, with him in it, to read the founders' ledger for the casting hall. She's sending a cart. He's said yes. I didn't know a bell could say yes to anything. It turns out it can, in writing.", "when": { "flag": "b3_sable_cast" } },
+        { "say": "Sorrel", "text": "Ailith Strake wants my prisoner lent to Cinder Fold until midwinter, to read the founders' ledger for the casting hall. She's sending a cart. He's said yes. He can't go anywhere without the council's word, and the council's risen till the autumn, and she knows it." }
+      ] },
+      { "say": "Sorrel", "text": "I'd like you to go down and ask him what he's doing. He won't tell me. He says I wouldn't follow the argument. He's right, and I'd like to hear it anyway." },
+      { "oneOf": [
+        { "narrate": "Cinder Fold answered the council's letter about the rope in the spring, in the same upright hand: the Parting Bell is in the casting hall, where it was cast, and it is safe, and the rope families will ring it at midwinter for the free wards, as they ring the Mother Bell. It does not say which way. The council read it out twice with the doors open, and still does not know.", "when": { "flag": "b4_accused_open" } },
+        { "narrate": "Sloe has not asked the council about the bell once all summer. Every few days she asks you whether the promise at the end of the lower watch's street still stands. It does.", "when": { "flag": "b4_told_sloe" } },
+        { "narrate": "Nobody on the council has asked about the bell. Sorrel has her gate book locked in her office, and has not read the autumn page out, which is as near as she comes to forgetting it." }
+      ] },
+      { "narrate": "Sloe has been at Highpass all summer, on the bench outside the cells, with her slate on her knee." },
+      { "narrate": "Hesk is in the cell next to Sable's. He has been there two years, and has heard everything said in the next cell, and has said nothing about any of it to anybody.", "when": { "flag": "b3_promise_old" } },
+      { "narrate": "Davin has spent the summer on the gate with Sorrel's watch, learning their drill, and Orin goes up most evenings to watch the boy get it wrong, and says nothing.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+      { "oneOf": [
+        { "narrate": "The Wold's door-bearers have cut and stacked the watch's winter wood along the inside of the gatehouse wall, up to the eaves, which is how Iona's bill was paid in the end. Iona has written 'Paid in wood' across it.", "when": { "flag": "job:other-invoice-worked" } },
+        { "narrate": "Iona's bill to the Wold hangs on the nail in her office, with 'Paid' across it in her own hand, and under that her own name.", "when": { "flag": "job:other-invoice-paid" } },
+        { "narrate": "Iona's bill to the Wold hangs on the nail in her office, crossed through, with 'Set against: nine hundred years' written under it.", "when": { "flag": "job:other-invoice-offset" } },
+        { "narrate": "Iona's bill to the Wold hangs on the nail in her office, unpaid, with 'Held to midwinter' on it in pencil.", "when": { "flag": "job:other-invoice-held" } }
+      ] }
+    ],
+    "talks": [
+      {
+        "id": "sable",
+        "label": "Go down to Sable, and ask him why he said yes",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "You go out into the gatehouse yard and stand under the bell. It speaks before you have said anything, in Sable's voice, from inside the bronze.", "when": { "flag": "b3_sable_cast" } },
+            { "narrate": "You go down the cell stair to the end cell. Sable is at his table, writing. He does not get up, and he does not stop writing until he has finished the line." }
+          ] },
+          { "say": "Sable", "text": "She came in the autumn, two days before she went up your road. She brought a page from her family's ledger, the founders' hand, and asked me to read it to her. I did. It was the Parting Bell's page: what the bell does, rung with the Mother Bell at midwinter, one way or the other. That is how she knows. I told her." },
+          { "say": "Sable", "text": "Then she asked me how it is rung forward. I said I would think about it. I have been thinking about it since the autumn." },
+          { "say": "Sable", "text": "Here is my case. She will ring it whether I help her or not. She is the best ringer alive, and she has the bell, and the rope families, and the nine, and midwinter will come whatever anybody votes. If she has to guess at the forward note she may guess it wrong, and a wrong note at Cinder Fold at midwinter is not nothing. Every bell in the free wards would answer it." },
+          { "say": "Sable", "text": "If I go, I am in the room. I am the only one living who knows both notes, and I would be standing beside her when she asks for one. I bound a bell's voice once, in secret, to keep a village safe properly. I know exactly what she is doing, and why. Who would you rather had her elbow?" },
+          { "say": "Sable", "text": "You see. It is a good case. My cases always are. That has always been the trouble with them." },
+          { "say": "maren", "text": "He means every word. That's the part I don't like.", "when": { "party": "maren" } }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Ask Sable about Aster Vey",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "You ask Sable about Aster Vey. Before he can answer, the bell in the yard answers instead, a breath late and very faint, from a long way off: Briarwatch's bell, under the ground, where the bells are joined.", "when": { "flag": "b3_sable_cast", "noneFlag": ["b3_bell_aster"] } },
+            { "narrate": "You ask Sable about Aster Vey. Before he can answer, the bell in the yard answers instead, a breath late and fainter than you have ever heard her: Vell's great bell, from the far end of the free wards, where the bells are joined.", "when": { "flag": "b3_sable_cast", "noneFlag": ["b3_promise_old"] } },
+            { "narrate": "You ask Sable about Aster Vey. He has a letter from Briarwatch on his table, in Tovin's careful hand: what Aster said in the bell-room the night after the quiet night, when she asked Tovin to write it down and send it to Highpass.", "when": { "noneFlag": ["b3_bell_aster"] } },
+            { "narrate": "You ask Sable about Aster Vey. He has a letter from Briarwatch on his table, in Tovin's careful hand: what Aster said through Briarwatch's bell, a breath late, from Vell's great bell, when she asked Tovin to write it down and send it to Highpass.", "when": { "noneFlag": ["b3_promise_old"] } },
+            { "narrate": "You ask Sable about Aster Vey. He does not answer for a long time." }
+          ] },
+          { "oneOf": [
+            { "say": "Sable", "text": "She is at rest. I bound her into Briarwatch's bell when I was the warden there, in secret, to keep the village safe properly, and she never once argued with me. Not that night, and not in all the years after.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "say": "Aster Vey", "text": "Tell him I was asked. At midsummer, in Briarwatch, for the first time since he put me in. Tell him that's what it's like, being asked. He never did." }
+          ] },
+          { "oneOf": [
+            { "say": "Sable", "text": "If she were here she would ask me one thing: whether anybody has asked the bells. Nobody has. Then she would wait, and I would have nothing to say, and she would know it, and so would I.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "say": "Aster Vey", "text": "If he goes to Cinder Fold, every one of us in a bell rings with whatever he gives Ailith. Him too. Me. Nobody's asked us. He asked to be put in a bell, and he was let. He knows the difference better than anybody. Tell him I said so." }
+          ] },
+          { "say": "Aster Vey", "text": "And tell him I'm going to rest after the harvest. I chose it. He can stop being sorry. I've decided to stop being angry.", "when": { "flag": "b4_voice_rests" } },
+          { "oneOf": [
+            { "narrate": "Sable does not say anything else while you are there.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "say": "Sable", "text": "She has never once argued with me. She says what is so, and waits. I have never had an answer to it. I still have not." }
+          ] }
+        ]
+      },
+      {
+        "id": "sloe",
+        "label": "Sit with Sloe on the bench outside the cells",
+        "lines": [
+          { "narrate": "Sloe moves along the bench to make room, and turns her slate face down on her knee." },
+          { "say": "Sloe", "text": "The founders' page says the Parting Bell can be rung two ways. It does not say how. I have the sum. I do not have the note. He has." },
+          { "say": "Sloe", "text": "I want the other note from him. The quiet one. Its true form, not a guess at it. I have asked him every day since the quiet night. He says he is thinking. In the Wold we would write that on his door, and by now there would be no door left to write on." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "You told me who has the bell, at the end of the street, and asked me to wait. I am waiting. I am waiting here, where the note is.", "when": { "flag": "b4_told_sloe" } },
+            { "say": "Sloe", "text": "Your council wrote to the rope families with the doors open. I liked that. Their answer says the bell is safe. Safe is a word that means whatever the person saying it needs.", "when": { "flag": "b4_accused_open" } },
+            { "say": "Sloe", "text": "Somebody in the south has the bell, and has not said so. Somebody in this gatehouse knows how it is rung. I can wait for one of them. I would rather not wait for both." }
+          ] }
+        ]
+      },
+      {
+        "id": "hesk",
+        "label": "Speak to Hesk in the next cell",
+        "requires": { "flagsAny": ["b3_promise_old"] },
+        "lines": [
+          { "narrate": "Hesk is at his table with his lamp, and the first winter of Iona's invoice still on his wall in charcoal." },
+          { "oneOf": [
+            { "say": "Hesk", "text": "I've had his bell through my window for two years. It rings when it likes, and it likes to ring when I'm asleep.", "when": { "flag": "b3_sable_cast" } },
+            { "say": "Hesk", "text": "I've had him through the wall for two years. He reads aloud. He reads aloud in his sleep, in the founders' spelling." }
+          ] },
+          { "say": "Hesk", "text": "She came down here in the autumn, Ailith, with a lamp and a page, and sat outside his bars for an evening, and I heard every word of it. He told her what the bell does. She asked him how it's rung. He said he'd think. She thanked him. She's a polite woman. So was I, once." },
+          { "say": "Hesk", "text": "I bought a ring of bells because I was sure. He bound one because he was sure. She's sure. Ask him which of the three of us he means to be at midwinter." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Ask Rue what she learned from Sable",
+        "requires": { "flagsAny": ["b4_rue_council", "b4_rue_watch"] },
+        "lines": [
+          { "narrate": "Rue is on the cell stair with her book, copying something out of it into a second book, slowly." },
+          { "say": "Rue", "text": "The summer before last, while I was waiting for your council, I came down here every day, and he taught me the marks at the bottom of the founders' page. Not the letters. I have always had the letters. The marks under them, for notes. We never kept those in the Wold. Nobody up there rang anything." },
+          { "say": "Rue", "text": "He said a note written down is a note anybody can ring. He showed me how the Parting Bell's would be written, and then he did not write it." },
+          { "say": "Rue", "text": "I have it in my book that he was kind to me. I am keeping that line, whatever he does." }
+        ]
+      }
+    ],
+    "clue": "Backward or forward, the Parting Bell's note is nothing on its own: either one needs the Parting Bell and the nine rung together, at Cinder Fold, at midwinter, when the Mother Bell is rung, and nowhere and at no time else.",
+    "investigate": {
+      "label": "Go through the Parting Bell's page with Sable, mark by mark",
+      "skill": "arcana",
+      "alt": ["insight", "history"],
+      "success": [
+        { "oneOf": [
+          { "narrate": "{You sit|@ sits} under the bell in the yard with the clerk's copy of the page Ailith brought, the Parting Bell's page, and {read|reads} the marks under the founders' letters aloud one at a time, and the bell says what each one is.", "when": { "flag": "b3_sable_cast" } },
+          { "narrate": "{You sit|@ sits} outside the bars with Sable's tracing of the page Ailith brought, the Parting Bell's page, and {go|goes} through the marks under the founders' letters one at a time while he says what each one is." }
+        ] },
+        { "narrate": "It takes the afternoon. By the end {you have|@ has} all of them, and Sable has stopped correcting." },
+        { "say": "Sable", "text": "There. Backward or forward, the note is nothing on its own. It wants the Parting Bell and the nine, rung together, at Cinder Fold, at midwinter, when the Mother Bell is rung. Nowhere else, and no other night." },
+        { "say": "Sable", "text": "So nobody can ring it early, and nobody can ring it here. Not Ailith, and not Sloe. On the one night it can be rung, everybody who wants it rung will be in the same room. The founders made sure of that. I expect they meant to." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} through the marks under the founders' letters with Sable, but they are a ringer's marks, not a scholar's, and by the end of the lamp {you know|@ knows} the names of a dozen of them and not what they say together." }
+      ]
+    },
+    "route": {
+      "label": "Walk the gatehouse with the watch sergeant, and find the way a cart comes in",
+      "skill": "perception",
+      "alt": ["investigation", "survival"],
+      "success": [
+        { "narrate": "{You walk|@ walks} the gatehouse with the watch sergeant in the afternoon, and {find|finds} the one way a cart can come into the yard: up the lower road, through the yard gate, to the head of the cell stair. {You put|@ puts} a lamp on the yard gate, and two of the watch at the stair head, with nothing to do but stand there and be seen." }
+      ],
+      "failure": [
+        { "narrate": "{You walk|@ walks} the gatehouse with the watch sergeant, but in summer every gate in it stands open for the air, and {you come|@ comes} back with four ways a cart could come in and nobody to put on any of them." }
+      ]
+    },
+    "direct": {
+      "label": "Wait in the gatehouse yard for the cart",
+      "text": "You wait in the gatehouse yard for the cart, with the doors open for the air and the watch up on the wall."
+    },
+    "approach": [
+      { "narrate": "The cart comes up the lower road at dusk, on the day the letter named: a long rope-families' cart with a hide over the bed and a hoist-frame lashed on top, and twelve of the rope families walking beside it." },
+      { "narrate": "The watch sergeant counts them in at the yard gate, out of habit, and looks at the gate book under his arm, and counts them again. They are the same twelve, by their names, who went up the north road with Ailith in the autumn and came down with a load." },
+      { "oneOf": [
+        { "narrate": "They draw up beside Highpass's bell in its frame. The rope-men's foreman looks at the bell, and at the cart, and at the hoist, the way a ringer looks at a weight.", "when": { "flag": "b3_sable_cast" } },
+        { "narrate": "They draw up at the head of the cell stair. The rope-men's foreman has a letter in Sable's hand, and gives it to the cell guard, who reads it twice and goes down for the keys, because it is Sable's writing and nobody has ever told him what that is worth." }
+      ] }
+    ],
+    "crisis": [
+      { "oneOf": [
+        { "narrate": "The rope-men have the hoist up over the bell's frame before the watch on the wall has come down the stair, and the bell off its beam and hanging over the cart's bed on four ropes, lowered slowly, the way the rope families lift a bell: as if it were somebody.", "when": { "flag": "b3_sable_cast" } },
+        { "narrate": "Sable comes up the cell stair between two of the rope-men with his books in a sack and his new pen behind his ear, and climbs up into the cart himself, and sits on the bench in the bed with his hands in his lap." }
+      ] },
+      { "oneOf": [
+        { "say": "Sable", "text": "I said yes. Let them do it properly. They know how to lift a bell.", "when": { "flag": "b3_sable_cast" } },
+        { "say": "Sable", "text": "I said yes. I should like it noted that nobody is carrying me." }
+      ] },
+      { "narrate": "Sorrel comes down off the wall with her watch behind her, pikes level, and the twelve stand round the cart with their hands on its ropes, and the yard gate is open behind them onto the lower road." },
+      { "oneOf": [
+        { "say": "Sorrel", "text": "That bell's Highpass's ward. It doesn't leave my yard on a letter.", "when": { "flag": "b3_sable_cast" } },
+        { "say": "Sorrel", "text": "That man's the council's prisoner. He doesn't leave my gatehouse on a letter he wrote himself." }
+      ] },
+      { "say": "The rope-men's foreman", "text": "Ailith said he'd come of his own will, and he has. We don't want a fight in your yard, Captain. We've a long road home, and we'd like to start it tonight." },
+      { "say": "orin", "text": "Give me the word and I'll have a wheel off that cart. I'd rather you didn't give it.", "when": { "party": "orin" } }
+    ],
+    "peaceful": {
+      "label": "Go up to the cart, and talk Sable out of it",
+      "skill": "persuasion",
+      "alt": ["insight", "history"],
+      "success": [
+        { "narrate": "{You know|@ knows} what the founders' page says: the note can be rung nowhere but Cinder Fold, at midwinter, with the nine. {You say|@ says} so in the yard, loud enough for the foreman. Nothing is lost if Sable waits the summer where he is.", "when": { "flag": "prepared:b4-gatehouse" } },
+        { "narrate": "The lamp is on the yard gate, and the watch at the stair head, and the cart stands where everybody can see all of it.", "when": { "flag": "approach:b4-gatehouse" } },
+        { "narrate": "{You put|@ puts} the watch between the cart and the yard gate, a pike at a time, without saying why.", "when": { "notFlag": "approach:b4-gatehouse" } },
+        { "oneOf": [
+          { "narrate": "Then {you go|@ goes} up to the bell where it hangs over the cart on its ropes, and {ask|asks} it the one thing Sable's case leaves out: when Ailith asks him for the forward note at midwinter, with the rope in her hands, whether he means to give it to her, or the other one.", "when": { "flag": "b3_sable_cast" } },
+          { "narrate": "Then {you climb|@ climbs} up into the cart and {sit|sits} on the bench beside Sable, and {ask|asks} him the one thing his case leaves out: when Ailith asks him for the forward note at midwinter, with the rope in her hands, whether he means to give it to her, or the other one." }
+        ] },
+        { "say": "Sable", "text": "I have not decided. That is the truth. I was going to decide in the room." },
+        { "narrate": "{You tell|@ tells} him that is how a bell's voice was bound in Briarwatch once: by one man, in secret, who decided at the last moment, alone, what was safe for everybody else." },
+        { "say": "Sable", "text": "Yes. It is. Nobody has put it to me as plainly as that since the vault." },
+        { "oneOf": [
+          { "narrate": "The foreman looks at the bell, and at {you|@}, and has the hoist let down again, gently, rope by rope, until the bell is back on its beam in the frame.", "when": { "flag": "b3_sable_cast" } },
+          { "narrate": "Sable climbs down out of the cart, slowly, with his sack of books, and sits on the cell stair." }
+        ] },
+        { "say": "The rope-men's foreman", "text": "Ailith said he'd come of his own will. If his will's changed, we'll not carry him. She'll not thank me. She'll understand." },
+        { "narrate": "The twelve stand the cart in the yard for the night, and the watch brings them supper in the guardroom, and nobody draws anything." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} up to the cart to talk Sable down, but the foreman has a long road and his orders, and before {you have|@ has} said three words he blows the rope families' horn, and the twelve take up the ropes, and the cart starts for the gate." }
+      ]
+    },
+    "objective": {
+      "name": "The yard gate",
+      "label": "Hold the cart in the yard until the gate is shut",
+      "description": "Four successful actions hold the cart and the twelve in the gatehouse yard until the watch can get the yard gate shut and barred.",
+      "skill": "athletics",
+      "alt": ["persuasion", "intimidation", "survival"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The yard gate is shut in the end, but the cart has been through it and back again first, with two of Sorrel's watch under its wheels, and both of them will be a month on their feet again.",
+      "successText": "The yard gate swings shut on its bar with the cart still inside it, and the twelve put down their ropes."
+    },
+    "foe": "b4-gatehouse-twelve",
+    "foeName": "The Twelve at the Cart",
+    "enemyTheme": "soldier",
+    "attackName": "Cart-rope Hitch",
+    "retainerName": "Rope-man of the Twelve",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Morning. The cart stands in the gatehouse yard where the twelve left it, with its hide folded and its hoist down, and Highpass's bell is on its beam in the frame with the dew on it.", "when": { "flag": "method:b4-gatehouse", "is": "peace", "anyFlag": ["b3_sable_cast"] } },
+        { "narrate": "Morning. The cart stands in the gatehouse yard where the twelve left it, with its hide folded, and Sable is still on the cell stair, where he sat all night with his sack of books.", "when": { "flag": "method:b4-gatehouse", "is": "peace" } },
+        { "narrate": "Morning. The gatehouse yard is torn up from the bell's frame to the gate, where the fight was, and the cart is on its side by the gatepost with a wheel off. Highpass's bell is back on its beam, with a new bright scar on its lip where the hoist let it down too fast. The twelve are in the guardroom under Sorrel's watch, with their hurt.", "when": { "flag": "b3_sable_cast" } },
+        { "narrate": "Morning. The gatehouse yard is torn up from the cell stair to the gate, where the fight was, and the cart is on its side by the gatepost with a wheel off. The twelve are in the guardroom under Sorrel's watch, with their hurt. Sable is on the cell stair, where the watch put him." }
+      ] },
+      { "say": "Sorrel", "text": "I've sent to Cinder Fold to say the cart's here, and the twelve, and that they can have both back when somebody's decided what about. I'd like that to be you. He'll take it from you. He won't from me." },
+      { "oneOf": [
+        { "narrate": "The council has it from Sorrel by noon, with the doors open: the rope families came for Sable. After the rope on the clerk's table, nobody in the hall has to be told who sent them.", "when": { "flag": "b4_accused_open" } },
+        { "narrate": "Sloe is on the bench by the cells with her slate on her knee. She has seen the cart and the twelve, and she does not ask you anything. You told her whose they would be, at the end of the street.", "when": { "flag": "b4_told_sloe" } },
+        { "narrate": "Sloe is on the bench by the cells with her slate on her knee. She has seen the cart and the twelve, and the knots on their ropes, and you can see her do the sum." }
+      ] },
+      { "say": "Sable", "text": "Ailith will have my answer by the next cart, whatever it is. I have three answers, and for the first time in my life I should like somebody else to choose between them. That is your doing. I have not decided whether to forgive you for it." }
+    ],
+    "decisions": [
+      {
+        "id": "ailith",
+        "label": "Let him go to Cinder Fold with Ailith's men",
+        "description": "This decision is permanent. Sable goes to Cinder Fold with the rope families, and will give Ailith the note she asks for. The forward ring will be ready at midwinter.",
+        "told": {
+          "ballad": "The hero let the old warden go to the rope families with the last note, because he had said he would.",
+          "tally": "Highpass. The south let the man who knew the note go to the ones who had the bell. Written: they let him go."
+        },
+        "text": [
+          { "oneOf": [
+            { "narrate": "You tell him to go. In the afternoon the twelve lift the bell again, slowly, on four ropes, and lash it into the cart's bed under the hide, and take it down the lower road with the watch standing aside.", "when": { "flag": "b3_sable_cast" } },
+            { "narrate": "You tell him to go. In the afternoon he climbs back up into the cart with his sack of books, and the twelve take him down the lower road with the watch standing aside." }
+          ] },
+          { "say": "Sable", "text": "Then I will stand beside her, and give her what she asks for, because I said I would, and because I have never had a better answer than hers. I will write to you. You will not like the letters." },
+          { "say": "Sorrel", "text": "I'll put it in the gate book. 'Down. Twelve, and a load.' Again." }
+        ],
+        "rep": { "trade": 1 },
+        "approval": { "nessa": -1 },
+        "flag": "b4_sable_ailith"
+      },
+      {
+        "id": "taught",
+        "label": "Ask him to teach you both notes, and carry them yourself",
+        "description": "This decision is permanent. Sable teaches you the forward note and the backward one, in the founders' marks, and stays at Highpass. At midwinter you will be the one in the room who knows both.",
+        "told": {
+          "ballad": "The hero sat out the summer with the old warden at Highpass, and learned both notes of the Parting Bell, so that nobody would ring either one alone.",
+          "tally": "Highpass. The south's prisoner taught the southerner both notes. Written: now there is somebody who can be asked."
+        },
+        "text": [
+          { "say": "Sable", "text": "Both, then. The one I would have given her, and the one Sloe wants. I will teach you them, and you will carry them, and at midwinter it will be you that is asked, and not me." },
+          { "narrate": "He teaches you through the rest of the summer, a mark at a time, in the evenings, until you can write both notes out under the founders' letters without the page, and say them, and know what each one would do." },
+          { "narrate": "The twelve take their cart home empty, with a letter for Ailith in Sable's hand. He does not tell you what it says." },
+          { "say": "Sloe", "text": "Then at midwinter I will ask you for it, and not him. I would rather ask somebody who has to look at me." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_sable_taught"
+      },
+      {
+        "id": "silent",
+        "label": "Let him keep both notes to himself, and stay",
+        "description": "This decision is permanent. Sable keeps both notes to himself and stays at Highpass. Ailith will have to work the forward note out for herself.",
+        "told": {
+          "ballad": "The hero left the old warden at Highpass with both notes kept, and the rope families went home with an empty cart.",
+          "tally": "Highpass. The man who knew the notes kept them. Written: the south has a secret again."
+        },
+        "text": [
+          { "say": "Sable", "text": "Then I keep them. I kept a bell's voice once, in secret, for everybody's good. I can keep two notes for nobody's in particular. I find that is easier." },
+          { "say": "Sable", "text": "Tell Ailith she will have to guess. She is the best ringer alive. She will guess well." },
+          { "narrate": "The twelve take their cart home empty, with Sorrel's letter and nothing from Sable." },
+          { "say": "orin", "text": "Good. Let her guess. I'd rather nobody had it at all.", "when": { "party": "orin" } }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_sable_silent"
       }
     ]
   }

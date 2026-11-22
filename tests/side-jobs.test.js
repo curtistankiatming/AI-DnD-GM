@@ -79,7 +79,7 @@ function paths(job) {
 }
 test('every way through every side job ends in town, paid once, with or without companions', () => {
   for (const job of OPEN_JOBS) for (const party of [['orin', 'maren', 'nessa'], []]) for (const path of paths(job)) {
-    const flags = { harbour_keepers: true, b4_company_council: true }; // every choice's requires: the harbour bell's keepers (Book One), the council's convoy (White-wool)
+    const flags = { harbour_keepers: true, b4_company_council: true, b4_vote_share: true }; // every choice's requires: the harbour bell's keepers (Book One), the council's convoy (White-wool), chapter 22's vote (the Other Invoice)
     let s = ready(job, { party, flags });
     const before = { xp: s.player.xp, gold: s.player.gold };
     s = act(s, { type: 'side-job', jobId: job.id }).state;

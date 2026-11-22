@@ -1247,9 +1247,11 @@ it, by the Book Three ending:
   watch is the fire at the stream, and a quiet night is the fire not lit.
   `b4_bw_*` says whether Briarwatch has had quiet nights before.
 
-**Walkouts** are back after chapters 21, 22 and 23 (src/away.js). No chapter
-from 22 to 24 needs anyone, so nobody stays in these three; the stay lines
-for chapters 25 to 27 come with build step 10. `away.json` gains Part Three
+**Walkouts** are back after chapters 21 to 24 (src/away.js). No chapter
+from 22 to 24 needs anyone, so nobody stays after 21, 22 or 23. After
+chapter 24 the next chapter is Orin's (25), so Orin stays, with a `b4-ford`
+stay line written with chapter 24; the stay lines for chapters 26 and 27
+come with build step 10. `away.json` gains Part Three
 versions of the leave and back lines, gated `b4_parttwo_done` and placed
 before the `b3_done` versions, which are Part One's. No Part Three away line
 has a goat in it.
@@ -1257,8 +1259,9 @@ has a goat in it.
 **Reputation and approval.** Chapter 21: accusing in the open moves the
 wardens, keeping quiet the wilds, telling Sloe the Wold. Chapter 22: sharing
 and refuge move the Wold, the rota the wardens. Chapter 23: ringing moves the
-wardens, quiet nights the Wold, rest the wilds. Approvals are listed in
-decided question 47.
+wardens, quiet nights the Wold, rest the wilds. Chapter 24: going with
+Ailith moves trade, the notes taught the Wold, silence the wardens.
+Approvals are listed in decided questions 47 and 48.
 
 ### 21. The Knot on the Hook (b4-knot, level 60, Highpass, spring)
 
@@ -1712,10 +1715,12 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | hush-camp, 19 (opening; tail fight and climb), 25, 26, epilogue |
 | 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | column-camp, 20 (Burdock), 22 (who reads), 30 (south), epilogue |
 | 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 30, 21 unlock |
-| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22 (the empty chair, the vote, where the towns stand), 28, 29 |
+| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22 (the empty chair, the vote, where the towns stand), 24 (who knows whose cart it is), 28, 29 |
+| Iona's Other Invoice (job, 22 to 24) | job:other-invoice-offset, job:other-invoice-held, job:other-invoice-paid, job:other-invoice-worked | 24 (opening: how the bill hangs on Iona's nail, or the watch's wood) |
 | 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 23 (whose quiet night it is), 30 |
-| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 30 scene (bound voices), epilogue (not yet written, so no written line reads them) |
-| 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | 28, 29, 30 |
+| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 24 (b4_voice_rests: Aster's word to Sable), 30 scene (bound voices), epilogue |
+| The Wold Family (job, 24 to 26) | job:wold-family-rule, job:wold-family-asked, job:wold-family-forge, job:wold-family-list | 30 or the epilogue (Briarwatch's doors; not yet written) |
+| 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | gatehouse-camp (the cell or the bell), 28, 29, 30 |
 | 25 Ford | b4_orin_captain, b4_orin_soldier, b4_orin_davin | 28 (the doors), epilogue |
 | 26 Hospice | b4_maren_vouched, b4_maren_doubts, b4_maren_silent | 28, 29, epilogue |
 | 27 Signal | b4_nessa_with_rue, b4_nessa_stops_rue, b4_nessa_signal | 30 (who rings), epilogue |
@@ -2179,6 +2184,13 @@ Book Four frames it the way Book Three framed the 3rd job:
     70 is on the story's route (docs/EQUIPMENT.md).
 - **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
   the engine is Book Three's) and 14 (the companion arc moves).
+- **Fixed in step 9: roller tokens inside a `oneOf`.** `outcomeForRoller`
+  (`src/expansion.js`) told only a check result's top-level lines for the
+  roller, so a token or a `roller` / `notRoller` gate inside a `oneOf` group
+  was left as written. It now tells each group's alternatives the same way,
+  at any depth: tokens are replaced, alternatives whose roller gate does not
+  fit are dropped, and the rest of their `when` is kept for the group to pick
+  by. Tested in `tests/book-four-part-three.test.js`.
 
 **Departures in step 6.** Tier 50 stays on sale in Highpass as well as Lantry
 and Orme, because the hero reaches level 50 at Highpass (chapter 10) and plays
@@ -2591,6 +2603,45 @@ below.
     read only when Burdock is there. With `b3_bell_aster`, chapter 23's
     talk, clue and answers go to Tovin, and his answer is `b4_voice_rings` or
     `b4_voice_quiet`. Burdock's Mistake (found, unsure) and The Third Verse
-    are read in chapters 22 and 23. The side jobs for step 9 (Iona's Other
-    Invoice, The Wold Family), chapter 24 and the chapter rewards 21 to 30
-    are not written yet.
+    are read in chapters 22 and 23. Chapter 24, step 9's jobs and the
+    rewards for 21 to 24 are decided question 48.
+48. **Chapter 24, step 9's jobs and the rewards for 21 to 24** (build step
+    9). Chapter 24 (b4-gatehouse) is high summer, a month after the quiet
+    night, leaving from Highpass with nextTown ashford; enemy theme soldier
+    (the twelve rope-men with the cart). Sable says it is how Ailith learned
+    what the bell does: she brought her family's ledger page, the Parting
+    Bell's, in the autumn before she went up the north road, and he read it
+    to her; he did not tell her how it is rung forward. The cart comes for
+    Sable in his cell, or with `b3_sable_cast` for Highpass's bell, which the
+    rope-men hoist onto it. Aster answers Sable through the joined bells with
+    `b3_sable_cast` (from Briarwatch's bell, or from Vell's with
+    `b3_bell_aster`), by Tovin's letter otherwise, and at rest
+    (`b3_bell_aster` with `b3_promise_old`) Sable speaks of her instead.
+    Hesk talks from the next cell with `b3_promise_old`; Rue, with
+    `b4_rue_council` or `b4_rue_watch`, learned the founders' note-marks from
+    Sable (she always had the letters). Approvals: going with Ailith Nessa
+    -1 (rep trade), both notes taught Maren +1 (rep Wold), kept silent Orin
+    +1 (rep wardens). gatehouse-camp names each 2nd job's level 64 skill, by
+    the same companions as decided question 26, without the fight. The
+    twelve are the twelve rope families of the gate book; Ailith did not come.
+    Iona's Other Invoice: the bill is set against her nine hundred years
+    (needs chapter 22's vote), held to midwinter, paid by Iona herself, or
+    paid in the watch's wood by the door-bearers; Burdock writes it into the
+    book of winters with `b4_tally_carried` or `b4_tally_last`, Rue into hers
+    otherwise. The Wold Family is Betony of Lantry's (new name), in the tents
+    with `b4_crossed`, otherwise Betony and her son, door-bearers who stayed
+    after the quiet night; its `until` is `b4-gatehouse` until chapter 26 is
+    written. Rewards, on the tier 60 curve (no accessory or focus is sold at
+    60, so each is measured against tier 55's and 65's): the Founders'
+    Rope-knot (level 58: Athletics and Acrobatics +3, Strength and Dexterity
+    saves +1, 10% taken, Stopper Knot: Fortified 1 round, Athletics story),
+    the Council Ledger-case (59: Investigation, History and Insight +3,
+    Intelligence saves +1, 10% dealt, Investigation story), the Quiet-night
+    Lantern (60: Perception and Survival +3, Wisdom saves +1, 10% dealt, 5%
+    taken, Perception story) and the Gatehouse Grammar (61, wizard: +6 spell
+    attack, +6 spell DC, one DC over the Lamplit Staff, 10% dealt, Arcana and
+    History +2, Unravel: Vulnerable 1 round). Each has a skill bonus no sold
+    tier 55 accessory has; none has everything a tier 65 piece of its slot
+    has (the Bellwarden Seal's AC and saves, the Lens's Arcana, the Quiver's
+    15%, the Chorus Bell's Performance); none is warm, and none reaches the
+    Long Hall Muffler's 20% dealt or the Orme Hearthstone's 15% taken.

@@ -1227,5 +1227,77 @@
         ]
       }
     }
+  },
+  "gatehouse-camp": {
+    "id": "gatehouse-camp",
+    "after": "b4-gatehouse",
+    "cast": [],
+    "act": "Camp",
+    "location": "The gatehouse wall, Highpass, the night after",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "The Gatehouse Wall",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "The night after, nobody wants to go to bed, and you sit up on the gatehouse wall under a sky that has not been properly dark all summer, the way you sat up there on the night of the first snow, two winters ago." },
+          { "oneOf": [
+            { "narrate": "Down in the yard the frame stands empty, with nothing on the beam.", "when": { "flag": "b4_sable_ailith", "anyFlag": ["b3_sable_cast"] } },
+            { "narrate": "Down under the gatehouse the end cell is dark, and its door stands open.", "when": { "flag": "b4_sable_ailith" } },
+            { "narrate": "Down in the yard the bell stands in its frame, and now and then, very low, it hums two notes, one after the other, the way a man goes over a lesson.", "when": { "flag": "b4_sable_taught", "anyFlag": ["b3_sable_cast"] } },
+            { "narrate": "Down under the gatehouse the end cell has its lamp lit, late. Sable is writing out tomorrow's lesson.", "when": { "flag": "b4_sable_taught" } },
+            { "narrate": "Down in the yard the bell stands in its frame with the dew on it, and says nothing all night.", "when": { "flag": "b3_sable_cast" } },
+            { "narrate": "Down under the gatehouse the end cell has its lamp lit, late, and Sable is not writing anything." }
+          ] },
+          { "say": "orin", "text": "You carried the watch's full water-butt up the wall stair this morning on one shoulder, and the cut you bound on the cook's hand had closed by supper. Living Fortress, the Bulwark Knights call that. I'd only ever read about it.", "when": { "spec": "guardian", "party": "orin" } },
+          { "narrate": "This morning you carry the watch's full water-butt up the wall stair on one shoulder, and the cut you bind on the cook's hand has closed by supper. Living Fortress, the Bulwark Knights call it.", "when": { "spec": "guardian", "absent": "orin" } },
+          { "say": "nessa", "text": "You were on the wall at sunrise going through your forms, and the swallows went through them with you, and not one of them got touched. Blade Dance, the Blademasters call that. Show me the turn at the end.", "when": { "spec": "duelist", "party": "nessa" } },
+          { "narrate": "At sunrise on the wall you go through your forms, and the swallows go through them with you, and none of them is touched. Blade Dance, the Blademasters call it.", "when": { "spec": "duelist", "absent": "nessa" } },
+          { "say": "orin", "text": "You had the whole relief changed over on the wall this morning with three words, and the cook's lad bandaged, and nobody noticed you'd done either. Field Marshal. The Banner Captains had that. Sorrel's going to try and keep you.", "when": { "spec": "warlord", "party": "orin" } },
+          { "narrate": "This morning you change the whole relief on the wall with three words, and bandage the cook's lad, and nobody notices you have done either. Field Marshal, the Banner Captains call it.", "when": { "spec": "warlord", "absent": "orin" } },
+          { "say": "nessa", "text": "The watch counted everybody on the wall at the change tonight, twice, and never counted you, and you were standing next to the sergeant. Unseen, the Nightblades call that. Teach me.", "when": { "spec": "shadow", "party": "nessa" } },
+          { "narrate": "At the change tonight the watch count everybody on the wall twice, and never count you, standing next to the sergeant. Unseen, the Nightblades call it.", "when": { "spec": "shadow", "absent": "nessa" } },
+          { "say": "nessa", "text": "You walked the wall this afternoon and put your hand on the three stones that'll go first when it goes, and the mason said yes, those three. Ruin Sense. Trapwright work. He wants you to stay.", "when": { "spec": "saboteur", "party": "nessa" } },
+          { "narrate": "This afternoon you walk the wall and put your hand on the three stones that will go first, and the mason says yes, those three. Ruin Sense, the Trapwrights call it.", "when": { "spec": "saboteur", "absent": "nessa" } },
+          { "say": "maren", "text": "The cell guard told you this afternoon where Sorrel keeps the gate book's key, and then thanked you for listening. I watched it happen and I still don't know how. Spymaster's Cunning, they say. Don't do it to me.", "when": { "spec": "grifter", "party": "maren" } },
+          { "narrate": "This afternoon the cell guard tells you where Sorrel keeps the gate book's key, and thanks you for listening. Spymaster's Cunning, the Spymasters call it.", "when": { "spec": "grifter", "absent": "maren" } },
+          { "say": "nessa", "text": "There was a squall over the pass this evening, and the rain went round the bit of wall you were standing on. Round. Eye of the Storm, the Stormcallers call it. I got wet.", "when": { "spec": "evoker", "party": "nessa" } },
+          { "narrate": "A squall comes over the pass in the evening, and the rain goes round the stretch of wall you are standing on. Eye of the Storm, the Stormcallers call it.", "when": { "spec": "evoker", "absent": "nessa" } },
+          { "say": "maren", "text": "The swallows over the yard went slow when you looked up at them this evening. Only for a breath. Timeless, the Timeweavers call that. I'm going to stop asking what any of it means.", "when": { "spec": "chronist", "party": "maren" } },
+          { "narrate": "In the evening the swallows over the yard go slow when you look up at them, for a breath. Timeless, the Timeweavers call it.", "when": { "spec": "chronist", "absent": "maren" } },
+          { "say": "orin", "text": "Every door in this gatehouse opened for you today before you'd reached it. Sorrel's office too. Gatewarden's Bond, the Summoners' word. She's counting her keys.", "when": { "spec": "binder", "party": "orin" } },
+          { "narrate": "All day every door in the gatehouse opens for you before you reach it. Gatewarden's Bond, the Summoners call it.", "when": { "spec": "binder", "absent": "orin" } },
+          { "say": "maren", "text": "The watch boy with the cough slept the whole night through after you sat with him. First time since spring. Saint's Vigor, the Menders of Hosts call it. I've been trying all summer.", "when": { "spec": "lifewarden", "party": "maren" } },
+          { "narrate": "The watch boy with the cough sleeps the whole night through after you sit with him, for the first time since spring. Saint's Vigor, the Menders of Hosts call it.", "when": { "spec": "lifewarden", "absent": "maren" } },
+          { "say": "maren", "text": "The cell stair's the coldest place in Highpass, summer or winter. It wasn't, today, when you went down it. Warded Soul, the Inquisitors call that. The guard's asked me to ask you to go down again.", "when": { "spec": "exorcist", "party": "maren" } },
+          { "narrate": "The cell stair is the coldest place in Highpass, summer or winter. It is not, today, when you go down it. Warded Soul, the Inquisitors call it.", "when": { "spec": "exorcist", "absent": "maren" } },
+          { "say": "orin", "text": "You lifted the end of the hay-cart off the watch boy's foot this morning with one hand, and said a word over him with the other. Champion's Might. The Templars had it. The boy's telling everybody it was a miracle. Let him.", "when": { "spec": "battlepriest", "party": "orin" } },
+          { "narrate": "This morning you lift the end of the hay-cart off the watch boy's foot with one hand, and say a word over him with the other. Champion's Might, the Templars call it.", "when": { "spec": "battlepriest", "absent": "orin" } },
+          { "say": "nessa", "text": "There's a hawk on the wall that won't leave you alone, and the watch's old mule followed you up the stair, and Biscuit doesn't even mind. Wild Heart, the Beastbond call that.", "when": { "spec": "beastwarden", "party": "nessa" } },
+          { "narrate": "A hawk on the wall will not leave you alone, and the watch's old mule follows you up the stair. Wild Heart, the Beastbond call it.", "when": { "spec": "beastwarden", "absent": "nessa" } },
+          { "say": "nessa", "text": "You read the carters' marks on the lower road tonight from up here. In this light. Hawk Eye, the Longshots call that. I couldn't read them with a lamp.", "when": { "spec": "deadeye", "party": "nessa" } },
+          { "narrate": "Tonight you read the carters' marks on the lower road from the top of the wall, in the last of the light. Hawk Eye, the Longshots call it.", "when": { "spec": "deadeye", "absent": "nessa" } },
+          { "say": "orin", "text": "The carters asked you the way to Ashford this morning, and you told them three roads and which one would be dry, and you've never been down two of them. Worldwise, the Wayfinders call it.", "when": { "spec": "pathfinder", "party": "orin" } },
+          { "narrate": "This morning the carters ask you the way to Ashford, and you tell them three roads and which one will be dry. Worldwise, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
+          { "say": "maren", "text": "Sable asked you a question this afternoon, from the founders, and you answered it before he'd finished asking, and he wrote it down. Loremaster's Ward, the Loremasters call that. He's never written down a word I've said.", "when": { "spec": "lorekeeper", "party": "maren" } },
+          { "narrate": "This afternoon Sable asks you a question from the founders, and you answer it before he has finished asking, and he writes it down. Loremaster's Ward, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "orin", "text": "You sang the watch up the stair at the change tonight, low, and every one of them came up it in step without meaning to. Warchanter's Might. Sing it again at the ford.", "when": { "spec": "battlecantor", "party": "orin" } },
+          { "narrate": "At the change tonight you sing the watch up the stair, low, and every one of them comes up it in step. Warchanter's Might, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
+          { "say": "maren", "text": "The carters and the watch and the door-bearers all ate at one table tonight, because you sat down at it. Nobody asked them to. Silver Crown, the Diplomats call it.", "when": { "spec": "envoy", "party": "maren" } },
+          { "narrate": "The carters and the watch and the door-bearers all eat at one table tonight, because you sit down at it. Silver Crown, the Diplomats call it.", "when": { "spec": "envoy", "absent": "maren" } },
+          { "narrate": "Up on the wall you go through your drill in the last of the light, the same as every evening. It is the drill you learned at the bottom of the pass, and it is not hard any more, and you do not remember when that happened.", "when": { "spec": "none" } },
+          { "narrate": "Rue sits on the wall step below you with her book, and writes the night down, and leaves a space at the end of it for whatever comes next." }
+        ],
+        "choices": [
+          {
+            "id": "wall",
+            "label": "Sit up on the wall until it gets light",
+            "lines": [
+              { "narrate": "You sit up on the wall until it gets light, which in high summer at Highpass is not long." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

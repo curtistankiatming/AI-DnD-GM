@@ -5271,6 +5271,138 @@
     }
   },
   {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 920,
+    "id": "founders-rope-knot",
+    "name": "Founders' Rope-knot",
+    "description": "The end of the rope that was left on the empty hook in the Hall, cut short, still tied in the rope families' knot: a round turn, two half-hitches and a small hard stopper. Nobody can tell you its name.",
+    "purpose": "Equip in the accessory slot: +3 Athletics and Acrobatics, +1 Strength and Dexterity saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "athletics": 3,
+      "acrobatics": 3
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1
+    },
+    "skill": {
+      "name": "Stopper Knot",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Pull the stopper down tight: become Fortified for one round and take 25% less damage."
+    },
+    "requires": {
+      "level": 58
+    },
+    "story": {
+      "skill": "athletics"
+    },
+    "exclusive": {
+      "quest": "b4-knot"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 930,
+    "id": "council-ledger-case",
+    "name": "Council Ledger-case",
+    "description": "The flat leather case Iona's invoice came into the council in, nine hundred years itemised, with her clerk's mark on the clasp. She has a newer one for bills.",
+    "purpose": "Equip in the accessory slot: +3 Investigation, History and Insight, +1 Intelligence saving throws.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "investigation": 3,
+      "history": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "int": 1
+    },
+    "requires": {
+      "level": 59
+    },
+    "story": {
+      "skill": "investigation"
+    },
+    "exclusive": {
+      "quest": "b4-invoice"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 940,
+    "id": "quiet-night-lantern",
+    "name": "Quiet-night Lantern",
+    "description": "The horn lantern Pim carries along the watch line on Briarwatch's quiet nights, with a shutter he can close with one thumb. He has made himself another.",
+    "purpose": "Equip in the accessory slot: +3 Perception and Survival, +1 Wisdom saving throws.",
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "perception": 3,
+      "survival": 3
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 60
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "quest": "b4-quietnight"
+    }
+  },
+  {
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "id": "gatehouse-grammar",
+    "name": "Gatehouse Grammar",
+    "description": "Sable's grammar of the founders' marks, copied out in his small hand over two winters under Highpass's gatehouse, with every note's mark in the margin and two of them left blank.",
+    "purpose": "Equip: +6 spell attack bonus and +6 spell save DC. +2 Arcana and History.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "arcana": 2,
+      "history": 2
+    },
+    "requires": {
+      "level": 61,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Read an enemy as Sable reads a page, mark by mark: it is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-gatehouse"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",
