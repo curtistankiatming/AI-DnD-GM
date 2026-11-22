@@ -1714,7 +1714,7 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | potbells-camp, 19, 23 (white comes south), 30 (peaceful), epilogue |
 | 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | hush-camp, 19 (opening; tail fight and climb), 25, 26, epilogue |
 | 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | column-camp, 20 (Burdock), 22 (who reads), 30 (south), epilogue |
-| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 30, 21 unlock |
+| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 21 unlock |
 | 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22 (the empty chair, the vote, where the towns stand), 24 (who knows whose cart it is), 28, 29 |
 | Iona's Other Invoice (job, 22 to 24) | job:other-invoice-offset, job:other-invoice-held, job:other-invoice-paid, job:other-invoice-worked | 24 (opening: how the bill hangs on Iona's nail, or the watch's wood) |
 | 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 23 (whose quiet night it is), 30 |
@@ -1848,8 +1848,8 @@ Rules every reward keeps:
 | 25 | b4-ford | Captain's Commission | Accessory, Orin only | Level 62 | Sorrel's commission, whatever Orin did with it. Saves, and an Intimidation story ability; its item skill Weakens one enemy (not Fortified, which is his arc move). |
 | 26 | b4-hospice | Hospice Physic-bag | Accessory, Maren only | Level 63 | Anwen's old bag, given to Maren. Wisdom saves and Medicine. |
 | 27 | b4-signal | Signal-fire Longbow | Main hand, bow, Nessa only | Level 64 · Dex 13 | Wren's bow from the forge-signal tower. Signal Shot (Vulnerable). |
-| 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
-| 29 | b4-lid | Settling-iron Plate | Armour, heavy | Level 66 · Str 15 | Plate cut from the lid's iron after it settled. Brace. |
+| 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Fighter · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
+| 29 | b4-lid | Settling-iron Plate | Armour, heavy | Level 66 · Str 13 | Plate cut from the lid's iron after it settled. Brace. |
 | 30 | b4-parting | Midwinter Tuning Fork | Main hand, focus | Level 67 · Wizard, Cleric or Bard | The fork the ringers tuned the nine with on midwinter night. First Note. |
 
 ### Where Book Four goes, by level
@@ -2228,7 +2228,6 @@ Book Four frames it the way Book Three framed the 3rd job:
     screen and wrap long words; the Telling's columns stack below two 14rem
     columns. Checked from the CSS (tests/book-four-release.test.js); there
     is no browser in the build container.
-  `out` is not set.
 - **Fixed in step 9: roller tokens inside a `oneOf`.** `outcomeForRoller`
   (`src/expansion.js`) told only a check result's top-level lines for the
   roller, so a token or a `roller` / `notRoller` gate inside a `oneOf` group
@@ -2782,10 +2781,10 @@ below.
     it), Dera's line for `b4_note_rung`, and the Hall by the ending, under
     the trial opening's 400 characters. The epilogue reads The Wold
     Family, Walkers' Names and the Telling. Rewards, on the tier 65 curve:
-    the Rope-family Maul (65, fighter or cleric, Str 15: 2d6, +3/+8, 10%
+    the Rope-family Maul (65, fighter, Str 15: 2d6, +3/+8, 10%
     dealt, Shatter: Vulnerable 1 round, a point over the Riftcleaver and
     under the tier 80 Ridgebreaker), the Settling-iron Plate (66, fighter
-    or cleric, Str 15: base AC 23, 15% taken, Strength, Constitution and
+    or cleric, Str 13: base AC 23, 15% taken, Strength, Constitution and
     Wisdom saves +1, Brace: Fortified 1 round) and the Midwinter Tuning
     Fork (67, wizard, cleric or bard: +6/+6, 10% dealt, Performance and
     Religion +2, First Note: Empowered 1 round). Stay lines: everyone for

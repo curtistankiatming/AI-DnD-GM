@@ -5551,8 +5551,7 @@
     "requires": {
       "level": 65,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 15
@@ -5600,7 +5599,7 @@
         "cleric"
       ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     },
     "exclusive": {

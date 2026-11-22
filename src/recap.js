@@ -10,7 +10,9 @@ const { QUESTS } = require('./expansion');
 const FIRST = Object.values(QUESTS).find((q) => !q.sideJob && Number(q.book) === 4) || null;
 
 function ending(f) {
-  if (f.b3_promise_old) return `Under the stair, the free wards gave one memory each, and the lid is held by giving. ${f.wards_seat ? 'The nine have rested.' : 'The nine stay, very tired.'}`;
+  if (f.b3_promise_old) return f.wards_seat
+    ? 'Under the stair, the free wards give one memory each, one person at a time, and their giving holds the lid. The nine have rested.'
+    : 'Under the stair, the free wards give one memory each, one person at a time. The nine stay, very tired.';
   if (f.b3_promise_hesk && f.b3_three_told) return "Hesk's ring of new bells holds some of the free wards, for a while: only those who stayed in the circle were cast.";
   if (f.b3_promise_hesk) return "Hesk's ring of new bells under the stair holds the free wards for a generation.";
   if (f.b3_stair_sealed) return "The stair is sealed from above, at Vell and at the founders' hatch. The nine carry it alone.";
@@ -37,14 +39,19 @@ function hesk(f) {
   return null;
 }
 const COMPANION = {
-  orin: (f) => (f.b3_mags_forgives ? 'Orin went to Saltwick in the spring for the lamps, as Mags asked him.' : "Orin stayed at Dera's forge and taught Pim knots."),
+  orin: (f) => (f.b3_mags_forgives ? 'Orin went to Saltwick in the spring for the lamps, as Mags asked him.'
+    : f.b3_orin_tried ? 'Orin asked to be tried at Saltwick, and was. He owes its roof council a season of lamps.'
+      : "Orin stayed at Dera's forge and taught Pim knots."),
   maren: (f) => (f.b3_seal_taken ? 'Maren is the seal: every week in Highpass she hears the people who come to give.'
     : f.b3_maren_gives ? 'Maren gave a day she would have written first, and knows she has forgotten it.'
       : 'Maren keeps no list. She goes to the shrine on the Briarwood side in the mornings.'),
-  nessa: (f) => (f.nessa_keeper === 'later' ? 'Nessa has the forge-signal key on a cord round her neck, and said she would go back to Cinder Fold to keep it.'
-    : f.nessa_keeper === 'declined' ? 'Nessa said no to the forge-signal, and writes to Cinder Fold.'
-      : f.b3_nessa_gives ? 'Nessa has forgotten one thing about Wren, and asked you to tell her everything you could.'
-        : 'Nessa writes to Wren, and does not keep a copy.')
+  nessa: (f) => (f.nessa_keeper === 'later' && f.b3_wren_cast ? 'Nessa has the forge-signal key on a cord round her neck, and said she would go back to Cinder Fold to keep it.'
+    : f.nessa_keeper === 'later' && f.b3_wren_waits ? 'In the spring Nessa went back over the pass to Cinder Fold, to take the forge-signal key from Wren.'
+      : f.nessa_keeper === 'later' ? "Nessa said yes to the forge-signal. Wren keeps it from a chair, and Nessa's yes is held for her."
+        : f.nessa_keeper === 'declined' ? 'Nessa said no to the forge-signal, and writes to Cinder Fold.'
+          : f.b3_nessa_gives ? 'Nessa has forgotten one thing about Wren, and asked you to tell her everything you could.'
+            : f.b3_wren_cast ? 'Nessa writes about Wren, and sends it to Cinder Fold to be read out at the lid. She does not keep a copy.'
+              : 'Nessa writes to Wren, and does not keep a copy.')
 };
 
 // The card while Book Four's first chapter is next and not yet begun; null otherwise.

@@ -279,7 +279,7 @@ test('chapter 29: who struck the half note, how Sloe comes in, and who answers t
   assert.match(open(both, ['orin', 'nessa']), /harbour's clerk wrote that she should be watched/);
   assert.match(open({ b4_maren_vouched: false, b4_maren_silent: true }), /comes in at the great doors/);
   assert.match(open({}), /its rope up/); assert.match(open({ mother_silenced: true }), /bare, its rope still in the signal house/);
-  assert.match(open({ mother_recalled: true }), /The council recalled that bell last winter/);
+  assert.match(open({ mother_recalled: true }), /The council recalled that bell three winters ago/);
   assert.match(talk('b4-lid', 'aster', {}), /^Aster Vey: It's in every one of us[^]*Ring them in time/m);
   assert.match(talk('b4-lid', 'aster', { flags: { b4_voice_rings: false, b4_voice_rests: true } }), /^Tovin: Can you hear this/m);
   assert.doesNotMatch(talk('b4-lid', 'aster', { flags: { b4_voice_rings: false, b4_voice_rests: true } }), /Aster Vey:/);
@@ -318,7 +318,15 @@ test('the parting scene: the bound voices answer by Book Three and chapter 23, t
   assert.deepEqual(END.nodes.telling.choices.map((c) => [c.id, c.setFlags.fourth_telling]), [['ballad', 'ballad'], ['tally', 'tally'], ['companions', 'companions'], ['none', 'none']]);
   // The bound voices.
   assert.match(epilogue('note', 'ballad', { flags: { b3_promise_old: false, b3_stair_sealed: true } }).voices, /silent tonight, against Aster's own answer/);
-  assert.match(epilogue('note', 'ballad', { flags: ASTER }).voices, /against its keeper's answer/);
+  assert.match(epilogue('note', 'ballad', { flags: ASTER }).voices, /with the rest, whatever its keeper answered at midsummer/);
+  // With the note rung, the bound voices are quiet for a winter: nobody else answers (review of step 11).
+  for (const flags of FLAGSETS) {
+    const v = epilogue('note', 'ballad', { flags }).voices;
+    assert.match(v, /^After midnight, every bell in the free wards with somebody in it should answer[^]*none of them can\.[^]*Then nothing else answers/, JSON.stringify(flags));
+    assert.doesNotMatch(v, /^(Wren|Sable):|answer together|Hesk's company answer|The nine answer last|thirty-one iron bells ring once|The nine say nothing/m, JSON.stringify(flags));
+  }
+  assert.match(epilogue('share', 'ballad', { flags: ENVOYS }).voices, /^After midnight, every bell in the free wards with somebody in it answers what has been done/);
+  assert.doesNotMatch(epilogue('share', 'ballad', { flags: ENVOYS }).voices, /Then nothing else answers/);
   assert.match(epilogue('share', 'ballad', { flags: RESTS }).voices, /Aster is at rest/);
   assert.match(epilogue('share').voices, /The nine answer last/); assert.match(epilogue('share', 'ballad', { flags: { wards_seat: true } }).voices, /The nine say nothing\. They rested/);
   const env = epilogue('share', 'ballad', { flags: ENVOYS }).voices;
@@ -327,8 +335,8 @@ test('the parting scene: the bound voices answer by Book Three and chapter 23, t
   assert.doesNotMatch(epilogue('share', 'ballad', { flags: { b3_vault_held: true } }).voices, /thirty-one/);
   // The epilogue, by the ending.
   assert.match(epilogue('share').home, /every town in the free wards has kept its quiet nights on the rota/);
-  assert.match(epilogue('share', 'ballad', { flags: { b3_promise_old: false, b3_stair_sealed: true } }).home, /from the north branch, at the Wold's floor/);
-  assert.match(epilogue('south').home, /the Wold comes over the peaks behind you[^]*Long Tally comes south[^]*Sloe does not come south/);
+  assert.match(epilogue('share', 'ballad', { flags: { b3_promise_old: false, b3_stair_sealed: true } }).home, /from the north branch, at the Wold's floor[^]*Named towns have hard winters/);
+  assert.match(epilogue('south').home, /the rest of the Wold comes over the peaks behind you[^]*to the families already wintering in the towns[^]*Long Tally comes south[^]*Sloe does not come south/);
   assert.match(epilogue('south', 'ballad', { flags: HALL }).home, /The Long Tally ends in Orme, in the Long Hall, with Burdock/);
   assert.match(epilogue('note').home, /the free wards' worst winter[^]*Towns fall[^]*Rue does not know any of you[^]*Nessa wrote its first page/);
   assert.match(epilogue('share', 'ballad', { flags: HALL }).home, /still on the first bell at Cinder Fold, under watch/);
@@ -339,7 +347,15 @@ test('the parting scene: the bound voices answer by Book Three and chapter 23, t
   // The Telling.
   assert.match(epilogue('share', 'companions').chose, /Orin keeps the ford[^]*Maren keeps the names[^]*Nessa keeps the signal/);
   assert.match(epilogue('share', 'companions', { party: ['maren'] }).chose, /The soldier who carried the back[^]*The girl who went first/);
-  assert.match(epilogue('share', 'tally', { flags: HALL }).chose, /She writes it to Burdock, at Orme/);
+  assert.match(epilogue('share', 'tally', { flags: HALL }).chose, /You tell Rue it is the tally's\. She writes it to Burdock, at Orme/);
+  // The tally left in Orme, and Rue's memory rung away: Sloe writes it (review of step 11).
+  const rung = epilogue('note', 'tally', { flags: { ...HALL, b4_nessa_with_rue: true } });
+  assert.match(rung.telling, /Sloe is by the brazier with her slate/); assert.doesNotMatch(rung.telling, /Rue is by the brazier/);
+  assert.match(rung.chose, /You tell Sloe it is the tally's/);
+  assert.match(epilogue('share', 'ballad', { flags: { 'job:wold-family-rule': true } }).home, /Eleven doors on the Briarwood edge/);
+  assert.match(epilogue('share', 'ballad', { flags: { 'job:wold-family-asked': true } }).home, /Two doors on the Briarwood edge[^]*Both houses were asked first/);
+  assert.match(epilogue('share', 'ballad', { flags: { 'job:walkers-names-sure': true } }).home, /to the man she calls Merrick/);
+  assert.match(epilogue('share', 'ballad', { flags: { 'job:walkers-names-plain': true } }).home, /Annis Corby has not been back/);
   for (const k of Telling.KEEPERS) assert.equal(epilogue('share', k).s.story.flags.fourth_telling, k);
   assert.match(epilogue('share', 'none').home, /Linus does not sing the song/);
 });
@@ -348,7 +364,7 @@ test('the 4th trial is framed by Dera\'s line for the keeper, with Sloe\'s note 
   const frame = (ending, telling, flags) => { const e = epilogue(ending, telling, { flags }); return { text: trialFraming(e.s, 'fourth'), s: e.s, home: e.home }; };
   assert.match(frame('share', 'ballad').text, /^Dera: They're singing it already, and wrong in places\. Go and make the next verse true\.\nAt the Hall of Legends the Parting Bell hangs on its hook again, silent\.$/);
   assert.match(frame('south', 'tally').text, /^Dera: Burdock's written you down[^]*the hook is empty, and the north door is barred\.$/);
-  assert.match(frame('note', 'companions').text, /^Dera: They've each got a piece of it[^]*Somebody gave everything so that you could carry the rest[^]*hangs on its hook again, cracked\.$/);
+  assert.match(frame('note', 'companions').text, /^Dera: They've each got a piece of it[^]*Somebody gave everything so that you could carry the rest[^]*hangs on its hook again\. It has been rung once, and everybody knows which way\.$/);
   assert.match(frame('share', 'none').text, /^Dera: Nobody's going to tell it\. Go and do it anyway\./);
   // The epilogue ends with the same lines the trial opens with, offline and in the AI brief.
   const f = frame('note', 'ballad');
@@ -376,7 +392,7 @@ test('chapters 28 to 30 give their own Legendary rewards on the tier 65 curve, n
   const GEAR = require('../src/data/gear.json');
   const rewards = GEAR.filter((i) => IDS.includes(i.exclusive?.quest));
   assert.deepEqual(rewards.map((i) => [i.exclusive.quest, i.name, i.slot, i.category, i.requires.level, i.requires.classes]), [
-    ['b4-ropes', 'Rope-family Maul', 'mainHand', 'weapon', 65, ['fighter', 'cleric']], ['b4-lid', 'Settling-iron Plate', 'armor', 'armor', 66, ['fighter', 'cleric']],
+    ['b4-ropes', 'Rope-family Maul', 'mainHand', 'weapon', 65, ['fighter']], ['b4-lid', 'Settling-iron Plate', 'armor', 'armor', 66, ['fighter', 'cleric']],
     ['b4-parting', 'Midwinter Tuning Fork', 'mainHand', 'focus', 67, ['wizard', 'cleric', 'bard']]]);
   for (const item of rewards) {
     assert.equal(item.rarity, 'Legendary', item.id);
@@ -400,4 +416,30 @@ test('chapters 28 to 30 give their own Legendary rewards on the tier 65 curve, n
   // Given once, when the chapter is done.
   const s = playPeaceful('b4-lid', 'council', { party: [] });
   assert.equal(s.player.inventory.filter((e) => e.itemId === 'settling-iron-plate').reduce((n, e) => n + e.quantity, 0), 1);
+});
+
+test('the step 11 review: Elske was recalled three winters ago, Hesk and Sable both stand on the step, Perrin speaks only for his own rope, and Sloe has her slate read to her', () => {
+  const recalled = { flags: { mother_recalled: true } };
+  assert.match(opening(departed('b4-ropes', recalled)), /The council took the rope off one woman three winters ago\. Elske Marrow/);
+  assert.match(told(decide('b4-ropes', 'judged', recalled)) + opening(after('b4-ropes', recalled)), /recalled one woman from that rope three winters ago/);
+  assert.match(opening(departed('b4-parting', recalled)), /We recalled that rope three winters ago/);
+  for (const id of IDS) for (const l of everyLine(RAWQ[id])) if (/recall/.test(l.text || l.narrate)) assert.doesNotMatch(l.text || l.narrate, /last winter/, id);
+  // Hesk and Sable are no longer one or the other.
+  const both = opening(departed('b4-ropes', { flags: { b3_promise_old: false, b3_promise_hesk: true, b4_sable_ailith: true } }));
+  assert.match(both, /Hesk stands beside her on the step[^]*Sable, who came to Cinder Fold/);
+  // With Elske in the chair, Brannagh says why she speaks for the council here.
+  assert.match(opening(departed('b4-ropes', { flags: { elske_seat: true } })), /here, at Cinder Fold, Brannagh chairs/);
+  assert.doesNotMatch(opening(departed('b4-ropes')), /Brannagh chairs/);
+  assert.match(talk('b4-ropes', 'son', { flags: { 'job:ninth-rope-given': true } }), /Perrin Rowe's family is whoever Perrin says it is/);
+  const rope = talk('b4-ropes', 'son', { flags: { 'job:ninth-rope-rope': true } });
+  assert.match(rope, /sits Garth Mott/); assert.doesNotMatch(rope, /Perrin/);
+  // Sloe rings the note, and Rue reads her the slate; nobody hands her a book.
+  const sloe = told(decide('b4-parting', 'note', { flags: { b4_nessa_with_rue: false, b4_nessa_stops_rue: true } }));
+  assert.match(sloe, /Sloe lets go of the rope[^]*Rue sits down beside her on the lid, and begins to read her the slate/);
+  assert.doesNotMatch(sloe, /gives it to her, open at the first page/);
+  // Nessa at the signal comes down for the midnight.
+  const signal = { flags: { b4_nessa_with_rue: false, b4_nessa_signal: true } };
+  assert.match(talk('b4-parting', 'rue', signal), /Nessa lit it at dusk and came down for the midnight/);
+  assert.match(talk('b4-parting', 'rue', { ...signal, party: ['orin', 'maren'] }), /Somebody is keeping it/);
+  assert.ok(RAWA.nessa.stay.lines.some((l) => l.when?.is === 'b4-lid' && /If anybody goes down there first, it's me\. After, we'll talk\./.test(l.text)));
 });

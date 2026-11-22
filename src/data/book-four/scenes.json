@@ -1436,7 +1436,7 @@
         { "oneOf": [
           { "narrate": "At the Hall of Legends the Parting Bell hangs on its hook again, silent.", "when": { "flag": "b4_winter_shared" } },
           { "narrate": "At the Hall of Legends the hook is empty, and the north door is barred.", "when": { "flag": "b4_wold_south" } },
-          { "narrate": "At the Hall of Legends the Parting Bell hangs on its hook again, cracked.", "when": { "flag": "b4_note_rung" } }
+          { "narrate": "At the Hall of Legends the Parting Bell hangs on its hook again. It has been rung once, and everybody knows which way.", "when": { "flag": "b4_note_rung" } }
         ] }
       ]
     },
@@ -1445,9 +1445,12 @@
         "title": "The Bound Voices",
         "objective": "Hear what the bound voices answer.",
         "lines": [
-          { "narrate": "After midnight, every bell in the free wards with somebody in it answers what has been done, one at a time, through the lid, through the nine, the way they answered at the floor of given things." },
           { "oneOf": [
-            { "narrate": "Briarwatch's bell is silent tonight, with the rest, against its keeper's answer: every night, he said, and tonight it could not. In the morning Tovin will write that it was not his choice.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b4_note_rung"] } },
+            { "narrate": "After midnight, every bell in the free wards with somebody in it should answer what has been done, one at a time, through the lid. Tonight, for a winter, none of them can.", "when": { "flag": "b4_note_rung" } },
+            { "narrate": "After midnight, every bell in the free wards with somebody in it answers what has been done, one at a time, through the lid, through the nine, the way they answered at the floor of given things." }
+          ] },
+          { "oneOf": [
+            { "narrate": "Briarwatch's bell is silent tonight, with the rest, whatever its keeper answered at midsummer. In the morning Tovin will write that it was not his choice.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b4_note_rung"] } },
             { "narrate": "Briarwatch's bell is silent tonight, against Aster's own answer. She asked to ring every night. Tonight she cannot, and through the joined bells, very faintly, you can hear her minding.", "when": { "flag": "b4_voice_rings", "noneFlag": ["b3_bell_aster"], "anyFlag": ["b4_note_rung"] } },
             { "narrate": "Briarwatch's bell is silent tonight. Aster asked for quiet nights, the ones she chose. This is one she did not choose and would have, and the joined bells carry something like a laugh.", "when": { "flag": "b4_voice_quiet", "noneFlag": ["b3_bell_aster"], "anyFlag": ["b4_note_rung"] } },
             { "narrate": "Briarwatch's bell does not answer. Aster is at rest; she went at the end of the summer, after one more harvest. Tovin answers for the bell instead, from the top of its tower, by hand.", "when": { "flag": "b4_voice_rests" } },
@@ -1455,25 +1458,26 @@
             { "say": "Aster Vey", "text": "Done, then. I'd like it written that I heard it. From Vell. I'll go on, a while.", "when": { "flag": "b3_bell_aster" } },
             { "say": "Aster Vey", "text": "I heard it. Pim's still on the rope. He won't let go. Tell him he can, now, for a minute." }
           ] },
+          { "narrate": "Then nothing else answers. Every bell with somebody in it, from Vell to the floor of given things to the nine overhead, is quiet for the winter, the way the note asked, and the hall stands and listens to them not answering.", "when": { "flag": "b4_note_rung" } },
           { "oneOf": [
             { "narrate": "In Vell the voices in the city's bells answer together, the way Vell does everything, by a vote, and the vote is to go on. They have been asked. It is enough.", "when": { "flag": "b3_bell_cast", "noneFlag": ["b3_promise_old"] } },
             { "narrate": "In Vell the city's bells are only bronze. Their voices rested two winters ago, by their own vote. Nobody answers from Vell.", "when": { "flag": "b3_bell_cast" } }
-          ] },
-          { "say": "Wren", "text": "Still here. Still a little ahead of the others. Tell Nessa I heard it.", "when": { "flag": "b3_wren_cast", "party": "nessa" } },
-          { "say": "Wren", "text": "Still here. Still a little ahead of the others. I heard it.", "when": { "flag": "b3_wren_cast", "absent": "nessa" } },
+          ], "when": { "noneFlag": ["b4_note_rung"] } },
+          { "say": "Wren", "text": "Still here. Still a little ahead of the others. Tell Nessa I heard it.", "when": { "flag": "b3_wren_cast", "party": "nessa", "noneFlag": ["b4_note_rung"] } },
+          { "say": "Wren", "text": "Still here. Still a little ahead of the others. I heard it.", "when": { "flag": "b3_wren_cast", "absent": "nessa", "noneFlag": ["b4_note_rung"] } },
           { "oneOf": [
             { "say": "Sable", "text": "I was in the hall, and I heard it from the inside. I find I have nothing to answer for tonight. It is a strange feeling. I will get used to it.", "when": { "flag": "b3_sable_cast", "anyFlag": ["b4_sable_ailith"] } },
             { "say": "Sable", "text": "I heard it from Highpass. I would have liked to argue with it. I find I do not want to.", "when": { "flag": "b3_sable_cast" } }
-          ] },
+          ], "when": { "noneFlag": ["b4_note_rung"] } },
           { "oneOf": [
             { "narrate": "In the ring on the floor of given things the bells that were Hesk's company answer, the ones who stayed in the circle: fewer than there were, and tired, and in time.", "when": { "flag": "b3_promise_hesk", "anyFlag": ["b3_three_told"] } },
             { "narrate": "In the ring on the floor of given things the bells that were Hesk's company answer, all of them, in time, and then go quiet.", "when": { "flag": "b3_promise_hesk" } }
-          ] },
+          ], "when": { "noneFlag": ["b4_note_rung"] } },
           { "oneOf": [
             { "narrate": "The nine say nothing. They rested, when the free wards voted it, and they are bronze. The ringers rang them by hand tonight, in time, and nobody in them answered, and that was the point.", "when": { "flag": "b3_promise_old", "anyFlag": ["wards_seat"] } },
             { "narrate": "The nine answer last, all together, in time for once. They are very tired. You can hear it in every bell. But they are in time." }
-          ] },
-          { "narrate": "On their sledges in the vault at Vell, the thirty-one iron bells ring once, together, still bound, still awake, and ask, through the lid, to be let go. Nobody here can do it tonight. Somebody writes it down.", "when": { "flag": "b3_vault_held", "noneFlag": ["b3_rite_law", "b3_promise_old"] } }
+          ], "when": { "noneFlag": ["b4_note_rung"] } },
+          { "narrate": "On their sledges in the vault at Vell, the thirty-one iron bells ring once, together, still bound, still awake, and ask, through the lid, to be let go. Nobody here can do it tonight. Somebody writes it down.", "when": { "flag": "b3_vault_held", "noneFlag": ["b3_rite_law", "b3_promise_old", "b4_note_rung"] } }
         ],
         "choices": [
           { "id": "on", "label": "Go out of the hall into the snow", "next": "telling" }
@@ -1488,6 +1492,7 @@
           { "say": "Linus Pardew", "text": "I've got the verses. All of them. I've had them since the ford. I've not got the last one, because I've not known who it's for. Is it mine to sing? Or do you want it written, or kept, or left?" },
           { "oneOf": [
             { "narrate": "Burdock is by the brazier with the book of winters, waiting to hear the answer before he writes tonight's line.", "when": { "noneFlag": ["b4_tally_left"] } },
+            { "narrate": "Sloe is by the brazier with her slate. Burdock is in Orme, in the Long Hall, with the tally; whatever is chosen, she will write it to him.", "when": { "flag": "b4_note_rung", "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
             { "narrate": "Rue is by the brazier with her book. Burdock is in Orme, in the Long Hall, with the tally; whatever is chosen, she will write it to him." }
           ] }
         ],
@@ -1509,6 +1514,7 @@
             "lines": [
               { "oneOf": [
                 { "narrate": "You tell Burdock it is the tally's. He writes the line, exactly, and then, under it, who chose it, and shows you, and shuts the book.", "when": { "noneFlag": ["b4_tally_left"] } },
+                { "narrate": "You tell Sloe it is the tally's. She writes it to Burdock, at Orme, there and then by the brazier, exactly, and then who chose it, and folds the letter.", "when": { "flag": "b4_note_rung", "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
                 { "narrate": "You tell Rue it is the tally's. She writes it to Burdock, at Orme, there and then by the brazier, exactly, and then who chose it, and folds the letter." }
               ] }
             ]
@@ -1550,11 +1556,11 @@
             { "narrate": "The way home is long, and the winter that follows it is a hard one in places and a soft one in others, and by the end of it every town in the free wards has kept its quiet nights on the rota and given at the floor, and the vote holds.", "when": { "flag": "b4_winter_shared", "anyFlag": ["b4_vote_share"] } },
             { "narrate": "The way home is long, and the winter that follows it is uneven: some towns keep quiet nights by the rota and give at the floor, the ones that chose to, and some have written 'later' against their names again.", "when": { "flag": "b4_winter_shared", "anyFlag": ["b4_rota_towns"] } },
             { "narrate": "The way home is long, and the winter that follows it is uneven: nobody voted to share it, and the towns that keep quiet nights do it because somebody asked them to at their own door.", "when": { "flag": "b4_winter_shared" } },
-            { "narrate": "The way home is long, and all winter the Wold comes over the peaks behind you, by the old north road and the Hall, family by family, on their ropes.", "when": { "flag": "b4_wold_south" } },
+            { "narrate": "The way home is long, and all winter the rest of the Wold comes over the peaks behind you, by the old north road and the Hall, family by family, on their ropes, to the families already wintering in the towns.", "when": { "flag": "b4_wold_south" } },
             { "narrate": "The way home is long and white. It is the free wards' worst winter in nine hundred years, and everybody in them knows why, and most of them say so to your face.", "when": { "flag": "b4_note_rung" } }
           ] },
+          { "narrate": "The givers from the free wards go over the peaks to give, because the stair is sealed: from the north branch, at the Wold's floor, the Wold's way. They come back thinner, and quiet, and some of them do not want to talk about what they gave.", "when": { "flag": "b3_stair_sealed", "anyFlag": ["b4_winter_shared"] } },
           { "oneOf": [
-            { "narrate": "The givers from the free wards go over the peaks to give, because the stair is sealed: from the north branch, at the Wold's floor, the Wold's way. They come back thinner, and quiet, and some of them do not want to talk about what they gave.", "when": { "flag": "b3_stair_sealed", "anyFlag": ["b4_winter_shared"] } },
             { "narrate": "Named towns have hard winters: Fenmere loses its lower street, and the houses on the Briarwood edge sleep in the hall on their quiet nights. The Wold still loses people. It loses fewer. It will have to be asked again in a generation, and everybody knows it.", "when": { "flag": "b4_winter_shared" } },
             { "narrate": "Iona's arithmetic holds, just. By the thaw there are families of the Wold in every town in the free wards, sleeping in barns and halls and spare rooms, and the old north road is empty.", "when": { "flag": "b4_wold_south" } },
             { "narrate": "Towns fall. The last houses on the Briarwood edge, and two villages on the Iron Road whose names Fennick writes down in full, one to a line. Over the peaks, for the first time since the founders, the Wold has a clear winter, and its doors stand open all of it.", "when": { "flag": "b4_note_rung" } }
@@ -1574,7 +1580,8 @@
           { "oneOf": [
             { "narrate": "Briarwatch's forge door has a line on it now, in the middle, where everybody coming into the square has to see it, in Betony of Lantry's chalk, gone over in paint.", "when": { "flag": "job:wold-family-forge" } },
             { "narrate": "At the top of Aveline's list, under the date, is Betony of Lantry's line, and Aveline reads it every night with the rest.", "when": { "flag": "job:wold-family-list" } },
-            { "narrate": "Briarwatch's doors have the Wold's lines on them, small, in the corners, by Aveline's rule.", "when": { "anyFlag": ["job:wold-family-rule", "job:wold-family-asked"] } }
+            { "narrate": "Eleven doors on the Briarwood edge have the Wold's lines on them, small, in the corners, by Aveline's rule.", "when": { "flag": "job:wold-family-rule" } },
+            { "narrate": "Two doors on the Briarwood edge have the Wold's lines on them, small, in the corners. Both houses were asked first.", "when": { "flag": "job:wold-family-asked" } }
           ] },
           { "oneOf": [
             { "narrate": "Orin comes in from the square with Davin behind him, both of them in the council's grey. Captain and sergeant. Davin calls him Captain in front of everybody, and Orin lets him.", "when": { "party": "orin", "flag": "b4_orin_davin" } },
@@ -1593,7 +1600,9 @@
           ] },
           { "oneOf": [
             { "narrate": "In the hospice, at the foot of a bed, a slate says 'Merrick', and under it, small, 'given by Annis Corby'.", "when": { "flag": "job:walkers-names-given" } },
-            { "narrate": "Annis Corby still comes to the hospice at noon. She sits with whoever has nobody.", "when": { "anyFlag": ["job:walkers-names-told", "job:walkers-names-sure", "job:walkers-names-plain"] } }
+            { "narrate": "Annis Corby still comes to the hospice at noon. She sits with whoever has nobody.", "when": { "flag": "job:walkers-names-told" } },
+            { "narrate": "Annis Corby still comes to the hospice at noon, to the man she calls Merrick. Anwen still watches.", "when": { "flag": "job:walkers-names-sure" } },
+            { "narrate": "Annis Corby has not been back to the hospice. The man in the bed still looks at the door in the evenings.", "when": { "flag": "job:walkers-names-plain" } }
           ] },
           { "oneOf": [
             { "narrate": "Nessa kept the forge-signal lit every night until the thaw, and came down the hill when it was done. Biscuit lies across the forge door with his grey muzzle on his paws, and will not move for anybody.", "when": { "party": "nessa", "flag": "b4_nessa_signal" } },

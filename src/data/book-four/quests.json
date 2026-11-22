@@ -7013,7 +7013,7 @@
         { "narrate": "The forge-signal has gone unkept since the summer the key left Cinder Fold on its cord. The lamp-room at the top of the town is dark, and nobody was watching the casting hall at night, and the rope families have it now. Its doors have been shut for a month, and rope-men stand at them.", "when": { "flag": "b4_key_carried" } }
       ] },
       { "oneOf": [
-        { "narrate": "Nessa still has the key on its cord round her neck. She has not taken it off since the summer Wren's key came to her.", "when": { "party": "nessa", "flag": "b4_key_carried" } },
+        { "narrate": "Nessa still has the key on its cord round her neck. She has not taken it off since Cinder Fold gave it to her.", "when": { "party": "nessa", "flag": "b4_key_carried" } },
         { "narrate": "Nessa looks up at the lamp-room from the bottom of the town before she has put her pack down, to see that it is lit. It is. She looks twice.", "when": { "party": "nessa", "noneFlag": ["b4_key_carried"] } },
         { "narrate": "Nobody has the key in Cinder Fold. It went north on its cord, and has not come back.", "when": { "absent": "nessa", "flag": "b4_key_carried" } }
       ] },
@@ -7326,15 +7326,16 @@
         { "narrate": "The council's forty are across the street from the great doors, in grey, under the captain Sorrel's paper made. They have their orders and their names, and nobody has had to be told twice.", "when": { "flag": "b4_orin_captain" } },
         { "narrate": "Sorrel's watch is across the street from the great doors, forty of them in the council's grey, with Sorrel's sergeant in front of them hating every minute of it." }
       ] },
+      { "narrate": "Brannagh has come up from Highpass for the council. Elske Marrow has the chair this session, at Highpass; here, at Cinder Fold, Brannagh chairs.", "when": { "flag": "elske_seat" } },
       { "narrate": "At the top of the step, with the doors shut behind her, Ailith Strake stands and waits for the town to be quiet. When it is, she speaks to all of it." },
       { "say": "Ailith Strake", "text": "Once. That's all. The Parting Bell rung forward with the Mother Bell, once, at midnight, and every ward in the free wards is louder for good. No more floors. No more giving. No more asking a child what they'd miss. My families have rung for you for nine hundred years. Let us ring this." },
       { "oneOf": [
-        { "say": "Ailith Strake", "text": "And don't let the council tell you it's not for one woman to say. The council took the rope off one woman last winter. Elske Marrow. Recalled her, in that hall, with the doors open. Now you'd take it off a town.", "when": { "flag": "mother_recalled" } },
+        { "say": "Ailith Strake", "text": "And don't let the council tell you it's not for one woman to say. The council took the rope off one woman three winters ago. Elske Marrow. Recalled her, in that hall, with the doors open. Now you'd take it off a town.", "when": { "flag": "mother_recalled" } },
         { "say": "Ailith Strake", "text": "The rope's in your store-room, under your lock. Bring me the key by midnight, in front of everybody, or tell everybody why you didn't.", "when": { "flag": "mother_silenced" } },
         { "say": "Ailith Strake", "text": "The rope's ours. It has been since the great note. We ring at midnight." }
       ] },
+      { "narrate": "Hesk stands beside her on the step. The free wards have called him their hero since the stair. He does not look as if he likes it any better than he did.", "when": { "flag": "b3_promise_hesk" } },
       { "oneOf": [
-        { "narrate": "Hesk stands beside her on the step. The free wards have called him their hero since the stair. He does not look as if he likes it any better than he did.", "when": { "flag": "b3_promise_hesk" } },
         { "narrate": "Behind her, somewhere in the hall, a bell hums: low and patient, the hum of Highpass's bell when it is somewhere it would rather not be. Sable.", "when": { "flag": "b4_sable_ailith", "anyFlag": ["b3_sable_cast"] } },
         { "narrate": "Behind her, in the doorway, stands a tall man in a scholar's coat with a sack of books at his feet. Sable, who came to Cinder Fold of his own will and has said nothing since.", "when": { "flag": "b4_sable_ailith" } }
       ] },
@@ -7368,7 +7369,7 @@
           { "say": "Ottilie Brand", "text": "The hall's the town's. Not the rope families'. Not the council's. The town's. The committee voted it this morning, eleven to none, with Ailith's own cousin voting. I've written to her that she's holding the town's hall against the town. She sent the letter back with 'yes' on it." },
           { "oneOf": [
             { "say": "Ottilie Brand", "text": "Everybody knows now. The council said it out loud in Highpass, with the doors open, and half her families heard it from the inn yard and not from her. Some of them are in there because they're angry with her for not telling them. They're in there anyway.", "when": { "flag": "b4_accused_open" } },
-            { "say": "Ottilie Brand", "text": "She read the founders' page to her own families, the year before last. Every one of them knows what the bell does. Some of them are in there because of it.", "when": { "flag": "b4_truth_ailith" } },
+            { "say": "Ottilie Brand", "text": "She read the founders' page to her own families, the spring before last. Every one of them knows what the bell does. Some of them are in there because of it.", "when": { "flag": "b4_truth_ailith" } },
             { "say": "Ottilie Brand", "text": "Half of them in there don't know what they're holding it for. They know Ailith asked." }
           ] },
           { "say": "Ottilie Brand", "text": "I don't want anybody hurt on that step. I'd like that in the minutes too." }
@@ -7382,7 +7383,8 @@
           { "say": "Wystan Strake", "text": "Her son. Wystan. I'm on the first bell. I've been on the first bell since I was nine." },
           { "say": "Wystan Strake", "text": "She says it's her that rings it. She says it every day, so that none of us offers. I offered. She said if I ever offered again she'd put me off the ropes for good. That's how I know she means it." },
           { "oneOf": [
-            { "narrate": "Two bells along, on the ninth's rope, sits Garth Mott, the miner's son, fifteen now, with the rope across his knees the way the families sit. Nobody has taken it off him. Perrin Rowe's family is whoever Perrin says it is.", "when": { "anyFlag": ["job:ninth-rope-rope", "job:ninth-rope-given"] } },
+            { "narrate": "Two bells along, on the ninth's rope, sits Garth Mott, the miner's son, fifteen now, with the rope across his knees the way the families sit. Nobody has taken it off him. Perrin Rowe's family is whoever Perrin says it is.", "when": { "flag": "job:ninth-rope-given" } },
+            { "narrate": "Two bells along, on the ninth's rope, sits Garth Mott, the miner's son, fifteen now, with the rope across his knees the way the families sit. Nobody has taken it off him.", "when": { "flag": "job:ninth-rope-rope" } },
             { "narrate": "Two bells along, on a spare rope beside the ninth, sits Garth Mott, the miner's son, in case anybody is short tonight. He has not been asked to leave.", "when": { "flag": "job:ninth-rope-spare" } },
             { "narrate": "Down through the lid, faint, from the miners' galleries, comes the gallery bell, rung in time against the nine. Garth Mott, below, keeping their time for them, as he does every shift.", "when": { "flag": "job:ninth-rope-stair" } },
             { "narrate": "Two bells along, on the ninth's rope, sits old Perrin Rowe, with his ruined hands bound to the rope with cloth so they will not slip." }
@@ -7412,7 +7414,7 @@
       "alt": ["persuasion"],
       "success": [
         { "oneOf": [
-          { "narrate": "The tenth mould is not in Cinder Fold. Rafe and Tilda Coppin sold it to the Lantern Hall, and it has stood in the Hall's front hall at Merrowgate for two years with its writing turned to the wall. But Cass Ord has had it carted back up the mountain this week, at the Hall's expense, with a note for the committee that Ottilie has pinned to her table: 'Since Cinder Fold does not sell.' {You find|@ finds} it on its cart in the street behind the committee's table, still roped down.", "when": { "flag": "job:mould-sold" } },
+          { "narrate": "The tenth mould is not in Cinder Fold. Rafe and Tilda Coppin sold it to the Lantern Hall, and it has stood in the Hall's front hall at Merrowgate since the summer before last with its writing turned to the wall. But Cass Ord has had it carted back up the mountain this week, at the Hall's expense, with a note for the committee that Ottilie has pinned to her table: 'Since Cinder Fold does not sell.' {You find|@ finds} it on its cart in the street behind the committee's table, still roped down.", "when": { "flag": "job:mould-sold" } },
           { "narrate": "{You go|@ goes} to the tenth mould where it stands in the casting hall against the wall, by the small door, with its writing turned outwards, as Ottilie had it put. The rope families walk past it every day.", "when": { "anyFlag": ["job:mould-kept", "job:mould-bought"] } },
           { "narrate": "{You go|@ goes} down to the vault under the first forge, by the committee's key, and {find|finds} the founders' ledger in its iron box, and {turn|turns} to the last page, where the tenth mould is drawn and measured and never used." }
         ] },
@@ -7476,7 +7478,7 @@
           { "narrate": "{You stand|@ stands} by the tenth mould, against the wall where it has always stood, and {put|puts} a hand on the band round its foot.", "when": { "anyFlag": ["job:mould-kept", "job:mould-bought"] } },
           { "narrate": "{You hold|@ holds} up the founders' ledger, open at the last page, where the whole lid can see the tenth mould drawn and measured and never poured." }
         ] },
-        { "narrate": "{You read|@ reads} it out. Not this way. Ask them all. Then {you say|@ says} what it means, as plainly as it can be said: that the founders could have cast a tenth and stopped the white for the south for good, and chose not to, and wrote down why, and that these are the hands that wrote the lid's first rota." },
+        { "narrate": "{You read|@ reads} it out. Not this way. Ask them all. Then {you say|@ says} what it means, as plainly as it can be said: that the founders could have cast a tenth and stopped the white for the south for good, and chose not to, and wrote down why, and that the same hands wrote the lid's first rota." },
         { "oneOf": [
           { "narrate": "Nessa does not say anything. She goes up onto the lid, to the ninth bell, and sits down beside whoever is on its rope, and puts her hand flat on the iron the way the miners do.", "when": { "party": "nessa", "notRoller": "nessa" } },
           { "narrate": "Nobody says anything for a long time." }
@@ -7514,7 +7516,7 @@
       { "say": "Ailith Strake", "text": "I'll not run. I'm the best ringer alive. Somebody's going to need me on a rope before tonight's out. I can hear it." },
       { "oneOf": [
         { "say": "Ottilie Brand", "text": "The committee will have her, if the council lets it. It's our hall she held, and our town.", "when": { "noneFlag": ["mother_recalled"] } },
-        { "say": "Ottilie Brand", "text": "The committee will have her, if the council lets it. The council recalled one woman from that rope last winter. I'd like the town to do this one." }
+        { "say": "Ottilie Brand", "text": "The committee will have her, if the council lets it. The council recalled one woman from that rope three winters ago. I'd like the town to do this one." }
       ] },
       { "say": "Brannagh", "text": "The council will have her. It's every town's bell she meant to ring." }
     ],
@@ -7611,12 +7613,12 @@
         { "narrate": "The Mother Bell hangs over the hall on its beam, bare, its rope still in the signal house, humming with the half note anyway." }
       ] },
       { "oneOf": [
-        { "say": "Brannagh", "text": "The council recalled that bell last winter, and I'll not have anybody ring it tonight without the council's say. I'll say it again at midnight, if we get there.", "when": { "flag": "mother_recalled" } },
+        { "say": "Brannagh", "text": "The council recalled that bell three winters ago, and I'll not have anybody ring it tonight without the council's say. I'll say it again at midnight, if we get there.", "when": { "flag": "mother_recalled" } },
         { "narrate": "Out in the street, the town has heard it, and nobody has gone home." }
       ] },
       { "oneOf": [
         { "narrate": "Sloe comes in by the north door, the door she was given to keep, with her twenty ringers behind her in single file, and shuts it behind them.", "when": { "flag": "b4_maren_vouched" } },
-        { "narrate": "Sloe comes in by the north door with her twenty ringers behind her. Nobody gave it to her. She tried it, and it was open, because it was you who told her where the bell was.", "when": { "flag": "b4_told_sloe" } },
+        { "narrate": "Sloe comes in by the north door with her twenty ringers behind her. Nobody gave it to her. She came because it was you who told her where the bell was, and she tried the door, and it was open.", "when": { "flag": "b4_told_sloe" } },
         { "narrate": "Sloe does not come in by any door. She comes up through the lid, by the hatch at the foot of the marked way, with her twenty ringers behind her on a rope, out of the dark under Cinder Fold, the way the founders went.", "when": { "flag": "b4_maren_doubts" } },
         { "narrate": "Sloe comes in at the great doors with her twenty ringers behind her, and asks at them to be let in, as anybody may, and is." }
       ] },
@@ -7880,7 +7882,7 @@
       ] },
       { "oneOf": [
         { "narrate": "The Mother Bell's rope is in your hands. You went up to the signal house at eleven, and unbarred the store-room with the only key, and carried it down through the town on your shoulder with the whole of Cinder Fold watching. Whether the Mother Bell rings its midwinter note tonight is yours to allow. Nobody here can take it from you.", "when": { "flag": "mother_silenced" } },
-        { "say": "Brannagh", "text": "The council asks for the midwinter note. In the council's name, and in mine, since I'm what's left of it in this hall. We recalled that rope last winter, and we're asking for it tonight, out loud, as it should have been asked for every year.", "when": { "flag": "mother_recalled" } },
+        { "say": "Brannagh", "text": "The council asks for the midwinter note. In the council's name, and in mine, since I'm what's left of it in this hall. We recalled that rope three winters ago, and we're asking for it tonight, out loud, as it should have been asked for every year.", "when": { "flag": "mother_recalled" } },
         { "narrate": "The towns have asked for the Mother Bell's note, as they have every midwinter since the night of the great note: Ottilie has the letters on the committee's table, one from every town, and reads out their names." }
       ] },
       { "say": "Sloe", "text": "There are three things that can be done with the Parting Bell tonight. Ring it backward with the Mother Bell. Ring it forward with the Mother Bell. Or not at all. I have done the sum for all three. I am not going to do it again. Somebody else has to choose." }
@@ -7919,6 +7921,7 @@
             { "narrate": "Rue is on the lid, by the Parting Bell's side of it, with her book under her arm and Nessa beside her, close enough that their shoulders touch.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
             { "narrate": "Rue is on the lid with her book under her arm, with nobody beside her. She keeps her thumb on the page where somebody once wrote in capitals that they would tell her who she is.", "when": { "flag": "b4_nessa_with_rue" } },
             { "narrate": "Rue is sitting on the edge of the lid with her book shut on her knees. She has not asked for a rope. She has written down, again, that she minds.", "when": { "flag": "b4_nessa_stops_rue" } },
+            { "narrate": "Rue is on the lid with her book under her arm, alone, near the Parting Bell. Up above the town the forge-signal is lit. Nessa lit it at dusk and came down for the midnight, and she stands at the back of the hall by the doors, where she can see Rue and the signal both.", "when": { "party": "nessa", "flag": "b4_nessa_signal" } },
             { "narrate": "Rue is on the lid with her book under her arm, alone, near the Parting Bell. Up above the town, the forge-signal is lit. Somebody is keeping it." }
           ] },
           { "oneOf": [
@@ -8082,7 +8085,7 @@
             { "narrate": "The Mother Bell rings its midwinter note, as it has every midwinter since the great note, and everything it pushes goes north, to a country that will be empty by the spring." }
           ] },
           { "oneOf": [
-            { "say": "Iona", "text": "I've costed it. I costed it at ten thousand, in the autumn, and the council voted it with its eyes open. It holds. Just. Don't anybody have a child for a year.", "when": { "flag": "b4_vote_refuge", "anyFlag": ["b4_embassy_refuge"] } },
+            { "say": "Iona", "text": "I've costed it. I costed it at ten thousand, the autumn before last, and the council voted it in the spring with its eyes open. It's three thousand. It holds. Just. Don't anybody have a child for a year.", "when": { "flag": "b4_vote_refuge", "anyFlag": ["b4_embassy_refuge"] } },
             { "say": "Iona", "text": "I've costed it. It holds. Just. Ask me again in the spring and I'll tell you how just." }
           ] },
           { "say": "Sloe", "text": "I will not come. Somebody has to stay and be the Wold, even if it is only me. I will keep the last door. Write that I chose it." }
@@ -8119,7 +8122,8 @@
           ] },
           { "oneOf": [
             { "say": "nessa", "text": "Hello. I'm Nessa. You're Rue. You wrote it down. I'll show you.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
-            { "narrate": "Somebody picks up the book and gives it to her, open at the first page." }
+            { "narrate": "Somebody picks up the book and gives it to her, open at the first page.", "when": { "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "narrate": "Rue sits down beside her on the lid, and begins to read her the slate, from the top, slowly." }
           ] }
         ],
         "rep": { "wold": 1 },

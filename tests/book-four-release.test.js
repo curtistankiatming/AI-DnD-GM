@@ -30,10 +30,10 @@ function start(flags, party = ['orin', 'maren', 'nessa']) {
 const recap = (s) => E.buildView(s).world.bookRecap;
 
 test('the recap card on Book Four\'s first screen reads Book Three\'s ending, the gift, Aster, Hesk and each companion', () => {
-  let r = recap(start({ b3_promise_old: true, b3_gave_forge: true, wards_seat: true, b3_mags_forgives: true, b3_seal_taken: true, nessa_keeper: 'later' }));
+  let r = recap(start({ b3_promise_old: true, b3_gave_forge: true, wards_seat: true, b3_mags_forgives: true, b3_seal_taken: true, nessa_keeper: 'later', b3_wren_cast: true }));
   assert.equal(r.title, 'Where Book Three left you');
   assert.deepEqual(r.lines, [
-    'Under the stair, the free wards gave one memory each, and the lid is held by giving. The nine have rested.',
+    'Under the stair, the free wards give one memory each, one person at a time, and their giving holds the lid. The nine have rested.',
     "Your gift was Dera's forge. You do not remember it, and she showed you round it again.",
     "Aster Vey stayed in Briarwatch's bell for one more generation, to see Pim grow old.",
     'Hesk was judged at Highpass in the open, and is in a cell under its gatehouse.',
@@ -51,6 +51,13 @@ test('the recap card on Book Four\'s first screen reads Book Three\'s ending, th
   assert.match(r.lines[1], /still in Briarwatch's bell/);
   assert.match(r.lines[2], /back down the stair alone, with a lamp/);
   assert.match(r.lines.join('\n'), /taught Pim knots[^]*a day she would have written first[^]*said no to the forge-signal/);
+  // Nessa's line follows Wren's ending, and Orin's his trial (review of step 12).
+  const nessa = (flags) => recap(start(flags, ['nessa'])).lines.at(-1);
+  assert.equal(nessa({ b3_promise_old: true, nessa_keeper: 'later', b3_wren_waits: true }), 'In the spring Nessa went back over the pass to Cinder Fold, to take the forge-signal key from Wren.');
+  assert.equal(nessa({ b3_promise_old: true, nessa_keeper: 'later' }), "Nessa said yes to the forge-signal. Wren keeps it from a chair, and Nessa's yes is held for her.");
+  assert.equal(nessa({ b3_promise_old: true, b3_wren_cast: true }), 'Nessa writes about Wren, and sends it to Cinder Fold to be read out at the lid. She does not keep a copy.');
+  assert.equal(recap(start({ b3_promise_old: true, b3_orin_tried: true }, ['orin'])).lines.at(-1), 'Orin asked to be tried at Saltwick, and was. He owes its roof council a season of lamps.');
+  assert.equal(recap(start({ b3_promise_old: true })).lines[0], 'Under the stair, the free wards give one memory each, one person at a time. The nine stay, very tired.');
   r = recap(start({ b3_promise_old: true, b3_bell_aster: true, b3_gave_name: true }));
   assert.match(r.lines.join('\n'), /a name, and you did not say whose[^]*Aster Vey rested/);
   // Only the companions in the party, and never a line that names one who is not.
