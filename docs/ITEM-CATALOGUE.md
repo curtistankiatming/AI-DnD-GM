@@ -304,7 +304,7 @@ Each is given when its chapter is completed (`src/world.js` calls
 | Council Envoy's Chain | Accessory | Legendary | 690 | +3 Persuasion, +3 Insight | 5% more dealt; story: Persuasion | Level 35 | Highpass Watch (from 35), Briarwatch (from 35) |
 | Frost-edge Knife | Main hand | Legendary | 690 | 1d8, finesse, +2/+5 | 10% more dealt; Hamstring (slowed) | Level 35 · Dexterity 13 | Highpass Watch (from 35), Briarwatch (from 35) |
 | Hearth-bell Charm | Accessory | Legendary | 690 | +1 AC, +1 CON save, +1 WIS save | 10% less taken | Level 35 | Cinder Fold only (from 35) |
-| Hearth-bell Shield | Off hand | Legendary | 690 | +4 AC | 15% less taken; Brace (fortified) | Level 35 · Fighter or Cleric · Strength 13 | Cinder Fold (from 35), Briarwatch (from 35) |
+| Hearth-bell Shield | Off hand | Legendary | 690 | +4 AC, +1 saves | 15% less taken; Brace (fortified) | Level 35 · Fighter or Cleric · Strength 13 | Cinder Fold (from 35), Briarwatch (from 35) |
 | Ridge Stalker's Pelt | Accessory | Legendary | 690 | +1 AC, +3 Stealth | story: Stealth | Level 35 | First bounty, Highpass Watch at level 35+ |
 | Snow-guide's Scale | Armour | Legendary | 690 | AC 18 + Dex (max 2) | 5% less taken | Level 35 | Briarwatch (from 35), Highpass Watch (from 35) |
 | Surveyor's Lamp | Accessory | Legendary | 690 | +3 Survival, +3 Investigation | 10% more dealt; story: Survival | Level 35 | Chapter: The Deep (b3-deep) |

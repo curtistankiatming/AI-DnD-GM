@@ -78,4 +78,16 @@ left as questions (below).
    and Maren has 10, so she wears a Steel Shield (Fine, +3) to level 40 while
    her other kit improves. Keep it, or add a shield she can wear?
 
-The reviewers' answers are recorded below.
+## The reviewers' answers
+
+Two independent reviewers both approved the PR. One of them confirmed that the
+new route test fails on master's `towns.json` (11 gaps at tier 35) and passes
+here. They agreed on both questions:
+
+1. **Keep as is.** The approved levels 1 to 20 catalogue made the same choice.
+   Weapons, shields and heavy armour still have class and stat requirements,
+   so "not everyone can equip anything" holds. Adding requirements to 53
+   items now would be a wide balance change.
+2. **Keep for now.** A shield Maren can wear is a fair follow-up, but it needs
+   its own Masterwork version, catalogue rows and tests. It is left for
+   Curtis to decide.
