@@ -657,3 +657,25 @@ body.in-combat .adventure-composer #chatStatus:empty { display:none; }
 @media(max-width:760px) and (min-height:651px){
  .combat-board-ui .combat-footer { position:sticky; bottom:-18px; z-index:3; padding-bottom:8px; background:var(--panel, var(--bg-elevated)); box-shadow:0 -8px 12px -8px rgba(0,0,0,.45); }
 }
+
+/* UI review through Book Four (22 November 2026). */
+/* Narrow phones: a fighter's HP sits under the name, so "Orin Stoneward" and "The Reckoner's Guard" wrap
+   between words instead of mid-word ("Stonewar d"). */
+@media(max-width:400px){
+ .fighter-card > .fighter-line:first-child { flex-direction:column; align-items:flex-start; gap:0; }
+ .fighter-card > .fighter-line:first-child strong { overflow-wrap:break-word; }
+}
+/* Book Four's fight goals are long sentences: on phones the goal's card takes the whole row. */
+@media(max-width:760px){
+ .combat-board-ui #combatActions .combat-action[data-action-id=objective] { flex-basis:100%; }
+}
+/* A long town shop in groups: gear for the party open, the rest folded with a count (public/expedition.js). */
+.v4-shop.is-grouped { max-height:none; overflow:visible; padding-right:0; }
+.v4-shop-group { margin:0 0 10px; }
+.v4-shop-group > h4,.v4-shop-group > summary { margin:6px 0 8px; color:var(--text); font-size:.92rem; font-weight:700; }
+.v4-shop-group > summary { cursor:pointer; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--panel-soft); }
+.v4-shop-group[open] > summary { margin-bottom:10px; }
+.item-warm-chip { border-color:#5d7f95; color:#cfe6f5; }
+/* The Journal's Telling and completed adventures: earlier entries fold under one line (public/chat-ui.js). */
+.journal-earlier > summary { cursor:pointer; padding:8px 0; color:var(--accent); font-size:.88rem; font-weight:700; }
+.journal-earlier[open] > summary { border-bottom:1px solid var(--border-soft, var(--border)); }
