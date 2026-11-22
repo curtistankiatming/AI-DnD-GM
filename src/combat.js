@@ -574,7 +574,9 @@ function resolveTacticalAction(state,actor,action,rng,events) {
     if(actor.actionUsed)return invalidResult(state,events,'Your action has already been used.');
     if(id==='spec-objective'){
       if(!['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization)||actorResourceCurrent(actor,'advancement')<1)return invalidResult(state,events,'This requires the appropriate advancement and an available use.');
-      spendActorResource(actor,'advancement');actor.actionUsed=true;o.progress=Math.min(o.target,o.progress+2);
+      // Once per fight: two uses would finish a four-step objective in two turns without a roll.
+      if(state.combat.specObjectiveUsed)return invalidResult(state,events,'You can unravel an objective only once per fight.');
+      spendActorResource(actor,'advancement');actor.actionUsed=true;state.combat.specObjectiveUsed=true;o.progress=Math.min(o.target,o.progress+2);
       events.push({type:'objective',tone:'good',text:`Your advancement unravels two objective steps: ${o.progress}/${o.target}.`});
     }else{
       const plan=objectivePlan(state);const d20=rollD20(rng,{advantage:plan.mode==='advantage',disadvantage:plan.mode==='disadvantage'});let total=d20.natural+plan.bonus;
@@ -653,7 +655,11 @@ function resolveJobAction(state,actor,def,target,rng,events){
       const r=actor.resources?.[e.resource];if(r)r.current=Math.min(r.max,r.current+(e.amount||1));
     }else if(e.do==='objective'){
       const o=state.combat.objective;
-      if(o&&!o.failed&&o.progress<o.target){o.progress=Math.min(o.target,o.progress+(e.steps||1));events.push({type:'objective',tone:'good',text:`${def.name} advances the objective: ${o.progress}/${o.target}.`});}
+      // Each skill pushes an objective once per fight; a second use keeps its other effects.
+      if(!Array.isArray(state.combat.objectiveSkills))state.combat.objectiveSkills=[];
+      const pushed=state.combat.objectiveSkills,key=def.id||def.name;
+      if(o&&!o.failed&&o.progress<o.target&&!pushed.includes(key)){pushed.push(key);o.progress=Math.min(o.target,o.progress+(e.steps||1));events.push({type:'objective',tone:'good',text:`${def.name} advances the objective: ${o.progress}/${o.target}.`});}
+      else if(o&&!o.failed&&o.progress<o.target)events.push({type:'objective',tone:'info',text:`${def.name} has already moved the objective this fight.`});
     }
   }
   events.push({type:'feature',tone:'good',text:`${actor.name} uses ${def.name}. ${def.resource?`${actorResourceCurrent(actor,def.resource)} uses remain.`:''}`});
@@ -1256,7 +1262,7 @@ function combatActionView(state) {
     const targetKind=member.id==='maren'?'ally':'enemy';const disabled=actor.bonusUsed||state.combat.comboUsed||actorResourceCurrent(actor,'technique')<1||combatActor(state,`companion:${member.id}`)?.hp<=0;
     actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.replace(/^Sister /,'').split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
   }
-  if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use.',disabled:actor.actionUsed||actorResourceCurrent(actor,'advancement')<1});
+  if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use, once per fight.',disabled:actor.actionUsed||Boolean(state.combat.specObjectiveUsed)||actorResourceCurrent(actor,'advancement')<1,disabledReason:state.combat.specObjectiveUsed?'Already used this fight.':undefined});
   // Below the stair (Book Three) there is no town: a retreat falls back to the last safe ledge (src/world.js recover).
   const ledge=!ENCOUNTERS[state.combat.encounterId].practice&&!ENCOUNTERS[state.combat.encounterId].bounty&&W.atLedge(state);
   actions.push({id:'retreat',name:ledge?'Fall back to the ledge':'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':ledge?'Withdraw to the last safe ledge, rest there, then go back down to this fight. Costs 25% of current gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
