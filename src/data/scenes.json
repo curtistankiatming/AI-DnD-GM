@@ -290,6 +290,7 @@
               { "say": "Hal", "text": "Stoneward. You came. Late, and with your friend's own fee in the first cart, I hear. But you came.", "when": { "flag": "b2_cost_party" } },
               { "narrate": "Hal goes off to check on the sentries, who don't need checking on. Orin stays by the fire and, for the first time since Briarwatch, looks like a man who is sitting down rather than waiting to stand up." }
             ],
+            "setFlags": { "b2:orin_hal": "said" },
             "approval": { "orin": 1 }
           },
           {
@@ -298,6 +299,7 @@
             "lines": [
               { "narrate": "You get up and go. Behind you, after a while, you hear them start talking: about the Ashford span, about people you never met, about a quartermaster in the Second Company who used to steal everyone's boots. Then, eventually, laughing." }
             ],
+            "setFlags": { "b2:orin_hal": "left" },
             "approval": { "orin": 1 }
           }
         ]
@@ -384,6 +386,7 @@
               { "say": "Anwen", "text": "Vale, your friend has no manners." },
               { "say": "maren", "text": "None. It's one of the things I like about them." }
             ],
+            "setFlags": { "b2:cards": "called" },
             "approval": { "maren": 1 },
             "next": "list"
           },
@@ -393,6 +396,7 @@
             "lines": [
               { "narrate": "You lose every button you have. It is the best evening anyone in the long room has had in a year." }
             ],
+            "setFlags": { "b2:cards": "lost" },
             "approval": { "maren": 1 },
             "next": "list"
           }
@@ -637,6 +641,8 @@
           { "narrate": "Brannagh has her fence. The goat ignores it entirely." },
           { "narrate": "Maren's list is gone; she let it go in Merrowgate harbour. She has started a new one. It is the names of the people in the Sallows long room, and beside each one is something true about them. The last name on it is Elske Marrow's. Beside it Maren has written: comes every week, and reads to them.", "when": { "flag": "keeper-list-done", "party": "maren" } },
           { "narrate": "Maren still has her list, with one empty space on it. She has stopped looking at it every night. She is waiting, she says, for the right word to turn up. Below the space, in newer ink, there is one more name: Elske Marrow. Beside it she has written nothing yet, either. When you ask, she says Elske isn't finished.", "when": { "notFlag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Anwen writes to Maren from the Sallows every month. Every letter ends the same way: tell your friend with no manners that we have stopped cheating. They have not.", "when": { "flag": "b2:cards", "is": "called", "party": "maren" } },
+          { "narrate": "Anwen writes to Maren from the Sallows every month, and every letter has a button folded into it, addressed to you. You have quite a few now. You are starting to suspect they were yours.", "when": { "flag": "b2:cards", "is": "lost", "party": "maren" } },
           { "narrate": "Orin has the quartermaster's invoice in his pack. Sometimes, when he thinks nobody is looking, he reads it.", "when": { "party": "orin" } }
         ],
         "choices": [
@@ -1353,21 +1359,24 @@
             "requires": { "flagsAny": ["prepared:b3-vault", "partial:b3-vault"] },
             "lines": [
               { "narrate": "You say it. People taken for standing in a room. Nobody answers. The sun comes up over the river wall, and Oswin Pike comes across the yard with the tin box under his good arm, and sits down on the rim of the door with you, and does not open it." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "register" }
           },
           {
             "id": "corvane",
             "label": "“Corvane, in front of the last bell, with nothing to say.”",
             "lines": [
               { "narrate": "You say it. Across the drill-yard, Corvane is on the wall walk above the casting wall, with his ledger, where he reads the lost at dusk. He is not reading. He is standing there with it closed, looking at the river." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "corvane" }
           },
           {
             "id": "quiet",
             "label": "Say nothing, and listen to the morning",
             "lines": [
               { "narrate": "You do not say anything. Nobody asks you to. The drill-yard fills slowly with ordinary sounds: a cart, a dog, a woman calling a child in for breakfast. Somebody in the volunteers' barracks is singing the evening hymn at the wrong end of the day, flat, very quietly." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "quiet" }
           }
         ]
       }

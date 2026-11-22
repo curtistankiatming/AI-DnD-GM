@@ -5921,6 +5921,32 @@
       },
       {
         "say": "orin",
+        "text": "She told me by that fire on the south road that I came, late. She came on time.",
+        "when": {
+          "flag": "b2:orin_hal",
+          "is": "said",
+          "anyFlag": [
+            "south_hal_council",
+            "south_hal_guild"
+          ],
+          "notFlag": "mother_recalled"
+        }
+      },
+      {
+        "narrate": "Orin and Hal do not say anything to each other when it is over. They said all of it by a fire on the south road, the night you left them to it.",
+        "when": {
+          "flag": "b2:orin_hal",
+          "is": "left",
+          "anyFlag": [
+            "south_hal_council",
+            "south_hal_guild"
+          ],
+          "notFlag": "mother_recalled",
+          "party": "orin"
+        }
+      },
+      {
+        "say": "orin",
         "text": "Somebody else held the door."
       },
       {
@@ -6117,6 +6143,20 @@
         "text": "To be fair to you: at the bell, when you could have stopped me by hand, you waited for the council to recall me instead. It cost Fenmere its song for a day. I noticed.",
         "when": {
           "flag": "mother_recalled"
+        }
+      },
+      {
+        "say": "Elske",
+        "text": "And you came back from Hollin's Reach and told me the bell there had stopped. Nobody had told me anything about that town in eleven years. I haven't forgotten it.",
+        "when": {
+          "flag": "hollin_told"
+        }
+      },
+      {
+        "say": "Elske",
+        "text": "You went to Hollin's Reach. I could see it on your faces at the inn, and you never said a word about it to me. You let it be mine. I noticed that as well.",
+        "when": {
+          "flag": "hollin_kept"
         }
       },
       {
@@ -6348,6 +6388,18 @@
       ],
       "success": [
         {
+          "narrate": "You told her once already, at the inn in Cinder Fold, that the bell in Hollin's Reach has stopped. Now you tell her the rest.",
+          "when": {
+            "flag": "hollin_told"
+          }
+        },
+        {
+          "narrate": "You have never told her what the council house in Hollin's Reach showed you. You tell her now, in front of everyone, because this is the one time it will help.",
+          "when": {
+            "flag": "hollin_kept"
+          }
+        },
+        {
           "narrate": "You tell Elske the one thing nobody has said to her in eleven years. That the room in Hollin's Reach was not her fault. That seven people had the numbers wrong, not one. That the answer to a slow council is not a fast person but a council that has learned to look at the window. And that you would like her in this one, looking at it with them."
         },
         {
@@ -6392,7 +6444,11 @@
           }
         }
       ],
-      "hero": true
+      "hero": true,
+      "easierWith": {
+        "flag": "hollin_told",
+        "reason": "You already told Elske what you saw in Hollin's Reach: DC lowered by 2"
+      }
     },
     "objective": {
       "name": "Quiet the Mother Bell before the room rings it",
