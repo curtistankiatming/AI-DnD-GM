@@ -1573,9 +1573,11 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered; line: b4_letters_maren | 9, 13 (the letter in the tally), 22; the Part One end (Maren) |
 | 9 Embassy | b4_embassy_council, b4_embassy_own, b4_embassy_refuge | 16 (whose promise), 22, 30 (south) |
 | 10 Peaks | b4_parting_rung, b4_unannounced, b4_gave_door; scene: b4_partone_done | 11 (Lantry), 16 (Sloe), 11 unlock |
-| 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | 12 (Sheddon), 17 (who taught Dunnet), epilogue |
-| 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back | 18 (Sedge's mother), 25, epilogue |
-| 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | 16 (peaceful), 22 |
+| 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | lantry-camp, 12 (Sheddon: the pots), 13 (Burdock's Lantry slate), 17 (who taught Dunnet), epilogue |
+| 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back, b4_hero_ordered (the answer with Orin away) | sheddon-camp, 13 (Sedge comes in with his mother or on his own), 18 (Sedge's mother; b4_hero_ordered reads as not saved), 25, epilogue |
+| The Painted Door (job, 11 to 13) | job:painted-door-read, job:painted-door-scraped, job:painted-door-left, job:painted-door-chalked | a later Lantry line (not yet written: Lantry's next visit, by chapter 17) |
+| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written) |
+| 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | orme-camp (Burdock's page), 16 (peaceful), 22 |
 | 14 Greve | b4_names_kept, b4_names_written, b4_names_given | 16, 19, 26 (walkers), epilogue |
 | 15 Thrum | b4_rue_gave, b4_rue_kept (also set by lines) | 27, epilogue |
 | 16 Reckoning | b4_demand_carried, b4_share_promised, b4_sloe_comes | 19 (where Sloe is), 22, 26 |
@@ -2305,3 +2307,45 @@ below.
     Parting-hall Plate (heavy, base AC 23, 15% taken, Constitution and Wisdom
     saves +1, Brace: Fortified 2 rounds). The late-gear test's tier rule
     allows a Book Four chapter reward at its chapter's level minus 2.
+30. **Lantry has pots, not bells** (build step 6). The Wold has no bells, so
+    `b4_rang_lantry` rings Lantry's cooking pots in the street. It drives the
+    white off Lantry and down the road to Sheddon, and chapter 12 opens on
+    "the night the pots were rung". With `b4_parting_rung` Lantry's bad night
+    is the night before the party arrives (Revisions). Lantry's waiting
+    answer (`b4_waited_lantry`) names the smith the white took.
+31. **Sheddon with Orin away** (build step 6). Chapter 12's two Orin answers
+    require him in the party. With Orin away the fourth answer, "on",
+    is the hero's order (`b4_hero_ordered`): Sedge's mother is not saved, and
+    chapter 18 reads it as `b4_orin_ordered`'s "not saved" version without
+    Orin's +1. With Orin away, `b4_hero_went_back` has Rue take the column.
+32. **What the white took at Sheddon** (build step 6). Orin forgets the name
+    of Varn's company, which canon never names, so nothing has to say it.
+    The hero's lost day (`b4_hero_went_back`) is the day of the vote at
+    Highpass. Sedge's mother has no name: she gave it at the well, and the
+    text never asks for it.
+33. **Part Two's speakers** (build step 6). New talks beyond the design:
+    Teasel and the Lantry children (11), Sheddon's eldest and Sedge (12),
+    Burdock and Sloe (13), with Hesk only with `b3_stair_sealed`. "Sheddon's
+    eldest" and "The weavers' eldest" are unnamed on purpose. Each Part Two
+    decision carries its own `told`, so the ballad and the tally say which
+    answer was given.
+34. **The Wold's reputation in chapters 11 to 13** (build step 6). Giving,
+    going back and telling the tally the truth or the reasons move
+    `rep.wold` by 1. Ringing the pots, ordering the column on and asking the
+    tally to wait move the wardens' instead, and waiting at Lantry the
+    wilds'.
+35. **White-wool's close** (build step 6). White-wool opens with chapter 11
+    and has no `until` yet: it closes after chapter 17 (`b4-potbells`),
+    which is not written. Add `until: "b4-potbells"` with chapter 17. The
+    blankets answer needs `b4_company_council`.
+36. **The chapter rewards for chapters 11 to 13** (build step 6) follow
+    decided question 29: tier 45 numbers for the scarf and shield, tier 50
+    for the staff, each with something the six warm shop items lack. The
+    Door-reader's Scarf (warm, level 48: Insight and Performance +3,
+    Intelligence and Wisdom saves +1, 5% dealt, Performance story), the
+    Sheddon Column Shield (level 49, fighter or cleric, Str 13: +5 AC, 15%
+    taken, Constitution and Wisdom saves +2, Athletics +3, Hold the Rear:
+    Weakened 2 rounds) and the Long Tally Staff (level 50, wizard, cleric or
+    bard: +5 spell attack and DC, 10% dealt, History +2, Count the Winters:
+    Vulnerable 1 round). The Part One lints (names, roller grammar, companion
+    gating, flags read) now run over all of Book Four's written chapters.
