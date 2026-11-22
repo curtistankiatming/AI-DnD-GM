@@ -1174,7 +1174,7 @@
             { "say": "Burdock", "text": "I have six.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
             { "say": "Rue", "text": "I have six." }
           ] },
-          { "say": "Iona", "text": "This one's torn. I'll put my number in pencil.", "when": { "flag": "method:b4-invoice", "is": "force" } },
+          { "say": "Iona", "text": "Some of these pages were out in the yard when the hall came up off its benches. Where I can't read his number, I'll put mine in pencil.", "when": { "flag": "method:b4-invoice", "is": "force" } },
           { "narrate": "They go on. At the bottom of the last page they each draw a line, and add, and turn their papers round, and read each other's." },
           { "say": "Iona", "text": "We agree." },
           { "oneOf": [
@@ -1287,8 +1287,8 @@
           { "narrate": "Tonight you read the carters' marks on the lower road from the top of the wall, in the last of the light. Hawk Eye, the Longshots call it.", "when": { "spec": "deadeye", "absent": "nessa" } },
           { "say": "orin", "text": "The carters asked you the way to Ashford this morning, and you told them three roads and which one would be dry, and you've never been down two of them. Worldwise, the Wayfinders call it.", "when": { "spec": "pathfinder", "party": "orin" } },
           { "narrate": "This morning the carters ask you the way to Ashford, and you tell them three roads and which one will be dry. Worldwise, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
-          { "say": "maren", "text": "Sable asked you a question this afternoon, from the founders, and you answered it before he'd finished asking, and he wrote it down. Loremaster's Ward, the Loremasters call that. He's never written down a word I've said.", "when": { "spec": "lorekeeper", "party": "maren" } },
-          { "narrate": "This afternoon Sable asks you a question from the founders, and you answer it before he has finished asking, and he writes it down. Loremaster's Ward, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "maren", "text": "Sable asked you a question this morning, from the founders, and you answered it before he'd finished asking, and he made you say it again, slowly, so he'd have it. Loremaster's Ward, the Loremasters call that. He's never asked me to say anything twice.", "when": { "spec": "lorekeeper", "party": "maren" } },
+          { "narrate": "This morning Sable asks you a question from the founders, and you answer it before he has finished asking, and he makes you say it again, slowly. Loremaster's Ward, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
           { "say": "orin", "text": "You sang the watch up the stair at the change tonight, low, and every one of them came up it in step without meaning to. Warchanter's Might. Sing it again at the ford.", "when": { "spec": "battlecantor", "party": "orin" } },
           { "narrate": "At the change tonight you sing the watch up the stair, low, and every one of them comes up it in step. Warchanter's Might, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
           { "say": "maren", "text": "The carters and the watch and the door-bearers all ate at one table tonight, because you sat down at it. Nobody asked them to. Silver Crown, the Diplomats call it.", "when": { "spec": "envoy", "party": "maren" } },

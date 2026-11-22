@@ -5148,7 +5148,7 @@
       { "narrate": "The last watch-fire above the upper gate is burning in daylight, built high, and the bar is off the gate. Rue looks at the fire for a long time.", "when": { "flag": "b4_rue_watch" } },
       { "narrate": "At the upper gate the watch is on the wall with bows, and Captain Sorrel stands in the middle of them. Along the wall beside her, the council's delegates have come up out of their spring session to look up the road." },
       { "narrate": "Before anyone has said anything, something grey at the muzzle comes through the bars of the gate at a run, barking, and Nessa sits down in the wet snow of the road and lets Biscuit knock her over.", "when": { "party": "nessa" } },
-      { "narrate": "And far up the road behind you, over the saddle, the white has come down off the Hall after you, slowly, filling the road from wall to wall, the way it lay on the road behind Rue." }
+      { "narrate": "And far up the road behind you, over the saddle, the white has come down off the Hall behind you, slowly, filling the road from wall to wall, the way it lay on the road behind Rue." }
     ],
     "talks": [
       {
@@ -5238,7 +5238,7 @@
       "success": [
         { "narrate": "Sorrel passes the gate book out to {you|@} through the bars: a long ledger in a canvas cover, wet at the corners, with every name that has gone up or down the north road, and the day, in the watch's hands. {You go|@ goes} back to the autumn." },
         { "narrate": "First snow: the party, by name, and Rue, and 'Linus Pardew, with a guide, to look', and the next evening, 'Down: Pardew and guide.'" },
-        { "narrate": "Two days after the party, in a large upright hand, signed: 'Ailith Strake, of Cinder Fold, delegate, and twelve of the rope families. Going up to the Hall, after the embassy.'" },
+        { "narrate": "Two days after the party, in a big round hand, signed: 'Ailith Strake, of Cinder Fold, delegate, and twelve of the rope families. Going up to the Hall, after the embassy.'" },
         { "narrate": "Three days after that, in a smaller hand, a rope-man's: 'Down. Thirteen, and a load.' Nobody on the watch has written what the load was. Under it, in Sorrel's hand: 'Road shut. Deep snow.'" },
         { "say": "Sorrel", "text": "A delegate's load. I didn't open it. She's on the council. I'm a captain. I'd open it now." }
       ],
@@ -5616,7 +5616,7 @@
       "alt": ["persuasion", "intimidation", "performance"],
       "target": 4,
       "deadline": 7,
-      "failText": "The reading is finished in the end, by lamplight, but the men had their hands on it once before they were stopped, and one winter is torn through, and nobody can say which.",
+      "failText": "The reading is finished in the end, by lamplight, but the men had their hands on the book once before they were stopped, and one winter is torn through, and nobody can say which.",
       "successText": "The last winter is read, in the small hours, to a hall that nobody has left."
     },
     "foe": "b4-invoice-men",
@@ -5953,7 +5953,7 @@
       ] },
       { "oneOf": [
         { "say": "Tovin", "text": "Nobody's in this bell but me, so I'm the one to ask. Ask me what Briarwatch's watch is for, now, and I'll tell you, and that'll be its answer. I've two answers in me. I'd like you to choose.", "when": { "flag": "b3_bell_aster" } },
-        { "say": "Aster Vey", "text": "Last night I was asked not to ring. Pim asked me the same thing last summer, for one night, and I said yes. Nobody has ever asked me the rest. What I want rung through me. I want three things, and I can have one. Choose with me.", "when": { "anyFlag": ["b4_bw_quiet", "b4_bw_pim"] } },
+        { "say": "Aster Vey", "text": "Last night I was asked not to ring. I was asked that last summer too, for a night a month, and I said yes. Nobody has ever asked me the rest. What I want rung through me. I want three things, and I can have one. Choose with me.", "when": { "anyFlag": ["b4_bw_quiet", "b4_bw_pim"] } },
         { "say": "Aster Vey", "text": "Last night I was asked not to ring. That's the first time anybody has asked me anything since I was put in here. I'd like to be asked the rest. What I want rung through me. I want three things, and I can have one. Choose with me." }
       ] },
       { "say": "Tovin", "text": "She answered last night from Vell, at the evening hour. She said whatever Briarwatch chooses, she'll hear it.", "when": { "flag": "b3_bell_aster", "noneFlag": ["b3_promise_old"] } },
@@ -6048,7 +6048,7 @@
         { "narrate": "In the gatehouse yard Highpass's bell stands in its frame with the sun on it: Sable, cast at his own asking in the first snow two winters ago. Sorrel's guard still reverse their pikes when they walk past it, and nobody has told them to.", "when": { "flag": "b3_sable_cast" } },
         { "narrate": "Under the gatehouse, in the end cell, Sable has his brazier lit in high summer, and his books stacked to the ceiling, and a new pen." }
       ] },
-      { "narrate": "Sorrel sends for you. On her table there is a letter that came up the lower road from Cinder Fold, in a large upright hand you last saw in the gate book, and a copy of the answer that went back down, made by the cell guard, because at Highpass every word Sable writes is copied." },
+      { "narrate": "Sorrel sends for you. On her table there is a letter that came up the lower road from Cinder Fold, in a big round hand you last saw in the gate book, and a copy of the answer that went back down, made by the cell guard: every word Sable sends out of the gatehouse is copied first." },
       { "oneOf": [
         { "say": "Sorrel", "text": "Ailith Strake wants Highpass's bell lent to Cinder Fold until midwinter, with him in it, to read the founders' ledger for the casting hall. She's sending a cart. He's said yes. I didn't know a bell could say yes to anything. It turns out it can, in writing.", "when": { "flag": "b3_sable_cast" } },
         { "say": "Sorrel", "text": "Ailith Strake wants my prisoner lent to Cinder Fold until midwinter, to read the founders' ledger for the casting hall. She's sending a cart. He's said yes. He can't go anywhere without the council's word, and the council's risen till the autumn, and she knows it." }
@@ -6059,9 +6059,13 @@
         { "narrate": "Sloe has not asked the council about the bell once all summer. Every few days she asks you whether the promise at the end of the lower watch's street still stands. It does.", "when": { "flag": "b4_told_sloe" } },
         { "narrate": "Nobody on the council has asked about the bell. Sorrel has her gate book locked in her office, and has not read the autumn page out, which is as near as she comes to forgetting it." }
       ] },
-      { "narrate": "Sloe has been at Highpass all summer, on the bench outside the cells, with her slate on her knee." },
+      { "oneOf": [
+        { "narrate": "Sloe took the council's answer up to the Hall in the spring, and came down again after the quiet night, and has been on the bench outside the cells since, with her slate on her knee.", "when": { "flag": "b4_hall_camp" } },
+        { "narrate": "Sloe has been at Highpass all summer, on the bench outside the cells, with her slate on her knee." }
+      ] },
       { "narrate": "Hesk is in the cell next to Sable's. He has been there two years, and has heard everything said in the next cell, and has said nothing about any of it to anybody.", "when": { "flag": "b3_promise_old" } },
-      { "narrate": "Davin has spent the summer on the gate with Sorrel's watch, learning their drill, and Orin goes up most evenings to watch the boy get it wrong, and says nothing.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+      { "narrate": "Davin has spent the summer on the gate with Sorrel's watch, learning their drill, and since you came back up from Briarwatch, Orin goes up most evenings to watch the boy get it wrong, and says nothing.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+      { "narrate": "Davin has spent the summer on the gate with Sorrel's watch, learning their drill, and getting it wrong, and then less wrong.", "when": { "flag": "b4_davin_comes", "absent": "orin" } },
       { "oneOf": [
         { "narrate": "The Wold's door-bearers have cut and stacked the watch's winter wood along the inside of the gatehouse wall, up to the eaves, which is how Iona's bill was paid in the end. Iona has written 'Paid in wood' across it.", "when": { "flag": "job:other-invoice-worked" } },
         { "narrate": "Iona's bill to the Wold hangs on the nail in her office, with 'Paid' across it in her own hand, and under that her own name.", "when": { "flag": "job:other-invoice-paid" } },
@@ -6099,11 +6103,18 @@
           ] },
           { "oneOf": [
             { "say": "Sable", "text": "She is at rest. I bound her into Briarwatch's bell when I was the warden there, in secret, to keep the village safe properly, and she never once argued with me. Not that night, and not in all the years after.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
-            { "say": "Aster Vey", "text": "Tell him I was asked. At midsummer, in Briarwatch, for the first time since he put me in. Tell him that's what it's like, being asked. He never did." }
+            { "oneOf": [
+              { "say": "Aster Vey", "text": "Tell him Briarwatch asked its keeper at midsummer what its bell was for, and Tovin answered, and I heard it from here. Nobody asked me. Nobody has, since he put me in.", "when": { "flag": "b3_bell_aster" } },
+              { "say": "Aster Vey", "text": "Tell him I was asked. Last summer, a night a month, and at midsummer for the rest. Tell him that's what it's like, being asked. He never did.", "when": { "anyFlag": ["b4_bw_quiet", "b4_bw_pim"] } },
+              { "say": "Aster Vey", "text": "Tell him I was asked. At midsummer, in Briarwatch, for the first time since he put me in. Tell him that's what it's like, being asked. He never did." }
+            ] }
           ] },
           { "oneOf": [
             { "say": "Sable", "text": "If she were here she would ask me one thing: whether anybody has asked the bells. Nobody has. Then she would wait, and I would have nothing to say, and she would know it, and so would I.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
-            { "say": "Aster Vey", "text": "If he goes to Cinder Fold, every one of us in a bell rings with whatever he gives Ailith. Him too. Me. Nobody's asked us. He asked to be put in a bell, and he was let. He knows the difference better than anybody. Tell him I said so." }
+            { "oneOf": [
+              { "say": "Aster Vey", "text": "If he goes to Cinder Fold, every one of us in a bell rings with whatever he gives Ailith. Him too. Me. Nobody's asked us. He asked to be put in a bell, and he was let. He knows the difference better than anybody. Tell him I said so.", "when": { "flag": "b3_sable_cast" } },
+              { "say": "Aster Vey", "text": "If he goes to Cinder Fold, every one of us in a bell rings with whatever he gives Ailith. Me too. Nobody's asked us. He asked to be put in a bell once, and was told no, and lived with it. He knows the difference better than anybody. Tell him I said so." }
+            ] }
           ] },
           { "say": "Aster Vey", "text": "And tell him I'm going to rest after the harvest. I chose it. He can stop being sorry. I've decided to stop being angry.", "when": { "flag": "b4_voice_rests" } },
           { "oneOf": [
@@ -6136,7 +6147,10 @@
             { "say": "Hesk", "text": "I've had his bell through my window for two years. It rings when it likes, and it likes to ring when I'm asleep.", "when": { "flag": "b3_sable_cast" } },
             { "say": "Hesk", "text": "I've had him through the wall for two years. He reads aloud. He reads aloud in his sleep, in the founders' spelling." }
           ] },
-          { "say": "Hesk", "text": "She came down here in the autumn, Ailith, with a lamp and a page, and sat outside his bars for an evening, and I heard every word of it. He told her what the bell does. She asked him how it's rung. He said he'd think. She thanked him. She's a polite woman. So was I, once." },
+          { "oneOf": [
+            { "say": "Hesk", "text": "She came in the autumn, Ailith, with a lamp and a page, and stood under his bell in the yard for an evening, and I heard every word of it through my window. He told her what the bell does. She asked him how it's rung. He said he'd think. She thanked him. She's a polite woman. So was I, once.", "when": { "flag": "b3_sable_cast" } },
+            { "say": "Hesk", "text": "She came down here in the autumn, Ailith, with a lamp and a page, and sat outside his bars for an evening, and I heard every word of it. He told her what the bell does. She asked him how it's rung. He said he'd think. She thanked him. She's a polite woman. So was I, once." }
+          ] },
           { "say": "Hesk", "text": "I bought a ring of bells because I was sure. He bound one because he was sure. She's sure. Ask him which of the three of us he means to be at midwinter." }
         ]
       },
@@ -6146,7 +6160,7 @@
         "requires": { "flagsAny": ["b4_rue_council", "b4_rue_watch"] },
         "lines": [
           { "narrate": "Rue is on the cell stair with her book, copying something out of it into a second book, slowly." },
-          { "say": "Rue", "text": "The summer before last, while I was waiting for your council, I came down here every day, and he taught me the marks at the bottom of the founders' page. Not the letters. I have always had the letters. The marks under them, for notes. We never kept those in the Wold. Nobody up there rang anything." },
+          { "say": "Rue", "text": "Last summer, while I was waiting for your council, I came down here every day, and he taught me the marks at the bottom of the founders' page. Not the letters. I have always had the letters. The marks under them, for notes. We never kept those in the Wold. Our ringers learn at the rope, by ear, and nobody writes a note down." },
           { "say": "Rue", "text": "He said a note written down is a note anybody can ring. He showed me how the Parting Bell's would be written, and then he did not write it." },
           { "say": "Rue", "text": "I have it in my book that he was kind to me. I am keeping that line, whatever he does." }
         ]
@@ -6190,7 +6204,7 @@
       { "narrate": "The watch sergeant counts them in at the yard gate, out of habit, and looks at the gate book under his arm, and counts them again. They are the same twelve, by their names, who went up the north road with Ailith in the autumn and came down with a load." },
       { "oneOf": [
         { "narrate": "They draw up beside Highpass's bell in its frame. The rope-men's foreman looks at the bell, and at the cart, and at the hoist, the way a ringer looks at a weight.", "when": { "flag": "b3_sable_cast" } },
-        { "narrate": "They draw up at the head of the cell stair. The rope-men's foreman has a letter in Sable's hand, and gives it to the cell guard, who reads it twice and goes down for the keys, because it is Sable's writing and nobody has ever told him what that is worth." }
+        { "narrate": "They draw up at the head of the cell stair. The rope-men's foreman has a letter in Sable's hand, and gives it to the cell guard, who reads it twice and goes down for the keys, because Sable's letters have been obeyed at Highpass for two years, and nobody has told him this one should not be." }
       ] }
     ],
     "crisis": [

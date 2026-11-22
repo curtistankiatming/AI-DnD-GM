@@ -362,7 +362,7 @@ test('chapter 24: Sable says how Ailith learned what the bell does, in his cell 
   assert.doesNotMatch(opening(departed('b4-gatehouse')), /bell stands in its frame/);
   // Aster through the joined bells with Sable cast, by Tovin's letter otherwise, and Sable speaks of her when she is at rest.
   assert.match(talk('b4-gatehouse', 'aster', { flags: cast }), /the bell in the yard answers instead[^]*Briarwatch's bell[^]*Aster Vey: Tell him I was asked/);
-  assert.match(talk('b4-gatehouse', 'aster', { flags: { ...cast, b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true } }), /Vell's great bell[^]*Aster Vey: Tell him I was asked/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { ...cast, b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true } }), /Vell's great bell[^]*Aster Vey: Tell him Briarwatch asked its keeper at midsummer/);
   assert.match(talk('b4-gatehouse', 'aster'), /in Tovin's careful hand[^]*Aster Vey:/);
   const rest = talk('b4-gatehouse', 'aster', { flags: { b3_bell_aster: true, b3_promise_old: true } });
   assert.match(rest, /Sable: She is at rest/); assert.doesNotMatch(rest, /Aster Vey:/);
@@ -494,7 +494,7 @@ test('the story reviews\' blockers for chapters 21 to 23 hold', () => {
   assert.match(opening(departed('b4-invoice', { flags: { b4_tally_truth: false, b4_tally_wait: true } })), /'They asked us to wait\. We have waited nine hundred years\.'/);
   assert.doesNotMatch(opening(departed('b4-invoice', { flags: { ...HALL, b4_tally_truth: false, b4_tally_wait: true } })), /The line for last winter/);
   // Aster remembers Pim's quiet nights; Pim's camp line follows whether the bell has a voice.
-  assert.match(opening(after('b4-quietnight', { flags: { b4_bw_quiet: true } })), /Pim asked me the same thing last summer/);
+  assert.match(opening(after('b4-quietnight', { flags: { b4_bw_quiet: true } })), /I was asked that last summer too, for a night a month/);
   assert.doesNotMatch(opening(after('b4-quietnight', { flags: { b4_bw_rings: true, b4_bw_quiet: false } })), /Pim asked me the same thing/);
   assert.match(sceneText(decide('b4-quietnight', 'quiet')), /Last night I sat up here and listened to the lanes/);
   assert.match(sceneText(decide('b4-quietnight', 'quiet', { flags: HALL })), /I never heard them before\. You don't, when you're ringing/);
@@ -505,4 +505,22 @@ test('the story reviews\' blockers for chapters 21 to 23 hold', () => {
   assert.doesNotMatch(night({ b3_bell_aster: true }, high), /Nobody rings|rings out of fear/);
   assert.match(night({ b3_bell_aster: true }, low), /somebody runs for the stream with a light/);
   assert.match(night({}, low), /somebody runs for the tower/);
+});
+
+test('the story reviews\' blockers for chapter 24 hold: Aster is asked only where she was, Sable was let into a bell only if he is in one, and Rue and Hesk speak of the right summer and place', () => {
+  // Aster's "I was asked": from Vell's bell she only heard Briarwatch asked; with Briarwatch's quiet nights, last summer too.
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b3_sable_cast: true, b3_bell_aster: true, b3_promise_old: false } }), /Briarwatch asked its keeper at midsummer[^]*Nobody asked me/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b3_sable_cast: true } }), /Last summer, a night a month, and at midsummer for the rest/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b3_sable_cast: true, b4_bw_quiet: false } }), /At midsummer, in Briarwatch, for the first time since he put me in/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b3_bell_aster: true } }), /She is at rest/);
+  // Only Sable in the bell asked to be put in one and was let.
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b3_sable_cast: true } }), /He asked to be put in a bell, and he was let/);
+  assert.match(talk('b4-gatehouse', 'aster', { flags: { b4_bw_quiet: false } }), /He asked to be put in a bell once, and was told no, and lived with it/);
+  assert.doesNotMatch(talk('b4-gatehouse', 'aster', { flags: { b4_bw_quiet: false } }), /and he was let/);
+  // Rue waited for the council last summer; Hesk heard Ailith through the wall, or through his window under the bell.
+  const rue = talk('b4-gatehouse', 'rue', { flags: { b4_rue_council: true } });
+  assert.match(rue, /Last summer, while I was waiting for your council/); assert.doesNotMatch(rue, /summer before last/);
+  assert.match(rue, /Our ringers learn at the rope, by ear/);
+  assert.match(talk('b4-gatehouse', 'hesk'), /sat outside his bars for an evening/);
+  assert.match(talk('b4-gatehouse', 'hesk', { flags: { b3_sable_cast: true } }), /stood under his bell in the yard[^]*through my window/);
 });

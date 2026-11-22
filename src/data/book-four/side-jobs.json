@@ -678,7 +678,11 @@
               { "say": "Dunnet's door-bearer", "text": "With our hands. Show us the work." },
               { "narrate": "Sorrel shows them the watch's woodpile, which is a month short for the winter. By the end of the week it is cut and stacked along the inside of the gatehouse wall, up to the eaves, and the watch has stopped arguing with the Wold about anything." },
               { "say": "Iona", "text": "Paid in wood. I've been paid in worse." },
-              { "narrate": "She writes 'Paid in wood' across the bill and hangs it back on its nail." }
+              { "narrate": "She writes 'Paid in wood' across the bill and hangs it back on its nail." },
+              { "oneOf": [
+                { "say": "Burdock", "text": "Paid in wood, by the Wold's own hands. I will cross it through. The door-bearers will want that one read aloud.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+                { "narrate": "Rue crosses the line through in her book, and writes under it: 'Paid in wood, by the Wold's own hands.'" }
+              ] }
             ],
             "setFlags": { "job:other-invoice-worked": true }
           }
@@ -705,7 +709,10 @@
             { "narrate": "In the far fields by the Briarwood road the Wold's tents are still up after the hay. Betony of Lantry and her family have been sleeping in Aveline's barn since the rain, and they have chalked their names on its door, small, in the corner, and under the names a line.", "when": { "flag": "b4_crossed" } },
             { "narrate": "Two of the Wold's door-bearers stayed in Briarwatch after the quiet night to help with the harvest: Betony of Lantry, and her grown son, with his mother's door-board on his back. They have been sleeping in Aveline's barn since the rain, and they have chalked their names on its door, small, in the corner, and under the names a line." }
           ] },
-          { "narrate": "The line says: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.'" },
+          { "oneOf": [
+            { "narrate": "The line says: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.'", "when": { "flag": "method:b4-quietnight", "is": "peace" } },
+            { "narrate": "The line says: 'Briarwatch let the white into its lanes for half a night. Owed to Briarwatch: one night.'" }
+          ] },
           { "say": "Betony", "text": "In Lantry we write on the doors what's owed, and who to, so nobody has to remember it. We'd like to write it on every door that took the white that night. Every house on the Briarwood edge. They're owed. It ought to be where they can see it." },
           { "say": "Aveline", "text": "Half the edge says it's a kindness, and the other half says it's chalk on their doors and who said anybody could. I've a list for everything in this village. I haven't a rule for this. I'd like one by the end of the week, and I'd like it not to be mine." },
           { "say": "maren", "text": "In Lantry the doors are how they remember. They're asking to remember Briarwatch.", "when": { "party": "maren" } }
@@ -738,7 +745,10 @@
             "lines": [
               { "narrate": "You go across the square to Dera, who listens with her hammer in her hand, and then puts it down." },
               { "say": "Dera", "text": "My door's been written on by every boy in Briarwatch since my mother's time. One more line won't hurt it." },
-              { "narrate": "Betony writes it on the forge door, in the middle, where everybody coming into the square has to see it: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.' By evening somebody has written under it, in a Briarwatch hand: 'Noted.'" }
+              { "oneOf": [
+                { "narrate": "Betony writes it on the forge door, in the middle, where everybody coming into the square has to see it: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.' By evening somebody has written under it, in a Briarwatch hand: 'Noted.'", "when": { "flag": "method:b4-quietnight", "is": "peace" } },
+                { "narrate": "Betony writes it on the forge door, in the middle, where everybody coming into the square has to see it: 'Briarwatch let the white into its lanes for half a night. Owed to Briarwatch: one night.' By evening somebody has written under it, in a Briarwatch hand: 'Noted.'" }
+              ] }
             ],
             "setFlags": { "job:wold-family-forge": true }
           },
