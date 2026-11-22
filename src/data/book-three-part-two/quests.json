@@ -297,7 +297,7 @@
             }
           },
           {
-            "narrate": "Elske Marrow is in a cell at Highpass, as the council judged. A letter from her is waiting for you at the harbour master's office, in her small, neat hand, dated before the board on the Hall steps was even painted.",
+            "narrate": "Elske Marrow is at the Sallows hospice, which the council sentenced her to keep open for five years, and has no seat. A letter from her is waiting for you at the harbour master's office, in her small, neat hand, dated before the board on the Hall steps was even painted.",
             "when": {
               "flag": "elske_judged"
             }
@@ -3573,7 +3573,7 @@
                 }
               },
               {
-                "narrate": "Elske Marrow is in her cell at Highpass. Her letter came up the Briarwood road with the council's, addressed to you, on prison paper.",
+                "narrate": "Elske Marrow is at the Sallows, and has no seat. Her letter came up the Briarwood road with the council's, addressed to you, on the hospice's paper.",
                 "when": {
                   "flag": "elske_judged"
                 }
@@ -3598,7 +3598,7 @@
               },
               {
                 "say": "Elske Marrow",
-                "text": "They will ask you what the free wards should promise. I can tell you what I would have done: asked for everything at once, from everyone, by law. It would have worked for a winter. I have had a long time in a small room to think about what it would have cost after.",
+                "text": "They will ask you what the free wards should promise. I can tell you what I would have done: asked for everything at once, from everyone, by law. It would have worked for a winter. I have had a long time at the Sallows, by the beds, to think about what it would have cost after.",
                 "when": {
                   "flag": "elske_judged"
                 }
