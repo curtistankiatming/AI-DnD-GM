@@ -800,7 +800,7 @@ test('the chapter\'s own companion is in one place when they roll the peaceful w
   assert.match(said('b4-key', 'nessa'), /Nessa goes down first, because she always does/);
   // The rope is held by as many miners as came.
   assert.match(told(choose(strong(at('b4-key', { phase: 'crisis', flags: { 'approach:b4-key': true } })), 'resolve')), /sixty miners/);
-  assert.match(told(choose(strong(at('b4-key', { phase: 'crisis' })), 'resolve')), /eleven miners/);
+  assert.match(told(choose(strong(at('b4-key', { phase: 'crisis' })), 'resolve')), /the miners on the lid paying it out/);
   // With Nessa away and Wren cast, nobody climbs the hill.
   const away = opening(at('b4-key', { phase: 'after', flags: { 'method:b4-key': 'peace', b3_wren_cast: true }, party: ['orin', 'maren'] }));
   assert.match(away, /the tenth bell rings once/); assert.doesNotMatch(away, /Wren keeps the key|on her stick/);
