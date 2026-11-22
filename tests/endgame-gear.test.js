@@ -83,7 +83,9 @@ test('every late requirement is one a hero of that class can meet, and every pie
   // classes; armour goes by weight and accessories stay shared (22 November 2026).
   for (const item of LATE.filter((i) => i.slot === 'mainHand')) assert.ok(item.requires.classes?.length >= 1 && item.requires.classes.length <= 3, `${item.id}: class family`);
   // Sparse: about eight pieces a tier, not one of each type at every level.
-  assert.ok(LATE.length >= 60 && LATE.length <= 90, `${LATE.length} late pieces`);
+  // Book Four's one-per-chapter rewards are counted apart from the sold tiers.
+  const sold = LATE.filter((i) => !chapterReward(i));
+  assert.ok(sold.length >= 60 && sold.length <= 90, `${sold.length} late pieces`);
 });
 
 test('each tier has something for every class and companion, and each kind of kit improves at least every 20 levels', () => {

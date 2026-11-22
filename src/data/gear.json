@@ -4695,9 +4695,9 @@
     "rarity": "Legendary",
     "value": 760,
     "description": "The lamplighter's hook Davin carried over the burning plank to the lamp-store, the night it burned, and carried back.",
-    "purpose": "Strength, 1d8 piercing, +3 to hit, +5 damage.",
+    "purpose": "Strength, 1d10 piercing, +3 to hit, +5 damage.",
     "weapon": {
-      "damage": "1d8",
+      "damage": "1d10",
       "damageType": "piercing",
       "ability": "str",
       "properties": []
@@ -4833,7 +4833,7 @@
       "cha": 1
     },
     "stats": {
-      "dealt": 0.1
+      "dealt": 0.05
     },
     "requires": {
       "level": 46

@@ -2164,13 +2164,13 @@ below.
     saves +1, 5% taken, History story), the True Verse (Performance +3,
     Persuasion +2, Charisma saves +2, Read Aloud: Empowered 2 rounds), the
     cutlass (finesse 1d8, +3/+5, 10% dealt, rogue, bard or ranger, Hamstring:
-    Slowed 2 rounds), the hook (Strength 1d8, +3/+5, 5% dealt, fighter or
+    Slowed 2 rounds), the hook (Strength 1d10, +3/+5, 5% dealt, fighter or
     cleric, Pull Clear: Slowed 2 rounds), Rue's second book (Insight and
     History +3, Wisdom saves +1, 5% dealt, Insight story), the key-cord
     (Perception and Athletics +3, Constitution and Wisdom saves +1, 10% taken,
     Perception story), the satchel (History, Religion and Investigation +3, 5%
     dealt, Religion story), the Embassy Seal (Persuasion, Insight and History
-    +3, Wisdom and Charisma saves +1, 10% dealt, Persuasion story) and the
+    +3, Wisdom and Charisma saves +1, 5% dealt, Persuasion story) and the
     Parting-hall Plate (heavy, base AC 23, 15% taken, Constitution and Wisdom
     saves +1, Brace: Fortified 2 rounds). The late-gear test's tier rule
     allows a Book Four chapter reward at its chapter's level minus 2.
