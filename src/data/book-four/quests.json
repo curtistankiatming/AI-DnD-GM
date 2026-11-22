@@ -3960,9 +3960,9 @@
     "xp": 15500,
     "gold": 1140,
     "region": "Orme's Long Hall, with the tally towns come in to vote by their door-boards",
-    "threat": "The Reckoner means to ring the Parting Bell backward at midwinter, and the tally towns are come to Orme to vote on it.",
+    "threat": "The Reckoner means to ring the Parting Bell backward at the next midwinter, and the tally towns are come to Orme to vote on it.",
     "faction": "wold",
-    "brief": "Sloe has called the tally towns to Orme. She has read the Parting Bell's line, and done her sum: share the winter with us, or at midwinter she rings the Parting Bell backward, and every bell in the bell-country goes quiet for one winter. Whoever rings it forgets everything. She will.",
+    "brief": "Sloe has called the tally towns to Orme. She has read the Parting Bell's line, and done her sum: share the winter with us, or at the next midwinter, a year from now, she rings the Parting Bell backward, and every bell in the bell-country goes quiet for one winter. Whoever rings it forgets everything. She will.",
     "told": {
       "ballad": "In the Long Hall the Reckoner did her sum before all the towns of the Wold, and it came out right, and the strangers from the south had to answer it.",
       "tally": "Orme, the Long Hall. The tally towns came in with their door-boards. The Reckoner read her sum. Written: it was right."
@@ -3975,7 +3975,7 @@
         { "say": "Sloe", "text": "The line on the Parting Bell: 'Rung once, to part. Ring it again and all will answer.' The founders cut it round the bell's shoulder. Our side of the Hall has it too, worn almost smooth, on the stone under our nine. Rue copied it for me off the stone." }
       ] },
       { "say": "Sloe", "text": "Rung forward, the founders' way, it rings the white north, all of it, every bell at once. Rung backward, it is the other note. Every bell answers it, and goes quiet. For one winter, every bell in the bell-country is a pot. And the white lies where it falls." },
-      { "say": "Sloe", "text": "Whoever rings it forgets everything. Everything, not a season. I have done that sum too. I will ring it. At midwinter, unless the south shares the winter with us. That is my sum. It is right." }
+      { "say": "Sloe", "text": "Whoever rings it forgets everything. Everything, not a season. I have done that sum too. I will ring it. Not this midwinter. The road south is shut until the thaw, and a sum must be heard before it can be answered. The next one, unless the south shares the winter with us. That is my sum. It is right." }
     ],
     "talks": [
       {
@@ -4034,7 +4034,7 @@
         "lines": [
           { "say": "Rue", "text": "She sent me south to find out who sends the white. I found out. Now she has the answer, and she is doing exactly what I would do with it, and I would like her to stop." },
           { "oneOf": [
-            { "say": "Rue", "text": "I kept my mother. It hurts every morning. Sloe will not have a morning after midwinter. She will not have a mother either, or a name. I would not wish that on anyone. She is wishing it on herself, carefully.", "when": { "flag": "b4_rue_kept" } },
+            { "say": "Rue", "text": "I kept my mother. It hurts every morning. Sloe will not have a morning after next midwinter. She will not have a mother either, or a name. I would not wish that on anyone. She is wishing it on herself, carefully.", "when": { "flag": "b4_rue_kept" } },
             { "say": "Rue", "text": "I gave my mother. It does not hurt. Sloe will give everything at once, and nothing will hurt her ever again. I know what that is like now. It is not nothing. It is not enough.", "when": { "flag": "b4_rue_gave" } }
           ] }
         ]
@@ -4075,8 +4075,8 @@
     ],
     "crisis": [
       { "narrate": "Then the door-boards begin to come down, one at a time, in front of Sloe's table: Thrum's face up, and Greve's, and Lantry's, and the next, and the next." },
-      { "say": "Sloe", "text": "Every door that lies face up says: send the sum south as the Wold's, and if the south will not share, I ring the bell at midwinter. Every door that lies face down says: wait." },
-      { "narrate": "The tally-guard stand along the walls in their grey coats with their spears wrapped and their slates under their arms. If the vote is Sloe's, they will hold the southerners in the Hall until midwinter, as surety for the answer." },
+      { "say": "Sloe", "text": "Every door that lies face up says: send the sum south as the Wold's, and if the south will not share, I ring the bell at the next midwinter. Every door that lies face down says: wait." },
+      { "narrate": "The tally-guard stand along the walls in their grey coats with their spears wrapped and their slates under their arms. If the vote is Sloe's, they will hold the southerners in the Hall until the thaw opens the road, as surety for the answer." },
       { "say": "orin", "text": "Count them. We've a dozen doors to turn, maybe less. Say it now, whatever you're going to say.", "when": { "party": "orin" } }
     ],
     "peaceful": {
@@ -4095,9 +4095,9 @@
         { "narrate": "{You know|@ knows} that the sum is right, and {you say|@ says} so first, to the whole Hall, before anything else.", "when": { "flag": "prepared:b4-reckoning" } },
         { "narrate": "{You know|@ knows} which bearers came to be told something first, and {you go|@ goes} to those doors.", "when": { "flag": "approach:b4-reckoning" } },
         { "narrate": "{You stand|@ stands} in front of Sloe's table, between her and the door-boards still standing, and {speak|speaks} to the Hall.", "when": { "notFlag": "approach:b4-reckoning" } },
-        { "narrate": "{You tell|@ tells} them that the free wards have never been asked. That the council at Highpass has never heard the sum, and that a sum nobody has been told cannot be answered. That if the Wold waits until midwinter for the south's own word, it will have lost nothing it has not lost already, and Sloe will still have her bell." },
+        { "narrate": "{You tell|@ tells} them that the free wards have never been asked. That the council at Highpass has never heard the sum, and that a sum nobody has been told cannot be answered. That if the Wold waits until the next midwinter for the south's own word, it will have lost nothing it has not lost already, and Sloe will still have her bell." },
         { "narrate": "Dunnet's door-bearer turns Dunnet's door face down, because Wem's has just gone face up. Then Wem's bearer turns Wem's over, because Dunnet's did. Then Greve's. Then, one at a time, the rest." },
-        { "say": "Sloe", "text": "Face down. Then the Wold waits for the south's answer until midwinter. I will be at the bell at midwinter whatever it is. Burdock, write that the vote was against me, and that I asked for it." },
+        { "say": "Sloe", "text": "Face down. Then the Wold waits for the south's answer until the next midwinter. I will be at the bell that night whatever it is. Burdock, write that the vote was against me, and that I asked for it." },
         { "say": "Burdock", "text": "Written. Against. Asked for. It is the first vote in the tally where I know what it was about." }
       ],
       "failure": [
