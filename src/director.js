@@ -352,10 +352,20 @@ function writtenTrial(state, kind = P.nextTrial(state.player) || 'third') {
     ]
   };
 }
+// Text cut to `room` characters: at the last sentence end inside it, else the
+// last word, so a cut never splits a word.
+function fitText(text, room) {
+  if (text.length <= room) return text;
+  const cut = text.slice(0, Math.max(0, room));
+  const end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (end > room / 2) return cut.slice(0, end + 1);
+  const space = cut.lastIndexOf(' ');
+  return (space > 0 ? cut.slice(0, space) : cut).replace(/[\s,;:]+$/, '');
+}
 // The book's last words before the 3rd job trial (src/expansion.js
 // trialFraming, Book Three's epilogue): what the hero gave or kept, read from
 // the save. The trial opens with it, as the Second Oath framed the 2nd job.
-const framing = (state, kind) => { const text = kind === 'third' ? clean(trialFraming(state), TEXT.brief) : ''; return text ? `${text} ` : ''; };
+const framing = (state, kind) => { const text = kind === 'third' ? fitText(clean(trialFraming(state), TEXT.long), TEXT.brief) : ''; return text ? `${text} ` : ''; };
 // Engine action: put the due job trial on the board, from Claude's draft or
 // the written trial.
 function commissionTrial(state, draft, events) {
@@ -363,7 +373,10 @@ function commissionTrial(state, draft, events) {
   if (blocked) return { ok: false, error: blocked };
   const d = normalize(state), b = P.branchOf(state.player), kind = P.nextTrial(state.player), to = b[kind];
   // Claude's trial opens with the book's framing too (the written one has it built in).
-  const framed = draft && typeof draft === 'object' && framing(state, kind) ? { ...draft, opening: `${framing(state, kind)}${clean(draft.opening, TEXT.long)}` } : draft;
+  // The opening keeps TEXT.long in all, so Claude's part is cut to the room the
+  // framing leaves, at a sentence end where it can be (never mid-word at 900).
+  const f = framing(state, kind);
+  const framed = draft && typeof draft === 'object' && f ? { ...draft, opening: `${f}${fitText(clean(draft.opening, TEXT.long), TEXT.long - f.length)}` } : draft;
   let out = framed ? bound({ ...state, trial: kind }, framed) : null;
   const written = !out?.ok;
   if (written) out = bound({ ...state, trial: kind }, writtenTrial(state, kind));
