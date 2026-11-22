@@ -8622,7 +8622,7 @@
           },
           {
             "say": "orin",
-            "text": "That's what I meant, all these years, when I said we left civilians behind once. Once. As if it were a thing that happened one time and was finished."
+            "text": "That's what I meant, all these years, when I said we left civilians behind once. You all think I meant Calder. I let you. After Calder I left the Second. Thought a hired company would at least be honest about it. It was. Twice. Not once. Calder was the one I could tell, because Hal went back."
           },
           {
             "say": "orin",
@@ -8747,7 +8747,7 @@
             "narrate": "The plank across Cooper's Lane has been creaking all evening, and two lamplighters go out to relash it, and Orin goes with them because he cannot watch someone tie a knot and not have a view on it."
           },
           {
-            "say": "Tam Ostler",
+            "say": "Kester Ostler",
             "text": "Lamplighter's hitch. Two turns and a tuck. Holds anything."
           },
           {
@@ -8755,7 +8755,7 @@
             "text": "It holds if you're pulling it. It walks if you're standing on it. You want a round turn and two half-hitches, and a stopper on the tail."
           },
           {
-            "say": "Tam Ostler",
+            "say": "Kester Ostler",
             "text": "A stopper. On a plank. He wants a stopper. Mags! He wants a stopper."
           },
           {
@@ -8766,13 +8766,13 @@
             }
           },
           {
-            "narrate": "They argue about it for twenty minutes, kneeling on a board over a twenty-foot drop into the mist, passing the rope back and forth: the lamplighter's hitch, the round turn, a third knot that Tam's mother used to use on washing lines that both of them agree is terrible. In the end they tie it Tam's way on one side and Orin's way on the other, and stand on the middle of the plank together, and bounce, carefully, to see which side gives first."
+            "narrate": "They argue about it for twenty minutes, kneeling on a board over a twenty-foot drop into the mist, passing the rope back and forth: the lamplighter's hitch, the round turn, a third knot that Kester's mother used to use on washing lines that both of them agree is terrible. In the end they tie it Kester's way on one side and Orin's way on the other, and stand on the middle of the plank together, and bounce, carefully, to see which side gives first."
           },
           {
-            "narrate": "Neither side gives. Tam looks at Orin. Orin looks at Tam."
+            "narrate": "Neither side gives. Kester looks at Orin. Orin looks at Kester."
           },
           {
-            "say": "Tam Ostler",
+            "say": "Kester Ostler",
             "text": "Tomorrow we'll try it with three of us."
           },
           {
@@ -8834,7 +8834,7 @@
       ],
       "success": [
         {
-          "narrate": "{You go|@ goes} round with Tam and Davin on the second night, the whole of the round, a hundred and six lamps. The planks bow under {them} and {they} {learn|learns} to go with them. At the far edge of town, where the Vell road starts to climb out of the valley, the roofs run out at a cooper's yard, and beyond it the road goes up between two walls, clear of the mist, to the ridge."
+          "narrate": "{You go|@ goes} round with Kester and Davin on the second night, the whole of the round, a hundred and six lamps. The planks bow under {them} and {they} {learn|learns} to go with them. At the far edge of town, where the Vell road starts to climb out of the valley, the roofs run out at a cooper's yard, and beyond it the road goes up between two walls, clear of the mist, to the ridge."
         },
         {
           "say": "Davin",
@@ -8846,7 +8846,7 @@
       ],
       "failure": [
         {
-          "narrate": "{You go|@ goes} round with Tam and Davin on the second night. Halfway along Mill Street a board gives under {their} heel and {they} {go|goes} through to the waist, legs in the mist. It is like stepping into a river in winter, if the river could think. It has {their} warmth before Tam has {their} collar. For a while afterwards {they} cannot remember the name of the lane {they} {are|is} on, or why it matters."
+          "narrate": "{You go|@ goes} round with Kester and Davin on the second night. Halfway along Mill Street a board gives under {their} heel and {they} {go|goes} through to the waist, legs in the mist. It is like stepping into a river in winter, if the river could think. It has {their} warmth before Kester has {their} collar. For a while afterwards {they} cannot remember the name of the lane {they} {are|is} on, or why it matters."
         },
         {
           "narrate": "{You come|@ comes} home shaking, by a way {they} will not remember tomorrow."
@@ -8885,7 +8885,7 @@
         "narrate": "The mist in the lanes stands up. It rises to the sills, to the lintels, to the gutters, and keeps rising, white and slow and absolutely silent, and where it touches the lamp poles the lamps gutter and shrink and go blue. On Mill Street a lamp goes out. Then the one beside it."
       },
       {
-        "say": "Tam Ostler",
+        "say": "Kester Ostler",
         "text": "Mill Street's gone! I can't get to it, it's over the plank!"
       },
       {
@@ -8952,13 +8952,13 @@
       ],
       "success": [
         {
-          "narrate": "{You go|@ goes} first, because the round has been walked now and the party knows where Mill Street's boards are rotten. Tam and Davin go with {them} with the lamplighters' hooks, and behind them the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
+          "narrate": "{You go|@ goes} first, because the round has been walked now and the party knows where Mill Street's boards are rotten. Kester and Davin go with {them} with the lamplighters' hooks, and behind them the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
           "when": {
             "flag": "approach:b3-saltwick"
           }
         },
         {
-          "narrate": "{You go|@ goes} first, with Tam and Davin and their hooks, finding the way plank by plank because nobody learned it in time. Behind {them} the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
+          "narrate": "{You go|@ goes} first, with Kester and Davin and their hooks, finding the way plank by plank because nobody learned it in time. Behind {them} the whole of Saltwick comes over the roofs in a line, a family at a time: children passed hand to hand across the gaps, the old carried, the hens in their coop slung on a pole between two men, a woman with a baby born on the roofs tied to her chest in a shawl.",
           "when": {
             "notFlag": "approach:b3-saltwick"
           }
@@ -8993,7 +8993,7 @@
           }
         },
         {
-          "narrate": "At the cooper's yard the roofs run out, and the line goes down a ladder into the head of the Vell road and up between the two walls, where the mist has not reached, and onto the ridge. It takes until the sky is going grey. Then the last of them are on the ridge: Davin, and Tam, and Mags with her lamp-hook, and last of all the lamp."
+          "narrate": "At the cooper's yard the roofs run out, and the line goes down a ladder into the head of the Vell road and up between the two walls, where the mist has not reached, and onto the ridge. It takes until the sky is going grey. Then the last of them are on the ridge: Davin, and Kester, and Mags with her lamp-hook, and last of all the lamp."
         },
         {
           "say": "Mags Peller",
@@ -9194,7 +9194,7 @@
           },
           {
             "say": "Mags Peller",
-            "text": "All of us? The old ones? Nan Coyle is ninety."
+            "text": "All of us? The old ones? Nan Dobbin is ninety."
           },
           {
             "say": "orin",
@@ -9301,7 +9301,7 @@
             }
           },
           {
-            "narrate": "The lamplighters unhitch three carts and run them down the ridge to the roofs with Tam steering and Davin on the brake. The ration officer writes in her ledger the whole time, very carefully: the date, the hour, the number of barrels, your name, and a description of each of your companions."
+            "narrate": "The lamplighters unhitch three carts and run them down the ridge to the roofs with Kester steering and Davin on the brake. The ration officer writes in her ledger the whole time, very carefully: the date, the hour, the number of barrels, your name, and a description of each of your companions."
           },
           {
             "say": "Ration Officer Dunn",
@@ -9471,7 +9471,7 @@
           },
           {
             "say": "Corvane",
-            "text": "Harl. Ada Brennick, sixty-one. Tobias Brennick, sixty-four. Their grandson, Aldo Brennick, eight. Lindmoor. Joss Marley, forty. The Teller villages. Gwen Teller, thirty-three, and her daughters..."
+            "text": "Harl. Wynn Mallory, sixty-one. Tobias Mallory, sixty-four. Their grandson, Aldo Mallory, eight. Lindmoor. Dunstan Marley, forty. The Teller villages. Rosa Teller, thirty-three, and her daughters..."
           },
           {
             "narrate": "He reads for most of an hour. When he stops it is because the light has gone, not because the names have."
@@ -9559,7 +9559,7 @@
           },
           {
             "say": "Ysolde",
-            "text": "It's Jory's. My brother. He's twelve, and he's grown out of everything, and Wil's nine and gets everything Jory grows out of, so I'm sewing it for both of them really."
+            "text": "It's Hugh's. My brother. He's twelve, and he's grown out of everything, and Wil's nine and gets everything Hugh grows out of, so I'm sewing it for both of them really."
           },
           {
             "say": "nessa",
@@ -9594,7 +9594,7 @@
           },
           {
             "say": "Ysolde",
-            "text": "You'll like Jory. He's furious about it. Wil just wants to know if I'll be able to hear him when he's in the Second District. I said I'll hear everyone. That's the point of a bell."
+            "text": "You'll like Hugh. He's furious about it. Wil just wants to know if I'll be able to hear him when he's in the Second District. I said I'll hear everyone. That's the point of a bell."
           },
           {
             "narrate": "Nessa doesn't say anything else. She stays and holds the button tin until Ysolde has finished the coat, and you can see her thinking, fast, the way she thinks before she does something.",
@@ -10667,7 +10667,7 @@
       },
       {
         "say": "Ysolde",
-        "text": "I come of my own free will. For Jory and Wil, and the Sixth District, and the city. I know what the bronze is. I'm not afraid of it. I'm afraid of them being cold, and I'm not afraid of anything else."
+        "text": "I come of my own free will. For Hugh and Wil, and the Sixth District, and the city. I know what the bronze is. I'm not afraid of it. I'm afraid of them being cold, and I'm not afraid of anything else."
       },
       {
         "narrate": "Maren listens. You can see her listening, with all of herself, for anything at all under the words. There is nothing. There is no stone under the stream."
@@ -11229,21 +11229,21 @@
       ],
       "success": [
         {
-          "narrate": "Nobody on the Briarwood road wants to talk about it, which is how you know there is something to talk about. {You start|@ starts} at Edwin Garland's farm, because Edwin has known {you|the party} since the bell, and {they} {help|helps} him mend a gate for most of a morning before {they} {ask|asks}."
+          "narrate": "Nobody on the Briarwood road wants to talk about it, which is how you know there is something to talk about. {You start|@ starts} at Abner Garland's farm, because Abner has known {you|the party} since the bell, and {they} {help|helps} him mend a gate for most of a morning before {they} {ask|asks}."
         },
         {
-          "say": "Edwin Garland",
+          "say": "Abner Garland",
           "text": "Salt. Two sacks, off the Vell cart, at the spring fair. Got them home and they were white inside. Not salt-white. The other white. The dog wouldn't go in the barn. I burned them in the yard and the smoke came off cold."
         },
         {
-          "say": "Edwin Garland",
-          "text": "The Teague place had it in a bolt of cloth. The widow Dorley had it in a crate of horseshoe iron. We burned it and kept our mouths shut. You know why we kept our mouths shut."
+          "say": "Abner Garland",
+          "text": "The Teague place had it in a bolt of cloth. The widow Cobb had it in a crate of horseshoe iron. We burned it and kept our mouths shut. You know why we kept our mouths shut."
         },
         {
           "narrate": "He looks down the hill at the river meadow, at the tents."
         },
         {
-          "say": "Edwin Garland",
+          "say": "Abner Garland",
           "text": "They're decent people, most of them. Two of them dug my top field. But it's their carts it comes in. It's their country it comes from. And it's market day on Thursday, and there's a Vell cart due, and half the road's been saying that if it comes in white this time, they'll know who to thank."
         },
         {
@@ -11306,7 +11306,7 @@
         "narrate": "It goes across the cobbles in a ring, quick and quiet, and where it passes the beans on the nearest stall go grey and the cheese-seller's breath comes out of her in a cloud, and she sits down hard on her own crate and cannot remember, for a moment, what she was selling. A child starts crying. Then everyone is shouting."
       },
       {
-        "say": "Edwin Garland",
+        "say": "Abner Garland",
         "text": "It's them! It comes with them, every time! Get them out of the meadow before it's in the houses!"
       },
       {
@@ -11340,7 +11340,7 @@
           "narrate": "{You get|@ gets} up on the edge of the well, where everyone can see {them}, and {do|does} not tell them they are wrong. {They} {tell|tells} them where the frost came from."
         },
         {
-          "narrate": "{You name|@ names} Edwin Garland's salt, and the Teague cloth, and the widow Dorley's horseshoe iron. Bought off Vell carts, at the spring fair, by Briarwatch people, and carried home by Briarwatch hands. Nobody from the river meadow touched any of it. Edwin goes red to the ears and puts his hay-fork down, and says, loudly, that it is true.",
+          "narrate": "{You name|@ names} Abner Garland's salt, and the Teague cloth, and the widow Cobb's horseshoe iron. Bought off Vell carts, at the spring fair, by Briarwatch people, and carried home by Briarwatch hands. Nobody from the river meadow touched any of it. Abner goes red to the ears and puts his hay-fork down, and says, loudly, that it is true.",
           "when": {
             "flag": "prepared:b3-home"
           }
@@ -11359,16 +11359,16 @@
           "text": "Fire. It hates fire and it hates noise. You've got both. You've all got hands. So have they. Bring the fire from Dera's and the buckets from the mill, and stop standing about."
         },
         {
-          "narrate": "It is the woman with the blue ribbons who moves first. She puts her tray down and picks up a bucket. Then Edwin Garland goes for Dera's brands. Then everyone."
+          "narrate": "It is the woman with the blue ribbons who moves first. She puts her tray down and picks up a bucket. Then Abner Garland goes for Dera's brands. Then everyone."
         },
         {
           "narrate": "They burn the cart where it stands, in the middle of the square, both ends of Briarwatch together, the farmers with brands and the river-meadow people with buckets to keep it off the stalls. Up in the tower Tovin and Pim ring the hours that are not hours, as loudly as they can, and in the bronze Aster Vey rings with them. The shapes come apart in the heat like wet paper."
         },
         {
-          "narrate": "When it is over there is a black ring on the cobbles and a smell of hot iron, and Edwin Garland is standing next to a man from Lindmoor with the same soot on both their faces, neither of them quite sure what to say."
+          "narrate": "When it is over there is a black ring on the cobbles and a smell of hot iron, and Abner Garland is standing next to a man from Lindmoor with the same soot on both their faces, neither of them quite sure what to say."
         },
         {
-          "say": "Edwin Garland",
+          "say": "Abner Garland",
           "text": "Your lot dug my top field."
         },
         {
@@ -11837,16 +11837,16 @@
           "narrate": "The register is where Oswin Pike told you it would be, in a tin box on a shelf at the foot of the stair, under a lamp nobody has lit in years. A long thin book bound in Commandery grey. The first entries are sixty-one years old, in a clerk's copperplate. The last thirty-one years are in Oswin Pike's big careful hand, one line a year for each bell, every year the same: \"Present. Quiet.\""
         },
         {
-          "narrate": "Number One. Edda Vane, 52, keeper of the shrine at Brack Mill. Taken: refused to surrender the shrine bell."
+          "narrate": "Number One. Hilde Vane, 52, keeper of the shrine at Brack Mill. Taken: refused to surrender the shrine bell."
         },
         {
-          "narrate": "Number Seven. Hugh Hollis, 31, shepherd, of Harl. Taken: present in the shrine at Harl at the time of collection."
+          "narrate": "Number Seven. Owen Pask, 31, shepherd, of Harl. Taken: present in the shrine at Harl at the time of collection."
         },
         {
-          "narrate": "Number Twelve. Effie Ilvey, 14, of Lindmoor. Water-carrier to the keeper. Taken: present."
+          "narrate": "Number Twelve. Mae Ilvey, 14, of Lindmoor. Water-carrier to the keeper. Taken: present."
         },
         {
-          "narrate": "Number Thirty-One. Teo Moran, 14, of Osgood's Cross. Taken: present. Countersigned: I. Corvane."
+          "narrate": "Number Thirty-One. Robin Moran, 14, of Osgood's Cross. Taken: present. Countersigned: I. Corvane."
         },
         {
           "narrate": "There are thirty-one lines like that. Four say \"refused\". Twenty-seven say \"present\". {You read|@ reads} them all, by the lamp, and then {they} {read|reads} them again, with the hand-bell beside the book, and Aster says each name out loud to the room, one at a time. Down the rows, one bell at a time, the iron rings back."
@@ -11953,7 +11953,7 @@
           "narrate": "{You hold|@ holds} the hand-bell up in the middle of the vault, in the middle of the note, and Aster Vey speaks."
         },
         {
-          "narrate": "She does not shout over the Chorus. She speaks under it, the way you speak to someone in a fever. She says the first name from the register. Edda Vane, of Brack Mill. Then the next. Hugh Hollis, of Harl. Effie Ilvey, fourteen, of Lindmoor. Teo Moran, fourteen, of Osgood's Cross. {You hold|@ holds} the register open for her, and {turn|turns} the pages, and she says every one.",
+          "narrate": "She does not shout over the Chorus. She speaks under it, the way you speak to someone in a fever. She says the first name from the register. Hilde Vane, of Brack Mill. Then the next. Owen Pask, of Harl. Mae Ilvey, fourteen, of Lindmoor. Robin Moran, fourteen, of Osgood's Cross. {You hold|@ holds} the register open for her, and {turn|turns} the pages, and she says every one.",
           "when": {
             "flag": "prepared:b3-vault"
           }
@@ -12081,10 +12081,10 @@
             "narrate": "You tell Aster to tell them: they can go. Now. Tonight. Nobody is going to ask them for anything ever again."
           },
           {
-            "narrate": "It takes until nearly dawn. Aster speaks to each of them in turn, by name, if she knows it, and they let go one at a time, and each time it is different. Edda Vane of Brack Mill says the evening hymn through once, properly, not flat, and stops halfway through the last line. Hugh Hollis asks whether his sheep were all right, and Aster says yes, and he goes. Effie Ilvey asks Aster to hold her hand, and Aster, who has no hands, says that she is."
+            "narrate": "It takes until nearly dawn. Aster speaks to each of them in turn, by name, if she knows it, and they let go one at a time, and each time it is different. Hilde Vane of Brack Mill says the evening hymn through once, properly, not flat, and stops halfway through the last line. Owen Pask asks whether his sheep were all right, and Aster says yes, and he goes. Mae Ilvey asks Aster to hold her hand, and Aster, who has no hands, says that she is."
           },
           {
-            "narrate": "Number Thirty-One goes last. Corvane is still standing in front of it. He reads the boy's name out of the register himself, all of it, Teo Moran, fourteen, of Osgood's Cross, and says that he signed for him, and that he is sorry, and the iron goes cold under his hand."
+            "narrate": "Number Thirty-One goes last. Corvane is still standing in front of it. He reads the boy's name out of the register himself, all of it, Robin Moran, fourteen, of Osgood's Cross, and says that he signed for him, and that he is sorry, and the iron goes cold under his hand."
           },
           {
             "say": "maren",
@@ -12252,10 +12252,10 @@
         "narrate": "It holds the hospice. The white comes up to its windows and stops at the glass, and inside a hundred and forty people say each other's names until their voices crack, and nobody forgets anything. It holds the hospice. It does not hold a city."
       },
       {
-        "narrate": "At the eighth hour a runner comes up onto the wall walk from the drill-yard. It is Jory Carr, twelve, in the coat with the button Ysolde sewed on, and he is crying with rage."
+        "narrate": "At the eighth hour a runner comes up onto the wall walk from the drill-yard. It is Hugh Carr, twelve, in the coat with the button Ysolde sewed on, and he is crying with rage."
       },
       {
-        "say": "Jory",
+        "say": "Hugh",
         "text": "He's lit the pit. The High Warden. He's locked the barracks and he's lit the pit and he says he's casting all of them, tonight, everyone on the wall, all at once, into the big bell. Ysolde's in the barracks. She's first. He's going to do it now."
       },
       {
@@ -12652,7 +12652,7 @@
         }
       },
       {
-        "narrate": "Ysolde Carr is at the front, in her shawl, with the string in her hair. Jory and Wil are on either side of her, each holding a fistful of her shawl, and she has stopped trying to make them let go."
+        "narrate": "Ysolde Carr is at the front, in her shawl, with the string in her hair. Hugh and Wil are on either side of her, each holding a fistful of her shawl, and she has stopped trying to make them let go."
       },
       {
         "narrate": "Nessa is beside them. She has been beside them since the barracks door opened. She has not said anything to anyone.",
@@ -12762,13 +12762,13 @@
             }
           },
           {
-            "narrate": "Ysolde Carr goes first, as she always meant to. She goes down the stair alone, without looking back, with the string in her hair, and Jory and Wil stand at the top holding each other.",
+            "narrate": "Ysolde Carr goes first, as she always meant to. She goes down the stair alone, without looking back, with the string in her hair, and Hugh and Wil stand at the top holding each other.",
             "when": {
               "notFlag": "b3_ysolde_respected"
             }
           },
           {
-            "narrate": "Ysolde Carr goes first, as she always meant to. She goes down the stair alone, without looking back, with the string in her hair, and Jory and Wil stand at the top holding each other.",
+            "narrate": "Ysolde Carr goes first, as she always meant to. She goes down the stair alone, without looking back, with the string in her hair, and Hugh and Wil stand at the top holding each other.",
             "when": {
               "flag": "b3_ysolde_respected",
               "absent": "nessa"

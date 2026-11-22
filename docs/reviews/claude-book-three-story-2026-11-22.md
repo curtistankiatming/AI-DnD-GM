@@ -33,7 +33,7 @@ rewriting.
   three straight-on chapters (17 to 19) work because each ends on a ledge.
 - **Tone.** Story comes first, and the lighter moments come from the people in
   the scene: Dera taking news as payment, Fennick's welcome forms (Biscuit
-  entered as "livestock (canine, attached)"), Orin and Tam Ostler bouncing on a
+  entered as "livestock (canine, attached)"), Orin and Kester Ostler bouncing on a
   plank to test each other's knots, and Maren winning fourteen hands of Seven
   Bells and giving everything back. Chapter 8 has no joke, as designed. The
   knot motif, a round turn, two half-hitches and a stopper, ends with Orin
@@ -64,22 +64,14 @@ rewriting.
    also took the rope down, Corvane's opening in chapter 9 used both lines,
    one after the other. Now the "recalled" line plays only when the rope is
    still up.
-6. **Names that belonged to somebody else.** These are minor characters, so
-   the names were changed:
-   - Pell Moran, the bound boy in the vault, shared a first name with Pell
-     Haverick, who returns in chapter 11. He is now Teo Moran.
-   - Anwen Teller, read out from Corvane's ledger, came a chapter before Anwen
-     Holt's way is tried at the hospice. She is now Gwen Teller.
-   - There were three Hannes. Hanne Ostrow, from Cask and Lindmoor, stays. The
-     ninety-year-old in Saltwick is now Nan Coyle. The fourteen-year-old bound
-     girl, who was also from Lindmoor, is now Effie Ilvey (Maren's camp line
-     too).
-   - Tam Hollis, the bound shepherd, was a second Tam beside Tam Ostler, and a
-     Hollis beside Reeve Hollis Brede. He is now Hugh Hollis.
-   - Hobb Garland, the Briarwatch farmer in chapter 7, shared a name with Old
-     Hobb from Book One. He is now Edwin Garland.
-   - The widow Marsh, a Briarwatch farmer, was a second Marsh beside Ella
-     Marsh. She is now the widow Dorley.
+6. **Names that belonged to somebody else.** The character review (PR #79)
+   merged first and renamed the same minor characters: Pell Moran is now
+   Robin Moran, Anwen Teller is Rosa Teller, the ninety-year-old Hanne Coyle is
+   Nan Dobbin, Hanne Ilvey is Mae Ilvey, Tam Hollis is Owen Pask, Hobb Garland
+   is Abner Garland, and the widow Marsh is the widow Cobb. Jory Carr became
+   Hugh Carr, and Tam Ostler became Kester Ostler. This PR keeps those names
+   and adds no renames of its own. Its test checks that the old names stay
+   gone.
 7. **Small wording fixes.**
    - "Corvane's letter from the free wards" (it is the council's letter for
      him) is now "The free wards' letter for Corvane".
@@ -102,16 +94,9 @@ line. `docs/book-three/DESIGN-PART-TWO.md` is updated to match.
 
 ## Noted, not changed
 
-- **Jory.** Ysolde's brother Jory Carr shares a first name with Jory Tanner,
-  the seed-cart driver in Book One's opening chapters. They are far apart and
-  in different families. Renaming him would touch a whole side job, so I left
-  it.
 - **Kettle Cross and Kettle Down.** Roke sleeps on the roofs of Kettle Cross
   (chapter 1), and Cass Ord lists Kettle Down among her castings (chapter 11).
   Each is named only once, so I left both.
-- **Tam Ostler and Tam Orrey.** The Saltwick lamplighter shares a first name
-  with Fenmere's baker in Book Two's ward scene. It is a common name in a
-  different book, so I left it.
 - **Saltwick's town page.** After `b3_saltwick_moved` the page still describes
   a town on its roofs (the TODO in `docs/book-three/DESIGN.md`). The only
   mechanism the game has is Vell's `emptied` page, which also closes the shop.
