@@ -3999,7 +3999,7 @@
         "id": "burdock",
         "label": "Ask Burdock what the tally says about a vote",
         "lines": [
-          { "say": "Burdock", "text": "A vote is a door-board, laid down. Each town lays its door face up for yes, face down for no, in front of the Reckoner. Then I write which. I have written four votes. The tally has eleven. The last was two hundred years ago." },
+          { "say": "Burdock", "text": "A vote is a door-board, laid down. Each town lays its door face up for yes, face down for no, in front of the Reckoner. Then I write which. I have never written one. The tally has eleven. The last was two hundred years ago." },
           { "say": "Burdock", "text": "I do not know what they were about. I wrote them down. I believe they were very important." },
           { "oneOf": [
             { "say": "Burdock", "text": "I have Greve's names on a new page. Forty. I read them every morning now, before the winters. It takes longer. I do not mind.", "when": { "flag": "b4_names_written" } },
@@ -4070,7 +4070,7 @@
       "text": "You go up through Orme to the Long Hall at dusk, for the vote."
     },
     "approach": [
-      { "narrate": "At dusk Burdock rings the vote three times. The vote is a small brass hand-bell that came over the old road from the south two hundred years ago, with somebody nobody remembers, and the Long Hall has called its votes with it ever since, because nobody knew what else it was for. Nobody in Orme calls it a bell. The bearers stand by their door-boards along the oldest wall." },
+      { "narrate": "At dusk Burdock rings the vote three times. The vote is a small brass hand-bell that came over the old road from the south two hundred years ago, with somebody nobody remembers, and the Long Hall has kept it on the desk ever since, for calling votes, because nobody knew what else it was for. Nobody in Orme calls it a bell. The bearers stand by their door-boards along the oldest wall." },
       { "narrate": "Sloe reads her sum aloud, once, from the slate. It takes four minutes." }
     ],
     "crisis": [
@@ -5065,7 +5065,7 @@
         },
         "text": [
           { "narrate": "You tell them to come south. Now, all of them, while the road is there. The council can say yes at the gate, or no to three thousand faces. You know which it is less likely to say." },
-          { "narrate": "You go to the south door and draw the bar. Behind you the Wold gets to its feet along the walls, rope by rope, to follow you through the Hall and down." },
+          { "narrate": "You tell Rue to get the ropes up. Behind you the Wold gets to its feet along the walls, rope by rope, to follow you through the Hall to the south door and down." },
           { "say": "Rue", "text": "I will write it on the door. On the south side. So that the free wards can read it when they come up: 'The Wold came through here.'" }
         ],
         "rep": { "wilds": 1 },
@@ -5099,7 +5099,8 @@
           { "narrate": "You tell them the column goes back. The free wards have never been asked, and three thousand people at the upper gate is not asking. The envoys come south with you, to ask properly, and the rest go home to wait." },
           { "narrate": "Nobody argues. The Wold does not argue with a door. When the weather allows, the ropes go back out of the north door, one at a time, and down the switchbacks towards Orme and whatever the Hush has done to it." },
           { "narrate": "The envoys stay: Sloe, and Rue, and two door-bearers from each tally town, with their door-boards on their backs." },
-          { "narrate": "Burdock stays too, with the record of the winters in his coat, and the sledges go back down without him.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+          { "narrate": "Burdock stays too. He takes the record of the winters off the first sledge and wraps it in his coat, and the sledges go back down with the column without him.", "when": { "flag": "b4_tally_carried" } },
+          { "narrate": "Burdock stays too, with the record of the winters in his coat.", "when": { "flag": "b4_tally_last" } },
           { "narrate": "Hesk stays with Sloe, with his lamp.", "when": { "flag": "b3_stair_sealed" } },
           { "say": "nessa", "text": "We brought them up a mountain to send them back down it. I'm going to remember that. Somebody should.", "when": { "party": "nessa" } }
         ],

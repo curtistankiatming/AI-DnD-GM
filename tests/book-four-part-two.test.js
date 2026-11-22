@@ -702,7 +702,7 @@ test('chapter 20: the door was opened from the south, the crossing is decided, a
   assert.match(knot({}), /You have seen it at Cinder Fold, on the ropes of the nine/); assert.doesNotMatch(knot({}), /^Orin:|Orin reaches/m);
   // Taking the Wold across: nobody leaves the Hall before the end scene, which follows the crossing.
   const crossed = decide('b4-northdoor', 'crossed');
-  assert.match(told(crossed), /draw the bar\. Behind you the Wold gets to its feet/); assert.doesNotMatch(told(crossed), /starts down|out onto the old north road/);
+  assert.match(told(crossed), /get the ropes up\. Behind you the Wold gets to its feet/); assert.doesNotMatch(told(crossed), /starts down|out onto the old north road/);
   assert.equal(crossed.story.nodeId, 'scene-b4-parttwo-end-beam');
   assert.match(opening(crossed), /Before anyone goes anywhere/);
   // Sending the column home: Burdock stays with the tally he brought, and Hesk with Sloe.

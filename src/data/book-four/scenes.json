@@ -1059,7 +1059,7 @@
         "objective": "Look at what is left.",
         "lines": [
           { "oneOf": [
-            { "narrate": "Before anyone goes anywhere, you walk down the Hall to its middle, where the roof is gone and the sky comes in. The Wold comes behind you, as far as the edge of the open part, and stops there, at the foot of the south door's steps.", "when": { "flag": "b4_crossed" } },
+            { "narrate": "Before anyone goes anywhere, you walk down the Hall to its middle, where the roof is gone and the sky comes in. The Wold comes behind you on its ropes, as far as the edge of the open part, and stops there.", "when": { "flag": "b4_crossed" } },
             { "narrate": "Before anyone goes anywhere, you walk down the Hall to its middle, where the roof is gone and the sky comes in, between the Wold's fires. The Wold comes behind you, as far as the edge of the open part, and stops.", "when": { "flag": "b4_hall_camp" } },
             { "narrate": "Before the ropes go back down, you walk down the Hall to its middle, where the roof is gone and the sky comes in. The Wold comes behind you, as far as the edge of the open part, and stops.", "when": { "flag": "b4_envoys_only" } }
           ] },
