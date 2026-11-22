@@ -94,7 +94,7 @@ const SPECIALIZATIONS = {
   ],
   rogue:[
     {id:'shadow',name:'Shadow Agent',kind:'shadow',cost:'bonus',target:'self',description:'Vanish: gain Hidden and 8 temporary HP; your next weapon hit deals 2d6 extra damage. Two uses per long rest.'},
-    {id:'saboteur',name:'Saboteur',kind:'sabotage',cost:'action',target:'enemy',description:'Disable: deal 3d6 force damage and stun an enemy for one action; or make two points of objective progress without a roll. Two uses per long rest.'}
+    {id:'saboteur',name:'Saboteur',kind:'sabotage',cost:'action',target:'enemy',description:'Disable: deal 3d6 force damage and stun an enemy for one action; or make two points of objective progress without a roll (once per fight). Two uses per long rest.'}
   ],
   wizard:[
     {id:'evoker',name:'Evoker',kind:'nova',cost:'action',target:'none',description:'Focused Nova: all enemies make Dexterity saves against 4d6 fire damage, half on a save. Two uses per long rest.'},
@@ -109,7 +109,7 @@ const SPECIALIZATIONS = {
     {id:'deadeye',name:'Deadeye',kind:'precisionBurst',cost:'action',target:'enemy',description:'Twin Arrows: make two weapon attacks with advantage against one target; Hunter’s Mark applies. Two uses per long rest.'}
   ],
   bard:[
-    {id:'lorekeeper',name:'Lorekeeper',kind:'sabotage',cost:'action',target:'enemy',description:'Unravel: automatic 3d6 psychic damage and stun one action; or advance an objective twice without a roll. Two uses per long rest.'},
+    {id:'lorekeeper',name:'Lorekeeper',kind:'sabotage',cost:'action',target:'enemy',description:'Unravel: automatic 3d6 psychic damage and stun one action; or advance an objective twice without a roll (once per fight). Two uses per long rest.'},
     {id:'battlecantor',name:'Battle Cantor',kind:'massHeal',cost:'action',target:'none',description:'Defiant Chorus: heal all party members for 2d6 + Charisma, reviving unconscious allies and curing poison. Two uses per long rest.'}
   ]
 };
