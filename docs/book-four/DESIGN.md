@@ -1367,104 +1367,104 @@ side jobs can be missing):
   `b3_nessa_gives`, `b3_orin_gives` (missing gives/keeps read as keeps).
 - Side jobs: `job:lamps-davin`, `job:mould-bought`, `job:mould-sold`.
 
-## Gear for levels 40 to 70
+## Gear: chapter rewards and where Book Four goes
 
-Book Three's curve ends at tier 40 (ITEM-CATALOGUE.md). Book Four extends it
-by five tiers in the book and one after it. The limits stay:
-- Enemy armour and to-hit are flat past level 20 (AC 18, +13 on Normal), so
-  weapon to-hit stays at +3 and spell attack at +5 for the whole book. More
-  to-hit would only make hits certain.
-- Gear damage taken stays capped at 30% (`MAX_GEAR_TAKEN`). No single piece
-  goes past 15% less taken; armour and shields grow in AC (by one, once),
-  saves and item skills instead.
-- Damage dealt from gear has no cap today; tier 40 can already reach 45%.
-  Book Four adds `MAX_GEAR_DEALT` at 50% (open question 9).
-- Skill bonuses stop at +3 and no requirement asks for more than 15 in a score.
+**Scope.** Another thread owns the gear sold in shops, the level bounties and
+the equipment sets for levels 45 to 100: tiers 45, 50, 55, 60, 65 and 70, and
+set bonuses. For now it puts the 45 to 70 stock in Briarwatch's and Highpass's
+`stockByLevel`. This design does not set shop stock or a gear curve. It plans
+one exclusive reward per chapter, and lists where Book Four goes and at what
+levels, so the shop gear can be moved to those towns later.
 
-| | Tier 45 (45 to 49) | Tier 50 (50 to 54) | Tier 55 (55 to 59) | Tier 60 (60 to 64) | Tier 65 (65 to 69) | Tier 70 (after the book) |
-|---|---|---|---|---|---|---|
-| Weapons (to hit/damage, dealt) | +3/+5, 10% | +3/+6, 10% | +3/+6, 15% | +3/+7, 15% | +3/+7, 20% | +3/+8, 20% |
-| Finesse weapons | +3/+5, 15% | +3/+6, 15% | +3/+6, 20% | +3/+7, 20% | +3/+7, 25% | +3/+8, 25% |
-| Spell focus (attack/DC, dealt) | +5/+4, 15% | +5/+5, 15% | +5/+5, 20% | +5/+5, 20% | +5/+5, 25% | +5/+5, 25% |
-| Heavy armour | AC 22, 15% less taken, +1 saves | 22, +1 saves, Brace 2 rounds | 22, +2 saves | 23, +2 saves | 23, +2 saves, Brace 3 rounds | 23, 15% less taken, +2 saves, Brace 3 rounds |
-| Medium armour (AC + Dex up to 2) | 18, 10% less taken | 18, 10%, +1 saves | 19, 10% | 19, 10%, +1 saves | 19, 15% | 20, 15% |
-| Light armour (AC + Dex) | 16, 10% more dealt, 5% less taken | 16, 15%, 5% | 16, 15%, 10% | 17, 15%, 10% | 17, 15%, 10%, story ability | 17, 15%, 10%, story ability |
-| Shield | +5, 15% less taken, +1 saves | +5, +1 saves, Brace 2 | +5, +2 saves | +5, +2 saves | +5, +2 saves, Brace 3 | +5, +2 saves, Brace 3 |
-| Accessories | 20% more dealt, 5% less taken | 20%, or warm (see Systems) | 25% | 25% | 30% | 30% |
+Rules every reward keeps:
+- **Gated by the book.** Each reward has `exclusive.quest` set to its b4-* id.
+  It is given once per save, by `Gear.award(state, 'quest:<id>')` when the
+  chapter is done, as Book Three's are. It is never sold. A save only gets it
+  by playing Book Four, so it already sits behind `Book.started(state, 4)`.
+  Any Book Four stock or level bounty that the gear thread moves to the towns
+  below must check `Book.started(state, 4)` too (today `bountyReward` checks
+  Book Three for every level).
+- **Worn from two levels below its chapter**, so a hero who skipped side
+  content can still use it.
+- **Numbers come from the gear thread's tier for that level.** A reward is as
+  good as the best sold item of its kind at its tier, with its own item skill
+  or story ability, and never beats the next tier's sold items.
+- **The 30% cap on damage taken stays.** No reward goes past 15% less damage
+  taken on its own. Armour, shields and charms show their worth through AC,
+  saves, item skills and story abilities, not more damage taken off.
+- **No requirement above 15** in any score.
+- **Spread.** Across the thirty rewards, every class gets a weapon or focus
+  and an armour or accessory, and Orin, Maren and Nessa each get pieces they
+  can wear (Maren has Strength 10, Nessa 9). Chapters 25 to 27 give companion
+  keepsakes that only that companion can wear (`requires.members`, a small
+  engine change).
+- **Warm** (`warm: true`, see "Systems"): the rewards for chapters 11, 15 and
+  18 are white-wool, made in the Wold.
 
-Item skills reuse today's effects (burning, slowed, vulnerable, weakened,
-empowered, fortified). From tier 60 a few last three rounds. Story abilities
-are as today; from tier 65 a few work twice per long rest (`story.uses: 2`, a
-small engine change).
+### One reward per chapter
 
-**Where it is sold** (`stockByLevel`, opened only for a save that has begun
-Book Four, `Book.started(state, 4)`):
-- Tier 45: Highpass, Cinder Fold, Merrowgate, Saltwick (and Vell, which does
-  not count: it can be emptied).
-- Tier 50: Lantry, Orme. Tier 55: Orme, Lantry.
-- Tier 60: Highpass, Briarwatch, Ashford. Tier 65: Merrowgate, Cinder Fold,
-  Highpass.
-- Tier 70: Briarwatch (Dera) and Highpass, for the trial.
+| Ch | Id | Item | Slot | Requires | Story root |
+|---|---|---|---|---|---|
+| 1 | b4-walker | Walker's Tally-cord | Accessory | Level 38 | The cord Rue ties round her book so she cannot lose it on the road. She gives you her spare. |
+| 2 | b4-records | Founders' Account Case | Accessory | Level 39 | The oiled case Ilse kept the founders' page in for two hundred years. |
+| 3 | b4-ballad | The True Verse | Accessory | Level 40 | Kester's broadsheet with Dera's corrections in the margin. Read aloud, it rallies (Empowered). |
+| 4 | b4-company | North Company Cutlass | Main hand, finesse | Level 41 · Dex 13 | Issued to the Company's guards, who were never told what they were guarding. |
+| 5 | b4-davin | Lamp-store Hook | Main hand | Level 42 · Str 13 | The hook Davin used to pull a burning plank clear. |
+| 6 | b4-book | Rue's Second Book | Accessory | Level 43 | A blank book from Iona's own shelf, given after the first was found or lost. Insight story ability. |
+| 7 | b4-key | Signal-keeper's Lanyard | Accessory | Level 44 | The cord the forge-signal key hung on, whoever has the key now. |
+| 8 | b4-letters | Floor-letter Satchel | Accessory | Level 45 | The satchel Fennick lends for the letters. History and Religion. |
+| 9 | b4-embassy | Embassy Seal | Accessory | Level 46 | The council's seal for the embassy north, cut overnight by a Highpass jeweller. Persuasion story ability. |
+| 10 | b4-peaks | Parting-hall Plate | Armour, heavy | Level 47 · Fighter or Cleric · Str 13 | Armour left in the Hall of Legends by the founders' last guard. Brace. |
+| 11 | b4-lantry | Door-reader's Scarf | Accessory, warm | Level 48 | Teasel's own white-wool scarf, chalked with your names. |
+| 12 | b4-sheddon | Sheddon Column Shield | Off hand | Level 49 · Fighter or Cleric · Str 13 | A farm gate, faced with iron, carried at the column's rear. |
+| 13 | b4-orme | Long Tally Staff | Main hand, focus | Level 50 · Wizard, Cleric or Bard | A tally-keeper's measuring staff, notched for nine hundred years of winters. |
+| 14 | b4-greve | Letting-house Censer | Accessory | Level 51 | Yarrow's censer, the one she lights for the grieving. Medicine story ability. |
+| 15 | b4-thrum | Thrum Lane Cloak | Accessory, warm | Level 52 | Heath's cloak, which she gives to the stranger who brought her daughter home. |
+| 16 | b4-reckoning | Reckoner's Slate | Main hand, focus | Level 53 · Wizard | The slate Sloe did her sum on, which she will not need again. |
+| 17 | b4-potbells | Pot-bell Mace | Main hand | Level 54 · Str 13 | Dunnet's clapper (if the bell was broken, a piece of the bell). |
+| 18 | b4-hush | Hush-wool Mantle | Accessory, warm | Level 55 | Woven by a walker who has no name, and given without a word. |
+| 19 | b4-column | Column Longbow | Main hand, bow | Level 56 · Dex 13 | The bow of the Wold's rearguard on the switchbacks. Pinning Shot. |
+| 20 | b4-northdoor | North-door Greataxe | Main hand, two-handed | Level 57 · Str 15 | The axe that has hung by the Hall's north door since the parting. |
+| 21 | b4-knot | Founders' Rope-knot | Accessory | Level 58 | The rope left on the empty hook, in the knot Orin knows and cannot name. Athletics. |
+| 22 | b4-invoice | Council Ledger-case | Accessory | Level 59 | The case Iona's invoice came in. Investigation story ability. |
+| 23 | b4-quietnight | Quiet-night Lantern | Accessory | Level 60 | The lantern Pim carries on the watch line on quiet nights. Perception. |
+| 24 | b4-gatehouse | Gatehouse Grammar | Main hand, focus | Level 61 · Wizard | Sable's founders' grammar, annotated, from his cell (or from the bell-room). Unravel. |
+| 25 | b4-ford | Captain's Commission | Accessory, Orin only | Level 62 | Sorrel's commission, whatever Orin did with it. Fortified for the party once a fight. |
+| 26 | b4-hospice | Hospice Physic-bag | Accessory, Maren only | Level 63 | Anwen's old bag, given to Maren. Wisdom saves and Medicine. |
+| 27 | b4-signal | Signal-fire Longbow | Main hand, bow, Nessa only | Level 64 · Dex 13 | Wren's bow from the forge-signal tower. Signal Shot (Vulnerable). |
+| 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
+| 29 | b4-lid | Lid-iron Plate | Armour, heavy | Level 66 · Str 15 | Plate cut from the lid's iron after it settled. Brace. |
+| 30 | b4-parting | Midwinter Tuning Fork | Main hand, focus | Level 67 · Wizard, Cleric or Bard | The fork the ringers tuned the nine with on midwinter night. First Note. |
 
-**Exclusives.**
-- Region: one or two pieces per Book Four town are sold nowhere else. The
-  Wold's are made without bells: white-wool, tally-bone, door-chalk.
-- Level bounties: `bounty:lantry:50`, `bounty:orme:55`, `bounty:highpass:60`,
-  `bounty:cinderfold:65`, `bounty:briarwatch:70`, opened by
-  `Book.started(state, 4)`.
-- Chapter rewards, one per chapter, wearable from two levels below:
+### Where Book Four goes, by level
 
-| Ch | Item | Slot | Requires |
+For the gear thread, so the 45 to 70 stock can move from Briarwatch and
+Highpass to where the story is.
+
+| Town or region id | Kind | Book Four chapters (level) | Level range in Book Four |
 |---|---|---|---|
-| 1 | Walker's Tally-cord | Accessory | Level 38 |
-| 2 | Founders' Account Case | Accessory | Level 39 |
-| 3 | The True Verse | Accessory | Level 40 |
-| 4 | North Company Cutlass | Main hand, finesse | Level 41 · Dex 13 |
-| 5 | Lamp-store Hook | Main hand | Level 42 · Str 13 |
-| 6 | Rue's Second Book | Accessory | Level 43 |
-| 7 | Signal-keeper's Key | Accessory | Level 44 |
-| 8 | Floor-letter Satchel | Accessory | Level 45 |
-| 9 | Embassy Seal | Accessory | Level 46 |
-| 10 | Parting-hall Plate | Armour, heavy | Level 47 · Fighter or Cleric · Str 13 |
-| 11 | Door-writer's Chalk-knife | Main hand, finesse | Level 48 · Dex 13 |
-| 12 | Sheddon Column Shield | Off hand | Level 49 · Fighter or Cleric · Str 13 |
-| 13 | Long Tally Staff | Main hand, focus | Level 50 · Wizard, Cleric or Bard |
-| 14 | Letting-house Censer | Accessory | Level 51 |
-| 15 | Thrum Lane Cloak | Accessory, warm | Level 52 |
-| 16 | Reckoner's Slate | Main hand, focus | Level 53 · Wizard |
-| 17 | Pot-bell Mace | Main hand | Level 54 · Str 13 |
-| 18 | Hush-wool Mantle | Accessory, warm | Level 55 |
-| 19 | Column Longbow | Main hand, bow | Level 56 · Dex 13 |
-| 20 | North-door Greataxe | Main hand, two-handed | Level 57 · Str 15 |
-| 21 | Founders' Rope-knot | Accessory | Level 58 |
-| 22 | Council Ledger-case | Accessory | Level 59 |
-| 23 | Quiet-night Lantern | Accessory | Level 60 |
-| 24 | Gatehouse Grammar | Main hand, focus | Level 61 · Wizard |
-| 25 | Captain's Commission | Accessory, Orin only | Level 62 |
-| 26 | Hospice Physic-bag | Accessory, Maren only | Level 63 |
-| 27 | Signal-fire Longbow | Main hand, bow, Nessa only | Level 64 · Dex 13 |
-| 28 | Rope-family Maul | Main hand, two-handed | Level 65 · Str 15 |
-| 29 | Lid-iron Plate | Armour, heavy | Level 66 · Str 15 |
-| 30 | Midwinter Tuning Fork | Main hand, focus | Level 67 · Wizard, Cleric or Bard |
+| `highpass` | Town | 1 (40), 6 (45), 9 (48), 21 (60), 22 (61), 24 (63); the road to the Hall | 40 to 49, 60 to 64 |
+| `ashford` | Town | 2 (41), 25 (64) | 41, 64 |
+| `briarwatch` | Town | 3 (42), 23 (62); the epilogue and the trial at 70 | 42, 62, 70 |
+| `merrowgate` | Town | 4 (43), 26 (65) | 43, 65 |
+| `saltwick` | Town | 5 (44) | 44 |
+| `cinderfold` | Town | 7 (46), 27 to 30 (66 to 69) | 46, 66 to 69 |
+| `vell` | Town, can be emptied | 8 (47) | 47 (does not count for coverage) |
+| `lantry` | New town (the Wold) | 11 (50), departure for 12 | 50 to 54 |
+| `orme` | New town (the Wold) | 13 (52), 16 (55); departure for 14, 15, 17 to 19 | 52 to 59 |
+| Hall of Legends | Region, from Highpass; not a town | 10 (49), 20 (59); the 4th job trial | 49, 59, 70 |
+| `wold` | Region id for the white and the faction | 11 to 20 | 50 to 59 |
 
-Chapters 25 to 27 give companion keepsakes (`requires.members`, a small
-engine change): as good as the tier's best for that companion, with an item
-skill of their own, and nobody else can wear them.
-
-**Who it is for.** `tests/book-four-gear.test.js`, built like Book Three's:
-at every tier, every class has a weapon or focus and armour it can wear (a
-shield for Fighters and Clerics, heavy armour for Clerics at Strength 13);
-every branch has its own kind of upgrade (the branch table in
-ITEM-CATALOGUE.md, unchanged); Orin, Maren (Str 10) and Nessa (Str 9) each
-have upgrades; every class and companion can get a warm item at tier 50.
-Only places that cannot be missed count. No Book Four item is matched or
-beaten, for everyone who can wear it, by an item at the same or lower level
-(Masterwork refines left out).
-
-About 120 pieces in all: roughly 90 sold, 30 chapter rewards, plus the level
-bounties. Prices follow the floor rule (Legendary 300 + 10 per level: 700 at
-40, 1,000 at 70), and Masterwork stays twice the price, so the 34,000 or so
-gold Book Four pays buys real choices.
+A natural split for the stock: tier 45 in Highpass and Cinder Fold; tiers 50
+and 55 in Lantry and Orme, which no hero can miss in Part Two; tier 60 in
+Highpass and Briarwatch; tier 65 in Merrowgate and Cinder Fold; tier 70 in
+Briarwatch and Highpass for the trial. Two requests go with this to the gear
+thread:
+- white-wool warm accessories in Lantry's and Orme's stock, so every party
+  member can be warm in the Wold (the three warm rewards cover three, by
+  chapter 18);
+- a cap on gear damage dealt (open question 9), since sold gear, sets and
+  rewards together can pass 50%.
 
 ## Systems and gameplay
 
@@ -1521,10 +1521,11 @@ rounds at 40 to 69, the objective route 3 to 5. Bosses (chapters 10, 20, 29,
 1. **The white** (Part Two). A chapter with `white: true` starts its deciding
    fight with each party member who wears no warm item Slowed for one round
    (the existing debuff), shown at the top of the fight with its reason.
-   Warm items (`warm: true`) are Wold-made white-wool, sold in Lantry and Orme
-   and given in chapters 15 and 18. Bells do not count: a bell pushes the
-   white onto someone else. It gives the accessory slot a real choice (warmth
-   or damage) for ten chapters.
+   Warm items (`warm: true`) are Wold-made white-wool: the rewards for
+   chapters 11, 15 and 18, and (asked of the gear thread) stock in Lantry and
+   Orme. Bells do not count: a bell pushes the white onto someone else. It
+   gives the accessory slot a real choice (warmth or damage) for ten
+   chapters.
 2. **The Wold's reputation.** A fourth faction, `wold`, beside wardens, trade
    and wilds. Chapter decisions move it; it sets Lantry's and Orme's prices
    (the existing rule) and changes a few lines in Part Three.
@@ -1549,7 +1550,7 @@ skip players, from a Book Three save to the legendary trial:
 - nobody is more than five levels under a chapter on the main path;
 - force fights in the target rounds;
 - each chapter-30 ending reached at least once;
-- with tier 70 kit and a full party, the Heroic legendary trial is won in at
+- with the gear thread's level 70 kit and a full party, the Heroic legendary trial is won in at
   least two of three attempts by every class on Standard, and a loss always
   allows a retry.
 
@@ -1637,10 +1638,11 @@ Book Four frames it the way Book Three framed the 3rd job:
 5. **Trial framing by kind.** `trialFraming.trial` ('third' by default);
    `framing(state, kind)` in `src/director.js` uses it for both kinds, so the
    4th trial is never framed with Book Three's lines.
-6. **Gear gates.** `Book.started(state, n)` for the book whose levels a stock
-   list or level bounty belongs to (today `bountyReward` checks Book Three for
-   every level). `MAX_GEAR_DEALT` (0.5) beside `MAX_GEAR_TAKEN`.
-   `requires.members` for keepsakes. `story.uses`. `warm`.
+6. **Gear hooks for the rewards.** The thirty `exclusive.quest` rewards;
+   `requires.members` for the keepsakes; `warm`. Shop stock, level bounties,
+   sets and any `MAX_GEAR_DEALT` cap belong to the gear thread; whatever it
+   moves to Book Four's towns checks `Book.started(state, 4)` (today
+   `bountyReward` checks Book Three for every level).
 7. **The white.** Quest `white: true`; Slowed at the start of the deciding
    fight for party members without a warm item.
 8. **Faction.** `wold` in `world.reputation`, Lantry's and Orme's `faction`.
@@ -1701,10 +1703,14 @@ the local stub server, and never with a real key.
   after chapters 9, 10 or 26.
 - **Straight on:** a defeat in chapters 28 or 29 wakes the hero at the last
   ledge.
-- **Gear** (`tests/book-four-gear.test.js`): coverage per class, branch and
-  companion at each tier; dominance; requirements at most 15; caps applied;
-  stock and level bounties wait for `Book.started(state, 4)`; keepsakes only
-  for their companion; warm items reachable for everyone at tier 50.
+- **Chapter rewards** (`tests/book-four-rewards.test.js`): each b4-* chapter
+  gives exactly one reward, once, never sold; each is wearable from two
+  levels below its chapter; requirements at most 15; no reward takes more
+  than 15% off damage taken and the 30% cap still applies with it worn;
+  every class and each companion gets pieces they can wear across the
+  thirty; keepsakes only for their companion; a save that has not begun
+  Book Four has none. Stock, bounty and set coverage are the gear thread's
+  tests.
 - **The white:** Slowed at fight start only in `white` chapters, only for
   members without a warm item.
 - **Playtest:** the targets under "Systems and gameplay", run before each
@@ -1722,18 +1728,18 @@ until Curtis changes `out`.
    town pages by flag. Tests with fixture chapters only.
 3. **Part One, chapters 1 to 3**, their scenes and two side jobs.
 4. **Part One, chapters 4 to 7**, two side jobs, Book Four walkout lines.
-5. **Part One, chapters 8 to 10**, the end-of-part scene, tier 45 gear and
-   chapter rewards 1 to 10. Playtest to 50. Curtis may set `out: 1`.
+5. **Part One, chapters 8 to 10**, the end-of-part scene and chapter
+   rewards 1 to 10. Playtest to 50. Curtis may set `out: 1`.
 6. **Part Two groundwork and chapters 11 to 13:** Lantry and Orme, the white,
    warm items, the Wold faction, the Telling in the Journal.
 7. **Part Two, chapters 14 to 17**, and the Wold's side jobs.
-8. **Part Two, chapters 18 to 20**, the end-of-part scene, tiers 50 and 55,
-   chapter rewards 11 to 20. Playtest to 60. Curtis may set `out: 2`.
+8. **Part Two, chapters 18 to 20**, the end-of-part scene and chapter
+   rewards 11 to 20. Playtest to 60. Curtis may set `out: 2`.
 9. **Part Three, chapters 21 to 24**, and two side jobs.
 10. **Part Three, chapters 25 to 27**, two side jobs, companion keepsakes and
     arc moves.
 11. **Part Three, chapters 28 to 30**, the parting scene and epilogue, the 4th
-    job framing, tiers 60, 65 and 70, chapter rewards 21 to 30.
+    job framing and chapter rewards 21 to 30.
 12. **Release pass:** the full playtest to the legendary trial, the recap
     card, item-card caps, phone checks. Curtis may set `out: 3`.
 
@@ -1776,8 +1782,8 @@ The reviewers settle these; each has a recommended answer.
    found Orin gains little after 30; companions otherwise get only HP from 40
    to 70.
 9. **Cap gear damage dealt at 50%, as damage taken is capped at 30%?**
-   Recommended yes. Today it is uncapped and tier 40 already reaches 45%;
-   Book Four's tiers would pass 70% without it.
+   Recommended yes, for the gear thread to decide with its sets. Today it is
+   uncapped and tier 40 already reaches 45%.
 10. **Walkouts in Book Four?** Recommended: Parts One and Three only, never in
     the Wold, never in the last four chapters.
 11. **Should the Book Three ending say that Book Four is being written,
