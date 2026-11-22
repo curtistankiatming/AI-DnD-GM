@@ -86,7 +86,10 @@
               {
                 "narrate": "She goes back out into the dark before anyone can give her anything."
               }
-            ]
+            ],
+            "setFlags": {
+              "b3_bett": "take"
+            }
           },
           {
             "id": "pay",
@@ -99,7 +102,10 @@
               {
                 "narrate": "She says it without any anger, as a plain fact about the world, and puts the basket down on the step, and goes."
               }
-            ]
+            ],
+            "setFlags": {
+              "b3_bett": "pay"
+            }
           },
           {
             "id": "stay",
@@ -108,7 +114,10 @@
               {
                 "narrate": "She stays. She eats two mackerel and none of the crab, and tells you about her mother's brother on the whaling ships, who was gone four years and came back with a tooth as long as her arm. When she has finished she says she has to go, because her dad will be home soon and he shouldn't come home to nobody."
               }
-            ]
+            ],
+            "setFlags": {
+              "b3_bett": "stay"
+            }
           }
         ]
       }
@@ -577,7 +586,10 @@
               {
                 "narrate": "She gets up, using your shoulder to do it, and goes down the steps into the full, cold town."
               }
-            ]
+            ],
+            "setFlags": {
+              "b3_brede_written": true
+            }
           },
           {
             "id": "sit",
@@ -1121,7 +1133,10 @@
                 "say": "Pim",
                 "text": "That's it. That's all it is. Late's all right. Late's still ringing."
               }
-            ]
+            ],
+            "setFlags": {
+              "b3_pim_rang": true
+            }
           },
           {
             "id": "listen",
@@ -1714,6 +1729,12 @@
             }
           },
           {
+            "narrate": "In Briarwatch Pim rings the quarter a full breath late, once a day, on purpose. When Tovin asks him why, he says it is for you, and that late is still ringing.",
+            "when": {
+              "flag": "b3_pim_rang"
+            }
+          },
+          {
             "narrate": "Maren is the seal. She sits at a table in Highpass every week, across from people who have come to give, and hears them. She has a list again. It is a list of yeses.",
             "when": {
               "flag": "b3_seal_taken",
@@ -1803,6 +1824,30 @@
             }
           },
           {
+            "narrate": "In the council's record of the winter, the town's name is spelled the way Hollis Brede asked: one word, Ashford, not the Crossing. You wrote that page yourself.",
+            "when": {
+              "flag": "b3_brede_written"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Once a month a basket of mackerel comes up the coast road from Merrowgate to Dera's forge, with a crab in it that nobody will eat and a note from Bett Haddow, two lines long, about the whaling ships.",
+                "when": {
+                  "flag": "b3_bett",
+                  "is": "stay"
+                }
+              },
+              {
+                "narrate": "Once a month a basket of mackerel comes up the coast road from Merrowgate to Dera's forge. There is never a note. There does not need to be.",
+                "when": {
+                  "flag": "b3_bett",
+                  "is": "take"
+                }
+              }
+            ]
+          },
+          {
             "oneOf": [
               {
                 "narrate": "In Cinder Fold the tenth bell rings a little ahead of the other nine, and the galleries hold.",
@@ -1842,6 +1887,31 @@
                 "narrate": "Fennick's ledger says that twenty-two of the thirty-eight came up. The other sixteen he has written out in full, one to a line, so that somebody has: Tobiah Keld. Maud Penney. Gil Asher. Jessamy Wicken. Annick Dole. And eleven more, and beside each one, nothing at all.",
                 "when": {
                   "flag": "b3_turned_left"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "You have kept what you said at Vell, at dawn, on the rim of the door: the register, and the same word on every page. Present. You were not going to let that one go.",
+                "when": {
+                  "flag": "b3_vault_word",
+                  "is": "register"
+                }
+              },
+              {
+                "narrate": "You have kept what you said at Vell, at dawn: Corvane in front of the last bell, with nothing to say. You still do not know what he would have said. You have stopped expecting to.",
+                "when": {
+                  "flag": "b3_vault_word",
+                  "is": "corvane"
+                }
+              },
+              {
+                "narrate": "You have kept the morning at Vell, when you said nothing: a cart, a dog, a woman calling a child in for breakfast. Some days it is the only thing from Vell you can stand to remember.",
+                "when": {
+                  "flag": "b3_vault_word",
+                  "is": "quiet"
                 }
               }
             ]

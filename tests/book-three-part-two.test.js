@@ -480,7 +480,7 @@ test('every Part Two line uses known conditions, and every flag it reads is set 
   // Read from Books One and Two and from Part One (design, "Book Two and Part One flags read in Part Two").
   const EARLIER = new Set(['nessa_keeper', 'elske_seat', 'elske_free', 'elske_judged', 'b2:haverick_named', 'mother_chorus', 'mother_silenced', 'mother_recalled', 'job:minersvote-decided', 'job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread',
     'b3_rite_law', 'b3_rite_destroyed', 'b3_rite_vell', 'b3_saltwick_moved', 'b3_saltwick_bought', 'b3_bell_evacuate', 'b3_partone_done',
-    'b3_bell_cast', 'b3_bell_aster', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath', 'wards_seat']);
+    'b3_bell_cast', 'b3_bell_aster', 'b3_vault_word', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath', 'wards_seat']);
   const ENGINE = /^(method|prepared|approach|partial|job|away|walked):/;
   const setIn = (content) => { const f = new Set(); JSON.stringify(content, (k, v) => { if (k === 'setFlags' && v) Object.keys(v).forEach((x) => f.add(x)); if (k === 'setFlag') Object.keys(typeof v === 'string' ? { [v]: 1 } : v).forEach((x) => f.add(x)); return v; }); for (const d of content.decisions || []) f.add(d.flag); return f; };
   const byChapter = IDS.map((id) => { const f = setIn(RAWQ[id]); const sc = sceneOf(id); if (sc) for (const x of setIn(RAWS[sc.id])) f.add(x); return f; });

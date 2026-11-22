@@ -166,13 +166,20 @@ test("hosted ceilings lower the owner's settings, and each player gets their own
   const calls = [];
   const waiting = [];
   const claude = { configured: () => true, complete: (config, request) => { calls.push(config); return new Promise((resolve) => waiting.push(() => resolve({ text: "ok", model: config.claudeModel }))); } };
+  // Release every held request when the test ends, even after a failed
+  // assertion: a request left waiting keeps its wait-limit timer alive, and the
+  // test file would then never finish (it hung CI on 22 November 2026).
+  t.after(() => waiting.forEach((go) => go()));
   const ai = createLocalAI({ configPath: path.join(dir, "ai.json"), claude, concurrency: 2 });
   await ai.save({ enabled: true, provider: "claude" });
+  // complete() reads the saved settings from disk before it takes a slot, so
+  // wait for the request to reach the provider, not for one turn of the loop.
+  const inFlight = async (n) => { for (let i = 0; i < 2000 && calls.length < n; i++) await new Promise((r) => setTimeout(r, 1)); assert.equal(calls.length, n); };
   const a = ai.complete({ system: "s", prompt: "p", owner: "acct:a", maxReplyTokens: 3000, maxContextChars: 50000 });
-  await new Promise((r) => setImmediate(r));
+  await inFlight(1);
   await assert.rejects(ai.complete({ system: "s", prompt: "p", owner: "acct:a" }), /busy/);
   const b = ai.complete({ system: "s", prompt: "p", owner: "acct:b" });
-  await new Promise((r) => setImmediate(r));
+  await inFlight(2);
   await assert.rejects(ai.complete({ system: "s", prompt: "p", owner: "acct:c" }), /other players/);
   assert.equal(ai.status("acct:a").busy, true);
   assert.equal(ai.status("acct:c").busy, false);
