@@ -1115,3 +1115,22 @@ test('below the stair the retreat order says it falls back to the ledge; above i
   assert.match(retreat('b3-deep').description, /last safe ledge/);
   assert.equal(retreat('b3-winter').name, 'Retreat to town');
 });
+
+test('after three defeats in the same chapter below the stair, the ledge also offers the climb back up to town, and the chapter resumes from there', () => {
+  let s = fightAt('b3-deep');
+  for (let i = 0; i < 3; i++) {
+    const c = E.buildView(s).scene.choices.find((x) => x.id === 'climb');
+    if (i) assert.ok(!c || c.locked, `closed after ${i} defeat(s)`);
+    s = act(s, { type: 'combat', actionId: 'retreat' }).state;
+    if (i < 2) s = act(s, { type: 'story-choice', choiceId: 'down' }).state;
+  }
+  assert.equal(s.story.nodeId, 'q-b3-company-ledge');
+  const climb = E.buildView(s).scene.choices.find((x) => x.id === 'climb');
+  assert.ok(climb && !climb.locked);
+  s = act(s, { type: 'story-choice', choiceId: 'climb' }).state;
+  assert.equal(s.story.nodeId, `town-${s.world.townId}`);
+  assert.equal(s.world.activeQuest, 'b3-deep'); assert.equal(s.world.pendingBattle, 'quest:b3-deep');
+  assert.ok(E.buildView(s).world.town);
+  s = act(s, { type: 'depart', questId: 'b3-deep' }).state;
+  assert.equal(s.combat?.encounterId, 'quest:b3-deep', 'departing again goes back down to the same fight');
+});

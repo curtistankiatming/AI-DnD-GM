@@ -403,6 +403,10 @@ function requirementStatus(state, requires = {}) {
   if (requires.cluesAny && !requires.cluesAny.some((clue) => clues.includes(clue))) {
     return { met: false, reason: "Requires a relevant clue from an earlier investigation." };
   }
+  // Defeats in the chapter under way (src/world.js recover counts them).
+  if (requires.failuresAtLeast && (Number(state.world?.progress?.[state.world?.activeQuest]?.failures) || 0) < Number(requires.failuresAtLeast)) {
+    return { met: false, reason: `Opens after ${requires.failuresAtLeast} defeats in this chapter.` };
+  }
   if (requires.item && !hasItem(state, requires.item)) {
     return { met: false, reason: `Requires ${ITEMS[requires.item]?.name || titleCase(requires.item)}.` };
   }
@@ -645,6 +649,8 @@ function applyOutcome(state, written = {}, rng, events) {
   if (outcome.goOn && state.world.completed[outcome.goOn]) next = W.goOn(state, outcome.goOn, events) || next;
   // The last safe ledge: rest, then go back down to the interrupted chapter.
   if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
+  // Back up the stair after repeated defeats: to town, the chapter kept in progress.
+  if (outcome.climbUp) { state.world.onExpedition = false; next = `town-${state.world.townId}`; events.push({ type: "rest", tone: "warning", text: "The party climbs back up to town. The chapter waits where you left it: depart again to go back down to the same encounter." }); }
   if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:part-end-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     const id = state.story.flags["books:part-end-due"];

@@ -40,17 +40,21 @@ the code and runs scripted checks; nothing here is natural play.
 3. **"Retreat to town" below the stair** is now "Fall back to the ledge", with
    a description that says what happens.
 
+4. **No way back up the stair.** Below the stair the only way out was to win:
+   a party that kept losing the same fight could rest on the ledge and retry
+   forever, but could not level, shop or change gear, and difficulty cannot be
+   changed after setup. Put to two independent reviewers while Curtis is
+   away; both recommended a safety valve. After three defeats in the same
+   chapter the ledge also offers "Climb back up to town". The chapter stays in
+   progress, and departing again goes straight back to the same encounter.
+
 Each has a test in `tests/book-three-part-two.test.js` that fails on `master`
-(the first two) or checks the new wording (the third).
+or checks the new behaviour.
 
 ## Not changed
 
 - **The hosted server trusts saves sent by the browser** (XP and gold can be
   edited). Still waiting on Curtis.
-- **No way back up the stair.** Below the stair the only way out is to win.
-  A party that keeps losing the same fight can rest on the ledge and retry
-  forever but cannot level, shop or change gear. Put to two reviewers; see the
-  PR for their answer.
 - Level bounties: a hero who first claims a bounty late gets the highest item
   first and the lower ones on later bounties. This is as the code's comment
   intends.
