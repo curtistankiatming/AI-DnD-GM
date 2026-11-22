@@ -2542,7 +2542,7 @@
       {
         "oneOf": [
           {
-            "narrate": "Since the Iron Road there has been a law. The council wrote it in the autumn, in Highpass's hall: no casting without a witness, no quotas, and never anyone unwilling. The law did not say who the witness should be, and every town has argued about it since.",
+            "narrate": "Since the Iron Road there has been a law. The council wrote it in the summer, in Highpass's hall: no casting without a witness, no quotas, and never anyone unwilling. The law did not say who the witness should be, and every town has argued about it since.",
             "when": {
               "flag": "b3_rite_law"
             }
@@ -3064,7 +3064,7 @@
     "decisions": [
       {
         "id": "take",
-        "label": "Tell Maren to take the seal",
+        "label": "Say the seal should be taken",
         "description": "This decision is permanent. Maren becomes the one witness for the free wards, and castings slow to the few she believes.",
         "text": [
           {
@@ -3100,7 +3100,7 @@
       },
       {
         "id": "refuse",
-        "label": "Tell Maren to refuse it",
+        "label": "Say the seal should be refused",
         "description": "This decision is permanent. Maren refuses the seal. The castings go on, unwitnessed or under forged seals.",
         "text": [
           {
@@ -3136,7 +3136,7 @@
       },
       {
         "id": "many",
-        "label": "Tell Maren to train witnesses, every town its own",
+        "label": "Say every town should train its own witnesses",
         "description": "This decision is permanent. Maren trains a witness for every town. It is slow, and for a season the forgers do well.",
         "text": [
           {
@@ -3193,13 +3193,13 @@
       {
         "oneOf": [
           {
-            "narrate": "The tower is empty. Aster Vey is in Vell's great bell, and Briarwatch's own bell is only bronze now. Tovin rings it by hand on the hour, and Pim rings it with him. Since last winter the Gloam has come to the edge of the Briarwood every night the frost is hard, and the village has kept a watch against it ever since.",
+            "narrate": "The tower is empty. Aster Vey is in Vell's great bell, and Briarwatch's own bell is only bronze now. Tovin rings it by hand on the hour, and Pim rings it with him. Since the summer the Gloam has come to the edge of the Briarwood every night the frost is hard, and the village has kept a watch against it ever since.",
             "when": {
               "flag": "b3_bell_aster"
             }
           },
           {
-            "narrate": "Vell's people are in Briarwatch's fields. Two thousand of them, of the twenty thousand who came over the pass, in tents and byres and the old tithe barn, with the snow on the canvas and their children in Briarwatch's school in two sittings, morning and afternoon. Aster Vey is in the tower, and rings with Tovin. Even so, this winter the Gloam has come to the edge of the Briarwood, and the village keeps a night watch against it.",
+            "narrate": "Vell's people are in Briarwatch's fields. Two thousand of them, of all who came over the pass, in tents and byres and the old tithe barn, with the snow on the canvas and their children in Briarwatch's school in two sittings, morning and afternoon. Aster Vey is in the tower, and rings with Tovin. Even so, this winter the Gloam has come to the edge of the Briarwood, and the village keeps a night watch against it.",
             "when": {
               "flag": "b3_bell_evacuate"
             }
@@ -3880,7 +3880,7 @@
         "text": "I never saw them. The morning after they took the Commander at the foot of the pass, I came down and the vault was open and that door was open, and three pairs of boots going down in the chalk. My keys were on my belt. Nobody's come up. I've kept a lamp at the top for them every night since."
       },
       {
-        "narrate": "The round key went into Captain Sorrel's custody ledger at Highpass with the rest of Hesk's effects. Somebody took it out of the council's strongbox, and it came to Cass Ord, and she sent three surveyors down with it to find where the copies of the rite came from. Fennick has their names now, from the Hall's own papers."
+        "narrate": "The round key never reached Highpass. On the night Hesk was taken, at the foot of the pass, a Lantern Hall hand lifted it from his effects before anything was listed, and Captain Sorrel's custody ledger has it only as not among the effects. It went to Cass Ord's people, and before dawn three surveyors unlocked the round door with it and went down to find where the copies of the rite came from. Fennick has their names now, from the Hall's own papers."
       },
       {
         "narrate": "And Hesk is coming. His company is on the Iron Road, a day out, three hundred people in a column in the snow, with hired men at the front and the back."
@@ -4393,7 +4393,7 @@
             "text": "Then the only way out is the other end. Under Cinder Fold, they say. Under the lid. It's a long way round, from the bottom, and you'd be bringing everybody with you that way."
           },
           {
-            "narrate": "You know. You go down at first light, with Fennick and his box. Above you the round iron door comes down, slowly, on its old hinge, and Pike turns the three keys in it one after another, and the last of the light goes."
+            "narrate": "You know. You go down at first light, with Fennick and his box. Above you the round iron door comes down, slowly, on its old hinge, and Pike drops the bar across it and runs the chain through, link by link, and the last of the light goes."
           }
         ],
         "flag": "b3_door_closed"
@@ -4448,7 +4448,7 @@
             }
           },
           {
-            "narrate": "You go down at first light. For the first hundred steps you can still hear Oswin Pike turning the three keys in the iron door above you, one after another. Then the stair turns, and there is only the light you carry, and a shut door behind it.",
+            "narrate": "You go down at first light. For the first hundred steps you can still hear Oswin Pike above you, running the chain through the bar on the iron door, link by link. Then the stair turns, and there is only the light you carry, and a shut door behind it.",
             "when": {
               "flag": "b3_door_closed"
             }
@@ -4976,7 +4976,7 @@
           {
             "oneOf": [
               {
-                "narrate": "You take them up yourselves: the whole day of the stair, with the thirty-eight in a line and the surveyor at the front and Fennick at the back, counting. At the top, on the rim, Pike's lamps are lit. Vell's people take the thirty-eight in one at a time and wrap them in blankets, and Pike asks no questions.",
+                "narrate": "You take them up yourselves: the whole day of the stair, with the thirty-eight in a line and the surveyor at the front and Fennick at the back, counting. At the top, on the rim, Pike's lamps are lit. Pike and the rim watch take the thirty-eight in one at a time and wrap them in blankets, and Pike asks no questions.",
                 "when": {
                   "flag": "b3_door_kept"
                 }

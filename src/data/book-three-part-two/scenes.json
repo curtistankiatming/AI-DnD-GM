@@ -616,7 +616,7 @@
           },
           {
             "say": "Sable",
-            "text": "Nobody need cast me. I will say the words myself while the founders pour. It is the one casting that needs no caster."
+            "text": "Nobody need cast me. I will say the words myself while the bell-casters pour. It is the one casting that needs no caster."
           },
           {
             "narrate": "He is calm. Maren, by the door, says nothing for a long time.",
@@ -673,7 +673,7 @@
             "next": "snow",
             "lines": [
               {
-                "narrate": "They cast him at dawn in the gatehouse yard, with the Highpass founders at the furnace and Captain Sorrel's guard standing round with their pikes reversed, which nobody told them to do."
+                "narrate": "They cast him at dawn in the gatehouse yard, with the Highpass bell-casters at the furnace and Captain Sorrel's guard standing round with their pikes reversed, which nobody told them to do."
               },
               {
                 "oneOf": [
@@ -1570,7 +1570,7 @@
                 }
               },
               {
-                "narrate": "Hesk comes up the stair the hero of the free wards. His name is in Corvane's ledger, in his own hand, at the foot of the page of the ones he cast.",
+                "narrate": "Hesk comes up the stair the hero of the free wards. His name is in the ledger of the ones he cast, in his own hand, at the foot of the page.",
                 "when": {
                   "flag": "b3_promise_hesk"
                 }
@@ -1752,6 +1752,33 @@
             }
           },
           {
+            "oneOf": [
+              {
+                "narrate": "Nessa has the forge-signal key on a cord round her neck. She said now, and she meant it: when the road over the pass opens she is going back to Cinder Fold to keep it, and she has told Dera so twice.",
+                "when": {
+                  "flag": "nessa_keeper",
+                  "is": "later",
+                  "anyFlag": [
+                    "b3_wren_cast"
+                  ]
+                }
+              },
+              {
+                "narrate": "In the spring Nessa goes back over the pass to Cinder Fold, as she said she would, to take the forge-signal from Wren.",
+                "when": {
+                  "flag": "nessa_keeper",
+                  "is": "later",
+                  "anyFlag": [
+                    "b3_wren_waits"
+                  ]
+                }
+              }
+            ],
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
             "narrate": "In Ashford the lower town is being rebuilt, where the ford is, under the ash trees, and Hollis Brede has had its name painted on the bridge-post herself. One word: Ashford.",
             "when": {
               "flag": "b3_ashford_defended",
@@ -1785,7 +1812,7 @@
           {
             "oneOf": [
               {
-                "narrate": "Fennick's ledger has a column he kept open for twenty years, and in it now, in his square hand: came back, thirty-eight. Underneath, smaller: and one surveyor, name not known. He shows it to everyone. He has shown it to Dera twice, and she has let him.",
+                "narrate": "Fennick's ledger has a column he has kept open since the autumn, and in it now, in his square hand: came back, thirty-eight. Underneath, smaller: one of them a surveyor, name not known. He shows it to everyone. He has shown it to Dera twice, and she has let him.",
                 "when": {
                   "flag": "b3_turned_escorted"
                 }
