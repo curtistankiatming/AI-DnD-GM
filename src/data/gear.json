@@ -5520,6 +5520,131 @@
     }
   },
   {
+    "rarity": "Legendary",
+    "value": 990,
+    "id": "rope-family-maul",
+    "name": "Rope-family Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "description": "The maul the rope families drive the casting hall's wedges with, iron-headed and ash-hafted, passed from champion to champion since the founders hung the nine. Its haft is wrapped in old bell-rope.",
+    "purpose": "Strength, 2d6 bludgeoning, +3 to hit, +8 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Drive the maul in like a wedge: the enemy is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "quest": "b4-ropes"
+    }
+  },
+  {
+    "rarity": "Legendary",
+    "value": 1000,
+    "id": "settling-iron-plate",
+    "name": "Settling-iron Plate",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Plate cut by Cinder Fold's smiths from the iron of the lid, where it cracked and settled on midwinter night. It is warm to the touch, always, like the lid.",
+    "purpose": "Base AC 23, no Dexterity bonus. +1 Strength, Constitution and Wisdom saving throws. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1,
+      "wis": 1
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Settle like the lid: you are Fortified until your next turn and take 25% less damage."
+    },
+    "requires": {
+      "level": 66,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "quest": "b4-lid"
+    }
+  },
+  {
+    "rarity": "Legendary",
+    "value": 1010,
+    "id": "midwinter-tuning-fork",
+    "name": "Midwinter Tuning Fork",
+    "category": "focus",
+    "slot": "mainHand",
+    "description": "The steel fork the ringers tuned the nine with on midwinter night, a southerner and a northerner passing it from rope to rope. Struck, it gives the nine's note, and nothing else.",
+    "purpose": "Equip: +6 spell attack bonus and +6 spell save DC. +2 Performance and Religion.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "performance": 2,
+      "religion": 2
+    },
+    "skill": {
+      "name": "First Note",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Strike the fork and give the first note: you are Empowered until your next turn and deal 25% more damage."
+    },
+    "requires": {
+      "level": 67,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "exclusive": {
+      "quest": "b4-parting"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",

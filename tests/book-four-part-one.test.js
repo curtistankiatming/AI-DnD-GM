@@ -339,7 +339,7 @@ test('every Book Four flag set is read: each chapter\'s answers change the lines
   // Nothing else sets a flag any other way (a companion's answer, a scene choice): only Mags's answer for Davin, and Maren carrying the letters.
   const lineSets = [];
   for (const [owner, c] of CONTENT) for (const l of everyLine(c)) if (l.setFlag !== undefined) lineSets.push([owner, l.say, l.setFlag]);
-  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-letters', undefined, 'b4_letters_maren']]);
+  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-letters', undefined, 'b4_letters_maren'], ['b4-parting-end', undefined, 'b4_done']]);
   const read = new Set(CONTENT.flatMap(([, c]) => [...readsIn(c)]));
   for (const flag of set) assert.ok(read.has(flag), `${flag} is read`);
 });
@@ -654,16 +654,16 @@ test('no new person in Book Four takes a name the earlier books or the story bib
   const RETURNING = new Set(['Sorrel', 'Sable', 'Hesk', 'Brannagh', 'Sister Ilse', 'Hollis Brede', 'Dera', 'Tovin', 'Pim', 'Aveline', 'Reeve Aveline', 'Aster Vey',
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
     'Fennick', 'Corvane', 'Anwen']);
-  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony', 'Bistort of Greve', 'Annis Corby']);
+  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony', 'Bistort of Greve', 'Annis Corby', 'Wystan Strake']);
   const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard', "The Hall's sergeant"]);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
   const older = JSON.stringify(OLDER);
-  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony', 'Bistort', 'Annis']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
+  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony', 'Bistort', 'Annis', 'Wystan']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
   // Chapter 7's family from Wem and the Ninth Rope's ringers are nobody's in Books One to Three, or the story bible's.
   const bible = fs.readFileSync(path.join(__dirname, '../docs/STORY-BIBLE.md'), 'utf8');
-  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe', 'Madder', 'Comfrey', 'Furze', 'Lovage', 'Piers', 'Ashdown', 'Betony', 'Bistort', 'Annis', 'Corby', 'Merrick']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
+  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe', 'Madder', 'Comfrey', 'Furze', 'Lovage', 'Piers', 'Ashdown', 'Betony', 'Bistort', 'Annis', 'Corby', 'Merrick', 'Wystan']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
   // A name one letter from a returning one is not new (the Book Three review: Tobin and Tovin).
   assert.doesNotMatch(text, /\bTobin\b/);
 });

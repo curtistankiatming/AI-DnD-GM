@@ -2188,8 +2188,11 @@ Book Four frames it the way Book Three framed the 3rd job:
     level stock too, except warm gear, so a hero beyond the written story
     still finds every tier. Shops drop entries they no longer sell. The shop stock for 45 to
     70 is on the story's route (docs/EQUIPMENT.md).
-- **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
-  the engine is Book Three's).
+- **Built in steps 8 and 11:** 11 (`continues` on chapters 19, 28 and 29:
+  data only, the engine is Book Three's). Chapter 19's camp keeps
+  `goingOn` (decided question 45); chapters 28 and 29 have no camp, so
+  their decisions go straight into the next chapter's opening, after any
+  stay line. Nothing is left to build.
 - **Built in step 10:**
   - 6, **`requires.members`** for the keepsakes (`src/gear.js`): only the
     companions named may put the item on (a party member by its id, a combat
@@ -2715,3 +2718,48 @@ below.
     point over the Column Longbow, Signal Shot: Vulnerable 1 round). Stay
     lines: Maren for b4-hospice after 25; everyone for b4-signal after 26
     and for b4-ropes after 27 (together).
+50. **Chapters 28 to 30, as written** (build step 11), all at Cinder Fold
+    on midwinter day and night. Chapter 28 (b4-ropes, enemy theme soldier):
+    the Parting Bell is under the lid at the foot of the founders' stair,
+    where chapter 27 left it, and Ailith's families hold the hall above it.
+    The council's forty stand on the step, under Orin (`b4_orin_captain`,
+    with Davin on the rear door for `b4_orin_davin`) or Sorrel's sergeant;
+    with Orin away the captain is described, not named. Ailith's son is
+    Wystan Strake (new name), on the first bell. The ninth rope follows
+    The Ninth Rope (Garth Mott on it, on a spare, in the galleries, or
+    Perrin Rowe). The clue is the tenth mould's five words: the mould in
+    the casting hall (`job:mould-kept`, `job:mould-bought`), carted back
+    by Cass Ord "since Cinder Fold does not sell" (`job:mould-sold`), or
+    otherwise the founders' ledger's last page in the vault. Sloe's talk at
+    the north door needs `b4_maren_vouched`. Approvals: the council's
+    judgement Maren +1 (wardens), the committee Orin +1 (wilds), the ropes
+    Nessa +1 (wold). Chapter 29 (b4-lid, gloam): Ailith struck the half
+    note herself, to hear it (a guess with `b4_sable_silent`, which also
+    makes the Two Winters 10% harder). Sloe comes in by the north door
+    (`b4_maren_vouched`, or `b4_told_sloe`, which wins over
+    `b4_maren_doubts`), up through the lid by the marked way
+    (`b4_maren_doubts` alone), or at the great doors (`b4_maren_silent`).
+    Aster answers through the joined bells unless she is at rest (Book
+    Three's old way with `b3_bell_aster`, or `b4_voice_rests`), when Tovin
+    speaks from Briarwatch. Burdock's talk needs him south (not
+    `b4_tally_left`). Approvals: Sloe holds it Maren +1 (wold), the council
+    Orin +1 (wardens), you Nessa +1 (wilds). Chapter 30 (b4-parting,
+    gloam, levelFloor 70, nextTown briarwatch): with `mother_silenced` the
+    hero carries the rope down from the signal house and allows the note;
+    with `mother_recalled` Brannagh asks for it. The answers are share
+    (Maren +1, wold), south (Orin +1, wardens) and Sloe's note (Nessa +1,
+    wold); Rue rings the note unless `b4_nessa_stops_rue`, and then Sloe
+    does. The scene `b4-parting-end` is the bound voices, the Telling and
+    the epilogue; Linus Pardew asks who keeps the story, and its framing
+    is Dera's line by `fourth_telling` (one default line for a save without
+    it), Dera's line for `b4_note_rung`, and the Hall by the ending, under
+    the trial opening's 400 characters. The epilogue reads The Wold
+    Family, Walkers' Names and the Telling. Rewards, on the tier 65 curve:
+    the Rope-family Maul (65, fighter or cleric, Str 15: 2d6, +3/+8, 10%
+    dealt, Shatter: Vulnerable 1 round, a point over the Riftcleaver and
+    under the tier 80 Ridgebreaker), the Settling-iron Plate (66, fighter
+    or cleric, Str 15: base AC 23, 15% taken, Strength, Constitution and
+    Wisdom saves +1, Brace: Fortified 1 round) and the Midwinter Tuning
+    Fork (67, wizard, cleric or bard: +6/+6, 10% dealt, Performance and
+    Religion +2, First Note: Empowered 1 round). Stay lines: everyone for
+    b4-lid after 28 and for b4-parting after 29.

@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 24 (build step 9): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, chapter 23 departs from Briarwatch and returns to Highpass, and chapter 24 departs from Highpass with nextTown ashford. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves, and after chapter 24 Orin stays, because chapter 25 needs him (src/data/away.json has the Part Three lines, gated b4_parttwo_done, and his b4-ford stay line). Build step 10 wrote chapters 25 to 27, the companions' own: chapter 25 (b4-ford) departs from Ashford for Merrowgate and needs Orin, chapter 26 (b4-hospice) departs from Merrowgate for Cinder Fold and needs Maren, and chapter 27 (b4-signal) is Cinder Fold's and needs Nessa, with together: true, so nobody walks out after chapter 26 or later. Each has three answers that require its companion and a fourth, for when they are away, that sets the default flag (b4_orin_soldier, b4_maren_silent, b4_nessa_signal). Completing each teaches that companion an arc move (src/combat.js ARC_MOVES). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 24 (build step 9): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, chapter 23 departs from Briarwatch and returns to Highpass, and chapter 24 departs from Highpass with nextTown ashford. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves, and after chapter 24 Orin stays, because chapter 25 needs him (src/data/away.json has the Part Three lines, gated b4_parttwo_done, and his b4-ford stay line). Build step 10 wrote chapters 25 to 27, the companions' own: chapter 25 (b4-ford) departs from Ashford for Merrowgate and needs Orin, chapter 26 (b4-hospice) departs from Merrowgate for Cinder Fold and needs Maren, and chapter 27 (b4-signal) is Cinder Fold's and needs Nessa, with together: true, so nobody walks out after chapter 26 or later. Each has three answers that require its companion and a fourth, for when they are away, that sets the default flag (b4_orin_soldier, b4_maren_silent, b4_nessa_signal). Completing each teaches that companion an arc move (src/combat.js ARC_MOVES). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's. Build step 11 wrote chapters 28 to 30, the end of the book, all at Cinder Fold: chapters 28 (b4-ropes) and 29 (b4-lid) have continues, so each decision goes straight on into the next chapter's opening, and each has its ledge (a defeat in 29 or 30 wakes there); neither has a camp. Chapter 29's flagScale makes the Two Winters harder after b4_sable_silent, and chapter 30's makes the Founders' Shade harder with b4_holder_you and easier with b4_holder_council. Chapter 30 (b4-parting) has levelFloor 70 and nextTown briarwatch; its three answers are the endings (b4_winter_shared, b4_wold_south, b4_note_rung), and the forward ring is never one of them. Its scene, b4-parting-end, is the bound voices, the Telling (fourth_telling) and the epilogue, whose last line sets b4_done.",
   "b4-walker": {
     "id": "b4-walker",
     "book": 4,
@@ -7276,6 +7276,842 @@
         ],
         "rep": { "wold": 1 },
         "flag": "b4_nessa_signal"
+      }
+    ]
+  },
+  "b4-ropes": {
+    "id": "b4-ropes",
+    "book": 4,
+    "part": 3,
+    "name": "The Rope Families",
+    "level": 67,
+    "town": "cinderfold",
+    "nextTown": "cinderfold",
+    "unlock": "b4-signal",
+    "continues": true,
+    "xp": 18500,
+    "gold": 1380,
+    "region": "Cinder Fold: the casting hall at the top of the town, the nine on the lid, and the Mother Bell over the first forge",
+    "threat": "Ailith Strake's rope families hold the casting hall on midwinter day, with the Parting Bell under the lid below them, and they mean to ring it forward at midnight.",
+    "faction": "wardens",
+    "brief": "Midwinter day at Cinder Fold. The rope families hold the casting hall, and the Parting Bell is under the lid below them. Ailith Strake means to ring it forward at midnight, for the free wards, for good. The hall has to be taken back before then.",
+    "told": {
+      "ballad": "On midwinter day at Cinder Fold the rope families shut the casting hall, and the bell was under their feet, and the founders had written them an answer.",
+      "tally": "Cinder Fold, midwinter day. The rope families held the casting hall. Written: the founders were asked, nine hundred years ago, and said no."
+    },
+    "opening": [
+      { "narrate": "Midwinter day at Cinder Fold. The sun is up for six hours and does not get over the peaks for any of them. The whole town is out in the street below the casting hall, miners and committee and the council's people, and the snow melts on the cobbles as it falls." },
+      { "narrate": "The casting hall's great doors are shut. Inside, as everybody in Cinder Fold knows, the nine stand on the iron lid over the first forge, and the Mother Bell hangs over them all from its beam the size of a tree. Under the lid, at the foot of the founders' stair, is the Parting Bell, where the rope families carried it." },
+      { "oneOf": [
+        { "narrate": "The Mother Bell's rope is up, as it has been since the night of the great note, and the rope families have it. Every midwinter since Elske's note they have rung it for the free wards. Tonight they mean to ring it with the Parting Bell.", "when": { "noneFlag": ["mother_silenced"] } },
+        { "narrate": "The Mother Bell hangs bare. Its rope is still coiled in the signal house's store-room, behind the bar, under your lock. Without it nobody rings the Mother Bell tonight, and without the Mother Bell the Parting Bell's note is nothing. Ailith knows it." }
+      ] },
+      { "oneOf": [
+        { "narrate": "Orin's forty are across the street from the great doors, in the council's grey, with their captain in front of them. Davin has the rear door, round by the slag heaps, with six of them. Nobody has told him he may leave it.", "when": { "party": "orin", "flag": "b4_orin_davin" } },
+        { "narrate": "Orin's forty are across the street from the great doors, in the council's grey, with their captain in front of them. He has learnt every name, and he says them under his breath as he walks the line.", "when": { "party": "orin", "flag": "b4_orin_captain" } },
+        { "narrate": "The council's forty are across the street from the great doors, in grey. Their captain has gone up and down the line since dawn saying their names, and nobody has had to be told twice. Round by the slag heaps a boy of seventeen has the rear door, with six of them.", "when": { "flag": "b4_orin_davin" } },
+        { "narrate": "The council's forty are across the street from the great doors, in grey, under the captain Sorrel's paper made. They have their orders and their names, and nobody has had to be told twice.", "when": { "flag": "b4_orin_captain" } },
+        { "narrate": "Sorrel's watch is across the street from the great doors, forty of them in the council's grey, with Sorrel's sergeant in front of them hating every minute of it." }
+      ] },
+      { "narrate": "At the top of the step, with the doors shut behind her, Ailith Strake stands and waits for the town to be quiet. When it is, she speaks to all of it." },
+      { "say": "Ailith Strake", "text": "Once. That's all. The Parting Bell rung forward with the Mother Bell, once, at midnight, and every ward in the free wards is louder for good. No more floors. No more giving. No more asking a child what they'd miss. My families have rung for you for nine hundred years. Let us ring this." },
+      { "oneOf": [
+        { "say": "Ailith Strake", "text": "And don't let the council tell you it's not for one woman to say. The council took the rope off one woman last winter. Elske Marrow. Recalled her, in that hall, with the doors open. Now you'd take it off a town.", "when": { "flag": "mother_recalled" } },
+        { "say": "Ailith Strake", "text": "The rope's in your store-room, under your lock. Bring me the key by midnight, in front of everybody, or tell everybody why you didn't.", "when": { "flag": "mother_silenced" } },
+        { "say": "Ailith Strake", "text": "The rope's ours. It has been since the great note. We ring at midnight." }
+      ] },
+      { "oneOf": [
+        { "narrate": "Hesk stands beside her on the step. The free wards have called him their hero since the stair. He does not look as if he likes it any better than he did.", "when": { "flag": "b3_promise_hesk" } },
+        { "narrate": "Behind her, somewhere in the hall, a bell hums: low and patient, the hum of Highpass's bell when it is somewhere it would rather not be. Sable.", "when": { "flag": "b4_sable_ailith", "anyFlag": ["b3_sable_cast"] } },
+        { "narrate": "Behind her, in the doorway, stands a tall man in a scholar's coat with a sack of books at his feet. Sable, who came to Cinder Fold of his own will and has said nothing since.", "when": { "flag": "b4_sable_ailith" } }
+      ] },
+      { "narrate": "Then she goes back in, and the bar drops on the inside of the doors." },
+      { "oneOf": [
+        { "say": "nessa", "text": "Rue's in the miners' hall. Whatever happens in there, she's going to want to be at the rope for it. So am I.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+        { "say": "nessa", "text": "She's the best ringer alive. She'll have it worked out to the breath. That's what scares me.", "when": { "party": "nessa" } },
+        { "narrate": "Somewhere down the street a miner says it to the man next to him: she's the best ringer alive, and she will have it worked out to the breath." }
+      ] }
+    ],
+    "talks": [
+      {
+        "id": "ailith",
+        "label": "Knock on the small door in the great doors, and ask for Ailith Strake",
+        "lines": [
+          { "narrate": "The small door in the great doors opens a hand's width, and then wider, and Ailith lets you in herself, and shuts it behind you. The casting hall is warm and enormous and full of rope. Her families are on every one of the nine, sitting on the lid with their ropes across their knees." },
+          { "say": "Ailith Strake", "text": "My grandmother lost three of her five to the white in one winter. That's not a story. That's the line in our book above my mother's name. I'm the best ringer alive. I can stop it. I'm to be told I mayn't, because the north has a sum." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "Sable's taught you both notes. I know. He wrote and told me. I'll not ask you for the forward one; I've guessed it. I'm asking you not to stop me ringing it.", "when": { "flag": "b4_sable_taught" } },
+            { "say": "Ailith Strake", "text": "Sable gave me the note. He stands over there and hums it when I'm wrong. I'm not often wrong now.", "when": { "flag": "b4_sable_ailith" } },
+            { "say": "Ailith Strake", "text": "Nobody would give me the note, so I worked it out. A year at it. I've guessed well. I'll know at midnight how well." }
+          ] },
+          { "say": "Ailith Strake", "text": "Whoever rings it gives the bell everything. I'm ringing it. Not my son. Not a miner's boy. Me. That's the price, and I'm paying it, and I'd like it written down that I paid it." }
+        ]
+      },
+      {
+        "id": "ottilie",
+        "label": "Find Ottilie Brand at the committee's table in the street",
+        "lines": [
+          { "narrate": "Ottilie Brand has had the committee's table carried out into the street in front of the casting hall, with the minutes book on it under a stone so it does not blow, and she sits at it in her coat and writes down everything anybody says." },
+          { "say": "Ottilie Brand", "text": "The hall's the town's. Not the rope families'. Not the council's. The town's. The committee voted it this morning, eleven to none, with Ailith's own cousin voting. I've written to her that she's holding the town's hall against the town. She sent the letter back with 'yes' on it." },
+          { "oneOf": [
+            { "say": "Ottilie Brand", "text": "Everybody knows now. The council said it out loud in Highpass, with the doors open, and half her families heard it from the inn yard and not from her. Some of them are in there because they're angry with her for not telling them. They're in there anyway.", "when": { "flag": "b4_accused_open" } },
+            { "say": "Ottilie Brand", "text": "She read the founders' page to her own families, the year before last. Every one of them knows what the bell does. Some of them are in there because of it.", "when": { "flag": "b4_truth_ailith" } },
+            { "say": "Ottilie Brand", "text": "Half of them in there don't know what they're holding it for. They know Ailith asked." }
+          ] },
+          { "say": "Ottilie Brand", "text": "I don't want anybody hurt on that step. I'd like that in the minutes too." }
+        ]
+      },
+      {
+        "id": "son",
+        "label": "Go round to the hall's high windows and talk to whoever is on the ropes below them",
+        "lines": [
+          { "narrate": "At the back of the casting hall the high windows are open for the heat, and below the nearest of them, on the first bell's rope, sits a young man with his mother's jaw, coiling and uncoiling the tail of the rope round his hand." },
+          { "say": "Wystan Strake", "text": "Her son. Wystan. I'm on the first bell. I've been on the first bell since I was nine." },
+          { "say": "Wystan Strake", "text": "She says it's her that rings it. She says it every day, so that none of us offers. I offered. She said if I ever offered again she'd put me off the ropes for good. That's how I know she means it." },
+          { "oneOf": [
+            { "narrate": "Two bells along, on the ninth's rope, sits Garth Mott, the miner's son, fifteen now, with the rope across his knees the way the families sit. Nobody has taken it off him. Perrin Rowe's family is whoever Perrin says it is.", "when": { "anyFlag": ["job:ninth-rope-rope", "job:ninth-rope-given"] } },
+            { "narrate": "Two bells along, on a spare rope beside the ninth, sits Garth Mott, the miner's son, in case anybody is short tonight. He has not been asked to leave.", "when": { "flag": "job:ninth-rope-spare" } },
+            { "narrate": "Down through the lid, faint, from the miners' galleries, comes the gallery bell, rung in time against the nine. Garth Mott, below, keeping their time for them, as he does every shift.", "when": { "flag": "job:ninth-rope-stair" } },
+            { "narrate": "Two bells along, on the ninth's rope, sits old Perrin Rowe, with his ruined hands bound to the rope with cloth so they will not slip." }
+          ] },
+          { "say": "Wystan Strake", "text": "I don't know if she's right. I know she's never once been wrong on a rope." }
+        ]
+      },
+      {
+        "id": "sloe",
+        "label": "Go to the casting hall's north door, where Sloe is",
+        "requires": { "flagsAll": ["b4_maren_vouched"] },
+        "lines": [
+          { "narrate": "The casting hall's north door is small and iron and nobody uses it. Sloe sits on its step in the snow with her slate on her knee. The council gave her the door to keep at midwinter, on a southerner's word, and she is keeping it." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "Your healer wrote my name on three letters and signed hers under it. The council gave me this door because of it. It is the first door in the south that is mine to keep. I am not going to open it to go in. I am going to keep it.", "when": { "absent": "maren" } },
+            { "say": "Sloe", "text": "Maren Vale wrote my name on three letters and signed hers under it. The council gave me this door because of it. It is the first door in the south that is mine to keep. I am not going to open it to go in. I am going to keep it.", "when": { "party": "maren" } }
+          ] },
+          { "say": "Sloe", "text": "My ringers are in the miners' hall. Twenty of them. If Ailith rings forward, everything she pushes away from the south comes to the Wold at once, at midnight, with nobody on any rope there to stop it. I have done that sum. I do not need my slate for it." },
+          { "say": "Sloe", "text": "I would like the hall taken back without anybody dying in it. In the Wold we would say that is the only way a hall is ever really taken back." }
+        ]
+      }
+    ],
+    "clue": "The founders cast nine bells on the lid, and drew a tenth, and did not pour it. Under the tenth mould, in their own hand, they wrote why: Not this way. Ask them all. The rope families have never been shown it.",
+    "investigate": {
+      "label": "Find what the founders wrote about the tenth bell, and bring it to the hall",
+      "skill": "history",
+      "alt": ["persuasion"],
+      "success": [
+        { "oneOf": [
+          { "narrate": "The tenth mould is not in Cinder Fold. Rafe and Tilda Coppin sold it to the Lantern Hall, and it has stood in the Hall's front hall at Merrowgate for two years with its writing turned to the wall. But Cass Ord has had it carted back up the mountain this week, at the Hall's expense, with a note for the committee that Ottilie has pinned to her table: 'Since Cinder Fold does not sell.' {You find|@ finds} it on its cart in the street behind the committee's table, still roped down.", "when": { "flag": "job:mould-sold" } },
+          { "narrate": "{You go|@ goes} to the tenth mould where it stands in the casting hall against the wall, by the small door, with its writing turned outwards, as Ottilie had it put. The rope families walk past it every day.", "when": { "anyFlag": ["job:mould-kept", "job:mould-bought"] } },
+          { "narrate": "{You go|@ goes} down to the vault under the first forge, by the committee's key, and {find|finds} the founders' ledger in its iron box, and {turn|turns} to the last page, where the tenth mould is drawn and measured and never used." }
+        ] },
+        { "narrate": "Under it, in the founders' square hand, five words. Not this way. Ask them all." },
+        { "narrate": "{You copy|@ copies} them out large, on the back of a page of Ottilie's minutes, in letters a whole hall could read from the lid. The founders could have cast a tenth bell and rung the north quiet for good. They knew how. They wrote down that they would not, and why, and left it where the rope families would one day have to look at it." }
+      ],
+      "failure": [
+        { "narrate": "{You look|@ looks} for what the founders wrote, and {find|finds} the words, Not this way, Ask them all, but nobody in the street will take them on a southerner's word until they see the founders' own hand, and there is no time to fetch it before the light goes." }
+      ]
+    },
+    "route": {
+      "label": "Learn every door into the casting hall, and who holds each one",
+      "skill": "perception",
+      "alt": ["investigation", "stealth"],
+      "success": [
+        { "narrate": "{You go|@ goes} round the casting hall twice in the last of the light and {count|counts} its doors: the great doors, barred; the small door in them; the rear door by the slag heaps; the north door, iron, that nobody uses; and the high windows, open for the heat, with the ropes of the first bell hanging just inside the nearest of them." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} round the casting hall in the last of the light, but the rope families have a man at every corner, and {you are|@ is} turned back twice, and by dark {you know|@ knows} only the great doors and the rear one." }
+      ]
+    },
+    "direct": {
+      "label": "Walk up to the great doors and knock",
+      "text": "You walk up the step to the great doors in front of the whole town, and knock, and wait."
+    },
+    "approach": [
+      { "narrate": "Dusk. Every lamp in Cinder Fold is lit, and the forge-signal is lit over all of them. The town stands in the street below the casting hall and waits, and the snow comes down and melts." },
+      { "oneOf": [
+        { "narrate": "Orin takes his forty up onto the step, and puts them either side of the great doors in two lines, and stands at the end of one of them himself.", "when": { "party": "orin", "anyFlag": ["b4_orin_captain", "b4_orin_davin"] } },
+        { "narrate": "The council's forty go up onto the step, and stand either side of the great doors in two lines, the way they were told.", "when": { "anyFlag": ["b4_orin_captain", "b4_orin_davin"] } },
+        { "narrate": "Sorrel's sergeant takes the watch up onto the step, and stands them either side of the great doors in two lines, and tells them, loudly, that nobody draws anything." }
+      ] }
+    ],
+    "crisis": [
+      { "narrate": "The great doors open from the inside, both of them, all the way, and the light of the hall comes out onto the step and the street. Inside, the rope families stand along the lid in their families, with their ropes in their hands, and in front of them stand their champions: the biggest of them, with the wedge-mauls the hall's doors are driven shut with." },
+      { "say": "Ailith Strake", "text": "Come in, then. All of you. You've a right to see it. But you'll not get past the lid while my families are on it." },
+      { "narrate": "Behind her, on its beam, the Mother Bell hangs over the hall. Under the lid, under all of them, something is waiting at the foot of the founders' stair." },
+      { "oneOf": [
+        { "say": "maren", "text": "They'll fight. Not because they're sure. Because she asked, and they've never once said no to her. Somebody has to give them something else to listen to.", "when": { "party": "maren" } },
+        { "narrate": "The champions lift their mauls. Nobody on the step moves." }
+      ] }
+    ],
+    "peaceful": {
+      "label": "Lay the founders' words before the rope families",
+      "skill": "persuasion",
+      "alt": ["history"],
+      "easierWith": {
+        "anyFlag": ["b4_accused_open", "b4_truth_ailith"],
+        "reason": "The rope families already know what the bell does, and that the free wards know it too"
+      },
+      "harderWith": {
+        "flag": "b4_sable_ailith",
+        "reason": "Sable stands by Ailith in the hall, and every ringer there has heard him hum the note"
+      },
+      "success": [
+        { "narrate": "{You have|@ has} the founders' five words, in their own hand, and a copy large enough for the lid to read.", "when": { "flag": "prepared:b4-ropes" } },
+        { "narrate": "{You know|@ knows} every door of the hall, and the council's people are at all of them, quietly, so that nobody in the hall can say they were shut in.", "when": { "flag": "approach:b4-ropes" } },
+        { "narrate": "{You walk|@ walks} in at the great doors with nothing in {their} hands, past the champions, slowly, so that they have to decide whether to stop {them}.", "when": { "notFlag": "approach:b4-ropes" } },
+        { "oneOf": [
+          { "narrate": "Ottilie's people bring the tenth mould in on its cart, through the great doors, and stand it at the edge of the lid with its writing turned to the families.", "when": { "flag": "job:mould-sold" } },
+          { "narrate": "{You stand|@ stands} by the tenth mould, against the wall where it has always stood, and {put|puts} a hand on the band round its foot.", "when": { "anyFlag": ["job:mould-kept", "job:mould-bought"] } },
+          { "narrate": "{You hold|@ holds} up the founders' ledger, open at the last page, where the whole lid can see the tenth mould drawn and measured and never poured." }
+        ] },
+        { "narrate": "{You read|@ reads} it out. Not this way. Ask them all. Then {you say|@ says} what it means, as plainly as it can be said: that the founders could have cast a tenth and stopped the white for the south for good, and chose not to, and wrote down why, and that these are the hands that wrote the lid's first rota." },
+        { "oneOf": [
+          { "narrate": "Nessa does not say anything. She goes up onto the lid, to the ninth bell, and sits down beside whoever is on its rope, and puts her hand flat on the iron the way the miners do.", "when": { "party": "nessa", "notRoller": "nessa" } },
+          { "narrate": "Nobody says anything for a long time." }
+        ] },
+        { "narrate": "Then, on the first bell, Wystan Strake stands up, and puts his rope down on the lid, and steps back from it." },
+        { "say": "Wystan Strake", "text": "Ask them all. We never did. Not once in nine hundred years. We asked each other." },
+        { "narrate": "One by one, along the lid, the families put their ropes down. Not all of them. Enough. The champions look at Ailith, and she looks at the five words for a long time, and does not tell them anything, and they lower their mauls." }
+      ],
+      "failure": [
+        { "narrate": "{You read|@ reads} the founders' words out across the lid, but the champions are already coming, and in the noise of the hall nobody on the ropes can hear a word of it." }
+      ]
+    },
+    "objective": {
+      "name": "The lid",
+      "label": "Hold the lid's edge until the families put their ropes down",
+      "description": "Four successful actions hold the edge of the lid against the rope families' champions, without taking a rope from anybody, until the families put them down of their own will.",
+      "skill": "athletics",
+      "alt": ["persuasion", "intimidation", "history"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The families put their ropes down in the end, when there is nobody left standing to hold them, and two of the champions do not get up off the lid.",
+      "successText": "Along the lid, one by one, the rope families put their ropes down, and their champions lower their mauls."
+    },
+    "foe": "b4-ropes-champion",
+    "foeName": "The Rope Families' Champions",
+    "enemyTheme": "soldier",
+    "attackName": "Wedge-maul Blow",
+    "retainerName": "Ringer on the Lid",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Late on midwinter day, in the casting hall. The ropes lie where the families put them down, across the lid, and the champions sit with their backs to the wall and their mauls across their knees, and nobody is hurt.", "when": { "flag": "method:b4-ropes", "is": "peace" } },
+        { "narrate": "Late on midwinter day, in the casting hall. The ropes lie across the lid where they were dropped, and there is blood on the iron by the third bell, and Cinder Fold's physicians are on their knees beside two of the champions. The rest sit with their backs to the wall." }
+      ] },
+      { "narrate": "Ailith Strake stands at the head of the founders' stair, with the hatch open below her and the warm coming up out of it, and does not go down, and does not come away." },
+      { "say": "Ailith Strake", "text": "I'll not run. I'm the best ringer alive. Somebody's going to need me on a rope before tonight's out. I can hear it." },
+      { "oneOf": [
+        { "say": "Ottilie Brand", "text": "The committee will have her, if the council lets it. It's our hall she held, and our town.", "when": { "noneFlag": ["mother_recalled"] } },
+        { "say": "Ottilie Brand", "text": "The committee will have her, if the council lets it. The council recalled one woman from that rope last winter. I'd like the town to do this one." }
+      ] },
+      { "say": "Brannagh", "text": "The council will have her. It's every town's bell she meant to ring." }
+    ],
+    "decisions": [
+      {
+        "id": "judged",
+        "label": "Give Ailith to the council's judgement",
+        "description": "This decision is permanent. Ailith Strake answers to the council for holding the casting hall and the Parting Bell. She is held under the council's guard until she is judged.",
+        "told": {
+          "ballad": "At Cinder Fold the best ringer alive put down her rope and gave herself to the council, and was led out under guard.",
+          "tally": "Cinder Fold. Ailith Strake was given to the council to be judged. Written: she did not run."
+        },
+        "text": [
+          { "narrate": "You give her to the council. Brannagh says it in front of everybody, so that it is said: Ailith Strake will answer to the council of the free wards, in the open, in the spring session." },
+          { "say": "Ailith Strake", "text": "Good. In the open. I'll say it all again, and they can write it down." },
+          { "narrate": "Two of the council's people take her to the door of the hall, and stop there, and stand either side of her, because she has asked to see it rung, whatever is rung, and nobody can think of a reason why not." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_ailith_judged"
+      },
+      {
+        "id": "committee",
+        "label": "Give her to Cinder Fold's committee",
+        "description": "This decision is permanent. Ailith Strake answers to Cinder Fold, whose hall she held. Ottilie Brand's committee will judge her, in the casting hall.",
+        "told": {
+          "ballad": "At Cinder Fold the town took its own ringer home, and judged her in its own hall.",
+          "tally": "Cinder Fold. Ailith Strake was given to the committee of her own town. Written: Cinder Fold asked for her."
+        },
+        "text": [
+          { "narrate": "You give her to the town. Ottilie writes it in the minutes first, and then says it, and Brannagh lets her." },
+          { "say": "Ottilie Brand", "text": "In the casting hall, after the thaw, with every family in it. I'll chair it. Nobody else wants to." },
+          { "narrate": "Two of the committee's miners take Ailith to the door of the hall, and stand either side of her there, because she has asked to see it rung, and Cinder Fold has never in its life refused a ringer that." }
+        ],
+        "rep": { "wilds": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_ailith_committee"
+      },
+      {
+        "id": "ropes",
+        "label": "Leave her on the ropes, under watch: she is the best ringer they have",
+        "description": "This decision is permanent. Ailith Strake stays on the ropes, under watch, because whatever is rung tonight will need the best ringer alive. She rings in whatever comes next.",
+        "told": {
+          "ballad": "At Cinder Fold they left the best ringer alive on her rope, with a guard at her back, because the night was not over.",
+          "tally": "Cinder Fold. Ailith Strake kept her rope, under watch. Written: she was needed."
+        },
+        "text": [
+          { "narrate": "You leave her on the ropes. Brannagh does not like it, and says so, and then puts two of the council's people at her back, and says that too." },
+          { "say": "Ailith Strake", "text": "Under watch. Fine. Watch, then. You'll see how it's done." },
+          { "narrate": "She goes back up onto the lid, to the first bell, and picks up her son's rope where he put it down, and puts it back in his hands, and stands beside him." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "nessa": 1 },
+        "flag": "b4_ailith_ropes"
+      }
+    ],
+    "ledgeTitle": "The Casting Hall",
+    "ledge": [
+      { "narrate": "You wake on the casting floor, by the committee's table that someone has carried in out of the snow, with a miner's coat over you and the warm of the first forge coming up through the iron." },
+      { "narrate": "Above you the nine stand on the lid, and the Mother Bell hangs over them from its beam. Below, the hatch at the head of the founders' stair is open, and something under the lid is humming." }
+    ]
+  },
+  "b4-lid": {
+    "id": "b4-lid",
+    "book": 4,
+    "part": 3,
+    "name": "The Lid",
+    "level": 68,
+    "town": "cinderfold",
+    "nextTown": "cinderfold",
+    "unlock": "b4-ropes",
+    "continues": true,
+    "xp": 18750,
+    "gold": 1400,
+    "region": "Cinder Fold: under the lid, at the foot of the founders' stair, where the Parting Bell is",
+    "threat": "Half a note of the Parting Bell has been struck under the lid, and the white of both countries, rung back from both sides of the peaks, is meeting under Cinder Fold.",
+    "faction": "wardens",
+    "brief": "Midwinter night. Somebody has struck the Parting Bell half a note under the lid, and it has not stopped. The white of the south and the white of the Wold are coming up under Cinder Fold together, and the lid is heaving.",
+    "flagScale": { "b4_sable_silent": 1.1 },
+    "told": {
+      "ballad": "Under the lid at Cinder Fold, on midwinter night, the two winters met, and the miners and the Wold's ringers rang the nine together.",
+      "tally": "Cinder Fold, midwinter night. Both winters under the lid. Written: who held the bell until midnight."
+    },
+    "opening": [
+      { "narrate": "Midwinter night. The first you know of it is the floor. The iron lid under the nine lifts under your boots, a finger's breadth, and settles, and lifts again, and every bell standing on it rings a little, by itself, out of time." },
+      { "narrate": "Then the sound comes up the founders' stair: one note, or half of one, from the Parting Bell at the foot of it, going on and on, as if it had been struck and nobody had told it to stop." },
+      { "oneOf": [
+        { "say": "Ailith Strake", "text": "That was me. In the last hour of the day, before the doors opened, I went down and struck it half a note. To hear it. I'd only guessed the note. I guessed wrong. It's not stopping.", "when": { "flag": "b4_sable_silent" } },
+        { "say": "Ailith Strake", "text": "That was me. In the last hour of the day, before the doors opened, I went down and struck it half a note. To hear it. I wanted to know I had it right. I had. It's not stopping." }
+      ] },
+      { "narrate": "Under the lid the white is coming. Not from the north, or not only: from both sides of the peaks at once: the south's white, that the wards ring north every winter, and the white that has lain on the Wold for nine hundred years and been rung back at it every winter since, meeting under Cinder Fold at the one bell that can turn them." },
+      { "oneOf": [
+        { "narrate": "The Mother Bell hangs over the hall on its beam, its rope up, humming with the half note.", "when": { "noneFlag": ["mother_silenced"] } },
+        { "narrate": "The Mother Bell hangs over the hall on its beam, bare, its rope still in the signal house, humming with the half note anyway." }
+      ] },
+      { "oneOf": [
+        { "say": "Brannagh", "text": "The council recalled that bell last winter, and I'll not have anybody ring it tonight without the council's say. I'll say it again at midnight, if we get there.", "when": { "flag": "mother_recalled" } },
+        { "narrate": "Out in the street, the town has heard it, and nobody has gone home." }
+      ] },
+      { "oneOf": [
+        { "narrate": "Sloe comes in by the north door, the door she was given to keep, with her twenty ringers behind her in single file, and shuts it behind them.", "when": { "flag": "b4_maren_vouched" } },
+        { "narrate": "Sloe comes in by the north door with her twenty ringers behind her. Nobody gave it to her. She tried it, and it was open, because it was you who told her where the bell was.", "when": { "flag": "b4_told_sloe" } },
+        { "narrate": "Sloe does not come in by any door. She comes up through the lid, by the hatch at the foot of the marked way, with her twenty ringers behind her on a rope, out of the dark under Cinder Fold, the way the founders went.", "when": { "flag": "b4_maren_doubts" } },
+        { "narrate": "Sloe comes in at the great doors with her twenty ringers behind her, and asks at them to be let in, as anybody may, and is." }
+      ] },
+      { "oneOf": [
+        { "narrate": "Maren watches her come in. Maren would not vouch for her, at the harbour. She does not say anything now either.", "when": { "party": "maren", "flag": "b4_told_sloe", "anyFlag": ["b4_maren_doubts"] } },
+        { "narrate": "At Merrowgate the harbour's clerk wrote that she should be watched. She trusted your word over his.", "when": { "flag": "b4_told_sloe", "anyFlag": ["b4_maren_doubts"] } }
+      ] },
+      { "say": "Sloe", "text": "Two winters. Both of them, under one town. I did not have that in my sum. I should have." },
+      { "oneOf": [
+        { "say": "orin", "text": "Then we hold it. Whatever's coming up those stairs. That's all there is to do.", "when": { "party": "orin" } },
+        { "narrate": "Nobody says what to do." }
+      ] }
+    ],
+    "talks": [
+      {
+        "id": "sloe",
+        "label": "Talk to Sloe at the head of the founders' stair",
+        "lines": [
+          { "narrate": "Sloe stands at the head of the founders' stair with her slate, and looks down it, and does a sum." },
+          { "say": "Sloe", "text": "If the half note goes on until midnight, both winters come up through this floor at once, into the nine, and the nine cannot hold one of them out of time. Cinder Fold first. Then whatever is nearest." },
+          { "say": "Sloe", "text": "If the nine are rung in time, the lid settles, and the bell stops, and at midnight we are where we were this morning, and somebody has to choose. I would rather be where we were this morning." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "Your council gave me a door. I am in the south's hall, by the south's door. I would like to keep it until midnight. After that I do not know what is mine.", "when": { "flag": "b4_maren_vouched" } },
+            { "say": "Sloe", "text": "I came up the marked way because I was not sure any door in the south would open to me. It was cold. It was my choice. I would make it again.", "when": { "flag": "b4_maren_doubts", "noneFlag": ["b4_told_sloe"] } },
+            { "say": "Sloe", "text": "You trusted me with where the bell was. I came here because of it. Nobody has written it on your door. You know it is there.", "when": { "flag": "b4_told_sloe" } },
+            { "say": "Sloe", "text": "I asked at your doors like anybody. It was strange, being let in for asking. I would like the Wold to try it." }
+          ] }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Find Rue among Sloe's ringers",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Rue is with the ringers, on the lid, with her book under her arm and Nessa beside her. Neither of them is talking.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue is with the ringers, on the lid, with her book under her arm. Somebody wrote in it, in capitals, that they would tell her who she is. She keeps her thumb on that page.", "when": { "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue is with the ringers, on the lid, with her book. She is not asking for a rope. She said she would not, and she has written down that she does not like it.", "when": { "flag": "b4_nessa_stops_rue" } },
+            { "narrate": "Rue is with the ringers, on the lid, with her book under her arm. She came down to them alone, and she has stayed." }
+          ] },
+          { "say": "Rue", "text": "I can hear it in the floor. Both of them. The Wold's white, and yours. They are the same white. I always thought it would be different. It is only the same thing, going both ways, and meeting." },
+          { "say": "Rue", "text": "I am writing it down. Whatever happens at midnight, somebody will want to read that tonight the two winters met, and what the floor did." },
+          { "oneOf": [
+            { "say": "Rue", "text": "Somebody told me no. I am writing that down too. Again. In case I forget I minded.", "when": { "flag": "b4_nessa_stops_rue" } },
+            { "say": "Rue", "text": "Sloe will say no again at midnight. I will ask again. That is how it is done." }
+          ] }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Put a hand on the nearest of the nine, and listen",
+        "lines": [
+          { "narrate": "You put your hand flat on the third bell, where it stands on the lid, the way the miners do. Under the half note, through the bronze, the joined bells are all ringing at once, every bell in the free wards with somebody in it." },
+          { "oneOf": [
+            { "say": "Tovin", "text": "Can you hear this? It's Tovin, at Briarwatch. I've got my hand on our bell, and it's shaking, and Pim says yours must be shaking worse. She's not in it to ask. So I'm asking. Whatever you do down there, do it in time.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "say": "Tovin", "text": "Can you hear this? It's Tovin, at Briarwatch. I've got my hand on our bell, and it's shaking, and Pim says yours must be shaking worse. She's not in it to ask. So I'm asking. Whatever you do down there, do it in time.", "when": { "flag": "b4_voice_rests" } },
+            { "say": "Aster Vey", "text": "It's in every one of us. Every bell with somebody in it, from Vell to Briarwatch. Half a note, and we're all half out of ourselves.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Aster Vey", "text": "It's in every one of us. Every bell with somebody in it. Half a note, and we're all half out of ourselves. Pim's holding the rope. He won't let go." }
+          ] },
+          { "oneOf": [
+            { "narrate": "Then the bells carry nothing but the half note.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "narrate": "Then the bells carry nothing but the half note.", "when": { "flag": "b4_voice_rests" } },
+            { "say": "Aster Vey", "text": "Ring them in time. The nine. That's all it wants. Something in time, to stand on." }
+          ] }
+        ]
+      },
+      {
+        "id": "burdock",
+        "label": "Find Burdock, who came south with the tally",
+        "requires": { "flagsNone": ["b4_tally_left"] },
+        "lines": [
+          { "narrate": "Burdock sits on the casting floor with his back to the wall and the book of winters on his knees, open at a page he has not written on yet." },
+          { "say": "Burdock", "text": "Nine hundred years. I have read every line of it, and in every one of them the white comes from the south. I never once asked where the south had it from. From us. It is the same white, going both ways. I will have to go back and write that in, at the beginning." },
+          { "say": "Burdock", "text": "Tonight I am going to write down what happened. Exactly. Whoever holds the bell, and how they held it. It is the only thing I can do that nobody else here can." }
+        ]
+      }
+    ],
+    "clue": "The half note has put the nine out of time. Ring the nine in time, all of them, together, and the lid will settle, and the Parting Bell will stop.",
+    "investigate": {
+      "label": "Listen to the nine, and find what the half note has done to them",
+      "skill": "performance",
+      "alt": ["arcana"],
+      "success": [
+        { "narrate": "{You stand|@ stands} on the lid among the nine and {listen|listens}, bell by bell, the way the rope families teach their children to, with an ear to each." },
+        { "oneOf": [
+          { "narrate": "The nine are only bronze now. They rested, when the free wards voted it, and nobody in them answers. But bronze can be out of time too, and they are: every one of them shaken off its beat by the half note under the lid. Rung by hand, in time, together, they would give the floor something to stand on.", "when": { "flag": "b3_promise_old", "anyFlag": ["wards_seat"] } },
+          { "narrate": "The nine are out of time. Every one of them, shaken off its beat by the half note, ringing a little by itself, and the voices in them are pulling against each other. Rung by hand, in time, together, they would give the floor something to stand on, and the voices something to hold." }
+        ] },
+        { "narrate": "{You tell|@ tells} Sloe, and the rope families, and the miners at the door. In time, all nine, together, from the first rope to the ninth, and keep it." }
+      ],
+      "failure": [
+        { "narrate": "{You listen|@ listens} to the nine, but the half note is in everything, the lid and the bronze and the floor, and {you can|@ can} hear that something is wrong with the beat, and not what." }
+      ]
+    },
+    "route": {
+      "label": "Go down the founders' stair to the Parting Bell, and learn the way back up",
+      "skill": "athletics",
+      "alt": ["survival", "perception"],
+      "success": [
+        { "narrate": "{You go|@ goes} down the founders' stair under the lid, into the warm and the dark, and {count|counts} it: forty steps cut in the rock, and then the vault, and the Parting Bell on its frame in the middle of it, humming, small as a bucket and black with age." },
+        { "narrate": "{You come|@ comes} back up it twice, until {you know|@ knows} it in the dark." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} down the founders' stair, but the lid heaves overhead, and dust and grit come down, and {you come|@ comes} back up not sure how many steps there were." }
+      ]
+    },
+    "direct": {
+      "label": "Go straight down the founders' stair to the bell",
+      "text": "You go straight down the founders' stair to the Parting Bell, with the lid heaving over your head."
+    },
+    "approach": [
+      { "narrate": "Under the lid. The vault at the foot of the founders' stair is round and warm, cut out of the rock, with the first forge's heat in its walls. The Parting Bell hangs in the middle of it on a frame of new timber, humming, small and black." },
+      { "narrate": "Round the walls, and up through the cracks in the floor, comes the white: grey and slow and very cold, from two sides at once." }
+    ],
+    "crisis": [
+      { "narrate": "The white comes up out of the floor in two shapes, from two sides of the vault, and they turn to face each other across the Parting Bell: one the south's, the colour of a free-wards winter, and one the Wold's, the colour of Orme's doors. Two winters, each the size of a country, folded small into a room." },
+      { "narrate": "They come for the bell. They do not want it rung. They want it to go on humming until midnight, so that they can come up through the lid together." },
+      { "say": "Sloe", "text": "Up there. Every rope. In time. Now." },
+      { "oneOf": [
+        { "say": "nessa", "text": "Ringers to the ropes! Miners too! Everybody who's ever pulled a rope, get on one!", "when": { "party": "nessa" } },
+        { "narrate": "Somebody up on the lid is shouting for every rope to be manned." }
+      ] }
+    ],
+    "peaceful": {
+      "label": "Get every rope on the nine manned, miners and the Wold's ringers together, and call the time down the stair",
+      "skill": "performance",
+      "alt": ["athletics"],
+      "success": [
+        { "narrate": "{You know|@ knows} what the nine need: in time, all nine, together, and kept.", "when": { "flag": "prepared:b4-lid" } },
+        { "narrate": "{You know|@ knows} the founders' stair in the dark, every step, and the vault at the foot of it.", "when": { "flag": "approach:b4-lid" } },
+        { "narrate": "{You go|@ goes} up and down the founders' stair in the dark with the lid heaving, and {miss|misses} a step, and {go|goes} on.", "when": { "notFlag": "approach:b4-lid" } },
+        { "narrate": "{You stand|@ stands} at the head of the stair, halfway between the bell and the nine, and {call|calls} the time: down to the vault, and up to the lid." },
+        { "oneOf": [
+          { "narrate": "On the lid the miners take ropes beside the rope families, and the Wold's ringers beside them, a miner and a ringer to a bell, and Ailith on the first with her son, calling the families in, and for the first time in nine hundred years nobody asks whose rope is whose.", "when": { "flag": "b4_ailith_ropes" } },
+          { "narrate": "On the lid the miners take ropes beside the rope families, and the Wold's ringers beside them, a miner and a ringer to a bell, and from the door, under guard, Ailith calls the families in, and for the first time in nine hundred years nobody asks whose rope is whose." }
+        ] },
+        { "oneOf": [
+          { "narrate": "Orin goes down the stair to the vault and stands with his back against the Parting Bell's frame, holding it still with both arms, while the white comes round him.", "when": { "party": "orin", "notRoller": "orin" } },
+          { "narrate": "Somebody's arms are round the Parting Bell's frame in the vault, holding it still." }
+        ] },
+        { "narrate": "They ring. Ragged, then less ragged, then in time: nine bells, a southerner and a northerner on every rope, and Sloe on the ninth, and the beat goes down through the lid like a hand laid flat on it." },
+        { "narrate": "The lid settles. The half note goes thin, and thinner, and stops. In the vault the two winters stand a moment longer, facing each other across the silent bell, and then there is nothing to stand on, and they go down into the floor." }
+      ],
+      "failure": [
+        { "narrate": "{You call|@ calls} the time, but the ringers on the lid cannot hear it over the half note, and the nine stay out of time, and the white comes up round the Parting Bell in two shapes and does not stop." }
+      ]
+    },
+    "objective": {
+      "name": "The nine",
+      "label": "Hold the vault until the nine are rung in time",
+      "description": "Four successful actions hold the Parting Bell and the vault against the two winters until the nine above are rung in time and the lid settles.",
+      "skill": "performance",
+      "alt": ["athletics", "arcana", "religion"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The nine come into time in the end, and the lid settles, but the white got up through the floor first, and the miners carry four of the ringers out of the hall stiff with it, and one of them does not wake.",
+      "successText": "Above, the nine come into time, all together, and the lid settles, and the Parting Bell goes quiet."
+    },
+    "foe": "b4-lid-winters",
+    "foeName": "The Two Winters",
+    "enemyTheme": "gloam",
+    "attackName": "Both Winters' Cold",
+    "retainerName": "White out of the Floor",
+    "after": [
+      { "oneOf": [
+        { "narrate": "An hour before midnight. The lid is still. The nine stand on it in time and silent, with their ropes hanging, and a southerner and a northerner sitting under every one, and nobody is hurt.", "when": { "flag": "method:b4-lid", "is": "peace" } },
+        { "narrate": "An hour before midnight. The lid is still. The vault below is scored white across its floor where the fight was, and the cold has not gone out of the rock, and the physicians are with the ringers by the north wall." }
+      ] },
+      { "narrate": "The Parting Bell is carried up the founders' stair on its frame, by eight people, slowly, and set down on the casting floor under the Mother Bell. Somebody has to hold it until midnight. Everybody looks at it, and then at everybody else." },
+      { "say": "Sloe", "text": "It should not be the one who rings it, if anybody rings it. It should be somebody who will give it up." },
+      { "say": "Brannagh", "text": "The council's here. All of it that matters. We can hold a bell for an hour." }
+    ],
+    "decisions": [
+      {
+        "id": "sloe",
+        "label": "Sloe holds the Parting Bell until midnight",
+        "description": "This decision is permanent. The Wold's Reckoner holds the Parting Bell until midnight.",
+        "told": {
+          "ballad": "On midwinter night the Reckoner of the Wold sat with the Parting Bell in her lap, in the south's own hall, and nobody took it from her.",
+          "tally": "Cinder Fold. Sloe of Orme held the bell until midnight. Written: the south let her."
+        },
+        "text": [
+          { "narrate": "You ask Sloe. She looks at the bell a long time before she sits down on the casting floor beside it, and puts one hand on its frame, the way you would put a hand on a door." },
+          { "say": "Sloe", "text": "Until midnight. Then it is everybody's, and I will give it to whoever everybody says." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_holder_sloe"
+      },
+      {
+        "id": "council",
+        "label": "The council holds it, in Brannagh's hands",
+        "description": "This decision is permanent. The council of the free wards holds the Parting Bell until midnight, in Brannagh's hands.",
+        "told": {
+          "ballad": "On midwinter night old Brannagh of Fenmere held the Parting Bell for the council, and said she was too old to drop it.",
+          "tally": "Cinder Fold. The council held the bell until midnight. Written: in Brannagh's hands."
+        },
+        "text": [
+          { "narrate": "You give it to the council. Brannagh takes the frame's handle herself and has a stool brought, and sits on it with the bell beside her knee." },
+          { "say": "Brannagh", "text": "An hour. I've sat through worse sessions. Nobody touches it unless the council says so, and the council's me, for an hour." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_holder_council"
+      },
+      {
+        "id": "you",
+        "label": "Hold it yourself",
+        "description": "This decision is permanent. You hold the Parting Bell until midnight.",
+        "told": {
+          "ballad": "On midwinter night the hero of the south held the Parting Bell in two hands, and both countries watched them do it.",
+          "tally": "Cinder Fold. The southerner held the bell until midnight. Written: nobody asked them to give it up."
+        },
+        "text": [
+          { "narrate": "You hold it yourself. You sit down on the casting floor with the Parting Bell's frame against your knee and your hand on it, and every face in the hall turns to you, and stays turned." },
+          { "say": "Sloe", "text": "Then it is yours to give up, at midnight. I hope you do." }
+        ],
+        "rep": { "wilds": 1 },
+        "approval": { "nessa": 1 },
+        "flag": "b4_holder_you"
+      }
+    ],
+    "ledgeTitle": "The Head of the Stair",
+    "ledge": [
+      { "narrate": "You wake at the head of the founders' stair, on the casting floor, with somebody's coat under your head and the nine standing in time above you." },
+      { "narrate": "The Parting Bell is on its frame under the Mother Bell, where it was set down, and somebody's hand is still on it. It is not quite midnight." }
+    ]
+  },
+  "b4-parting": {
+    "id": "b4-parting",
+    "book": 4,
+    "part": 3,
+    "name": "The Parting Bell",
+    "level": 69,
+    "town": "cinderfold",
+    "nextTown": "briarwatch",
+    "unlock": "b4-lid",
+    "levelFloor": 70,
+    "xp": 19000,
+    "gold": 1420,
+    "region": "Cinder Fold: the casting hall at midwinter midnight, under the Mother Bell",
+    "threat": "At midnight the Mother Bell's midwinter note is due, and the Parting Bell can turn it. When the Parting Bell is touched, something that was waiting under the lid will come up to stop it.",
+    "faction": "wardens",
+    "brief": "Midwinter midnight at Cinder Fold. The Mother Bell's note is due, every bell in the free wards is listening, and the Parting Bell is on the casting floor beneath it. How the winter is shared is decided tonight.",
+    "flagScale": { "b4_holder_you": 1.15, "b4_holder_council": 0.9 },
+    "told": {
+      "ballad": "At midnight on midwinter at Cinder Fold, with every bell in the south listening, the hero of the song decided how the winter would be shared.",
+      "tally": "Cinder Fold, midwinter midnight. The winter was decided. Written: how."
+    },
+    "opening": [
+      { "narrate": "Midwinter, a quarter before midnight. The casting hall is as full as it has ever been: the council on the casting floor, the committee by the wall, the rope families on the lid with the miners beside them, and the Wold's ringers in among them all, a southerner and a northerner to every rope." },
+      { "narrate": "Every bell in the free wards is listening. You can feel it through the iron of the lid: Highpass and Merrowgate and Briarwatch and every hearth bell in every town, quiet, waiting for the Mother Bell's note." },
+      { "oneOf": [
+        { "narrate": "Away north, over the peaks, Campion is standing under Dunnet's pot-bell in an empty valley with the clapper-rope in her hand, listening too.", "when": { "flag": "b4_potbell_kept" } },
+        { "narrate": "Away north, on the boundary stones between Dunnet and Wem, the pot-bell stands in its frame with the rota chalked on it, and nobody to ring it tonight. Whoever comes back will read whose night it was.", "when": { "flag": "b4_potbell_rota" } },
+        { "narrate": "Away north, in Dunnet, the pots are back on their hooks, and nothing in the Wold rings at all." }
+      ] },
+      { "oneOf": [
+        { "narrate": "The Parting Bell is on its frame on the casting floor under the Mother Bell, with Sloe sitting beside it and one hand on its frame, the way you would put a hand on a door.", "when": { "flag": "b4_holder_sloe" } },
+        { "narrate": "The Parting Bell is on its frame on the casting floor under the Mother Bell, with Brannagh on a stool beside it and the frame's handle in her fist.", "when": { "flag": "b4_holder_council" } },
+        { "narrate": "The Parting Bell is on its frame on the casting floor under the Mother Bell, with your hand on it. Every face in the hall has been turned to you for an hour." }
+      ] },
+      { "oneOf": [
+        { "narrate": "The Mother Bell's rope is in your hands. You went up to the signal house at eleven, and unbarred the store-room with the only key, and carried it down through the town on your shoulder with the whole of Cinder Fold watching. Whether the Mother Bell rings its midwinter note tonight is yours to allow. Nobody here can take it from you.", "when": { "flag": "mother_silenced" } },
+        { "say": "Brannagh", "text": "The council asks for the midwinter note. In the council's name, and in mine, since I'm what's left of it in this hall. We recalled that rope last winter, and we're asking for it tonight, out loud, as it should have been asked for every year.", "when": { "flag": "mother_recalled" } },
+        { "narrate": "The towns have asked for the Mother Bell's note, as they have every midwinter since the night of the great note: Ottilie has the letters on the committee's table, one from every town, and reads out their names." }
+      ] },
+      { "say": "Sloe", "text": "There are three things that can be done with the Parting Bell tonight. Ring it backward with the Mother Bell. Ring it forward with the Mother Bell. Or not at all. I have done the sum for all three. I am not going to do it again. Somebody else has to choose." }
+    ],
+    "talks": [
+      {
+        "id": "sloe",
+        "label": "Talk to Sloe",
+        "lines": [
+          { "say": "Sloe", "text": "Backward, and every ward in the free wards goes quiet for a winter, and the Wold has its first clear winter since the founders. Your worst. Towns I have never seen will fall, and I will have to write their names. Whoever rings it gives the bell everything they are." },
+          { "say": "Sloe", "text": "Not at all, and the south gives at the floor and keeps quiet nights, town by town, and the Wold gives too, and every generation somebody has to ask again. Nobody is spared. Everybody pays a little, and has to keep paying." },
+          { "say": "Sloe", "text": "Or the Wold leaves. Comes south, everyone, and gives the Wold to the white. I will not come. Somebody has to stay and be the Wold, even if it is only me." },
+          { "say": "Sloe", "text": "Forward I will not talk about. Nobody in this hall is going to ring it forward. You will see to that." }
+        ]
+      },
+      {
+        "id": "ailith",
+        "label": "Talk to Ailith Strake",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Ailith is on the lid, on the first bell's rope, with her son on the rope beside her and two of the council's people at her back.", "when": { "flag": "b4_ailith_ropes" } },
+            { "narrate": "Ailith stands at the door of the hall, under guard, where she asked to stand, so that she can see whatever is rung." }
+          ] },
+          { "say": "Ailith Strake", "text": "I'll not ask you for forward. I've read the five words. I don't like them. I'll not pretend I didn't read them." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "Whatever you ring, I'll ring it. Properly. Nobody will say a Strake let a note go out of time on a night like this.", "when": { "flag": "b4_ailith_ropes" } },
+            { "say": "Ailith Strake", "text": "Whatever you ring, I'll be stood here, listening for who's out of time. Somebody will be. Tell my son to watch the third." }
+          ] }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Find Rue",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Rue is on the lid, by the Parting Bell's side of it, with her book under her arm and Nessa beside her, close enough that their shoulders touch.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue is on the lid with her book under her arm, with nobody beside her. She keeps her thumb on the page where somebody once wrote in capitals that they would tell her who she is.", "when": { "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue is sitting on the edge of the lid with her book shut on her knees. She has not asked for a rope. She has written down, again, that she minds.", "when": { "flag": "b4_nessa_stops_rue" } },
+            { "narrate": "Rue is on the lid with her book under her arm, alone, near the Parting Bell. Up above the town, the forge-signal is lit. Somebody is keeping it." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "I asked Sloe for the rope again, at eleven. She said no again. I said that I would ask once more, at midnight, in front of everybody. That is how it is done.", "when": { "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "say": "Rue", "text": "I am not going to ask. I said so. If Sloe rings it, I will hold her book for her, and read it to her after. Every day." }
+          ] },
+          { "oneOf": [
+            { "say": "nessa", "text": "If she rings it, I'm the first thing she sees after. I'll tell her. I said I would.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue writes the time at the top of a clean page, and the date, and nothing under it yet." }
+          ] }
+        ]
+      },
+      {
+        "id": "burdock",
+        "label": "Find Burdock",
+        "requires": { "flagsNone": ["b4_tally_left"] },
+        "lines": [
+          { "narrate": "Burdock has a place against the wall by the committee's table, with the book of winters open on his knees at tonight's page and a pen ready." },
+          { "say": "Burdock", "text": "One line. Every winter gets one line. Nine hundred of them. I have never in my life wanted so much to know what a line will say before I write it." },
+          { "say": "Burdock", "text": "Whatever you choose, I will write it exactly. And then I will write who chose it. That is the part nobody ever reads, and it is the part I mind most." }
+        ]
+      },
+      {
+        "id": "aster",
+        "label": "Put a hand on the nearest of the nine, and listen to the joined bells",
+        "lines": [
+          { "narrate": "You put your hand on the third bell where it stands on the lid. Through the bronze, every bell in the free wards with somebody in it is listening." },
+          { "oneOf": [
+            { "narrate": "Among them, far off, Briarwatch's bell is listening too, rung by hand at the top of its tower. It does not answer. Nobody is in it to answer.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+            { "narrate": "Among them, far off, Briarwatch's bell is listening too, rung by hand at the top of its tower. It does not answer. Nobody is in it to answer.", "when": { "flag": "b4_voice_rests" } },
+            { "say": "Aster Vey", "text": "I'm here. In Vell's bell, still. I can hear all of you. Whatever you ring, tell me after. I'd like to have been told.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Aster Vey", "text": "I'm here. Pim's got the rope. I can hear every one of us, all the way to you. Whatever you ring, I'd like to have been asked. You did ask. Thank you." }
+          ] }
+        ]
+      }
+    ],
+    "clue": "The Parting Bell only turns the Mother Bell's note. Rung with it, backward or forward, it sends the note one way or the other; left alone, the Mother Bell rings its note as it always has. The Mother Bell rings either way.",
+    "investigate": {
+      "label": "Read the Parting Bell's founders' marks, and learn what it can do to the Mother Bell's note",
+      "skill": "arcana",
+      "alt": ["performance"],
+      "success": [
+        { "narrate": "{You kneel|@ kneels} by the Parting Bell's frame and {read|reads} the marks round its lip, in the founders' letters, by lamplight: what it does, and when, and with what." },
+        { "narrate": "It does nothing by itself. It turns the Mother Bell's note, that is all. Rung backward with it at midwinter, every ward in the south goes quiet for a winter, and the white stays where it is. Rung forward, every ward is louder for good, and all of it goes north. Left alone, the Mother Bell rings its note as it always has, and the Parting Bell is only a small black bell." },
+        { "narrate": "Under the marks for forward, very small, somebody long ago has scratched a line through them. Not this way." }
+      ],
+      "failure": [
+        { "narrate": "{You kneel|@ kneels} by the Parting Bell and {try|tries} to read its marks, but the founders' letters are worn almost flat round the lip, and by lamplight {you can|@ can} read only that it turns the Mother Bell's note, and not how far." }
+      ]
+    },
+    "route": {
+      "label": "Find a place on the lid where you can see every rope and the Parting Bell at once",
+      "skill": "perception",
+      "alt": ["insight", "performance"],
+      "success": [
+        { "narrate": "{You find|@ finds} the place: on the lid by the fifth bell, in the middle, where every rope and every ringer's hands are in sight, and the Parting Bell below, and the Mother Bell above." }
+      ],
+      "failure": [
+        { "narrate": "{You look|@ looks} for a place on the lid where all of it can be seen at once, but there are too many people, and the lid is crowded to its edges, and {you end|@ ends} up at the side of it, by the ninth." }
+      ]
+    },
+    "direct": {
+      "label": "Walk out into the middle of the casting floor, to the Parting Bell",
+      "text": "You walk out into the middle of the casting floor, through everybody, to the Parting Bell under the Mother Bell, and stand by it."
+    },
+    "approach": [
+      { "narrate": "Five minutes to midnight. The casting hall goes quiet, the way the street did this morning, from the doors inwards." },
+      { "narrate": "Somebody has to touch the Parting Bell first, whatever is to be done with it: to ring it, or to lift it off the floor and carry it away so that it is not." }
+    ],
+    "crisis": [
+      { "narrate": "When the Parting Bell is touched, the lid answers. Up through the iron, between the nine, through the ringers' feet and the ropes, comes something that has been waiting under Cinder Fold since the bell was cast." },
+      { "narrate": "The Founders' Shade: nine shapes in the white, as tall as the bells, with the faces the free wards' songs give them. The ones on the coins and the gatehouse arch and the broadsheets. The legends. Not the people who drew the tenth mould and wrote under it; the people the songs made out of them." },
+      { "narrate": "They have come for the bell. They want it rung forward, the way the songs say the founders would have wanted, and they mean to have it." },
+      { "oneOf": [
+        { "say": "maren", "text": "That's not them. That's what we said about them. The real ones wrote five words and left them for us. Don't let the songs have it.", "when": { "party": "maren" } },
+        { "narrate": "Somebody on the lid says it out loud: that is not them. That is what the songs made of them." }
+      ] }
+    ],
+    "peaceful": {
+      "label": "Ring the nine in time, with both countries on the ropes, and give the Shade nothing to stand on",
+      "skill": "performance",
+      "alt": ["religion"],
+      "easierWith": {
+        "anyFlag": ["b4_potbell_rota", "b4_vote_share", "b4_holder_council", "b4_sable_taught"],
+        "reason": "Both countries have shared a bell before, the council has stood together, or you know both notes and can call the true time"
+      },
+      "success": [
+        { "narrate": "{You know|@ knows} what the Parting Bell does and does not do, and that forward is not in it any more except in songs.", "when": { "flag": "prepared:b4-parting" } },
+        { "narrate": "{You can|@ can} see every rope from the middle of the lid, and every pair of hands on them.", "when": { "flag": "approach:b4-parting" } },
+        { "narrate": "{You push|@ pushes} through the crowd on the lid to the middle of it, and {see|sees} as many ropes as {you can|@ can}.", "when": { "notFlag": "approach:b4-parting" } },
+        { "narrate": "{You call|@ calls} the time. The same time as under the lid, an hour ago, that the nine already know." },
+        { "oneOf": [
+          { "narrate": "Ailith takes it up on the first bell, and calls the families in after it, and her son beside her.", "when": { "flag": "b4_ailith_ropes" } },
+          { "narrate": "From the door, under guard, Ailith calls it too, for her families, louder than anybody." }
+        ] },
+        { "narrate": "The nine ring in time. A southerner and a northerner on every rope, miners and rope families and the Wold's ringers, nine bells and one beat, and the beat goes out through the lid and the floor and up the walls." },
+        { "narrate": "The Founders' Shade stands among the bells and has nothing to stand on. The songs that made it are being sung by nobody. Its faces go one by one, the way breath goes off a cold window, and the nine shapes are white, and then grey, and then nothing." }
+      ],
+      "failure": [
+        { "narrate": "{You call|@ calls} the time, but the Shade is among the ropes already, and the ringers falter at the faces they have known from coins and broadsheets all their lives, and the beat breaks." }
+      ]
+    },
+    "objective": {
+      "name": "The Parting Bell",
+      "label": "Hold the Parting Bell until the nine are rung in time",
+      "description": "Four successful actions hold the Parting Bell on the casting floor against the Founders' Shade until the nine are rung in time.",
+      "skill": "performance",
+      "alt": ["religion", "athletics", "intimidation"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The nine come into time in the end and the Shade goes down through the lid, but it went through the ringers on the lid first, and the physicians are at the ropes of the second and the seventh, and one of the rope families' oldest is carried out of the hall.",
+      "successText": "The nine ring in time, and the Founders' Shade goes out like breath off a window, and the Parting Bell is still on the floor."
+    },
+    "foe": "b4-parting-shade",
+    "foeName": "The Founders' Shade",
+    "enemyTheme": "gloam",
+    "attackName": "The Song's Weight",
+    "retainerName": "Face from a Broadsheet",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Midnight. The nine have stopped. The casting hall stands in the silence after them, and the Parting Bell is on the floor under the Mother Bell where it was, and nobody is hurt.", "when": { "flag": "method:b4-parting", "is": "peace" } },
+        { "narrate": "Midnight. The nine have stopped. The lid is scored white between the bells where the Shade went through it, and the physicians are still on their knees by the ropes, and the Parting Bell is on the floor under the Mother Bell where it was." }
+      ] },
+      { "narrate": "The Mother Bell's note is due. Everybody in the hall is looking at the same small black bell, and then at you." },
+      { "say": "Sloe", "text": "Choose. I will hold you to it. So will the tally." }
+    ],
+    "decisions": [
+      {
+        "id": "share",
+        "label": "Share it: nobody rings the Parting Bell, and both countries give",
+        "description": "This decision is permanent. Nobody rings the Parting Bell. It goes back to the Hall of Legends, silent. The Mother Bell is rung softer, by the rota, and both countries keep quiet nights and give at the floor, and must keep doing it, every generation.",
+        "told": {
+          "ballad": "At midnight on midwinter the hero of the song left the Parting Bell on the floor, and the Mother Bell was rung soft, and both countries took a share of the winter, and must take it again.",
+          "tally": "Midwinter. The bell was not rung. The winter is shared: quiet nights in the south, giving at the floor in both countries. Written: it must be asked again."
+        },
+        "text": [
+          { "narrate": "You lift the Parting Bell off the floor, frame and all, and hand it to the nearest pair of hands that will carry it out of the hall. It is not rung. It is going back to the Hall of Legends, to its hook, to hang there silent." },
+          { "oneOf": [
+            { "narrate": "You go up the lid to the Mother Bell's rope with the rope from the signal house on your shoulder, and hang it, yourself. You allow the note.", "when": { "flag": "mother_silenced" } },
+            { "narrate": "The Mother Bell's rope comes down off its cleat." }
+          ] },
+          { "narrate": "The Mother Bell rings its midwinter note, softer than it has ever been rung, by the rota: four ringers, a southerner and a northerner and two more, a quarter-pull each, so that less goes north than any winter since the great note." },
+          { "say": "Sloe", "text": "Less. It is not nothing. It is less, every year, if you keep it. I will write that down myself." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_winter_shared"
+      },
+      {
+        "id": "south",
+        "label": "Bring them south: the Parting Bell stays silent, and the Wold comes over the peaks to live",
+        "description": "This decision is permanent. The Parting Bell stays silent. The Wold's people come over the peaks to live in the free wards, and the Wold is left to the white for good.",
+        "told": {
+          "ballad": "At midnight on midwinter the hero of the song left the bell unrung and opened the south to the whole of the Wold, and the Wold came over the peaks, all but one.",
+          "tally": "Midwinter. The bell was not rung. The Wold is to come south. Written: the Wold is given to the white. Written: Sloe of Orme stays."
+        },
+        "text": [
+          { "narrate": "You leave the Parting Bell where it is, on the floor, and say it in front of everybody: the Wold comes south. All of it that will come. The free wards will take them in." },
+          { "oneOf": [
+            { "narrate": "You go up the lid to the Mother Bell's rope with the rope from the signal house on your shoulder, and hang it, yourself. You allow the note, as it has always been rung.", "when": { "flag": "mother_silenced" } },
+            { "narrate": "The Mother Bell rings its midwinter note, as it has every midwinter since the great note, and everything it pushes goes north, to a country that will be empty by the spring." }
+          ] },
+          { "oneOf": [
+            { "say": "Iona", "text": "I've costed it. I costed it at ten thousand, in the autumn, and the council voted it with its eyes open. It holds. Just. Don't anybody have a child for a year.", "when": { "flag": "b4_vote_refuge", "anyFlag": ["b4_embassy_refuge"] } },
+            { "say": "Iona", "text": "I've costed it. It holds. Just. Ask me again in the spring and I'll tell you how just." }
+          ] },
+          { "say": "Sloe", "text": "I will not come. Somebody has to stay and be the Wold, even if it is only me. I will keep the last door. Write that I chose it." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_wold_south"
+      },
+      {
+        "id": "note",
+        "label": "Sloe's note: the Parting Bell rung backward with the Mother Bell",
+        "description": "This decision is permanent. The Parting Bell is rung backward with the Mother Bell. Every ward in the free wards goes quiet for one winter: the Wold's first clear winter in nine hundred years, and the free wards' worst. Whoever rings it gives the bell everything they are.",
+        "told": {
+          "ballad": "At midnight on midwinter the Parting Bell was rung backward, once, and every ward in the south went quiet, and somebody gave everything they were to ring it.",
+          "tally": "Midwinter. The bell was rung backward. The Wold's first clear winter since the founders. Written: the south's worst. Written: who rang it."
+        },
+        "text": [
+          { "narrate": "You say it: backward. Sloe's note. Once." },
+          { "oneOf": [
+            { "narrate": "Rue comes across the lid to the Parting Bell with Nessa beside her, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again, and Sloe looks at her a long time and gives it to her.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue comes across the lid to the Parting Bell, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again, and Sloe looks at her a long time and gives it to her.", "when": { "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "narrate": "Sloe takes the Parting Bell's rope herself. Nobody asks for it. Rue holds her book." }
+          ] },
+          { "oneOf": [
+            { "narrate": "You go up the lid to the Mother Bell's rope with the rope from the signal house on your shoulder, and hang it, yourself. You allow the note.", "when": { "flag": "mother_silenced" } },
+            { "narrate": "The Mother Bell's rope comes down off its cleat." }
+          ] },
+          { "narrate": "The Mother Bell rings its midwinter note, and under it, once, backward, the Parting Bell." },
+          { "narrate": "Every ward in the free wards goes quiet. You can hear it go: through the lid, through the floor, through every bell with somebody in it, one after another, Highpass and Merrowgate and Briarwatch and every hearth bell in every town, like lamps going out down a street." },
+          { "oneOf": [
+            { "narrate": "Rue lets go of the rope. She looks at the bell, and at her hands, and at the hall full of people, and at Nessa, and does not know any of it.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue lets go of the rope. She looks at the bell, and at her hands, and at the hall full of people, and does not know any of it. Her book is on the lid by her feet. She does not know it is hers.", "when": { "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "narrate": "Sloe lets go of the rope. She looks at the bell, and at her slate, and at the sum on it, and cannot read it. Rue picks up the slate and holds it for her." }
+          ] },
+          { "oneOf": [
+            { "say": "nessa", "text": "Hello. I'm Nessa. You're Rue. You wrote it down. I'll show you.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Somebody picks up the book and gives it to her, open at the first page." }
+          ] }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "nessa": 1 },
+        "flag": "b4_note_rung"
       }
     ]
   }
