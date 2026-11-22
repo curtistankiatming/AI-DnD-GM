@@ -131,7 +131,7 @@ in the Wold's white, the wearer is not Slowed at the start of a deciding fight."
 
 | Item | Level | Slot | Who | Sold in |
 |---|---|---|---|---|
-| White-wool Plate | 50 | Armour, heavy (AC 23, 15% less damage taken, +1 Strength and Constitution saves) | Fighter, Cleric · Strength 13 | Lantry, Orme |
+| White-wool Plate | 50 | Armour, heavy (AC 23, 15% less damage taken, +1 to every save, +2 Strength and Constitution saves) | Fighter, Cleric · Strength 13 | Lantry, Orme |
 | Fleece-lined Scale | 50 | Armour, medium (AC 19 + 2, 10% less damage taken, +1 Constitution and Wisdom saves) | Anyone | Lantry, Orme |
 | White-wool Jerkin | 50 | Armour, light (AC 17 + Dex, 10% more damage dealt, 5% less taken, +2 Survival) | Anyone | Lantry, Orme |
 | Door-chalk Mittens | 50 | Accessory (+3 Survival, Insight, History, Investigation; 5% more damage dealt) | Anyone | Lantry, Orme |

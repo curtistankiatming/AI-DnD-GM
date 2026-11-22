@@ -395,7 +395,7 @@ not gear (a follow-up for the Book Four and gameplay threads).
 
 | Item | Slot | What it does | Who | Where |
 |---|---|---|---|---|
-| Frostforged Plate | Armour | Base AC 23, no Dexterity bonus. -2 Stealth. 15% less damage taken. | Fighter, Cleric · STR 13 | Highpass Watch |
+| Frostforged Plate | Armour | Base AC 23, no Dexterity bonus. +1 to every saving throw. -2 Stealth. 15% less damage taken. | Fighter, Cleric · STR 13 | Highpass Watch |
 | Ridgeguard Scale | Armour | Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves. 10% less damage taken. | Anyone | Highpass Watch |
 | Mistweave Jerkin | Armour | Base AC 17, full Dexterity bonus. +2 Stealth. 10% more damage dealt; 5% less damage taken. | Anyone | Highpass Watch |
 | Gatewarden Shield | Off hand | Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw. 15% less damage taken; Skill, Hold the Gate: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Highpass Watch |
@@ -426,7 +426,7 @@ warmth is never a tax (tests/book-four-wold.test.js).
 
 | Item | Level | Slot | What it does | Who | Where |
 |---|---|---|---|---|---|
-| White-wool Plate | 50 | Armour | Base AC 23, no Dexterity bonus. -2 Stealth; +1 Strength saves, +1 Constitution saves. 15% less damage taken. Warm. | Fighter, Cleric · STR 13 | Lantry, Orme |
+| White-wool Plate | 50 | Armour | Base AC 23, no Dexterity bonus. +1 to every saving throw, +2 to Strength and Constitution saves. -2 Stealth. 15% less damage taken. Warm. | Fighter, Cleric · STR 13 | Lantry, Orme |
 | Fleece-lined Scale | 50 | Armour | Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Wisdom saves. 10% less damage taken. Warm. | Anyone | Lantry, Orme |
 | White-wool Jerkin | 50 | Armour | Base AC 17, full Dexterity bonus. +2 Survival. 10% more damage dealt; 5% less damage taken. Warm. | Anyone | Lantry, Orme |
 | Door-chalk Mittens | 50 | Accessory | +3 Survival, +3 Insight, +3 History, +3 Investigation. 5% more damage dealt. Warm. | Anyone | Lantry, Orme |

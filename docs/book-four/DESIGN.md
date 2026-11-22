@@ -2581,8 +2581,8 @@ below.
     the Letting-house Censer (level 51: Medicine, Religion and Insight +3,
     Wisdom saves +2, Constitution +1, 5% dealt, Every Name Said: Fortified 1
     round, Medicine story), the Thrum Lane Cloak (warm, light, level 52: base
-    AC 17, 5% dealt, 5% taken, Stealth and Insight +2, Wisdom saves +1,
-    Insight story), the Reckoner's Slate (level 53, wizard: tier 50's +5
+    AC 17, 10% dealt (5% until the items review), 5% taken, Stealth and
+    Insight +2, Wisdom saves +1, Insight story), the Reckoner's Slate (level 53, wizard: tier 50's +5
     spell attack and +5 spell DC, 10% dealt, Arcana and History +2, The Sum
     Comes Out: Vulnerable 1 round) and the Pot-bell Mace (level 54, fighter
     or cleric, Str 13, as the late-gear test's class rule asks: 1d10, +3/+6,

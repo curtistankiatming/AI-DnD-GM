@@ -5054,7 +5054,7 @@
       "dexCap": null
     },
     "stats": {
-      "dealt": 0.05,
+      "dealt": 0.1,
       "taken": -0.05
     },
     "skillBonuses": {
@@ -5651,7 +5651,7 @@
     "rarity": "Legendary",
     "value": 790,
     "description": "Plate hammered cold on the high road, so it never softens in a thaw.",
-    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth.",
+    "purpose": "Base AC 23, no Dexterity bonus. +1 to every saving throw. Heavy: −2 Stealth.",
     "armor": {
       "base": 23,
       "dexCap": 0
@@ -5671,6 +5671,14 @@
       "abilities": {
         "str": 13
       }
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
     }
   },
   {
@@ -6116,7 +6124,7 @@
     "value": 840,
     "warm": true,
     "description": "Lantry plate over a quilted coat of the Wold's white wool, with the smith's name chalked inside so that the smith will know it next year.",
-    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth; +1 Strength saves, +1 Constitution saves.",
+    "purpose": "Base AC 23, no Dexterity bonus. +1 to every saving throw, +2 to Strength and Constitution saves. Heavy: −2 Stealth.",
     "armor": {
       "base": 23,
       "dexCap": 0
@@ -6128,8 +6136,12 @@
       "stealth": -2
     },
     "saveBonuses": {
-      "str": 1,
-      "con": 1
+      "str": 2,
+      "dex": 1,
+      "con": 2,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
     },
     "requires": {
       "level": 50,

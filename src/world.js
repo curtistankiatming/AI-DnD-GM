@@ -506,7 +506,19 @@ function handle(state,action,rng,events,api){
   }
   return fail(events,'That action is unavailable.');
 }
-function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:Gear.purpose(item),set:Gear.setCard(item,state.player),rarity:item.rarity||'Common',requires:Gear.requirementText(item)||null,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
+function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,level:item.requires?.level||0,purpose:Gear.purpose(item),set:Gear.setCard(item,state.player),rarity:item.rarity||'Common',requires:Gear.requirementText(item)||null,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
+// A shop's shelves (Book Four items review): from level 40 a town sells forty to
+// seventy cards, which is metres of scrolling on a phone. Gear for the hero's
+// level that somebody in the party can wear comes first ("gear", newest first),
+// then supplies ("supplies", in the shop's order), and older tiers and gear
+// nobody in the party can wear go on a folded shelf ("more"). "For the hero's
+// level" is the last SHELF_SPAN levels, or the newest gear the party can wear
+// when the shop has nothing that recent. Nothing is hidden, only folded.
+const SHELF_SPAN=5,SHELF_ORDER={gear:0,supplies:1,more:2};
+function shelve(state,items){const level=Number(state.player?.level)||1,usable=(i)=>i.comparisons.some((c)=>c&&!c.unmet);
+  const top=Math.max(0,...items.filter((i)=>i.comparisons.length&&usable(i)).map((i)=>i.level)),from=Math.min(level-SHELF_SPAN,top);
+  const shelf=(i)=>!i.comparisons.length?'supplies':usable(i)&&i.level>=from?'gear':'more';
+  return items.map((i)=>({...i,shelf:shelf(i)})).sort((a,b)=>SHELF_ORDER[a.shelf]-SHELF_ORDER[b.shelf]||(a.shelf==='supplies'?0:b.level-a.level));}
 function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
   // A written chapter in a book this save cannot open (unreleased, or paid) is not on the board.
@@ -537,8 +549,8 @@ function view(state){
   return {day:w.day,cycle:w.cycle,town:t?{...asNow(state,t),rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!below(state)&&!STORY_NODES[state.story.nodeId]?.defeat&&!sceneDecides(state.story.nodeId),
     towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
     reputation:Director.shownReputation(state),services,
-    shop:t&&!empty?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
-    merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
+    shop:t&&!empty?shelve(state,Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town'))):[],
+    merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:shelve(state,Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant')))}:null,
     upgrades:t&&!empty?eq:[],recipes:t&&!empty?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],
     storage:w.storage.map(e=>({...e,name:ITEMS[e.itemId].name,purpose:Gear.purpose(ITEMS[e.itemId])})),
     sellable:state.player.inventory.filter(e=>ITEMS[e.itemId].category!=='quest'&&G.available(state,e.itemId)>0).map(e=>({...e,name:ITEMS[e.itemId].name,loose:G.available(state,e.itemId),sellPrice:sellPrice(e.itemId),partial:Boolean(ITEMS[e.itemId].charges&&e.charges!==ITEMS[e.itemId].charges)})),
@@ -556,4 +568,4 @@ function view(state){
 }
 // Whether a retreat or defeat now wakes the party on a ledge, not in a town.
 const atLedge=state=>Boolean(ledgeOf(state));
-module.exports={atLedge,below,goOn,backDown,restore,init,town,townOpen,townStock,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={shelve,SHELF_SPAN,atLedge,below,goOn,backDown,restore,init,town,townOpen,townStock,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

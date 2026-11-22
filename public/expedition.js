@@ -20,17 +20,25 @@ function compareDescription(c){return `${c.name}: replaces ${c.replaces}. AC ${c
 function chooseEquipmentOwner(item){
   openTargetDialog({title:`Equip ${item.name}`,description:`Choose an owner. ${item.purpose} Unassigned copies: ${item.available}.`,targets:(item.comparisons||[]).map(c=>({id:c.actorId,name:c.name,detail:compareDescription(c),disabled:Boolean(c.blocked)||item.available<1})),onChoose:actorId=>sendAction({type:'equip',itemId:item.id,actorId})});
 }
-function v4Shop(root,stock,market){
-  const box=createElement('div','v4-shop');
-  for(const item of stock){
+// The shop's shelves (src/world.js shelve): gear for the hero's level first, then supplies, and older
+// tiers and gear nobody in the party can wear folded below, so a level 40+ shop is not metres long on a phone.
+function v4ShopCard(item,market){
     const c=v4Card(item.name,purposeWithoutSkill(item));const skill=itemSkillLine(item);if(skill)c.appendChild(skill);const setLine=typeof itemSetLine==='function'?itemSetLine(item):null;if(setLine)c.appendChild(setLine);const req=requirementLine(item);if(req)c.appendChild(req);const price=createElement('div','tag-row');price.append(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));if(item.rarity&&item.rarity!=='Common')price.append(rarityTag(item.rarity));c.appendChild(price);
     // Who in the party meets the item's requirements, before you pay for it (src/gear.js).
     if(item.requires&&item.comparisons.length){const fit=item.comparisons.filter(x=>!x.unmet).map(x=>x.name);c.appendChild(createElement('p',fit.length?'muted':'prep-warning',!fit.length?'No one in your party can use this yet.':fit.length===item.comparisons.length?'Everyone in your party can use this.':`Can be used by ${fit.length>1?fit.slice(0,-1).join(', ')+' and '+fit.at(-1):fit[0]}.`));}
     if(item.comparisons.length){const details=createElement('details','comparison');details.appendChild(createElement('summary','','Compare with party equipment'));for(const cmp of item.comparisons)details.appendChild(createElement('p','',compareDescription(cmp)));c.appendChild(details);}
     const controls=createElement('div','v4-controls');controls.append(v4Button('Buy 1',{type:'buy',market,itemId:item.id,quantity:1},item.stock<1||view.player.gold<item.price));
     if(!item.comparisons.length)controls.append(v4Button('Buy 2',{type:'buy',market,itemId:item.id,quantity:2},item.stock<2||view.player.gold<item.price*2));
-    c.appendChild(controls);box.appendChild(c);
-  }
+    c.appendChild(controls);return c;
+}
+// Whether each shop's fold is open, kept across the redraw after a purchase.
+const shopFoldOpen={};
+function v4Shop(root,stock,market){
+  const box=createElement('div','v4-shop'),on=k=>stock.filter(i=>(i.shelf||'gear')===k);
+  const gear=on('gear'),supplies=on('supplies'),more=on('more'),headed=Boolean(more.length&&(gear.length||supplies.length));
+  if(headed&&gear.length)box.appendChild(createElement('p','smith-group',`Gear for your level · ${gear.length}`));for(const item of gear)box.appendChild(v4ShopCard(item,market));
+  if(headed&&supplies.length)box.appendChild(createElement('p','smith-group',`Supplies · ${supplies.length}`));for(const item of supplies)box.appendChild(v4ShopCard(item,market));
+  if(more.length){const fold=headed?createElement('details','smith-fold shop-fold'):box;if(headed){fold.dataset.shelf='more';fold.open=Boolean(shopFoldOpen[market]);fold.addEventListener('toggle',()=>{shopFoldOpen[market]=fold.open;});fold.appendChild(createElement('summary','',`Older gear, and gear your party can't wear · ${more.length}`));}for(const item of more)fold.appendChild(v4ShopCard(item,market));if(headed)box.appendChild(fold);}
   root.appendChild(box);
 }
 function renderExpansion(){
