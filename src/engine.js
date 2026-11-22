@@ -786,7 +786,7 @@ function shortRest(state, rng, events) {
   if (state.combat?.active) return invalidResult(state, events, "You cannot take a short rest during combat.");
   if (!node.safeRest) return invalidResult(state, events, "This location is not safe enough for a short rest.");
   if (state.story.shortRestsUsed[node.id]) return invalidResult(state, events, "The party has already rested at this location.");
-  if (state.player.hitDice.current <= 0 && state.player.hp >= state.player.maxHp) return invalidResult(state, events, "No hit dice remain and the player is already at full health.");
+  if (!Core.restHelps(state)) return invalidResult(state, events, "The party is already rested: everyone is at full health and nothing a short rest restores is spent.");
   state.story.shortRestsUsed[node.id] = true;
   if (state.player.hitDice.current > 0 && state.player.hp < state.player.maxHp) {
     state.player.hitDice.current -= 1;

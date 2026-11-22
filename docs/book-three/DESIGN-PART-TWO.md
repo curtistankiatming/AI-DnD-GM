@@ -390,7 +390,7 @@ way that fits the job.
 **Opening.** The second winter is shaped by chapter 9:
 - `b3_bell_aster`: an empty bell and the night watch on the Briarwood edge.
 - `b3_bell_evacuate`: Vell's people are in Briarwatch's fields.
-- `b3_bell_cast`: news that four hundred voices hold Vell.
+- `b3_bell_cast`: news of how many voices hold Vell: 391, 330 or 186, the fifty from the first casting plus those cast at the great bell.
 
 Letters arrive:
 - Fennick: three hundred volunteers are on the Iron Road with Hesk, and the

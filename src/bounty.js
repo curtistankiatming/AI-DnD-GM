@@ -30,15 +30,20 @@ const gold = level => 8 + 3 * Math.max(1, Math.floor(Number(level) || 1));
 // While the hero is under the current chapter's level, a bounty pays half as
 // much XP again, so catching up takes a handful of fights, not dozens.
 const CATCH_UP = 1.5;
-// After the written story, bounties lift a hero to level 20 (the 2nd job) and
-// no further: past that, AI adventures and the next book are the way on.
+// After the written story, bounties lift a hero to level 20 (the 2nd job), or
+// to the level the last book this save can play ends at if that is higher
+// (Book Three ends at level 40, the 3rd job trial), at the catch-up rate while
+// below it, and no further: past that, AI adventures and the next book are
+// the way on. So a hero who finishes the books a level or two short can still
+// reach the trial without the AI game master.
 const AFTER_BOOKS_LEVEL = P.SECOND_JOB_LEVEL || 20;
+const afterBooksLevel = state => Math.min(P.MAX_LEVEL, Math.max(AFTER_BOOKS_LEVEL, Book.lastLevel(state) + 1));
 // A loss or retreat costs a tenth of the gold carried, never more than a win pays.
 const lossCost = state => Math.min(Math.floor(state.player.gold * 0.1), gold(state.player.level));
 function room(state) {
   const r = Book.xpRoom(state);
   if (Number.isFinite(r)) return r;
-  return Math.max(0, (P.XP_NEXT[AFTER_BOOKS_LEVEL] || Infinity) - 1 - (Number(state.player.xp) || 0));
+  return Math.max(0, (P.XP_NEXT[afterBooksLevel(state)] || Infinity) - 1 - (Number(state.player.xp) || 0));
 }
 
 // Shapes a bounty's enemies for the hero's level as an adventure battle would be.
@@ -56,7 +61,7 @@ function shape(state, enemies, scale = 1) {
 function reward(state) {
   const level = state.player.level, f = XP.foeStats(XP.challenge({ level }));
   const { rating, xp: base } = XP.battleXp(level, [f.main, f.retainer, f.retainer], 'normal', level);
-  const cap = Book.levelCap(state), behind = cap !== null && level < cap;
+  const cap = Book.levelCap(state), behind = cap !== null ? level < cap : level < afterBooksLevel(state) && level > AFTER_BOOKS_LEVEL;
   return { rating, xp: behind ? Math.round(base * CATCH_UP / 10) * 10 : base, gold: gold(level), behind };
 }
 
@@ -71,6 +76,8 @@ function view(state) {
     level: state.player.level,
     reward: { xp, gold: r.gold },
     capped: xp < r.xp,
+    // After the books: the level bounties stop at (20, or 40 once Book Three is done).
+    afterBooks: afterBooksLevel(state),
     catchUp: r.behind,
     loss: lossCost(state),
     reason: open ? null : !w.completed?.bell ? 'The bounty board opens once the bell investigation is finished.' : 'Return to town to take a bounty.'
@@ -105,7 +112,7 @@ function finish(state, result, events, api) {
   const r = reward(state), xp = Math.max(0, Math.min(r.xp, room(state)));
   state.player.gold += r.gold;
   if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
-  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${AFTER_BOOKS_LEVEL}; AI adventures or the next book go further.`) : ''}` });
+  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${afterBooksLevel(state)}; AI adventures or the next book go further.`) : ''}` });
   // The first bounty claimed in a town gives that town's bounty item (src/gear.js).
   const townId = b.nodeId.replace(/^town-/, '');
   Gear.award(state, `bounty:${townId}`, events);
@@ -114,4 +121,4 @@ function finish(state, result, events, api) {
   api.enterNode(state, b.nodeId, events);
 }
 
-module.exports = { ID, BOARDS, board, shape, reward, view, start, finish, gold, lossCost, room, CATCH_UP, AFTER_BOOKS_LEVEL };
+module.exports = { afterBooksLevel, ID, BOARDS, board, shape, reward, view, start, finish, gold, lossCost, room, CATCH_UP, AFTER_BOOKS_LEVEL };
