@@ -5159,7 +5159,7 @@
     "value": 890,
     "warm": true,
     "description": "A long mantle of grey-white wool, close-woven and quilted over horn scales, made by a walker in the Hush who has no name, and given without a word.",
-    "purpose": "Base AC 19, up to +2 from Dexterity. +2 Stealth, +1 Constitution and Wisdom saving throws.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +2 Stealth, +1 Constitution and Dexterity saving throws. Stealth story ability.",
     "armor": {
       "base": 19,
       "dexCap": 2
@@ -5172,10 +5172,13 @@
     },
     "saveBonuses": {
       "con": 1,
-      "wis": 1
+      "dex": 1
     },
     "requires": {
       "level": 55
+    },
+    "story": {
+      "skill": "stealth"
     },
     "exclusive": {
       "quest": "b4-hush"

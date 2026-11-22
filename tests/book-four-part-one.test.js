@@ -648,7 +648,8 @@ test('no new person in Book Four takes a name the earlier books or the story bib
   const text = JSON.stringify([RAWQ, RAWS, RAWJ]);
   // Taken first names (design, "Test plan"), with every first name of Book Three's #79 Saltwick list.
   for (const name of ['Tamsin', 'Brask', 'Hesper', 'Pell', 'Pellow', 'Tam', 'Ansel', 'Garrow', 'Edda', 'Hob', 'Bryony', 'Brack', 'Tansy', 'Kester', 'Ostler', 'Hugh', 'Owen', 'Robin', 'Nan', 'Mae', 'Joan', 'Alfie', 'Mallory', 'Abner', 'Hilde', 'Rosa', 'Dunstan', 'Cobb'])
-    assert.doesNotMatch(text, new RegExp(`\\b${name}\\b`), name);
+    assert.doesNotMatch(text.replace(/Tam Orrey, the baker from Fenmere/g, ''), new RegExp(`\\b${name}\\b`), name);
+  // Tam Orrey is Book Two's Fenmere baker himself (chapter 18, Maren), not a new person with his name.
   // Every speaker is a companion, someone returning from Books One to Three, or one of the design's new people.
   const RETURNING = new Set(['Sorrel', 'Sable', 'Hesk', 'Brannagh', 'Sister Ilse', 'Hollis Brede', 'Dera', 'Tovin', 'Pim', 'Aveline', 'Reeve Aveline', 'Aster Vey',
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',

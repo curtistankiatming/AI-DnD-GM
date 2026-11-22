@@ -2411,11 +2411,15 @@ below.
     10% dealt, Forty Strokes: Weakened until the next turn). None uses a
     tier 55 number.
 44. **Chapters 18 to 20, as written** (build step 8). The Hush is four days
-    north of Orme past the last cairn. Burdock lends the party the Long
-    Hall's hand-bell (the one that calls a vote), which is the bell
+    north of Orme past the last cairn. Burdock lends the party "the vote", the small
+    brass hand-bell from his desk that came over the old road from the south
+    two hundred years ago and that nobody in Orme calls a bell (so decided
+    question 30 holds; chapter 16 says so too). It is the bell
     `b4_hush_rang` rings; it rings the white off the hollow for one night
-    and onto the Orme road. The walker who gives water is "The walker", and
-    the hand-bell's night names her Water. Fenmere's baker is never named.
+    and onto the cairn road, the road north from Orme (the road from
+    Sheddon stays the Orme road). The walker who gives water is "The walker", and
+    the hand-bell's night names her Water. Maren names Fenmere's baker, Tam Orrey, Book Two's own
+    (the name lint allows him as himself).
     The sixteen from the deep appear only with `b3_turned_left`; Sedge's
     mother has a talk only with `b4_orin_ordered` or `b4_hero_ordered`. Rue
     reads the Hush's growth by the Book Three ending. In hush-camp Orin keeps
@@ -2429,9 +2433,11 @@ below.
     the north door was opened once from inside since the first snow (a swept
     arc in the first snow's crust, and tarred southern hemp in the hinge);
     nobody is named. The rope on the empty hook is tied with a round turn,
-    two half-hitches and a small hard stopper: the knot the stair took, not
-    the one Orin learned again, and without Orin a bell-rope knot of Cinder
-    Fold's rope families. The hero takes the cut rope (chapter 21's reward).
+    two half-hitches and a small hard stopper: the knot as Orin worked it
+    before the stair, not as he ties it now. Orin's lines need
+    `b3_orin_gives` or `b3_orin_keeps` (he was below the stair); otherwise,
+    and without Orin, the hero sees a bell-rope knot of Cinder Fold's rope
+    families. The hero takes the cut rope (chapter 21's reward).
 45. **A camp after a straight-on chapter** (build step 8). src/engine.js
     applyOutcome: when a `continues` chapter's decision leads into a camp
     scene, `goingOn` is kept, and leaving the camp goes on into the next
@@ -2439,8 +2445,9 @@ below.
     Book Three's straight-on chapters have no camp, so nothing there changes.
 46. **The chapter rewards for chapters 18 to 20** (build step 8), tier 55
     numbers: the Hush-wool Mantle (warm, medium, level 55: base AC 19, Dex
-    cap 2, 10% taken, Stealth +2, Constitution and Wisdom saves +1, so it
-    beats the sold Fleece-lined Scale by Stealth), the Column Longbow (level
+    cap 2, 10% taken, Stealth +2, Constitution and Dexterity saves +1, the
+    Stealth story ability: it trades the sold Fleece-lined Scale's Wisdom
+    save for a Dexterity save and Stealth), the Column Longbow (level
     56, ranger or rogue, Dex 13: 1d8, +3/+7, 10% dealt, Pinning Shot: Slowed
     2 rounds; the sold Long Watch Bow has no skill and is ranger only) and
     the North-door Greataxe (level 57, fighter, Str 15: 2d6, +3/+7, 5%

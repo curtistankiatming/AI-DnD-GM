@@ -945,7 +945,7 @@
     "after": "b4-hush",
     "cast": [],
     "act": "Camp",
-    "location": "The last cairn north of Orme, the night after",
+    "location": "The last cairn north of Orme, the first night south",
     "start": "cairn",
     "nodes": {
       "cairn": {
@@ -953,9 +953,9 @@
         "objective": "Camp.",
         "lines": [
           { "oneOf": [
-            { "narrate": "The last cairn, late. The walkers are asleep round it in a ring, close together, holding hands. Nobody else is asleep.", "when": { "flag": "b4_walkers_led" } },
-            { "narrate": "The last cairn, late. Behind you to the north the marks go back into the white, one every twenty paces. Nobody is asleep.", "when": { "flag": "b4_walkers_marked" } },
-            { "narrate": "The last cairn, late. The Orme road runs south from it under a white that was not there yesterday. Nobody is asleep.", "when": { "flag": "b4_hush_rang" } }
+            { "narrate": "The first night south, at the last cairn, late. The walkers are asleep round it in a ring, close together, holding hands. Nobody else is asleep.", "when": { "flag": "b4_walkers_led" } },
+            { "narrate": "The first night south, at the last cairn, late. Behind you to the north the marks go back into the white, one every twenty paces. Nobody is asleep.", "when": { "flag": "b4_walkers_marked" } },
+            { "narrate": "The first night south, at the last cairn, late. The cairn road runs south from it under a white that was not there yesterday. Nobody is asleep.", "when": { "flag": "b4_hush_rang" } }
           ] },
           { "narrate": "Nobody says anything for a long time. Then Rue takes out her chalk and writes a name on the cairn, small, and says it aloud, so that it has been said." },
           { "oneOf": [
@@ -992,6 +992,7 @@
   },
   "column-camp": {
     "id": "column-camp",
+    "_note": "column-camp must keep an empty cast: a scene whose cast is not all in the party is skipped by skipTo, which goes to town and would bypass world.goingOn, so chapter 20 would not open straight after it.",
     "after": "b4-column",
     "cast": [],
     "act": "Camp",
@@ -1068,11 +1069,12 @@
             { "narrate": "At first snow it hung here, small as a bucket and black with age, and nobody rang it. Now there is nothing on the hook to ring." }
           ] },
           { "narrate": "A rope is still on the hook: a short length of tarred hemp, cut clean a foot below it, with the knot that held the bell still tied in it." },
-          { "say": "orin", "text": "I know that knot.", "when": { "party": "orin" } },
-          { "narrate": "Orin reaches up and takes the cut end in his hand, and turns it over, and looks at the knot for a long time. A round turn and two half-hitches, and a stopper on the tail, worked small and hard, the way he does not tie it now.", "when": { "party": "orin" } },
-          { "say": "orin", "text": "My hands know it. That's the one I tied before the stair. I learned a knot again, after. Not this one. This is the one the stair took. It had a name. Somebody told me its name.", "when": { "party": "orin" } },
-          { "say": "orin", "text": "I can't tell you what it's called. I can't tell you who taught me.", "when": { "party": "orin" } },
-          { "narrate": "You reach up and take the cut end in your hand. You know the knot. A round turn and two half-hitches, and a stopper worked small and hard on the tail, the size of a thumb: a bell-rope knot. You have seen it at Cinder Fold, on the ropes of the nine, where the rope families tie it.", "when": { "absent": "orin" } }
+          { "say": "orin", "text": "I know that knot.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "Orin reaches up and takes the cut end in his hand, and turns it over, and looks at the knot for a long time. A round turn and two half-hitches, and a stopper on the tail, worked small and hard, the way he does not tie it now.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "orin", "text": "My hands know it. Not the knot. The way it's worked. Small and hard, with the stopper pulled down tight like that. That's how I tied it before the stair. I tie it plainer now, even when I tie it right. This is what the stair took. Somebody taught me to work it like that.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "orin", "text": "I can't tell you what it's called. I can't tell you who taught me.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "You reach up and take the cut end in your hand. You know the knot. A round turn and two half-hitches, and a stopper worked small and hard on the tail, the size of a thumb: a bell-rope knot. You have seen it at Cinder Fold, on the ropes of the nine, where the rope families tie it.", "when": { "absent": "orin" } },
+          { "narrate": "You reach up and take the cut end in your hand. You know the knot. A round turn and two half-hitches, and a stopper worked small and hard on the tail, the size of a thumb: a bell-rope knot. You have seen it at Cinder Fold, on the ropes of the nine, where the rope families tie it.", "when": { "party": "orin", "noneFlag": ["b3_orin_gives", "b3_orin_keeps"] } }
         ],
         "choices": [
           {

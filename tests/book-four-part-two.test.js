@@ -620,7 +620,7 @@ test('chapter 18: the Hush shows the faces the earlier books left there, Aster c
   // Rue reads the Hush by the Book Three ending.
   assert.match(talk('b4-hush', 'rue'), /lightest in the tally/);
   assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_promise_hesk: true } }), /the worst in the tally/);
-  assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_promise_hesk: true, b3_three_told: true } }), /not the worst in the tally/);
+  assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_promise_hesk: true, b3_three_told: true } }), /not by as much as Sloe's sum said/);
   assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_stair_sealed: true } }), /Every winter is worse/);
   assert.match(talk('b4-hush', 'rue', { flags: { b4_book_returned: false, b4_book_burned: true } }), /'Heath'/);
   // Sedge's mother is walking only where she was not fetched; Orin's order is his.
@@ -630,8 +630,9 @@ test('chapter 18: the Hush shows the faces the earlier books left there, Aster c
   assert.match(away, /moves over on the stone/); assert.doesNotMatch(away, /Orin/);
   assert.match(talk('b4-hush', 'mother', { flags: { b4_hero_ordered: true } }), /moves over on the stone/);
   // The hand-bell is lent in the opening, and ringing it sends the white onto the Orme road.
-  assert.match(open({}), /Long Hall's hand-bell/);
-  assert.match(told(decide('b4-hush', 'rang')), /down onto the Orme road/);
+  assert.match(open({}), /Burdock lent you the vote[^]*little brass hand-bell from his desk, from the south/);
+  assert.match(told(decide('b4-hush', 'rang')), /down onto the cairn road/);
+  assert.match(talk('b4-hush', 'faces'), /^Maren: That's Tam Orrey, the baker from Fenmere/m);
   const camp = sceneText(decide('b4-hush', 'led'));
   assert.match(camp, /^Maren: Anwen\.$/m); assert.match(camp, /^Nessa: Wren\.$/m); assert.match(camp, /^Orin: Davin\.$/m);
   assert.match(sceneText(decide('b4-hush', 'led', { flags: { b4_orin_ordered: true } })), /^Orin: Sedge's mother/m);
@@ -685,7 +686,7 @@ test('chapter 20: the door was opened from the south, the crossing is decided, a
   assert.match(told(decide('b4-northdoor', 'envoys')), /^Nessa: We brought them up a mountain/m);
   assert.equal(ENEMIES[QUESTS['b4-northdoor'].foe].name, "The North Face's White");
   for (const [decision, line] of [['crossed', /the Wold goes down it behind you/], ['camp', /fires burn along the walls/], ['envoys', /the ropes are going out of it/]]) {
-    let s = playPeaceful('b4-northdoor', decision);
+    let s = playPeaceful('b4-northdoor', decision, { flags: { b3_orin_keeps: true } });
     assert.equal(s.story.nodeId, 'scene-b4-parttwo-end-beam', decision);
     assert.match(opening(s), /The hook is there\. The Parting Bell is not\./);
     assert.match(opening(s), /^Orin: I know that knot\./m);
@@ -695,6 +696,20 @@ test('chapter 20: the door was opened from the south, the crossing is decided, a
     assert.equal(s.story.flags.b4_parttwo_done, true); assert.equal(s.story.nodeId, 'town-highpass', decision);
     assert.equal(s.player.level, 60);
   }
+  // Orin knows the knot only if he was below the stair; otherwise, and without him, the hero knows it from Cinder Fold.
+  const knot = (flags, party) => opening(decide('b4-northdoor', 'camp', { flags, party }));
+  for (const flag of ['b3_orin_gives', 'b3_orin_keeps']) { assert.match(knot({ [flag]: true }), /^Orin: I know that knot\.[^]*^Orin: My hands know it\. Not the knot\. The way it's worked/m, flag); assert.doesNotMatch(knot({ [flag]: true }), /You have seen it at Cinder Fold/, flag); }
+  assert.match(knot({}), /You have seen it at Cinder Fold, on the ropes of the nine/); assert.doesNotMatch(knot({}), /^Orin:|Orin reaches/m);
+  // Taking the Wold across: nobody leaves the Hall before the end scene, which follows the crossing.
+  const crossed = decide('b4-northdoor', 'crossed');
+  assert.match(told(crossed), /draw the bar\. Behind you the Wold gets to its feet/); assert.doesNotMatch(told(crossed), /starts down|out onto the old north road/);
+  assert.equal(crossed.story.nodeId, 'scene-b4-parttwo-end-beam');
+  assert.match(opening(crossed), /Before anyone goes anywhere/);
+  // Sending the column home: Burdock stays with the tally he brought, and Hesk with Sloe.
+  const envoys = (flags) => told(decide('b4-northdoor', 'envoys', { flags }));
+  assert.match(envoys({ b4_tally_carried: true }), /Burdock stays too/); assert.match(envoys({ b4_tally_last: true }), /Burdock stays too/);
+  assert.doesNotMatch(envoys({ b4_tally_left: true }), /Burdock/);
+  assert.match(envoys({ b3_promise_old: false, b3_stair_sealed: true }), /Hesk stays with Sloe, with his lamp\./); assert.doesNotMatch(envoys({}), /Hesk/);
   // Without Orin, the hero knows the knot from Cinder Fold.
   const alone = opening(decide('b4-northdoor', 'camp', { party: ['maren', 'nessa'] }));
   assert.match(alone, /You have seen it at Cinder Fold, on the ropes of the nine/); assert.doesNotMatch(alone, /Orin/);
