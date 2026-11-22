@@ -247,7 +247,7 @@ Highpass in Part One and from Orme in Part Two.
 | 9 | highpass → highpass | 19 | orme → orme (`continues`) | 29 | cinderfold → cinderfold (`continues`) |
 | 10 | highpass → highpass | 20 | orme → highpass | 30 | cinderfold → briarwatch |
 
-Chapter 10 ends at Highpass (no `nextTown`), so while Part One is out alone the hero waits at "to be continued" in a free-wards town, not in the Wold. Lantry is opened by chapter 11 itself (its `town` is lantry, reached from Highpass once Part Two is released, the way `Book.townOpen` opens a playable chapter's town); chapter 20's `nextTown` returns the party to Highpass for Part Three.
+Chapter 10 ends at Highpass (no `nextTown`), so while Part One is out alone the hero waits at "to be continued" in a free-wards town, not in the Wold. Lantry is opened by chapter 11 itself through engine change 16 (a playable chapter's `town` joins `unlockedTowns` once its `unlock` chapter is done, on load and in the view, because chapter 10 is finished before Part Two is released); chapter 20's `nextTown` returns the party to Highpass for Part Three.
 
 Travel between the free wards and the Wold is by the old north road, through
 the Hall of Legends, and is allowed between chapters like any other travel.
@@ -1907,6 +1907,7 @@ Book Four frames it the way Book Three framed the 3rd job:
     question 11).
 14. **Companion arc moves** (decided question 8): one move per companion in the
     companion turn, unlocked on completing chapters 25, 26 and 27.
+16. **A playable chapter opens its own town.** Today only `completeQuest` adds towns to `unlockedTowns`, through `nextTown` (src/world.js), and `unlocked()` and travel both need the town on that list; `Book.townOpen` only shows or hides. On load and when building the view, add each playable chapter's `town` to `unlockedTowns` once its `unlock` chapter is done. This must not run only in `completeQuest`, since a save can finish chapter 10 while Part Two is still hidden. Test: a save waiting after chapter 10 reaches Lantry and can start chapter 11 once Part Two is released, and does not see Lantry before.
 15. **Reused as they are:** `oneOf`, line `setFlag`, scene-choice `requires`,
     decision `requires` (`requirementStatus` already supports `flagsAll`,
     `flagsNone`, `flagsAny`, `cluesAll`, `companion` and `absent`; chapters
