@@ -7199,6 +7199,13 @@
         "text": "I can hear the mountain. It's very loud. I didn't know stone was this loud."
       },
       {
+        "say": "Aster Vey",
+        "text": "You made Corvane wait for me. I keep thinking about that. Nobody has ever kept anybody waiting for me before.",
+        "when": {
+          "flag": "b3_asked_aster"
+        }
+      },
+      {
         "narrate": "Sable's cell was a powder store once: dry, windowless, with a door a foot thick. It has become a library. There are books on the bunk and under it, books stacked against every wall to the height of a man, books on the floor with slips of paper in them like tongues. Every scholar in the free wards who wanted his opinion on anything has sent him a book, and he has given his opinion, in the margins."
       },
       {
@@ -9187,7 +9194,7 @@
           },
           {
             "say": "Mags Peller",
-            "text": "All of us? The old ones? Hanne Coyle is ninety."
+            "text": "All of us? The old ones? Nan Coyle is ninety."
           },
           {
             "say": "orin",
@@ -9464,7 +9471,7 @@
           },
           {
             "say": "Corvane",
-            "text": "Harl. Ada Brennick, sixty-one. Tobias Brennick, sixty-four. Their grandson, Aldo Brennick, eight. Lindmoor. Joss Marley, forty. The Teller villages. Anwen Teller, thirty-three, and her daughters..."
+            "text": "Harl. Ada Brennick, sixty-one. Tobias Brennick, sixty-four. Their grandson, Aldo Brennick, eight. Lindmoor. Joss Marley, forty. The Teller villages. Gwen Teller, thirty-three, and her daughters..."
           },
           {
             "narrate": "He reads for most of an hour. When he stops it is because the light has gone, not because the names have."
@@ -11222,21 +11229,21 @@
       ],
       "success": [
         {
-          "narrate": "Nobody on the Briarwood road wants to talk about it, which is how you know there is something to talk about. {You start|@ starts} at Hobb Garland's farm, because Hobb has known {you|the party} since the bell, and {they} {help|helps} him mend a gate for most of a morning before {they} {ask|asks}."
+          "narrate": "Nobody on the Briarwood road wants to talk about it, which is how you know there is something to talk about. {You start|@ starts} at Edwin Garland's farm, because Edwin has known {you|the party} since the bell, and {they} {help|helps} him mend a gate for most of a morning before {they} {ask|asks}."
         },
         {
-          "say": "Hobb Garland",
+          "say": "Edwin Garland",
           "text": "Salt. Two sacks, off the Vell cart, at the spring fair. Got them home and they were white inside. Not salt-white. The other white. The dog wouldn't go in the barn. I burned them in the yard and the smoke came off cold."
         },
         {
-          "say": "Hobb Garland",
-          "text": "The Teague place had it in a bolt of cloth. The widow Marsh had it in a crate of horseshoe iron. We burned it and kept our mouths shut. You know why we kept our mouths shut."
+          "say": "Edwin Garland",
+          "text": "The Teague place had it in a bolt of cloth. The widow Dorley had it in a crate of horseshoe iron. We burned it and kept our mouths shut. You know why we kept our mouths shut."
         },
         {
           "narrate": "He looks down the hill at the river meadow, at the tents."
         },
         {
-          "say": "Hobb Garland",
+          "say": "Edwin Garland",
           "text": "They're decent people, most of them. Two of them dug my top field. But it's their carts it comes in. It's their country it comes from. And it's market day on Thursday, and there's a Vell cart due, and half the road's been saying that if it comes in white this time, they'll know who to thank."
         },
         {
@@ -11299,7 +11306,7 @@
         "narrate": "It goes across the cobbles in a ring, quick and quiet, and where it passes the beans on the nearest stall go grey and the cheese-seller's breath comes out of her in a cloud, and she sits down hard on her own crate and cannot remember, for a moment, what she was selling. A child starts crying. Then everyone is shouting."
       },
       {
-        "say": "Hobb Garland",
+        "say": "Edwin Garland",
         "text": "It's them! It comes with them, every time! Get them out of the meadow before it's in the houses!"
       },
       {
@@ -11333,7 +11340,7 @@
           "narrate": "{You get|@ gets} up on the edge of the well, where everyone can see {them}, and {do|does} not tell them they are wrong. {They} {tell|tells} them where the frost came from."
         },
         {
-          "narrate": "{You name|@ names} Hobb Garland's salt, and the Teague cloth, and the widow Marsh's horseshoe iron. Bought off Vell carts, at the spring fair, by Briarwatch people, and carried home by Briarwatch hands. Nobody from the river meadow touched any of it. Hobb goes red to the ears and puts his hay-fork down, and says, loudly, that it is true.",
+          "narrate": "{You name|@ names} Edwin Garland's salt, and the Teague cloth, and the widow Dorley's horseshoe iron. Bought off Vell carts, at the spring fair, by Briarwatch people, and carried home by Briarwatch hands. Nobody from the river meadow touched any of it. Edwin goes red to the ears and puts his hay-fork down, and says, loudly, that it is true.",
           "when": {
             "flag": "prepared:b3-home"
           }
@@ -11352,16 +11359,16 @@
           "text": "Fire. It hates fire and it hates noise. You've got both. You've all got hands. So have they. Bring the fire from Dera's and the buckets from the mill, and stop standing about."
         },
         {
-          "narrate": "It is the woman with the blue ribbons who moves first. She puts her tray down and picks up a bucket. Then Hobb Garland goes for Dera's brands. Then everyone."
+          "narrate": "It is the woman with the blue ribbons who moves first. She puts her tray down and picks up a bucket. Then Edwin Garland goes for Dera's brands. Then everyone."
         },
         {
           "narrate": "They burn the cart where it stands, in the middle of the square, both ends of Briarwatch together, the farmers with brands and the river-meadow people with buckets to keep it off the stalls. Up in the tower Tovin and Pim ring the hours that are not hours, as loudly as they can, and in the bronze Aster Vey rings with them. The shapes come apart in the heat like wet paper."
         },
         {
-          "narrate": "When it is over there is a black ring on the cobbles and a smell of hot iron, and Hobb Garland is standing next to a man from Lindmoor with the same soot on both their faces, neither of them quite sure what to say."
+          "narrate": "When it is over there is a black ring on the cobbles and a smell of hot iron, and Edwin Garland is standing next to a man from Lindmoor with the same soot on both their faces, neither of them quite sure what to say."
         },
         {
-          "say": "Hobb Garland",
+          "say": "Edwin Garland",
           "text": "Your lot dug my top field."
         },
         {
@@ -11617,7 +11624,7 @@
         "text": "He took the fourth key and all. The round one. Thirty-one years it's hung on its nail at the bottom of the stair and nobody's touched it, not me, not anybody. Nobody knows what it's for. He took it off the nail first, before anything, and put it round his neck."
       },
       {
-        "narrate": "Corvane's letter from the free wards is still in your coat. You give it to Oswin Pike to keep for the High Warden, because there is nobody else to give it to."
+        "narrate": "The free wards' letter for Corvane is still in your coat. You give it to Oswin Pike to keep for the High Warden, because there is nobody else to give it to."
       },
       {
         "narrate": "It says that the free wards will take Vell in, if Vell must come. Oswin Pike reads it standing in the yard, and folds it very carefully, and puts it inside his sling.",
@@ -11765,7 +11772,7 @@
         "label": "Hear Commander Hesk out at the far end of the vault",
         "lines": [
           {
-            "narrate": "Hesk has a table at the end of the vault, under the last lamp, with nine pages spread on it in Sable's small neat hand. Corvane's copy of the rite. He took it from the High Warden's room this morning, he says, and the High Warden can have it back when it has done some good. He does not look up while he talks. He is marking the pages with a stub of pencil."
+            "narrate": "Hesk has a table at the end of the vault, under the last lamp, with eleven pages spread on it in Sable's small neat hand. Corvane's copy of the rite. He took it from the High Warden's room this morning, he says, and the High Warden can have it back when it has done some good. He does not look up while he talks. He is marking the pages with a stub of pencil."
           },
           {
             "say": "Hesk",
@@ -11833,13 +11840,13 @@
           "narrate": "Number One. Edda Vane, 52, keeper of the shrine at Brack Mill. Taken: refused to surrender the shrine bell."
         },
         {
-          "narrate": "Number Seven. Tam Hollis, 31, shepherd, of Harl. Taken: present in the shrine at Harl at the time of collection."
+          "narrate": "Number Seven. Hugh Hollis, 31, shepherd, of Harl. Taken: present in the shrine at Harl at the time of collection."
         },
         {
-          "narrate": "Number Twelve. Hanne Ilvey, 14, of Lindmoor. Water-carrier to the keeper. Taken: present."
+          "narrate": "Number Twelve. Effie Ilvey, 14, of Lindmoor. Water-carrier to the keeper. Taken: present."
         },
         {
-          "narrate": "Number Thirty-One. Pell Moran, 14, of Osgood's Cross. Taken: present. Countersigned: I. Corvane."
+          "narrate": "Number Thirty-One. Teo Moran, 14, of Osgood's Cross. Taken: present. Countersigned: I. Corvane."
         },
         {
           "narrate": "There are thirty-one lines like that. Four say \"refused\". Twenty-seven say \"present\". {You read|@ reads} them all, by the lamp, and then {they} {read|reads} them again, with the hand-bell beside the book, and Aster says each name out loud to the room, one at a time. Down the rows, one bell at a time, the iron rings back."
@@ -11946,7 +11953,7 @@
           "narrate": "{You hold|@ holds} the hand-bell up in the middle of the vault, in the middle of the note, and Aster Vey speaks."
         },
         {
-          "narrate": "She does not shout over the Chorus. She speaks under it, the way you speak to someone in a fever. She says the first name from the register. Edda Vane, of Brack Mill. Then the next. Tam Hollis, of Harl. Hanne Ilvey, fourteen, of Lindmoor. Pell Moran, fourteen, of Osgood's Cross. {You hold|@ holds} the register open for her, and {turn|turns} the pages, and she says every one.",
+          "narrate": "She does not shout over the Chorus. She speaks under it, the way you speak to someone in a fever. She says the first name from the register. Edda Vane, of Brack Mill. Then the next. Hugh Hollis, of Harl. Effie Ilvey, fourteen, of Lindmoor. Teo Moran, fourteen, of Osgood's Cross. {You hold|@ holds} the register open for her, and {turn|turns} the pages, and she says every one.",
           "when": {
             "flag": "prepared:b3-vault"
           }
@@ -12031,7 +12038,7 @@
         "narrate": "Corvane comes down the stair. Nobody stops him now. He walks down the rows to the last bell, Number Thirty-One, the boy from Osgood's Cross, and stands in front of it with his ledger under his arm, and does not say anything at all."
       },
       {
-        "narrate": "Hesk gathers up the pages of Corvane's copy from the table and the floor, all nine, and puts them in the leather satchel at his hip, and buckles it. Nobody stops him either. His vault guard come to their feet when he moves, and fall in behind him without being told."
+        "narrate": "Hesk gathers up the pages of Corvane's copy from the table and the floor, all eleven, and puts them in the leather satchel at his hip, and buckles it. Nobody stops him either. His vault guard come to their feet when he moves, and fall in behind him without being told."
       },
       {
         "say": "Hesk",
@@ -12074,10 +12081,10 @@
             "narrate": "You tell Aster to tell them: they can go. Now. Tonight. Nobody is going to ask them for anything ever again."
           },
           {
-            "narrate": "It takes until nearly dawn. Aster speaks to each of them in turn, by name, if she knows it, and they let go one at a time, and each time it is different. Edda Vane of Brack Mill says the evening hymn through once, properly, not flat, and stops halfway through the last line. Tam Hollis asks whether his sheep were all right, and Aster says yes, and he goes. Hanne Ilvey asks Aster to hold her hand, and Aster, who has no hands, says that she is."
+            "narrate": "It takes until nearly dawn. Aster speaks to each of them in turn, by name, if she knows it, and they let go one at a time, and each time it is different. Edda Vane of Brack Mill says the evening hymn through once, properly, not flat, and stops halfway through the last line. Hugh Hollis asks whether his sheep were all right, and Aster says yes, and he goes. Effie Ilvey asks Aster to hold her hand, and Aster, who has no hands, says that she is."
           },
           {
-            "narrate": "Number Thirty-One goes last. Corvane is still standing in front of it. He reads the boy's name out of the register himself, all of it, Pell Moran, fourteen, of Osgood's Cross, and says that he signed for him, and that he is sorry, and the iron goes cold under his hand."
+            "narrate": "Number Thirty-One goes last. Corvane is still standing in front of it. He reads the boy's name out of the register himself, all of it, Teo Moran, fourteen, of Osgood's Cross, and says that he signed for him, and that he is sorry, and the iron goes cold under his hand."
           },
           {
             "say": "maren",
@@ -12217,7 +12224,8 @@
         "say": "Corvane",
         "text": "Your council recalled its Warden and her Mother Bell last winter, I'm told, and the wards have been uneasy since. Uneasy. I'd give the city for uneasy. We had nothing left that could hear it at all.",
         "when": {
-          "flag": "mother_recalled"
+          "flag": "mother_recalled",
+          "notFlag": "mother_silenced"
         }
       },
       {
@@ -13019,7 +13027,7 @@
       },
       {
         "say": "Corvane",
-        "text": "He thinks he has. He put my copy in his satchel in the vault, all nine pages, and buckled it, and went up the stair. I was down at bell Thirty-One with my back to him. I saw a brown coat go up at the back of the press, and thought nothing of it. I didn't know what I'd seen until Fennick read me the gate log."
+        "text": "He thinks he has. He put my copy in his satchel in the vault, all eleven pages, and buckled it, and went up the stair. I was down at bell Thirty-One with my back to him. I saw a brown coat go up at the back of the press, and thought nothing of it. I didn't know what I'd seen until Fennick read me the gate log."
       },
       {
         "say": "Fennick",
@@ -13413,7 +13421,7 @@
       },
       {
         "say": "The carter",
-        "text": "They read the rite out on the Hall steps every noon. All of it. Nine pages. People come to listen. You'd be surprised how many."
+        "text": "They read the rite out on the Hall steps every noon. All of it. Eleven pages. People come to listen. You'd be surprised how many."
       },
       {
         "say": "Roke",

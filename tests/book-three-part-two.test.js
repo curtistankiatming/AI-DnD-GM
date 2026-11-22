@@ -702,9 +702,9 @@ test('the winter watch: the second winter follows the great bell, with a line fo
   assert.match(start({ b3_bell_aster: true }), /The tower is empty/); assert.doesNotMatch(start({ b3_bell_aster: true }), /Aster Vey is in Briarwatch's tower|in Briarwatch's fields/);
   assert.match(start({ b3_bell_evacuate: true }), /Vell's people are in Briarwatch's fields/);
   const cast = start({ b3_bell_cast: true });
-  assert.match(cast, /voices in Vell's bells are holding the city/); assert.match(cast, /four hundred voices/);
-  assert.match(start({ b3_bell_cast: true, b3_witnessed: true }), /three hundred and thirty-seven voices/);
-  assert.match(start({ b3_bell_cast: true, b3_quotas_exposed: true }), /a hundred and ninety voices/);
+  assert.match(cast, /voices in Vell's bells are holding the city/); assert.match(cast, /three hundred and ninety-one voices/);
+  assert.match(start({ b3_bell_cast: true, b3_witnessed: true }), /three hundred and thirty voices/);
+  assert.match(start({ b3_bell_cast: true, b3_quotas_exposed: true }), /a hundred and eighty-six voices/);
   const old = start({});
   assert.match(old, /Aster Vey is in Briarwatch's tower/); assert.doesNotMatch(old, /tower is empty|in Briarwatch's fields|voices in Vell's bells|four hundred voices/);
   for (const t of [old, cast]) { assert.match(t, /three hundred volunteers/); assert.match(t, /the morning after Commander Hesk was taken at the foot of the pass/); }
@@ -756,7 +756,7 @@ test('Hesk\'s company: who the three hundred are follows the market, and Varn an
   assert.match(start({ b3_debts_bought: true }), /Hardly any of them are from Merrowgate's docks/);
   const old = start({});
   assert.match(old, /from every town the Lantern Hall has sold to/);
-  assert.match(old, /round iron door in the vault floor, the one nobody in Vell built, is standing open/); assert.match(old, /Captain Sorrel's custody ledger/); assert.match(old, /count them back up/);
+  assert.match(old, /round iron door in the vault floor, the one nobody in Vell built, is standing open/); assert.match(old, /the council's custody ledger at the foot of the pass/); assert.match(old, /count them back up/);
   assert.match(start({ b3_bell_evacuate: true }), /Vell is empty/); assert.doesNotMatch(old, /Vell is empty/);
   assert.match(start({ b3_varn_freed: true }), /Captain Odell Varn is in the column/); assert.doesNotMatch(old, /Varn/);
   assert.match(start({ b3_vault_held: true }), /thirty-one iron bells are still in their rows/);
