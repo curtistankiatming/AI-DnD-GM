@@ -285,12 +285,14 @@ function installQuest(q){
   // its decision to the next chapter's opening (src/world.js goOn), and its
   // end is the safe ledge a defeat in the next chapter wakes on: "ledge" is
   // what is told there, and its one choice rests and goes back down.
-  if(q.continues)STORY_NODES[`${prefix}-ledge`]={id:`${prefix}-ledge`,act:'The last ledge',title:q.ledgeTitle||'The last ledge',location:q.region,objective:'Rest, then go back down.',lines:q.ledge||[{narrate:'You wake where the last part of the way ended, with the dark below you.'}],safeRest:true,sideStory:true,ledge:q.id,
+  if(q.continues)STORY_NODES[`${prefix}-ledge`]={id:`${prefix}-ledge`,act:'The last ledge',title:q.ledgeTitle||'The last ledge',location:q.region,objective:`${q.ledgeLabel||'Rest, then go back down'}.`,lines:q.ledge||[{narrate:'You wake where the last part of the way ended, with the dark below you.'}],safeRest:true,sideStory:true,ledge:q.id,
     choices:[choice('down',q.ledgeLabel||'Rest, then go back down',{once:false,description:'A long rest on the ledge, then back to the encounter that beat you. Nothing earlier is undone.',result:{backDown:true}}),
       // A safety valve (systems review, 22 November 2026): after three defeats
       // in the same chapter the party may climb back up to town to level, shop
       // or change gear. The chapter stays in progress and resumes from the board.
-      choice('climb','Climb back up to town',{once:false,requires:{failuresAtLeast:3},description:'The long climb back to the last town. The chapter waits where you left it; depart again to go back down to the same encounter.',result:{climbUp:true}})]};
+      // "climbLabel" and "climbText" word it for a ledge that is not on a stair
+      // (Book Four's mountain column and casting floor).
+      choice('climb',q.climbLabel||'Climb back up to town',{once:false,requires:{failuresAtLeast:3},description:q.climbText||'The long climb back to the last town. The chapter waits where you left it; depart again to go back down to the same encounter.',result:{climbUp:true}})]};
   const level=L;
   const type=q.enemyTheme;
   const f=XP.foeStats(challenge);

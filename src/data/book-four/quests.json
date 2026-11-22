@@ -4882,6 +4882,9 @@
       }
     ],
     "ledgeTitle": "The high turns under the overhang",
+    "ledgeLabel": "Rest, then go on up to the north door",
+    "climbLabel": "Go back down to Orme",
+    "climbText": "The party unropes and goes back down the switchbacks to Orme. The north door waits where you left it: depart again to go back up to the same encounter.",
     "ledge": [
       { "narrate": "You wake on the high turns under the overhang, roped to the column still, with the white lying in the gorge of switchbacks below and the north face going up into the cloud above you." },
       { "narrate": "Somebody has chalked the next mark on the rock beside your hand while you slept: a button." }
@@ -7574,6 +7577,9 @@
       }
     ],
     "ledgeTitle": "The Casting Hall",
+    "ledgeLabel": "Rest, then go back to the lid",
+    "climbLabel": "Go back out into Cinder Fold",
+    "climbText": "The party goes out of the casting hall into Cinder Fold. The lid waits where you left it: depart again to go back to the same encounter.",
     "ledge": [
       { "narrate": "You wake on the casting floor, by the committee's table that someone has carried in out of the snow, with a miner's coat over you and the warm of the first forge coming up through the iron." },
       { "narrate": "Above you the nine stand on the lid, and the Mother Bell hangs over them from its beam. Below, the hatch at the head of the founders' stair is open, and something under the lid is humming." }
@@ -7841,6 +7847,9 @@
       }
     ],
     "ledgeTitle": "The Head of the Stair",
+    "ledgeLabel": "Rest, then go back to the bell",
+    "climbLabel": "Go back out into Cinder Fold",
+    "climbText": "The party goes out of the casting hall into Cinder Fold. The Parting Bell waits where you left it: depart again to go back to the same encounter.",
     "ledge": [
       { "narrate": "You wake at the head of the founders' stair, on the casting floor, with somebody's coat under your head and the nine standing in time above you." },
       { "narrate": "The Parting Bell is on its frame under the Mother Bell, where it was set down, and somebody's hand is still on it. It is not quite midnight." }
