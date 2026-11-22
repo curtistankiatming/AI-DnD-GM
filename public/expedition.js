@@ -100,7 +100,7 @@ function renderExpansion(){
     // Masterwork refines first; with Book Three gear the basic Fine upgrades of starting gear fold away below them.
     const upCard=u=>{const c=v4Card(u.masterwork?`${u.name} → Masterwork`:`${u.name} → ${u.newName}`,`${u.owner} · ${u.cost} gold. ${u.purpose}`);c.appendChild(v4Button('Commission upgrade',{type:'upgrade',itemId:u.itemId,actorId:u.actorId},hero.gold<u.cost));return c;};
     const refines=w.upgrades.filter(u=>u.masterwork),basics=w.upgrades.filter(u=>!u.masterwork);
-    if(refines.length){smith.appendChild(createElement('h4','smith-group',`Masterwork refines · ${refines.length}`));for(const u of refines)smith.appendChild(upCard(u));}
+    if(refines.length){smith.appendChild(createElement('p','smith-group',`Masterwork refines · ${refines.length}`));for(const u of refines)smith.appendChild(upCard(u));}
     if(refines.length&&basics.length){const fold=createElement('details','smith-fold');fold.appendChild(createElement('summary','',`Fine upgrades for basic gear · ${basics.length}`));for(const u of basics)fold.appendChild(upCard(u));smith.appendChild(fold);}
     else for(const u of basics)smith.appendChild(upCard(u));
     for(const r of w.recipes){const c=v4Card(r.name,`${r.ingredients.map(i=>`${i.quantity} × ${titleCase(i.itemId)}`).join(', ')} + ${r.gold} gold. ${r.description||''}`);c.appendChild(v4Button('Craft',{type:'craft',recipeId:r.id},!r.ready));smith.appendChild(c);}
