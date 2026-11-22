@@ -155,7 +155,7 @@ tier is a step up for every kind of item:
 | Light armour (AC + Dex) | 15 | 15, 5% more dealt | 15, 5% more dealt and less taken | 16, 5% more dealt and less taken | 16, 10% more dealt, 5% less taken |
 | Shield | +4, 10% less taken | +4, 10% less taken, Brace for two rounds | +4, 10 to 15% less taken | +4, 15% less taken, +1 saves | +5, 15% less taken, +1 saves |
 
-**A cap on damage taken.** However many worn pieces cut damage taken, gear takes off at most 30% (`MAX_GEAR_TAKEN` in `src/equipment.js`). Plate, shield and charm at level 40 add up to 45%, which with AC 28 and Masterwork refines left a heavy wearer taking about a tenth of normal damage.
+**A cap on damage taken.** However many worn pieces cut damage taken, gear takes off at most 30% (`MAX_GEAR_TAKEN` in `src/equipment.js`). Plate, shield and charm at level 40 add up to 45%, which with AC 28 and Masterwork refines left a heavy wearer taking about a tenth of normal damage. Every item card that cuts damage taken says so: "(all worn gear together takes off at most 30%)".
 
 Every tier has a heavy armour that Fighters and Clerics can wear at Strength 13
 (a Cleric starts with 13), and one at Strength 15 that anyone strong enough
@@ -173,7 +173,11 @@ its own kind of upgrade, and Orin, Maren and Nessa each have upgrades they can
 wear. Only places that can't be missed count: Vell's shop and bounty board
 close if the city is evacuated, so they don't. Part One never goes back to
 Highpass after level 22, so Briarwatch (chapter 7, level 26) sells the tier 25
-kit as well as Highpass. Another test checks that no Book Three item is
+kit as well as Highpass. In the same way Part Two leaves Highpass and Cinder
+Fold at level 34, and from 35 Briarwatch (chapter 16) is the last shop before
+the stair, so it also sells their tier 35 knife, greathammer, shield, plate
+and envoy's chain. A second test checks every class, branch and companion
+against only the towns the story stops in at each tier. Another test checks that no Book Three item is
 matched or beaten, for everyone who can wear it, by an item already available
 at the same or a lower level (Fine forge items included; a Masterwork refine is left out, since it is meant to carry an item towards the next tier for twice its price). Finesse weapons gain a little more damage dealt per tier than other weapons, because the items review's Saltwick and Vell blades already sit at the top of tier 20.
 
@@ -277,11 +281,11 @@ Each is given when its chapter is completed (`src/world.js` calls
 | Gallery Warhammer | Main hand | Epic | 500 | 1d10, Str, +2/+4 | 5% more dealt; Shatter (vulnerable) | Level 31 · Strength 13 | Cinder Fold only (from 30) |
 | Lid-forge Plate | Armour | Epic | 500 | AC 21, heavy | 15% less taken | Level 31 · Fighter or Cleric · Strength 13 | Cinder Fold only (from 30) |
 | Miners' Rope-chime | Accessory | Epic | 500 | +3 Performance | Every Rope at Once (empowered) | Level 31 | Cinder Fold (from 30) |
-| Old Wall Mail | Armour | Legendary | 650 | AC 17 + Dex (max 2) | 10% less taken | Level 31 | Chapter: The Town That Said No (b3-ashford) |
+| Old Wall Mail | Armour | Legendary | 650 | AC 17 + Dex (max 2), +1 CON save | 10% less taken | Level 31 | Chapter: The Town That Said No (b3-ashford) |
 | Slag Golem's Core | Accessory | Legendary | 650 |  | 5% less taken; Molten Core (burning) | Level 31 | First bounty, Cinder Fold at level 30+ |
 | Archive Grammar | Main hand | Epic | 510 | +4 spell attack, +3 DC | 5% more dealt; Unravel (vulnerable) | Level 32 · Wizard | Ashford Crossing (from 30) |
 | Plank-hook Gloves | Accessory | Epic | 510 | +3 Sleight of Hand, +3 Stealth | story: Stealth | Level 32 | Saltwick only (from 30) |
-| Roof-council Coat | Armour | Epic | 510 | AC 17 + Dex (max 2) | 10% less taken | Level 32 | Highpass Watch (from 30), Saltwick (from 30) |
+| Roof-council Coat | Armour | Epic | 510 | AC 17 + Dex (max 2), +1 DEX save | 10% less taken | Level 32 | Highpass Watch (from 30), Saltwick (from 30) |
 | Salt-ward Charm | Accessory | Epic | 510 | +1 AC, +1 saves | 5% less taken | Level 32 | Saltwick (from 30) |
 | Witness's Staff | Main hand | Legendary | 660 | +4 spell attack, +4 DC | 5% more dealt; Hear the Lie (weakened) | Level 32 · Cleric or Bard | Chapter: The Witness's Seal (b3-seal) |
 | Archive Reader's Spectacles | Accessory | Epic | 520 | +3 Arcana, +3 History | story: History | Level 33 | Ashford Crossing (from 30) |
@@ -297,10 +301,10 @@ Each is given when its chapter is completed (`src/world.js` calls
 |---|---|---|---|---|---|---|---|
 | Briarwood Night-leathers | Armour | Legendary | 690 | AC 16 + Dex | 5% more dealt; 5% less taken | Level 35 | Briarwatch (from 35) |
 | Briarwood Watch-blade | Main hand | Legendary | 690 | 1d10, Str, +2/+5 | 5% more dealt | Level 35 · Strength 13 | Briarwatch (from 35) |
-| Council Envoy's Chain | Accessory | Legendary | 690 | +3 Persuasion, +3 Insight | 5% more dealt; story: Persuasion | Level 35 | Highpass Watch (from 35) |
-| Frost-edge Knife | Main hand | Legendary | 690 | 1d8, finesse, +2/+5 | 10% more dealt; Hamstring (slowed) | Level 35 · Dexterity 13 | Highpass Watch (from 35) |
+| Council Envoy's Chain | Accessory | Legendary | 690 | +3 Persuasion, +3 Insight | 5% more dealt; story: Persuasion | Level 35 | Highpass Watch (from 35), Briarwatch (from 35) |
+| Frost-edge Knife | Main hand | Legendary | 690 | 1d8, finesse, +2/+5 | 10% more dealt; Hamstring (slowed) | Level 35 · Dexterity 13 | Highpass Watch (from 35), Briarwatch (from 35) |
 | Hearth-bell Charm | Accessory | Legendary | 690 | +1 AC, +1 CON save, +1 WIS save | 10% less taken | Level 35 | Cinder Fold only (from 35) |
-| Hearth-bell Shield | Off hand | Legendary | 690 | +4 AC | 15% less taken; Brace (fortified) | Level 35 · Fighter or Cleric · Strength 13 | Cinder Fold (from 35) |
+| Hearth-bell Shield | Off hand | Legendary | 690 | +4 AC | 15% less taken; Brace (fortified) | Level 35 · Fighter or Cleric · Strength 13 | Cinder Fold (from 35), Briarwatch (from 35) |
 | Ridge Stalker's Pelt | Accessory | Legendary | 690 | +1 AC, +3 Stealth | story: Stealth | Level 35 | First bounty, Highpass Watch at level 35+ |
 | Snow-guide's Scale | Armour | Legendary | 690 | AC 18 + Dex (max 2) | 5% less taken | Level 35 | Briarwatch (from 35), Highpass Watch (from 35) |
 | Surveyor's Lamp | Accessory | Legendary | 690 | +3 Survival, +3 Investigation | 10% more dealt; story: Survival | Level 35 | Chapter: The Deep (b3-deep) |
@@ -310,8 +314,8 @@ Each is given when its chapter is completed (`src/world.js` calls
 | Winter-watch Staff | Main hand | Legendary | 690 | +4 spell attack, +4 DC | 5% more dealt; Hold the Line (slowed) | Level 35 · Wizard, Cleric or Bard | Briarwatch (from 35) |
 | Book of Hours | Accessory | Legendary | 700 | +3 Religion, +3 History, +3 Medicine | story: Religion | Level 36 | Briarwatch (from 35) |
 | Circle-edge Plate | Armour | Legendary | 700 | AC 22, heavy | 15% less taken; Brace (fortified) | Level 36 · Strength 15 | Chapter: The First Promise (b3-promise) |
-| Ninefold Greathammer | Main hand | Legendary | 700 | 2d6, Str, two-handed, +2/+5 | 5% more dealt; Shatter (vulnerable) | Level 36 · Strength 15 | Cinder Fold (from 35) |
-| Winter-watch Plate | Armour | Legendary | 700 | AC 22, heavy | 15% less taken | Level 36 · Fighter or Cleric · Strength 13 | Highpass Watch (from 35), Cinder Fold (from 35) |
+| Ninefold Greathammer | Main hand | Legendary | 700 | 2d6, Str, two-handed, +2/+5 | 5% more dealt; Shatter (vulnerable) | Level 36 · Strength 15 | Cinder Fold (from 35), Briarwatch (from 35) |
+| Winter-watch Plate | Armour | Legendary | 700 | AC 22, heavy | 15% less taken | Level 36 · Fighter or Cleric · Strength 13 | Highpass Watch (from 35), Cinder Fold (from 35), Briarwatch (from 35) |
 | First-note Tuning Iron | Main hand | Legendary | 710 | +4 spell attack, +4 DC | 10% more dealt; First Note (vulnerable) | Level 37 · Wizard, Cleric or Bard | Chapter: The First Bell (b3-firstbell) |
 | Margin-noted Grammar | Main hand | Legendary | 710 | +4 spell attack, +4 DC | 10% more dealt; Unravel (vulnerable) | Level 37 · Wizard | Highpass Watch only (from 35) |
 
@@ -335,4 +339,4 @@ Each is given when its chapter is completed (`src/world.js` calls
 | Second-winter Charm | Accessory | Legendary | 740 | +1 AC, +1 saves | 15% less taken | Level 40 | Briarwatch (from 40) |
 | Ward-captain's Signet | Accessory | Legendary | 740 |  | 20% more dealt; 5% less taken; story: Insight | Level 40 | Briarwatch (from 40) |
 | Wardsmith's Plate | Armour | Legendary | 740 | AC 22, heavy | 15% less taken; Brace (fortified) | Level 40 · Fighter or Cleric · Strength 13 | Briarwatch (from 40) |
-| Wardsmith's Scale | Armour | Legendary | 740 | AC 18 + Dex (max 2) | 10% less taken | Level 40 | Briarwatch (from 40), Highpass Watch (from 40) |
+| Wardsmith's Scale | Armour | Legendary | 740 | AC 18 + Dex (max 2), +1 CON save | 10% less taken | Level 40 | Briarwatch (from 40), Highpass Watch (from 40) |
