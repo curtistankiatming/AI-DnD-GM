@@ -3626,8 +3626,14 @@
         { "narrate": "Dawn at Greve. The white has gone back down the valley without its giving. The grieving are asleep on the benches, still holding their own arms.", "when": { "flag": "method:b4-greve", "is": "peace" } },
         { "narrate": "Dawn at Greve. The yard is trampled to the stones, and the white has gone on down the valley. Yarrow is going along the benches with tea, and the grieving are holding their own arms." }
       ] },
-      { "say": "Yarrow", "text": "Nobody gave last night. Not one of them. They'll give at the next, or go home with it. I don't know which is kinder. I used to know." },
-      { "narrate": "Madder is at the fire with the house-book open on her knee, writing under her son's name, in her own hand, the thing about the whistle." },
+      { "oneOf": [
+        { "say": "Yarrow", "text": "Nobody gave last night. Not one of them. They'll give at the next, or go home with it. I don't know which is kinder. I used to know.", "when": { "flag": "method:b4-greve", "is": "peace" } },
+        { "say": "Yarrow", "text": "Nobody gave what they came to give last night. They'll give at the next, or go home with it. I don't know which is kinder. I used to know." }
+      ] },
+      { "oneOf": [
+        { "narrate": "Madder is at the fire with the house-book open on her knee, writing under her son's name, in her own hand, the thing about the whistle.", "when": { "flag": "method:b4-greve", "is": "peace" } },
+        { "narrate": "Madder is at the fire with the house-book open on her knee, writing under her son's name, in her own hand, one true thing about him: that he could whistle with two fingers." }
+      ] },
       { "say": "Yarrow", "text": "You came in at my door and changed my house in a night. So tell me what to do with it. I'll listen. I don't promise more." }
     ],
     "decisions": [
@@ -3710,13 +3716,13 @@
     "region": "Thrum, three days down the long valley east of Orme, and the lane of twelve doors where Rue was born",
     "threat": "The white comes up Thrum's lane past the fourth door, and Rue will not leave her mother's step.",
     "faction": "wold",
-    "brief": "Rue comes home to Thrum after a year. Her mother, Heath, gave her grief for a lost daughter to the white at Greve, and does not know her. The lines about Rue on Heath's door have been scrubbed off.",
+    "brief": "Rue comes home to Thrum after a spring, a summer and an autumn away. Her mother, Heath, gave her grief for a lost daughter to the white at Greve, and does not know her. The lines about Rue on Heath's door have been scrubbed off.",
     "told": {
       "ballad": "Rue of Thrum came home over the peaks and down the long valley, and her mother opened the door to her, kindly, as to a stranger.",
       "tally": "Thrum. Rue of Thrum came home, who went south to ask. Written: her mother did not know her."
     },
     "opening": [
-      { "narrate": "Thrum is a lane of twelve doors at the end of the long valley, three days east of Orme. Most winters the white lies in the lane as far as the third door. This winter it is at the second, and it is early yet." },
+      { "narrate": "Thrum is a lane of twelve doors at the end of the long valley, three days east of Orme. Most winters the white lies in the lane as far as the third door. This winter it is already at the third, and it is early yet." },
       { "narrate": "Rue walks up the lane in front of you, reading the doors aloud, the way she has read every door since Lantry. At the seventh she stops." },
       { "narrate": "It is her mother's door. Heath's name is on it, and today's weather, and the bread. Halfway down, where Rue's lines were, the wood has been scrubbed pale, and nothing has been written over it." },
       { "narrate": "Heath opens the door before Rue can knock: a thin, tidy woman with flour to the elbow. She looks at Rue the way you look at a stranger on your step, kindly, and waiting to be told." },
@@ -3805,10 +3811,10 @@
       "skill": "survival",
       "alt": ["perception", "nature"],
       "success": [
-        { "narrate": "{You walk|@ walks} the end of the lane at dusk and {find|finds} the gap in the field wall past the twelfth door, where the white comes in first, with the frost already grey on the stones." }
+        { "narrate": "{You walk|@ walks} the end of the lane at dusk and {find|finds} the gap in the field wall below the first door, where the white comes in first, with the frost already grey on the stones." }
       ],
       "failure": [
-        { "narrate": "{You go|@ goes} out past the twelfth door at dusk, and the white is over the field wall before {you are|@ is} back, and {they come|@ comes} up the lane cold to the bone." }
+        { "narrate": "{You go|@ goes} out below the first door at dusk, and the white is over the field wall before {you are|@ is} back, and {you come|@ comes} up the lane cold to the bone." }
       ]
     },
     "direct": {
@@ -3903,7 +3909,7 @@
         "text": [
           { "narrate": "You tell her to keep it. All of it, and the hurt with it, and to start again from the door." },
           { "narrate": "Rue takes Furze's chalk. She stands at her mother's door with it for a long time, and then writes, small, under the scrubbed place: 'Rue of Thrum. A stranger. She brought the southerners. She would like to come to the bread.'" },
-          { "narrate": "Nessa takes the chalk off her and writes the next line, in capitals, under Rue's: 'SHE IS MY FRIEND. NESSA.' It is the first of Nessa's letters anybody has ever read.", "when": { "party": "nessa" } },
+          { "narrate": "Nessa takes the chalk off her and writes the next line, in capitals, under Rue's: 'SHE IS MY FRIEND. NESSA.' It is the first thing Nessa has ever written on a door.", "when": { "party": "nessa" } },
           { "narrate": "In the morning Furze reads the door to his mother, aloud, as he does every morning. Heath listens to the new lines, and goes to the step, and asks the stranger in." }
         ],
         "rep": { "wilds": 1 },
@@ -3927,7 +3933,7 @@
             { "say": "nessa", "text": "It's yours. I kept all of mine, and some nights I'd give anything. Give it. I'd not blame you. Nobody would." }
           ] },
           { "oneOf": [
-            { "narrate": "Rue takes Furze's chalk and writes, under the scrubbed place on her mother's door: 'Rue of Thrum. A stranger. She would like to come to the bread.' Nessa writes the next line under it in capitals: 'SHE IS MY FRIEND. NESSA.' It is the first of Nessa's letters anybody has ever read.", "when": { "flag": "b3_nessa_gives" } },
+            { "narrate": "Rue takes Furze's chalk and writes, under the scrubbed place on her mother's door: 'Rue of Thrum. A stranger. She would like to come to the bread.' Nessa writes the next line under it in capitals: 'SHE IS MY FRIEND. NESSA.' It is the first thing Nessa has ever written on a door.", "when": { "flag": "b3_nessa_gives" } },
             { "narrate": "At the giving that night, at the third door, Rue holds out her hands and gives, and Nessa stands next to her the whole time, and holds the book." }
           ] }
         ],
@@ -3965,8 +3971,8 @@
       { "narrate": "The Long Hall is full of doors. Every tally town has carried one in on a cart, its own door-board, written over with its name and its winters: Lantry's, and Greve's, and Thrum's, and Dunnet's and Wem's, and forty more, stood up along the oldest wall like people waiting to be written." },
       { "narrate": "Sloe stands in front of them at her table, with one slate. She has finished her sum." },
       { "oneOf": [
-        { "say": "Sloe", "text": "The line on the Parting Bell: 'Rung once, to part. Ring it again and all will answer.' It is cut on the north face of the Hall, in our hand, under our nine. Rue read it to me off the bell itself. And in the first snow, somebody rang it, and I heard every bell in the south answer it, from here.", "when": { "flag": "b4_parting_rung" } },
-        { "say": "Sloe", "text": "The line on the Parting Bell: 'Rung once, to part. Ring it again and all will answer.' It is cut on the north face of the Hall, in our hand, under our nine. Rue read it to me off the bell itself." }
+        { "say": "Sloe", "text": "The line on the Parting Bell: 'Rung once, to part. Ring it again and all will answer.' The founders cut it round the bell's shoulder. Our side of the Hall has it too, worn almost smooth, on the stone under our nine. Rue copied it for me off the stone. And in the first snow, somebody rang it, and I heard every bell in the south answer it, from here.", "when": { "flag": "b4_parting_rung" } },
+        { "say": "Sloe", "text": "The line on the Parting Bell: 'Rung once, to part. Ring it again and all will answer.' The founders cut it round the bell's shoulder. Our side of the Hall has it too, worn almost smooth, on the stone under our nine. Rue copied it for me off the stone." }
       ] },
       { "say": "Sloe", "text": "Rung forward, the founders' way, it rings the white north, all of it, every bell at once. Rung backward, it is the other note. Every bell answers it, and goes quiet. For one winter, every bell in the bell-country is a pot. And the white lies where it falls." },
       { "say": "Sloe", "text": "Whoever rings it forgets everything. Everything, not a season. I have done that sum too. I will ring it. At midwinter, unless the south shares the winter with us. That is my sum. It is right." }
@@ -4007,7 +4013,7 @@
         "lines": [
           { "narrate": "Dunnet's and Wem's door-boards stand next to each other at the end of the row, because the carts came in together, and their bearers have been arguing since dawn." },
           { "say": "Wem's door-bearer", "text": "Dunnet rings a pot. Every night. And every night the white comes down on Wem, a mile down the valley, and lies in our street to the eaves." },
-          { "say": "Dunnet's door-bearer", "text": "We ring it so it doesn't come down on Dunnet. It worked. It's in the tally. Dunnet: lost none. First winter in the tally." },
+          { "say": "Dunnet's door-bearer", "text": "We ring it so it doesn't come down on Dunnet. It worked. It's in the tally. Dunnet: lost none, since the pot. First time in the tally." },
           { "say": "Wem's door-bearer", "text": "And under it, Wem: lost seven. Read the whole line." },
           { "say": "Rue", "text": "They are both right. That is the sum. That is Sloe's whole sum, a mile wide." }
         ]
@@ -4056,7 +4062,7 @@
         { "narrate": "{You go|@ goes} along the row of door-boards through the morning and {talk|talks} to every bearer, and by noon {you know|@ knows} which towns have come to vote for the sum and which have come to be told something else first." }
       ],
       "failure": [
-        { "narrate": "{You go|@ goes} along the row of door-boards, but every bearer says what their door says, and their door says their winters, and by noon {you know|@ knows} no more than {you did|@ did} at dawn." }
+        { "narrate": "{You go|@ goes} along the row of door-boards, but every bearer says what their door says, and their door says their winters, and by noon {you know|@ knows} no more than {they} did at dawn." }
       ]
     },
     "direct": {
@@ -4089,13 +4095,13 @@
         { "narrate": "{You know|@ knows} that the sum is right, and {you say|@ says} so first, to the whole Hall, before anything else.", "when": { "flag": "prepared:b4-reckoning" } },
         { "narrate": "{You know|@ knows} which bearers came to be told something first, and {you go|@ goes} to those doors.", "when": { "flag": "approach:b4-reckoning" } },
         { "narrate": "{You stand|@ stands} in front of Sloe's table, between her and the door-boards still standing, and {speak|speaks} to the Hall.", "when": { "notFlag": "approach:b4-reckoning" } },
-        { "narrate": "{You tell|@ tells} them that the free wards have never been asked. That the council at Highpass has never heard the sum, only a letter about it, and that a sum nobody has been told cannot be answered. That if the Wold waits until midwinter for the south's own word, it will have lost nothing it has not lost already, and Sloe will still have her bell." },
+        { "narrate": "{You tell|@ tells} them that the free wards have never been asked. That the council at Highpass has never heard the sum, and that a sum nobody has been told cannot be answered. That if the Wold waits until midwinter for the south's own word, it will have lost nothing it has not lost already, and Sloe will still have her bell." },
         { "narrate": "Dunnet's door-bearer turns Dunnet's door face down, because Wem's has just gone face up. Then Wem's bearer turns Wem's over, because Dunnet's did. Then Greve's. Then, one at a time, the rest." },
         { "say": "Sloe", "text": "Face down. Then the Wold waits for the south's answer until midwinter. I will be at the bell at midwinter whatever it is. Burdock, write that the vote was against me, and that I asked for it." },
         { "say": "Burdock", "text": "Written. Against. Asked for. It is the first vote in the tally where I know what it was about." }
       ],
       "failure": [
-        { "narrate": "{You speak|@ speaks} to the Hall in front of Sloe's table, but the door-boards keep coming down face up while {they speak|@ speaks}, Wem's and then Dunnet's to spite it, and when the last is down the tally-guard unwrap their spears and come off the walls to close the doors." }
+        { "narrate": "{You speak|@ speaks} to the Hall in front of Sloe's table, but the door-boards keep coming down face up while {you speak|@ speaks}, Wem's and then Dunnet's to spite it, and when the last is down the tally-guard unwrap their spears and come off the walls to close the doors." }
       ]
     },
     "objective": {
@@ -4117,7 +4123,7 @@
     "after": [
       { "oneOf": [
         { "narrate": "Midnight in the Long Hall. The door-boards lie where they fell, face down, along the oldest wall. Nobody has been held, and nobody is hurt.", "when": { "flag": "method:b4-reckoning", "is": "peace" } },
-        { "narrate": "Midnight in the Long Hall. The door-boards lie where they fell, face up, along the oldest wall, and the tally-guard sit under them with the clerks binding their hands. Nobody is held. Sloe told them to stop, in the end. Her sum stands." }
+        { "narrate": "Midnight in the Long Hall. The door-boards lie where they fell, face up, along the oldest wall, and the tally-guard sit under them with the clerks bandaging their hands. Nobody is held. Sloe told them to stop, in the end. Her sum stands." }
       ] },
       { "narrate": "Sloe sits at her table with her one slate in front of her and her hands flat either side of it." },
       { "say": "Sloe", "text": "So. You have to answer it. Not the council: you. You are the south that came. What do you do with my sum?" }
@@ -4227,7 +4233,7 @@
       { "oneOf": [
         { "narrate": "Dunnet learned it from a southern man with a lamp, who came up the valley road in the spring and told them what bells are for. They listened very carefully.", "when": { "flag": "b3_stair_sealed" } },
         { "narrate": "Dunnet learned it from the Company. Forty wagons came down the valley road in the summer, asking the way to the empty land, with a bell on wagon one to keep the white off the road. They camped a night in Dunnet's street and rang it. Dunnet watched the white go.", "when": { "flag": "b4_company_sails" } },
-        { "narrate": "Dunnet learned it from Lantry. The carters brought the news up the valley: the southerners rang Lantry's pots in the street, and the white went off Lantry onto Sheddon. Dunnet thought about it, and then it thought bigger.", "when": { "flag": "b4_rang_lantry" } },
+        { "narrate": "Dunnet learned it from Lantry. The carters brought the news up the valley: the southerners rang Lantry's pots in the street, and the white went off Lantry onto Sheddon. Dunnet thought about it, and then melted down its pots.", "when": { "flag": "b4_rang_lantry" } },
         { "narrate": "Dunnet learned it from the tally. Sloe read the bell-country's line aloud in the Long Hall, and Dunnet's door-bearer listened, and went home, and melted down every pot in the village." }
       ] }
     ],
@@ -4246,7 +4252,7 @@
         "id": "elder",
         "label": "Go down to the stones and talk to Wem's elder",
         "lines": [
-          { "say": "Wem's elder", "text": "Every night at dusk we hear it, up there. Forty strokes. And every night the white comes down the shelf and lies in our street. Seven of ours are gone since midsummer. Seven. Before that bell, the worst winter in the tally was three." },
+          { "say": "Wem's elder", "text": "Every night at dusk we hear it, up there. Forty strokes. And every night the white comes down the shelf and lies in our street. Seven of ours are gone since that bell was hung. Seven. Before that bell, the worst winter in the tally was three." },
           { "say": "Wem's elder", "text": "Vetch's house went down to give in the summer, at the floor, and never came back up. We have him on the stones. Vetch, Clary, Burnet, gone to give." },
           { "narrate": "You know where they came up: in the casting hall at Cinder Fold, by the forge fire, under the free wards' bells." },
           { "say": "Wem's elder", "text": "We don't want to hurt anybody. We want the bell down. They want it up. Those are both true. Somebody's going to swing an axe at the stones before morning." },
@@ -4259,7 +4265,7 @@
         "requires": { "flagsAny": ["b4_company_sails"] },
         "lines": [
           { "narrate": "The Company's factor is standing by Dunnet's bell-frame in his good coat, with ink on the cuffs and frost on the ink. He came back up the valley road from the Company's camp when he heard about the axes." },
-          { "say": "The Company's factor", "text": "We rang our bell on the road all the way down from Orme, every night, to keep the white off the wagons. Dunnet asked how. I showed them. I thought I was being neighbourly." },
+          { "say": "The Company's factor", "text": "Once we were past Orme and down into the white, we rang our bell on the road every night, to keep it off the wagons. Dunnet asked how. I showed them. I thought I was being neighbourly." },
           { "say": "The Company's factor", "text": "I didn't know where it went. Nobody in Merrowgate ever told me where it went. I'm not sure anybody in Merrowgate ever asked." },
           { "say": "The Company's factor", "text": "Our bell's still on wagon one at the camp, and it's still rung every night, and I have just this minute worked out who it's been ringing it onto. I would like to sit down." }
         ]
@@ -4271,9 +4277,9 @@
           { "say": "Rue", "text": "It is the founders' bell. Exactly. Somebody made something to save the people in front of them, and the white went on to the next people, and they did not ask where." },
           { "say": "Rue", "text": "The founders did it with the whole south. Dunnet has done it with one village. It is the same sum. It is only a mile wide." },
           { "oneOf": [
-            { "say": "Rue", "text": "Sloe will hear of it by morning. It is the best thing that could have happened to her sum, and she will not be glad.", "when": { "flag": "b4_demand_carried" } },
-            { "say": "Rue", "text": "Sloe will hear of it by morning. She will ask whether the south's promise covers Dunnet. I do not know the answer.", "when": { "flag": "b4_share_promised" } },
-            { "say": "Rue", "text": "Sloe will hear of it by morning, and she will tell the council so, in the south, in her own voice. She will use it.", "when": { "flag": "b4_sloe_comes" } }
+            { "say": "Rue", "text": "Sloe will hear by morning that Wem came to the stones with axes. It is the best thing that could have happened to her sum, and she will not be glad.", "when": { "flag": "b4_demand_carried" } },
+            { "say": "Rue", "text": "Sloe will hear by morning that Wem came to the stones with axes. She will ask whether the south's promise covers Dunnet. I do not know the answer.", "when": { "flag": "b4_share_promised" } },
+            { "say": "Rue", "text": "Sloe will hear by morning that Wem came to the stones with axes, and she will tell the council so, in the south, in her own voice. She will use it.", "when": { "flag": "b4_sloe_comes" } }
           ] }
         ]
       }
@@ -4303,7 +4309,7 @@
       ]
     },
     "direct": {
-      "label": "Go up the valley to Dunnet",
+      "label": "Go down the valley road to Dunnet",
       "text": "You go a day down the valley road from Orme to Dunnet, and come to the boundary stones at dusk."
     },
     "approach": [
@@ -4396,7 +4402,7 @@
       {
         "id": "rota",
         "label": "Put it on a rota: the two villages ring on alternate nights",
-        "description": "This decision is permanent. The bell is moved to the boundary stones. Dunnet and Wem ring it on alternate nights, each sending the white onto itself on the other's night.",
+        "description": "This decision is permanent. The bell is moved to the boundary stones. Dunnet and Wem ring it on alternate nights, and each takes the white on the other's night.",
         "told": {
           "ballad": "At Dunnet the strangers put the bell on the stones and gave it to both villages, a night each, and the Wold had its first shared bell.",
           "tally": "Dunnet and Wem. The southerners said: share it. Written, on the stones: Dunnet rings the odd nights, Wem the even. The first shared bell."
@@ -4404,7 +4410,7 @@
         "text": [
           { "narrate": "You tell them to share it. Move the frame down onto the boundary stones, and ring it from there, a night each: on Dunnet's night the white goes down the shelf onto Wem, and on Wem's it goes up the shelf onto Dunnet. Half the winter each. Nobody's children in the line on their own night." },
           { "say": "Wem's elder", "text": "Half. Half's what we had before the bell. Half's fair." },
-          { "narrate": "They carry the frame down that night, both villages together, and stand it over the middle stone, and the elders chalk the rota on the stone itself: odd nights Dunnet, even nights Wem. Campion rings the first odd night, forty strokes, and a boy from Wem counts them out loud." },
+          { "narrate": "They carry the frame down that night, both villages together, and stand it over the middle stone, and the elders chalk the rota on the stone itself: odd nights Dunnet, even nights Wem, and on Wem's nights they turn the bell in its frame, so that its thick side faces down the shelf. Campion rings the first odd night, forty strokes, and a boy from Wem counts them out loud." },
           { "say": "Rue", "text": "Burdock will write that. He will write it on a new page, and put it at the front. The first bell in the Wold that two towns share." }
         ],
         "rep": { "wold": 1 },

@@ -785,7 +785,8 @@
           { "say": "nessa", "text": "Give it here, then.", "when": { "party": "nessa", "flag": "b4_rue_gave" } },
           { "narrate": "Nessa reads Rue's mother to her by the lamp, slowly, the page with Heath's bread and Heath's hands on it, stumbling on the long words, and Rue listens with her head on one side, interested and not hurt at all.", "when": { "party": "nessa", "flag": "b4_rue_gave", "noneFlag": ["b4_book_burned"] } },
           { "narrate": "There is one word to read. Nessa reads it off Rue's wrist, 'Heath', and then makes up the rest, a page of it, out loud, about the bread, and Rue lets her.", "when": { "party": "nessa", "flag": "b4_rue_gave", "anyFlag": ["b4_book_burned"] } },
-          { "narrate": "You read Rue her mother, slowly, by the lamp, and she listens with her head on one side, interested and not hurt at all.", "when": { "absent": "nessa", "flag": "b4_rue_gave" } },
+          { "narrate": "You read Rue her mother, slowly, by the lamp, and she listens with her head on one side, interested and not hurt at all.", "when": { "absent": "nessa", "flag": "b4_rue_gave", "noneFlag": ["b4_book_burned"] } },
+          { "narrate": "There is one word to read. You read it off Rue's wrist, 'Heath', and then you tell her what you saw Heath do today, at the table, with the bread and with Furze's chalk, and she listens with her head on one side, interested and not hurt at all.", "when": { "absent": "nessa", "flag": "b4_rue_gave", "anyFlag": ["b4_book_burned"] } },
           { "say": "nessa", "text": "Course it hurts. That's how you know it's still in there.", "when": { "party": "nessa", "flag": "b4_rue_kept" } },
           { "narrate": "Rue writes in her book by the lamp for a long time. When she has finished she turns it round so that you can read it: 'Kept. It hurts. Somebody went back for me.'", "when": { "flag": "b4_rue_kept" } },
           { "say": "Rue", "text": "You answered me. Nobody in the Wold would have. They would have said, it is yours, and gone in. You said it anyway. I have written down what you said, in your words, so that I can read it every morning.", "when": { "party": "nessa", "flag": "b4_rue_asked_nessa" } },
@@ -865,9 +866,9 @@
           { "narrate": "Before it is light, you read the oldest wall aloud through the window, and every clerk in the Long Hall stops writing to listen. Recital of Ages, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
           { "say": "orin", "text": "You sang in the yard this morning. Low. And the icicles on the Hall came down all at once, the whole row. Dirge, the Warchanters call it. Sing it somewhere else next time.", "when": { "spec": "battlecantor" } },
           { "narrate": "In the yard before it is light, you sing one low line, and every icicle on the Long Hall comes down at once. Dirge, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
-          { "say": "maren", "text": "Half the door-bearers came to breakfast this morning with a promise to keep for you, and not one of them could say when you'd asked. Alliance, they call that in Merrowgate, as a joke. It isn't one.", "when": { "spec": "envoy" } },
-          { "narrate": "Before it is light, half the door-bearers come to breakfast each with a promise to keep for you, and none of them can say when you asked. Alliance, they call that in Merrowgate, as a joke.", "when": { "spec": "envoy", "absent": "maren" } },
-          { "narrate": "Somewhere in the last few weeks you stopped feeling the cold of the Wold. You are not sure when.", "when": { "spec": "none" } },
+          { "say": "maren", "text": "Half the door-bearers came to breakfast this morning with a promise to keep for you, and not one of them could say when you'd asked. Alliance, they call that in Merrowgate. They're not wrong.", "when": { "spec": "envoy" } },
+          { "narrate": "Before it is light, half the door-bearers come to breakfast each with a promise to keep for you, and none of them can say when you asked. Alliance, the Diplomats call it.", "when": { "spec": "envoy", "absent": "maren" } },
+          { "narrate": "In the yard before it is light, you go through your drill at the post, the same as every morning, and nothing about it is new. You are not sure when it stopped being hard.", "when": { "spec": "none" } },
           { "say": "Rue", "text": "I wrote down what I saw you do. I do not know what it is called. I have left a space for the name." }
         ],
         "choices": [
@@ -913,7 +914,10 @@
             { "say": "Campion", "text": "Half the nights it's going to be rung onto us. On those nights I want it rung properly. I'm not having Wem's boy say I can't count.", "when": { "flag": "b4_potbell_rota" } }
           ] },
           { "say": "Rue", "text": "I will write down whatever you teach her, so that she has it after the season." },
-          { "say": "nessa", "text": "Don't look at me. I go up towers and light lamps. Wren did the bells.", "when": { "party": "nessa" } },
+          { "oneOf": [
+            { "say": "nessa", "text": "Don't look at me. I go up towers and light lamps. Wren's in a bell. That's as near as I get.", "when": { "party": "nessa", "flag": "b3_wren_cast" } },
+            { "say": "nessa", "text": "Don't look at me. I go up towers and light lamps. Wren did the bells.", "when": { "party": "nessa" } }
+          ] },
           { "say": "orin", "text": "I can tie the rope so it doesn't slip. That's all I've got.", "when": { "party": "orin" } },
           { "narrate": "Campion waits, with her burnt hands round her knees, looking at you." }
         ],

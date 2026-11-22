@@ -959,7 +959,7 @@ like each other.
 
 ### 15. Rue's Mother (b4-thrum, level 54, Thrum). Nessa's story
 
-**Opening.** Rue comes home after a year. Her mother, Heath, gave her grief
+**Opening.** Rue comes home after a spring, a summer and an autumn away. Her mother, Heath, gave her grief
 for a lost daughter to the white, and does not know her. Rue's page on the
 door was scrubbed off. What Rue has to show her depends on her book: the old
 book (`b4_book_returned`, and the default), the new first page with Maren in
@@ -980,8 +980,8 @@ mother's door.
 **Decision (what you tell Rue).**
 - Give her memory of her mother, so it stops hurting: `b4_rue_gave`.
 - Keep it, and start again with her mother as a stranger: `b4_rue_kept`. Rue
-  writes a new page on the door with Nessa's help: the first of Nessa's
-  letters that anyone reads.
+  writes a new page on the door with Nessa's help: the first thing Nessa
+  has ever written on a door.
 - Let Nessa answer, from her own past (lines with `setFlag`): with
   `b3_nessa_gives`, "Keep it. I gave one of mine and I'd want it back" (sets
   `b4_rue_kept`); otherwise "It's yours. I kept all of mine, and some nights
@@ -2401,12 +2401,12 @@ below.
 43. **The chapter rewards for chapters 14 to 17** (build step 7), tier 50
     numbers, each with something the sold tier 50 piece of its kind lacks:
     the Letting-house Censer (level 51: Medicine, Religion and Insight +3,
-    Wisdom saves +2, Constitution +1, 5% dealt, 5% taken, Every Name Said:
-    Fortified 1 round, Medicine story), the Thrum Lane Cloak (warm, light,
-    level 52: base AC 17, 10% dealt, 5% taken, Survival, Stealth and Insight
-    +2, Dexterity, Constitution and Wisdom saves +1, Insight story), the
-    Reckoner's Slate (level 53, wizard: +5 spell attack, +6 spell DC, 10%
-    dealt, Arcana and History +2, The Sum Comes Out: Vulnerable 1 round) and
-    the Pot-bell Mace (level 54, fighter or cleric, Str 13, as the late-gear
-    test's class rule asks: 1d10, +3/+6, 10% dealt, Forty Strokes: Weakened
-    2 rounds).
+    Wisdom saves +2, Constitution +1, 5% dealt, Every Name Said: Fortified 1
+    round, Medicine story), the Thrum Lane Cloak (warm, light, level 52: base
+    AC 17, 5% dealt, 5% taken, Stealth and Insight +2, Wisdom saves +1,
+    Insight story), the Reckoner's Slate (level 53, wizard: tier 50's +5
+    spell attack and +5 spell DC, 10% dealt, Arcana and History +2, The Sum
+    Comes Out: Vulnerable 1 round) and the Pot-bell Mace (level 54, fighter
+    or cleric, Str 13, as the late-gear test's class rule asks: 1d10, +3/+6,
+    10% dealt, Forty Strokes: Weakened until the next turn). None uses a
+    tier 55 number.

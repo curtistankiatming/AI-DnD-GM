@@ -5008,11 +5008,10 @@
     "slot": "accessory",
     "rarity": "Legendary",
     "value": 850,
-    "description": "Yarrow's censer on its chain, the one she lit for the grieving on giving nights, blackened inside with thirty years of smoke.",
+    "description": "The old censer from Yarrow's shelf, the first she lit for the grieving, blackened inside with thirty years of smoke. She has a newer one for giving nights.",
     "purpose": "Equip in the accessory slot: +3 Medicine, Religion and Insight, +2 Wisdom and +1 Constitution saving throws.",
     "stats": {
-      "dealt": 0.05,
-      "taken": -0.05
+      "dealt": 0.05
     },
     "skillBonuses": {
       "medicine": 3,
@@ -5049,23 +5048,20 @@
     "value": 860,
     "warm": true,
     "description": "Heath's white-wool cloak, darned at the hem, which she gives to the stranger who brought her daughter home.",
-    "purpose": "Base AC 17, full Dexterity bonus. +2 Survival, Stealth and Insight, +1 Dexterity, Constitution and Wisdom saving throws.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Stealth and Insight, +1 Wisdom saving throws.",
     "armor": {
       "base": 17,
       "dexCap": null
     },
     "stats": {
-      "dealt": 0.1,
+      "dealt": 0.05,
       "taken": -0.05
     },
     "skillBonuses": {
-      "survival": 2,
       "stealth": 2,
       "insight": 2
     },
     "saveBonuses": {
-      "dex": 1,
-      "con": 1,
       "wis": 1
     },
     "requires": {
@@ -5085,10 +5081,10 @@
     "slot": "mainHand",
     "rarity": "Legendary",
     "value": 870,
-    "description": "The slate Sloe did her sum on, in a frame of black wood worn pale where her thumbs held it. She will not need it again.",
-    "purpose": "Equip: +5 spell attack bonus and +6 spell save DC. +2 Arcana and History.",
+    "description": "The slate Sloe did her first sum on, in a frame of black wood worn pale where her thumbs held it. She has the sum by heart.",
+    "purpose": "Equip: +5 spell attack bonus and +5 spell save DC. +2 Arcana and History.",
     "spellAttackBonus": 5,
-    "spellDcBonus": 6,
+    "spellDcBonus": 5,
     "stats": {
       "dealt": 0.1
     },
@@ -5137,8 +5133,8 @@
       "name": "Forty Strokes",
       "effect": "weakened",
       "target": "enemy",
-      "rounds": 2,
-      "text": "Ring an enemy like a bell: it deals 25% less damage for two rounds."
+      "rounds": 1,
+      "text": "Ring an enemy like a bell: it deals 25% less damage until your next turn."
     },
     "requires": {
       "level": 54,

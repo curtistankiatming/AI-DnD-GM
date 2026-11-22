@@ -170,7 +170,7 @@ test('a decision changes exactly the approval and the reputation the design give
 
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won; the white is in every fight', () => {
   for (const [id, fought] of [['b4-lantry', /scraped and trampled where the fight was/], ['b4-sheddon', /trampled grey where the fight was/], ['b4-orme', /bandages and lamps/],
-    ['b4-greve', /The yard is trampled to the stones/], ['b4-thrum', /The lane is trampled to the stones/], ['b4-reckoning', /clerks binding their hands/], ['b4-potbells', /Dunnet has brought out blankets/]]) {
+    ['b4-greve', /The yard is trampled to the stones/], ['b4-thrum', /The lane is trampled to the stones/], ['b4-reckoning', /clerks bandaging their hands/], ['b4-potbells', /Dunnet has brought out blankets/]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -434,8 +434,8 @@ test('chapters 11 to 17 each give their own Legendary reward, once, worn from tw
   assert.deepEqual(ITEMS['reckoners-slate'].requires.classes, ['wizard']);
   assert.equal(ITEMS['pot-bell-mace'].requires.abilities.str, 13);
   // Each beats the sold piece of its kind at tier 50 on something, and none is beaten by it.
-  for (const [reward, sold, better] of [['letting-house-censer', 'avalanche-horn', (r) => r.saveBonuses.wis], ['thrum-lane-cloak', 'whitewool-jerkin', (r) => r.saveBonuses.dex],
-    ['reckoners-slate', 'aurora-staff', (r) => r.spellDcBonus > ITEMS['aurora-staff'].spellDcBonus], ['pot-bell-mace', 'rimeheart-longsword', (r) => r.stats.dealt > ITEMS['rimeheart-longsword'].stats.dealt]]) {
+  for (const [reward, sold, better] of [['letting-house-censer', 'avalanche-horn', (r) => r.saveBonuses.wis], ['thrum-lane-cloak', 'whitewool-jerkin', (r) => r.saveBonuses.wis && r.skillBonuses.insight],
+    ['reckoners-slate', 'aurora-staff', (r) => r.skillBonuses.arcana && r.skill.effect !== ITEMS['aurora-staff'].skill.effect && r.spellDcBonus === ITEMS['aurora-staff'].spellDcBonus], ['pot-bell-mace', 'rimeheart-longsword', (r) => r.stats.dealt > ITEMS['rimeheart-longsword'].stats.dealt]]) {
     assert.ok(better(ITEMS[reward]), `${reward} beats ${sold}`);
     assert.ok(ITEMS[sold].requires.level <= ITEMS[reward].requires.level, sold);
   }
@@ -471,6 +471,15 @@ test('chapter 14 is Maren\'s: Greve gives its griefs, the names said aloud hold 
   assert.doesNotMatch(sceneText(decide('b4-greve', 'kept', { party: ['orin', 'nessa'] })), /Maren|soup/);
   assert.match(talk('b4-reckoning', 'sloe', { flags: { b4_names_kept: true } }), /Greve's grieving came to my table/);
   assert.match(talk('b4-reckoning', 'burdock', { flags: { b4_names_written: true } }), /Greve's names on a new page/);
+  // The after, by how the night went: the whistle is new to the fight's telling.
+  const after = (method) => opening(at('b4-greve', { phase: 'after', flags: method ? { 'method:b4-greve': method } : {} }));
+  assert.match(after('peace'), /^Yarrow: Nobody gave last night\. Not one of them\./m);
+  assert.match(after('peace'), /the thing about the whistle/);
+  for (const fought of [after(), after('fight')]) {
+    assert.match(fought, /^Yarrow: Nobody gave what they came to give last night\./m);
+    assert.match(fought, /one true thing about him: that he could whistle with two fingers/);
+    assert.doesNotMatch(fought, /the thing about the whistle/);
+  }
 });
 
 test('chapter 15 is Nessa\'s: Rue comes home by the book she has, and Nessa\'s answer comes from her own past', () => {
@@ -491,13 +500,32 @@ test('chapter 15 is Nessa\'s: Rue comes home by the book she has, and Nessa\'s a
   const answers = (party) => E.buildView(at('b4-thrum', { party, phase: 'after', flags: { 'method:b4-thrum': 'peace' } })).scene.choices.filter((c) => !c.locked).map((c) => c.id);
   assert.deepEqual(answers(['orin', 'maren', 'nessa']), ['gave', 'kept', 'nessa']);
   assert.deepEqual(answers(['orin', 'maren']), ['gave', 'kept']);
-  assert.match(told(decide('b4-thrum', 'kept')), /the first of Nessa's letters anybody has ever read/);
+  assert.match(told(decide('b4-thrum', 'kept')), /the first thing Nessa has ever written on a door/);
   assert.doesNotMatch(told(decide('b4-thrum', 'kept', { party: ['orin', 'maren'] })), /Nessa/);
   // The step: Nessa and Rue, or Rue alone; the Rue Part Two goes on with.
   assert.match(sceneText(asked({})), /You answered me\./);
   assert.match(sceneText(decide('b4-thrum', 'kept', { party: ['orin', 'maren'] })), /Somebody went back for me/);
   assert.match(talk('b4-reckoning', 'rue', { flags: { b4_rue_kept: true } }), /I kept my mother/);
   assert.match(talk('b4-reckoning', 'rue', { flags: { b4_rue_gave: true } }), /I gave my mother/);
+  // With the book burned and Nessa away, the hero reads the one word.
+  const burned = sceneText(decide('b4-thrum', 'gave', { party: ['orin', 'maren'], flags: { b4_book_returned: false, b4_book_burned: true } }));
+  assert.match(burned, /You read it off Rue's wrist, 'Heath'/);
+  assert.doesNotMatch(burned, /You read Rue her mother, slowly/);
+});
+
+test('the roller lines in chapters 14 to 17 read for the hero and for a companion', () => {
+  const result = (node, choice, key, id) => outcomeForRoller(STORY_NODES[node].choices.find((c) => c.id === choice)[key], { id }).text;
+  assert.match(result('q-b4-thrum-approach', 'careful', 'failure', 'player'), /before you are back, and you come up the lane cold to the bone/);
+  assert.match(result('q-b4-thrum-approach', 'careful', 'failure', 'nessa'), /before Nessa is back, and Nessa comes up the lane cold to the bone/);
+  assert.match(result('q-b4-thrum-approach', 'careful', 'success', 'player'), /below the first door/);
+  assert.match(result('q-b4-reckoning-crisis', 'resolve', 'failure', 'player'), /while you speak/);
+  assert.match(result('q-b4-reckoning-crisis', 'resolve', 'failure', 'orin'), /while Orin speaks/);
+  assert.match(result('q-b4-reckoning-approach', 'careful', 'failure', 'player'), /no more than you did at dawn/);
+  assert.match(result('q-b4-reckoning-approach', 'careful', 'failure', 'maren'), /no more than she did at dawn/);
+  for (const id of ['b4-greve', 'b4-thrum', 'b4-reckoning', 'b4-potbells']) for (const phase of ['start', 'approach', 'crisis']) for (const c of STORY_NODES[`q-${id}-${phase}`].choices.filter((x) => x.check)) for (const key of ['success', 'failure']) for (const who of ['player', 'orin', 'maren', 'nessa']) {
+    const text = result(`q-${id}-${phase}`, c.id, key, who);
+    assert.doesNotMatch(text, /[{}@]|\byou (is|goes|knows|comes|speaks|stands)\b|\b(Orin|Maren|Nessa) (are|go|know|come|speak|stand)\b/, `${id} ${c.id} ${key} ${who}`);
+  }
 });
 
 test('chapter 16: the vote is easier after the truth, harder after waiting or Greve\'s anger, and the share is the council\'s or the hero\'s own', () => {
@@ -526,7 +554,7 @@ test('chapter 16: the vote is easier after the truth, harder after waiting or Gr
   assert.match(camp('guardian', ['maren', 'nessa']), /^In the yard before it is light, you put your whole weight[^\n]*Shield Slam/m);
   assert.match(camp('chronist'), /^Maren: [^\n]*Time Stop/m);
   assert.match(camp('deadeye'), /^Nessa: [^\n]*Pinning Shots/m);
-  assert.match(camp('none'), /stopped feeling the cold of the Wold/);
+  assert.match(camp('none'), /nothing about it is new/);
   const specs = require('../src/data/jobs.json').classes;
   for (const cls of Object.values(specs)) for (const b of cls.branches) assert.match(camp(b.id), new RegExp(b.thirdSkills.find((x) => x.level === 56).name), b.id);
 });
@@ -543,4 +571,9 @@ test('chapter 17: who taught Dunnet its bell follows Part One and Book Three, an
   assert.doesNotMatch(opening(at('b4-potbells', { phase: 'crisis' })), /Company/);
   for (const [decision, line] of [['broken', /pieces of the bell are stacked/], ['kept', /Wem's street is dark/], ['rota', /the rota chalked on it/]]) assert.match(sceneText(decide('b4-potbells', decision)), line, decision);
   assert.match(talk('b4-potbells', 'rue', { flags: { b4_sloe_comes: true } }), /in her own voice/);
+  assert.match(talk('b4-potbells', 'rue', { flags: { b4_demand_carried: true } }), /^Rue: Sloe will hear by morning that Wem came to the stones with axes\./m);
+  // potbells-camp: Nessa on bells by where Wren is.
+  assert.match(sceneText(decide('b4-potbells', 'rota', { flags: { b3_wren_cast: true } })), /^Nessa: [^\n]*Wren's in a bell\. That's as near as I get\./m);
+  assert.match(sceneText(decide('b4-potbells', 'rota')), /^Nessa: [^\n]*Wren did the bells\./m);
+  assert.doesNotMatch(sceneText(decide('b4-potbells', 'rota', { party: ['orin', 'maren'], flags: { b3_wren_cast: true } })), /Wren|Nessa/);
 });

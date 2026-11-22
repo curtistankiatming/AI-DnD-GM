@@ -501,7 +501,7 @@
             "success": {
               "lines": [
                 { "narrate": "{You go|@ goes} through every book that mentions that winter, and the porch door, and the doors of the three oldest houses in Orme, which still carry their own winters cut under the chalk. Three of them say fourteen. One house lost four that winter on its own, and its door says so, with the names rubbed out." },
-                { "narrate": "Then {you find|@ finds} it: a clerk's slate, kept in the back of the old book as a page-mark, with the winter's count on it in a hurried hand. 'Lost: 14.' The one and the four are close together. Whoever copied it read the four as a nought and put the one in front." },
+                { "narrate": "Then {you find|@ finds} it: a clerk's slate, kept in the back of the old book as a page-mark, with the winter's count on it in a hurried hand. 'Lost: 14.' The one and the four are close together. Whoever copied it read the one as the first stroke of a four, and the four as a nought." },
                 { "say": "Burdock", "text": "Fourteen. Then I write fourteen, and I write under it why, and whose slate, and that it was forty for three hundred and six years. Both. And then everybody who reads it will know that the tally can be wrong. That is a terrible thing to know. It is also true." }
               ],
               "setFlags": { "job:burdock-mistake-found": true }
@@ -556,7 +556,7 @@
           { "say": "Rue", "text": "That is your writing. Not yours: the south's. The letters are joined. Nobody here joins their letters. Read it to me." },
           { "narrate": "It is cut small and careful, in the free wards' hand, the way a child is taught to write in a ward school: 'Piers Ashdown, of Briarwatch, came over the old road in the hungry year, and was taken in at Orme, and given a door, and stayed. I have written this in my own hand, because nobody here could.'" },
           { "say": "Rue", "text": "Two hundred years. He had children. They had children. Somebody in Orme is his, and does not know it, and has a door." },
-          { "say": "Rue", "text": "Nobody came from the south. Burdock says so every morning. He has been wrong for two hundred years, in a hand he could not read." }
+          { "say": "Rue", "text": "Nobody came from the south to stay. Burdock says so every morning. He has been wrong for two hundred years, in a hand he could not read." }
         ],
         "choices": [
           {
@@ -584,7 +584,7 @@
             "label": "Read the line to Burdock, so that it goes into the tally in the Wold's hand",
             "lines": [
               { "narrate": "You read the line aloud to Burdock at his desk, slowly, the whole of it. He writes it into the newest book as you say it, in the square hand, and then reads it back, and stops at 'came over the old road'." },
-              { "say": "Burdock", "text": "Then somebody did come from the south. Two hundred years ago. It is in the tally now. I must have been wrong every morning for forty years, and I believed it every time." },
+              { "say": "Burdock", "text": "Then somebody came from the south and stayed. Two hundred years ago. It is in the tally now. I have said otherwise every morning for forty years, and believed it every time." },
               { "narrate": "He reads it again. Then he writes, under it, in smaller letters: 'Found by Rue of Thrum, read by the southerners. Nobody here could.'" }
             ],
             "setFlags": { "job:southern-hand-tally": true }
