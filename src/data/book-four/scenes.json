@@ -1112,5 +1112,120 @@
         ]
       }
     }
+  },
+  "knot-camp": {
+    "id": "knot-camp",
+    "after": "b4-knot",
+    "cast": [],
+    "act": "Camp",
+    "location": "The guardroom of the lower watch, Highpass, late",
+    "start": "brazier",
+    "nodes": {
+      "brazier": {
+        "title": "The Guardroom Brazier",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Late, in the guardroom of the lower watch, by the brazier. The watch are asleep along the walls, and some of the Wold's people with them, in their coats." },
+          { "narrate": "Biscuit is asleep against Nessa's boots, grey at the muzzle, with one ear up.", "when": { "party": "nessa" } },
+          { "narrate": "Orin sits by the brazier with a length of rope off the guardroom's coil, and the cut rope from the hook on his knee beside it, and ties the knot from memory.", "when": { "party": "orin" } },
+          { "narrate": "He ties it slowly. A round turn. Two half-hitches. The stopper. It comes out plain, the way he ties it now, and he looks at it, and unties it.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "He ties it again, and works it wrong: the stopper on the wrong side of the hitches, and loose. He unties that too.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "The third time his hands go small and hard over the tail without him, and pull the stopper down tight, and it is the knot on the hook. The same. He holds the two side by side in the light of the brazier.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "orin", "text": "There. That's it. I still can't tell you what it's called.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "orin", "text": "Somebody showed me that once and told me its name, and I said it back to them. I can feel where the name was. Like a tooth that's gone.", "when": { "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "He ties it twice, copying the knot on the hook turn for turn, and pulls the stopper down tight the way the rope families do, and the second time it comes out right.", "when": { "party": "orin", "noneFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "orin", "text": "There. I've tied that knot all my life, and never once like that. That's not a soldier's knot. It's a ringer's. I don't know its name either. I never needed it to have one.", "when": { "party": "orin", "noneFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "say": "Davin", "text": "You'll get the name back. You got the knot.", "when": { "flag": "b4_davin_comes", "party": "orin", "anyFlag": ["b3_orin_gives", "b3_orin_keeps"] } },
+          { "narrate": "You sit by the brazier with a length of rope off the guardroom's coil and try to tie the knot from the hook, turn for turn. It comes out wrong twice. The third time it is close. It is not the same.", "when": { "absent": "orin" } },
+          { "narrate": "Rue watches from the bench with her book open on her knee." },
+          { "say": "Rue", "text": "I will draw it. If nobody knows its name, I will write down what it looks like. That is a kind of name." }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Sleep by the brazier",
+            "lines": [
+              { "narrate": "You sleep by the brazier. In the morning the knot is still tied on the end of the guardroom's coil, and nobody has untied it." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "invoice-camp": {
+    "id": "invoice-camp",
+    "after": "b4-invoice",
+    "cast": [],
+    "act": "Camp",
+    "location": "Iona's office under the gatehouse, Highpass, late",
+    "start": "ledger",
+    "nodes": {
+      "ledger": {
+        "title": "Iona's Office",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Late, in Iona's office under the gatehouse. One lamp, and the invoice, and the book of winters open beside it. Burdock sits on one side of the desk and Iona on the other, and they go through it line by line, his count of each winter against her cost of it. Where his number and hers disagree, they stop, and find out why.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+            { "narrate": "Late, in Iona's office under the gatehouse. One lamp, and the invoice, and Rue's book open beside it. Rue sits on one side of the desk and Iona on the other, and they go through it line by line, Rue's count of each winter against Iona's cost of it. Where the numbers disagree, they stop, and find out why." }
+          ] },
+          { "say": "Iona", "text": "Lantry. The winter of the long white. I have six." },
+          { "oneOf": [
+            { "say": "Burdock", "text": "I have six.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+            { "say": "Rue", "text": "I have six." }
+          ] },
+          { "narrate": "They go on. At the bottom of the last page they each draw a line, and add, and turn their papers round, and read each other's." },
+          { "say": "Iona", "text": "We agree." },
+          { "oneOf": [
+            { "say": "Burdock", "text": "We agree. I have never agreed with anybody's figures before. I did not know it felt like this.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+            { "say": "Rue", "text": "We agree. I will write that we agreed. It is the first sum I have ever done, and it came out." }
+          ] }
+        ],
+        "choices": [
+          {
+            "id": "leave",
+            "label": "Leave them the lamp",
+            "lines": [
+              { "narrate": "You leave them the lamp. When you look back from the door, they have gone back to the first page, to check it again." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "quietnight-camp": {
+    "id": "quietnight-camp",
+    "after": "b4-quietnight",
+    "cast": [],
+    "act": "Camp",
+    "location": "The bell-room of Briarwatch's tower, the next night",
+    "start": "tower",
+    "nodes": {
+      "tower": {
+        "title": "The Bell-room",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "The next night, late, you climb the tower with Tovin and Pim for the hour, because you have never once been up there for it in summer." },
+          { "narrate": "Tovin takes one rope and Pim the other. They ring the hour together, Pim a breath behind, the way he always has." },
+          { "oneOf": [
+            { "narrate": "The bell is bronze only, and the two notes go out over the fields.", "when": { "flag": "b3_bell_aster" } },
+            { "narrate": "Inside the bell Aster Vey rings with them, a little late, as she always has." }
+          ] },
+          { "narrate": "At the next hour they take the ropes and do not ring. They sit on the bench under the window with the ropes in their laps, and listen." },
+          { "narrate": "Out over the fields, at first, there is nothing to hear. Then, very faint, from the south and the east, a bell. Then another, further off. Every town keeps its own hours. You have never heard them all at once before." },
+          { "narrate": "Down in the far fields a lamp is lit in one of the Wold's tents, and somebody there begins to read names aloud, slowly, the way the Wold does at a door.", "when": { "flag": "b4_crossed" } },
+          { "say": "Pim", "text": "That's all of them. Ringing it north. I never heard them before. You don't, when you're ringing." },
+          { "say": "Tovin", "text": "No. You don't." }
+        ],
+        "choices": [
+          {
+            "id": "listen",
+            "label": "Listen until the next hour",
+            "lines": [
+              { "narrate": "You listen until the next hour. Then Pim takes up his rope again and looks at Tovin, and Tovin nods, and they ring." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

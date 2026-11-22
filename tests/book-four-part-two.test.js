@@ -95,7 +95,7 @@ const EXPECT = {
 };
 
 test('chapters 11 to 20 follow Part One in Book Four\'s own file: white, from Highpass to Lantry and Orme and back to Highpass, each paying exactly one level', () => {
-  assert.deepEqual(FX.WRITTEN, [...FX.IDS.slice(0, 10), ...IDS]);
+  assert.deepEqual(FX.WRITTEN.slice(0, 20), [...FX.IDS.slice(0, 10), ...IDS]);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown, q.white, q.faction]; }), [
     ['b4-lantry', 4, 2, 50, 'b4-peaks', 'highpass', 'lantry', true, 'wold'],
     ['b4-sheddon', 4, 2, 51, 'b4-lantry', 'lantry', 'orme', true, 'wold'],

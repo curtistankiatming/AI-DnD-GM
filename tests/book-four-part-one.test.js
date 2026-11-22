@@ -655,7 +655,7 @@ test('no new person in Book Four takes a name the earlier books or the story bib
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
     'Fennick', 'Corvane']);
   const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage']);
-  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker']);
+  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard']);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
@@ -804,9 +804,10 @@ test('a companion down on chapter 4, 5 or 6 stays for their own chapter and says
   assert.equal(s.story.nodeId, 'away-orin-leave');
   assert.match(opening(s), /walk with the carters on the Highpass road/); assert.doesNotMatch(opening(s), /relief carts/);
   const raw = file('away');
-  assert.equal(raw.orin.leave.lines[1].oneOf[1].text, "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it.");
-  assert.equal(raw.orin.leave.lines[1].oneOf[1].when, undefined, 'Book Two\'s line is the ungated default');
-  for (const who of ['orin', 'maren', 'nessa']) for (const kind of ['leave', 'back']) for (const l of everyLine(raw[who][kind])) if (/Highpass road|up north|nine hundred years/.test(l.text || l.narrate)) assert.equal(l.when.flag, 'b3_done', `${who} ${kind}`);
+  const group = raw.orin.leave.lines[1].oneOf, last = group[group.length - 1];
+  assert.equal(last.text, "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it.");
+  assert.equal(last.when, undefined, 'Book Two\'s line is the ungated default');
+  for (const who of ['orin', 'maren', 'nessa']) for (const kind of ['leave', 'back']) for (const l of everyLine(raw[who][kind])) if (/Highpass road|up north|nine hundred years/.test(l.text || l.narrate)) assert.ok(['b3_done', 'b4_parttwo_done'].includes(l.when.flag), `${who} ${kind}`);
 });
 
 test('the chapter\'s own companion is in one place when they roll the peaceful way', () => {

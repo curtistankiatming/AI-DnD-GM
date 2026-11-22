@@ -1138,6 +1138,128 @@ the hero sees a rope-families' knot from Cinder Fold. Sets `b4_parttwo_done`.
 
 ## Part Three: The Parting Bell (levels 60 to 69)
 
+### Revisions for Part Three (override the chapters below)
+
+Part Two's writing (build steps 6 to 8) settled these things, and Part Three
+keeps them. Where a chapter below says otherwise, this list wins. No Part
+Three chapter has `white: true`: the white in the free wards is the old one,
+as in Part One.
+
+**Where Part Two leaves the party.**
+- `b4-parttwo-end` ends in the middle of the Hall at the end of the winter,
+  with the hero going out of the south door, and the engine leaves the hero
+  at Highpass (as in decided question 28). Chapter 21 is taken from
+  Highpass's board, and its opening is the descent of the south side the same
+  morning, early spring, to the upper gate. No line says the party went down
+  to Highpass in between. The descent takes the day; the party arrives at
+  noon, as Rue did.
+- **Who comes down**, by the chapter 20 flag:
+  - `b4_crossed`: the whole column, on its ropes, three thousand, with Sloe's
+    twenty ringers among them.
+  - `b4_hall_camp`: the Wold waits in the Hall, and its ringers with it. Sloe,
+    Rue and the door-bearers (two from each tally town) come down as the
+    Wold's voice. Sloe means to go back up with the council's answer.
+  - `b4_envoys_only`: the envoys, as chapter 20 named them. The column and
+    the ringers have gone back down to Orme.
+  So Sloe, Rue and door-bearers are at Highpass in every branch, and lines
+  that need "the Wold's people at Highpass" use the door-bearers.
+- **The tally.** With `b4_crossed` and `b4_tally_carried`, the sledges come
+  down behind the column, and Burdock beside the first. With `b4_hall_camp`
+  and `b4_tally_carried`, the sledges stay in the Hall, and Burdock brings
+  the book of winters down in his coat. With `b4_envoys_only` and
+  `b4_tally_carried`, or with `b4_tally_last`, it is the book of winters in
+  Burdock's coat (chapter 20). With `b4_tally_left`, Burdock is in Orme, and
+  Rue reads from her own book wherever a chapter says Burdock reads. Only
+  `b4_crossed` with `b4_tally_carried` has sledges at Highpass, so chapter
+  22's crisis is about the sledges there, and about the book and its reader
+  everywhere else.
+- **Hesk** with `b3_stair_sealed` comes down with Sloe, with his lamp, as
+  her adviser. The council has not decided what he is, and says so.
+- **Davin** with `b4_davin_comes` comes down with Orin. He has lines in
+  chapters 21 to 24 only; chapter 25 decides his road. Nobody gives his age
+  before chapter 25, where he is seventeen.
+- **Biscuit** is at the Highpass guardroom by the brazier, where Nessa left
+  him (decided in Part Two's revisions). Every line with him is
+  `party: "nessa"`.
+
+**The knot and the bell.**
+- The knot on the hook is a round turn, two half-hitches and a small hard
+  stopper, worked the way the rope families of Cinder Fold work a bell-rope
+  (chapter 20). Orin's lines that say his hands know it need `b3_orin_gives`
+  or `b3_orin_keeps` (the stair took his knot, Book Three). Any other Orin
+  knows it as his own knot worked the rope families' way, and says he never
+  tied one that tight. Without Orin, the hero knows it as Cinder Fold's.
+  Nobody in Part Three says who taught Orin; chapter 28 may.
+- **The gate book.** Highpass's watch keeps a book at the upper gate of
+  everyone who goes up or down the north road. Two days after the party went
+  up at first snow, Ailith Strake signed it in her own hand: "Ailith Strake,
+  of Cinder Fold, delegate, and twelve of the rope families. Going up to the
+  Hall, after the embassy." (She said at the vote, chapter 9, that she would
+  go north if she was let.) Three days later a rope-man signed them down:
+  "Down. Twelve, and a load." The watch did not open a delegate's load. The
+  next line is "Road shut. Deep snow." This is chapter 21's clue, and the
+  after lines show it in every branch, so no decision needs the clue to have
+  been found. No Part Three line before chapter 24 says how Ailith learned
+  what the bell does.
+- **The Wold has no bells** (decided question 30) except Dunnet's pot-bell
+  with `b4_potbell_kept`. "The vote" is Burdock's hand-bell from the south,
+  and nobody calls it a bell. Chapter 23's white from the north comes only
+  with `b4_potbell_kept`: Dunnet rings every night in the Wold, and in summer
+  a white lies on the snow-line above Highpass that was never there before.
+
+**The free wards' winter** (the one the party missed), as the council tells
+it, by the Book Three ending:
+- `b3_promise_old`: the givings held. It was a hard winter in the free
+  wards, the first with the bound voices resting, and every town that gave
+  came through.
+- `b3_promise_hesk`: Hesk's ring held the towns in it, and the free wards had
+  their mildest winter in memory. With `b3_three_told`, the ring was partial,
+  and the towns outside it had a hard one.
+- `b3_stair_sealed`: the nine alone, and the worst winter the free wards
+  remember.
+- With `b4_parting_rung`, the council also says that at noon on the first
+  day of snow every bell in the free wards rang once by itself, and nobody
+  has explained it.
+
+**People and places.**
+- Sorrel with `b4_rue_watch` learned the north road from Rue, kept the last
+  watch-fire lit all winter, and left the bar off the upper gate on the
+  nights the road was open, for the Wold. Without it she keeps the gate as
+  she always has, and opens it in the end, as she did for Rue.
+- Highpass's council sits for its spring session (the chair as in Part One:
+  Elske with `elske_seat`, otherwise Brannagh). Cinder Fold's chair is empty:
+  Cinder Fold wrote that the thaw kept its delegates at home.
+- Linus sang the first true verse at Briarwatch at midwinter (Part Two's
+  revisions). In chapter 23 he has the next one, about the Wold.
+- Seasons: chapters 21 and 22 are early spring, chapter 23 is midsummer, the
+  summer after the song (chapter 3). Pim is not given an age.
+- Chapter 21's white comes down the north road after the Wold, whoever came,
+  and reaches the lower watch at dusk. The watch tries to put the Wold back
+  out of the upper gate, as it tried with Rue in chapter 1. With
+  `b4_rue_watch`, the sergeant who sat with Rue at the fire stands with the
+  Wold instead; otherwise he leads the watch again.
+- **The quiet night** in chapter 23 happens in every branch, and the
+  opening says whose it is, by chapter 22's flag: with `b4_vote_share` it is
+  the council's first shared night, kept on midsummer night in every town
+  that voted for it; with `b4_rota_towns` Briarwatch asked to go first; with
+  `b4_vote_refuge` the council voted to take the Wold in and not to share,
+  and Briarwatch keeps the night anyway. With `b3_bell_aster`, Briarwatch's
+  watch is the fire at the stream, and a quiet night is the fire not lit.
+  `b4_bw_*` says whether Briarwatch has had quiet nights before.
+
+**Walkouts** are back after chapters 21, 22 and 23 (src/away.js). No chapter
+from 22 to 24 needs anyone, so nobody stays in these three; the stay lines
+for chapters 25 to 27 come with build step 10. `away.json` gains Part Three
+versions of the leave and back lines, gated `b4_parttwo_done` and placed
+before the `b3_done` versions, which are Part One's. No Part Three away line
+has a goat in it.
+
+**Reputation and approval.** Chapter 21: accusing in the open moves the
+wardens, keeping quiet the wilds, telling Sloe the Wold. Chapter 22: sharing
+and refuge move the Wold, the rota the wardens. Chapter 23: ringing moves the
+wardens, quiet nights the Wold, rest the wilds. Approvals are listed in
+decided question 47.
+
 ### 21. The Knot on the Hook (b4-knot, level 60, Highpass, spring)
 
 **Opening.** Down the north road to Highpass, with the Wold behind you
@@ -1590,9 +1712,9 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | hush-camp, 19 (opening; tail fight and climb), 25, 26, epilogue |
 | 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | column-camp, 20 (Burdock), 22 (who reads), 30 (south), epilogue |
 | 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 30, 21 unlock |
-| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22, 28, 29 |
-| 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 30 |
-| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 30 scene (bound voices), epilogue |
+| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22 (the empty chair, the vote, where the towns stand), 28, 29 |
+| 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 23 (whose quiet night it is), 30 |
+| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 30 scene (bound voices), epilogue (not yet written, so no written line reads them) |
 | 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | 28, 29, 30 |
 | 25 Ford | b4_orin_captain, b4_orin_soldier, b4_orin_davin | 28 (the doors), epilogue |
 | 26 Hospice | b4_maren_vouched, b4_maren_doubts, b4_maren_silent | 28, 29, epilogue |
@@ -2454,3 +2576,21 @@ below.
     dealt, Hold the Door: Weakened until the next turn; above the Glacier
     Maul's +6, under the Riftcleaver's 10% dealt). The Southern Hand closes
     once chapter 18 is done (`until: "b4-hush"`).
+47. **Chapters 21 to 23, as written** (build step 9, the first three of its
+    four chapters). Chapter 21 (b4-knot) is taken from Highpass's board and
+    played there; chapter 22 (b4-invoice) leaves from Highpass with nextTown
+    briarwatch; chapter 23 (b4-quietnight) leaves from Briarwatch with
+    nextTown highpass. Enemy themes: gloam, soldier (the men from the yard,
+    with cudgels), gloam. The gate book's entries, Sorrel's fire and who comes
+    down are as in "Revisions for Part Three". Approvals: accusing in the open
+    Maren +1, keeping quiet Maren -1; the vote to share Nessa +1, refuge Maren
+    +1; quiet nights Nessa +1, Aster's rest Maren +1. New unnamed speaker: "A
+    man from the yard". Burdock reads in chapter 22 with `b4_tally_carried`
+    or `b4_tally_last`; otherwise Rue reads her book (with `b4_book_burned`,
+    Sister Ilse's copy of the old one, made at Ashford in chapter 2), and the line Burdock wrote about the south (`b4_tally_*`) is
+    read only when Burdock is there. With `b3_bell_aster`, chapter 23's
+    talk, clue and answers go to Tovin, and his answer is `b4_voice_rings` or
+    `b4_voice_quiet`. Burdock's Mistake (found, unsure) and The Third Verse
+    are read in chapters 22 and 23. The side jobs for step 9 (Iona's Other
+    Invoice, The Wold Family), chapter 24 and the chapter rewards 21 to 30
+    are not written yet.

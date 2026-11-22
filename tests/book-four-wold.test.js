@@ -288,7 +288,8 @@ test('after the books the AI storyteller is given the hero\'s legend by its keep
   const legend = JSON.parse(D.prompt(s)).legend;
   assert.equal(legend.keeper, 'ballad');
   assert.ok(legend.lines.length > 0 && legend.lines.length <= 12);
-  assert.ok(legend.lines.some((x) => x.told === QUESTS['b4-peaks'].told.ballad));
+  // The last twelve chapters told: the latest written one is among them.
+  assert.ok(legend.lines.some((x) => x.told === QUESTS[FX.WRITTEN.at(-1)].told.ballad));
   s.story.flags.fourth_telling = 'none';
   assert.deepEqual(JSON.parse(D.prompt(s)).legend, { keeper: 'none', text: Telling.UNTOLD, lines: [] });
 });
