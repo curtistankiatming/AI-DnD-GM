@@ -7,10 +7,11 @@ const { TOWNS, QUESTS } = require('../src/expansion');
 const { makeSandbox } = require('../src/public-preview');
 const GEAR = require('../src/data/gear.json');
 
-// 80 for levels 1 to 20 (step 5), and about a hundred more for Book Three's levels 20 to 40.
-test('the catalogue holds 170 to 200 pieces of equipment', () => {
+// 80 for levels 1 to 20 (step 5), about a hundred more for Book Three's levels
+// 20 to 40, and about 75 for levels 45 to 100 (sparse tiers and sets, 22 November 2026).
+test('the catalogue holds 240 to 280 pieces of equipment', () => {
   const n = Object.values(ITEMS).filter(i => i.slot && !i.upgradeTier && !i.forged).length;
-  assert.ok(n >= 170 && n <= 200, `${n} equippable items`);
+  assert.ok(n >= 240 && n <= 280, `${n} equippable items`);
 });
 
 test('prices rise with rarity and with the level an item needs', () => {
@@ -52,8 +53,10 @@ test('the first bounty claimed in a town gives its bounty item', () => {
 test('AI adventure items come only from templates, with numbers bounded by level', () => {
   for (const template of Gear.TEMPLATES) for (const level of [1, 10, 20, 40, 100]) {
     const item = Gear.forge({ id: 'forged-t', template, level, from: 'A Test' });
-    assert.ok((item.attackBonus || 0) <= 2 && (item.damageBonus || 0) <= 3 && (item.spellAttackBonus || 0) <= 2, `${template} ${level}`);
-    assert.ok(!item.armor || item.armor.base <= 15);
+    // Up to level 40 as before; past it found gear grows to +4 / +7 by level 100.
+    const [hit, dmg, ac] = level <= 40 ? [2, 3, 15] : [4, 7, 17];
+    assert.ok((item.attackBonus || 0) <= hit && (item.damageBonus || 0) <= dmg && (item.spellAttackBonus || 0) <= hit, `${template} ${level}`);
+    assert.ok(!item.armor || item.armor.base <= ac);
     assert.ok(Object.values(item.skillBonuses || {}).every(v => v <= 3));
     assert.equal(item.requires.level, level);
     assert.ok(item.value >= Gear.minValue(item));
