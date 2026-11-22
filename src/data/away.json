@@ -1,5 +1,5 @@
 {
-  "_note": "Companions walking out (see src/away.js and docs/STORY-BIBLE.md). In Book Two, a companion whose approval falls by 2 or more over one chapter (counting its side jobs and camp scene) leaves after it for the next chapter ('leave'), and comes back when that chapter is done ('back'). If the next chapter needs them (quests.json 'needs'), they stay and say so instead ('stay'); the flag away:stay-<id> holds that chapter's id for the lines. Every choice here ends at the town the party is in. Lines spoken by a companion who is not in the party are skipped, so a line answering one needs a 'when'.",
+  "_note": "Companions walking out (see src/away.js and docs/STORY-BIBLE.md). In Book Two, a companion whose approval falls by 2 or more over one chapter (counting its side jobs and camp scene) leaves after it for the next chapter ('leave'), and comes back when that chapter is done ('back'). If the next chapter needs them (quests.json 'needs'), they stay and say so instead ('stay'); the flag away:stay-<id> holds that chapter's id for the lines. Every choice here ends at the town the party is in, or, below the stair (chapters 17 to 19 go straight on), at the next chapter's opening. Lines spoken by a companion who is not in the party are skipped, so a line answering one needs a 'when'.",
   "orin": {
     "leave": {
       "title": "Orin, at the gate",
@@ -27,12 +27,17 @@
     "stay": {
       "title": "Orin, before breakfast",
       "lines": [
-        {"narrate": "Orin finds you before breakfast. He has his pack with him, and he has tied it for a long march."},
+        {"oneOf": [{"narrate": "Orin finds you on the vault floor before you go down, with his pack on. He has tied it for a long march.", "when": {"flag": "away:stay-orin", "is": "b3-deep"}}, {"narrate": "Orin finds you at the foot of the ledge while the others sleep, with his pack on. He has tied it for a long march, with a plain knot.", "when": {"flag": "away:stay-orin", "is": "b3-promise"}}, {"narrate": "Orin finds you at the edge of the floor of given things while the others sleep, with his pack on, tied with a plain knot.", "when": {"flag": "away:stay-orin", "is": "b3-firstbell"}}, {"narrate": "Orin finds you before breakfast. He has his pack with him, and he has tied it for a long march."}]},
         {"say": "orin", "text": "I was going to walk for a while. I've been standing behind choices I'd have argued with, and I don't like what that makes me."},
         {"say": "orin", "text": "But it's Kell's Bridge next. If it's who I think it is on that bridge, I'm the one at the front. So I'm staying. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "southroad"}},
         {"say": "orin", "text": "But it's the Mother Bell next, and there'll be a door to hold. I don't walk away from doors. After, we talk. If there's an after.", "when": {"flag": "away:stay-orin", "is": "motherbell"}},
         {"say": "orin", "text": "But they're deciding about Elske next, and I'll stand in that hall whatever I think of you this week. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "oath"}},
-        {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}
+        {"say": "orin", "text": "But it's Saltwick next. Mags sent word: they've caught my old captain, and the roof council's going to try him. If they're trying that night, I'm in the room. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-order"}},
+        {"say": "orin", "text": "But it's Vell next, and the stair. Once we're down there, there's no walking back to anyone. I'm not letting you go down a hole I haven't checked first. After, if there's an after, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-company"}},
+        {"say": "orin", "text": "But it's down, now. There's no road to walk off on, only the stair, and I'm not letting you go down it with nobody at your back. After, if there's an after, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-deep"}},
+        {"say": "orin", "text": "But there's nowhere down here to walk to. And I'm not leaving anyone in the dark. Not again. Not even you. After, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-promise"}},
+        {"say": "orin", "text": "But Hesk's at the heart of that ring, and somebody has to stand next to you when you go in. After, we talk.", "when": {"flag": "away:stay-orin", "is": "b3-firstbell"}},
+        {"oneOf": [{"narrate": "He puts the pack down. He does not untie it.", "when": {"flag": "away:stay-orin", "is": "b3-promise"}}, {"narrate": "He puts the pack down. He does not untie it.", "when": {"flag": "away:stay-orin", "is": "b3-firstbell"}}, {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}]}
       ],
       "choices": [
         {"id": "after", "label": "“After, then.”", "lines": [
@@ -94,11 +99,16 @@
     "stay": {
       "title": "Maren, after supper",
       "lines": [
-        {"narrate": "Maren finds you after supper with her satchel packed. She sits down across the table from you, and then, after a while, she takes the satchel off her shoulder and puts it on the floor."},
+        {"oneOf": [{"narrate": "Maren finds you on the vault floor before you go down, with her satchel packed. She sits down beside you on the cold iron, and after a while she takes the satchel off her shoulder and puts it down.", "when": {"flag": "away:stay-maren", "is": "b3-deep"}}, {"narrate": "Maren finds you at the foot of the ledge while the others sleep, with her satchel packed. She sits down beside you on the rock, and after a while she takes the satchel off her shoulder and puts it down.", "when": {"flag": "away:stay-maren", "is": "b3-promise"}}, {"narrate": "Maren finds you at the edge of the floor of given things while the others sleep, with her satchel packed. She sits down beside you, and after a while she takes the satchel off her shoulder and puts it down.", "when": {"flag": "away:stay-maren", "is": "b3-firstbell"}}, {"narrate": "Maren finds you after supper with her satchel packed. She sits down across the table from you, and then, after a while, she takes the satchel off her shoulder and puts it on the floor."}]},
         {"say": "maren", "text": "I was going to go and sit in a shrine somewhere for a while. I keep hearing you mean well and do things I can't stand beside."},
         {"say": "maren", "text": "But Anwen's note is in my pocket, and I've carried her name for six years. I'm not going anywhere tonight. After the Sallows, we'll talk.", "when": {"flag": "away:stay-maren", "is": "keeper"}},
         {"say": "maren", "text": "But Elske is riding for the Mother Bell, and somebody who can hear her should be in that hall. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "motherbell"}},
-        {"say": "maren", "text": "But they're deciding what to do with Elske, and I want to hear what she says. And what you say. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "oath"}}
+        {"say": "maren", "text": "But they're deciding what to do with Elske, and I want to hear what she says. And what you say. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "oath"}},
+        {"say": "maren", "text": "But it's Highpass next, and the council's letter is addressed to me. Whatever they want of me, I'll answer it myself, and I'd like you there when I do. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-seal"}},
+        {"say": "maren", "text": "But it's the stair next. Nobody who goes down it can come back for anyone who stayed behind, and I won't be the one you have to leave. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-company"}},
+        {"say": "maren", "text": "But there's no shrine down a stair. There's nowhere to go that isn't with you. So I'll come, and I'll say so when I can't stand beside it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-deep"}},
+        {"say": "maren", "text": "But it takes things down here, and I want somebody near you who'll notice what it takes. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-promise"}},
+        {"say": "maren", "text": "But somebody has to hear Hesk, at the end, and hear whether he means it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-firstbell"}}
       ],
       "choices": [
         {"id": "after", "label": "“After, then.”", "lines": [
@@ -153,11 +163,16 @@
     "stay": {
       "title": "Nessa, on the step",
       "lines": [
-        {"narrate": "Nessa is sitting on the step with a letter in her lap that she has, for once, finished."},
+        {"oneOf": [{"narrate": "Nessa is sitting at the rim of the iron door with a letter in her lap that she has, for once, finished.", "when": {"flag": "away:stay-nessa", "is": "b3-deep"}}, {"narrate": "Nessa is sitting on the ledge with a letter in her lap that she has, for once, finished. She has to hold it close to the lamp to see it.", "when": {"flag": "away:stay-nessa", "is": "b3-promise"}}, {"narrate": "Nessa is sitting at the edge of the floor of given things with a letter in her lap that she has, for once, finished.", "when": {"flag": "away:stay-nessa", "is": "b3-firstbell"}}, {"narrate": "Nessa is sitting on the step with a letter in her lap that she has, for once, finished."}]},
         {"say": "nessa", "text": "I was going to go. Out on the roads for a bit. You keep making people wait, and I keep being the one who— never mind. I wrote it down. It's a very good letter."},
         {"say": "nessa", "text": "But Wren's at Cinder Fold. Wren. So I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "cinderfold"}},
         {"say": "nessa", "text": "But it's the Mother Bell. Everyone's going to be there. I'm not missing that to sulk on a road.", "when": {"flag": "away:stay-nessa", "is": "motherbell"}},
         {"say": "nessa", "text": "But they're deciding about Elske, and I want to see your face when you answer her.", "when": {"flag": "away:stay-nessa", "is": "oath"}},
+        {"say": "nessa", "text": "But Wren's written. From Cinder Fold. The committee's voted, and she's said yes, and I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b3-wren"}},
+        {"say": "nessa", "text": "But it's the stair. Under Vell. You're not going down a hole in the ground without someone who can find the way back, and that's me. That's always been me.", "when": {"flag": "away:stay-nessa", "is": "b3-company"}},
+        {"say": "nessa", "text": "But it's the stair. You're not going down a hole in the ground without someone who can find the way back, and that's me.", "when": {"flag": "away:stay-nessa", "is": "b3-deep"}},
+        {"say": "nessa", "text": "But there's nowhere to go down here. I looked. I'm good at looking. It's all down.", "when": {"flag": "away:stay-nessa", "is": "b3-promise"}},
+        {"say": "nessa", "text": "But it's the last bit. I'm not missing the last bit.", "when": {"flag": "away:stay-nessa", "is": "b3-firstbell"}},
         {"narrate": "She folds the letter and puts it in her pocket. The one for later."}
       ],
       "choices": [

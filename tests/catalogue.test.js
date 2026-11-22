@@ -7,9 +7,10 @@ const { TOWNS, QUESTS } = require('../src/expansion');
 const { makeSandbox } = require('../src/public-preview');
 const GEAR = require('../src/data/gear.json');
 
-test('the catalogue holds 60 to 90 pieces of equipment', () => {
+// 80 for levels 1 to 20 (step 5), and about a hundred more for Book Three's levels 20 to 40.
+test('the catalogue holds 170 to 200 pieces of equipment', () => {
   const n = Object.values(ITEMS).filter(i => i.slot && !i.upgradeTier && !i.forged).length;
-  assert.ok(n >= 60 && n <= 90, `${n} equippable items`);
+  assert.ok(n >= 170 && n <= 200, `${n} equippable items`);
 });
 
 test('prices rise with rarity and with the level an item needs', () => {
@@ -18,11 +19,11 @@ test('prices rise with rarity and with the level an item needs', () => {
 
 test('exclusive items are sold only where they say, and rewards are never sold', () => {
   for (const item of GEAR) {
-    const sellers = Object.values(TOWNS).filter(t => t.stock.includes(item.id)).map(t => t.id);
+    const sellers = Object.values(TOWNS).filter(t => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()].includes(item.id)).map(t => t.id);
     if (item.exclusive?.town) assert.deepEqual(sellers, [item.exclusive.town], item.id);
-    if (item.exclusive?.quest || item.exclusive?.event) assert.deepEqual(sellers, [], item.id);
+    if (item.exclusive?.quest || item.exclusive?.event || item.exclusive?.pending) assert.deepEqual(sellers, [], item.id);
     if (item.exclusive?.quest) assert.ok(QUESTS[item.exclusive.quest], `${item.id}: ${item.exclusive.quest}`);
-    if (item.exclusive?.event) assert.ok(TOWNS[item.exclusive.event.replace('bounty:', '')], item.id);
+    if (item.exclusive?.event) assert.ok(TOWNS[item.exclusive.event.split(':')[1]], item.id);
     if (!item.exclusive) assert.ok(sellers.length >= 1, `${item.id} is sold somewhere`);
   }
   assert.match(Gear.purpose(ITEMS['glasswind-bow']), /Only sold in Highpass Watch\./);

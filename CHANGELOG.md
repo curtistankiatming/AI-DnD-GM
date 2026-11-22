@@ -4,6 +4,19 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Three gear: levels 20 to 40 (22 November 2026)
+
+- 105 new pieces of equipment in five tiers (20, 25, 30, 35 and 40), 185 in
+  all. Every class, every 2nd job branch and Orin, Maren and Nessa get
+  upgrades at each tier: weapons and foci, all three weights of armour,
+  shields, and accessories for each branch's skills.
+- Every Part One chapter now gives its own item. Part Two's ten chapters give one each too.
+- Towns can sell more as the hero levels (`stockByLevel`), and some bounty
+  boards give a level bounty item, both only for a save that has begun Book
+  Three. Every tier is a step up, and a test checks that no new item is
+  matched by one already available at its level. Book Three stays hidden. List:
+  [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md#book-three-gear-levels-20-to-40).
+
 ## Gameplay playtest: shorter fights, Book Three catch-up (21 November 2026)
 
 - Fights by force were 7 to 11 rounds. Enemies now have a quarter less health

@@ -138,13 +138,16 @@ New people:
   "retired to the country" and she runs the guilds anyway. She sells castings
   as a public service and believes it: "The poor have always paid for safety.
   Now somebody pays them." Never use the name Tamsin, which is taken.
-- **Coll Garrow**, a Merrowgate docker, with his daughter Bett.
+- **Coll Haddow**, a Merrowgate docker, with his daughter Bett.
 - **Captain Odell Varn**, Orin's old captain.
 - **Reeve Hollis Brede** of Ashford. Nobody persuades her. When she changes
   her mind, she does it by her own reasoning.
 
 Returning people:
-- Wren: sixty, one bad leg, the retired forge-signal keeper.
+- Wren: sixty, one bad leg. She kept the Highpass tower for twenty years,
+  then came over the pass and has kept Cinder Fold's forge-signal since.
+- Ottilie Brand, who chairs Cinder Fold's fourteen-seat miners' committee
+  (Book Two, `minersvote`).
 - Sable, Elske, Mags, Davin, Fennick, Corvane, Iona, Sister Ilse, Brannagh,
   Tovin and Pim, and Dera.
 - Ysolde, only with `notFlag b3_bell_cast`.
@@ -164,7 +167,7 @@ says how he got out.
 **Talks.**
 - Cass Ord, who shows you the ledger herself.
 - Hesk: "You beat me on a road. The road was never the argument."
-- Coll Garrow and Bett on the dock.
+- Coll Haddow and Bett on the dock.
 - Elske:
   - `elske_seat`: she holds Merrowgate's seat, and hers is the vote against a
     ban.
@@ -197,9 +200,10 @@ it.
 ### 12. Wren's Bell (b3-wren, level 31, Cinder Fold, autumn). Nessa's story
 
 **Opening.** The lid is moving, and the nine ring out of time. The miners'
-committee has voted yes to cast Wren, and Wren has said yes too. She is sixty,
-her leg is worse, and she wants her last work to hold the galleries she kept
-for thirty years. With `job:minersvote-decided`, the committee that finally
+committee, all fourteen seats, has voted eleven to three to cast Wren, and
+Wren has said yes too. She is sixty, her leg is worse, and she kept the
+Highpass tower twenty years and the forge-signal since she came over the pass.
+She wants her last work to hold the town that took her in. With `job:minersvote-decided`, the committee that finally
 stopped tying is the one that voted. The guild has offered to cast her for
 nothing, because a free casting at the first forge would sell a hundred more.
 
@@ -207,13 +211,19 @@ nothing, because a free casting at the first forge would sell a hundred more.
 - With `nessa_keeper` (set to "later" in Book Two: "yes, but not yet"): Nessa
   is the promised heir to the forge-signal. A casting makes the long yes due
   tonight, and the committee will not cast without her answer. Wren has the
-  letter Nessa sent her in Book Two, and reads its last line back to her.
+  letter Nessa sent her in the spring, and reads its last line back to her.
+  Nessa answers in the decision (lines on `{"flag": "nessa_keeper", "is":
+  "later"}`): with a casting she says yes now and takes the signal key, and
+  the committee writes her in as keeper; with a refusal she says not yet, and
+  Wren keeps the signal from a chair; with the wait she says yes, in the
+  spring. Without Nessa, the committee writes "held for her" beside her yes.
 - Without the flag: Wren asks Nessa to stand at the pit with her. Nessa has a
   letter she wrote Wren and never sent.
 
 **Talks.**
 - Wren, who has decided.
-- The committee chair.
+- Ottilie Brand, the committee chair. If the `mould` job came first she knows
+  the founders' words already.
 - Nessa, who interrupts everyone.
 - A miner's child, about the hearth bell.
 
@@ -238,7 +248,8 @@ describes a tenth mould, never used. Beside it: "Not this way. Ask them all."
   miner fell from the ropes, and that Wren can no longer climb to the pit.
 
 **Scene wren-nessa.**
-- With Nessa: Nessa and Wren alone, and the letter.
+- With Nessa: Nessa and Wren alone, and the letter. A casting is the next
+  night.
 - Without Nessa: Wren gives you the letter, unread, to pass on.
 
 The camp beat: Biscuit will not leave the forge door.

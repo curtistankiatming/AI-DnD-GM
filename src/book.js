@@ -32,28 +32,36 @@ const bookNo = q => Number(q?.book) || 1;
 // A book with a part still to come is "writing": the hero waits at a "to be
 // continued" after its last released chapter. A book with no part out is not
 // shown to players at all. Tests and agent playtests see every written part
-// with BRIARWATCH_PREVIEW_BOOKS=1. A paid book is free in the open-source game
+// with BRIARWATCH_PREVIEW_BOOKS=1; BRIARWATCH_PREVIEW_PARTS="3:1" holds a
+// preview of Book Three at Part One, as players will first have it. A paid book is free in the open-source game
 // and needs a paid account on the hosted game (docs/AI-STORYTELLER.md,
 // "Paid books").
 const PREVIEW = /^(1|true|yes|on)$/i.test(String((typeof process !== 'undefined' && process.env && process.env.BRIARWATCH_PREVIEW_BOOKS) || ''));
+const PREVIEW_PARTS = Object.fromEntries(String((typeof process !== 'undefined' && process.env && process.env.BRIARWATCH_PREVIEW_PARTS) || '')
+  .split(',').map(x => x.split(':').map(Number)).filter(([n, p]) => Number.isInteger(n) && Number.isInteger(p) && p >= 0));
 const partNo = q => Number(q?.part) || 1;
 const DEFS = [
   { n: 1, title: 'The Bell Beneath Briarwatch' },
   { n: 2, title: 'The Council of Small Voices' },
-  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0 }
+  // finale: the book's last chapter. Until it is written the book is still
+  // being written, even when every part has some chapters (Part Two is
+  // written a few chapters at a time), so the hero waits after the last one.
+  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell' }
 ];
-function buildShelf(defs, chapters, preview = false) {
+// limits: { book number: parts } a preview opens at most.
+function buildShelf(defs, chapters, preview = false, limits = {}) {
   return Object.freeze(defs.map(b => {
-    const open = !b.parts ? Infinity : preview ? b.parts : Math.max(0, Math.min(b.parts, Number(b.out) || 0));
+    const open = !b.parts ? Infinity : preview ? Math.min(b.parts, limits[b.n] ?? b.parts) : Math.max(0, Math.min(b.parts, Number(b.out) || 0));
     const last = chapters.filter(q => bookNo(q) === b.n && partNo(q) <= open).at(-1)?.id || null;
     // Preview shows every written part, and still waits if the last part has
     // no chapters yet, so playtests can reach the "to be continued".
     const written = Math.max(0, ...chapters.filter(q => bookNo(q) === b.n).map(partNo));
-    const writing = Boolean(b.parts) && open > 0 && (preview ? written < b.parts : open < b.parts);
+    const unfinished = Boolean(b.finale) && !chapters.some(q => q.id === b.finale);
+    const writing = Boolean(b.parts) && open > 0 && ((preview ? Math.min(written, open) < b.parts : open < b.parts) || (open >= b.parts && unfinished));
     return Object.freeze({ ...b, open, last, writing });
   }));
 }
-const SHELF = buildShelf(DEFS, ALL, PREVIEW);
+const SHELF = buildShelf(DEFS, ALL, PREVIEW, PREVIEW_PARTS);
 const released = b => Boolean(b.last);
 const shelfOf = n => SHELF.find(b => b.n === n);
 // Whether a chapter is in a released part of its book.
@@ -82,6 +90,13 @@ const lastLevel = state => Math.max(1, ...chapters(state).map(q => Number(q.leve
 const writing = state => books(state).find(b => b.writing) || null;
 // The next released book this session may not open (a paid book on a free
 // hosted account), or null.
+// Whether this save has begun book n: it may play the book and has finished
+// one of its chapters. Gear for a book's levels (towns.json stockByLevel, level
+// bounties) waits for this, so a hero who levels past a book another way
+// (bounties, AI adventures, a free hosted account) never sees it.
+// A finished chapter means the book was playable for this save, so the
+// released-parts check is not needed (and a save keeps its gear if a preview ends).
+const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n && done(state, q.id));
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
 // The open-source view, for code and tests that do not hold a save.
 const BOOKS = Object.freeze(books(null));
@@ -268,4 +283,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = {paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started};

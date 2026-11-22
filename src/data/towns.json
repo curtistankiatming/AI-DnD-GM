@@ -36,7 +36,54 @@
       "woodcutters-axe",
       "hunting-spear"
     ],
-    "rumor": "The missing caravans did not simply vanish. A western tollhouse has been ringing the wrong road signal."
+    "rumor": "The missing caravans did not simply vanish. A western tollhouse has been ringing the wrong road signal.",
+    "stockByLevel": {
+      "25": [
+        "bellmetal-longsword",
+        "bramblewood-longbow",
+        "bellkeeper-staff",
+        "bellbronze-plate",
+        "hollow-oak-leathers",
+        "bellrim-shield",
+        "nightwatch-cloak",
+        "keepers-prayer-beads",
+        "gloamcutter-greatsword",
+        "passrunner-blade",
+        "watch-scale",
+        "watchfire-brooch",
+        "delegate-seal",
+        "passguide-horn",
+        "smuggler-gloves"
+      ],
+      "35": [
+        "watch-blade",
+        "watchline-longbow",
+        "winterwatch-staff",
+        "night-leathers",
+        "snowguide-scale",
+        "watch-horn",
+        "tracker-cloak",
+        "book-of-hours"
+      ],
+      "40": [
+        "bellward-longsword",
+        "briarwatch-greatsword",
+        "bramblesteel-rapier",
+        "briar-yew-greatbow",
+        "hourbell-staff",
+        "wardsmith-plate",
+        "wardsmith-scale",
+        "briar-leather-coat",
+        "bell-iron-shield",
+        "ward-captain-signet",
+        "second-winter-charm",
+        "envoy-seal",
+        "warden-horn",
+        "keepers-daybook",
+        "bramble-silk-gloves",
+        "hour-chime"
+      ]
+    }
   },
   "ashford": {
     "id": "ashford",
@@ -78,7 +125,17 @@
       "toll-ledger",
       "marsh-leather"
     ],
-    "rumor": "Sabotage at the western span, and ward ash in the Fenmere marsh. Someone is getting rid of old wards downstream, and does not care who drinks them."
+    "rumor": "Sabotage at the western span, and ward ash in the Fenmere marsh. Someone is getting rid of old wards downstream, and does not care who drinks them.",
+    "stockByLevel": {
+      "30": [
+        "seawall-greatsword",
+        "ashford-wallbow",
+        "archive-grammar",
+        "wall-shield",
+        "scout-horn",
+        "archive-spectacles"
+      ]
+    }
   },
   "highpass": {
     "id": "highpass",
@@ -121,7 +178,48 @@
       "watch-brigandine",
       "warded-tome"
     ],
-    "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command."
+    "rumor": "The final beacon does not need a new master. The old wardens designed it to answer a council of voices, not a single command.",
+    "stockByLevel": {
+      "20": [
+        "watch-chaplain-mace",
+        "passwarden-greataxe",
+        "passguard-plate",
+        "commandery-brigandine",
+        "iron-road-longbow",
+        "plankwalker-leathers",
+        "stormlamp-lens",
+        "ironroad-guide-cord",
+        "ledger-room-lens"
+      ],
+      "25": [
+        "gloamcutter-greatsword",
+        "passrunner-blade",
+        "watch-scale",
+        "watchfire-brooch",
+        "delegate-seal",
+        "passguide-horn",
+        "smuggler-gloves"
+      ],
+      "30": [
+        "ashford-wallbow",
+        "signal-staff",
+        "roof-council-coat"
+      ],
+      "35": [
+        "frost-edge-knife",
+        "margin-grammar",
+        "winterwatch-plate",
+        "envoy-chain",
+        "snowguide-scale"
+      ],
+      "40": [
+        "bellward-longsword",
+        "bramblesteel-rapier",
+        "briar-yew-greatbow",
+        "hourbell-staff",
+        "wardsmith-scale"
+      ]
+    }
   },
   "merrowgate": {
     "id": "merrowgate",
@@ -165,7 +263,16 @@
       "tidecaller-staff",
       "sallows-coat"
     ],
-    "rumor": "The harbour bell is to be sold. The lantern guilds say it is the only sensible thing; a bell that big should belong to people who can afford to ring it."
+    "rumor": "The harbour bell is to be sold. The lantern guilds say it is the only sensible thing; a bell that big should belong to people who can afford to ring it.",
+    "stockByLevel": {
+      "30": [
+        "seawall-greatsword",
+        "guild-smallsword",
+        "dockrunner-jerkin",
+        "factor-ring",
+        "hospice-censer"
+      ]
+    }
   },
   "cinderfold": {
     "id": "cinderfold",
@@ -216,7 +323,22 @@
       "bellmetal-rod",
       "wardthread-robe"
     ],
-    "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back."
+    "rumor": "The miners say the deep galleries under the first forge have gone cold, and something in them has started ringing back.",
+    "stockByLevel": {
+      "30": [
+        "gallery-warhammer",
+        "signal-staff",
+        "lidforge-plate",
+        "foundry-ring",
+        "rope-chime"
+      ],
+      "35": [
+        "ninefold-greathammer",
+        "hearthbell-shield",
+        "hearthbell-charm",
+        "winterwatch-plate"
+      ]
+    }
   },
   "saltwick": {
     "id": "saltwick",
@@ -252,12 +374,24 @@
       "sentinel-charm",
       "saltwick-harpoon",
       "roofrunner-boots",
+      "lamplighter-hookknife",
+      "iron-road-longbow",
+      "stormlamp-lens",
+      "plankwalker-leathers",
+      "lamp-oil-flask",
       "plankwalker-sabre",
       "mistwatch-bow",
       "saltwick-oilskin",
       "lamplighter-staff"
     ],
-    "rumor": "Saltwick's echo-stone went dead last year in the middle of supper. Every lamp in town burns oil the town can no longer buy, and Vell's ration office sends oil only to towns that send names."
+    "rumor": "Saltwick's echo-stone went dead last year in the middle of supper. Every lamp in town burns oil the town can no longer buy, and Vell's ration office sends oil only to towns that send names.",
+    "stockByLevel": {
+      "30": [
+        "roof-council-coat",
+        "saltward-charm",
+        "plankhook-gloves"
+      ]
+    }
   },
   "vell": {
     "id": "vell",
@@ -297,6 +431,11 @@
       "commandery-halberd",
       "vell-casting-mail",
       "drillmaster-baton",
+      "commandery-brigandine",
+      "echo-stone-rod",
+      "drill-yard-pavise",
+      "ration-ledger",
+      "furnace-iron-maul",
       "commandery-longbow",
       "vell-duelling-sword",
       "chancery-rod",

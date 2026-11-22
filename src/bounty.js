@@ -107,7 +107,10 @@ function finish(state, result, events, api) {
   if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
   events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${AFTER_BOOKS_LEVEL}; AI adventures or the next book go further.`) : ''}` });
   // The first bounty claimed in a town gives that town's bounty item (src/gear.js).
-  Gear.award(state, `bounty:${b.nodeId.replace(/^town-/, '')}`, events);
+  const townId = b.nodeId.replace(/^town-/, '');
+  Gear.award(state, `bounty:${townId}`, events);
+  // Later levels have their own bounty items in some towns (Book Three's levels 20 to 40).
+  Gear.bountyReward(state, townId, state.player.level, events);
   api.enterNode(state, b.nodeId, events);
 }
 

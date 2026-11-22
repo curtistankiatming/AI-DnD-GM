@@ -86,6 +86,14 @@ const PERSONAL=require('./data/personal.json');
 // Numerical rewards are objective-based: social and combat solutions pay the same XP.
 // "aftermath" is the post-advancement mission, so the level-10 reward is not a dead end.
 const QUESTS=require('./data/quests.json');
+// Book Three, Part Two (chapters 11 to 20) is written in its own files under
+// src/data/book-three-part-two/ and merged here, after the main tables, so it
+// follows Part One in story order. It is merged into the same objects, so
+// anything that reads the JSON tables after this module sees one set. "_"
+// keys are notes.
+const PART_TWO={quests:require('./data/book-three-part-two/quests.json'),scenes:require('./data/book-three-part-two/scenes.json'),jobs:require('./data/book-three-part-two/side-jobs.json')};
+function mergeTable(into,from,what){for(const [id,v]of Object.entries(from)){if(id.startsWith('_'))continue;if(Object.prototype.hasOwnProperty.call(into,id))throw new Error(`${what} ${id} is written twice`);into[id]=v;}return into;}
+mergeTable(QUESTS,PART_TWO.quests,'Chapter');
 // Books One and Two pay a share of each chapter's level (src/xp.js
 // CHAPTER_SHARE), so side content matters there. A chapter written to pay
 // nothing (the trial, an aftermath) still pays nothing. Book Three on keeps
@@ -96,9 +104,20 @@ for(const q of Object.values(QUESTS))if(Number(q.xp)>0&&!q.sideJob&&(Number(q.bo
 // optional "when" that the engine checks as the line is told (see liveLines in
 // src/engine.js). Lines spoken by a companion who is not in the party are
 // skipped there too.
+// A line may also be a group, {"oneOf": [lines]}: the first line in it that
+// applies is told, and no other (an optional "when" on the group is checked
+// first). A line's "setFlag" (a flag name, or {flag: value}) is set when the
+// line is told (playLines), so later lines can read it; a group's setFlag is
+// set when any line in it is told.
+// Never gate a line on the negation of its own setFlag (notFlag or noneFlag on
+// the flag it sets): once playLines has set it, the engine's view and the
+// narrator run liveLines over the same lines again, and the line would vanish
+// from what they show.
 const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const storyLine=l=>({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{})});
-function dialogueText(lines){return lines.map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
+const storyLine=l=>l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
+// The written text keeps every line, every alternative of a group included.
+const everyLine=lines=>lines.flatMap(l=>l.oneOf?everyLine(l.oneOf):[l]);
+function dialogueText(lines){return everyLine(lines).map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
 // A written line is told only when it applies now: its speaker is in the
 // party, and its optional "when" holds (flag / is, notFlag, anyFlag, noneFlag,
 // party, absent, class, spec, bondAtLeast, bondBelow, item, notItem, clue,
@@ -180,9 +199,32 @@ function outcomeForRoller(outcome,actor){
   }else if(typeof outcome.text==='string')out.text=forRoller(outcome.text,actor);
   return out;
 }
-function liveLines(state, lines) {
-  return Array.isArray(lines) ? lines.filter((line) => lineApplies(state, line)).map(({ when, ...line }) => line) : lines;
+// The line a written line or group tells now, or null.
+function pickLine(state, line) {
+  if (!line.oneOf) return lineApplies(state, line) ? line : null;
+  if (line.when && !lineApplies(state, { when: line.when })) return null;
+  for (const alt of line.oneOf) { const picked = pickLine(state, alt); if (picked) return picked; }
+  return null;
 }
+const lineFlags = (set) => typeof set === 'string' ? { [set]: true } : set && typeof set === 'object' ? set : {};
+// Lines are read in order, so a line's setFlag counts for the lines after it.
+// liveLines only looks (on a copy of the flags); playLines, used where the
+// lines are told, sets them on the save.
+function liveLines(state, lines, play = false) {
+  if (!Array.isArray(lines)) return lines;
+  const flags = play ? (state.story.flags ||= {}) : { ...(state.story.flags || {}) };
+  const seen = play ? state : { ...state, story: { ...state.story, flags } };
+  const out = [];
+  for (const line of lines) {
+    const picked = pickLine(seen, line);
+    if (!picked) continue;
+    const { when, setFlag, ...told } = picked;
+    for (const set of [line.oneOf && line.setFlag, setFlag]) if (set) Object.assign(flags, lineFlags(set));
+    out.push(told);
+  }
+  return out;
+}
+const playLines = (state, lines) => liveLines(state, lines, true);
 // A written quest field is plain text or a list of lines.
 const told=v=>Array.isArray(v)?{lines:v}:{text:v};
 const toldOpening=v=>Array.isArray(v)?{lines:v}:{opening:v};
@@ -220,15 +262,24 @@ function installQuest(q){
     // "direct" may give a chapter its own words for the no-roll approach.
     choice('direct',q.direct?.label||'Take the obvious route and keep the party together',{description:'No check. Arrive openly without an approach advantage.',result:{text:q.direct?.text||'The party arrives together by the direct route. You have surrendered surprise, not the opportunity to decide what happens next.',nextNode:`${prefix}-crisis`}})
   ]};
+  // A peaceful way may be easier after an earlier choice ("easierWith": a
+  // story flag and the reason shown): the DC drops by 2 while it is set.
+  // "harderWith" is the same, and raises the DC by 2.
   STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...own(q.peaceful)},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
+    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...own(q.peaceful),...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{}),...(q.peaceful.harderWith?{harderWith:q.peaceful.harderWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
     ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
-  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  // A straight-on chapter ("continues": true, Book Three's stair) goes from
+  // its decision to the next chapter's opening (src/world.js goOn), and its
+  // end is the safe ledge a defeat in the next chapter wakes on: "ledge" is
+  // what is told there, and its one choice rests and goes back down.
+  if(q.continues)STORY_NODES[`${prefix}-ledge`]={id:`${prefix}-ledge`,act:'The last ledge',title:q.ledgeTitle||'The last ledge',location:q.region,objective:'Rest, then go back down.',lines:q.ledge||[{narrate:'You wake where the last part of the way ended, with the dark below you.'}],safeRest:true,sideStory:true,ledge:q.id,
+    choices:[choice('down',q.ledgeLabel||'Rest, then go back down',{once:false,description:'A long rest on the ledge, then back to the encounter that beat you. Nothing earlier is undone.',result:{backDown:true}})]};
   const level=L;
   const type=q.enemyTheme;
   const f=XP.foeStats(challenge);
@@ -246,7 +297,7 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // not all in the party is skipped (engine enterNode follows skipTo).
 // A scene may also follow another scene ("after" names that scene): it plays
 // straight after it, as the second choice of a chapter runs before its camp.
-const SCENES=require('./data/scenes.json');
+const SCENES=mergeTable(require('./data/scenes.json'),PART_TWO.scenes,'Scene');
 const sceneNode=(scene,key)=>`scene-${scene.id}-${key}`;
 const chapterOf=scene=>{for(let s=scene,i=0;s&&i<10;s=SCENES[s.after],i++)if(QUESTS[s.after])return QUESTS[s.after];return null;};
 function installScene(scene){
@@ -255,19 +306,34 @@ function installScene(scene){
   const home=next?sceneNode(next,next.start):`town-${q.nextTown||q.town}`,nodeId=key=>sceneNode(scene,key);
   for(const [key,raw]of Object.entries(scene.nodes)){
     const base=raw.sameAs?scene.nodes[raw.sameAs]:raw;
-    const dialogue=base.lines.map(storyLine);
-    STORY_NODES[nodeId(key)]={id:nodeId(key),act:scene.act,title:base.title,location:scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
+    // The node that names the 3rd job ("framesTrial") ends with the scene's
+    // trialFraming lines, the same ones the trial opens with (trialFraming below).
+    const dialogue=[...base.lines,...(base.framesTrial&&scene.trialFraming?scene.trialFraming.lines:[])].map(storyLine);
+    STORY_NODES[nodeId(key)]={id:nodeId(key),act:base.act||scene.act,title:base.title,location:base.location||scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
       choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{...(c.requires?{requires:c.requires}:{}),result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),nextNode:c.next?nodeId(c.next):home}}))};
   }
   if(QUESTS[scene.after])for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
+// The 3rd job trial is framed the way the Second Oath framed the 2nd job: a
+// scene's "trialFraming" ({flag, lines}) is what the hero carries into it,
+// read from the save once that flag is set (Book Three's epilogue, b3_done).
+// Plain text, the same offline and with the AI game master; '' otherwise.
+function trialFraming(state){
+  for(const scene of Object.values(SCENES)){
+    const f=scene?.trialFraming;
+    if(!f||!state?.story?.flags?.[f.flag])continue;
+    const text=dialogueText(liveLines(state,f.lines.map(storyLine)));
+    if(text)return text;
+  }
+  return '';
+}
 // Side jobs (src/data/side-jobs.json): short optional stories taken from a
 // town. Each node is a story node; a choice either moves on ("next") or
 // finishes the job, which pays it (src/world.js completeJob) and goes back to
 // the job's town. Checks use a DC by the job's level. A choice that costs gold
 // needs that much in the purse.
-const SIDE_JOBS=Object.fromEntries(Object.entries(require('./data/side-jobs.json')).filter(([,j])=>j&&j.nodes));
+const SIDE_JOBS=Object.fromEntries(Object.entries(mergeTable(require('./data/side-jobs.json'),PART_TWO.jobs,'Side job')).filter(([,j])=>j&&j.nodes));
 function installJob(job){
   const town=TOWNS[job.town];if(!town)throw new Error(`Side job ${job.id} is in unknown town ${job.town}`);
   for(const id of [job.from,job.until])if(id&&!QUESTS[id])throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
@@ -323,4 +389,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,lineApplies,outcomeForRoller,forRoller,nodeLocation};
+module.exports={trialFraming,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};
