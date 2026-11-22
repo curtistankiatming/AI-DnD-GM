@@ -1579,17 +1579,17 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | lantry-camp, 12 (Sheddon: the pots), 13 (Burdock's Lantry slate), 17 (who taught Dunnet), epilogue |
 | 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back, b4_hero_ordered (the answer with Orin away) | sheddon-camp, 13 (Sedge comes in with his mother or on his own), 18 (Sedge's mother; b4_hero_ordered reads as not saved), 25, epilogue |
 | The Painted Door (job, 11 to 13) | job:painted-door-read, job:painted-door-scraped, job:painted-door-left, job:painted-door-chalked | a later Lantry line (not yet written: Lantry's next visit, by chapter 17) |
-| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written). Open to chapter 17 (`until: "b4-potbells"`) |
+| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 19 (what Lantry wears in the column). Open to chapter 17 (`until: "b4-potbells"`) |
 | 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | orme-camp (Burdock's page), 16 (peaceful), 22 |
 | 14 Greve | b4_names_kept, b4_names_written, b4_names_given | greve-camp, 16 (Sloe and Burdock; b4_names_kept makes the vote harder), 19, 26 (walkers), epilogue |
-| Burdock's Mistake (job, 13 to 16) | job:burdock-mistake-found, job:burdock-mistake-unsure, job:burdock-mistake-beside, job:burdock-mistake-left | 19 or 22 (what Burdock does with an old line; not yet written) |
-| The Southern Hand (job, 14 to 18) | job:southern-hand-found, job:southern-hand-lost, job:southern-hand-tally, job:southern-hand-answered | 22 (the free wards' tally; not yet written). TODO with chapter 18: set `until: "b4-hush"` on the job |
+| Burdock's Mistake (job, 13 to 16) | job:burdock-mistake-found, job:burdock-mistake-unsure, job:burdock-mistake-beside, job:burdock-mistake-left | 19 (Burdock on the tally's new line), 22 |
+| The Southern Hand (job, 14 to 18) | job:southern-hand-found, job:southern-hand-lost, job:southern-hand-tally, job:southern-hand-answered | 22 (the free wards' tally; not yet written). Open to chapter 18 (`until: "b4-hush"`) |
 | 15 Thrum | b4_rue_gave, b4_rue_kept (also set by Nessa's answer's flagsIf), b4_rue_asked_nessa | thrum-nessa, 16 (Rue on Sloe), 27, epilogue |
 | 16 Reckoning | b4_demand_carried, b4_share_promised (two answers: under the council's seal, or on the hero's own word), b4_sloe_comes | reckoning-camp, 17 (Rue on Sloe), 19 (where Sloe is), 22, 26 |
 | 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | potbells-camp, 19, 23 (white comes south), 30 (peaceful), epilogue |
-| 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | 19 (tail fight), 25, 26, epilogue |
-| 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | 22 (who reads), 30 (south), epilogue |
-| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | 21, 23, 25, 30, 21 unlock |
+| 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | hush-camp, 19 (opening; tail fight and climb), 25, 26, epilogue |
+| 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | column-camp, 20 (Burdock), 22 (who reads), 30 (south), epilogue |
+| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 30, 21 unlock |
 | 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22, 28, 29 |
 | 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 30 |
 | 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 30 scene (bound voices), epilogue |
@@ -2395,8 +2395,8 @@ below.
     door-bearer".
 42. **Orme's jobs** (build step 7). Burdock's Mistake (from `b4-orme`, until
     `b4-reckoning`): forty or fourteen, three hundred and six years ago. The
-    Southern Hand (from `b4-greve`) has no `until` yet: it closes after
-    chapter 18 (`b4-hush`), which is not written. Piers Ashdown of Briarwatch
+    Southern Hand (from `b4-greve`) closes after chapter 18
+    (`until: "b4-hush"`, set with chapter 18, decided question 46). Piers Ashdown of Briarwatch
     crossed in the hungry year; his family is Lovage the chandler's.
 43. **The chapter rewards for chapters 14 to 17** (build step 7), tier 50
     numbers, each with something the sold tier 50 piece of its kind lacks:
@@ -2410,3 +2410,40 @@ below.
     or cleric, Str 13, as the late-gear test's class rule asks: 1d10, +3/+6,
     10% dealt, Forty Strokes: Weakened until the next turn). None uses a
     tier 55 number.
+44. **Chapters 18 to 20, as written** (build step 8). The Hush is four days
+    north of Orme past the last cairn. Burdock lends the party the Long
+    Hall's hand-bell (the one that calls a vote), which is the bell
+    `b4_hush_rang` rings; it rings the white off the hollow for one night
+    and onto the Orme road. The walker who gives water is "The walker", and
+    the hand-bell's night names her Water. Fenmere's baker is never named.
+    The sixteen from the deep appear only with `b3_turned_left`; Sedge's
+    mother has a talk only with `b4_orin_ordered` or `b4_hero_ordered`. Rue
+    reads the Hush's growth by the Book Three ending. In hush-camp Orin keeps
+    Sedge's mother (with `b4_orin_ordered`), Davin or Mags, Maren Anwen,
+    Nessa Wren, Rue Heath. Chapter 19 has the column climb the old north
+    road above Lantry, marked at every turn with small things like the
+    marked way under the stair ("whoever marked the one marked the other");
+    Sloe left with twenty ringers, people she taught to pull a rope in time.
+    The descent took one day in chapter 11, so the column's climb is two.
+    White-wool and Burdock's Mistake are read in chapter 19. In chapter 20
+    the north door was opened once from inside since the first snow (a swept
+    arc in the first snow's crust, and tarred southern hemp in the hinge);
+    nobody is named. The rope on the empty hook is tied with a round turn,
+    two half-hitches and a small hard stopper: the knot the stair took, not
+    the one Orin learned again, and without Orin a bell-rope knot of Cinder
+    Fold's rope families. The hero takes the cut rope (chapter 21's reward).
+45. **A camp after a straight-on chapter** (build step 8). src/engine.js
+    applyOutcome: when a `continues` chapter's decision leads into a camp
+    scene, `goingOn` is kept, and leaving the camp goes on into the next
+    chapter's opening instead of the town (column-camp, then chapter 20).
+    Book Three's straight-on chapters have no camp, so nothing there changes.
+46. **The chapter rewards for chapters 18 to 20** (build step 8), tier 55
+    numbers: the Hush-wool Mantle (warm, medium, level 55: base AC 19, Dex
+    cap 2, 10% taken, Stealth +2, Constitution and Wisdom saves +1, so it
+    beats the sold Fleece-lined Scale by Stealth), the Column Longbow (level
+    56, ranger or rogue, Dex 13: 1d8, +3/+7, 10% dealt, Pinning Shot: Slowed
+    2 rounds; the sold Long Watch Bow has no skill and is ranger only) and
+    the North-door Greataxe (level 57, fighter, Str 15: 2d6, +3/+7, 5%
+    dealt, Hold the Door: Weakened until the next turn; above the Glacier
+    Maul's +6, under the Riftcleaver's 10% dealt). The Southern Hand closes
+    once chapter 18 is done (`until: "b4-hush"`).

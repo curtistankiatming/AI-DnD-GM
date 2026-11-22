@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written to chapter 17 (build steps 6 and 7). Chapters 13 to 17 all depart from Orme and return there (town and nextTown \"orme\"). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
   "b4-walker": {
     "id": "b4-walker",
     "book": 4,
@@ -4415,6 +4415,694 @@
         ],
         "rep": { "wold": 1 },
         "flag": "b4_potbell_rota"
+      }
+    ]
+  },
+  "b4-hush": {
+    "id": "b4-hush",
+    "book": 4,
+    "part": 2,
+    "name": "The Hush",
+    "level": 57,
+    "town": "orme",
+    "nextTown": "orme",
+    "unlock": "b4-potbells",
+    "white": true,
+    "xp": 16000,
+    "gold": 1180,
+    "region": "The Hush, four days north of Orme past the last cairn, where everything the bells ring north has come to lie",
+    "threat": "People with no names are walking down out of the north into Orme's top fields, and the white behind them is so thick it makes no sound. The Hush is moving.",
+    "faction": "wold",
+    "brief": "Walkers with no names have come down into Orme's top fields out of the north: kind, quiet, and lost. They came from the Hush, where everything the bells ring north has gathered for nine hundred years. Nobody from Orme has gone that far and come back with anything to say.",
+    "told": {
+      "ballad": "The strangers went north to the Hush, where the white is so deep it makes no sound, and walked among the people who had given everything, and saw faces there they knew.",
+      "tally": "The Hush. The southerners went north past the last cairn. Written: the Hush is full, and moving."
+    },
+    "opening": [
+      { "narrate": "Four days north of Orme the cairns stop. Past the last one the white is not lying in a lane or coming down a slope. It is the whole country, from the ground to the sky, and it is so thick that it is quiet. Your boots make no sound in it. Nothing does." },
+      { "narrate": "Burdock lent you the Long Hall's hand-bell before you left, the one he rings three times to call a vote, so that the tally could say the Hush had been counted. Rue carries it wrapped in her scarf, so that it cannot ring by itself." },
+      { "narrate": "People live here. You meet the first of them an hour past the cairn: a woman carrying water in two buckets on a yoke, walking carefully so as not to spill it. She knows where the water goes. She does not know her name. Everyone here has given everything, and walked north when there was nothing left to give, and kept walking until they stopped." },
+      { "narrate": "Among them, in the white, there are shapes, and the shapes have faces. One is floured to the elbows, like a baker. Others have the faces of Hollin's Reach, the town that burned while its council argued: a market town's worth of faces, walking." },
+      { "narrate": "Sixteen have faces from the deep: the ones who turned back on the stair, whom you gave your lamps and left to find their own way up. Tobiah Keld. Maud Penney. Gil Asher. Jessamy Wicken. Annick Dole. And eleven more. Fennick wrote them out in full, one to a line. Here they are.", "when": { "flag": "b3_turned_left" } },
+      { "oneOf": [
+        { "narrate": "Aster Vey is at rest, in the south, and has no voice now. You did not know until today how often you listened for one. Here, where nothing rings, you notice.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+        { "narrate": "Aster Vey is in Vell's great bell, a long way south, and in the free wards you are never far from a bell. Here there are none. Whatever she might say, it does not reach this far.", "when": { "flag": "b3_bell_aster" } },
+        { "narrate": "Aster Vey is in Briarwatch's bell, a long way south, and in the free wards you are never far from a bell. Here there are none. Whatever she might say, it does not reach this far." }
+      ] }
+    ],
+    "talks": [
+      {
+        "id": "walker",
+        "label": "Take water from the walker with the buckets",
+        "lines": [
+          { "narrate": "The walker with the yoke stops in front of you and holds out a bucket, because you look thirsty. You drink. The water is very cold and tastes of nothing." },
+          { "say": "The walker", "text": "Good. That is for drinking." },
+          { "narrate": "You ask her name. She thinks about the word carefully, as if it were heavy, and puts the buckets down to think about it better." },
+          { "say": "The walker", "text": "I do not have that. Is it for carrying? I can carry it, if you show me where it goes." },
+          { "oneOf": [
+            { "say": "maren", "text": "She means it. My gift says so. It says that about everyone up here, and it has never been less use to me.", "when": { "party": "maren" } },
+            { "narrate": "Rue writes in her book, under the day: 'She gave us water.' There is nowhere else to write it." }
+          ] },
+          { "narrate": "The walker picks up the buckets and goes on into the white, carefully, so as not to spill them." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Sit with Rue while she reads her book",
+        "lines": [
+          { "narrate": "Rue sits down in the white, which here is like sitting down in deep snow that is not cold, and takes out her book. She reads herself aloud before anything hard. She always has." },
+          { "oneOf": [
+            { "narrate": "It is the new book, the one she began after the fire at Highpass, and it does not take long. At the end she turns her left wrist over and reads that too: 'Heath'.", "when": { "flag": "b4_book_burned" } },
+            { "narrate": "She reads it from the front, where today is, the way she keeps it now, back to the spring at Highpass.", "when": { "flag": "b4_book_rewritten" } },
+            { "narrate": "She reads the old book from the first page, every page of it, and it takes a long time, and nobody hurries her." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "Every winter is worse than the one before, and every winter Burdock moves the Hush's line on the oldest wall a little nearer Orme. This winter he moved it twice.", "when": { "flag": "b3_stair_sealed" } },
+            { "say": "Rue", "text": "Last winter was bad, and not the worst in the tally. The Hush still came a day nearer Orme. Sloe can tell you how much nearer it would have come. I do not want to know the sum.", "when": { "flag": "b3_promise_hesk", "anyFlag": ["b3_three_told"] } },
+            { "say": "Rue", "text": "Last winter was the worst in the tally. The Hush came a day's walk nearer Orme in one winter. Burdock moved its line on the oldest wall, and his hand shook.", "when": { "flag": "b3_promise_hesk" } },
+            { "say": "Rue", "text": "Last winter was the lightest in the tally, and the Hush came no nearer Orme. It is the first winter it has not. It did not need to. It was already full." }
+          ] },
+          { "say": "Rue", "text": "When I have given everything, I will walk here. Everyone does. I used to think that was a long way off." }
+        ]
+      },
+      {
+        "id": "faces",
+        "label": "Look at the faces in the white",
+        "lines": [
+          { "narrate": "The shapes do not come near. They stand in the white a little way off, the way people stand at the edge of a fire they have not been asked to, and their faces turn after you as you pass." },
+          { "say": "maren", "text": "That one's the baker from Fenmere. He went back for his starter dough. I wrote him down.", "when": { "party": "maren" } },
+          { "say": "orin", "text": "Hollin's Reach. I'd know that street anywhere. I've known it since the night it burned.", "when": { "party": "orin" } },
+          { "oneOf": [
+            { "narrate": "You count them, because somebody should: sixteen faces from the deep. Annick Dole is at the front, holding up a lamp that is not there.", "when": { "flag": "b3_turned_left" } },
+            { "narrate": "You look for faces from the stair, and do not find any. Whoever came up out of the deep with you, none of them is here." }
+          ] },
+          { "narrate": "Rue looks at the shapes for a long time, and then writes in her book: 'What the south rang away, with the faces it took.' She shows you, to see if it is right. It is." }
+        ]
+      },
+      {
+        "id": "mother",
+        "label": "Go to the woman from the edge farm",
+        "requires": { "flagsAny": ["b4_orin_ordered", "b4_hero_ordered"] },
+        "lines": [
+          { "narrate": "She is sitting on a stone in the white with her hands in her lap, looking at nothing. Sedge's mother, of the edge farm at Sheddon. She gave her name at the well, and then the rest, and then she walked." },
+          { "oneOf": [
+            { "narrate": "Orin goes and stands in front of her, and takes his helmet off. She looks up at him kindly, the way she looks at everyone now.", "when": { "flag": "b4_orin_ordered", "party": "orin" } },
+            { "narrate": "You go and stand in front of her. She looks up at you kindly, the way she looks at everyone now." }
+          ] },
+          { "say": "orin", "text": "I gave the order. I said it at the cairn: go on. You won't know what that means. I do.", "when": { "flag": "b4_orin_ordered", "party": "orin" } },
+          { "narrate": "She nods, as if she has been told what the weather will do, and goes back to looking at nothing.", "when": { "flag": "b4_orin_ordered", "party": "orin" } },
+          { "narrate": "She does not know Sheddon, or Sedge, or the cairn where the column went on without her. She knows that you are cold, and moves over on the stone to make room.", "when": { "absent": "orin" } },
+          { "narrate": "She does not know Sheddon, or Sedge, or the cairn where the column went on without her. She knows that you are cold, and moves over on the stone to make room.", "when": { "flag": "b4_hero_ordered", "party": "orin" } }
+        ]
+      }
+    ],
+    "clue": "The Hush is full. Nine hundred years of what the bells rang north has nowhere left to lie, and it is moving south, towards Orme, with the walkers in front of it.",
+    "investigate": {
+      "label": "Read the white: how deep the Hush is, and which way it is moving",
+      "skill": "survival",
+      "alt": ["arcana", "nature"],
+      "success": [
+        { "narrate": "{You dig|@ digs} down through the white where it lies against a cairn, and {find|finds} it is not one white but layers of it, packed hard, a winter to a layer, like the rings of a tree. There are more layers than anyone could count." },
+        { "narrate": "The newest layers are on the north side of every stone, and none on the south. The Hush is full, with nowhere left for the white to lie. It is moving south, slowly, the way a glacier moves, and the walkers are walking in front of it." }
+      ],
+      "failure": [
+        { "narrate": "{You dig|@ digs} down through the white against a cairn, and it goes down and down, hard as ice, and in the quiet {you cannot|@ cannot} tell which way anything is moving, or whether it is moving at all." }
+      ]
+    },
+    "route": {
+      "label": "Find where the walkers gather, by the stones they have stood up",
+      "skill": "perception",
+      "alt": ["survival", "investigation"],
+      "success": [
+        { "narrate": "{You find|@ finds} the walkers' stones: single stones stood on end, one every few hundred paces, that somebody stood up long ago and somebody else keeps standing up again. {You follow|@ follows} them to a hollow where the walkers sit together at dusk, and {come|comes} to it from above, out of the deepest white." }
+      ],
+      "failure": [
+        { "narrate": "{You lose|@ loses} the stones in the white, and {go|goes} round in a long slow circle in the quiet before {you find|@ finds} the walkers' hollow, by walking into the side of it." }
+      ]
+    },
+    "direct": {
+      "label": "Go north past the last cairn into the Hush",
+      "text": "You go four days north from Orme, past the last cairn, into the Hush, and come to the hollow where the walkers sit at dusk."
+    },
+    "approach": [
+      { "narrate": "Dusk in the walkers' hollow. Forty or fifty of them sit together in the white, close, the way people sit round a fire, though there is no fire. Some are holding hands. The woman with the buckets is passing round water." },
+      { "narrate": "At the edge of the hollow the shapes stand and watch, with their faces." }
+    ],
+    "crisis": [
+      { "narrate": "The white rises. It does not come down a slope or along a lane. It comes up out of the ground under the walkers, slowly, the way water comes up through sand, round their ankles and then their knees." },
+      { "narrate": "The walkers do not get up. They have nothing left for it to take, and they know it, and they sit and let it come. The shapes at the edge of the hollow take a step in." },
+      { "say": "Rue", "text": "When it has them to the chest, it will stand them up and walk them south with it. That is how the Hush moves. That is what it is moving with." }
+    ],
+    "peaceful": {
+      "label": "Make a marked way up out of the hollow, and lead the walkers along it",
+      "skill": "survival",
+      "alt": ["athletics", "persuasion"],
+      "success": [
+        { "narrate": "{You know|@ knows} which way the white is moving, and {you lay|@ lays} the way across it, not along it, where it is thinnest.", "when": { "flag": "prepared:b4-hush" } },
+        { "narrate": "{You came|@ came} down into the hollow from above, and the way out is the way {you came|@ came} in.", "when": { "flag": "approach:b4-hush" } },
+        { "narrate": "{You find|@ finds} the lip of the hollow by feel, in the white, and {start|starts} the way from there.", "when": { "notFlag": "approach:b4-hush" } },
+        { "narrate": "{You mark|@ marks} it the way the marked way under the stair was marked, with small things, one every twenty paces: a button, a tin cup, a strip of cloth tied to a stick, a knot of rope. Everyone gives something to it. Rue gives her lead, and writes the next mark in chalk on the back of her hand." },
+        { "narrate": "Then {you take|@ takes} the walkers' hands, one at a time, and {put|puts} the next one's hand into it, and the woman with the buckets puts down her yoke and takes the last hand in the line." },
+        { "narrate": "They come up out of the hollow behind {them}, mark to mark, slowly, the way a child walks who has only just learned. The white comes up to the lip of the hollow behind the last of them, and stops there, and the shapes stand at the lip and do not follow." }
+      ],
+      "failure": [
+        { "narrate": "{You mark|@ marks} a way, with whatever is to hand, but the walkers will not get up to follow it. They do not know what following is for. The white comes up round them to the waist, and the shapes come down into the hollow." }
+      ]
+    },
+    "objective": {
+      "name": "The walkers' hollow",
+      "label": "Get the walkers up out of the hollow before the white has them",
+      "description": "Four successful actions get the walkers up onto the lip of the hollow, out of the rising white, before it stands them up and walks them south.",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion", "medicine"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "Most of the walkers are up on the lip of the hollow in the end. Six are not. The white stood them up to the chest and walked them away south into the quiet, and nobody saw which way they went.",
+      "successText": "Every walker is up on the lip of the hollow, sitting together in the white, and the woman with the buckets is counting them, without knowing what the numbers are for."
+    },
+    "foe": "b4-hush-white",
+    "foeName": "The Hush",
+    "enemyTheme": "gloam",
+    "attackName": "The Quiet",
+    "retainerName": "Shape with a Known Face",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Night on the lip of the hollow. The walkers sit together in a line along the marks, holding hands, because that is the last thing they were shown how to do. The white lies in the hollow below them like water in a bowl.", "when": { "flag": "method:b4-hush", "is": "peace" } },
+        { "narrate": "Night on the lip of the hollow. The white in the hollow below is trampled and torn where the fight was, and the shapes are gone from its edge. The walkers sit together in a line, close, the way people sit round a fire, and do not ask what happened." }
+      ] },
+      { "narrate": "Rue sits beside the woman with the buckets with her book open on her knee, and has not written anything for a long time." },
+      { "say": "Rue", "text": "They will walk south with it whatever we do. The Hush is coming to Orme. The only thing we can choose is how they get there." },
+      { "narrate": "The woman with the buckets offers you water again." }
+    ],
+    "decisions": [
+      {
+        "id": "led",
+        "label": "Lead the walkers south to Orme yourselves",
+        "description": "This decision is permanent. The walkers come south with you, as slowly as they can walk, and with the Wold after that. Whatever comes next on the road, they will be in it.",
+        "told": {
+          "ballad": "The strangers led the walkers out of the Hush by the hand, all the way south to Orme, as slowly as they could walk.",
+          "tally": "The Hush. The southerners led the walkers south to Orme. Written: they came, every one, slowly."
+        },
+        "text": [
+          { "narrate": "You tell them you will take them south. They do not know what south is, but they know what a hand is, and when you hold yours out the first of them takes it." },
+          { "narrate": "It takes six days to walk to Orme instead of four, because the walkers stop whenever they see something that needs carrying, and carry it. The white comes south behind you the whole way, not fast, never further off." },
+          { "narrate": "Burdock meets you at Orme's top field with a slate, and writes every one of them in, as 'came from the Hush, with the southerners', because there is nothing else to write. He writes the woman with the buckets first." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_walkers_led"
+      },
+      {
+        "id": "marked",
+        "label": "Mark a way south for them, and go on ahead",
+        "description": "This decision is permanent. You mark the way from the Hush to the last cairn, and go on to Orme ahead of the walkers. Some of them will follow the marks. Some will not.",
+        "told": {
+          "ballad": "The strangers marked a way out of the Hush with small things, and went on south, and some of the walkers followed the marks.",
+          "tally": "The Hush. The southerners marked a way south to the last cairn. Written: some followed it."
+        },
+        "text": [
+          { "narrate": "You mark the way south, from the lip of the hollow to the last cairn, the way the marked way under the stair was marked, with small things. By the end you have given it everything in your packs that is small enough to leave." },
+          { "narrate": "At the last cairn you look back. Some of the walkers are coming, mark to mark, a long way apart. Some have stopped at a mark and are sitting by it, as if it were a fire. You cannot see the rest." },
+          { "narrate": "Four days later at Orme, Burdock writes in the tally: 'The Hush. Some came.' He leaves room under it for a number." }
+        ],
+        "rep": { "wilds": 1 },
+        "flag": "b4_walkers_marked"
+      },
+      {
+        "id": "rang",
+        "label": "Ring Burdock's hand-bell here, so that the walkers wake for one night",
+        "description": "This decision is permanent. The hand-bell rings the white off the hollow for one night, and the walkers wake. The white it rings away goes south, onto the Orme road.",
+        "told": {
+          "ballad": "The strangers rang a bell in the Hush, and for one night the walkers woke and learned names, and the white went down onto the Orme road.",
+          "tally": "The Hush. The southerners rang the hand-bell of the Long Hall. Written: the walkers woke one night, and had names. The white went onto the Orme road."
+        },
+        "text": [
+          { "narrate": "Rue unwraps the hand-bell and gives it to you without a word, and you ring it, three times, the way Burdock calls a vote." },
+          { "narrate": "It is a very small bell. In the Long Hall it is hardly louder than a voice. Here, where nothing has rung for nine hundred years, it goes out over the Hush like a shout, and the white in the hollow lies down flat, and in the hollow, one by one, the walkers look up as if somebody had called them." },
+          { "narrate": "They want names. Their own are gone, and they know it now, for one night, and they want names. So you give them names, and Rue writes each one on the back of a hand: the woman with the buckets is Water, because that is what she gave you first. They say the names back, carefully, as a child says a new word, and then say them to each other, all night." },
+          { "narrate": "By morning they have forgotten again, and the names are only on their hands. The white the bell rang off the hollow has gone south in the night, down onto the Orme road, and lies on it from the last cairn to the edge of Orme's fields." }
+        ],
+        "rep": { "wardens": 1 },
+        "flag": "b4_hush_rang"
+      }
+    ]
+  },
+  "b4-column": {
+    "id": "b4-column",
+    "book": 4,
+    "part": 2,
+    "name": "The Road to the Peaks",
+    "level": 58,
+    "town": "orme",
+    "nextTown": "orme",
+    "unlock": "b4-hush",
+    "continues": true,
+    "white": true,
+    "xp": 16250,
+    "gold": 1200,
+    "region": "The Orme road south to Lantry, and the old north road up the north face above it, in the white",
+    "threat": "The Hush is moving south, and the Wold is leaving in front of it: thousands of people on the Orme road, with the Long Tally on sledges, and the white at the tail of the column.",
+    "faction": "wold",
+    "brief": "The Reckoner left Orme two nights ago for the peaks. Behind her the Wold is following, town by town, because the Hush is coming south. The column has to get up the north face to the Hall before the white at its tail catches it on the switchbacks.",
+    "flagScale": { "b4_walkers_led": 1.15, "b4_hush_rang": 1.25 },
+    "told": {
+      "ballad": "The whole of the Wold went up the north face in one column, roped, with the Long Tally on sledges, and the white came up the road behind it.",
+      "tally": "The Orme road. The Wold left in front of the Hush. Written: everyone, on the road, roped."
+    },
+    "opening": [
+      { "oneOf": [
+        { "narrate": "Sloe left Orme two nights ago for the peaks, with her ringers: twenty of Orme's people she has taught to pull a rope in time, in the Long Hall, on a rope tied to a beam. She is going to wait at the Hall for the south's answer to her sum, with her slate, and her ringers, in case the answer is no.", "when": { "flag": "b4_demand_carried" } },
+        { "narrate": "Sloe left Orme two nights ago for the peaks, with her ringers: twenty of Orme's people she has taught to pull a rope in time, in the Long Hall, on a rope tied to a beam. She is going to the Hall to see whether the south's promise is kept, with your seal on her slate, and her ringers, in case it is not.", "when": { "flag": "b4_share_promised" } },
+        { "narrate": "Sloe left Orme two nights ago for the peaks, with her ringers: twenty of Orme's people she has taught to pull a rope in time, in the Long Hall, on a rope tied to a beam. She is going to wait for you at the Hall, as she said she would, and go south with you to ask.", "when": { "flag": "b4_sloe_comes" } },
+        { "narrate": "Sloe left Orme two nights ago for the peaks, with her ringers: twenty of Orme's people she has taught to pull a rope in time, in the Long Hall, on a rope tied to a beam." }
+      ] },
+      { "narrate": "Hesk went with her. He walked out of Orme at the back of her ringers with his lamp, the way he came into it.", "when": { "flag": "b3_stair_sealed" } },
+      { "narrate": "Behind her, the Wold is following. Not because she asked. Because the Hush is moving, and every town north of Orme has seen the white come over its top field and not go back. Orme empties in a morning. By noon the Orme road is one column from Orme to the ford, roped, a body's length apart, and Lantry is waiting at its well to join the tail." },
+      { "oneOf": [
+        { "narrate": "The walkers from the Hush are in the middle of the column, on a rope of their own, holding it carefully with both hands, as they were shown.", "when": { "flag": "b4_walkers_led" } },
+        { "narrate": "Some of the walkers from the Hush came down to Orme by your marks, one at a time, in the days after you did. They are in the column, a long way apart, each holding on to whoever is in front.", "when": { "flag": "b4_walkers_marked" } },
+        { "narrate": "Behind the column, from the last cairn to Orme's fields, the white lies on the Orme road where the hand-bell rang it, and the column walks out of it, south, with the white coming after.", "when": { "flag": "b4_hush_rang" } }
+      ] },
+      { "oneOf": [
+        { "narrate": "Lantry's people join the column in new white-wool, the summer's fleeces, woven over the autumn on the six looms.", "when": { "anyFlag": ["job:white-wool-down", "job:white-wool-given"] } },
+        { "narrate": "Half of Lantry joins the column in new white-wool, and the other half in last winter's, mended.", "when": { "flag": "job:white-wool-half" } },
+        { "narrate": "Lantry's people join the column in white-wool woven from the council's blankets, with the free wards' bell still in the weave at the hems.", "when": { "flag": "job:white-wool-blankets" } },
+        { "narrate": "Lantry's people join the column in their white-wool, grey and mended, with the town written on the backs of their coats." }
+      ] },
+      { "narrate": "At the tail, behind everyone, come the sledges. Burdock has loaded the Long Tally onto them, every book in the Long Hall, and walks beside the first with his hand on it." }
+    ],
+    "talks": [
+      {
+        "id": "burdock",
+        "label": "Walk with Burdock beside the sledges",
+        "lines": [
+          { "narrate": "Twelve sledges, each with six people on its ropes and a cover of oiled hide over the books. The oldest wall is still in Orme. Burdock has copied the first line of it onto a slate, and the slate is on the first sledge, on top." },
+          { "say": "Burdock", "text": "Nine hundred years. It weighs what it weighs. I asked the clerks to work it out, and then I asked them to stop telling me." },
+          { "say": "Burdock", "text": "The tally has never moved. Not once. There is no line for it. I will have to write one, when we stop, and I do not know what it says yet." },
+          { "narrate": "He has a stub of charcoal behind his ear, and a fresh page open on top of the first sledge, under the hide, to be ready.", "when": { "flag": "job:burdock-mistake-beside" } },
+          { "say": "Burdock", "text": "I will write it beside the old line, and date it. I learned that this winter. A correction is not a lie, if you put it beside the thing it corrects.", "when": { "flag": "job:burdock-mistake-beside" } },
+          { "say": "Burdock", "text": "I will write it under the old lines, and leave them as they were written. I learned that this winter, from a forty that was a fourteen.", "when": { "flag": "job:burdock-mistake-left" } }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Ask Rue about the road up",
+        "lines": [
+          { "narrate": "Rue walks at the side of the column, up and down it, reading people their coats: name, town, who they are roped to. She has done it since Orme, and she will do it all the way up." },
+          { "say": "Rue", "text": "I went up this road alone in the spring, and came down it with you at the start of the winter, and now I am going up it with everyone. I have it written three times. It is not the same road any of the three." },
+          { "oneOf": [
+            { "say": "Rue", "text": "My mother is on the Thrum rope. She does not know me. She is very kind to me. I have written that I am her daughter on the back of her coat, in case she wants to read it.", "when": { "flag": "b4_rue_kept" } },
+            { "say": "Rue", "text": "My mother is on the Thrum rope. I have it written that she is my mother. I like her very much. I would like to have known her.", "when": { "flag": "b4_rue_gave" } },
+            { "say": "Rue", "text": "Thrum is on one rope, with Furze at the front of it, chalking the turns on the rock as he goes." }
+          ] }
+        ]
+      },
+      {
+        "id": "dunnet",
+        "label": "Find Dunnet and Wem in the column",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Dunnet and Wem are on the same rope, a family from one and then a family from the other, all the way down it. Campion is near the front, with her mother's pan-handle tied to her pack.", "when": { "flag": "b4_potbell_broken" } },
+            { "narrate": "Wem is in the column, with its middle boundary stone on a sledge of its own. Dunnet is not. Campion is ringing the pot-bell every night in an empty valley, and Dunnet says the Hush can go round.", "when": { "flag": "b4_potbell_kept" } },
+            { "narrate": "Dunnet and Wem are on the same rope, a family from one and then a family from the other. They left the bell in its frame on the boundary stones, with the rota chalked on it, for whoever comes back. Campion is at the front of the rope, and the boy from Wem behind her.", "when": { "flag": "b4_potbell_rota" } },
+            { "narrate": "Dunnet and Wem are in the column a mile apart, as they live. Campion is near the front of Dunnet's rope, with burnt hands and her hair tied back with string." }
+          ] },
+          { "oneOf": [
+            { "say": "Wem's elder", "text": "Dunnet sent the white down on us every night, and now Dunnet's ringing it down on nobody, and we're the ones walking. I don't know what to write about that. I'll find out.", "when": { "flag": "b4_potbell_kept" } },
+            { "say": "Campion", "text": "Everyone keeps asking me if I can ring. In case. In case of what? Nobody says." }
+          ] }
+        ]
+      },
+      {
+        "id": "davin",
+        "label": "Find Davin on the ropes",
+        "requires": { "flagsAny": ["b4_davin_comes"] },
+        "lines": [
+          { "narrate": "Davin has hung his six lamps on poles at the turns ahead, one every few turns, and when the tail of the column has passed one he goes back down the face for it and carries it up to the front again." },
+          { "say": "Davin", "text": "You can't see a mark in the white. You can see a lamp. Gran says a lamp's not for you, it's for whoever's behind you." },
+          { "say": "orin", "text": "Give me the next one. I'll carry it up.", "when": { "party": "orin" } },
+          { "say": "Davin", "text": "You carry them too fast. They go out.", "when": { "party": "orin" } },
+          { "narrate": "Orin carries the next one up slower.", "when": { "party": "orin" } },
+          { "narrate": "Davin goes back down for the next lamp." }
+        ]
+      }
+    ],
+    "clue": "The old north road up the north face is marked the way the marked way under the stair is marked: with small things set at every turn, older than any bell. Whoever marked the one marked the other. Climbed mark to mark, roped, it can be climbed in the white.",
+    "investigate": {
+      "label": "Read the old north road above Lantry, turn by turn",
+      "skill": "survival",
+      "alt": ["history", "investigation"],
+      "success": [
+        { "narrate": "At the first turn of the road above Lantry {you find|@ finds} a niche cut into the rock at knee height, and in it, worn smooth, a button. At the second, a cup. At the third, a ring of horn. {You have|@ has} seen marks like these before, on the marked way under the stair." },
+        { "narrate": "Whoever marked the one marked the other. One way goes down to the floor of given things, and the other goes up over the peaks, and both are marked with small things, older than any bell, so that people could find them in the dark or in the white. Climbed mark to mark, roped, the north face can be climbed in anything." }
+      ],
+      "failure": [
+        { "narrate": "{You climb|@ climbs} the first turns of the road above Lantry and {look|looks} for anything to steer by, and in the white the rock all looks the same, turn after turn." }
+      ]
+    },
+    "route": {
+      "label": "Get to the head of the column before it reaches the switchbacks",
+      "skill": "athletics",
+      "alt": ["survival", "acrobatics"],
+      "success": [
+        { "narrate": "{You go|@ goes} up the outside of the column at a run along the road's edge, past rope after rope, and {reach|reaches} the head of it at the foot of the first switchback, before the first rope starts to climb." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} up the outside of the column along the road's edge, but the column fills the road, and by the time {you reach|@ reaches} the head of it the first ropes are already climbing, and {you are|@ is} soaked to the waist from the drifts." }
+      ]
+    },
+    "direct": {
+      "label": "Walk with the column up the Orme road",
+      "text": "You walk with the column south down the Orme road to Lantry, and on to the foot of the north face, where the old north road starts to climb."
+    },
+    "approach": [
+      { "narrate": "The foot of the north face. The old north road goes up it in long zigzags cut into the rock, the way you came down it at the start of the winter, and the head of the column is already on the first of them." },
+      { "narrate": "Three thousand people, roped, a body's length apart, and the sledges at the tail. From the first turn, looking down, you can see the column all the way back to Lantry's top door." }
+    ],
+    "crisis": [
+      { "narrate": "Halfway up the face the white comes up the road behind the column. It comes up the switchbacks a turn at a time, the way water comes up a stair, and the tail of the column is on the lowest turns, with the sledges." },
+      { "narrate": "Higher up, the ropes stop. Somebody near the head cannot see the next turn, and the rope behind them stops, and the rope behind that, all the way down the face, until the whole column is standing still on the rock with the white coming up under it." },
+      { "say": "Burdock", "text": "Do not leave the books. I will not leave the books. You may leave me." },
+      { "say": "Rue", "text": "Everyone is roped to someone. If one rope goes, it takes the next. That is what a rope is for." }
+    ],
+    "peaceful": {
+      "label": "Get the column climbing again, roped, mark to mark",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion"],
+      "harderWith": {
+        "anyFlag": ["b4_walkers_led"],
+        "reason": "The walkers from the Hush are on the face, in the middle of the column, and they stop when they are frightened"
+      },
+      "success": [
+        { "narrate": "{You know|@ knows} the marks: the niche at every turn, a button, a cup, a ring of horn, older than any bell.", "when": { "flag": "prepared:b4-column" } },
+        { "narrate": "{You are|@ is} already at the head of the column when it stops.", "when": { "flag": "approach:b4-column" } },
+        { "narrate": "{You climb|@ climbs} past rope after rope to the head of the column, on the outside edge of the road.", "when": { "notFlag": "approach:b4-column" } },
+        { "narrate": "{You call|@ calls} the next mark from the front, and the person behind {them} calls it back, and the next, all the way down the face, a turn at a time: a button. A cup. A ring of horn. Every rope starts again when it hears the mark called above it." },
+        { "narrate": "The column climbs. It climbs the way the walkers walk, one hand on the rope in front, slowly and without stopping, and at the tail the sledge-ropes take the strain and the sledges come up the turns after it, every one." },
+        { "narrate": "The white comes up the switchbacks behind the last sledge and stops at the turn below it, as if it had been told which way the mark was." }
+      ],
+      "failure": [
+        { "narrate": "{You call|@ calls} the next turn from the front, but in the white nobody further down can hear which turn {you mean|@ means}, and a rope at the middle of the column starts up the wrong way, onto the rock, and stops, and the white comes up the face onto the tail." }
+      ]
+    },
+    "objective": {
+      "name": "The sledges",
+      "label": "Get the tail of the column and the sledges up out of the white",
+      "description": "Four successful actions get the last ropes and the sledges up the switchbacks, out of the white, before it takes the tail of the column.",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion", "intimidation"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The tail of the column comes up the face in the end, but the white had the last rope first, on the lowest turn, and the five people on it come up the switchbacks behind the others not knowing whose rope they are on.",
+      "successText": "The last rope is up off the lowest turns, and the sledges with it, and the white lies on the switchbacks below them and comes no higher."
+    },
+    "foe": "b4-column-white",
+    "foeName": "The White at the Column's Tail",
+    "enemyTheme": "gloam",
+    "attackName": "Up the Switchbacks",
+    "retainerName": "Shape on the Turn",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Dusk on the high turns. The column has stopped for the night where the road widens under an overhang, roped together still, because nobody wants to untie. Below, the white lies on the switchbacks like a river in a gorge.", "when": { "flag": "method:b4-column", "is": "peace" } },
+        { "narrate": "Dusk on the high turns. The column has stopped for the night where the road widens under an overhang. The lowest turns below are trampled and broken where the fight was, and the people of the last rope are being bandaged by the people of the next." }
+      ] },
+      { "narrate": "Burdock sits on the first sledge with his hand on the hide. The column has climbed half the face today. Rue came down the whole of it in one. There is a day of turns still above, and twelve sledges of books, and at every turn so far the sledge-ropes have had to stop and take the strain while the column waited." },
+      { "say": "Burdock", "text": "Everyone keeps looking at the sledges. I have seen that look before. It is the look the tally towns give a line they do not want written." },
+      { "say": "Rue", "text": "He is right. It is your answer they are waiting for. You are from the south, where the bells are. Everybody thinks you know what weighs too much." }
+    ],
+    "decisions": [
+      {
+        "id": "carried",
+        "label": "Bring the whole of the Long Tally up on the sledges",
+        "description": "This decision is permanent. Every book of the Long Tally comes up the face to the Hall. Burdock comes with it. The column goes slower for it, all the way.",
+        "told": {
+          "ballad": "The Wold carried the whole of the Long Tally up the north face on sledges, nine hundred years of it, and the column waited at every turn for the books.",
+          "tally": "The north face. The southerners said: bring all of it. Written: all of it came. This line is written at the Hall."
+        },
+        "text": [
+          { "narrate": "You tell them the tally comes. All of it. It is the only thing the Wold has that remembers the Wold, and nobody is leaving it on a mountain." },
+          { "narrate": "They put more people on the sledge-ropes, and the column waits at every turn while the sledges come up after it, and nobody complains, because everybody in the column is in one of the books." },
+          { "say": "Burdock", "text": "Then I come too. Someone has to read it to them when we get there." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_tally_carried"
+      },
+      {
+        "id": "left",
+        "label": "Leave the tally in Orme, with Burdock",
+        "description": "This decision is permanent. The sledges go back down the face to Orme with Burdock, to wait in the Long Hall for whatever comes. The column climbs light.",
+        "told": {
+          "ballad": "The Wold left the Long Tally in Orme, and its keeper went back down the north face with it, alone, into the white.",
+          "tally": "The north face. The southerners said: leave it. Written by Burdock, at Orme: the tally stayed, and so did I."
+        },
+        "text": [
+          { "narrate": "You tell them the column cannot wait at every turn for another day of switchbacks, with the white behind it. The tally goes back to Orme, to the Long Hall, where it has always been." },
+          { "say": "Burdock", "text": "Then I go with it. I have kept it for forty years. I am not going to stop because it has stopped moving." },
+          { "narrate": "In the morning the sledges go back down the switchbacks into the white, with six people on each rope, who will come back up, and Burdock walking beside the first with his hand on the hide, who will not." },
+          { "say": "Rue", "text": "I will write it. 'Burdock of the Long Hall went home.' It is true. That is the only thing I know how to write." }
+        ],
+        "rep": { "wardens": 1 },
+        "flag": "b4_tally_left"
+      },
+      {
+        "id": "last",
+        "label": "Bring the last book only: the record of the winters",
+        "description": "This decision is permanent. The newest book of the Long Tally, the record of the winters, comes up the face in Burdock's arms. The rest goes back to Orme on the sledges.",
+        "told": {
+          "ballad": "The Wold sent the Long Tally back to Orme, all but the last book, the book of the winters, and its keeper carried that one up the north face in his arms.",
+          "tally": "The north face. The southerners said: the winters. Written: the last book came, carried. The rest is at Orme."
+        },
+        "text": [
+          { "narrate": "You tell them to bring the record of the winters, and send the rest home. Whatever the south is asked, at the Hall or beyond it, that is the book it will be asked from." },
+          { "narrate": "Burdock takes it off the top of the last sledge himself: a thick book bound in grey hide, the newest, nine hundred winters in it, one line each. He wraps it in his own coat." },
+          { "say": "Burdock", "text": "I will carry it. Nobody else is to carry it. I want that written." },
+          { "narrate": "In the morning the sledges go back down into the white to Orme, and Burdock goes up the face with the column, with the book in his arms." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_tally_last"
+      }
+    ],
+    "ledgeTitle": "The high turns under the overhang",
+    "ledge": [
+      { "narrate": "You wake on the high turns under the overhang, roped to the column still, with the white lying in the gorge of switchbacks below and the north face going up into the cloud above you." },
+      { "narrate": "Somebody has chalked the next mark on the rock beside your hand while you slept: a button." }
+    ]
+  },
+  "b4-northdoor": {
+    "id": "b4-northdoor",
+    "book": 4,
+    "part": 2,
+    "name": "The North Door",
+    "level": 59,
+    "town": "orme",
+    "nextTown": "highpass",
+    "unlock": "b4-column",
+    "levelFloor": 60,
+    "white": true,
+    "xp": 16500,
+    "gold": 1220,
+    "region": "The Hall of Legends from the north: the last slope of the north face, the Wold's nine, and the north door",
+    "threat": "The Wold's column is on the last slope under the Hall, and the white-storm of the year is coming over the peaks onto the north face, with the column below it.",
+    "faction": "wold",
+    "brief": "The column comes up the last slope to the Hall of Legends, where the Reckoner's ringers are camped at the north door. The white-storm of the year is coming down onto the north face, and three thousand people have to be somewhere other than the slope when it does.",
+    "told": {
+      "ballad": "The Wold came up to the north door of the Hall of Legends with the storm behind it, three thousand of them, and the strangers from the south stood at the door.",
+      "tally": "The north door. The Wold came up to the Hall in the storm. Written: the door, and who opened it."
+    },
+    "opening": [
+      { "narrate": "The last slope. Above it, across the saddle, the Hall of Legends lies along the ridge from one side to the other, long and low and grey, with the roof gone from the middle. You have not seen it from this side in daylight. On its north face the Wold's nine stand in a row with nothing in their hands, because they gave them away." },
+      { "oneOf": [
+        { "narrate": "Below the nine is the north door, where you knelt at the start of the winter and gave.", "when": { "flag": "b4_gave_door" } },
+        { "narrate": "Below the nine is the north door, where you made camp the night before you went down into the Wold." }
+      ] },
+      { "narrate": "Sloe's ringers are camped in the lee of the door: twenty of them, in a ring of snow-walls they have built, with their coils of rope beside them. They have been here two days. The door is shut." },
+      { "narrate": "Below you, the column comes up the last of the switchbacks onto the slope, rope after rope, and spreads out across the snow under the Hall, and stops, because there is nowhere further to go." },
+      { "narrate": "Over the peaks to the south, the sky is the colour of slate." }
+    ],
+    "talks": [
+      {
+        "id": "sloe",
+        "label": "Go to Sloe at the ringers' camp",
+        "lines": [
+          { "narrate": "Sloe is sitting on her pack by the north door, with her slate on her knees, doing a sum." },
+          { "say": "Sloe", "text": "We have not gone in. It is the founders' hall. In the Wold you wait at a door until somebody answers it, and nobody has. That is two days." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "You have my sum on a slate, to carry south. I have waited here for the answer, because this is as near the south as the Wold has ever been. My ringers are here in case it is no. I am honest about that.", "when": { "flag": "b4_demand_carried" } },
+            { "say": "Sloe", "text": "You promised the Wold half the winter. I have come to see whether the south keeps it. My ringers are here in case it does not. I am honest about that.", "when": { "flag": "b4_share_promised" } },
+            { "say": "Sloe", "text": "I said I would wait for you here and go south with you to ask. I have waited. My ringers are here in case I am told no. I am honest about that.", "when": { "flag": "b4_sloe_comes" } },
+            { "say": "Sloe", "text": "My ringers are here in case the south says no. I am honest about that." }
+          ] },
+          { "narrate": "Hesk sits a little way off with his lamp between his boots, looking at the door, and does not say anything.", "when": { "flag": "b3_stair_sealed" } },
+          { "say": "Sloe", "text": "I did not bring the whole of the Wold. The Hush did. I would like that written, somewhere it will be read." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Ask Rue what happens at the door",
+        "lines": [
+          { "say": "Rue", "text": "When I came up here in the spring, the door was open, and nobody was on the other side. I went through, because I had been sent. Nobody has sent the Wold." },
+          { "say": "Rue", "text": "The free wards have doors too. You told me. Bells on them, and people behind them who are frightened of what is outside. Three thousand people is a great deal of outside." },
+          { "oneOf": [
+            { "say": "Rue", "text": "Sorrel learned the north road from me, at Highpass. She will know what is coming down it. I do not know what she will do about it.", "when": { "flag": "b4_rue_watch" } },
+            { "say": "Rue", "text": "The council heard me, at Highpass, before anyone decided what I was. I wrote it down. I do not know whether it will hear three thousand.", "when": { "flag": "b4_rue_council" } },
+            { "say": "Rue", "text": "I walked the south with you, and nobody stopped me, because I was with you. I wrote it down. Three thousand people cannot all be with you." }
+          ] }
+        ]
+      },
+      {
+        "id": "home",
+        "label": "Ask the others where they are going, after this",
+        "lines": [
+          { "narrate": "You stand at the top of the last slope, with the Hall above you and the Wold below, and ask the others what comes after the door." },
+          { "say": "Davin", "text": "Saltwick. Gran will want to know I came back. I'll tell her about the lamps.", "when": { "flag": "b4_davin_comes" } },
+          { "say": "orin", "text": "Down to Highpass, with whoever's coming. After that I don't know. I've been going north so long I've forgotten what's at the bottom of the other side.", "when": { "party": "orin" } },
+          { "say": "maren", "text": "Home is wherever I'm listening. I'll listen to the south hear this. I want to know what it sounds like.", "when": { "party": "maren" } },
+          { "say": "nessa", "text": "Home's a dog by a brazier at Highpass. I'll go where the door goes. First through it, either way.", "when": { "party": "nessa" } },
+          { "narrate": "Nobody says anything about the Wold. Everybody looks at it." }
+        ]
+      },
+      {
+        "id": "burdock",
+        "label": "Find Burdock with the tally",
+        "requires": { "flagsAny": ["b4_tally_carried", "b4_tally_last"] },
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Burdock has the sledges drawn up in a row under the Wold's nine, with their hides lashed down against the weather that is coming.", "when": { "flag": "b4_tally_carried" } },
+            { "narrate": "Burdock is sitting in the lee of the nine with the record of the winters on his knees, wrapped in his coat." }
+          ] },
+          { "say": "Burdock", "text": "I have written the line. 'The tally moved.' It is not a long line. It took me two days." },
+          { "say": "Burdock", "text": "I would like to be inside before the weather. The books do not like weather. I do not like it much myself." }
+        ]
+      }
+    ],
+    "clue": "The north door has been opened from the inside since the party came through it at first snow: somebody in the Hall, from the south, stood on the step and looked out at the Wold, and shut it again, before the deep snow closed the road.",
+    "investigate": {
+      "label": "Look at the north door, and the snow and ice on its step",
+      "skill": "arcana",
+      "alt": ["investigation", "perception"],
+      "success": [
+        { "narrate": "{You dig|@ digs} the drift away from the foot of the north door with {their} hands, down through this winter's snow to the first snow's crust under it, the snow that fell the day you crossed." },
+        { "narrate": "In the crust, frozen hard, there is an arc: the door has swung open across it once, from inside the Hall, since you came through, and shut again before the deep snow came. Caught in the iron of the hinge there is a twist of tarred hemp, rope-maker's hemp from the south, the kind nobody in the Wold has. Somebody from the south has been in the Hall since you, and stood on this step, and looked at the Wold, and gone back." }
+      ],
+      "failure": [
+        { "narrate": "{You look|@ looks} at the north door for a long time. It is old, and iron-bound, and shut, and drifted to the latch, and if anyone has touched it since the first snow the snow is not saying." }
+      ]
+    },
+    "route": {
+      "label": "Bring the head of the column up through the nine's lee to the door",
+      "skill": "survival",
+      "alt": ["athletics", "perception"],
+      "success": [
+        { "narrate": "{You find|@ finds} the way up the last slope in the lee of the Wold's nine, where the wind has scoured the snow down to rock, and {bring|brings} the head of the column up it to the door before the first of the storm, dry-shod." }
+      ],
+      "failure": [
+        { "narrate": "{You bring|@ brings} the head of the column straight up the last slope, through drifts to the thigh, and {you reach|@ reaches} the door with the first of the storm, wet to the waist." }
+      ]
+    },
+    "direct": {
+      "label": "Go up the last slope to the north door",
+      "text": "You go up the last slope with the head of the column, to the north door of the Hall of Legends, as the storm comes over the peaks."
+    },
+    "approach": [
+      { "narrate": "The north door. It is the height of three men, iron-bound, drifted to the latch, and shut. Sloe's ringers have dug the drift back from it a little, and stopped, and not knocked." },
+      { "narrate": "Behind you three thousand people stand on the last slope in their ropes, looking at the door, and behind them the storm comes over the peaks." }
+    ],
+    "crisis": [
+      { "narrate": "The white-storm of the year comes down off the peaks onto the north face all at once, the way it came over the saddle at first snow: a whole sky of it, moving. And in it, this time, is the white from the Orme road, that followed the column up the switchbacks and has been waiting below it for the storm." },
+      { "narrate": "The slope goes white from the bottom up. The column on it is three thousand people on the open snow, roped to each other, with nothing to get behind." },
+      { "say": "Sloe", "text": "Open it. It is not my door. Somebody from the south has to open it, or nobody will." },
+      { "say": "Rue", "text": "If they let go of each other now, the storm will have half of them by morning. Somebody has to tell them where to go." }
+    ],
+    "peaceful": {
+      "label": "Open the north door and bring the column into the Hall",
+      "skill": "survival",
+      "alt": ["persuasion", "athletics"],
+      "success": [
+        { "narrate": "{You know|@ knows} the door has been opened since the first snow, and from which side, and {you put|@ puts} {their} shoulder to it where it last gave.", "when": { "flag": "prepared:b4-northdoor" } },
+        { "narrate": "{You came|@ came} up through the lee of the nine, and the head of the column is at the door already.", "when": { "flag": "approach:b4-northdoor" } },
+        { "narrate": "{You bring|@ brings} the head of the column up through the drifts to the door as the storm comes down.", "when": { "notFlag": "approach:b4-northdoor" } },
+        { "narrate": "The north door opens inward, groaning, onto the dark inside the Hall. {You stand|@ stands} in it and {call|calls} the ropes in, one at a time, by their towns, the way Rue reads a street its doors: Orme. Lantry. Thrum. Greve. Dunnet and Wem. Each rope comes up out of the white and through the door, and the next comes up behind it." },
+        { "narrate": "It takes all night. The storm goes over the Hall all night, and the column comes in under the north face's roof a rope at a time, and sits down along the walls in the dark in the lee of the stone, roped still, and nobody lets go of anyone." },
+        { "narrate": "Nobody can see, in the dark, which rope is the last one in. When there are no more, {you shut|@ shuts} the door." }
+      ],
+      "failure": [
+        { "narrate": "{You put|@ puts} {their} shoulder to the north door, and it gives a hand's breadth and sticks, iron-bound and frozen at the foot, and the storm comes down on the slope while the column stands in it, waiting, and the white comes up the slope inside the storm." }
+      ]
+    },
+    "objective": {
+      "name": "The north door",
+      "label": "Get the column off the slope and into the lee of the Hall",
+      "description": "Four successful actions get the ropes up the last slope and into the lee of the Hall, out of the storm, before the white in it takes the slope.",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion", "intimidation"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The column gets into the lee of the Hall in the end, rope by rope, but the storm had the two lowest ropes first, on the open slope, and the people on them come up into the lee not knowing whose ropes they are holding.",
+      "successText": "The last rope is up off the slope and into the lee of the Hall, and the storm goes over the north face above them and finds nobody on it."
+    },
+    "foe": "b4-northdoor-white",
+    "foeName": "The North Face's White",
+    "enemyTheme": "boss",
+    "attackName": "The Year's Storm",
+    "retainerName": "Shape in the Storm",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Dawn, after the storm. The Wold is inside the Hall of Legends, along its walls, in its ropes: three thousand people under the north face's roof, in the founders' hall, where none of them has ever been. Nobody has been lost. Nobody has slept.", "when": { "flag": "method:b4-northdoor", "is": "peace" } },
+        { "narrate": "Dawn, after the storm. The last slope is trampled and torn where the fight was. The Wold came in through the north door in the night, rope by rope, and sits along the walls of the Hall in its ropes, and the hurt were carried in last. Nobody has slept." }
+      ] },
+      { "narrate": "Through the Hall, at the far end, the south door is shut. Beyond it the old north road goes down to Highpass's upper gate, and to the free wards, and to the council, which has not been asked." },
+      { "say": "Sloe", "text": "The south has a door. Somebody has to say what happens at it. It is not going to be me." },
+      { "narrate": "Everybody looks at you." }
+    ],
+    "decisions": [
+      {
+        "id": "crossed",
+        "label": "Take the Wold through the south door now, without the council's leave",
+        "description": "This decision is permanent. The Wold's people go down the south side of the peaks with you, to Highpass's upper gate, all of them, before the council has said yes.",
+        "told": {
+          "ballad": "The strangers opened the south door of the Hall of Legends and took the whole of the Wold through it, down to Highpass, and nobody had asked the council.",
+          "tally": "The south door. The southerners said: come. Written: the Wold crossed into the bell-country, every rope, and the bell-country had not said yes."
+        },
+        "text": [
+          { "narrate": "You tell them to come south. Now, all of them, while the road is there. The council can say yes at the gate, or no to three thousand faces. You know which it is less likely to say." },
+          { "narrate": "You go to the south door and open it, and the Wold comes through the Hall behind you, rope by rope, and out onto the old north road on the south side of the peaks, and starts down." },
+          { "say": "Rue", "text": "I will write it on the door. On the south side. So that the free wards can read it when they come up: 'The Wold came through here.'" }
+        ],
+        "rep": { "wilds": 1 },
+        "flag": "b4_crossed"
+      },
+      {
+        "id": "camp",
+        "label": "Let the Wold camp in the Hall until the council answers",
+        "description": "This decision is permanent. The Wold's people stay in the Hall of Legends, on the border, until the council says what happens at its door. The Hall becomes a town of the Wold.",
+        "told": {
+          "ballad": "The Wold camped in the Hall of Legends, between its two doors, and waited for the south to answer, and the Hall became a town.",
+          "tally": "The Hall. The southerners said: wait here, and we will ask. Written: the Wold lives in the founders' hall now, between the doors."
+        },
+        "text": [
+          { "narrate": "You tell them to stay. Here, in the Hall, on the border, out of the Hush's way and inside the founders' walls, until the council answers. You will go down and ask it." },
+          { "narrate": "By noon there are fires along the walls, and the ropes are coiled, and Rue is going down the Hall from the north door to the south, reading the Wold its new street. Somebody has already chalked a name on the first fire's wall: 'The Hall. Of the Wold.'" },
+          { "say": "Sloe", "text": "We will wait. We are good at waiting. We have done it for nine hundred years. Do not make it ten." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_hall_camp"
+      },
+      {
+        "id": "envoys",
+        "label": "Send the column back down to Orme; only envoys go south",
+        "description": "This decision is permanent. The column goes back down the north face to Orme when the weather allows, into the Hush's way. Only the Wold's envoys cross to Highpass with you.",
+        "told": {
+          "ballad": "The strangers sent the Wold back down the north face to its own country, and took only its envoys south, to ask properly.",
+          "tally": "The north door. The southerners said: go home, and send us your voices. Written: the Wold went back down. Its envoys went south."
+        },
+        "text": [
+          { "narrate": "You tell them the column goes back. The free wards have never been asked, and three thousand people at the upper gate is not asking. The envoys come south with you, to ask properly, and the rest go home to wait." },
+          { "narrate": "Nobody argues. The Wold does not argue with a door. When the weather allows, the ropes go back out of the north door, one at a time, and down the switchbacks towards Orme and whatever the Hush has done to it." },
+          { "narrate": "The envoys stay: Sloe, and Rue, and two door-bearers from each tally town, with their door-boards on their backs." },
+          { "say": "nessa", "text": "We brought them up a mountain to send them back down it. I'm going to remember that. Somebody should.", "when": { "party": "nessa" } }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "nessa": -1 },
+        "flag": "b4_envoys_only"
       }
     ]
   }

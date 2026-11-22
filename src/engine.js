@@ -645,10 +645,16 @@ function applyOutcome(state, written = {}, rng, events) {
   // chapters goes on into the next chapter instead (src/world.js goOn).
   // If no next chapter can be played any more (access lapsed), it is the town after all.
   const home = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
-  let next = outcome.toTown && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) || home : home;
+  // A camp scene after a straight-on chapter (Book Four's column-camp) plays
+  // first; leaving it for the town goes on into the next chapter instead.
+  const leavingCamp = Boolean(state.world?.goingOn && currentNode(state)?.scene && STORY_NODES[home]?.townId);
+  let next = (outcome.toTown || leavingCamp) && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) || home : home;
   // A straight-on chapter ("continues") goes from its decision to the next
   // chapter's opening, not to a town, when that chapter is there to play.
-  if (outcome.goOn && state.world.completed[outcome.goOn]) next = W.goOn(state, outcome.goOn, events) || next;
+  if (outcome.goOn && state.world.completed[outcome.goOn]) {
+    if (STORY_NODES[next]?.scene) state.world.goingOn = outcome.goOn;
+    else next = W.goOn(state, outcome.goOn, events) || next;
+  }
   // The last safe ledge: rest, then go back down to the interrupted chapter.
   if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
   // Back up the stair after repeated defeats: to town, the chapter kept in progress.

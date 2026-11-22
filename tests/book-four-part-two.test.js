@@ -1,7 +1,7 @@
 'use strict';
-// Book Four, Part Two (docs/book-four/DESIGN.md, build step 6): chapters 11
-// to 13 (Lantry, Sheddon, Orme), their camps, Lantry's two side jobs and the
-// chapter rewards. Every part is previewed, with fixture chapters standing in
+// Book Four, Part Two (docs/book-four/DESIGN.md, build steps 6 to 8):
+// chapters 11 to 20, their camps, the end of the part, the Wold's four side
+// jobs and the chapter rewards. Every part is previewed, with fixture chapters standing in
 // for the ones not written yet (tests/fixtures/book-four.js). node --test runs
 // each file in its own process, so these settings reach no other file.
 // Nothing here calls the paid API. The lints that read the whole of Book
@@ -16,7 +16,7 @@ const { QUESTS, SCENES, SIDE_JOBS, outcomeForRoller } = require('../src/expansio
 const GEAR = require('../src/data/gear.json');
 const high = () => .999999, low = () => 0;
 
-const IDS = ['b4-lantry', 'b4-sheddon', 'b4-orme', 'b4-greve', 'b4-thrum', 'b4-reckoning', 'b4-potbells'];
+const IDS = ['b4-lantry', 'b4-sheddon', 'b4-orme', 'b4-greve', 'b4-thrum', 'b4-reckoning', 'b4-potbells', 'b4-hush', 'b4-column', 'b4-northdoor'];
 const JOB_IDS = ['painted-door', 'white-wool', 'burdock-mistake', 'southern-hand'];
 // A chapter a job is open during, and a hero in the job's own town then.
 const during = (job) => IDS[IDS.indexOf(job.from) + 1];
@@ -88,10 +88,13 @@ const EXPECT = {
   'b4-thrum': { gave: ['b4_rue_gave', {}, { wold: 1 }], kept: ['b4_rue_kept', { nessa: 1 }, { wilds: 1 }], nessa: ['b4_rue_asked_nessa', { nessa: 1 }, { wold: 1 }, undefined, ['b4_rue_gave']] },
   'b4-reckoning': { carried: ['b4_demand_carried', {}, { wold: 1 }], 'share-council': ['b4_share_promised', {}, { wold: 1 }],
     'share-own': ['b4_share_promised', { orin: -1 }, { wold: 1 }, undefined, [], { b4_embassy_council: false, b4_embassy_own: true }], comes: ['b4_sloe_comes', {}, { wardens: 1 }] },
-  'b4-potbells': { broken: ['b4_potbell_broken', {}, { wardens: 1 }], kept: ['b4_potbell_kept', { nessa: -1 }, { wilds: 1 }], rota: ['b4_potbell_rota', {}, { wold: 1 }] }
+  'b4-potbells': { broken: ['b4_potbell_broken', {}, { wardens: 1 }], kept: ['b4_potbell_kept', { nessa: -1 }, { wilds: 1 }], rota: ['b4_potbell_rota', {}, { wold: 1 }] },
+  'b4-hush': { led: ['b4_walkers_led', {}, { wold: 1 }], marked: ['b4_walkers_marked', {}, { wilds: 1 }], rang: ['b4_hush_rang', {}, { wardens: 1 }] },
+  'b4-column': { carried: ['b4_tally_carried', {}, { wold: 1 }], left: ['b4_tally_left', {}, { wardens: 1 }], last: ['b4_tally_last', {}, { wold: 1 }] },
+  'b4-northdoor': { crossed: ['b4_crossed', {}, { wilds: 1 }], camp: ['b4_hall_camp', {}, { wold: 1 }], envoys: ['b4_envoys_only', { nessa: -1 }, { wardens: 1 }] }
 };
 
-test('chapters 11 to 17 follow Part One in Book Four\'s own file: white, from Highpass to Lantry and Orme, each paying exactly one level', () => {
+test('chapters 11 to 20 follow Part One in Book Four\'s own file: white, from Highpass to Lantry and Orme and back to Highpass, each paying exactly one level', () => {
   assert.deepEqual(FX.WRITTEN, [...FX.IDS.slice(0, 10), ...IDS]);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown, q.white, q.faction]; }), [
     ['b4-lantry', 4, 2, 50, 'b4-peaks', 'highpass', 'lantry', true, 'wold'],
@@ -100,8 +103,14 @@ test('chapters 11 to 17 follow Part One in Book Four\'s own file: white, from Hi
     ['b4-greve', 4, 2, 53, 'b4-orme', 'orme', 'orme', true, 'wold'],
     ['b4-thrum', 4, 2, 54, 'b4-greve', 'orme', 'orme', true, 'wold'],
     ['b4-reckoning', 4, 2, 55, 'b4-thrum', 'orme', 'orme', true, 'wold'],
-    ['b4-potbells', 4, 2, 56, 'b4-reckoning', 'orme', 'orme', true, 'wold']
+    ['b4-potbells', 4, 2, 56, 'b4-reckoning', 'orme', 'orme', true, 'wold'],
+    ['b4-hush', 4, 2, 57, 'b4-potbells', 'orme', 'orme', true, 'wold'],
+    ['b4-column', 4, 2, 58, 'b4-hush', 'orme', 'orme', true, 'wold'],
+    ['b4-northdoor', 4, 2, 59, 'b4-column', 'orme', 'highpass', true, 'wold']
   ]);
+  // Chapter 19 goes straight on into chapter 20; only chapter 20 tops a hero up, to 60.
+  assert.deepEqual(IDS.filter((id) => QUESTS[id].continues), ['b4-column']);
+  assert.ok(QUESTS['b4-column'].ledge.length && QUESTS['b4-column'].ledgeTitle);
   for (const id of IDS) {
     const q = QUESTS[id];
     assert.equal(q.name, RAWQ[id].name, `${id} is read from src/data/book-four/quests.json`);
@@ -113,7 +122,7 @@ test('chapters 11 to 17 follow Part One in Book Four\'s own file: white, from Hi
     assert.ok(q.told?.ballad && q.told?.tally, `${id}: the Telling has one line for the chapter`);
     for (const d of q.decisions) if (d.told) assert.ok(d.told.ballad && d.told.tally, `${id}/${d.id}: a decision's own told has both lines`);
     assert.equal(q.needs, undefined, `${id}: nobody walks out in the Wold, so no chapter needs anyone`);
-    assert.equal(q.levelFloor, undefined, `${id}: only the end of a part tops a hero up`);
+    assert.equal(q.levelFloor, id === 'b4-northdoor' ? 60 : undefined, `${id}: only the end of a part tops a hero up`);
     assert.equal(ENEMIES[q.foe].name, q.foeName); assert.equal(ENEMIES[q.foe].attack.name, q.attackName); assert.equal(ENEMIES[`${q.foe}-retainer`].name, q.retainerName);
     assert.equal(ENCOUNTERS[`quest:${id}`].victoryNode, `q-${id}-after`);
     // The clue makes the peaceful way's first line, and the careful route its second.
@@ -124,8 +133,16 @@ test('chapters 11 to 17 follow Part One in Book Four\'s own file: white, from Hi
 
 test('each chapter has one camp scene: an empty cast, one node, the camp beat, and choices that change nothing', () => {
   assert.deepEqual(entries(RAWS).filter(([, v]) => IDS.includes(v.after)).map(([k, v]) => [k, v.after]), [['lantry-camp', 'b4-lantry'], ['sheddon-camp', 'b4-sheddon'], ['orme-camp', 'b4-orme'],
-    ['greve-camp', 'b4-greve'], ['thrum-nessa', 'b4-thrum'], ['reckoning-camp', 'b4-reckoning'], ['potbells-camp', 'b4-potbells']]);
-  for (const id of IDS) {
+    ['greve-camp', 'b4-greve'], ['thrum-nessa', 'b4-thrum'], ['reckoning-camp', 'b4-reckoning'], ['potbells-camp', 'b4-potbells'],
+    ['hush-camp', 'b4-hush'], ['column-camp', 'b4-column'], ['b4-parttwo-end', 'b4-northdoor']]);
+  // The end of the part is two nodes, chained, and sets b4_parttwo_done on its last choice, as Part One's did.
+  const end = SCENES['b4-parttwo-end'];
+  assert.deepEqual(end.cast, []);
+  assert.deepEqual(Object.keys(end.nodes), ['beam', 'south']);
+  assert.deepEqual(end.nodes.beam.choices.map((c) => c.next), ['south']);
+  assert.equal(end.nodes.south.objective, 'Camp.');
+  assert.deepEqual(end.nodes.south.choices.map((c) => c.setFlags), [{ b4_parttwo_done: true }]);
+  for (const id of IDS.filter((x) => x !== 'b4-northdoor')) {
     const scenes = Object.values(SCENES).filter((x) => x?.after === id);
     assert.equal(scenes.length, 1, id);
     const [scene] = scenes;
@@ -146,6 +163,8 @@ test('every chapter plays to its end peacefully, by every answer, sets only its 
     assert.equal(s.player.xp, P.XP_NEXT[QUESTS[id].level - 1] + QUESTS[id].xp, `${id}: exactly the chapter's XP`);
     const scene = sceneOf(id);
     assert.equal(s.story.nodeId, `scene-${scene.id}-${scene.start}`, `${id}: its camp follows`);
+    // Chapter 19 goes straight on: its camp leads into chapter 20's opening, not to a town.
+    if (QUESTS[id].continues) { const on = choose(s, E.buildView(s).scene.choices[0].id); assert.equal(on.story.nodeId, 'q-b4-northdoor-start', `${id}/${decision}`); assert.equal(on.world.activeQuest, 'b4-northdoor'); continue; }
     assert.equal(toTown(s).story.nodeId, `town-${home(id)}`, `${id}/${decision}`);
   }
   // Chapter 11 opens Lantry, which chapter 12 leaves from; chapter 12 ends in Orme.
@@ -170,7 +189,8 @@ test('a decision changes exactly the approval and the reputation the design give
 
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won; the white is in every fight', () => {
   for (const [id, fought] of [['b4-lantry', /scraped and trampled where the fight was/], ['b4-sheddon', /trampled grey where the fight was/], ['b4-orme', /bandages and lamps/],
-    ['b4-greve', /The yard is trampled to the stones/], ['b4-thrum', /The lane is trampled to the stones/], ['b4-reckoning', /clerks bandaging their hands/], ['b4-potbells', /Dunnet has brought out blankets/]]) {
+    ['b4-greve', /The yard is trampled to the stones/], ['b4-thrum', /The lane is trampled to the stones/], ['b4-reckoning', /clerks bandaging their hands/], ['b4-potbells', /Dunnet has brought out blankets/],
+    ['b4-hush', /trampled and torn where the fight was, and the shapes are gone/], ['b4-column', /trampled and broken where the fight was/], ['b4-northdoor', /trampled and torn where the fight was\. The Wold came in/]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -240,7 +260,8 @@ test('every flag Part Two sets is read: by its own camp, a later chapter or both
   const sets = new Set();
   JSON.stringify(IDS.map((id) => RAWQ[id]), (k, v) => { if (v && Array.isArray(v.decisions)) for (const d of v.decisions) sets.add(d.flag); return v; });
   assert.deepEqual([...sets].sort(), ['b4_demand_carried', 'b4_gave_lantry', 'b4_hero_ordered', 'b4_hero_went_back', 'b4_names_given', 'b4_names_kept', 'b4_names_written', 'b4_orin_ordered', 'b4_orin_went_back',
-    'b4_potbell_broken', 'b4_potbell_kept', 'b4_potbell_rota', 'b4_rang_lantry', 'b4_rue_asked_nessa', 'b4_rue_gave', 'b4_rue_kept', 'b4_share_promised', 'b4_sloe_comes', 'b4_tally_reasons', 'b4_tally_truth', 'b4_tally_wait', 'b4_waited_lantry']);
+    'b4_potbell_broken', 'b4_potbell_kept', 'b4_potbell_rota', 'b4_rang_lantry', 'b4_rue_asked_nessa', 'b4_rue_gave', 'b4_rue_kept', 'b4_share_promised', 'b4_sloe_comes', 'b4_tally_reasons', 'b4_tally_truth', 'b4_tally_wait', 'b4_waited_lantry',
+    'b4_crossed', 'b4_envoys_only', 'b4_hall_camp', 'b4_hush_rang', 'b4_tally_carried', 'b4_tally_last', 'b4_tally_left', 'b4_walkers_led', 'b4_walkers_marked'].sort());
   const text = JSON.stringify([...IDS.map((id) => RAWQ[id]), ...entries(RAWS).map(([, s]) => s), ...entries(RAWJ).map(([, j]) => j)]);
   for (const flag of sets) assert.ok(text.includes(`"flag":"${flag}"`) || new RegExp(`"anyFlag":\\[[^\\]]*"${flag}"`).test(text), `${flag} is read`);
   // Chapter 12 reads chapter 11, and chapter 13 reads both.
@@ -387,12 +408,12 @@ test('the Telling: each chapter is told in the Journal, by the answer\'s own lin
   assert.match(J.sync(s).telling.find((x) => x.id === 'told:b4-lantry').tally, /The southerners rang/);
 });
 
-test('Lantry\'s and Orme\'s jobs are on their boards in their windows: The Painted Door to chapter 13, White-wool to 17, Burdock\'s Mistake 14 to 16, The Southern Hand from 15', () => {
-  assert.deepEqual(JOB_IDS.map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [['lantry', 'b4-lantry', 'b4-orme'], ['lantry', 'b4-lantry', 'b4-potbells'], ['orme', 'b4-orme', 'b4-reckoning'], ['orme', 'b4-greve', undefined]]);
+test('Lantry\'s and Orme\'s jobs are on their boards in their windows: The Painted Door to chapter 13, White-wool to 17, Burdock\'s Mistake 14 to 16, The Southern Hand 15 to 18', () => {
+  assert.deepEqual(JOB_IDS.map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [['lantry', 'b4-lantry', 'b4-orme'], ['lantry', 'b4-lantry', 'b4-potbells'], ['orme', 'b4-orme', 'b4-reckoning'], ['orme', 'b4-greve', 'b4-hush']]);
   const offered = (id, chapter, done = false) => { const s = at(chapter); if (done) s.world.completed[chapter] = { xp: 0, gold: 0 }; s.world.townId = SIDE_JOBS[id].town; s.story.nodeId = `town-${SIDE_JOBS[id].town}`; return (E.buildView(s).world.sideJobs || []).some((j) => j.id === id); };
   assert.ok(offered('white-wool', 'b4-potbells') && !offered('white-wool', 'b4-potbells', true), 'White-wool closes once chapter 17 is done');
   assert.ok(!offered('burdock-mistake', 'b4-orme') && offered('burdock-mistake', 'b4-greve') && offered('burdock-mistake', 'b4-reckoning') && !offered('burdock-mistake', 'b4-reckoning', true));
-  assert.ok(!offered('southern-hand', 'b4-greve') && offered('southern-hand', 'b4-thrum') && offered('southern-hand', 'b4-potbells', true));
+  assert.ok(!offered('southern-hand', 'b4-greve') && offered('southern-hand', 'b4-thrum') && offered('southern-hand', 'b4-hush') && !offered('southern-hand', 'b4-hush', true));
   const board = (upTo) => { const s = at(upTo); s.world.townId = 'lantry'; s.story.nodeId = 'town-lantry'; return (E.buildView(s).world.sideJobs || []).map((j) => j.id); };
   assert.deepEqual(board('b4-sheddon').filter((id) => JOB_IDS.includes(id)).sort(), ['painted-door', 'white-wool']);
   assert.deepEqual(board('b4-orme').filter((id) => JOB_IDS.includes(id)).sort(), ['painted-door', 'white-wool']);
@@ -416,11 +437,12 @@ test('Lantry\'s and Orme\'s jobs are on their boards in their windows: The Paint
   assert.ok(!blankets({}) || blankets({}).locked);
 });
 
-test('chapters 11 to 17 each give their own Legendary reward, once, worn from two levels below the chapter, never sold; the scarf and the cloak are warm', () => {
+test('chapters 11 to 20 each give their own Legendary reward, once, worn from two levels below the chapter, never sold; the scarf, the cloak and the mantle are warm', () => {
   const rewards = GEAR.filter((i) => IDS.includes(i.exclusive?.quest));
   assert.deepEqual(rewards.map((i) => [i.exclusive.quest, i.name, i.slot, i.requires.level]), [
     ['b4-lantry', "Door-reader's Scarf", 'accessory', 48], ['b4-sheddon', 'Sheddon Column Shield', 'offHand', 49], ['b4-orme', 'Long Tally Staff', 'mainHand', 50],
-    ['b4-greve', 'Letting-house Censer', 'accessory', 51], ['b4-thrum', 'Thrum Lane Cloak', 'armor', 52], ['b4-reckoning', "Reckoner's Slate", 'mainHand', 53], ['b4-potbells', 'Pot-bell Mace', 'mainHand', 54]]);
+    ['b4-greve', 'Letting-house Censer', 'accessory', 51], ['b4-thrum', 'Thrum Lane Cloak', 'armor', 52], ['b4-reckoning', "Reckoner's Slate", 'mainHand', 53], ['b4-potbells', 'Pot-bell Mace', 'mainHand', 54],
+    ['b4-hush', 'Hush-wool Mantle', 'armor', 55], ['b4-column', 'Column Longbow', 'mainHand', 56], ['b4-northdoor', 'North-door Greataxe', 'mainHand', 57]]);
   for (const item of rewards) {
     assert.equal(item.rarity, 'Legendary', item.id);
     assert.equal(item.requires.level, QUESTS[item.exclusive.quest].level - 2, item.id);
@@ -429,13 +451,22 @@ test('chapters 11 to 17 each give their own Legendary reward, once, worn from tw
     for (const n of Object.values(item.requires.abilities || {})) assert.ok(n <= 15, item.id);
   }
   assert.equal(ITEMS['door-readers-scarf'].warm, true);
-  assert.deepEqual(rewards.filter((i) => i.warm).map((i) => i.id), ['door-readers-scarf', 'thrum-lane-cloak'], 'chapters 11 and 15 are the warm ones');
+  assert.deepEqual(rewards.filter((i) => i.warm).map((i) => i.id), ['door-readers-scarf', 'thrum-lane-cloak', 'hush-wool-mantle'], 'chapters 11, 15 and 18 are the warm ones');
+  assert.equal(ITEMS['hush-wool-mantle'].armor.dexCap, 2, 'the mantle is medium armour');
+  assert.deepEqual(ITEMS['column-longbow'].requires.classes, ['ranger', 'rogue']);
+  assert.equal(ITEMS['column-longbow'].skill.name, 'Pinning Shot');
+  assert.ok(ITEMS['north-door-greataxe'].weapon.properties.includes('twoHanded') && ITEMS['north-door-greataxe'].requires.abilities.str === 15);
+  // Rewards 18 to 20 are worn from 55 to 57: tier 55 numbers, never tier 60's.
+  assert.equal(ITEMS['column-longbow'].damageBonus, ITEMS['long-watch-bow'].damageBonus);
+  assert.ok(ITEMS['north-door-greataxe'].stats.dealt < ITEMS.riftcleaver.stats.dealt);
   assert.equal(ITEMS['letting-house-censer'].story.skill, 'medicine', 'the censer has the Medicine story ability');
   assert.deepEqual(ITEMS['reckoners-slate'].requires.classes, ['wizard']);
   assert.equal(ITEMS['pot-bell-mace'].requires.abilities.str, 13);
   // Each beats the sold piece of its kind at tier 50 on something, and none is beaten by it.
   for (const [reward, sold, better] of [['letting-house-censer', 'avalanche-horn', (r) => r.saveBonuses.wis], ['thrum-lane-cloak', 'whitewool-jerkin', (r) => r.saveBonuses.wis && r.skillBonuses.insight],
-    ['reckoners-slate', 'aurora-staff', (r) => r.skillBonuses.arcana && r.skill.effect !== ITEMS['aurora-staff'].skill.effect && r.spellDcBonus === ITEMS['aurora-staff'].spellDcBonus], ['pot-bell-mace', 'rimeheart-longsword', (r) => r.stats.dealt > ITEMS['rimeheart-longsword'].stats.dealt]]) {
+    ['reckoners-slate', 'aurora-staff', (r) => r.skillBonuses.arcana && r.skill.effect !== ITEMS['aurora-staff'].skill.effect && r.spellDcBonus === ITEMS['aurora-staff'].spellDcBonus], ['pot-bell-mace', 'rimeheart-longsword', (r) => r.stats.dealt > ITEMS['rimeheart-longsword'].stats.dealt],
+    ['hush-wool-mantle', 'fleece-lined-scale', (r) => r.skillBonuses.stealth && r.armor.base === ITEMS['fleece-lined-scale'].armor.base],
+    ['column-longbow', 'long-watch-bow', (r) => r.skill && r.requires.classes.includes('rogue')], ['north-door-greataxe', 'glacier-maul', (r) => r.damageBonus > ITEMS['glacier-maul'].damageBonus]]) {
     assert.ok(better(ITEMS[reward]), `${reward} beats ${sold}`);
     assert.ok(ITEMS[sold].requires.level <= ITEMS[reward].requires.level, sold);
   }
@@ -576,4 +607,100 @@ test('chapter 17: who taught Dunnet its bell follows Part One and Book Three, an
   assert.match(sceneText(decide('b4-potbells', 'rota', { flags: { b3_wren_cast: true } })), /^Nessa: [^\n]*Wren's in a bell\. That's as near as I get\./m);
   assert.match(sceneText(decide('b4-potbells', 'rota')), /^Nessa: [^\n]*Wren did the bells\./m);
   assert.doesNotMatch(sceneText(decide('b4-potbells', 'rota', { party: ['orin', 'maren'], flags: { b3_wren_cast: true } })), /Wren|Nessa/);
+});
+
+test('chapter 18: the Hush shows the faces the earlier books left there, Aster cannot reach it, and the camp keeps one name each', () => {
+  const open = (flags, party) => opening(departed('b4-hush', { flags, party }));
+  assert.match(open({ b3_turned_left: true }), /Tobiah Keld\. Maud Penney\. Gil Asher\. Jessamy Wicken\. Annick Dole\. And eleven more\./);
+  assert.doesNotMatch(open({}), /Tobiah Keld/);
+  assert.match(open({}), /Hollin's Reach, the town that burned while its council argued/);
+  assert.match(open({}), /Aster Vey is in Briarwatch's bell/);
+  assert.match(open({ b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true }), /Aster Vey is in Vell's great bell/);
+  assert.match(open({ b3_bell_aster: true }), /Aster Vey is at rest/);
+  // Rue reads the Hush by the Book Three ending.
+  assert.match(talk('b4-hush', 'rue'), /lightest in the tally/);
+  assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_promise_hesk: true } }), /the worst in the tally/);
+  assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_promise_hesk: true, b3_three_told: true } }), /not the worst in the tally/);
+  assert.match(talk('b4-hush', 'rue', { flags: { b3_promise_old: false, b3_stair_sealed: true } }), /Every winter is worse/);
+  assert.match(talk('b4-hush', 'rue', { flags: { b4_book_returned: false, b4_book_burned: true } }), /'Heath'/);
+  // Sedge's mother is walking only where she was not fetched; Orin's order is his.
+  assert.ok(!talkIds('b4-hush').includes('mother') && !talkIds('b4-hush', { flags: { b4_orin_went_back: true } }).includes('mother'));
+  assert.match(talk('b4-hush', 'mother', { flags: { b4_orin_ordered: true } }), /^Orin: I gave the order/m);
+  const away = talk('b4-hush', 'mother', { flags: { b4_hero_ordered: true }, party: ['maren', 'nessa'] });
+  assert.match(away, /moves over on the stone/); assert.doesNotMatch(away, /Orin/);
+  assert.match(talk('b4-hush', 'mother', { flags: { b4_hero_ordered: true } }), /moves over on the stone/);
+  // The hand-bell is lent in the opening, and ringing it sends the white onto the Orme road.
+  assert.match(open({}), /Long Hall's hand-bell/);
+  assert.match(told(decide('b4-hush', 'rang')), /down onto the Orme road/);
+  const camp = sceneText(decide('b4-hush', 'led'));
+  assert.match(camp, /^Maren: Anwen\.$/m); assert.match(camp, /^Nessa: Wren\.$/m); assert.match(camp, /^Orin: Davin\.$/m);
+  assert.match(sceneText(decide('b4-hush', 'led', { flags: { b4_orin_ordered: true } })), /^Orin: Sedge's mother/m);
+  assert.match(sceneText(decide('b4-hush', 'led', { flags: { b4_rue_gave: true } })), /^Rue: Heath\. I do not remember her/m);
+  assert.doesNotMatch(sceneText(decide('b4-hush', 'marked', { party: [] })), /Orin|Maren|Nessa/);
+});
+
+test('chapter 19: where Sloe went follows chapter 16, the Hush\'s answer is on the road, and the walkers make the climb harder', () => {
+  const open = (flags) => opening(departed('b4-column', { flags }));
+  assert.match(open({ b4_demand_carried: true }), /wait at the Hall for the south's answer/);
+  assert.match(open({ b4_share_promised: true }), /whether the south's promise is kept/);
+  assert.match(open({ b4_sloe_comes: true }), /wait for you at the Hall, as she said she would/);
+  assert.match(open({ b3_promise_old: false, b3_stair_sealed: true }), /Hesk went with her/);
+  assert.doesNotMatch(open({}), /Hesk/);
+  assert.match(open({ b4_walkers_led: true }), /walkers from the Hush are in the middle of the column/);
+  assert.match(open({ b4_walkers_marked: true }), /came down to Orme by your marks/);
+  assert.match(open({ b4_hush_rang: true }), /where the hand-bell rang it/);
+  assert.match(open({ 'job:white-wool-blankets': true }), /council's blankets/);
+  assert.match(open({}), /grey and mended/);
+  for (const [flag, line] of [['b4_potbell_broken', /pan-handle tied to her pack/], ['b4_potbell_kept', /^Wem's elder: Dunnet sent the white/m], ['b4_potbell_rota', /rota chalked on it/]]) assert.match(talk('b4-column', 'dunnet', { flags: { [flag]: true } }), line, flag);
+  assert.ok(talkIds('b4-column').includes('davin') && !talkIds('b4-column', { flags: { b4_davin_comes: false, b4_davin_home: true } }).includes('davin'));
+  assert.match(talk('b4-column', 'burdock', { flags: { 'job:burdock-mistake-beside': true } }), /A correction is not a lie/);
+  // The walkers make the climb 2 harder; the white at the tail is stronger after the walkers and the hand-bell.
+  const dc = (flags) => E.buildView(at('b4-column', { phase: 'crisis', flags })).scene.choices.find((c) => c.id === 'resolve').check.dc;
+  assert.equal(dc({ b4_walkers_led: true }), dc({}) + 2);
+  assert.deepEqual(ENCOUNTERS['quest:b4-column'].flagScale, { b4_walkers_led: 1.15, b4_hush_rang: 1.25 });
+  const hp = (flags) => choose(at('b4-column', { phase: 'crisis', flags }), 'confront').combat.actors.find((a) => a.name === QUESTS['b4-column'].foeName).maxHp;
+  assert.ok(hp({ b4_hush_rang: true }) > hp({}));
+  // The camp: Burdock asks about the south's tally and hears of Fennick; with the tally left, Rue asks for him.
+  assert.match(sceneText(decide('b4-column', 'carried')), /^Burdock: May I ask you something[^]*Clerk-Major Fennick of Vell/m);
+  const left = sceneText(decide('b4-column', 'left'));
+  assert.match(left, /^Rue: Burdock asked me to ask you/m); assert.doesNotMatch(left, /^(Burdock|Orin):/m);
+  assert.match(sceneText(decide('b4-column', 'last', { flags: { b3_turned_left: true } })), /You saw their faces in the Hush/);
+});
+
+test('chapter 19 goes straight on: its camp plays, then chapter 20 opens, and a defeat in chapter 20 wakes on chapter 19\'s ledge', () => {
+  let s = decide('b4-column', 'carried');
+  assert.equal(s.story.nodeId, 'scene-column-camp-overhang');
+  s = choose(s, 'sleep');
+  assert.equal(s.story.nodeId, 'q-b4-northdoor-start');
+  assert.equal(s.world.activeQuest, 'b4-northdoor'); assert.equal(s.world.goingOn, undefined);
+  assert.equal(STORY_NODES['q-b4-column-ledge'].title, 'The high turns under the overhang');
+});
+
+test('chapter 20: the door was opened from the south, the crossing is decided, and Part Two ends at the empty hook', () => {
+  assert.match(told(choose(strong(departed('b4-northdoor')), 'investigate')), /tarred hemp, rope-maker's hemp from the south/);
+  assert.match(opening(departed('b4-northdoor', { flags: { b4_gave_door: true } })), /where you knelt at the start of the winter and gave/);
+  assert.match(talk('b4-northdoor', 'sloe', { flags: { b4_sloe_comes: true } }), /I said I would wait for you here/);
+  assert.ok(talkIds('b4-northdoor', { flags: { b4_tally_last: true } }).includes('burdock') && !talkIds('b4-northdoor', { flags: { b4_tally_left: true } }).includes('burdock'));
+  assert.match(talk('b4-northdoor', 'home'), /^Davin: Saltwick[^]*^Orin:[^]*^Maren:[^]*^Nessa:/m);
+  assert.match(told(decide('b4-northdoor', 'envoys')), /^Nessa: We brought them up a mountain/m);
+  assert.equal(ENEMIES[QUESTS['b4-northdoor'].foe].name, "The North Face's White");
+  for (const [decision, line] of [['crossed', /the Wold goes down it behind you/], ['camp', /fires burn along the walls/], ['envoys', /the ropes are going out of it/]]) {
+    let s = playPeaceful('b4-northdoor', decision);
+    assert.equal(s.story.nodeId, 'scene-b4-parttwo-end-beam', decision);
+    assert.match(opening(s), /The hook is there\. The Parting Bell is not\./);
+    assert.match(opening(s), /^Orin: I know that knot\./m);
+    s = choose(s, 'rope');
+    assert.match(opening(s), line, decision);
+    s = choose(s, 'down');
+    assert.equal(s.story.flags.b4_parttwo_done, true); assert.equal(s.story.nodeId, 'town-highpass', decision);
+    assert.equal(s.player.level, 60);
+  }
+  // Without Orin, the hero knows the knot from Cinder Fold.
+  const alone = opening(decide('b4-northdoor', 'camp', { party: ['maren', 'nessa'] }));
+  assert.match(alone, /You have seen it at Cinder Fold, on the ropes of the nine/); assert.doesNotMatch(alone, /Orin/);
+  assert.match(opening(decide('b4-northdoor', 'camp', { flags: { b4_unannounced: false, b4_parting_rung: true } })), /You rang it here, at first snow/);
+  // A hero behind is topped up to 60 by the chapter.
+  const s = at('b4-northdoor', { phase: 'after', flags: { 'method:b4-northdoor': 'peace' } });
+  s.player.xp = P.XP_NEXT[52]; s.player.level = 53;
+  assert.equal(choose(s, 'camp').player.level, 60);
 });

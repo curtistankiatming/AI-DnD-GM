@@ -939,5 +939,176 @@
         ]
       }
     }
+  },
+  "hush-camp": {
+    "id": "hush-camp",
+    "after": "b4-hush",
+    "cast": [],
+    "act": "Camp",
+    "location": "The last cairn north of Orme, the night after",
+    "start": "cairn",
+    "nodes": {
+      "cairn": {
+        "title": "The Last Cairn",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "The last cairn, late. The walkers are asleep round it in a ring, close together, holding hands. Nobody else is asleep.", "when": { "flag": "b4_walkers_led" } },
+            { "narrate": "The last cairn, late. Behind you to the north the marks go back into the white, one every twenty paces. Nobody is asleep.", "when": { "flag": "b4_walkers_marked" } },
+            { "narrate": "The last cairn, late. The Orme road runs south from it under a white that was not there yesterday. Nobody is asleep.", "when": { "flag": "b4_hush_rang" } }
+          ] },
+          { "narrate": "Nobody says anything for a long time. Then Rue takes out her chalk and writes a name on the cairn, small, and says it aloud, so that it has been said." },
+          { "oneOf": [
+            { "say": "Rue", "text": "Heath. I do not remember her. I have it written. I am keeping the name.", "when": { "flag": "b4_rue_gave" } },
+            { "say": "Rue", "text": "Heath. I am keeping her." }
+          ] },
+          { "oneOf": [
+            { "say": "orin", "text": "Sedge's mother. She hasn't got one. I'm keeping that she hadn't.", "when": { "flag": "b4_orin_ordered", "party": "orin" } },
+            { "say": "orin", "text": "Davin.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+            { "say": "orin", "text": "Mags.", "when": { "party": "orin" } }
+          ] },
+          { "say": "maren", "text": "Anwen.", "when": { "party": "maren" } },
+          { "say": "nessa", "text": "Wren.", "when": { "party": "nessa" } },
+          { "narrate": "Rue writes each one on the cairn as it is said, under her own, and then holds out the chalk to you." }
+        ],
+        "choices": [
+          {
+            "id": "own",
+            "label": "Say your own name",
+            "lines": [
+              { "narrate": "You say your own name, aloud, into the quiet, and Rue writes it on the cairn with the others." }
+            ]
+          },
+          {
+            "id": "other",
+            "label": "Say the name of someone you have lost",
+            "lines": [
+              { "narrate": "You say a name, aloud, into the quiet. Rue writes it on the cairn with the others, and does not ask whose it was." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "column-camp": {
+    "id": "column-camp",
+    "after": "b4-column",
+    "cast": [],
+    "act": "Camp",
+    "location": "Under the overhang on the north face, the night after",
+    "start": "overhang",
+    "nodes": {
+      "overhang": {
+        "title": "The Overhang",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Late, under the overhang. The column sleeps roped, in rows along the road, and the sledges are lashed to iron rings in the rock that somebody cut nine hundred years ago. Burdock is awake, sitting on the first of them with a lamp.", "when": { "flag": "b4_tally_carried" } },
+            { "narrate": "Late, under the overhang. The column sleeps roped, in rows along the road. Below, a long way down, a lamp is going down the switchbacks into the white with the sledges. Rue is awake, watching it.", "when": { "flag": "b4_tally_left" } },
+            { "narrate": "Late, under the overhang. The column sleeps roped, in rows along the road. Burdock is awake, sitting against the rock with the record of the winters on his knees, wrapped in his coat.", "when": { "flag": "b4_tally_last" } }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "Burdock asked me to ask you, before he went down. Does the south keep a tally? He said he would like to know, and that I should write it down for him, and bring it to Orme one day.", "when": { "flag": "b4_tally_left" } },
+            { "say": "Burdock", "text": "May I ask you something, for the tally? Does the south keep one? A tally. Of who is lost, and who came back, and who was never written." }
+          ] },
+          { "narrate": "You tell them about Fennick. Clerk-Major Fennick of Vell, who keeps the census in a box on his shoulder and counts everybody down the stair and back up it, and writes the ones who do not come back in full, one to a line, so that somebody has." },
+          { "oneOf": [
+            { "narrate": "You tell them about Fennick's ledger: came back, thirty-eight. He shows it to everyone.", "when": { "flag": "b3_turned_escorted" } },
+            { "narrate": "You tell them about the seven names in Fennick's ledger with nothing written beside them, because he does not know what to write.", "when": { "flag": "b3_turned_fennick" } },
+            { "narrate": "You tell them about the sixteen names in Fennick's ledger, one to a line, with nothing beside them. You saw their faces in the Hush.", "when": { "flag": "b3_turned_left" } },
+            { "narrate": "You tell them about Fennick's ledger, and the square hand he writes it in." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "Then there is one. In the south. A small one, in a box. I will write that for him: the south keeps a tally, and its keeper is called Fennick, and he counts the ones who come back.", "when": { "flag": "b4_tally_left" } },
+            { "say": "Burdock", "text": "Then there is one. A small one, in a box. I would like to meet him. I would like to see his hand. I expect it is very square." }
+          ] },
+          { "say": "orin", "text": "He'd like you. He'd want to count your books.", "when": { "party": "orin", "noneFlag": ["b4_tally_left"] } },
+          { "say": "Burdock", "text": "Everyone does, in the end.", "when": { "party": "orin", "noneFlag": ["b4_tally_left"] } },
+          { "narrate": "Below the overhang the white lies in the gorge of switchbacks, not moving." }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Sleep, roped, with the column",
+            "lines": [
+              { "narrate": "You sleep roped to the column, on the road, under the overhang, with three thousand people breathing round you in the dark." }
+            ]
+          },
+          {
+            "id": "watch",
+            "label": "Sit up with whoever is awake",
+            "lines": [
+              { "narrate": "You sit up until the lamp goes out, and say nothing, and nobody needs you to." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b4-parttwo-end": {
+    "id": "b4-parttwo-end",
+    "after": "b4-northdoor",
+    "cast": [],
+    "act": "The end of Part Two",
+    "location": "The middle of the Hall of Legends, under the open sky",
+    "start": "beam",
+    "nodes": {
+      "beam": {
+        "title": "The Empty Hook",
+        "objective": "Look at what is left.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Before anyone goes anywhere, you walk down the Hall to its middle, where the roof is gone and the sky comes in. The Wold comes behind you, as far as the edge of the open part, and stops there, at the foot of the south door's steps.", "when": { "flag": "b4_crossed" } },
+            { "narrate": "Before anyone goes anywhere, you walk down the Hall to its middle, where the roof is gone and the sky comes in, between the Wold's fires. The Wold comes behind you, as far as the edge of the open part, and stops.", "when": { "flag": "b4_hall_camp" } },
+            { "narrate": "Before the ropes go back down, you walk down the Hall to its middle, where the roof is gone and the sky comes in. The Wold comes behind you, as far as the edge of the open part, and stops.", "when": { "flag": "b4_envoys_only" } }
+          ] },
+          { "narrate": "The iron beam is there, across the open middle of the Hall, with the snow of the storm along the top of it. The hook is there. The Parting Bell is not." },
+          { "oneOf": [
+            { "narrate": "You rang it here, at first snow, and every bell in the south answered. Now there is nothing on the hook to ring.", "when": { "flag": "b4_parting_rung" } },
+            { "narrate": "At first snow it hung here, small as a bucket and black with age, and nobody rang it. Now there is nothing on the hook to ring." }
+          ] },
+          { "narrate": "A rope is still on the hook: a short length of tarred hemp, cut clean a foot below it, with the knot that held the bell still tied in it." },
+          { "say": "orin", "text": "I know that knot.", "when": { "party": "orin" } },
+          { "narrate": "Orin reaches up and takes the cut end in his hand, and turns it over, and looks at the knot for a long time. A round turn and two half-hitches, and a stopper on the tail, worked small and hard, the way he does not tie it now.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "My hands know it. That's the one I tied before the stair. I learned a knot again, after. Not this one. This is the one the stair took. It had a name. Somebody told me its name.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "I can't tell you what it's called. I can't tell you who taught me.", "when": { "party": "orin" } },
+          { "narrate": "You reach up and take the cut end in your hand. You know the knot. A round turn and two half-hitches, and a stopper worked small and hard on the tail, the size of a thumb: a bell-rope knot. You have seen it at Cinder Fold, on the ropes of the nine, where the rope families tie it.", "when": { "absent": "orin" } }
+        ],
+        "choices": [
+          {
+            "id": "rope",
+            "label": "Lift the cut rope off the hook",
+            "next": "south",
+            "lines": [
+              { "narrate": "You lift the cut rope off the hook, knot and all, and put it in your pack. Somebody from the south took the Parting Bell down off this hook, and cut the rope, and left the knot." }
+            ]
+          }
+        ]
+      },
+      "south": {
+        "title": "To Be Continued",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Sloe comes out into the open middle of the Hall, alone, and stands under the beam, and looks up at the hook for as long as it takes her to do a sum." },
+          { "say": "Sloe", "text": "Then somebody in the south has done the sum already. And not told anyone the answer." },
+          { "narrate": "Rue writes it down. She writes it on the beam's iron post, in chalk, under the hook, in letters as big as her hand, so that whoever comes next will read it: 'The bell was here. It has gone south.'" },
+          { "oneOf": [
+            { "narrate": "Below the south door the old north road goes down to Highpass, and the Wold goes down it behind you.", "when": { "flag": "b4_crossed" } },
+            { "narrate": "Below the south door the old north road goes down to Highpass. Behind you, the Wold's fires burn along the walls of the Hall.", "when": { "flag": "b4_hall_camp" } },
+            { "narrate": "Below the south door the old north road goes down to Highpass. Behind you, the north door is open, and the ropes are going out of it, one at a time.", "when": { "flag": "b4_envoys_only" } }
+          ] }
+        ],
+        "choices": [
+          {
+            "id": "down",
+            "label": "Go down to Highpass",
+            "setFlags": { "b4_parttwo_done": true },
+            "lines": [
+              { "narrate": "You go out of the south door and down the old north road towards Highpass, with the cut rope in your pack. Behind you the hook is empty." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

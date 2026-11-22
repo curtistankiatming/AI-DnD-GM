@@ -131,9 +131,10 @@ test('a choice that costs gold needs it, and a job left half done picks up where
 });
 
 test('the story mentions a side job only if it was done', () => {
+  // Penn the job's, not Maud Penney of Book Three's deep (b4-hush).
   const lines = (id) => QUESTS[id].opening.concat(QUESTS[id].after).filter((l) => l.when?.flag?.startsWith('job:'));
   assert.ok(lines('chairs').length + lines('southroad').length >= 2);
   for (const q of Book.CHAPTERS) for (const key of ['opening', 'approach', 'crisis', 'after']) for (const l of Array.isArray(q[key]) ? q[key] : []) {
-    if (/Tib|Ada Rusk|Penn|Farrow|Mag Tolly|Davy|Ottilie|Gilliam|Willem/.test(l.text || l.narrate || '')) assert.ok(l.when?.flag?.startsWith('job:'), `${q.id}.${key}: ${l.text || l.narrate}`);
+    if (/Tib|Ada Rusk|Penn\b|Farrow|Mag Tolly|Davy|Ottilie|Gilliam|Willem/.test(l.text || l.narrate || '')) assert.ok(l.when?.flag?.startsWith('job:'), `${q.id}.${key}: ${l.text || l.narrate}`);
   }
 });

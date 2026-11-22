@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand from chapter 15 (from: b4-greve); it has no until yet, since it closes after chapter 18 (b4-hush), which is not written.",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand during chapters 15 to 18 (from: b4-greve, until: b4-hush).",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -544,6 +544,7 @@
     "town": "orme",
     "level": 54,
     "from": "b4-greve",
+    "until": "b4-hush",
     "gold": 170,
     "giver": "Rue, at the oldest wall",
     "brief": "A line on Orme's oldest wall is in free-wards script: a southerner who crossed two hundred years ago and stayed. Find his family, who do not know.",

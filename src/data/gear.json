@@ -5151,6 +5151,123 @@
     }
   },
   {
+    "id": "hush-wool-mantle",
+    "name": "Hush-wool Mantle",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 890,
+    "warm": true,
+    "description": "A long mantle of grey-white wool, close-woven and quilted over horn scales, made by a walker in the Hush who has no name, and given without a word.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +2 Stealth, +1 Constitution and Wisdom saving throws.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 55
+    },
+    "exclusive": {
+      "quest": "b4-hush"
+    }
+  },
+  {
+    "id": "column-longbow",
+    "name": "Column Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 900,
+    "description": "The bow of the Wold's rearguard on the switchbacks, horn and ash, with the marks of the north face's turns cut along the back of it.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +7 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Pin an enemy to the turn for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 56,
+      "classes": [
+        "ranger",
+        "rogue"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-column"
+    }
+  },
+  {
+    "id": "north-door-greataxe",
+    "name": "North-door Greataxe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 910,
+    "description": "The axe that has hung on the inside of the Hall's north door since the parting, for whoever has to clear the step of ice.",
+    "purpose": "Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Hold the Door",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Stand in the door: an enemy deals 25% less damage until your next turn."
+    },
+    "requires": {
+      "level": 57,
+      "classes": [
+        "fighter"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "quest": "b4-northdoor"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",
