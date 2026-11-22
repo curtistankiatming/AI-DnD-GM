@@ -41,7 +41,10 @@
         "noneFlag": [
           "b3_wren_cast",
           "b3_wren_waits",
-          "b3_wren_refused"
+          "b3_wren_refused",
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
         ]
       },
       "text": "Nessa wrote Wren a long yes: she will take Cinder Fold's forge-signal after her, but not yet."
@@ -53,6 +56,11 @@
         "is": "later",
         "anyFlag": [
           "b3_wren_cast"
+        ],
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
         ]
       },
       "text": "Nessa is keeper of Cinder Fold's forge-signal. Wren gave her the key at the pit before she was cast into the tenth bell."
@@ -64,6 +72,11 @@
         "is": "later",
         "anyFlag": [
           "b3_wren_waits"
+        ],
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
         ]
       },
       "text": "Nessa turned her long yes into a real one: she went back over the pass in the spring to take the forge-signal from Wren."
@@ -75,6 +88,11 @@
         "is": "later",
         "anyFlag": [
           "b3_wren_refused"
+        ],
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
         ]
       },
       "text": "Nessa's yes to Wren's post is held for her. Wren keeps the forge-signal from a chair, alive and still angry about it."
@@ -83,7 +101,12 @@
       "who": "nessa",
       "when": {
         "flag": "nessa_keeper",
-        "is": "declined"
+        "is": "declined",
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
+        ]
       },
       "text": "Nessa turned down Wren's forge-signal post in a letter she sealed herself, and chose the road with the hero. Wren kept the no and will not ask again."
     },
@@ -94,6 +117,11 @@
         "is": "declined",
         "anyFlag": [
           "b3_wren_cast"
+        ],
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
         ]
       },
       "text": "Wren was cast into Cinder Fold's tenth bell. The miners' committee holds the signal key Nessa said no to."
@@ -102,7 +130,12 @@
       "who": "nessa",
       "when": {
         "flag": "second_oath",
-        "notFlag": "nessa_keeper"
+        "notFlag": "nessa_keeper",
+        "noneFlag": [
+          "b4_key_left",
+          "b4_key_carried",
+          "b4_key_hew"
+        ]
       },
       "text": "Nessa never answered Wren's offer of the forge-signal. The letter is still in her pocket."
     },
@@ -261,6 +294,111 @@
         "flag": "hollin_kept"
       },
       "text": "The hero never told Elske Marrow what they saw in Hollin's Reach. It was hers to tell."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_key_carried"
+      },
+      "text": "At Cinder Fold, Nessa took the forge-signal key north with her on its cord. Where she is, the signal is."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_key_hew"
+      },
+      "text": "At Cinder Fold, Nessa gave the forge-signal key to Hew, nine, who already climbed the signal stair every night with a hearth bell. She was nine when Wren pulled her out of the drain."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_key_left"
+      },
+      "text": "When the party went north from Cinder Fold, the forge-signal key stayed there with whoever keeps it."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_nessa_with_rue"
+      },
+      "text": "At midwinter in Cinder Fold, Nessa did not stop Rue of Thrum and did not go first for her: she went down and stood beside her among the ringers."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_nessa_stops_rue"
+      },
+      "text": "At midwinter in Cinder Fold, Nessa told Rue of Thrum no, and stopped her giving her season to the Parting Bell."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b4_nessa_signal"
+      },
+      "text": "At midwinter in Cinder Fold, Rue of Thrum went down to the ringers without Nessa, and the forge-signal was kept lit."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_orin_ordered"
+      },
+      "text": "At Sheddon in the Wold, Orin ordered the column on, and Sedge's mother was left in the white. He asked her name after."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_orin_went_back"
+      },
+      "text": "At Sheddon in the Wold, Orin could not order the column on: he went back into the white for Sedge's mother and gave the hero the front."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_hero_went_back"
+      },
+      "text": "At Sheddon in the Wold, the hero went back into the white for Sedge's mother instead of ordering the column on."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_orin_captain"
+      },
+      "text": "At Ashford, Orin took Captain Sorrel's commission: captain of the council's watch, forty strong, from the crossing to midwinter. He wanted every one of their names written down."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_orin_davin"
+      },
+      "text": "At Ashford, Orin took Captain Sorrel's commission as captain of the council's watch until midwinter, and made Davin of Saltwick his sergeant, holding the rear."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b4_orin_soldier"
+      },
+      "text": "Orin is not a captain: Captain Sorrel's commission to lead the council's watch went to someone else, and Orin is still the one who carries things."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b4_maren_vouched"
+      },
+      "text": "At Merrowgate, Maren vouched for Sloe of Orme in front of the harbour and in writing, without proof her gift could hear, and signed it Maren Vale, not Sister."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b4_maren_doubts"
+      },
+      "text": "At Merrowgate, Maren would not vouch for Sloe of Orme: she believed her, but was not sure of the sum, and wanted somebody to keep asking."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b4_maren_silent"
+      },
+      "text": "At Merrowgate, Maren did not speak for Sloe of Orme, or against her."
     }
   ]
 }

@@ -1481,10 +1481,10 @@
     ],
     "crisis": [
       { "narrate": "The carter is by the fire. He is a big quiet man in a drover's coat, with the book in both hands, held against his chest the way Rue held it coming down the road." },
-      { "say": "The carter", "text": "It came down that road after her. All of you saw. And it didn't go back up. It's been on every road since, worse than it ever was, and my Ada went into it on the Ashford road with the cart. This is what brought it." },
+      { "say": "The carter", "text": "It came down that road after her. All of you saw. And it didn't go back up. It's been on every road since, worse than it ever was, and my Lettice went into it on the Ashford road with the cart. This is what brought it." },
       { "narrate": "Nobody in the crowd says he is right. Nobody says he is wrong, either. They have come to see it done." },
       { "say": "Rue", "text": "Please. That is my mother. That is my town. Please do not. I will not know any of it, ever, if it burns." },
-      { "say": "The carter", "text": "Then you'll be like the rest of us. Ada can't remember me. Why should you get your mother back?" },
+      { "say": "The carter", "text": "Then you'll be like the rest of us. Lettice can't remember me. Why should you get your mother back?" },
       { "say": "maren", "text": "That isn't what he means. That isn't what he means at all. Listen to him." }
     ],
     "peaceful": {
@@ -1496,7 +1496,7 @@
         { "narrate": "Maren hears it first, as she always does, the catch in his breath when he says his wife's name. She does not try to take the book. She walks up to the fire and stands beside him, close, the way you would stand beside somebody at a grave.", "when": { "roller": "maren", "party": "maren" } },
         { "narrate": "{You walk|@ walks} up to the fire and {stand|stands} beside him, close, the way you would stand beside somebody at a grave. Maren is on his other side.", "when": { "party": "maren", "notRoller": "maren" } },
         { "narrate": "{You walk|@ walks} up to the fire and {stand|stands} beside him, close, the way you would stand beside somebody at a grave.", "when": { "absent": "maren" } },
-        { "narrate": "And {you say|@ says} it to him, quietly, where the crowd cannot hear: that he is not afraid of the book. He is not afraid of the white, either. He found the cart, with the reins tied off, the way Ada always tied them, and he has nowhere to put that. So he has put it here, in a book that holds a girl's mother, because if this burns, then somebody else has lost as much as he has, and he is not on his own with it." },
+        { "narrate": "And {you say|@ says} it to him, quietly, where the crowd cannot hear: that he is not afraid of the book. He is not afraid of the white, either. He found the cart, with the reins tied off, the way Lettice always tied them, and he has nowhere to put that. So he has put it here, in a book that holds a girl's mother, because if this burns, then somebody else has lost as much as he has, and he is not on his own with it." },
         { "narrate": "The carter does not answer for a long time. The fire goes on burning. Then he says, to nobody, that she tied the reins off. That she always did. That she must have got down on purpose, to walk, because she liked to walk the last mile." },
         { "say": "The carter", "text": "I'm not frightened of it. I never was. I just wanted somebody else to have lost something. That's all. That's all it was." },
         { "narrate": "He holds the book out, away from the fire, to nobody in particular, and his hands are shaking. Nobody in the crowd says anything. Then they begin, quietly, to go back down the road." }
@@ -5753,7 +5753,8 @@
       { "oneOf": [
         { "narrate": "Up in the tower Tovin rings the hour by hand with Pim, a breath behind him, on a bell that is bronze only.", "when": { "flag": "b3_bell_aster" } },
         { "narrate": "Up in the tower Tovin rings the hour with Pim, a breath behind him, and inside the bell Aster Vey rings with them, a little late, as she always has." }
-      ] }
+      ] },
+      { "narrate": "At the quarter after, Pim rings it a full breath late, once, on purpose, as he has once a day since the winter. Tovin has stopped asking him why. When Pim sees you in the square he rings the next one late as well.", "when": { "flag": "b3_pim_rang" } }
     ],
     "talks": [
       {
@@ -6417,6 +6418,7 @@
             { "say": "Hollis Brede", "text": "The council took our children over our own vote. Now it wants our ford. It can have the ford. The meeting says they may cross and not stop, and I said it louder than anybody, and I'm not sorry. The council can learn what a no sounds like from the other side.", "when": { "flag": "b3_ashford_children" } }
           ] },
           { "say": "Hollis Brede", "text": "Ashford's not cruel. Ashford's careful. There's a difference, and nobody up at Highpass has ever once troubled to learn it." },
+          { "say": "Hollis Brede", "text": "You spelled us right, once, in the council's book. One word. I've not forgotten it. It's why you're hearing this from me, on this wall, and not from a clerk.", "when": { "flag": "b3_brede_written" } },
           { "say": "Hollis Brede", "text": "If the river comes up white while they're in it, they'll be on their own. You know that. I'd like you to know I know it." }
         ]
       },
