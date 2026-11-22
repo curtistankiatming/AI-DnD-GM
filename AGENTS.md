@@ -31,6 +31,13 @@
   client (see `tests/claude-ai.test.js`) or use isolated loopback mocks.
 - Authored content lives in `src/data/*.json`. Edit the data, not the loaders;
   `tests/content-data.test.js` checks that every reference resolves.
+- Hosted mode (`HOSTED=1`, `src/hosted.js`, docs/HOSTED.md) runs the game for
+  other people on the owner's key: the server seals every state it sends and
+  refuses unsealed or edited ones, book access comes from the account pass,
+  saves are kept per account, AI settings are owner-only, and AI calls go
+  through the account's allowance (`Hosted.provider`). Anything new that
+  continues a state from the browser must check `trusted(...)` in server.js,
+  and new AI calls must use the request's provider, not the shared one.
 - Keep save schema compatibility explicit. Use an OS temporary SAVE_DIR for all
   HTTP tests; never touch real saves or include them in commits/releases.
 - Authored content is levels 1–10; the cap is 100, reached through AI-directed

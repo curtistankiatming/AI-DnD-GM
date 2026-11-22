@@ -2,7 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs/promises'),os=require('node:os'),path=require('node:path');
 const Profiles=require('../src/model-profiles');
-const {createClaudeProvider,apiKey}=require('../src/claude-ai');
+const {createClaudeProvider,apiKey,GAME_ONLY}=require('../src/claude-ai');
 const {createLocalAI}=require('../src/local-ai');
 const {SCHEMA,resolveChat}=require('../src/chat-runtime');
 const E=require('../src/engine');
@@ -46,7 +46,7 @@ test('proposals use structured output, prompt caching and server-side fallbacks'
   assert.equal(out.text,'{"kind":"clarify","optionId":"","reply":"Which door?"}');assert.equal(out.model,'claude-opus-5-5');
   const {body,opts}=client.calls[0];
   assert.equal(body.model,'claude-opus-5-5');assert.deepEqual(body.output_config,{effort:'medium',format:{type:'json_schema',schema:SCHEMA}});
-  assert.deepEqual(body.system,[{type:'text',text:'Rules.',cache_control:{type:'ephemeral'}}]);
+  assert.deepEqual(body.system,[{type:'text',text:'Rules.\n\n'+GAME_ONLY,cache_control:{type:'ephemeral'}}]);
   assert.deepEqual(body.messages,[{role:'user',content:'Facts.'}]);
   assert.equal(body.fallbacks,'default');assert.deepEqual(body.betas,['server-side-fallback-2026-07-01']);
   assert.equal(body.temperature,undefined,'Sampling parameters are not sent to current Claude models.');

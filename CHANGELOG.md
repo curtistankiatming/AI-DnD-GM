@@ -4,6 +4,23 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Hosted game: sealed saves and a protected AI key (22 November 2026)
+
+- New hosted mode for running the game for other people on the owner's Claude
+  key (`HOSTED=1`, see docs/HOSTED.md). Off by default; the open-source game is
+  unchanged.
+- The server seals every game it sends and refuses edited ones, so gold, XP,
+  level, items and story cannot be changed in the browser or a save file.
+- Books come from the account pass (paid: every book; free or no pass: Books
+  One and Two), never from the save. Server saves are kept per account.
+- Players cannot change the AI settings or the key. AI turns have a daily
+  allowance per plan, a per-minute limit and a server total; off-game requests
+  ("ignore your instructions", "write me code") are turned away before any AI
+  call; every Claude prompt carries a stay-in-the-game rule; output is capped.
+  Each player has their own AI slot, so one player no longer blocks the rest.
+- `scripts/hosted-pass.js` issues free or paid account passes until a real
+  sign-in exists.
+
 ## UX review through Book Three (22 November 2026)
 
 - The end of Book Three points at the 3rd job trial, and What's next has a

@@ -28,8 +28,15 @@ const VERSION = require("./package.json").version;
 const {createLocalAI}=require('./src/local-ai');
 const {saveKey}=require('./src/claude-ai');
 const {createCoordinator}=require('./src/chat-coordinator');
-const localAI=createLocalAI({configPath:process.env.AI_CONFIG_PATH || path.join(__dirname,'.local-ai.json')});
+const Hosted=require('./src/hosted');
+// Hosted mode (docs/HOSTED.md) is off unless HOSTED=1; it refuses to start half-configured.
+let hosted;
+try { hosted = Hosted.settings(); } catch (error) { console.error(error.message); process.exit(1); }
+const localAI=createLocalAI({configPath:process.env.AI_CONFIG_PATH || path.join(__dirname,'.local-ai.json'),concurrency:hosted.enabled?hosted.concurrency:1});
 const chatCoordinator=createCoordinator(localAI);
+const usage=hosted.enabled?Hosted.createUsage(hosted):null;
+// The AI service this request may use: the shared one, or a hosted account's bounded view of it.
+const aiFor=req=>hosted.enabled?Hosted.provider(localAI,req.account,usage,hosted):localAI;
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
   console.error("PORT must be a whole number from 1 to 65535.");
   process.exit(1);
@@ -51,6 +58,8 @@ const MIME_TYPES = {
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 function sendJson(res, statusCode, payload) {
+  // A hosted game seals every state it hands out, so it can tell an edited one.
+  if (hosted.enabled && payload && payload.state && typeof payload.state === "object") Hosted.seal(payload.state, hosted.secret);
   const body = JSON.stringify(payload);
   res.writeHead(statusCode, {
     "Content-Type": "application/json; charset=UTF-8",
@@ -141,16 +150,25 @@ async function serveStatic(req, res, pathname) {
   }
 }
 
-function savePath(slot) {
-  return path.join(SAVE_DIR, `${slot}.json`);
+// A hosted game keeps each account's saves in its own folder.
+function saveDir(req) {
+  if (!hosted.enabled) return SAVE_DIR;
+  const folder = Hosted.saveFolder(req.account);
+  return folder ? path.join(SAVE_DIR, "accounts", folder) : null;
 }
 
-async function listSaves() {
-  const filenames = await fsPromises.readdir(SAVE_DIR);
+function savePath(slot, dir = SAVE_DIR) {
+  return path.join(dir, `${slot}.json`);
+}
+
+async function listSaves(dir = SAVE_DIR) {
+  let filenames;
+  try { filenames = await fsPromises.readdir(dir); }
+  catch (error) { if (error.code === "ENOENT") return []; throw error; }
   const saves = [];
   for (const filename of filenames) {
     if (!filename.toLowerCase().endsWith(".json")) continue;
-    const fullPath = path.join(SAVE_DIR, filename);
+    const fullPath = path.join(dir, filename);
     try {
       const stat = await fsPromises.stat(fullPath);
       const raw = JSON.parse(await fsPromises.readFile(fullPath, "utf8"));
@@ -189,9 +207,9 @@ function appendNarrationLog(state, narration) {
   if (state.logs.length > 180) state.logs = state.logs.slice(-180);
 }
 
-async function sessionPayload(state, action, events = [], result = null) {
+async function sessionPayload(state, action, events = [], result = null, ai = localAI) {
   let view = buildView(state);
-  const narration = await narrate(state, view, action, events, result, localAI);
+  const narration = await narrate(state, view, action, events, result, ai);
   appendNarrationLog(state, narration);
   view = buildView(state);
   return { state, view, narration, events };
@@ -202,7 +220,14 @@ async function sessionPayload(state, action, events = [], result = null) {
 // plays on its owner's AI key replaces this with its account check, giving a
 // free account Book.FREE_BOOKS and a paid account every book. Access is set
 // on the incoming state each request and is never read from a save.
-function bookAccess(req) { return Infinity; }
+function bookAccess(req) { return hosted.enabled ? Hosted.bookAccess(req.account) : Infinity; }
+// A hosted game only continues states it sealed itself.
+function trusted(req, res, state) {
+  if (!hosted.enabled || Hosted.verify(state, hosted.secret)) return true;
+  sendJson(res, 409, { error: Hosted.TAMPERED });
+  return false;
+}
+const OWNER_ONLY = "On this hosted game the owner chooses the AI game master and its settings.";
 function withAccess(req, state) { return Book.grant(state, bookAccess(req)); }
 
 async function handleApi(req, res, url) {
@@ -210,6 +235,15 @@ async function handleApi(req, res, url) {
 
   if(pathname.startsWith('/api/ai/')) {
     try {
+      if(hosted.enabled) {
+        // Players see what the AI is and how much of today's allowance is left; they cannot change it.
+        if(pathname==='/api/ai/settings'&&req.method==='GET') {
+          const c=await localAI.config();
+          sendJson(res,200,{config:{enabled:c.enabled,provider:c.provider,narration:c.narration,claudeModel:c.claudeModel,effort:c.effort},...localAI.manifest(),...localAI.status(req.account.id),hosted:{plan:req.account.plan,allowance:usage.report(req.account)}}); return;
+        }
+        if(pathname==='/api/ai/cancel'&&req.method==='POST') {sendJson(res,200,{cancelled:localAI.cancel(req.account.id)}); return;}
+        sendJson(res,403,{error:OWNER_ONLY}); return;
+      }
       if(pathname==='/api/ai/settings'&&req.method==='GET') {
         sendJson(res,200,{config:await localAI.config(),...localAI.manifest(),...localAI.status()}); return;
       }
@@ -236,7 +270,8 @@ async function handleApi(req, res, url) {
   }
   if(pathname==='/api/chat'&&req.method==='POST') {
     const body=await readJsonBody(req);
-    try {const payload=await chatCoordinator.run(withAccess(req,body.state),body.request);
+    if(!trusted(req,res,body.state)) return;
+    try {const payload=await chatCoordinator.run(withAccess(req,body.state),body.request,aiFor(req));
       sendJson(res,payload.result?.ok===false?422:200,payload);}
     catch(error){sendJson(res,400,{error:error.message});}
     return;
@@ -253,7 +288,7 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && pathname === "/api/session/new") {
     const body = await readJsonBody(req);
     const state = withAccess(req, createNewGame(body.setup || body));
-    sendJson(res, 200, await sessionPayload(state, { type: "opening" }, []));
+    sendJson(res, 200, await sessionPayload(state, { type: "opening" }, [], null, aiFor(req)));
     return;
   }
 
@@ -262,20 +297,25 @@ async function handleApi(req, res, url) {
     const action = pathname === "/api/turn" && typeof body.action === "string"
       ? { type: "freeform", text: body.action }
       : body.action || body;
+    if (!trusted(req, res, body.state)) return;
     const resolved = resolveAction(withAccess(req, body.state), action);
-    const payload = await sessionPayload(resolved.state, action, resolved.events, resolved.result);
+    const payload = await sessionPayload(resolved.state, action, resolved.events, resolved.result, aiFor(req));
     payload.result = resolved.result;
     sendJson(res, resolved.result?.ok === false ? 422 : 200, payload);
     return;
   }
 
   if (req.method === "GET" && pathname === "/api/session/list") {
-    sendJson(res, 200, { saves: await listSaves() });
+    const dir = saveDir(req);
+    sendJson(res, 200, { saves: dir ? await listSaves(dir) : [], ...(hosted.enabled && !dir ? { note: "Sign in to keep saves on this server. Your browser keeps your current game." } : {}) });
     return;
   }
 
   if (req.method === "POST" && pathname === "/api/session/save") {
     const body = await readJsonBody(req);
+    const dir = saveDir(req);
+    if (!dir) { sendJson(res, 403, { error: "Saves on this server need an account. Your browser keeps your current game." }); return; }
+    if (!trusted(req, res, body.state)) return;
     const slot = sanitizeSaveName(body.slot || body.name || `campaign-${Date.now()}`);
     if (!validSaveName(slot)) {
       sendJson(res, 400, { error: "Save names must use 1–48 letters, numbers, spaces, underscores, or hyphens, and cannot be reserved Windows device names." });
@@ -283,10 +323,11 @@ async function handleApi(req, res, url) {
     }
     const state = normalizeIncomingState(body.state);
     const payload = { slot, savedAt: new Date().toISOString(), state };
-    const temporary = savePath(slot)+`.${require("crypto").randomUUID()}.tmp`;
+    await fsPromises.mkdir(dir, { recursive: true });
+    const temporary = savePath(slot, dir)+`.${require("crypto").randomUUID()}.tmp`;
     try {
       await fsPromises.writeFile(temporary, JSON.stringify(payload, null, 2), "utf8");
-      await fsPromises.rename(temporary, savePath(slot));
+      await fsPromises.rename(temporary, savePath(slot, dir));
     } finally { await fsPromises.unlink(temporary).catch(() => {}); }
     sendJson(res, 200, { status: "saved", slot, savedAt: payload.savedAt });
     return;
@@ -298,8 +339,10 @@ async function handleApi(req, res, url) {
       sendJson(res, 400, { error: "Invalid save slot." });
       return;
     }
+    const dir = saveDir(req);
+    if (!dir) { sendJson(res, 404, { error: "Save slot not found." }); return; }
     try {
-      const raw = JSON.parse(await fsPromises.readFile(savePath(slot), "utf8"));
+      const raw = JSON.parse(await fsPromises.readFile(savePath(slot, dir), "utf8"));
       const state = normalizeIncomingState(withAccess(req, raw.state || raw));
       const view = buildView(state);
       sendJson(res, 200, {
@@ -321,13 +364,22 @@ async function handleApi(req, res, url) {
       sendJson(res, 400, { error: "Invalid save slot." });
       return;
     }
+    const dir = saveDir(req);
+    if (!dir) { sendJson(res, 404, { error: "Save slot not found." }); return; }
     try {
-      await fsPromises.unlink(savePath(slot));
+      await fsPromises.unlink(savePath(slot, dir));
       sendJson(res, 200, { status: "deleted", slot });
     } catch (error) {
       if (error.code === "ENOENT") sendJson(res, 404, { error: "Save slot not found." });
       else sendJson(res, 500, { error: "Save slot could not be deleted." });
     }
+    return;
+  }
+
+  if (req.method === "GET" && pathname === "/api/hosted/account") {
+    if (!hosted.enabled) { sendJson(res, 404, { error: "This game is not hosted." }); return; }
+    const a = req.account, books = Hosted.bookAccess(a);
+    sendJson(res, 200, { plan: a.plan, signedIn: !a.guest, books: Number.isFinite(books) ? books : "all", ai: usage.report(a), serverSaves: !a.guest, ...(a.exp ? { passExpires: new Date(a.exp).toISOString() } : {}) });
     return;
   }
 
@@ -347,10 +399,24 @@ async function handleApi(req, res, url) {
 async function handleRequest(req, res) {
   try {
     const url = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+    if (hosted.enabled) {
+      req.account = Hosted.account(req, hosted);
+      // An account pass link: /pass?token=... stores the pass in a cookie and opens the game.
+      if (req.method === "GET" && url.pathname === "/pass") {
+        const token = url.searchParams.get("token") || "";
+        const pass = Hosted.readPass(token, hosted.secret);
+        if (!pass) { sendJson(res, 400, { error: "That pass is not valid or has expired." }); return; }
+        res.writeHead(302, { Location: "/", "Set-Cookie": Hosted.passCookie(token, pass.exp, hosted), "Cache-Control": "no-store" });
+        res.end();
+        return;
+      }
+    }
+    // Behind HTTPS and a proxy the request URL says http://, so a hosted game names its public address.
+    const origin = hosted.enabled && hosted.origin ? hosted.origin : url.origin;
     if (url.pathname.startsWith("/api/") && ["POST", "DELETE"].includes(req.method)) {
-      // Local browser clients must use this application's own origin. This is
-      // defense in depth, not accounts, anti-cheat, or permission to publish.
-      if ((req.headers.origin && req.headers.origin !== url.origin) || req.headers["sec-fetch-site"] === "cross-site") {
+      // Browser clients must use this application's own origin. This is
+      // defense in depth against other sites, not anti-cheat.
+      if ((req.headers.origin && req.headers.origin !== origin) || req.headers["sec-fetch-site"] === "cross-site") {
         sendJson(res, 403, { error: "Use the game from its own local address." });
         return;
       }
