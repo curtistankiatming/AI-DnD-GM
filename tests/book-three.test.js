@@ -244,7 +244,7 @@ test('a camp scene whose companion is away is skipped, and lines for absent comp
 });
 
 // What every Book Three line may read, and where each flag it reads comes from.
-const KNOWN_WHEN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess']);
+const KNOWN_WHEN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller']);
 const SPECS = new Set(['none', ...Object.values(P.SPECIALIZATIONS).flat().map((b) => b.id)]);
 const ENGINE_PREFIX = /^(method|prepared|approach|partial|job|away|walked):/;
 // Each line array in a piece of content, with its owner and where it sits in the story.
@@ -580,8 +580,8 @@ test('the Saltwick camp: how much Orin says follows how far he trusts the hero',
 
 test('the witness: the strongest way through needs the wardens\' rolls, and each decision says how many names remain', () => {
   const strong = told(peaceAt('b3-witness', { 'prepared:b3-witness': true })), weak = told(peaceAt('b3-witness'));
-  assert.match(strong, /You read it out/); assert.doesNotMatch(strong, /You don't have the wardens' rolls/);
-  assert.match(weak, /You don't have the wardens' rolls/); assert.doesNotMatch(weak, /You read it out/);
+  assert.match(strong, /(You read|reads) it out/); assert.doesNotMatch(strong, /You don't have the wardens' rolls/);
+  assert.match(weak, /You don't have the wardens' rolls/); assert.doesNotMatch(weak, /(You read|reads) it out/);
   const decide = (d, flags) => told(act(at('b3-witness', 'after', { flags }), { type: 'story-choice', choiceId: d }).state);
   assert.match(decide('witness'), /Three hundred and thirty-seven/);
   assert.match(decide('unwitness'), /All four hundred/);
@@ -643,8 +643,8 @@ test('Book Three side jobs pay mostly gold and 130 XP; Book Two jobs keep their 
 test('review fixes: lines that answer an absent companion, or a step not taken, are not told', () => {
   // The crossing follows the night round (the approach), not the investigation.
   const cross = (flags) => told(peaceAt('b3-saltwick', flags));
-  assert.match(cross({ 'approach:b3-saltwick': true }), /you have walked the round/); assert.doesNotMatch(cross({ 'approach:b3-saltwick': true }), /did not learn it in time/);
-  assert.match(cross({ 'prepared:b3-saltwick': true }), /did not learn it in time/);
+  assert.match(cross({ 'approach:b3-saltwick': true }), /the round has been walked/); assert.doesNotMatch(cross({ 'approach:b3-saltwick': true }), /nobody learned it in time/);
+  assert.match(cross({ 'prepared:b3-saltwick': true }), /nobody learned it in time/);
   // "As the letter said" only if the letter was read.
   assert.match(opening(peaceAt('b3-saltwick', { 'prepared:b3-saltwick': true })), /exactly as the letter said/);
   assert.doesNotMatch(opening(peaceAt('b3-saltwick')), /exactly as the letter said/);
@@ -973,8 +973,10 @@ test('PR #67: lines that answer or name a companion are told only with them ther
   assert.doesNotMatch(told(decideAt('b3-vault', 'held', {}, { party: ['maren'] })), /Nobody answers him/);
   assert.match(told(decideAt('b3-vault', 'held', {}, { party: ['orin', 'maren'] })), /Nobody answers him/);
   const roofs = RAWQ['b3-greatbell'].route.failure.filter((l) => /Tanner's Row/.test(l.narrate));
-  assert.deepEqual(roofs.map((l) => l.when), [{ party: 'orin' }, { absent: 'orin' }]);
-  assert.doesNotMatch(roofs[1].narrate, /Orin/);
+  // With Orin there his rope gets whoever fell out, unless he fell himself (then your hand does).
+  assert.deepEqual(roofs.map((l) => l.when), [{ party: 'orin', notRoller: 'orin' }, { party: 'orin', roller: 'orin' }, { absent: 'orin' }]);
+  assert.match(roofs[1].narrate, /your hand gets him out/);
+  assert.doesNotMatch(roofs[2].narrate, /Orin/);
 });
 
 test('PR #67: Dera\'s level-30 lines hold on every route, and Corvane learns of the satchel from the gate log', () => {

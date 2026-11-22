@@ -298,7 +298,9 @@ function atLeast(a, b) {
 test('no Book Three item is matched or beaten by one already available at its level to the same wearers', () => {
   const pool = Object.values(ITEMS).filter((i) => i.slot && !i.forged && (i.upgradeTier || obtainable(i) || GEAR.includes(i)) && !(i.exclusive?.town && missable(i.exclusive.town)));
   const found = [];
-  for (const b of B3) for (const a of pool) if (a.id !== b.id && atLeast(a, b)) found.push(`${b.id} (level ${lv(b)}) is no better than ${a.id} (level ${lv(a)})`);
+  // A Masterwork refine (twice the item's price) is meant to carry an item
+  // towards the next tier, so it is left out.
+  for (const b of B3) for (const a of pool) if (a.id !== b.id && !a.masterwork && atLeast(a, b)) found.push(`${b.id} (level ${lv(b)}) is no better than ${a.id} (level ${lv(a)})`);
   assert.deepEqual(found, []);
 });
 

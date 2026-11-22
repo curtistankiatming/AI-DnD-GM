@@ -113,3 +113,17 @@ test('a chain does not carry into the next fight', () => {
   assert.equal(next.combat.chain, undefined);
   assert.equal(Power.chainHit(next.combat, { team: 'party' }, enemyOf(next)), 0);
 });
+
+test('Arcane Snare adds stat damage like other spells', () => {
+  let total = 0, hits = 0, bonus = 0;
+  for (let seed = 1; seed <= 30; seed++) {
+    const s = practice('wizard', 10), foe = enemyOf(s); foe.hp = foe.maxHp = 9999; foe.ac = 1;
+    const out = E.resolveAction(s, { type: 'combat', actionId: 'arcane-snare', targetId: foe.id }, R.createSeededRng(seed));
+    assert.equal(out.result.ok, true, out.result.error);
+    bonus = Power.statDamage(out.state.combat.actors.find(a => a.id === 'player'), 'int');
+    const dealt = 9999 - out.state.combat.actors.find(a => a.id === foe.id).hp;
+    if (dealt) { hits++; total += dealt; assert.ok(dealt >= 3 + bonus, `every hit adds the bonus (${dealt})`); }
+  }
+  assert.ok(bonus > 0 && hits > 20, 'a level 10 wizard has an Intelligence bonus and hits armour 1');
+  assert.ok(total / hits > 10.5 + bonus - 2, `average ${total / hits} includes +${bonus}`);
+});

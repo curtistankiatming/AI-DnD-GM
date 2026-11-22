@@ -21,7 +21,7 @@ ITEMS.antitoxin.purpose='Action: cure Poisoned, or prepare advantage on the next
 ITEMS['healers-kit'].value=12;
 ITEMS['healers-kit'].purpose='Three uses per kit. Outside combat each use heals 1d6+2 HP. In combat it only stabilizes an unconscious, unstable ally (0 HP); it does not revive them.';
 ITEMS['thornward-cloak'].story={skill:'survival'};
-ITEMS['thornward-cloak'].purpose='Equip for +1 AC. Its charge is shown on the character sheet.';
+ITEMS['thornward-cloak'].purpose='Equip for +1 AC.';
 ITEMS['smoke-bomb'].value=18;
 ITEMS['holy-water'].value=15;
 const newItems = require('./data/region-items.json');
@@ -36,18 +36,47 @@ ITEMS.greatsword.requires={abilities:{str:13}};
 const UPGRADE_BASES=Object.values(ITEMS).filter(i=>['weapon','armor','shield','focus'].includes(i.category));
 for(const base of UPGRADE_BASES){
   const item=deepClone(base);item.id=`${base.id}-fine`;item.name=`Fine ${base.name}`;item.baseId=base.id;item.upgradeTier=1;
-  item.value=base.value+50;item.rarity='Uncommon';
+  item.value=base.value+50;
+  // A Fine item is at least Uncommon and never rarer-looking than its base: Fine Field Plate stays Rare.
+  const R=['Common','Uncommon','Rare','Epic','Legendary'];item.rarity=R[Math.max(1,R.indexOf(base.rarity))];
   let effect='';
   if(item.weapon){item.attackBonus=(item.attackBonus||0)+1;item.damageBonus=(item.damageBonus||0)+1;effect='+1 to hit and damage.';}
   if(item.armor){item.armor.base+=1;effect='+1 base AC.';}
   if(item.category==='shield'){item.acBonus=(item.acBonus||0)+1;effect='+1 AC.';}
   if(item.category==='focus'){item.spellAttackBonus=(item.spellAttackBonus||0)+1;effect='+1 spell attack bonus.';}
-  item.purpose=`${base.purpose} Fine quality: ${effect} This is the maximum forge tier in this campaign.`;
+  item.purpose=`${base.purpose} Fine quality: ${effect} The smith cannot improve it further.`;
   ITEMS[item.id]=item;
 }
 // Items with requirements, special stats, skills and story abilities
 // (src/gear.js). They have no forge upgrade: they are already special.
 for(const item of require('./data/gear.json'))ITEMS[item.id]=item;
+// Gold sink (items review, 21 November 2026): the smith can also refine each
+// of these once. An Epic or Legendary item becomes a Masterwork one step rarer,
+// for twice the item's price (Gear.upgradeCost), so late gold has a use.
+// The refined copy is never in a shop or given as a reward, so it drops its exclusive tag.
+{
+  const R=['Common','Uncommon','Rare','Epic','Legendary'];
+  for(const base of require('./data/gear.json')){
+    // Uncommon and Rare special items have no upgrade: a cheap refine of early
+    // gear would outclass the next towns' items.
+    if(!base.slot||['Uncommon','Rare'].includes(base.rarity))continue;
+    const master=R.indexOf(base.rarity)>=3;
+    const item=deepClone(base);delete item.exclusive;
+    Object.assign(item,{id:`${base.id}-fine`,name:`${master?'Masterwork':'Fine'} ${base.name}`,baseId:base.id,upgradeTier:1,masterwork:master||undefined,
+      rarity:R[Math.min(R.length-1,Math.max(1,R.indexOf(base.rarity)+(master?1:0)))],value:master?base.value*3:base.value+50});
+    if(!master)delete item.masterwork;
+    let effect;
+    // A Common item gets the usual Fine +1 to hit and damage; a Masterwork refine adds one number only.
+    if(item.weapon&&!master){item.attackBonus=(item.attackBonus||0)+1;item.damageBonus=(item.damageBonus||0)+1;effect='+1 to hit and damage.';}
+    else if(item.weapon){item.damageBonus=(item.damageBonus||0)+1;effect='+1 damage.';}
+    else if(item.armor){item.armor={...item.armor,base:item.armor.base+1};effect='+1 base AC.';}
+    else if(item.category==='shield'){item.acBonus=(item.acBonus||0)+1;effect='+1 AC.';}
+    else if(item.category==='focus'){item.spellDcBonus=(item.spellDcBonus||0)+1;effect='+1 spell save DC.';}
+    else{item.stats={...(item.stats||{}),dealt:Math.round(((item.stats?.dealt||0)+0.05)*100)/100};effect='5% more damage dealt.';}
+    item.purpose=`${base.purpose} ${master?'Masterwork':'Fine'} quality: ${effect} This is the maximum forge tier in this campaign.`;
+    ITEMS[item.id]=item;
+  }
+}
 const TOWNS=require('./data/towns.json');
 const MERCHANTS=require('./data/merchants.json');
 const RECIPES=require('./data/recipes.json');
@@ -123,7 +152,52 @@ function lineApplies(state, line) {
   // the hosted game). Required here, not at the top: book.js requires this file.
   if (w.access !== undefined && !require('./book').reads(state, w.access)) return false;
   if (w.notAccess !== undefined && require('./book').reads(state, w.notAccess)) return false;
+  // roller / notRoller are settled when a check's result is told (outcomeForRoller);
+  // anywhere else the hero is the one acting.
+  if (w.roller !== undefined && w.roller !== 'hero') return false;
+  if (w.notRoller === 'hero') return false;
   return true;
+}
+// Who rolled a check (21 November 2026): the best-suited party member may
+// roll for the hero, so a check's written result can name them. In a check's
+// success or failure text, "{You}", "{you}", "{your}" and "{Your}" become the
+// roller ("You", or "Orin", "Orin's"); "{they}", "{them}", "{their}" (and
+// capitalised) their pronouns ("you" for the hero); and "{a|b}" picks a for the
+// hero and b for a companion, where "@" in b is the companion's name. A line's
+// "when" may also hold roller ("hero", "companion" or a companion id) or
+// notRoller; these are settled here, when the result is told, so they never
+// need the roll again later.
+const PRONOUNS={he:['he','him','his'],she:['she','her','her'],they:['they','them','their']};
+function rollerWords(actor){
+  if(!actor||actor.id==='player')return {name:'you',possessive:'your',p:['you','you','your'],hero:true};
+  const c=C.COMPANIONS[actor.id],name=speakerName(actor.id),key=String(c?.pronouns||'they').split('/')[0];
+  return {name,possessive:`${name}'s`,p:PRONOUNS[key]||PRONOUNS.they,hero:false};
+}
+const cap=t=>t?t[0].toUpperCase()+t.slice(1):t;
+function forRoller(text,actor){
+  if(typeof text!=='string'||!text.includes('{'))return text;
+  const w=rollerWords(actor),who=w.hero?'you':w.name;
+  const map={You:cap(who),you:who,your:w.hero?'your':w.possessive,Your:w.hero?'Your':w.possessive,they:w.p[0],They:cap(w.p[0]),them:w.p[1],Them:cap(w.p[1]),their:w.p[2],Their:cap(w.p[2])};
+  return text.replace(/\{([^{}|]*)\|([^{}]*)\}/g,(m,a,b)=>w.hero?a:b.replace(/@/g,w.name)).replace(/\{(You|you|your|Your|they|They|them|Them|their|Their)\}/g,(m,k)=>map[k]);
+}
+function rollerFits(w,actor){
+  const id=actor?.id||'player',is=v=>v==='hero'?id==='player':v==='companion'?id!=='player':id===v;
+  if(w.roller!==undefined&&!is(w.roller))return false;
+  if(w.notRoller!==undefined&&is(w.notRoller))return false;
+  return true;
+}
+// A check's outcome as told for whoever rolled it.
+function outcomeForRoller(outcome,actor){
+  if(!outcome)return outcome;
+  const out={...outcome};
+  if(Array.isArray(outcome.dialogue)){
+    out.dialogue=outcome.dialogue.filter(l=>!l.when||rollerFits(l.when,actor)).map(l=>{
+      const {roller,notRoller,...rest}=l.when||{};const line={...l,...(l.narration!==undefined?{narration:forRoller(l.narration,actor)}:{}),...(l.text!==undefined?{text:forRoller(l.text,actor)}:{})};
+      if(l.when){if(Object.keys(rest).length)line.when=rest;else delete line.when;}
+      return line;});
+    if(outcome.text!==undefined)out.text=dialogueText(out.dialogue);
+  }else if(typeof outcome.text==='string')out.text=forRoller(outcome.text,actor);
+  return out;
 }
 // The line a written line or group tells now, or null.
 function pickLine(state, line) {
@@ -172,8 +246,10 @@ function installQuest(q){
   // chapters to level 10, where Help is almost always on hand, are 2 harder
   // to keep the average odds near 60-70% (docs/BALANCE-2026-11-21-CHECKS.md).
   const D=Math.floor(A/2)+(q.level<=10?2:0);
-  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools};
-  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools};
+  // hero: true on a check means the hero always rolls it (their own trial, their own oath).
+  const own=c=>c.hero?{hero:true}:{};
+  const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools,...own(q.investigate)};
+  const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools,...own(q.route)};
   STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,...toldOpening(q.opening),safeRest:true,questId:q.id,phase:'start',choices:[
     choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{...told(q.investigate.success),clues:[evidence],setFlags:{[preparation]:true}},failure:{...told(q.investigate.failure),clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
     // Optional conversations before setting out ("talks"): lines only, no
@@ -190,7 +266,7 @@ function installQuest(q){
   // story flag and the reason shown): the DC drops by 2 while it is set.
   // "harderWith" is the same, and raises the DC by 2.
   STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
-    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{}),...(q.peaceful.harderWith?{harderWith:q.peaceful.harderWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
+    choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...own(q.peaceful),...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{}),...(q.peaceful.harderWith?{harderWith:q.peaceful.harderWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
     ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
@@ -313,4 +389,4 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={trialFraming,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation};
+module.exports={trialFraming,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};

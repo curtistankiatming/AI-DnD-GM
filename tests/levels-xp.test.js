@@ -42,8 +42,11 @@ test('bounded growth: proficiency stops at +6 and health grows slowly past 20', 
 
 test('adventure enemies grow by power tier up to level 20 and stay inside the d20 past it', () => {
   const f10 = XP.foeStats(XP.challenge({ level: 10 }));
-  // +3 damage per power tier matches the party's stat damage (src/power.js).
-  assert.deepEqual(f10.main, { maxHp: 82, ac: 15, attackBonus: 8, damage: '3d6+8' });
+  // +3 damage per power tier, +6 once the health trim is full, keeps pace with stat damage (src/power.js);
+  // health is trimmed by a quarter from power 8 so fights by force last 4 to 7 rounds.
+  assert.deepEqual(f10.main, { maxHp: 62, ac: 15, attackBonus: 8, damage: '3d6+11' });
+  assert.equal(XP.foeStats(XP.challenge({ level: 4 })).main.maxHp, 46, 'no health trim up to power 4');
+  assert.equal(XP.foeStats(XP.challenge({ level: 6 })).main.maxHp, Math.round(58 * 0.875), 'the trim eases in');
   assert.equal(XP.foeStats(XP.challenge({ level: 3 })).main.damage, '1d6+3', 'no tier bonus below power 5');
   const f100 = XP.foeStats(XP.challenge({ level: 100 })), f20 = XP.foeStats(XP.challenge({ level: 20 }));
   assert.equal(f100.main.ac, f20.main.ac); assert.equal(f100.main.attackBonus, f20.main.attackBonus);

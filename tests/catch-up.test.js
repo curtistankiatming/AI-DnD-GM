@@ -41,6 +41,15 @@ test('the under-level penalty starts past 5 levels under and stops growing at 10
   assert.equal(XP.underSteps(25, 20), 0, 'Being over-levelled is no penalty.');
 });
 
+test('past level 20 each missing level counts three times in the fight, capped, since a level there adds little power', () => {
+  assert.equal(XP.underSteps(14, 20), 1, 'A level 20 chapter keeps single steps.');
+  assert.deepEqual([5, 6, 8, 10].map((under) => XP.underSteps(27 - under, 27)), [0, 3, 7, 9]);
+  assert.equal(XP.underSteps(14, 21), 2, 'Missing levels below 20 are not weighted.');
+  assert.equal(XP.underSteps(20, 30), XP.UNDER_LATE_MAX, 'The weighted penalty is capped.');
+  assert.equal(XP.underSteps(30, 27), 0);
+  assert.equal(XP.underChecks(17, 27), 5, 'Story checks keep single steps, at most 5.');
+});
+
 test('a written chapter can be started up to 10 levels under, never further', () => {
   const q = QUESTS.harbour;
   assert.equal(W.unlocked(ready('harbour', q.level - 10), q), true);

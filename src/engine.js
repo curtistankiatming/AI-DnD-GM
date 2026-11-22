@@ -14,7 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines, playLines, lineApplies, nodeLocation } = require("./expansion");
+const { dialogueText, liveLines, playLines, lineApplies, nodeLocation, outcomeForRoller } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const Gear = require("./gear");
@@ -88,6 +88,9 @@ function createPlayer(setup = {}) {
   };
   return applyEquipmentDerivedStats(player);
 }
+
+// A companion's authored identity: refreshed from companions.json on every load.
+const AUTHORED = (base) => Object.fromEntries(["name", "role", "pronouns", "summary", "personality", "dialogue", "signature", "gearClass"].filter((k) => base[k] !== undefined).map((k) => [k, deepClone(base[k])]));
 
 function createCompanion(id) {
   const definition = COMPANIONS[id];
@@ -239,6 +242,9 @@ function normalizeIncomingState(raw) {
       return {
         ...createCompanion(base.id),
         ...member,
+        // Who a companion is comes from companions.json, never the save, so a
+        // save from before a character rewrite gets the current voice.
+        ...AUTHORED(base),
         abilities: normalizeAbilities(member.abilities, base.abilities),
         skills: Array.isArray(member.skills) ? member.skills.filter((id) => SKILLS[id]) : base.skills,
         conditions: Array.isArray(member.conditions) ? member.conditions : [],
@@ -317,10 +323,10 @@ function applyApproval(state, changes = {}, events = []) {
     if (!member) continue;
     const delta = Number(deltaRaw || 0);
     member.bond = clamp(Number(member.bond || 0) + delta, -5, 5);
-    // The chapter's count is of what happened, not of the capped bond.
-    Away.count(state, id, delta);
     const direction = delta > 0 ? "approved" : delta < 0 ? "disapproved" : "was unaffected";
     if (delta) events.push({ type: "party", tone: delta > 0 ? "good" : "warning", text: `${member.name} ${direction} (${delta > 0 ? "+" : ""}${delta} bond).` });
+    // The chapter's count is of what happened, not of the capped bond.
+    Away.count(state, id, delta, events);
   }
 }
 
@@ -504,7 +510,7 @@ function checkPlan(state, choice, forced = null) {
   let dc=Number(check.dc||10);
   const quest=currentNode(state).questId;
   if(quest && state.story.flags[`prepared:${quest}`]){dc-=2;reasons.push('Established evidence lowers DC by 2');}
-  const under=quest?XP.underSteps(state.player.level,Director.quest(state,quest)?.level):0;
+  const under=quest?XP.underChecks(state.player.level,Director.quest(state,quest)?.level):0;
   if(under){dc+=under;reasons.push(`More than ${XP.UNDER_FREE} levels under this adventure raises DC by ${under}`);}
   if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
@@ -681,7 +687,8 @@ function resolveStoryChoice(state, choiceId, rng, events) {
   if (choice.check) {
     const checkResult = resolveStoryCheck(state, choice, rng, events);
     success = checkResult.success;
-    outcome = success ? choice.success : choice.failure;
+    // Told for whoever rolled it: the hero, or the companion best placed.
+    outcome = outcomeForRoller(success ? choice.success : choice.failure, checkResult.plan?.actor);
   } else if (choice.autoSuccess) {
     outcome = choice.result;
   } else {
@@ -871,7 +878,9 @@ function resolveFreeform(state,text,rng,events) {
   if(/^(return|go back) to (town|the town)/.test(normalized))return W.handle(state,{type:'return-town'},rng,events,extensionApi());
   if(/^(buy|purchase|sell|equip|use)\b/.test(normalized)){
     const aliases={'healing-potion':['healing potion','potion of healing'],'greater-healing':['greater healing'],'healers-kit':["healer's kit",'healers kit'],'antitoxin':['antitoxin','antidote'],'holy-water':['holy water'],'iron-longsword':['iron longsword','longsword']};
-    const candidates=Object.values(ITEMS).filter(i=>!i.forged||state.player.inventory.some(e=>e.itemId===i.id)).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length);
+    // Same-length names: an item you own first, then one you can wear, then the one for the higher level.
+    const owns=i=>Number(state.player.inventory.some(e=>e.itemId===i.id)),fits=i=>Number(!Gear.unmet(state.player,i));
+    const candidates=Object.values(ITEMS).filter(i=>!i.forged||state.player.inventory.some(e=>e.itemId===i.id)).filter(i=>[i.name.toLowerCase(),i.id.replaceAll('-',' '),...(aliases[i.id]||[])].some(a=>normalized.includes(a))).sort((a,b)=>b.name.length-a.name.length||owns(b)-owns(a)||fits(b)-fits(a)||(b.requires?.level||0)-(a.requires?.level||0));
     const item=candidates[0];if(!item)return invalidResult(state,events,'Name an item shown in the inventory or current shop. No action was taken.');
     const namedTarget=state.party.find(m=>normalized.includes(m.id)||normalized.includes(m.name.toLowerCase()));
     const explicitTarget=normalized.match(/\b(?:on|for)\s+(.+)$/)?.[1];
