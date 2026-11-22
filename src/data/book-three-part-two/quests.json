@@ -1864,7 +1864,7 @@
           },
           {
             "say": "Mags Peller",
-            "text": "Stoneward asked me a question in the spring, on the salt-hall roof, and I told him I'd think about it. I have. Here it is. I'll not forgive a man who's been let off. If this council lets either of them off, it'll be the council I'm forgiving, and the council never did anything to me.",
+            "text": "Stoneward asked me a question in the spring, on the ridge above the town, and I told him I'd think about it. I have. Here it is. I'll not forgive a man who's been let off. If this council lets either of them off, it'll be the council I'm forgiving, and the council never did anything to me.",
             "when": {
               "party": "orin"
             }
@@ -3218,7 +3218,7 @@
       {
         "oneOf": [
           {
-            "narrate": "Corvane's clerks write that it is four hundred voices, and that the whole city holds.",
+            "narrate": "Corvane's clerks write that it is three hundred and ninety-one voices, and that the whole city holds.",
             "when": {
               "noneFlag": [
                 "b3_witnessed",
@@ -3227,13 +3227,13 @@
             }
           },
           {
-            "narrate": "Corvane's clerks write that it is three hundred and thirty-seven voices, and that the city holds, all but the outer district.",
+            "narrate": "Corvane's clerks write that it is three hundred and thirty voices, and that the city holds, all but the outer district.",
             "when": {
               "flag": "b3_witnessed"
             }
           },
           {
-            "narrate": "Corvane's clerks write that it is a hundred and ninety voices, and that they hold the inner city, and that the rest of Vell's people have gone over the pass.",
+            "narrate": "Corvane's clerks write that it is a hundred and eighty-six voices, and that they hold the inner city, and that the rest of Vell's people have gone over the pass.",
             "when": {
               "flag": "b3_quotas_exposed"
             }
@@ -3247,7 +3247,7 @@
         "narrate": "Three letters came up the Briarwood road in the last week, and Reeve Aveline has pinned them to the board outside the inn, because she says the village has a right to read them."
       },
       {
-        "narrate": "The first is from Clerk-Major Fennick, in Vell, on the Commandery's ruled paper, numbered. Item one: Commander Idris Hesk is on the Iron Road with three hundred volunteers and is expected at Vell before the year turns. Item two: the three who went down the stair under the iron vault in the summer, the morning after Commander Hesk was taken at the foot of the pass, were Lantern Hall surveyors, sent by Guildmistress Ord with lamps and chalk and a week's food. Fennick has had it from the Hall's own papers. None of them has come up. Item three: Fennick has counted the volunteers twice and would like it on record that the number is three hundred exactly, which he does not find reassuring."
+        "narrate": "The first is from Clerk-Major Fennick, in Vell, on the Commandery's ruled paper, numbered. Item one: Commander Idris Hesk is on the Iron Road with three hundred volunteers and is expected at Vell before the year turns. Item two: the three who went down the stair under the iron vault in the summer, a few days after Commander Hesk was taken at the foot of the pass, were Lantern Hall surveyors, sent by Guildmistress Ord with lamps and chalk and a week's food. Fennick has had it from the Hall's own papers. None of them has come up. Item three: Fennick has counted the volunteers twice and would like it on record that the number is three hundred exactly, which he does not find reassuring."
       },
       {
         "oneOf": [
@@ -3873,14 +3873,14 @@
         "narrate": "Clerk-Major Fennick meets you at the gate with his writing-board and his census box under his arm. He processes you, name and town and purpose, on the proper form, and then he takes you straight down to the vault without a word about anything else."
       },
       {
-        "narrate": "Old Oswin Pike, the sergeant-at-keys, is at the foot of the vault stair with his lamp. He has kept the vault's three keys for more than thirty years. He has not needed them since the autumn. The round iron door in the vault floor, the one nobody in Vell built, is standing open, and the cold is coming up out of it like breath."
+        "narrate": "Old Oswin Pike, the sergeant-at-keys, is at the foot of the vault stair with his lamp. He has kept the vault's three keys for more than thirty years. He has not needed them since the summer. The round iron door in the vault floor, the one nobody in Vell built, is standing open, and the cold is coming up out of it like breath."
       },
       {
         "say": "Oswin Pike",
-        "text": "I never saw them. The morning after they took the Commander at the foot of the pass, I came down and the vault was open and that door was open, and three pairs of boots going down in the chalk. My keys were on my belt. Nobody's come up. I've kept a lamp at the top for them every night since."
+        "text": "I never saw them. A few mornings after they took the Commander at the foot of the pass, I came down and the vault was open and that door was open, and three pairs of boots going down in the chalk. My keys were on my belt. Nobody's come up. I've kept a lamp at the top for them every night since."
       },
       {
-        "narrate": "The round key never reached Highpass. On the night Hesk was taken, at the foot of the pass, a Lantern Hall hand lifted it from his effects before anything was listed, and Captain Sorrel's custody ledger has it only as not among the effects. It went to Cass Ord's people, and before dawn three surveyors unlocked the round door with it and went down to find where the copies of the rite came from. Fennick has their names now, from the Hall's own papers."
+        "narrate": "The round key never reached Highpass. It was written into the council's custody ledger at the foot of the pass, with the rest of Hesk's effects, and by the time the ledger reached the fort there was a second note beside that line: not found. A Lantern Hall hand had lifted it from the effects box in the night, between the writing and the fort. It went to Cass Ord's people, and a few nights later three surveyors unlocked the round door with it and went down to find where the copies of the rite came from. Fennick has their names now, from the Hall's own papers."
       },
       {
         "narrate": "And Hesk is coming. His company is on the Iron Road, a day out, three hundred people in a column in the snow, with hired men at the front and the back."
@@ -4024,7 +4024,7 @@
           {
             "oneOf": [
               {
-                "narrate": "Ysolde Carr came back over the pass in the autumn with Fennick's clerks to help him count the empty city. Jory and Wil are at Briarwatch, in the fields, at school in the afternoon sitting.",
+                "narrate": "Ysolde Carr came back over the pass in the autumn with Fennick's clerks to help him count the empty city. Hugh and Wil are at Briarwatch, in the fields, at school in the afternoon sitting.",
                 "when": {
                   "flag": "b3_bell_evacuate"
                 }

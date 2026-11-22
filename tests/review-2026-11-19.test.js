@@ -146,10 +146,10 @@ test('finishing the last written chapter says the written story is complete and 
   // Book One now hands over to Book Two, not to the AI storyteller.
   assert.equal(r.state.story.flags[Book.FINISHED], undefined);
   assert.ok(r.events.some((e) => e.text === Book.bookEnd('aftermath')));
-  assert.match(Book.bookEnd('aftermath'), /Book 1, The Bell Beneath Briarwatch, is complete\. Book 2, The Council of Small Voices, begins\. Its first chapter, The Chair Problem, is on the expedition board in Highpass Watch\./);
+  assert.match(Book.bookEnd('aftermath'), /Book One, The Bell Beneath Briarwatch, is complete\. Book Two, The Council of Small Voices, begins\. Its first chapter, The Chair Problem, is on the expedition board in Highpass Watch\./);
   assert.doesNotMatch(JSON.stringify(QUESTS.aftermath.decisions), /This season/);
   const text = deterministicFallback(r.state, r.view, { type: 'story-choice' }, r.events);
-  assert.match(text, /Book 2, The Council of Small Voices, begins/);
+  assert.match(text, /Book Two, The Council of Small Voices, begins/);
   assert.equal(r.view.world.director.sideQuests, true);
   assert.equal(r.view.world.book.chapter, 'The Chair Problem');
 });

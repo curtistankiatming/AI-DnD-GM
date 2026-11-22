@@ -2466,7 +2466,7 @@
             "text": "Twenty-two years in the census office. I have never once struck a name out of the box. I've added nine thousand, four hundred and six. I'd like to strike one out. I'd like very much to be sure it's the right one."
           },
           {
-            "narrate": "The three underlined names: Liss Marrin, 30, of Cask. Tobin Marrin, 8, of Cask. Ada Marrin, 61, of Cask."
+            "narrate": "The three underlined names: Liss Marrin, 30, of Cask. Alfie Marrin, 8, of Cask. Joan Marrin, 61, of Cask."
           },
           {
             "say": "Fennick",
@@ -2487,17 +2487,17 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "It takes the afternoon. The Highpass list has a woman from Cask in the store-room hammocks, with a cough, \"caring for one child, not hers\". Fennick's box has Liss Marrin's last known address: the tithe barn at Lindmoor, with her mother-in-law, Ada, and her son, Tobin. Hanne Ostrow's party came from Cask by way of Lindmoor's tithe barn, and walked over the pass together."
+                  "narrate": "It takes the afternoon. The Highpass list has a woman from Cask in the store-room hammocks, with a cough, \"caring for one child, not hers\". Fennick's box has Liss Marrin's last known address: the tithe barn at Lindmoor, with her mother-in-law, Joan, and her son, Alfie. Hanne Ostrow's party came from Cask by way of Lindmoor's tithe barn, and walked over the pass together."
                 },
                 {
                   "narrate": "{You find|@ finds} it at the bottom of the Highpass list in Iona's own hand, added late: \"Marrin, A., widow, cough; came over in the Ostrow party; asks after her grandson.\" Sixty-one. Not thirty."
                 },
                 {
                   "say": "Fennick",
-                  "text": "Ada. It's Ada. Then Liss and the boy..."
+                  "text": "Joan. It's Joan. Then Liss and the boy..."
                 },
                 {
-                  "narrate": "He does not finish. He takes his pencil, and in the box, beside the name Ada Marrin, 61, of Cask, he draws one small neat line. He does it very slowly. Then he sits looking at it."
+                  "narrate": "He does not finish. He takes his pencil, and in the box, beside the name Joan Marrin, 61, of Cask, he draws one small neat line. He does it very slowly. Then he sits looking at it."
                 }
               ],
               "next": "letter",
@@ -2531,13 +2531,13 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "A man from Cask in the ration queue knew all three. Liss was a dyer, with blue hands. Tobin was eight and frightened of geese. Ada was a widow with a cough who ran the Cask egg stall and charged soldiers double, and was right to."
+                  "narrate": "A man from Cask in the ration queue knew all three. Liss was a dyer, with blue hands. Alfie was eight and frightened of geese. Joan was a widow with a cough who ran the Cask egg stall and charged soldiers double, and was right to."
                 },
                 {
-                  "narrate": "And Ada, he says, went over the pass with Hanne Ostrow's people, to look for her grandson in the free wards. Liss and Tobin stayed at Lindmoor. Lindmoor's stone stopped in the second week of the new year."
+                  "narrate": "And Joan, he says, went over the pass with Hanne Ostrow's people, to look for her grandson in the free wards. Liss and Alfie stayed at Lindmoor. Lindmoor's stone stopped in the second week of the new year."
                 },
                 {
-                  "narrate": "Fennick listens to all of it, with his pencil in his hand, and then he draws one small neat line through Ada Marrin's name in the box. He does it very slowly."
+                  "narrate": "Fennick listens to all of it, with his pencil in his hand, and then he draws one small neat line through Joan Marrin's name in the box. He does it very slowly."
                 }
               ],
               "next": "letter",
@@ -2567,7 +2567,7 @@
             "narrate": "Fennick writes to Highpass in his neat hand, and lets you read it before he seals it."
           },
           {
-            "narrate": "\"To Mistress Ada Marrin, of Cask, at Highpass, by the kindness of Quartermaster Iona. From the census office at Vell. You are entered in the census of the lost. You asked after your grandson Tobin Marrin, eight. I am very sorry. He is entered too, with his mother, at Lindmoor, on the twelfth day of the new year. I am striking your name out of the box. It is the first name I have ever struck out. I wanted you to know that you are not lost, and that someone has written it down.\"",
+            "narrate": "\"To Mistress Joan Marrin, of Cask, at Highpass, by the kindness of Quartermaster Iona. From the census office at Vell. You are entered in the census of the lost. You asked after your grandson Alfie Marrin, eight. I am very sorry. He is entered too, with his mother, at Lindmoor, on the twelfth day of the new year. I am striking your name out of the box. It is the first name I have ever struck out. I wanted you to know that you are not lost, and that someone has written it down.\"",
             "when": {
               "flag": "job:census-found"
             }
@@ -2633,14 +2633,14 @@
   },
   "brothers": {
     "id": "brothers",
-    "name": "Jory and Wil",
+    "name": "Hugh and Wil",
     "town": "vell",
     "level": 25,
     "from": "b3-vell",
     "until": "b3-greatbell",
     "gold": 95,
-    "giver": "Jory Carr, twelve",
-    "brief": "Ysolde Carr's brothers, Jory and Wil, have walked up to the casting wall with a piece of chalk to put their own names on it in her place. Talk them out of it, or find them work that feeds them.",
+    "giver": "Hugh Carr, twelve",
+    "brief": "Ysolde Carr's brothers, Hugh and Wil, have walked up to the casting wall with a piece of chalk to put their own names on it in her place. Talk them out of it, or find them work that feeds them.",
     "start": "chalk",
     "nodes": {
       "chalk": {
@@ -2650,7 +2650,7 @@
             "narrate": "The drill-guard at the foot of the casting wall have stopped two boys with a piece of chalk. The older one is twelve, thin, with his sister's quick plain face and a coat with a button newly sewn on, and he is furious. The younger one is nine, and holding the older one's sleeve, and has a bit of chalk dust on his nose."
           },
           {
-            "narrate": "It is not the first time. Since the first fifty went down the stair, Jory has come to the wall every morning with a piece of chalk, and every morning the drill-guard have taken it off him and sent him home.",
+            "narrate": "It is not the first time. Since the first fifty went down the stair, Hugh has come to the wall every morning with a piece of chalk, and every morning the drill-guard have taken it off him and sent him home.",
             "when": {
               "anyFlag": [
                 "b3_council_take",
@@ -2660,11 +2660,11 @@
             }
           },
           {
-            "say": "Jory",
+            "say": "Hugh",
             "text": "It says anyone can volunteer. It says it over the door. Anyone. It doesn't say over twelve. It doesn't say not if your sister already did."
           },
           {
-            "say": "Jory",
+            "say": "Hugh",
             "text": "It's two for one. Me and Wil. That's more bells. That's a better deal. They'd take that. Anyone would take that."
           },
           {
@@ -2676,7 +2676,7 @@
           },
           {
             "say": "nessa",
-            "text": "Oh, no. No, no. Give me the chalk, Jory. Give it here.",
+            "text": "Oh, no. No, no. Give me the chalk, Hugh. Give it here.",
             "when": {
               "party": "nessa"
             }
@@ -2699,7 +2699,7 @@
         "choices": [
           {
             "id": "talk",
-            "label": "Sit down with Jory on the drill-yard step and talk him out of it",
+            "label": "Sit down with Hugh on the drill-yard step and talk him out of it",
             "check": {
               "skill": "persuasion",
               "alt": [
@@ -2710,17 +2710,17 @@
             "success": {
               "lines": [
                 {
-                  "narrate": "{You sit|@ sits} on the step with him, and {don't|doesn't} tell him he's too young, because he knows, and that's why he came. {You ask|@ asks} Jory instead what Ysolde said to him when she put her name up. Jory tells {them}. She said she'd hear everyone. She said that was the point of a bell."
+                  "narrate": "{You sit|@ sits} on the step with him, and {don't|doesn't} tell him he's too young, because he knows, and that's why he came. {You ask|@ asks} Hugh instead what Ysolde said to him when she put her name up. Hugh tells {them}. She said she'd hear everyone. She said that was the point of a bell."
                 },
                 {
-                  "narrate": "So {they} {ask|asks} him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then Jory gives {them} the chalk."
+                  "narrate": "So {they} {ask|asks} him who she'll be listening for, if he and Wil are in the bronze beside her. He doesn't answer for a long time. Then Hugh gives {them} the chalk."
                 },
                 {
-                  "say": "Jory",
+                  "say": "Hugh",
                   "text": "She'd have nobody to hear. That's what you mean."
                 },
                 {
-                  "say": "Jory",
+                  "say": "Hugh",
                   "text": "I hate it. I hate all of it. I'm not going to stop hating it."
                 },
                 {
@@ -2732,10 +2732,10 @@
             "failure": {
               "lines": [
                 {
-                  "narrate": "{You tell|@ tells} him he's too young, and it is the wrong thing to say. He tells {them} that he's twelve and he carries coal for the Second District every morning and he can carry anything. Jory says {you're from the free wards and you don't know anything|@'s from the free wards and doesn't know anything}. He's right about the second part."
+                  "narrate": "{You tell|@ tells} him he's too young, and it is the wrong thing to say. He tells {them} that he's twelve and he carries coal for the Second District every morning and he can carry anything. Hugh says {you're from the free wards and you don't know anything|@'s from the free wards and doesn't know anything}. He's right about the second part."
                 },
                 {
-                  "narrate": "In the end it is Wil who stops it. He takes the chalk out of his brother's hand and puts it in his own pocket, and holds Jory's sleeve, and won't let go. Jory lets him."
+                  "narrate": "In the end it is Wil who stops it. He takes the chalk out of his brother's hand and puts it in his own pocket, and holds Hugh's sleeve, and won't let go. Hugh lets him."
                 }
               ],
               "next": "work"
@@ -2747,7 +2747,7 @@
         "title": "Something that feeds them",
         "lines": [
           {
-            "say": "Jory",
+            "say": "Hugh",
             "text": "Fine. Fine. But she's only on the wall because of food. If we had work, real work, that paid in bread, she'd — she wouldn't have to. Would she? Would she?"
           },
           {
@@ -2772,22 +2772,22 @@
                   "text": "Runners. For the census. I have no runners. I have never had runners. There's no regulation for... There is a regulation for runners. Regulation forty. Nobody reads regulation forty."
                 },
                 {
-                  "narrate": "Jory and Wil Carr are entered in Fennick's books that afternoon as census runners, junior, on a clerk's half-ration each, which comes to one whole ration between them, which is what Ysolde's promise would have bought them, near enough."
+                  "narrate": "Hugh and Wil Carr are entered in Fennick's books that afternoon as census runners, junior, on a clerk's half-ration each, which comes to one whole ration between them, which is what Ysolde's promise would have bought them, near enough."
                 },
                 {
-                  "narrate": "Ysolde stands in the doorway of the census office and watches them sign their names in Fennick's ledger. Jory's is very neat. Wil's is mostly a W."
+                  "narrate": "Ysolde stands in the doorway of the census office and watches them sign their names in Fennick's ledger. Hugh's is very neat. Wil's is mostly a W."
                 },
                 {
                   "say": "Ysolde",
                   "text": "It's good. It's a good thing. Thank you. I'm still on the wall."
                 },
                 {
-                  "say": "Jory",
+                  "say": "Hugh",
                   "text": "Ysolde—"
                 },
                 {
                   "say": "Ysolde",
-                  "text": "I know. I know. But now I'm on it because I chose it, and not only because of bread. That's better. You've made it better. That's not nothing, Jory."
+                  "text": "I know. I know. But now I'm on it because I chose it, and not only because of bread. That's better. You've made it better. That's not nothing, Hugh."
                 }
               ],
               "approval": {
@@ -2816,10 +2816,10 @@
             "gold": -50,
             "lines": [
               {
-                "narrate": "You go to the ration office with Jory and Wil and pay a season's bread for both, in advance, in gold, and make the clerk write it in the ledger in front of you."
+                "narrate": "You go to the ration office with Hugh and Wil and pay a season's bread for both, in advance, in gold, and make the clerk write it in the ledger in front of you."
               },
               {
-                "say": "Jory",
+                "say": "Hugh",
                 "text": "A season. Then what?"
               },
               {

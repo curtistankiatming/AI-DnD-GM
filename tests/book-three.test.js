@@ -93,7 +93,7 @@ test('the Second Oath epilogue hands the hero straight on to the letter from Vel
   const r = act(s, { type: 'story-choice', choiceId: 'seat' });
   assert.equal(r.state.story.flags[Book.FINISHED], undefined, 'Not handed to the AI storyteller.');
   // Book Two is finished, so it says so on the decision itself, as before Part One.
-  assert.equal(r.events.filter((e) => /Book 2, .* is complete\. Book 3, .* begins\./.test(e.text || '')).length, 1, 'Book Two ends on the oath decision.');
+  assert.equal(r.events.filter((e) => /Book Two, .* is complete\. Book Three, .* begins\./.test(e.text || '')).length, 1, 'Book Two ends on the oath decision.');
   assert.equal(r.state.story.flags['books:part-end-due'], undefined);
   s = act(r.state, { type: 'story-choice', choiceId: 'town' }).state;
   s = toTown(s);
@@ -542,7 +542,7 @@ test('the sluices: back Nessa or Ysolde\'s choice, and with Nessa away Ysolde\'s
   const alone = sluice({ party: ['orin', 'maren'] });
   assert.equal(alone.story.nodeId, 'scene-vell-ysolde-sluice');
   const text = opening(alone);
-  assert.match(text, /I'm not going\. I wanted to tell someone from the free wards/); assert.doesNotMatch(text, /Jory and Wil are at the end of the sluice|I came down here because you asked me/);
+  assert.match(text, /I'm not going\. I wanted to tell someone from the free wards/); assert.doesNotMatch(text, /Hugh and Wil are at the end of the sluice|I came down here because you asked me/);
   assert.deepEqual(E.buildView(alone).scene.choices.map((c) => c.id), ['back']);
   assert.equal(E.resolveAction(alone, { type: 'story-choice', choiceId: 'pressed' }, high).result.ok, false);
   const after = act(alone, { type: 'story-choice', choiceId: 'back' }).state;
@@ -612,7 +612,7 @@ test('the side jobs of chapters 4 to 6 open and close with their windows, and Be
   assert.ok(!offered('oil', upTo('b3-pass'), 'saltwick')); assert.ok(offered('oil', upTo('b3-saltwick'), 'saltwick')?.canStart); assert.ok(!offered('oil', upTo('b3-witness'), 'saltwick'));
   assert.ok(!offered('census', upTo('b3-pass'), 'vell')); assert.ok(offered('census', upTo('b3-saltwick'), 'vell')?.canStart);
   assert.ok(!offered('brothers', upTo('b3-saltwick'), 'vell')); assert.ok(offered('brothers', upTo('b3-vell'), 'vell')?.canStart);
-  // Fennick's Census runs to chapter 9, and Jory and Wil from chapter 6 to 9.
+  // Fennick's Census runs to chapter 9, and Hugh and Wil from chapter 6 to 9.
   for (const id of ['census', 'brothers']) {
     assert.ok(offered(id, upTo('b3-vault'), 'vell')?.canStart, `${id} is open during the great bell`);
     assert.ok(!offered(id, upTo('b3-greatbell'), 'vell'), `${id} closes once the great bell is decided`);
@@ -843,6 +843,8 @@ test('"To be continued" is told once, back in town after the end of Part One, no
   assert.ok(E.buildView(last.state).world.town, 'The letter is folded at home.');
   assert.equal(last.state.story.flags.b3_partone_done, true);
   assert.equal(last.events.filter((e) => /To be continued/.test(e.text || '')).length, 1);
+  // It names the part that is finished and the one still being written, in words, and what stays open meanwhile.
+  assert.ok(last.events.some((e) => /You have finished The Bronze, Part One of Book Three, The Names in the Bronze\. Part Two, The Stair, is being written; .*bounties and side jobs stay open/.test(e.text || '')), last.events.map((e) => e.text).join('\n'));
   assert.ok(!last.state.story.flags['books:part-end-due']);
   assert.equal(Book.chapter(last.state).id, 'to-be-continued');
   assert.equal(Book.chapter(last.state).waiting, true);
@@ -995,4 +997,25 @@ test('PR #67: Dera\'s level-30 lines hold on every route, and Corvane learns of 
   const all = JSON.stringify([RAWQ['b3-home'], RAWQ['b3-vault'], RAWQ['b3-greatbell'], RAWQ['b3-paid'], RAWS['vault-camp'], RAWS['b3-partone-end']]);
   assert.doesNotMatch(all, /south gate|congregation|Nobody makes a joke|fourteenth|only trained caster|The last nineteen years|for the harvest, and stayed/);
   assert.doesNotMatch(JSON.stringify(RAWS['b3-partone-end']), /"To be continued\."/);
+});
+
+// The Book Three story review (docs/reviews/claude-book-three-story-2026-11-22.md).
+test('Book Three story review: one count for the rite, one key, one Mags, and no borrowed names', () => {
+  const P2Q = require('../src/data/book-three-part-two/quests.json'), P2S = require('../src/data/book-three-part-two/scenes.json');
+  const book = JSON.stringify([IDS.map((id) => RAWQ[id]), RAWS, RAWJ, P2Q, P2S]);
+  // Sable's letter, and Corvane's copy of it, is eleven pages from the ledger room to the Hall steps.
+  assert.doesNotMatch(book, /nine pages|Nine pages|all nine, and puts them/);
+  // The bound in the vault, the lost in Corvane's ledger and a Briarwatch farmer no longer share a name with somebody else.
+  assert.doesNotMatch(JSON.stringify(IDS.map((id) => RAWQ[id])), /Pell Moran|Anwen Teller|Hanne Coyle|Hanne Ilvey|Tam Hollis|Hobb|widow Marsh/);
+  assert.match(book, /Robin Moran, 14, of Osgood's Cross/); assert.match(book, /Mae Ilvey, 14, of Lindmoor/);
+  // The round key is in the custody ledger at the foot of the pass (chapter 10), so chapter 17 says how it went missing after.
+  assert.match(JSON.stringify(RAWQ['b3-paid']), /one key, iron, round, on a chain/);
+  assert.match(JSON.stringify(P2Q['b3-company']), /written into the council's custody ledger at the foot of the pass/);
+  assert.doesNotMatch(book, /before anything was listed/);
+  // Mags said she would think about it on the ridge above Saltwick, whichever way the town went.
+  assert.doesNotMatch(book, /in the spring, on the salt-hall roof/);
+  // A save that recalled Elske and also took the rope down hears Corvane once, not twice.
+  const s = at('b3-greatbell', 'opening', { flags: { mother_recalled: true, mother_silenced: true } });
+  const lines = liveLines(s, RAWQ['b3-greatbell'].opening).map((l) => l.text || '').filter((t) => /^Your council/.test(t));
+  assert.equal(lines.length, 1);
 });

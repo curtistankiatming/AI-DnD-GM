@@ -1570,7 +1570,7 @@
                 }
               },
               {
-                "narrate": "Hesk comes up the stair the hero of the free wards. His name is in the ledger of the ones he cast, in his own hand, at the foot of the page.",
+                "narrate": "Hesk comes up the stair, and the free wards call him their hero. His name is in the ledger of the ones he cast, in his own hand, at the foot of the page.",
                 "when": {
                   "flag": "b3_promise_hesk"
                 }

@@ -61,7 +61,7 @@ Camp scene saltwick-camp: who sits with Orin. His approval decides how much he s
 ### 5. The Casting Yard (b3-vell, level 24, Vell). Nessa's story
 Opening. Vell: iron gates, a drill-yard the size of Briarwatch, and four hundred names chalked on the casting wall. Corvane meets you (at the gate himself if b3_answered; otherwise after Fennick has processed you). His first question follows your Second Oath.
 Corvane's ask, and his line. The first casting is in nine days. He wants your blessing, because the free wards will follow your word and he will need their bronze. He tells you plainly that he will cast on the ninth day with it or without it.
-Talks. Corvane and his ledger of the lost, read aloud each night. Commander Idris Hesk, his second, who makes his case to your face: his district lost six hundred people this winter waiting for volunteers, and the willing are a luxury he can no longer afford. Ysolde Carr, nineteen, first on the wall, volunteering so her brothers Jory and Wil are fed for life.
+Talks. Corvane and his ledger of the lost, read aloud each night. Commander Idris Hesk, his second, who makes his case to your face: his district lost six hundred people this winter waiting for volunteers, and the willing are a luxury he can no longer afford. Ysolde Carr, nineteen, first on the wall, volunteering so her brothers Hugh and Wil are fed for life.
 Clue (arcana, alt. history): Corvane's copy is Sable's altered rite. If b3_rite_carried, you can show him the old keepers' version beside it.
 Crisis. Hesk's officers try to take the iron vault's keys at night. Peaceful: wake Corvane and make him refuse them in front of his own officers (persuasion, alt. intimidation). Fight: Hesk's drill-guard.
 Decision. Give Corvane your blessing (b3_blessed), refuse it (b3_refused), or "not yet; show me all of it first" (b3_waiting). It decides whose name is on the first casting in chapter 7.
@@ -179,7 +179,7 @@ Fennick's Census |
 5 to 9 | 
 Match a refugee at Highpass to a name in Fennick's box. One is alive.
 | Vell | 
-Jory and Wil | 
+Hugh and Wil | 
 6 to 9 | 
 Ysolde's brothers want to volunteer in her place. Talk them out of it, or find them work.
 Camp scenes: one after each chapter except 9, ids as listed in the chapters. The ones after chapter 5 and the epilogue also mark the 2nd job skills at 25 and 30. After `b3_bell_evacuate`, Vell's town page becomes the empty city: no merchants or side jobs, one visit scene.
