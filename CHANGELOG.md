@@ -6,10 +6,10 @@ the pull requests that made them.
 
 ## Gear to level 100 and equipment sets (22 November 2026)
 
-- 77 new pieces of equipment for levels 45 to 100 in ten tiers (45, 50, 55, 60, 65, 70, 80, 90,
+- 79 new pieces of equipment for levels 45 to 100 in ten tiers (45, 50, 55, 60, 65, 70, 80, 90,
   95 and 100), about eight a tier rather than every type at every level. Every tier has something for
   every class and companion, and each kind of kit improves at least every 20 levels.
-- Six equipment sets in two versions (Book Four, levels 55 to 65; final, 90 to 95). Two pieces
+- Every class has its own equipment sets, one per class in two versions (Book Four, levels 55 to 65; final, 90 to 95). Two pieces
   turn on a bonus, more pieces add more, and the full set gives a set skill once per fight. Cards
   and the equipment screen show the set and its bonuses.
 - Maren can carry a shield again: three late shields need no Strength.

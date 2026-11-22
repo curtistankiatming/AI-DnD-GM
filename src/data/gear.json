@@ -5026,8 +5026,7 @@
     "requires": {
       "level": 55,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -5067,9 +5066,7 @@
     "requires": {
       "level": 55,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ],
       "abilities": {
         "dex": 13
@@ -5103,9 +5100,7 @@
     "requires": {
       "level": 55,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ],
       "abilities": {
         "dex": 13
@@ -5230,8 +5225,7 @@
     "requires": {
       "level": 60,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -5255,8 +5249,7 @@
     "requires": {
       "level": 60,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -5288,9 +5281,7 @@
     "requires": {
       "level": 60,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ]
     },
     "set": "thornstep"
@@ -5319,9 +5310,7 @@
     "requires": {
       "level": 60,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ]
     },
     "set": "long-watch"
@@ -5505,8 +5494,7 @@
     "requires": {
       "level": 65,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ]
     },
     "set": "bellwarden-oath"
@@ -5530,9 +5518,7 @@
     "requires": {
       "level": 65,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ]
     },
     "set": "thornstep"
@@ -5556,9 +5542,7 @@
     "requires": {
       "level": 65,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ]
     },
     "set": "long-watch"
@@ -6155,8 +6139,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -6194,8 +6177,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -6227,8 +6209,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ],
       "abilities": {
         "str": 13
@@ -6268,9 +6249,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ],
       "abilities": {
         "dex": 13
@@ -6302,9 +6281,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ]
     },
     "set": "nightbriar"
@@ -6342,9 +6319,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ],
       "abilities": {
         "dex": 13
@@ -6376,9 +6351,7 @@
     "requires": {
       "level": 90,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ]
     },
     "set": "farwatch"
@@ -6607,8 +6580,7 @@
     "requires": {
       "level": 95,
       "classes": [
-        "fighter",
-        "cleric"
+        "fighter"
       ]
     },
     "set": "highbell-regalia"
@@ -6632,9 +6604,7 @@
     "requires": {
       "level": 95,
       "classes": [
-        "fighter",
-        "rogue",
-        "bard"
+        "rogue"
       ]
     },
     "set": "nightbriar"
@@ -6658,9 +6628,7 @@
     "requires": {
       "level": 95,
       "classes": [
-        "ranger",
-        "rogue",
-        "fighter"
+        "ranger"
       ]
     },
     "set": "farwatch"
@@ -6776,6 +6744,80 @@
       "level": 100,
       "abilities": {
         "str": 15
+      }
+    }
+  },
+  {
+    "id": "songsteel-rapier",
+    "name": "Songsteel Rapier",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1340,
+    "description": "A rapier that sings a clear note when it parries; duellists and minstrels both swear by it.",
+    "purpose": "Finesse, 1d8 piercing, +5 to hit, +9 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 5,
+    "damageBonus": 9,
+    "stats": {
+      "dealt": 0.15
+    },
+    "skill": {
+      "name": "Ringing Parry",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Weaken an enemy for two rounds: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 100,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "hallowsteel-plate",
+    "name": "Hallowsteel Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1340,
+    "description": "Plate blessed at every shrine on the high road; it is said no blow struck in anger has ever split it.",
+    "purpose": "Base AC 25, no Dexterity bonus. -2 Stealth; +1 to every saving throw.",
+    "armor": {
+      "base": 25,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
       }
     }
   },

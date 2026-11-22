@@ -81,7 +81,7 @@ see [ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#masterwork-what-late-gold-is-for).
 
 ## Equipment sets (22 November 2026)
 
-A set piece names its set in `set` (src/data/gear.json); the sets are in
+Each class has its own sets, which only that class can wear. A set piece names its set in `set` (src/data/gear.json); the sets are in
 src/data/gear-sets.json. Wearing 2 or more different pieces of a set gives every
 bonus of that set whose piece count is reached (src/gear.js `setBonuses`). A
 bonus uses the item fields (`acBonus`, `attackBonus`, `damageBonus`,

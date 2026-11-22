@@ -180,6 +180,11 @@ test('every set is sound: real pieces in different slots, one class list, bonuse
     for (const id of set.pieces) { assert.ok(!inSets.has(id), `${id} is in one set`); inSets.add(id); }
   }
   assert.deepEqual(LATE.filter((i) => i.set).map((i) => i.id).sort(), [...inSets].sort(), 'every set piece is listed in its set');
+  // Every class has its own sets, one in each version, that no other class can wear (Curtis, 22 November 2026).
+  for (const c of Object.keys(CLASSES)) for (const grade of ['Book Four', 'Final']) {
+    const own = SETS.filter((s) => s.grade === grade && JSON.stringify(ITEMS[s.pieces[0]].requires.classes) === JSON.stringify([c]));
+    assert.equal(own.length, 1, `${c}: one ${grade} set of its own`);
+  }
   // Every class and companion has a set of its own.
   for (const c of Object.keys(CLASSES)) assert.ok(SETS.some((s) => Gear.unmet(hero(c, 100).player, ITEMS[s.pieces[0]]) === null), c);
   for (const m of ['orin', 'maren', 'nessa']) assert.ok(SETS.some((s) => s.pieces.every((id) => Gear.unmet({ ...COMPANIONS[m], level: 100 }, ITEMS[id]) === null)), m);
