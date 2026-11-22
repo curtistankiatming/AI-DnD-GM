@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's from chapter 4, after Linus has sung his song; it closes after chapter 6 (until: b4-book), which is added when chapter 6 is written (build step 4), since a job may only name a written chapter.",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's from chapter 7, and closes after chapter 9 (until: b4-embassy), which is added when chapter 9 is written (build step 5), since a job may only name a written chapter.",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -103,6 +103,7 @@
     "town": "briarwatch",
     "level": 43,
     "from": "b4-ballad",
+    "until": "b4-book",
     "gold": 150,
     "giver": "Linus Pardew, at his table by the well",
     "brief": "Linus Pardew wants the true story for the third verse of his song. Dera, Tovin and Pim each tell him a different one.",
@@ -182,6 +183,152 @@
               ],
               "setFlags": { "job:third-verse-all": true }
             }
+          }
+        ]
+      }
+    }
+  },
+  "bett-berth": {
+    "id": "bett-berth",
+    "name": "Bett's Berth",
+    "town": "merrowgate",
+    "level": 44,
+    "from": "b4-ballad",
+    "until": "b4-key",
+    "gold": 160,
+    "giver": "Bett Haddow, on the north quay",
+    "brief": "Bett Haddow wants to sign on as ship's girl north. Her father does not want her to.",
+    "start": "quay",
+    "nodes": {
+      "quay": {
+        "title": "Hands Wanted",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "The Company's ship is still at the north quay, sold at the Hall's auction to a coaster master from the Tanneries who means to try the coast north before anybody else does. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_broken" } },
+            { "narrate": "Cass Ord's ship is at the north quay with the council's seal chalked on her stern, loading grain for the relief convoy, to sail north up the coast when the peaks open. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_council" } },
+            { "narrate": "The Company's second ship is at the north quay, the one that carries the lamp-oil and the glass, and will sail north on the next spring tide. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_sails" } },
+            { "narrate": "The North Company's ship is at the north quay, loading for the Wold. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on." }
+          ] },
+          { "say": "Bett", "text": "Ship's girl. They take ship's boys at ten, and I'm eleven. I can splice, and I can climb, and I can tie every knot on this quay, and I can read, which most of them can't. I've asked the mate. He says I can sign if my father signs as well." },
+          { "narrate": "Her father is not here to sign. Coll went north on wagon four at the end of the week, and left a letter with Bett's aunt in the Tanneries, which Bett has read, and has in her pocket, and reads out to you without being asked: Bett is to stop with you till I send. She is not to go on any ship. She will ask. Tell her no from me.", "when": { "flag": "b4_company_sails" } },
+          { "narrate": "Coll Haddow is sitting on a bollard at the foot of the gangway with his arms folded, which is where he has been since the board went up.", "when": { "notFlag": "b4_company_sails" } },
+          { "say": "Coll Haddow", "text": "I'm going north myself with the convoy, when the peaks open. One Haddow up there is enough. She stops with her aunt.", "when": { "flag": "b4_company_council" } },
+          { "say": "Coll Haddow", "text": "She's eleven. Nobody knows what's up there, and I'll not sign her onto it. She stops with her aunt.", "when": { "noneFlag": ["b4_company_sails", "b4_company_council"] } },
+          { "say": "nessa", "text": "She can climb, though. I watched her go up that rigging. She'd be good." },
+          { "say": "Bett", "text": "I would be good.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "speak",
+            "label": "Make Bett's case to whoever has to sign",
+            "check": { "skill": "persuasion", "alt": ["insight", "performance"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up to the Tanneries with Bett, and {sit|sits} in her aunt's kitchen, and {tell|tells} her what {you have|@ has} seen the girl do on the quay. Her aunt reads Coll's letter again. Then she signs the mate's paper under it, and writes beside her name: one voyage. Then home.", "when": { "flag": "b4_company_sails" } },
+                { "narrate": "{You sit|@ sits} down on the bollard beside Coll, and {tell|tells} him what {you have|@ has} seen her do on the quay. He listens to all of it. Then he signs the mate's paper, slowly, with the mate's pen, and writes beside his name: one voyage. Then home.", "when": { "notFlag": "b4_company_sails" } },
+                { "say": "Bett", "text": "One voyage. Then home. Then another one." }
+              ],
+              "setFlags": { "job:bett-berth-signed": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up to the Tanneries with Bett, but her aunt has Coll's letter on the mantel and will not be talked past it. She does not sign. She gives Bett a cup of tea instead, and the mate's paper back, folded, for next year.", "when": { "flag": "b4_company_sails" } },
+                { "narrate": "{You sit|@ sits} down on the bollard beside Coll and {put|puts} her case to him. He hears all of it, and does not sign. But he takes the mate's paper, folded, and puts it in his coat. Next year, he says. Ask me next year.", "when": { "notFlag": "b4_company_sails" } },
+                { "say": "Bett", "text": "Next year. I'll be twelve. I'll be better." }
+              ],
+              "setFlags": { "job:bett-berth-next": true }
+            }
+          },
+          {
+            "id": "loft",
+            "label": "Ask the harbour's rope-loft to take her on, here in Merrowgate",
+            "lines": [
+              { "narrate": "You go along the harbour with Bett to the rope-loft over the harbour master's office, where the riggers make up every line that goes out of Merrowgate, and ask the loft master to watch her splice. He watches her for a quarter of an hour. Then he hands her a marlinspike of her own, and tells her the lines she makes will go north on every ship that does, whoever's it is." },
+              { "say": "Bett", "text": "It's not north." },
+              { "say": "Bett", "text": "But my knots'll go first. That's something." }
+            ],
+            "setFlags": { "job:bett-berth-loft": true }
+          },
+          {
+            "id": "home",
+            "label": "Tell Bett her father is right",
+            "lines": [
+              { "narrate": "You tell Bett her father is right, and that the north will still be there when she is older." },
+              { "say": "Bett", "text": "You don't know that. Nobody knows anything about it. That's why I want to go." },
+              { "narrate": "She takes her pack off, and goes home, and does not look back at the ship." },
+              { "narrate": "Coll unfolds his arms at last, and goes after her.", "when": { "notFlag": "b4_company_sails" } }
+            ],
+            "setFlags": { "job:bett-berth-home": true }
+          }
+        ]
+      }
+    }
+  },
+  "ninth-rope": {
+    "id": "ninth-rope",
+    "name": "The Ninth Rope",
+    "town": "cinderfold",
+    "level": 46,
+    "from": "b4-book",
+    "gold": 170,
+    "giver": "Ottilie Brand, for the committee",
+    "brief": "The rope families will not give a miner's son a place on the nine's ropes. He is the best ringer in Cinder Fold.",
+    "start": "lid",
+    "nodes": {
+      "lid": {
+        "title": "The Ninth Bell",
+        "lines": [
+          { "narrate": "The ninth bell on the lid has had one rope family on it since the founders hung it. Old Perrin Rowe has rung it for fifty-one years. His hands have gone, and he has nobody of his own to give the rope to." },
+          { "narrate": "The best ringer in Cinder Fold is a miner's son called Garth Mott, who is fourteen, and has never been let touch the ninth bell's rope, because the ropes go to the rope families, and he is not from one." },
+          { "oneOf": [
+            { "narrate": "He rang the nine by hand all last winter with the miners, while Wren's casting waited, and took Ned Thorne's rope the night Ned fell. When the spring came the rope families took their ropes back, and the committee thanked the miners, and that was all.", "when": { "flag": "b3_wren_waits" } },
+            { "narrate": "He learnt on his family's hearth bell, ringing it against the nine from the top of the stair every hour, until he could keep their time better than they could." }
+          ] },
+          { "say": "Ottilie Brand", "text": "Perrin Rowe wants the boy on his rope. Ailith Strake says the ropes are the families' and always have been, and she has the founders' rule on her side. I've a committee of fourteen and seven of them are miners. Somebody find me a way through this that doesn't end with half the town not speaking to the other half." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "The founders' page says who hung each bell. I've read it, aloud, to my own families. It does not say who rings them. I know what it doesn't say. That doesn't make it easier.", "when": { "flag": "b4_truth_ailith" } },
+            { "say": "Ailith Strake", "text": "Thirty generations. The ropes are the families'. That's the rule, and the rule is what's kept the nine in time for nine hundred years." }
+          ] },
+          { "say": "Garth Mott", "text": "I don't want anybody's rope taken off them. I want the ninth's, because Perrin's asked, and nobody else is going to ring it." },
+          { "say": "nessa", "text": "Give him the rope. He's better than the lot of them. Listen to him." },
+          { "say": "Ailith Strake", "text": "I have listened. That's why it's hard.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "ailith",
+            "label": "Ask Ailith Strake to stand by the ninth bell while Garth rings the hour",
+            "check": { "skill": "persuasion", "alt": ["performance", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} Ailith up onto the lid at dusk and {stand|stands} with her by the ninth bell while Perrin Rowe puts the rope in Garth's hands. He rings the hour. He does not miss a beat of it. When it is done Ailith takes the rope from him, and looks at it, and gives it back." },
+                { "say": "Ailith Strake", "text": "The rope's the family's. Perrin's family is whoever he says it is. Write it in the minutes that way, Ottilie, so it's the rule and not a favour." }
+              ],
+              "setFlags": { "job:ninth-rope-rope": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} Ailith up onto the lid at dusk, but she will not stand by the ninth while a miner's boy has its rope. She will agree to this much: when a ringer is sick or short, Garth may take a rope, any rope, until they are well. It is not the ninth's. He takes it anyway." }
+              ],
+              "setFlags": { "job:ninth-rope-spare": true }
+            }
+          },
+          {
+            "id": "perrin",
+            "label": "Ask Perrin Rowe to give his rope himself, in front of the committee",
+            "lines": [
+              { "narrate": "Perrin Rowe comes up the hill to the committee's table on two sticks, with the ninth's rope coiled over his shoulder, and puts it down in front of Garth Mott, and says the words his father said to him, which nobody in the hall has heard said for fifty years." },
+              { "say": "Ailith Strake", "text": "That's a giving. I can't undo a giving. Nobody can." }
+            ],
+            "setFlags": { "job:ninth-rope-given": true }
+          },
+          {
+            "id": "stair",
+            "label": "Tell Garth the ropes are the rope families' to give",
+            "lines": [
+              { "narrate": "You tell Garth the ropes are the families' to give, and that you will not take one from them for him. He nods, as if he had expected it." },
+              { "narrate": "That night he rings against the nine from the top of the stair on his family's hearth bell, every hour, in time, and the whole lid can hear him." }
+            ],
+            "setFlags": { "job:ninth-rope-stair": true }
           }
         ]
       }

@@ -162,5 +162,196 @@
         ]
       }
     }
+  },
+  "company-camp": {
+    "id": "company-camp",
+    "after": "b4-company",
+    "cast": [],
+    "act": "Camp",
+    "location": "The north quay, Merrowgate, the night after",
+    "start": "north",
+    "nodes": {
+      "north": {
+        "title": "What the North Is Like",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night the north quay is unloading by lamplight, crate by crate, back off the wagons and onto the stones. Coll Haddow carries his own crate home on his shoulder. Bett comes back down to the quay after him, and sits on the bollard by the empty wagons.", "when": { "flag": "b4_company_broken" } },
+            { "narrate": "That night the council's clerks are on the north quay with lamps, chalking the council's seal on the wagons' tailboards. Coll Haddow is helping them, for wages. Bett is sitting on the bollard by wagon four, watching him.", "when": { "flag": "b4_company_council" } },
+            { "narrate": "That night Coll Haddow is loading wagon four by lamplight, for the end of the week. Bett is sitting on the bollard beside it with the roll in her lap, and her name on it in pencil, crossed out.", "when": { "flag": "b4_company_sails" } },
+            { "narrate": "That night Bett comes down to the north quay and sits on the bollard by the wagons." }
+          ] },
+          { "narrate": "Nessa is sitting on the quay edge beside her with her boots over the water and Biscuit's head on her knee. Bett has been looking at her for some time.", "when": { "party": "nessa" } },
+          { "say": "Bett", "text": "You're going north. Up over the peaks. What's it like?", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Never been." },
+          { "say": "Bett", "text": "Then what's it like?", "when": { "party": "nessa" } },
+          { "narrate": "Nessa thinks about it for a while. Then she tells her anyway.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Cold. Colder than here. White on the ground all year, and not the bad white, the ordinary kind: snow, so deep you walk on top of it. Writing on every door, so you always know whose house it is. People who give away the day they were born and write it on their arm so they can read it back. And dogs. I've decided there are dogs." },
+          { "say": "Bett", "text": "You don't know any of that.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "No. I'll write and tell you which bits I got right." },
+          { "narrate": "Biscuit thumps his tail once on the stones.", "when": { "party": "nessa" } },
+          { "narrate": "You sit down on the quay edge beside her. She has been waiting for somebody to.", "when": { "absent": "nessa" } },
+          { "say": "Bett", "text": "You're going north. Up over the peaks. What's it like?", "when": { "absent": "nessa" } },
+          { "narrate": "You tell her you have never been. She asks again, as if that were no answer, and so you tell her what Rue has told you: the white on the ground all year, the writing on every door, the people who write on their own arms so as to read back who they are.", "when": { "absent": "nessa" } },
+          { "say": "Bett", "text": "Will you write and tell me if it's true?", "when": { "absent": "nessa" } },
+          { "oneOf": [
+            { "say": "Bett", "text": "Nobody's going now. Not Da, not anybody. He's glad. I can tell he's glad, and he's pretending he isn't, for me.", "when": { "flag": "b4_company_broken" } },
+            { "say": "Bett", "text": "Da's going on the council's wagons, when the peaks open. He says the council doesn't take girls either. I asked the clerk. The clerk says it's not up to him, it's up to Da.", "when": { "flag": "b4_company_council" } },
+            { "say": "Bett", "text": "The clerk crossed me out. Neatly. I watched him do it. Da didn't say anything.", "when": { "flag": "b4_company_sails" } }
+          ] }
+        ],
+        "choices": [
+          { "id": "sit", "label": "Sit with her until her father calls her in", "lines": [
+            { "narrate": "You sit on the quay until Coll calls her in. She goes slowly, and looks back once at the north end of the harbour." }
+          ] },
+          { "id": "inn", "label": "Go up to the inn", "lines": [
+            { "narrate": "You leave Nessa on the quay with her. When you look back from the top of the steps they are both looking north.", "when": { "party": "nessa" } },
+            { "narrate": "You leave her on the quay. When you look back from the top of the steps she is looking north.", "when": { "absent": "nessa" } }
+          ] }
+        ]
+      }
+    }
+  },
+  "davin-camp": {
+    "id": "davin-camp",
+    "after": "b4-davin",
+    "cast": [],
+    "act": "Camp",
+    "location": "Saltwick, the night after the fire",
+    "start": "knot",
+    "nodes": {
+      "knot": {
+        "title": "The Knot",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night Orin sits with Davin on the parapet, with Davin's pack between them and a length of lamp-rope across both their knees.", "when": { "party": "orin", "flag": "b4_davin_comes" } },
+            { "narrate": "That night Orin sits with Davin on the parapet with a length of lamp-rope across both their knees. The pack is unpacked. Davin has not said a word to him since noon, and came up anyway.", "when": { "party": "orin", "flag": "b4_davin_home" } },
+            { "narrate": "That night Davin finds you on the parapet, with his pack and a length of lamp-rope.", "when": { "absent": "orin", "flag": "b4_davin_comes" } },
+            { "narrate": "That night Davin finds you on the parapet with a length of lamp-rope. The pack is unpacked. He has come up to say something, and has not decided what.", "when": { "absent": "orin" } },
+            { "narrate": "That night Orin sits with Davin on the parapet with a length of lamp-rope across both their knees.", "when": { "party": "orin" } }
+          ] },
+          { "say": "orin", "text": "That's my knot on your pack." },
+          { "say": "Davin", "text": "I learned it off you. From watching.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Then watch again. Slowly." },
+          { "narrate": "He ties it on the parapet rail, slowly, so that Davin can see each turn: a round turn, two half-hitches, and the stopper.", "when": { "party": "orin" } },
+          { "say": "Davin", "text": "It's nearly it. The stopper goes on the other side. Like that it holds the lamp, but it won't come undone when you want it to. Gran ties it the other way, so you can get a lamp off in the dark with one hand. Watch.", "when": { "party": "orin" } },
+          { "narrate": "He ties it again, the other way. Orin looks at it for a long time. Then he unties it, and ties it himself, Davin's way, twice, and tugs it.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Your way." },
+          { "say": "orin", "text": "Tomorrow, then. The rear of the column. You stay where I can see you.", "when": { "flag": "b4_davin_comes" } },
+          { "say": "Davin", "text": "Where you can see me.", "when": { "party": "orin", "flag": "b4_davin_comes" } },
+          { "say": "orin", "text": "They'll want somebody on the far roofs who ties it right.", "when": { "flag": "b4_davin_home" } },
+          { "say": "Davin", "text": "They've got somebody.", "when": { "party": "orin", "flag": "b4_davin_home" } },
+          { "narrate": "He shows you the knot on his pack: a round turn, two half-hitches and a stopper, with the stopper on the far side, so that it comes off in the dark with one hand. His grandmother ties it that way. He shows you twice, until you have it.", "when": { "absent": "orin" } },
+          { "say": "Davin", "text": "Everybody ties it wrong. They tie it the soldiers' way, so it holds. It's meant to hold and let go. That's the whole trick of it.", "when": { "absent": "orin" } },
+          { "say": "Davin", "text": "I'll tie yours, on the road. Every morning. You'll see.", "when": { "absent": "orin", "flag": "b4_davin_comes" } },
+          { "narrate": "Mags comes up the ladder before it is quite dark, to look at the knot. She looks at it for a while, and nods, and goes down again. She has not said a word about what she said at noon, and nobody has asked her to.", "when": { "flag": "b4_davin_mags" } }
+        ],
+        "choices": [
+          { "id": "learn", "label": "Ask Davin to show you too", "lines": [
+            { "narrate": "He shows you. It takes you four tries, and he does not laugh at any of them." }
+          ] },
+          { "id": "lamps", "label": "Go round the lamps with him at midnight", "lines": [
+            { "narrate": "You go round the long planks with him at midnight, lamp by lamp. He checks every knot, and reties two of them." }
+          ] }
+        ]
+      }
+    }
+  },
+  "book-camp": {
+    "id": "book-camp",
+    "after": "b4-book",
+    "cast": [],
+    "act": "Camp",
+    "location": "The quartermaster's office, Highpass, the night after",
+    "start": "ledgers",
+    "nodes": {
+      "ledgers": {
+        "title": "Two Ledgers",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with her book under her arm, and asks her in out of the wind.", "when": { "flag": "b4_book_returned" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with her book, and the new first page in it, and asks her in out of the wind.", "when": { "flag": "b4_book_rewritten" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with nothing in her hands, and asks her in out of the wind.", "when": { "flag": "b4_book_burned" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office, and asks her in out of the wind." }
+          ] },
+          { "say": "Iona", "text": "I keep ledgers. I've kept the council's since before you were born. I'd like to see yours, if I may." },
+          { "oneOf": [
+            { "narrate": "Rue pushes back her sleeve and shows Iona her wrist, with the one word on it. Iona looks at it as carefully as she looks at anything. Then she takes a new ledger off her shelf, a good one, bound, with nothing in it, and puts it on the table between them, and does not say what it is for. Rue writes the date on the first leaf, and under it, HEATH.", "when": { "flag": "b4_book_burned" } },
+            { "narrate": "Rue puts her book on the table, and Iona puts the council's ledger beside it, and they read each other's for an hour without speaking." }
+          ] },
+          { "say": "Iona", "text": "You've no column for what's owed." },
+          { "say": "Rue", "text": "Nothing is owed. Things are given. Then they are written down, so that nobody forgets they were given." },
+          { "say": "Iona", "text": "Here it's the other way about. Nothing's given. Everything's owed, and written down so that nobody forgets they owe it." },
+          { "say": "Iona", "text": "And I've Cass Ord's bill in that case, for forty wagons and a ship, to the copper. That one I'm paying.", "when": { "flag": "b4_company_council" } },
+          { "oneOf": [
+            { "narrate": "Iona takes a sheet off the top of the pile at her elbow: the bill for the watch's night at the north gate, made out to the carter. She reads it over once, and puts it in the stove.", "when": { "flag": "method:b4-book", "is": "peace" } },
+            { "narrate": "Iona takes a sheet off the top of the pile at her elbow: the bill for the north gate's new timbers, made out to the carter. She reads it over once, and puts it in the stove." }
+          ] },
+          { "say": "Iona", "text": "Given. Write that down." },
+          { "narrate": "Rue writes it down." },
+          { "narrate": "Maren is on the bench by the stove. She has not said anything for an hour.", "when": { "party": "maren" } },
+          { "say": "maren", "text": "She means it. I can hear that much." },
+          { "say": "Iona", "text": "I should hope so. I don't say things twice.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          { "id": "ask", "label": "Ask Rue what she wrote", "lines": [
+            { "say": "Rue", "text": "The quartermaster gave a thing. I wrote it under her name. Tomorrow I will write it on her door. She does not know yet." }
+          ] },
+          { "id": "leave", "label": "Leave them to their ledgers", "lines": [
+            { "narrate": "You leave them at it. The lamp in Iona's window is still lit when the watch changes at midnight." }
+          ] }
+        ]
+      }
+    }
+  },
+  "key-camp": {
+    "id": "key-camp",
+    "after": "b4-key",
+    "cast": [],
+    "act": "Camp",
+    "location": "The casting hall, Cinder Fold, the night after",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "At the Hall Door",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Biscuit would not go near the founders' hatch. When it came up he sat down on the lid with all four legs set and his ears flat, and nothing would shift him, and in the end Nessa picked him up, grey muzzle and all, and carried him across the lid to the casting hall door under one arm, with the lid moving under her boots.", "when": { "party": "nessa" } },
+          { "narrate": "Now he is lying across the hall door with his nose on his paws, watching the lid, and Nessa is sitting beside him.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Coward. Great soft coward. Wouldn't go near it. Had to be carried, like a sack of meal, in front of the whole town." },
+          { "narrate": "She says it into his neck, with both arms round him.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He was right, mind. He's always right about holes." },
+          { "oneOf": [
+            { "narrate": "Hew comes down from the signal house at half past midnight with the key round his neck, and sits down on Biscuit's other side, and Biscuit puts his head on Hew's knee instead of Nessa's.", "when": { "party": "nessa", "flag": "b4_key_hew" } },
+            { "narrate": "Hew comes in off the lid at midnight with his hearth bell, and sits down on Biscuit's other side, and Biscuit puts his head on Hew's knee instead of Nessa's.", "when": { "party": "nessa" } }
+          ] },
+          { "say": "nessa", "text": "Traitor." },
+          { "narrate": "She watches the two of them for a while.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He's old. The peaks'll be cold, and the Wold's colder, Rue says, and he won't go near a hole, and I bet it's all holes up there. When we go north, he stays here. With Hew. If Hew'll have him." },
+          { "say": "Hew", "text": "I'll have him.", "when": { "party": "nessa" } },
+          { "oneOf": [
+            { "say": "nessa", "text": "He'll go up the stair with you every night. He'll want to. Let him.", "when": { "flag": "b4_key_hew" } },
+            { "say": "nessa", "text": "He can sit under the lamp-room for me, since there's nobody up it. Somebody should mind it, even dark.", "when": { "flag": "b4_key_carried" } },
+            { "say": "nessa", "text": "You'll both go up the stair with whoever's keeping the key, every night. Count the steps for me.", "when": { "flag": "b4_key_left" } }
+          ] },
+          { "narrate": "The family from Wem are asleep in miners' blankets by the forge fire. Hew sits up with them on the hall step with his hearth bell in his lap, and keeps very still so as not to wake the child.", "when": { "absent": "nessa" } },
+          { "say": "Hew", "text": "I'll go up the stair with them again tomorrow. Somebody has to learn it. I'm learning it.", "when": { "absent": "nessa" } }
+        ],
+        "choices": [
+          { "id": "sit", "label": "Sit by the hall door", "lines": [
+            { "narrate": "You sit by the hall door with them until the forge fire is low. Biscuit falls asleep across the feet of all three of you.", "when": { "party": "nessa" } },
+            { "narrate": "You sit by the forge fire until it is low. Hew falls asleep sitting up, with the bell in his lap.", "when": { "absent": "nessa" } }
+          ] },
+          { "id": "lid", "label": "Go out and listen to the nine", "lines": [
+            { "oneOf": [
+              { "narrate": "You go out onto the lid at the turn of the hour and listen to the nine ring it, and the tenth a beat ahead of them. They are in time.", "when": { "flag": "b3_wren_cast" } },
+              { "narrate": "You go out onto the lid at the turn of the hour and listen to the nine ring it. They are in time." }
+            ] }
+          ] }
+        ]
+      }
+    }
   }
 }

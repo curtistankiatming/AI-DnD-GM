@@ -1483,10 +1483,12 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 3 Ballad | b4_bw_rings, b4_bw_quiet, b4_bw_pim | 9, 22 (rota), 23, epilogue |
 | Rue's Doors (job, 2 to 3) | job:rue-doors-gate, job:rue-doors-office, job:rue-doors-door, job:rue-doors-kitchen | 6 (Highpass: Rue's lines on the founders' gate or Sorrel's office door, her oak door in the inn yard, or the kitchen door left as it was) |
 | The Third Verse (job, 4 to 6) | job:third-verse-dera, job:third-verse-tovin, job:third-verse-all | 23 (Briarwatch: which third verse the square sings on the quiet night) |
+| Bett's Berth (job, 4 to 7) | job:bett-berth-signed, job:bett-berth-next, job:bett-berth-loft, job:bett-berth-home | 26 (Merrowgate: where Bett is, on a ship's deck, in the rope-loft or at home) |
+| The Ninth Rope (job, 7 to 9) | job:ninth-rope-rope, job:ninth-rope-spare, job:ninth-rope-given, job:ninth-rope-stair | 28 (the casting hall: who is on the ninth bell's rope) |
 | 4 Company | b4_company_broken, b4_company_council, b4_company_sails | 6, 9 (waylayers), 11 (Lantry), 17 (pot-bells), 26 |
-| 5 Davin | b4_davin_comes, b4_davin_home (also set by lines) | 10, 12, 15, 25 (requires), epilogue |
+| 5 Davin | b4_davin_comes, b4_davin_home (also set by Mags's lines), b4_davin_mags | 10, 12, 15, 25 (requires), epilogue; b4_davin_mags: davin-camp |
 | 6 Book | b4_book_returned, b4_book_rewritten, b4_book_burned | 15 (the door), 27 (Rue) |
-| 7 Key | b4_key_left, b4_key_carried, b4_key_hew | 27 (the signal), epilogue |
+| 7 Key | b4_key_left (also the answer with Nessa away), b4_key_carried, b4_key_hew | 27 (the signal), epilogue |
 | 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered | 9, 13 (the letter in the tally), 22 |
 | 9 Embassy | b4_embassy_council, b4_embassy_own, b4_embassy_refuge | 16 (whose promise), 22, 30 (south) |
 | 10 Peaks | b4_parting_rung, b4_unannounced, b4_gave_door; scene: b4_partone_done | 11 (Lantry), 16 (Sloe), 11 unlock |
@@ -2083,3 +2085,36 @@ below.
     the bell, and Pim has had the fire on his own for one month; his crisis,
     the decisions and The Third Verse are about the fire going out, while
     Tovin still rings the bell by hand. Without it, they are about the bell.
+17. **Leaving Davin to Mags** (build step 4). A decision always sets its own
+    flag, so this answer sets `b4_davin_mags` (Maren +1, read in davin-camp)
+    as well as the `b4_davin_comes` or `b4_davin_home` that Mags's own line
+    sets.
+18. **The key with Nessa away** (build step 4). Chapter 7 has a fourth
+    answer, "Leave the key where it is", open only with Nessa away
+    (`requires: { absent: "nessa" }`); her three answers need her there. It
+    sets `b4_key_left` instead of no flag, which is how later lines were to
+    read it anyway.
+19. **The sealed hatch** (build step 4). With `b3_stair_sealed`, Ottilie's
+    committee opens the founders' hatch for an hour on "the warrant from
+    Vell", the seal's own authority, rather than Corvane's by name, so the
+    line holds whatever `b3_corvane_*` made of him.
+20. **Orin's knot** (build step 4). In davin-camp the knot is Orin's own (as
+    chapter 5's opening has it) and Davin corrects it to Mags's way, with the
+    stopper on the far side. The camp does not say where Orin learnt it,
+    since no earlier book does.
+21. **Bett's ship** (build step 4). With `b4_company_broken` there is no
+    Company or council ship north: the Company's ship has been sold to a
+    Tanneries coaster master who means to try the coast north. With
+    `b4_company_sails`, Coll has gone north on wagon four and Bett's aunt
+    holds his letter, so the one to persuade is the aunt.
+22. **The Ninth Rope's people** (build step 4). The miner's son is Garth
+    Mott, and the ninth bell's old ringer Perrin Rowe (a "Tobin" was dropped:
+    one letter from Tovin). The job has no `until` until chapter 9 is
+    written (build step 5).
+23. **Book Four's walkout lines** (build step 4). The leave and back lines
+    Book Four tells (Orin's, Nessa's letter and both of their returns, and
+    Maren's return) are gated on `b3_done`, which only Book Four can see,
+    inside a `oneOf` whose ungated default is Book Two's line. Maren's leave
+    is Book Two's. The stay lines are keyed on `away:stay-<id>`: Orin for
+    `b4-davin`, Maren for `b4-book`, Nessa for `b4-key` (with or without
+    `b3_wren_cast`), and all three for `b4-peaks`.
