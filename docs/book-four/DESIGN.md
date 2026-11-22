@@ -1687,9 +1687,9 @@ chapter 1 at the start of level 40 ends chapter 30 at the start of level 70.
   needs the 3rd job, which needs level 40 (decided question 2), and the last
   chapter of each part tops a behind hero up to the part's end level
   (`levelFloor`: 50, 60, 70; decided question 3). `b3-firstbell` gets
-  `levelFloor: 40`, and Book Four's chapter 1 applies the 40 floor too, for
-  saves that finished Book Three before the field existed; and for those
-  saves the after-the-books bounties are capped at the next job trial's level
+  `levelFloor: 40`. Book Four's chapter 1 needs no floor of its own:
+  `requiresJob: 3` already means the hero is at least 40 when it starts. For
+  saves that finished Book Three before the field existed, the after-the-books bounties are capped at the next job trial's level
   (40, then 70), but never above the last level of the books this save can
   play plus one (today's `afterBooksLevel`), so a hidden Book Four never lets
   bounties run on to 69, so a hero who ended Book Three at 38
@@ -1862,13 +1862,13 @@ Book Four frames it the way Book Three framed the 3rd job:
    after the chapter's own XP is paid. It only ever raises XP (to the start
    of that level), never lowers it, and handles several level-ups at once
    (each level-up event fires in order). Values: `b3-firstbell` 40,
-   `b4-walker` 40 (for saves that finished Book Three before the field
-   existed), `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
+   `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
    past its book, the after-the-books bounty cap becomes the next job trial's
    level (40, then 70), but never above `afterBooksLevel` (the last level of
    the books this save can play, plus one), so an old save at 38 can reach the
    trial and a hidden Book Four never lets bounties run past 40. A test checks
-   both.
+   both. (`b4-walker` has no floor: its `requiresJob: 3` already needs level
+   40, so a floor of 40 there could never raise anything.)
 5. **Trial framing by kind.** `trialFraming.trial` ('third' by default);
    `framing(state, kind)` in `src/director.js`, which today handles only
    'third', uses it for both kinds, so the 4th trial is never framed with
@@ -1883,8 +1883,11 @@ Book Four frames it the way Book Three framed the 3rd job:
 7. **The white.** Quest `white: true`; Slowed at the start of the deciding
    fight for party members without a `warm: true` item.
 8. **Faction.** `wold` added to `director.FACTIONS` (the frozen list beside
-   wardens, trade and wilds) and to `world.reputation`; Lantry's and Orme's
-   `faction`.
+   wardens, trade and wilds) and to `world.reputation` together, in build
+   step 6; Lantry's and Orme's `faction`. (Moved from step 2: `FACTIONS`
+   feeds the AI's tool schema, so adding it alone would offer every save's AI
+   a faction that `world.reputation` drops, and the reputation list is shown
+   to players, so it waits for Part Two.)
 9. **The Telling.** Decision `told` (or one per chapter); the Journal section;
    `fourth_telling` and the told lines in the AI's facts after the books,
    with neutral legend text for `none`.
@@ -1994,8 +1997,9 @@ until Curtis changes `out`.
 2. **Engine groundwork:** shelf entry, data directory, 3rd job gate, level
    floors (with `b3-firstbell` 40 and the after-the-books bounty cap), trial
    framing by kind, gear gates (the dealt cap comes from #86), the
-   `walkoutsOn` fix and Book Four walkouts, `wold` in `director.FACTIONS`,
-   ending text, town pages by flag. Teach the player policy
+   `walkoutsOn` fix and Book Four walkouts, ending text, town pages by
+   flag (`wold` in `director.FACTIONS` moved to step 6, with
+   `world.reputation`). Teach the player policy
    (`tests/player-policy.js`) to request and play the written 3rd and 4th
    trials offline. Tests with fixture chapters only.
 3. **Part One, chapters 1 to 3**, their scenes and two side jobs.
@@ -2003,7 +2007,8 @@ until Curtis changes `out`.
 5. **Part One, chapters 8 to 10**, the end-of-part scene and chapter
    rewards 1 to 10. Playtest to 50. Curtis may set `out: 1`.
 6. **Part Two groundwork and chapters 11 to 13:** Lantry and Orme, the white,
-   warm items, the Wold faction, the Telling in the Journal.
+   warm items, the Wold faction (`wold` in `director.FACTIONS` and
+   `world.reputation` together), the Telling in the Journal.
 7. **Part Two, chapters 14 to 17**, and the Wold's side jobs.
 8. **Part Two, chapters 18 to 20**, the end-of-part scene and chapter
    rewards 11 to 20. Playtest to 60. Curtis may set `out: 2`.

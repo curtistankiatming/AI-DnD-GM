@@ -106,10 +106,19 @@ const writing = state => books(state).find(b => b.writing) || null;
 // A finished chapter means the book was playable for this save, so the
 // released-parts check is not needed (and a save keeps its gear if a preview ends).
 const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n && done(state, q.id));
-// Whether gear for a level (towns.json stockByLevel, level bounties) is open:
-// the levels 20 to 40 are Book Three's, above 40 Book Four's.
-const GEAR_BOOK_FOUR_FROM = P.THIRD_JOB_LEVEL + 1;
-const gearOpen = (state, level) => started(state, (Number(level) || 0) >= GEAR_BOOK_FOUR_FROM ? 4 : 3);
+// Whether gear for a level (towns.json stockByLevel, level bounties) is open.
+// Every list waits for Book Three to begin, as Book Three's levels 20 to 40
+// always have. Levels 41 to 70 are Book Four's: while this save can read
+// Book Four (released, and open to this session) they wait for it to begin
+// too. A save that cannot read it (Book Four hidden or unpaid, or an AI story
+// that will never begin it) keeps Book Three's rule, so gear still opens by
+// level; and so does every level above 70 (docs/EQUIPMENT.md, "Gear by level").
+const GEAR_BOOK_FOUR = Object.freeze({ from: P.THIRD_JOB_LEVEL + 1, to: P.FOURTH_JOB_LEVEL });
+const gearOpen = (state, level) => {
+  const l = Number(level) || 0;
+  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && reads(state, 4);
+  return started(state, four ? 4 : 3);
+};
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
 // The open-source view, for code and tests that do not hold a save.
 const BOOKS = Object.freeze(books(null));

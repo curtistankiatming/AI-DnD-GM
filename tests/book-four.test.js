@@ -81,6 +81,9 @@ test('chapter 1 needs the 3rd job: the board says why, and it cannot be started 
   const c = card(s, 'b4-walker');
   assert.equal(c.available, false); assert.equal(c.canDepart, false);
   assert.equal(c.needs, 'Pass your 3rd job trial first.');
+  // Below level 40 the trial is not offered yet, so the board says so.
+  const young = ready('b4-walker', { level: 38, third: false });
+  assert.equal(card(young, 'b4-walker').needs, 'Reach level 40 and pass your 3rd job trial first.');
   assert.equal(W.unlocked(s, QUESTS['b4-walker']), false);
   const r = E.resolveAction(s, { type: 'depart', questId: 'b4-walker' }, high);
   assert.equal(r.result.ok, false); assert.match(r.result.error, /Pass your 3rd job trial first/);
@@ -95,6 +98,7 @@ test('chapter 1 needs the 3rd job: the board says why, and it cannot be started 
 
 test('level floors: Book Three ends at 40, each Book Four part at 50, 60 and 70, after the chapter\'s own XP', () => {
   assert.equal(QUESTS['b3-firstbell'].levelFloor, 40);
+  assert.equal(QUESTS['b4-walker'].levelFloor, undefined, 'Chapter 1 needs the 3rd job, so it needs no floor.');
   // A hero who entered Book Three's last chapter at 38.
   let s = ready('b3-firstbell', { level: 38 }); s.player.progression.thirdJob = false;
   const events = [];
@@ -175,8 +179,9 @@ test('the 4th trial\'s XP is capped by the books, like AI XP', () => {
   assert.equal(s.world.completed[out.questId].xp, full); assert.equal(s.player.xp - xp >= full, true);
 });
 
-test('Book Four gear waits for Book Four: stock and level bounties above 40 need a Book Four chapter done', () => {
+test('Book Four gear waits for Book Four: a save that can play it sees no 41 to 70 stock or level bounty until it begins', () => {
   let s = ready('b4-walker', { level: 45 });
+  assert.equal(Book.reads(s, 4), true);
   assert.equal(Book.started(s, 3), true); assert.equal(Book.started(s, 4), false);
   assert.equal(Book.gearOpen(s, 40), true, 'Level 40 is Book Three\'s gear.');
   assert.equal(Book.gearOpen(s, 45), false);
@@ -191,9 +196,26 @@ test('Book Four gear waits for Book Four: stock and level bounties above 40 need
     assert.ok(W.townStock(s, 'highpass').includes('fixture-b4-charm'));
     assert.equal(Gear.bountyReward(s, 'highpass', 45, [])?.id, 'fixture-b4-charm');
   } finally { delete stock['45']; }
-  // A save without Book Four on its account never has it, whatever its level.
+  // A save whose account cannot read Book Four (a Book Three grant) keeps
+  // Book Three's rule: its 41 to 70 gear opens by level.
   s = ready('b4-records', { level: 60 }); Book.grant(s, 3);
-  assert.equal(Book.started(s, 4), false); assert.equal(Book.gearOpen(s, 45), false);
+  assert.equal(Book.reads(s, 4), false); assert.equal(Book.started(s, 4), false);
+  assert.equal(Book.gearOpen(s, 45), true); assert.equal(Book.gearOpen(s, 70), true);
+});
+
+test('gear above level 70 keeps Book Three\'s rule, whether or not Book Four has begun', () => {
+  const s = ready('b4-walker', { level: 75 });
+  assert.equal(Book.reads(s, 4), true); assert.equal(Book.started(s, 4), false);
+  assert.equal(Book.gearOpen(s, 70), false, 'Level 70 is still Book Four\'s.');
+  assert.equal(Book.gearOpen(s, 71), true); assert.equal(Book.gearOpen(s, 100), true);
+  const stock = TOWNS.highpass.stockByLevel;
+  stock['75'] = ['fixture-b4-charm'];
+  try {
+    assert.ok(W.townStock(s, 'highpass').includes('fixture-b4-charm'), 'A fixture item at 75 is sold from 75.');
+    s.player.level = 74; assert.ok(!W.townStock(s, 'highpass').includes('fixture-b4-charm'), 'Not before its level.');
+  } finally { delete stock['75']; }
+  // Before Book Three begins, nothing by level is open at any level.
+  const fresh = hero(80); assert.equal(Book.gearOpen(fresh, 75), false);
 });
 
 test('walkouts: Book Three\'s Part Two and Book Four\'s Parts One and Three, in the same book only', () => {
@@ -243,10 +265,13 @@ test('no walkout after chapters 9, 10 or 26: the companion stays and says so', (
   assert.ok(s.party.some((m) => m.id === 'maren'));
 });
 
-test('the Wold is a faction the AI storyteller can name', () => {
-  assert.deepEqual([...D.FACTIONS], ['wardens', 'trade', 'wilds', 'wold']);
+test('the Wold is not offered to the AI storyteller until it holds reputation (build step 6)', () => {
+  assert.deepEqual([...D.FACTIONS], ['wardens', 'trade', 'wilds']);
   assert.ok(Object.isFrozen(D.FACTIONS));
-  assert.ok(D.SCHEMA.properties.faction.enum.includes('wold'));
+  assert.ok(!D.SCHEMA.properties.faction.enum.includes('wold'));
+  // Every faction the AI may name holds reputation.
+  const s = ready('b4-walker');
+  for (const f of D.FACTIONS) assert.ok(f in s.world.reputation, f);
 });
 
 test('the ending counts four books in words, and a Book Three account is told Book Four is for paid accounts', () => {
@@ -282,10 +307,10 @@ test('town pages follow a flag: Saltwick after its people moved, and a page can 
   s.story.flags.b3_saltwick_moved = true;
   const v = E.buildView(s);
   assert.equal(v.world.town.subtitle, 'The Lamps Left Burning');
-  assert.match(v.world.town.description, /^Saltwick's people have gone up the Iron Road/);
+  assert.match(v.world.town.description, /^Saltwick is empty. Its people went over the ridge with you/);
   assert.equal(v.scene.location, 'The Lamps Left Burning');
-  assert.match(v.scene.opening, /Saltwick's people have gone/); assert.doesNotMatch(v.scene.opening, /keeps a small market\.$/m);
-  assert.ok(v.world.shop.length, 'The chandler still keeps a market.'); assert.equal(v.world.town.emptied, undefined);
+  assert.match(v.scene.opening, /Mags comes back over the ridge every week with six of her lamplighters/); assert.doesNotMatch(v.scene.opening, /keeps a small market\.$/m);
+  assert.ok(v.world.shop.length, 'The chandler\'s stall still opens on lamp nights.'); assert.equal(v.world.town.emptied, undefined);
   // A page with services of its own, and the first page set wins.
   TOWNS.highpass.pages = [{ flag: 'fixture_camp', subtitle: 'Fixture Camp', description: 'Fixture camp page.', services: ['inn', 'storage'] }, { flag: 'fixture_later', subtitle: 'Fixture Later' }];
   try {

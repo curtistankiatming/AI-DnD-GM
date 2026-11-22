@@ -21,8 +21,10 @@ const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
 const MAX_STORED = 40;       // Older completed adventures are pruned beyond this.
 const THEMES = Object.freeze(['wild', 'undead', 'storm', 'construct', 'soldier', 'caster']);
-// wold: the people north of the Highpass peaks (Book Four, Part Two).
-const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds', 'wold']);
+// Book Four's Wold joins this list in build step 6, together with
+// world.reputation (docs/book-four/DESIGN.md, engine change 8): this list
+// feeds the AI's tool schema, so a faction here must also hold reputation.
+const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds']);
 const TOOLS = Object.freeze(Object.values(ITEMS).filter(i => i.category === 'tool' && i.id !== 'healers-kit').map(i => i.id));
 const SKILL_IDS = Object.freeze(Object.keys(SKILLS));
 const TEXT = Object.freeze({ name: 80, short: 120, label: 120, brief: 400, long: 900, arc: 900, hint: 400 });

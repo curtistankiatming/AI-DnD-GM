@@ -48,8 +48,9 @@ const asNow=(state,t)=>{const page=t&&townPage(state,t.id);if(!page)return t;
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 // What a town sells now: its stock, plus each stockByLevel list (towns.json)
 // once the hero has reached that level. Those lists are a later book's gear
-// (Book Three's for levels 20 to 40, Book Four's above 40), so each opens only
-// once this save has begun the book it belongs to (Book.gearOpen).
+// (Book Three's for levels 20 to 40, Book Four's for 41 to 70), so each opens
+// only once this save has begun the book it belongs to (Book.gearOpen, which
+// keeps Book Three's rule for a save that cannot read Book Four).
 function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids)];}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
@@ -87,8 +88,16 @@ function minLevel(q){return QUESTS[q.id]&&!q.generated&&!q.trial&&!q.requiresAdv
 // chapter needs the 3rd job, which its trial at level 40 gives).
 function hasJob(state,n){const p=P.ensure(state.player);return n<=1?true:n===2?Boolean(p.specialization):n===3?Boolean(p.thirdJob):Boolean(p.thirdJob&&p.fourthJob);}
 const jobReady=(state,q)=>!q?.requiresJob||hasJob(state,Number(q.requiresJob));
+// What the board says a chapter needs. A trial is offered only from its
+// level, so a hero below it is told to reach that level too.
 const JOB_NAMES={2:'Choose your 2nd job branch first.',3:'Pass your 3rd job trial first.',4:'Pass your 4th job trial first.'};
-const jobNeeded=(state,q)=>jobReady(state,q)?null:JOB_NAMES[Number(q.requiresJob)]||'Advance your job first.';
+const JOB_TRIAL_LEVELS={3:P.THIRD_JOB_LEVEL,4:P.FOURTH_JOB_LEVEL};
+function jobNeeded(state,q){
+  if(jobReady(state,q))return null;
+  const n=Number(q.requiresJob),at=JOB_TRIAL_LEVELS[n];
+  if(at&&(Number(state.player.level)||1)<at)return `Reach level ${at} and pass your ${n===3?'3rd':'4th'} job trial first.`;
+  return JOB_NAMES[n]||'Advance your job first.';
+}
 function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=minLevel(q)&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery)&&jobReady(state,q));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}

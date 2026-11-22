@@ -252,5 +252,7 @@ few lamplighters, the way Vell's page is to change after `b3_bell_evacuate`.
 This needs a town page that can follow a flag.
 Done in Book Four's engine groundwork (docs/book-four/DESIGN.md, "Town pages
 that follow a flag"): `pages` in towns.json gives Saltwick its page after
-`b3_saltwick_moved`. Its market stays open: Saltwick still sells Book Three's
-level 30 gear.
+`b3_saltwick_moved`: empty, with its lamps kept lit by Mags and six
+lamplighters who come back over the ridge every week. The chandler's stall
+opens on lamp nights, so its market stays, and Saltwick still sells Book
+Three's level 30 gear.

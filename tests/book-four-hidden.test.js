@@ -47,7 +47,20 @@ test('a hidden Book Four never lets bounties run past 40, and its gear stays uns
   assert.equal(Bounty.room(s), P.XP_NEXT[40] - 1 - s.player.xp);
   s.player.xp = P.XP_NEXT[40] - 1;
   assert.equal(Bounty.room(s), 0);
-  assert.equal(Book.gearOpen(s, 40), true); assert.equal(Book.gearOpen(s, 45), false);
+  assert.equal(Book.gearOpen(s, 40), true);
+});
+
+test('with Book Four hidden and Book Three begun, gear above 40 opens by level, as Book Three\'s does', () => {
+  const { TOWNS } = require('../src/expansion');
+  const s = afterBookThree(45, { third: true });
+  assert.equal(Book.reads(s, 4), false); assert.equal(Book.started(s, 3), true);
+  assert.equal(Book.gearOpen(s, 45), true); assert.equal(Book.gearOpen(s, 70), true); assert.equal(Book.gearOpen(s, 80), true);
+  const stock = TOWNS.briarwatch.stockByLevel;
+  stock['45'] = ['sentinel-charm'];
+  try {
+    assert.ok(W.townStock(s, 'briarwatch').includes('sentinel-charm'));
+    s.player.level = 44; assert.ok(!W.townStock(s, 'briarwatch').includes('sentinel-charm'), 'Not before its level.');
+  } finally { delete stock['45']; }
 });
 
 test('the ending counts the three books open here and points at the 3rd job trial', () => {

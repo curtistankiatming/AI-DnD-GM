@@ -152,7 +152,9 @@ function award(state, key, events) {
 // a hero who comes back later still collects the rest, one bounty at a time.
 function bountyReward(state, townId, level, events) {
   // Level bounties belong to a later book by their level (Book Three's 20 to
-  // 40, Book Four's above 40): each only once this save has begun that book.
+  // 40, Book Four's 41 to 70): each only once this save has begun that book
+  // (Book.gearOpen, which keeps Book Three's rule for a save that cannot read
+  // Book Four, and above 70).
   const Book = require('./book');
   const given = state.world.gearAwarded || {};
   const keys = Object.keys(REWARDS()).filter((k) => k.startsWith(`bounty:${townId}:`) && !given[k])

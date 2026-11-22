@@ -6,8 +6,13 @@
 // together), with placeholder text and none of the story. They are never
 // shipped: install() puts them in Node's module cache in place of
 // src/data/book-four/quests.json and scenes.json, before anything from src/
-// is loaded, so it must be called at the top of a test file. node --test runs
-// each file in its own process, so no other test file sees them.
+// is loaded, so it must be called at the top of a test file.
+//
+// This relies on node --test running each test file in its own process (its
+// default isolation, which scripts/verify.js uses). The fixtures and the
+// preview settings install() writes to process.env would otherwise leak into
+// every test file loaded after this one in the same process; never run these
+// files with --test-isolation=none.
 const path = require('node:path');
 const Module = require('node:module');
 
@@ -21,7 +26,7 @@ const TOWNS = ['highpass', 'ashford', 'briarwatch', 'merrowgate', 'saltwick', 'h
   'highpass', 'highpass', 'briarwatch', 'highpass', 'ashford', 'merrowgate', 'cinderfold', 'cinderfold', 'cinderfold', 'cinderfold'];
 const NEXT = [...TOWNS.slice(1), 'briarwatch'];
 // The design's engine fields (engine changes 3, 4 and 10).
-const FLOORS = { 'b4-walker': 40, 'b4-peaks': 50, 'b4-northdoor': 60, 'b4-parting': 70 };
+const FLOORS = { 'b4-peaks': 50, 'b4-northdoor': 60, 'b4-parting': 70 };
 const NEEDS = { 'b4-davin': ['orin'], 'b4-book': ['maren'], 'b4-key': ['nessa'], 'b4-peaks': ['orin', 'maren', 'nessa'], 'b4-ford': ['orin'], 'b4-hospice': ['maren'], 'b4-signal': ['nessa'] };
 const band = (level) => 4000 + 250 * (level - 9); // P.levelBand from level 10
 

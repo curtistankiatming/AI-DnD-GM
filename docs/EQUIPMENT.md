@@ -30,7 +30,24 @@ Fighters, Clerics and Orin unless the hero raises Strength. Companions'
 ability scores don't change, so Maren (Strength 10) and Nessa (Strength 9)
 can't wear the heaviest gear.
 
-## Rarity
+## Gear by level: which book it waits for
+
+A town's `stockByLevel` lists (`src/data/towns.json`) and its level bounties
+(`bounty:<town>:<level>` in `src/data/gear.json`) open by the hero's level,
+and each waits for the book whose levels it belongs to (`Book.gearOpen` in
+`src/book.js`), so a hero who levels past a book another way never sees its
+gear early:
+
+- **Every level** waits until this save has begun Book Three (finished one of
+  its chapters). Levels 20 to 40 are Book Three's.
+- **Levels 41 to 70** are Book Four's. While this save can read Book Four
+  (released, and open to this session: `Book.reads(state, 4)`), they also wait
+  until it has begun Book Four. A save that cannot read it (Book Four hidden,
+  or not on a free hosted account) keeps Book Three's rule, so its gear still
+  opens by level. That includes AI-story saves that will never begin Book Four.
+- **Above 70** the Book Three rule applies again, whether or not Book Four
+  has begun.
+
 
 Common, Uncommon, Rare, Epic and Legendary. Shown on item cards and in shops.
 
