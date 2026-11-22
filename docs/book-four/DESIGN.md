@@ -753,6 +753,84 @@ what they are bringing. Linus goes back down with the first true verse. Sets
 
 Every Part Two chapter has `white: true` (see "Systems").
 
+### Revisions for Part Two (override the chapters below)
+
+Part One's writing (build steps 3 to 5) settled these things, and Part Two
+keeps them. Where a chapter below says otherwise, this list wins.
+
+**Where Part One leaves the party.**
+- `b4-partone-end` ends at the Hall's north door the night before the
+  descent, and the engine leaves the hero at Highpass (decided question 28).
+  Chapter 11 is taken from Highpass's board, and its opening is the descent
+  from the north door the next morning. No line says the party went back
+  down to Highpass in between.
+- With `b4_parting_rung`, the cloud rolled down onto Lantry at noon the day
+  the bell was rung (chapter 10's decision), so Lantry's worst night was the
+  night before the party arrives, not "three days ago". Rue said Lantry would
+  write "the bell" on every door in the morning, and it has.
+- With `b4_gave_door`, Rue said she would write "a giver came from the
+  south" on Lantry's top door when you came there. She writes it herself as
+  the party comes down to that door. Nobody has written it before.
+- Linus Pardew went back down the south side from the Hall
+  (`b4-partone-end`). He sings the first true verse at Briarwatch at
+  midwinter and is not in the Wold. The Telling's ballad lines are still his
+  song.
+- Biscuit did not cross. Part One never says so, so it is decided here.
+  Nessa left him at Highpass with the watch, by the guardroom brazier,
+  because he is grey at the muzzle and the saddle was in snow. Her letter in
+  `lantry-camp` is addressed there. In `orme-camp`, Burdock asks how to spell
+  Biscuit's name without ever having seen him.
+
+**People as Part One left them.**
+- **Davin.** With `b4_davin_comes` he is north on Orin's word: "When I say
+  go back, you go back." His pack is tied in Mags's knot. With
+  `b4_davin_home`, Orin has already given one order, the "No" on the ladder
+  that he called "the first one I ever gave". So chapter 12 never says Orin
+  has never given an order. With `b4_davin_home`, the order on the Orme road
+  is his second.
+- **Rue's book** has three states (`b4_book_*`). She reads it aloud before
+  anything hard:
+  - With `b4_book_burned` she has only the pages written since the fire at
+    Highpass (chapter 6), in a new book, and "Heath" on the inside of her
+    left wrist.
+  - With `b4_book_rewritten`, today comes first in it, and "Maren sat with
+    me" (or "Somebody sat with me").
+  - With `b4_book_returned`, it is the old book with every page.
+- **The letter back** (`b4_letters_answered`). Its words are fixed by
+  chapter 8: "To whoever is on the other side of the bells. This is the
+  south. We did not know you were there. We are sorry it took nine hundred
+  years to ask. We are coming north, to ask properly." The hero cannot
+  remember a word of it, so in chapter 13 they hear it read aloud for the
+  first time.
+- **What the satchel cost** (`b4_letters_read`). Orin lost the tune he
+  whistled when he cleaned his boots. Maren lost the colour of her
+  birth-house door (`b4_letters_maren`). Nessa lost all but the first line of
+  a skipping rhyme. The hero lost the smell of rain on the Briarwood road.
+  Givings in the Wold take other things, never these again.
+- **The seal.** The hero carries a seal on a cord in every version of
+  chapter 9:
+  - the council's seal (`b4_embassy_council`), with Iona's "Whatever you
+    promise with that, I pay for";
+  - a seal with only the free wards' bell on it (`b4_embassy_own`);
+  - a seal with an open door under the bell (`b4_embassy_refuge`), for
+    which Iona costed ten thousand.
+- **The Company.**
+  - With `b4_company_sails` it crossed in the summer, before the party, with
+    Coll Haddow on wagon four and Cass Ord's "I'll have the lamps lit".
+  - With `b4_company_council` the relief convoy crossed under the council's
+    seal with grain, oil, blankets and seed, and Coll as a wagon-hand.
+  - With `b4_company_broken` nobody crossed.
+- **Hesk** with `b3_stair_sealed`. Chapter 8 shows one set of boot-prints
+  going north on the north branch, and Fennick's entry "went down, one", and
+  nothing in the free wards says where he went. Chapter 13 is where the
+  party learns it.
+- **The white is two things.** Rue, on the saddle (chapter 10): "It does not
+  want anything. It is only weather." The storm over the Hall was weather.
+  The white in the Wold's streets is what the bells ring north, and it takes.
+  Part Two keeps the two apart, and Rue says so once, in Lantry.
+- The Wold's nine on the Hall's north face have nothing in their hands,
+  "because they gave them away" (Rue, chapter 10).
+
 ### 11. Written on the Doors (b4-lantry, level 50, Lantry)
 
 **Opening.** Lantry under the north face, every surface written over. Teasel
@@ -1950,8 +2028,9 @@ Book Four frames it the way Book Three framed the 3rd job:
     Lantry and Orme have `faction: "wold"`, so the existing price rule
     applies. The Wold is shown (town screen, Journal, AI brief) only once
     the party has reached one of its towns or a choice has moved it
-    (`director.shownReputation`), and an AI adventure cannot favour it
-    before then.
+    (`director.shownReputation`). Before then the AI's draft schema
+    (`director.schema(state)`) leaves it out of the faction enums, and an AI
+    adventure cannot favour it.
   - 9, **the Telling.** `src/telling.js`. A chapter's `told` (or the chosen
     decision's own `told`, which wins) is shown in the Journal under "What
     they tell of you": the song and the Long Tally side by side, stacked on
@@ -1963,10 +2042,11 @@ Book Four frames it the way Book Three framed the 3rd job:
     (`BOARDS` in `src/bounty.js`) and town pages. Each has `book: 4`: a town
     written for a later book is closed until a chapter names it, and then
     follows the existing `Book.townOpen` rule (open while one of its chapters
-    is playable). Each has `from: "highpass"`: for a save whose gear does not
-    wait for Book Four (`Book.ownsGear` false: Book Four hidden or unpaid, or
-    an AI story), Highpass sells Lantry's and Orme's level stock too, so a
-    hero beyond the books still finds every tier. The shop stock for 45 to
+    is playable). Each has `from: "highpass"`: while a Wold town is closed to
+    a save, or its gear does not wait for Book Four (`Book.ownsGear` false:
+    Book Four hidden or unpaid, or an AI story), Highpass sells that town's
+    level stock too, except warm gear, so a hero beyond the written story
+    still finds every tier. Shops drop entries they no longer sell. The shop stock for 45 to
     70 is on the story's route (docs/EQUIPMENT.md).
 - **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
   the engine is Book Three's) and 14 (the companion arc moves).

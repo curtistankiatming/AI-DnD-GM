@@ -295,3 +295,37 @@ test('Book Four stays hidden', () => {
   assert.equal(Book.SHELF.find((b) => b.n === 4).out, 0);
   assert.ok(FX.IDS.includes('b4-lantry'));
 });
+
+test('the AI\'s draft schema offers the Wold only once the party has met it', () => {
+  const enums = (schema) => { const p = schema.properties, d = p.decisions.items.properties; return [p.faction.enum, d.favors.enum, d.also.enum]; };
+  const s = ready('b4-lantry');
+  for (const list of enums(D.schema(s))) assert.ok(!list.includes('wold') && list.includes('wardens'), JSON.stringify(list));
+  assert.ok(!JSON.stringify(D.schema(s)).includes('"wold"'));
+  const met = finish(ready('b4-lantry'), 'b4-lantry');
+  for (const list of enums(D.schema(met))) assert.ok(list.includes('wold'));
+  assert.deepEqual(D.schema(met), D.SCHEMA);
+});
+
+test('before chapter 11 Highpass sells no warm gear, so the first Wold fight is cold', () => {
+  const s = ready('b4-lantry');
+  assert.ok(!W.townStock(s, 'highpass').some((id) => ITEMS[id].warm));
+  fight(s, 'b4-lantry');
+  assert.ok(s.combat.actors.filter((a) => a.team === 'party').every(slowed));
+});
+
+test('a shop drops level gear it no longer sells: stand-in stock goes once the save can reach the Wold', () => {
+  let s = ready('b4-reckoning');
+  Book.grant(s, 3); // an account that cannot read Book Four: Highpass stands in for Orme
+  assert.equal(Book.ownsGear(s, 4), false);
+  s.story.nodeId = 'town-highpass'; s.world.townId = 'highpass';
+  assert.ok(E.buildView(s).world.shop.some((x) => x.id === 'lamplit-staff'));
+  assert.ok('lamplit-staff' in s.world.stock.highpass);
+  Book.grant(s, undefined); // the account upgrades
+  assert.equal(Book.ownsGear(s, 4), true);
+  assert.ok(!E.buildView(s).world.shop.some((x) => x.id === 'lamplit-staff'), 'Gone from Highpass');
+  assert.ok(!('lamplit-staff' in s.world.stock.highpass));
+  // Loading the save again keeps it gone, and the town's own stock stays.
+  W.init(s); E.buildView(s);
+  assert.ok(!('lamplit-staff' in s.world.stock.highpass));
+  for (const id of TOWNS.highpass.stock) assert.ok(id in s.world.stock.highpass, id);
+});

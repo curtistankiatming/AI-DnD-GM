@@ -140,6 +140,22 @@ const SCHEMA = Object.freeze({
   },
   required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed', 'storyArc']
 });
+// The draft schema for this save: the faction enums list only factions this
+// save has met (factionKnown), so the AI is never offered the Wold before the
+// party reaches it. SCHEMA is the full list, for code without a save.
+function schema(state) {
+  const known = FACTIONS.filter(f => factionKnown(state, f));
+  if (known.length === FACTIONS.length) return SCHEMA;
+  const item = SCHEMA.properties.decisions.items;
+  return {
+    ...SCHEMA,
+    properties: {
+      ...SCHEMA.properties,
+      faction: { ...SCHEMA.properties.faction, enum: known },
+      decisions: { ...SCHEMA.properties.decisions, items: { ...item, properties: { ...item.properties, favors: { ...item.properties.favors, enum: known }, also: { ...item.properties.also, enum: ['none', ...known] } } } }
+    }
+  };
+}
 
 const SYSTEM = [
   'You are the story director for Briarwatch, a story-first d20 fantasy campaign. Write the NEXT adventure (an expedition) for this party, as JSON that matches the schema.',
@@ -530,4 +546,4 @@ function view(state) {
   };
 }
 
-module.exports = { destination, SCHEMA, SYSTEM, THEMES, FACTIONS, LATER_FACTIONS, factionKnown, shownReputation, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };
+module.exports = { destination, SCHEMA, schema, SYSTEM, THEMES, FACTIONS, LATER_FACTIONS, factionKnown, shownReputation, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };

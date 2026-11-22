@@ -368,8 +368,9 @@ and 60; Lantry 50; Orme 50 and 55; Merrowgate and Cinder Fold 65; Briarwatch
 70, for the trial. Levels 80 to 100 stay in Briarwatch and Highpass. Each tier
 opens from its level for a save that has begun Book Three, and levels 41 to 70
 wait for Book Four as docs/EQUIPMENT.md says. For a save that will not play
-Book Four (hidden, unpaid, or an AI story), Lantry and Orme are closed and
-Highpass sells their stock too. Six accessories are level bounty rewards in Briarwatch,
+Book Four (hidden, unpaid, or an AI story), or while Lantry and Orme are closed
+to it, Highpass sells their stock too, except the warm gear, which is sold only
+in the Wold. Six accessories are level bounty rewards in Briarwatch,
 Highpass, Ashford, Merrowgate and Cinder Fold, at 70, 80 and 100. Gear found on
 AI adventures now keeps improving past level 40 (up to +4 to hit, +7 damage at
 100), a step behind the shops.

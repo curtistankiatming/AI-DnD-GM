@@ -174,7 +174,7 @@ async function commissionAdventure(state,hint,provider,rng){
   let cfg=null;try{cfg=provider&&await provider.config();}catch(e){return rejected(state,e.message);}
   if(!cfg?.enabled||cfg.provider!=='claude')return rejected(state,'New adventures are written by the Claude AI game master. Turn it on under Settings, then AI settings. The expeditions already on the board stay available.');
   let out;
-  try{out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{hint,journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions}),schema:Director.SCHEMA,purpose:'director'});}
+  try{out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{hint,journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions}),schema:Director.schema(state),purpose:'director'});}
   catch(e){return rejected(state,e.message);}
   let draft;try{draft=JSON.parse(out.text);}catch{return rejected(state,'The director returned an unreadable adventure. Nothing was added.');}
   const resolved=E.resolveAction(state,{type:'director-commission',draft},rng);
@@ -188,7 +188,7 @@ async function commissionTrial(state,provider,rng){
   let cfg=null;try{cfg=provider&&await provider.config();}catch{}
   let draft=null,model=null,note='';
   if(cfg?.enabled&&cfg.provider==='claude'){
-    try{const out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions,trial:true}),schema:Director.SCHEMA,purpose:'director'});draft=JSON.parse(out.text);model=out.model;}
+    try{const out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions,trial:true}),schema:Director.schema(state),purpose:'director'});draft=JSON.parse(out.text);model=out.model;}
     catch(e){note=` The AI game master could not write it (${e.message}), so the written trial is used.`;}
   }
   const resolved=E.resolveAction(state,{type:'job-trial',draft},rng);

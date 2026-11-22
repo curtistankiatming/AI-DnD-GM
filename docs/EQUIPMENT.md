@@ -66,10 +66,14 @@ so nobody has to go back for it (tests/book-four-wold.test.js plays the route):
 
 Lantry and Orme (`towns.json`, `book: 4`) are closed until a Book Four chapter
 that names them is playable for this save, as Book Three's Saltwick and Vell
-were. For a save whose gear does not wait for Book Four (`Book.ownsGear`:
-Book Four hidden or unpaid, or an AI story that will never begin it), Highpass,
-the town they are reached from (`from`), sells their level stock as well, so
-every tier can still be bought.
+were. While they are closed to a save (Part Two not out, Book Four hidden or
+unpaid), or the save's gear does not wait for Book Four (`Book.ownsGear`: an
+AI story that will never begin it), Highpass, the town they are reached from
+(`from`), sells their level stock as well, so every tier can still be bought.
+Warm gear is the exception: it is sold only in Lantry and Orme. A shop drops
+any entry it no longer sells (`ensureStock`), so stand-in stock goes once the
+save can reach the Wold. (With only Part One out, a hero who finished it waits
+at level 50: bounties and AI XP stop just under 51.)
 
 
 Common, Uncommon, Rare, Epic and Legendary. Shown on item cards and in shops.

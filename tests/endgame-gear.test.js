@@ -279,14 +279,15 @@ test('item cards and the equipment screen show the set and its bonuses', () => {
 // "Where Book Four goes"; tests/book-four-wold.test.js plays the route). With
 // Book Four hidden, as here, Lantry and Orme are closed, and Highpass (the
 // town they are reached from) sells their stock too, so a hero beyond the
-// books still finds every tier in a free-wards town.
+// books still finds every tier in a free-wards town. The Wold's warm gear is
+// the one exception: it is sold only in Lantry and Orme.
 const OPEN_TOWNS = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold', 'saltwick'];
 test('each late tier is sold from its level in a town a save beyond the books can reach, once Book Three has begun', () => {
   const sold = LATE.filter((i) => !i.exclusive);
   const at100 = begun('fighter', 100);
   assert.equal(Book.townOpen(at100, 'lantry'), false); assert.equal(Book.townOpen(at100, 'orme'), false);
   const reach = new Set(OPEN_TOWNS.flatMap((t) => W.townStock(at100, t)));
-  for (const item of sold) assert.ok(reach.has(item.id), `${item.id} is sold somewhere open`);
+  for (const item of sold) assert.equal(reach.has(item.id), !item.warm, `${item.id} is sold somewhere open, unless it is the Wold's warm gear`);
   // Each from its own level, in the towns its tier is listed for.
   for (const item of sold) for (const town of Object.values(TOWNS).filter((t) => Object.values(t.stockByLevel || {}).flat().includes(item.id))) {
     const key = Object.entries(town.stockByLevel).find(([, ids]) => ids.includes(item.id))[0];
@@ -296,11 +297,17 @@ test('each late tier is sold from its level in a town a save beyond the books ca
   assert.ok(!W.townStock(at44, 'highpass').includes('frostforged-plate'));
   assert.ok(W.townStock(at45, 'highpass').includes('frostforged-plate'));
   assert.ok(!W.townStock(at45, 'highpass').includes('rimeheart-longsword'));
-  assert.ok(W.townStock(begun('fighter', 55), 'highpass').includes('long-hall-muffler'), 'Orme\'s stock stands in at Highpass');
+  assert.ok(W.townStock(begun('fighter', 55), 'highpass').includes('lamplit-staff'), 'Orme\'s stock stands in at Highpass');
   assert.ok(!W.townStock(begun('fighter', 54), 'highpass').includes('lamplit-staff'));
   assert.ok(W.townStock(at100, 'highpass').includes('highbell-seal'));
   assert.ok(W.townStock(at100, 'briarwatch').includes('summitforged-plate'));
   assert.ok(W.townStock(begun('fighter', 65), 'merrowgate').includes('thornstep-band'));
+  // Warm gear is the Wold's own: never sold at Highpass, and nothing there names the Wold.
+  for (const level of [50, 55, 100]) {
+    const stock = W.townStock(begun('fighter', level), 'highpass');
+    assert.ok(!stock.some((id) => ITEMS[id].warm), `no warm gear at Highpass at ${level}`);
+    for (const id of stock) assert.doesNotMatch(`${ITEMS[id].name} ${ITEMS[id].description || ''} ${Gear.purpose(ITEMS[id])}`, /Wold|Lantry|Orme/, `${id} at ${level}`);
+  }
   // Not for a save that has never begun Book Three, at any level.
   assert.deepEqual(W.townStock(hero('fighter', 100), 'briarwatch'), TOWNS.briarwatch.stock);
   assert.deepEqual(W.townStock(hero('fighter', 100), 'highpass'), TOWNS.highpass.stock);

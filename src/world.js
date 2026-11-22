@@ -52,16 +52,25 @@ function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')retur
 // only once this save has begun the book it belongs to (Book.gearOpen, which
 // keeps Book Three's rule for a save that cannot read Book Four).
 // A later book's own town ("book" in towns.json: Book Four's Lantry and Orme)
-// sells its level stock only to a save whose gear waits for that book
-// (Book.ownsGear). For any other save (the book hidden or unpaid, or an AI
-// story that will never begin it) the town it is reached from ("from":
-// Highpass) sells that stock too, so a hero beyond the books can still buy
-// every tier.
-const standIns=(state,id)=>Object.values(TOWNS).filter(x=>x.from===id&&x.book&&!Book.ownsGear(state,x.book));
+// sells its level stock where it is. While that town is closed to this save
+// (its chapters not playable here: the part not out, the book hidden or
+// unpaid), or the save's gear does not wait for that book (Book.ownsGear
+// false: an AI story that will never begin it), the town it is reached from
+// ("from": Highpass) sells that stock too, so a hero who levels on past the
+// written story still finds every tier. Warm gear ("warm": true) is the
+// Wold's own and is never sold anywhere else: it names the Wold, and the
+// first Wold chapter's fight is meant to be cold.
+const standIns=(state,id)=>Object.values(TOWNS).filter(x=>x.from===id&&x.book&&(!Book.ownsGear(state,x.book)||!Book.townOpen(state,x.id)));
+const levelStock=(state,town,level,keep=()=>true)=>Object.entries(town.stockByLevel||{}).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids.filter(keep));
 function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;
-  const byLevel=[t,...standIns(state,id)].flatMap(x=>Object.entries(x.stockByLevel||{})).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids);
+  const byLevel=[...levelStock(state,t,level),...standIns(state,id).flatMap(x=>levelStock(state,x,level,i=>!ITEMS[i]?.warm))];
   return [...new Set([...t.stock,...byLevel])];}
-function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
+// A town's shop: what it sells now (townStock). An entry it no longer sells
+// (stand-in stock once the save can reach the Wold, or an item a town has
+// stopped selling) is dropped, so a shop never keeps stale gear.
+function ensureStock(state,id){const w=state.world,now=townStock(state,id),stock=(w.stock[id] ||= {});
+  const sold=new Set(now);for(const itemId of Object.keys(stock))if(!sold.has(itemId))delete stock[itemId];
+  for(const itemId of now)if(stock[itemId]===undefined)stock[itemId]=maxStock(itemId);return stock;}
 function activeMerchant(state){
   const q=state.world?.activeQuest;const node=STORY_NODES[state.story.nodeId];
   if(!state.world?.onExpedition||state.combat?.active||node?.phase!=='start')return null;
