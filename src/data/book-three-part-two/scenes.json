@@ -1735,6 +1735,106 @@
             }
           },
           {
+            "oneOf": [
+              {
+                "narrate": "Pim still keeps his mornings at Dera's anvil and his afternoons in the tower. He has made, by his own count, eleven hundred and four nails, and a bell the size of a thimble that rings flat.",
+                "when": {
+                  "flag": "job:apprentice-shared"
+                }
+              },
+              {
+                "narrate": "Pim has been at Dera's forge every morning since the day you walked him there. He stopped being angry about it some time in the summer, and has not told Tovin.",
+                "when": {
+                  "flag": "job:apprentice-forge"
+                }
+              },
+              {
+                "narrate": "Pim knows everything now about what was done to Aster Vey, and about the keepers who stayed, because he asked to. He says no to the forge every spring, properly, and Dera saves him the nails anyway.",
+                "when": {
+                  "flag": "job:apprentice-chose"
+                }
+              },
+              {
+                "narrate": "Pim is still in the tower all day. By the forge door there is a jar of nails with his name on it, which Dera says she is saving for when he wants it.",
+                "when": {
+                  "flag": "job:apprentice-stayed"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "The night watch on the Briarwood edge is still drawn by lot, a week at a time, every house in. Pim gets one night in nine, and sleeps the other eight, mostly.",
+                "when": {
+                  "flag": "job:roster-lots"
+                }
+              },
+              {
+                "narrate": "Pim's name is still on every third night of Aveline's watch list. He says it will do, for now. Aveline says that is what everyone says about her lists.",
+                "when": {
+                  "flag": "job:roster-aveline"
+                }
+              },
+              {
+                "narrate": "You walked Pim's nights on the Briarwood edge all winter. He has taken to leaving a flask of tea at the top of the watch ladder for whoever is on, every night, whether or not it is you.",
+                "when": {
+                  "flag": "job:roster-walked"
+                }
+              },
+              {
+                "narrate": "The night watch on the Briarwood edge still gets its hot supper. Briarwatch can no longer remember a winter when it didn't, and argues about the soup instead.",
+                "when": {
+                  "flag": "job:roster-supper"
+                }
+              }
+            ]
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "At Highpass, Iona and Fennick now do the winter sums together, at the same table, and correct each other's in silence.",
+                "when": {
+                  "flag": "job:beds-together"
+                }
+              },
+              {
+                "narrate": "At Highpass, Sorrel's soldiers share their bunks by Fennick's roster whenever a hard frost comes off the pass. Nobody has ordered it since the first night.",
+                "when": {
+                  "flag": "job:beds-shared"
+                }
+              }
+            ]
+          },
+          {
+            "narrate": "In Saltwick, Joss Brennick drives the oil up the Iron Road himself now, once a month, and is home by morning every time. His wife still waits up.",
+            "when": {
+              "flag": "job:oil-joss"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "narrate": "Hugh and Wil Carr still run census papers for Fennick, on a clerk's half-ration each. Wil's signature in the ledger is nearly a whole name now.",
+                "when": {
+                  "flag": "job:brothers-runners",
+                  "noneFlag": [
+                    "b3_bell_evacuate"
+                  ]
+                }
+              },
+              {
+                "narrate": "Fennick still feeds two census runners out of his own ration, irregularly, and it is still nobody's business.",
+                "when": {
+                  "flag": "job:brothers-volunteers",
+                  "noneFlag": [
+                    "b3_bell_evacuate"
+                  ]
+                }
+              }
+            ]
+          },
+          {
             "narrate": "Maren is the seal. She sits at a table in Highpass every week, across from people who have come to give, and hears them. She has a list again. It is a list of yeses.",
             "when": {
               "flag": "b3_seal_taken",

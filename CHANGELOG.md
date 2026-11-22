@@ -4,6 +4,18 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## More choices now carry forward (22 November 2026)
+
+- Nine side jobs that recorded how they ended but never said so again are now
+  remembered in the Book Two or Book Three epilogue: Pim's night bell, the
+  Ashford road well, the coach driver's wages, Davy's boat, Pim's apprenticeship
+  and the night roster, the Highpass winter beds, Saltwick's lamp oil and the
+  Carr brothers.
+- Four camp choices that only moved approval now return later: Nessa's goat
+  letter from Highpass, waiting for or pressing Orin about Saltwick, Maren's one
+  name in the tin, and Nessa's letter to Ysolde.
+- Report: docs/reviews/claude-choices-batch3-2026-11-22.md.
+
 ## Choices that used to change nothing (22 November 2026)
 
 - Hollin's Reach: whether you told Elske what you saw comes back at the Second

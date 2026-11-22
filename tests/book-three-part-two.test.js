@@ -478,7 +478,7 @@ test('a line that names a companion is told only when they are there, or is writ
 test('every Part Two line uses known conditions, and every flag it reads is set earlier or has a default', () => {
   const KNOWN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess']);
   // Read from Books One and Two and from Part One (design, "Book Two and Part One flags read in Part Two").
-  const EARLIER = new Set(['nessa_keeper', 'elske_seat', 'elske_free', 'elske_judged', 'b2:haverick_named', 'mother_chorus', 'mother_silenced', 'mother_recalled', 'job:minersvote-decided', 'job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread',
+  const EARLIER = new Set(['nessa_keeper', 'b3_maren_one_name', 'b3_nessa_wrote_ysolde', 'elske_seat', 'elske_free', 'elske_judged', 'b2:haverick_named', 'mother_chorus', 'mother_silenced', 'mother_recalled', 'job:minersvote-decided', 'job:library-sent', 'job:library-noted', 'job:library-cut', 'job:library-unread',
     'b3_rite_law', 'b3_rite_destroyed', 'b3_rite_vell', 'b3_saltwick_moved', 'b3_saltwick_bought', 'b3_bell_evacuate', 'b3_partone_done',
     'b3_bell_cast', 'b3_bell_aster', 'b3_vault_word', 'b3_witnessed', 'b3_quotas_exposed', 'b3_vault_held', 'b3_corvane_keeper', 'b3_corvane_vell', 'b3_corvane_judged', 'second_oath', 'wards_seat']);
   const ENGINE = /^(method|prepared|approach|partial|job|away|walked):/;

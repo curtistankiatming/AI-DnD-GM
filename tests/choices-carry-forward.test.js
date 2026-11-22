@@ -120,3 +120,47 @@ test('the AI game master hears how Maren\'s and Orin\'s stories went', () => {
   assert.match(p.party.find((m) => m.name.startsWith('Orin')).standing.join(' '), /gave up the Saltwick night/);
   assert.match(JSON.parse(Director.prompt(s({ hollin_told: true }))).hero.standing.join(' '), /Hollin's Reach/);
 });
+
+// Curtis, 22 November 2026: "Approve both, proceed to the next." Side jobs whose
+// endings were never told again, and camp choices that only moved approval.
+const SJ = require('../src/data/side-jobs.json');
+const jobFlags = () => { const out = new Set(); const walk = (o) => { if (Array.isArray(o)) o.forEach(walk); else if (o && typeof o === 'object') { for (const k of Object.keys(o.setFlags || {})) out.add(k); Object.values(o).forEach(walk); } }; walk(SJ); return out; };
+
+test('side-job endings are told again in the Book Two and Book Three epilogues', () => {
+  const forge = RAW2['oath-epilogue'].nodes.forge.lines;
+  for (const [flag, text] of [['job:nightbell-rota', /twenty-two names long/], ['job:nightbell-saturday', /On Saturdays Pim and Tovin/], ['job:nightbell-rung', /every hour ticked/], ['job:nightbell-told', /does not say who for/],
+    ['job:well-shared', /tally slate/], ['job:well-ordered', /the way Aveline said/], ['job:well-dug', /check the rope/], ['job:well-paid', /brass plate/],
+    ['job:coach-iona', /council's coach driver/], ['job:coach-listed', /paid it in full/], ['job:boat-named', /LENORA/]]) {
+    assert.match(live(forge, { [flag]: true }), text, flag);
+  }
+  assert.match(live(forge, { 'job:coach-box': true }), /forty-six gold counted out/);
+  assert.match(live(forge, { 'job:coach-box': true }, ['orin']), /count unknown/);
+  assert.doesNotMatch(live(forge, {}), /tally slate|LENORA|Willem|night rota/);
+  const home = RAWS.firstbell.nodes.home.lines;
+  for (const [flag, text] of [['job:apprentice-forge', /walked him there/], ['job:apprentice-stayed', /jar of nails/], ['job:roster-lots', /drawn by lot/], ['job:roster-supper', /hot supper/],
+    ['job:beds-together', /winter sums together/], ['job:beds-shared', /Fennick's roster/], ['job:oil-joss', /Joss Brennick drives the oil/], ['job:brothers-runners', /Hugh and Wil Carr/], ['job:brothers-volunteers', /own ration/]]) {
+    assert.match(live(home, { [flag]: true }), text, flag);
+  }
+  const set = jobFlags();
+  const read = JSON.stringify([forge, home]).match(/job:[a-z-]+/g);
+  for (const f of read) assert.ok(set.has(f) || /^job:(minersvote|library)/.test(f), `${f} is never set by a side job`);
+});
+
+test('camp choices that only moved approval are now remembered', () => {
+  const choice = (raw, scene, node, id) => raw[scene].nodes[node].choices.find((c) => c.id === id);
+  assert.deepEqual(choice(RAW2, 'chairs-camp', 'wall', 'send').setFlags, { 'b2:nessa_first_letter': true });
+  assert.match(live(RAW2['oath-epilogue'].nodes.letters.lines, { 'b2:nessa_first_letter': true }), /with the goat in it/);
+  assert.doesNotMatch(live(RAW2['oath-epilogue'].nodes.letters.lines, {}), /with the goat in it/);
+  assert.equal(choice(RAW2, 'letter-camp', 'forge', 'wait').setFlags.b3_orin_asked, 'wait');
+  assert.equal(choice(RAW2, 'letter-camp', 'forge', 'ask').setFlags.b3_orin_asked, 'ask');
+  const orin = RAW2['saltwick-camp'].nodes.orin.lines;
+  assert.match(live(orin, { b3_orin_asked: 'wait' }), /you waited/);
+  assert.match(live(orin, { b3_orin_asked: 'ask' }), /You were right to ask/);
+  assert.deepEqual(choice(RAW2, 'witness-camp', 'road', 'list').setFlags, { b3_maren_one_name: true });
+  assert.deepEqual(choice(RAW2, 'home-camp', 'hours', 'write').setFlags, { b3_nessa_wrote_ysolde: true });
+  const RQ2 = require('../src/data/book-three-part-two/quests.json');
+  const talk = (q, id) => RQ2[q].talks.find((t) => t.id === id).lines;
+  assert.match(live(talk('b3-seal', 'maren'), { b3_maren_one_name: true }), /inside the lid of the tin/);
+  assert.match(live(talk('b3-company', 'ysolde'), { b3_nessa_wrote_ysolde: true }), /Nessa's letter in her apron pocket/);
+  assert.doesNotMatch(live(talk('b3-company', 'ysolde'), { b3_nessa_wrote_ysolde: true }, ['nessa']), /Nessa's letter/);
+});
