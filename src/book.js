@@ -237,7 +237,11 @@ function bookEnd(id, state = null) {
   if (!next) return null;
   const first = ALL.find(q => bookNo(q) === next.n);
   const where = first ? ` Its first chapter, ${first.name}, is on the expedition board in ${TOWNS[first.town]?.name || first.town}.` : '';
-  return `${bookName(b.n)}, ${b.title}, is complete. ${bookName(next.n)}, ${next.title}, begins.${where}`;
+  // Book Four's first chapter needs the 3rd job: say the trial comes first.
+  const job = Number(first?.requiresJob), p = state?.player && P.ensure(state.player);
+  const owed = p && (job === 3 ? !p.thirdJob : job === 4 ? !p.fourthJob : false);
+  const trial = owed ? ` First comes your ${job === 3 ? '3rd' : '4th'} job trial: begin it from What's next or the expedition board. It is written into the game, so it does not need the AI game master. The chapter opens once you pass.` : '';
+  return `${bookName(b.n)}, ${b.title}, is complete. ${bookName(next.n)}, ${next.title}, begins.${where}${trial}`;
 }
 
 // The written chapter the hero is on now: the bell, then each authored
