@@ -1452,8 +1452,8 @@ to Book Four), never past `jobRoom`, and is never assumed by the main story.
 
 | Town | Job (id) | Open during | What it is |
 | --- | --- | --- | --- |
-| Highpass | Rue's Doors (`rue-doors`) | 1 to 3 | The innkeeper wants Rue to stop writing on his doors. Find her somewhere she may. |
-| Briarwatch | The Third Verse (`third-verse`) | 3 to 6 | Linus wants the true story. Dera, Tovin and Pim each tell him a different one. |
+| Highpass | Rue's Doors (`rue-doors`) | 2 to 3 | The innkeeper wants Rue to stop writing on his doors. Find her somewhere she may. |
+| Briarwatch | The Third Verse (`third-verse`) | 4 to 6 | Linus wants the true story. Dera, Tovin and Pim each tell him a different one. |
 | Merrowgate | Bett's Berth (`bett-berth`) | 4 to 7 | Bett wants to sign on as ship's girl north (the Company's or the council's, by `b4_company_*`). Coll does not want her to. |
 | Cinder Fold | The Ninth Rope (`ninth-rope`) | 7 to 9 | The rope families refuse a miner's son a place on the nine's ropes. He is the best ringer in the Fold. |
 | Lantry | The Painted Door (`painted-door`) | 11 to 13 | One door in Lantry has been painted over. Nobody knows who lived there. |
@@ -1481,6 +1481,8 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 1 Walker | b4_rue_council, b4_rue_party, b4_rue_watch | 6 (where Rue is), 9 (council heard her), 21 (Sorrel), 24 |
 | 2 Records | b4_truth_published, b4_truth_council, b4_truth_ailith | 4 (dockers), 7 (Cinder Fold), 9 (votes), 22, 28 |
 | 3 Ballad | b4_bw_rings, b4_bw_quiet, b4_bw_pim | 9, 22 (rota), 23, epilogue |
+| Rue's Doors (job, 2 to 3) | job:rue-doors-gate, job:rue-doors-office, job:rue-doors-door, job:rue-doors-kitchen | 6 (Highpass: Rue's lines on the founders' gate or Sorrel's office door, her oak door in the inn yard, or the kitchen door left as it was) |
+| The Third Verse (job, 4 to 6) | job:third-verse-dera, job:third-verse-tovin, job:third-verse-all | 23 (Briarwatch: which third verse the square sings on the quiet night) |
 | 4 Company | b4_company_broken, b4_company_council, b4_company_sails | 6, 9 (waylayers), 11 (Lantry), 17 (pot-bells), 26 |
 | 5 Davin | b4_davin_comes, b4_davin_home (also set by lines) | 10, 12, 15, 25 (requires), epilogue |
 | 6 Book | b4_book_returned, b4_book_rewritten, b4_book_burned | 15 (the door), 27 (Rue) |
@@ -2070,3 +2072,14 @@ below.
 14. **Davin, sixteen, may come north.** Decided yes, as an option the player
     and Orin choose, written with Orin's responsibility at its centre. He is
     hurt at most, never killed.
+15. **Rue reaches Ashford in chapter 2 when she did not walk with the
+    party.** Accepted as written (review of build step 3). With
+    `b4_rue_council` or `b4_rue_watch` she comes down after her pages on the
+    morning after the rope-men (by coach or behind Sorrel's rider), speaks in
+    chapter 2's after and camp, and goes back up to Highpass the next morning,
+    so chapter 3 finds her there.
+16. **Pim's fire.** Accepted as written (review of build step 3). With
+    `b3_bell_aster`, Briarwatch has kept the night watch only since Aster left
+    the bell, and Pim has had the fire on his own for one month; his crisis,
+    the decisions and The Third Verse are about the fire going out, while
+    Tovin still rings the bell by hand. Without it, they are about the bell.

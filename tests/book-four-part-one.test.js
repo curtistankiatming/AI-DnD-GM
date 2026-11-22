@@ -356,10 +356,16 @@ test('where Rue stays is read in chapters 2 and 3 and in her side job', () => {
   assert.match(talk('b4-records', 'rue', { flags: { b4_rue_watch: true } }), /Do not fold them/);
   assert.doesNotMatch(talk('b4-records', 'rue', { flags: { b4_rue_watch: true } }), /^Rue:/m);
   // Chapter 3: Rue is there to answer Pim only if she walks with you.
-  assert.match(opening(at('b4-ballad', { phase: 'after', flags: { b4_rue_party: true } })), /^Rue: Yes\. It comes down on Thrum/m);
+  assert.match(opening(at('b4-ballad', { phase: 'after', flags: { b4_rue_party: true } })), /^Rue: Yes\. It comes down on Thrum\. It is in my book, most winters/m);
   assert.match(opening(at('b4-ballad', { phase: 'after', flags: { b4_rue_council: true } })), /Rue has gone back up to Highpass/);
   // The camp scene after chapter 1 is told where she lodges.
-  assert.match(opening(decide('b4-walker', 'council')), /Brannagh's goat follows her/);
+  assert.match(opening(decide('b4-walker', 'council')), /comes up from Brannagh's lodging/);
+  assert.doesNotMatch(opening(decide('b4-walker', 'council')), /goat/);
+  // With nobody else in the party, Rue's page is for the hero alone.
+  assert.match(opening(decide('b4-walker', 'council', { party: [] })), /She has made a page for you\./);
+  assert.match(opening(decide('b4-walker', 'council')), /She has made a page for each of you\./);
+  // Chapter 2 sends her back up to Highpass when she came down after her pages.
+  for (const [flag, line] of [['b4_rue_council', /Rue goes back up to Highpass on the morning coach/], ['b4_rue_watch', /Sorrel's rider takes Rue back up to Highpass/]]) assert.match(opening(decide('b4-records', 'publish', { flags: { [flag]: true } })), line, flag);
   assert.match(opening(decide('b4-walker', 'watch')), /between Sorrel and the sergeant/);
   assert.match(opening(decide('b4-walker', 'party')), /in the room Sorrel has found you/);
 });
@@ -385,15 +391,142 @@ test('chapter 3 follows Aster: in Briarwatch\'s bell she feels where the white g
   assert.match(talk('b4-ballad', 'bell', { flags: { ...flags, b3_promise_old: false, b3_promise_hesk: true } }), /She's at Vell, in the great bell/);
   assert.match(talk('b4-ballad', 'bell', { flags: { ...flags, b4_rue_party: true } }), /^Rue: Last winter/m);
   assert.match(talk('b4-ballad', 'bell', { flags }), /Kindest winter in the Tally/);
+  // The Wold's last winter follows Book Three's ending: kindest only with the old way.
+  const hesk = { ...flags, b3_promise_old: false, b3_promise_hesk: true }, sealed = { ...flags, b3_promise_old: false, b3_stair_sealed: true };
+  assert.match(talk('b4-ballad', 'bell', { flags: hesk }), /Worst winter in the Tally\. Every lane under but ours\. Thrum's lane clear past the third door until midwinter/);
+  assert.match(talk('b4-ballad', 'bell', { flags: sealed }), /Worse than the last/);
+  assert.match(talk('b4-ballad', 'bell', { flags: { ...hesk, b4_rue_party: true } }), /^Rue: Last winter\. The winter your bell was empty\. It was the worst winter in the Tally/m);
+  assert.match(talk('b4-ballad', 'bell', { flags: { ...sealed, b4_rue_party: true } }), /^Rue: Last winter was worse than the one before/m);
+  for (const f of [hesk, sealed, { ...hesk, b4_rue_party: true }, { ...sealed, b4_rue_party: true }]) assert.doesNotMatch(talk('b4-ballad', 'bell', { flags: f }), /[Kk]indest|kind winter/);
+  assert.equal((talk('b4-ballad', 'bell', { flags: { ...flags, b4_rue_party: true } }).match(/Last winter/g) || []).length, 1, 'Rue or her pages, not both');
+  // Pim's fire with Aster gone: the watch is a winter old, and the fire his for a month.
+  assert.match(opening(at('b4-ballad', { phase: 'after', flags })), /since Aster left the bell\. It's the first rule this village made without her\. Now a boy who's had the fire one month/);
+  assert.match(opening(at('b4-ballad', { phase: 'after', flags: { ...flags, 'method:b4-ballad': 'peace' } })), /same as the fire/);
+  assert.match(opening(at('b4-ballad', { phase: 'after' })), /Now Pim, who's rung it since he was a boy/);
+  assert.match(told(decide('b4-ballad', 'pim', { flags })), /He has stood it since last winter.*He is the one who asked\./);
+  assert.match(told(decide('b4-ballad', 'pim')), /He has rung the bell since he was a boy/);
+  // Aster, still in her bell, answers the quiet night.
+  for (const d of ['quiet', 'pim']) {
+    assert.match(told(decide('b4-ballad', d)), /^Aster Vey: Ask me, then\. Yes\. One night/m, d);
+    assert.doesNotMatch(told(decide('b4-ballad', d, { flags })), /Aster Vey:/, d);
+  }
+  for (const raw of [RAWQ, RAWJ]) assert.doesNotMatch(JSON.stringify(raw), /since he was nine|when he was nine|bell went quiet/);
   assert.doesNotMatch(talk('b4-ballad', 'bell', { flags }), /Aster Vey:/);
   // The night watch is Pim's crisis with Aster gone; otherwise the bell.
   assert.match(opening(at('b4-ballad', { phase: 'crisis', flags })), /watch-fire is cold/);
   assert.match(opening(at('b4-ballad', { phase: 'crisis' })), /the bell hangs still/);
   // The answers are read in the camp scene and the job after it.
   for (const [decision, line] of [['quiet', /a rhyme for 'share'/], ['pim', /letters an inch high/], ['rings', /Nobody wants a song about a thing staying the same/]]) assert.match(opening(decide('b4-ballad', decision)), line, decision);
-  assert.match(opening(decide('b4-ballad', 'rings')), /^Orin: Calder bridge/m);
+  assert.match(opening(decide('b4-ballad', 'rings')), /^Orin: The ford at Calder/m);
+  assert.match(opening(decide('b4-ballad', 'rings', { flags: { b3_orin_tried: true, b3_orin_gives: true } })), /^Orin: Then Briarwatch\. Then the council\. Then Saltwick\. I don't remember it/m);
   assert.match(opening(decide('b4-ballad', 'rings', { party: ['maren', 'nessa'] })), /Is he really eight feet tall/);
   assert.match(opening(decide('b4-ballad', 'rings', { flags: { b3_orin_tried: true } })), /where I asked to be tried/);
+});
+
+test('the review\'s fixes hold: Sorrel is she, Sable judges what he can, and each line follows the Book Three ending it is told for', () => {
+  const all = JSON.stringify([RAWQ, RAWS, RAWJ]);
+  // Captain Sorrel is a woman (Book Three).
+  for (const s of all.match(/[^."]*Sorrel[^."]*/g)) assert.doesNotMatch(s.replace(/take it down to him/, ''), /\b(he|him|his|himself)\b/i, s);
+  assert.match(talk('b4-walker', 'sorrel'), /She points with her chin/);
+  // Sable hears a copy Rue made, and in the bell in the gatehouse yard judges the spellings, not the hand.
+  const cast = talk('b4-walker', 'sable', { flags: { b3_sable_cast: true } });
+  assert.match(cast, /gatehouse yard/); assert.match(cast, /Those are the founders' spellings/);
+  assert.doesNotMatch(cast, /tower|Square letters/);
+  assert.match(talk('b4-walker', 'sable'), /Rue copies her first page out for you herself, through the bars/);
+  assert.match(talk('b4-walker', 'sable'), /Square letters/);
+  // Chapter 1's opening by ending: the partial ring, Maren's sealed table, Orin back with Mags.
+  const start = (flags, party) => opening(departed('b4-walker', { flags: { b3_promise_old: false, ...flags }, party }));
+  assert.match(start({ b3_promise_hesk: true, b3_three_told: true }), /holds what towns it can, for as long as it can/);
+  assert.match(start({ b3_promise_hesk: true }), /whose ring of bells holds the free wards/);
+  assert.match(start({ b3_promise_old: true }), /the sentence given at the first sitting this spring/);
+  assert.match(start({ b3_stair_sealed: true, b3_seal_taken: true }), /a table in the gatehouse that nobody comes to now/);
+  assert.match(start({ b3_promise_hesk: true, b3_seal_taken: true }), /across from people who have come to give/);
+  assert.match(start({ b3_orin_tried: true, b3_mags_forgives: true }), /Mags Peller asked for him back, and he went/);
+  assert.doesNotMatch(start({ b3_orin_tried: true }), /Mags Peller/);
+  assert.match(opening(at('b4-walker', { phase: 'crisis', party: ['maren', 'nessa'] })), /They are all looking at the third house/);
+  // Chapter 2: the nine rest with the wards' seat; Rue reads first when she walks with you; Maren speaks before the choice.
+  assert.match(talk('b4-records', 'ailith', { flags: { wards_seat: true } }), /The nine have rested/);
+  assert.match(talk('b4-records', 'ailith'), /nine people under that lid/);
+  const resolved = (id, opts) => told(choose(strong(at(id, { ...opts, phase: 'crisis' })), 'resolve'));
+  assert.match(resolved('b4-records', { flags: { b4_rue_party: true } }), /Rue is out of the cellar door with her own pages before (you|Orin|Maren|Nessa),/);
+  assert.match(resolved('b4-records', { flags: { b4_rue_party: true } }), /Then Rue reads the Wold's winters again/);
+  assert.doesNotMatch(resolved('b4-records', { flags: { b4_rue_watch: true } }), /Rue is out of the cellar door|Then Rue reads/);
+  assert.match(opening(at('b4-records', { phase: 'after' })), /^Maren: Whoever has it next will want to change a word/m);
+  assert.doesNotMatch(opening(at('b4-records', { phase: 'after', party: ['orin', 'nessa'] })), /change a word/);
+  assert.match(told(decide('b4-records', 'ailith')), /You can wait till morning, Ailith\. Two hundred years, you can wait a night/);
+  // A page read in Ashford's square is not a page nobody has heard.
+  for (const flag of ['b4_truth_council', 'b4_truth_ailith']) {
+    assert.match(talk('b4-ballad', 'linus', { flags: { [flag]: true, 'method:b4-records': 'peace' } }), /Ashford heard a page read in its square at midnight/, flag);
+    assert.doesNotMatch(talk('b4-ballad', 'linus', { flags: { [flag]: true, 'method:b4-records': 'peace' } }), /Nobody knows what's on it|Nobody outside Cinder Fold knows/, flag);
+  }
+  // The Telling's lines fit the fight as well as the peaceful way.
+  for (const id of IDS) assert.doesNotMatch(QUESTS[id].told.ballad, /read in the square|pots and pans|stood in the gate/, id);
+  // Narrator wit and the goat are cut.
+  assert.doesNotMatch(all, /number of cups|read to for two days|neither of them notices|being bored|I don't usually find it|blisters|goat is tied|goat follows/);
+  assert.equal((all.match(/goat/g) || []).length, 1, 'only Brannagh\'s own goat');
+  // The camp after chapter 1: Hesk's appeal was heard that day.
+  assert.match(opening(choose(decide('b4-walker', 'party'), 'ask')), /the speech he gave at his appeal today/);
+  assert.match(opening(choose(decide('b4-walker', 'party', { party: [] }), 'ask')), /and the line about you\./);
+});
+
+test('a companion who rolls a check is the one doing every verb after "and" in its result', () => {
+  // The verbs written with a roller token, as the hero says them and as a companion does.
+  const pairs = new Map();
+  JSON.stringify([RAWQ, RAWJ], (k, v) => { if (typeof v === 'string') for (const m of v.matchAll(/\{(?:[Yy]ou )?([a-z]+)\|(?:@ )?([a-z]+)\}/g)) if (m[2] !== m[1] && /s$/.test(m[2])) pairs.set(m[1], m[2]); return v; });
+  assert.ok(pairs.size >= 20, `${pairs.size} verbs`);
+  for (const base of ['sing', 'lose', 'come', 'beat', 'put', 'read']) assert.ok(pairs.has(base), base);
+  const third = [...pairs.values()].join('|'), bases = new Set(pairs.keys());
+  let checked = 0;
+  for (const node of Object.values(STORY_NODES).filter((n) => IDS.includes(n.questId) || JOB_IDS.includes(n.sideJob))) for (const c of node.choices || []) {
+    if (!c.check) continue;
+    for (const key of ['success', 'failure']) for (const id of ['orin', 'maren', 'nessa']) {
+      const name = COMPANIONS[id].name.split(' ')[0];
+      for (const sentence of (outcomeForRoller(c[key], { id }).text || '').split(/(?<=[.!?:])\s+|\n/)) {
+        const at = sentence.search(new RegExp(`\\b${name} (${third})\\b`));
+        if (at < 0) continue;
+        checked++;
+        // Read on from the companion's verb until a new clause starts with someone else.
+        for (const m of sentence.slice(at).matchAll(/(,\s+)?\b(and|but) (\w+)/g)) {
+          assert.ok(m[2] !== 'and' || !bases.has(m[3]), `${node.id} ${c.id} ${key} [${id}]: "and ${m[3]}" in "${sentence}"`);
+          if (m[1] && !bases.has(m[3])) break;
+        }
+      }
+    }
+  }
+  assert.ok(checked > 50, `${checked} sentences`);
+});
+
+test('a line that answers a companion\'s line is told only with that companion there', () => {
+  let answers = 0;
+  const walk = (value, owner) => {
+    if (Array.isArray(value)) {
+      value.forEach((l, i) => {
+        const prev = value[i - 1];
+        if (!prev?.say || !COMPANIONS[prev.say] || !l?.say || COMPANIONS[l.say]) return;
+        answers++;
+        assert.equal(l.when?.party, prev.say, `${owner}: "${l.text.slice(0, 60)}" answers ${prev.say}`);
+      });
+      value.forEach((v) => walk(v, owner));
+    } else if (value && typeof value === 'object') for (const v of Object.values(value)) walk(v, owner);
+  };
+  for (const [owner, content] of CONTENT) walk(content, owner);
+  assert.ok(answers >= 8, `${answers} answers`);
+});
+
+test('The Third Verse follows the night as it went and Aster\'s bell', () => {
+  const job = (flags, choice) => { let s = act(at(during(SIDE_JOBS['third-verse']), { flags, town: 'briarwatch' }), { type: 'side-job', jobId: 'third-verse' }).state; const o = opening(s); if (!choice) return o; return told(act(s, { type: 'story-choice', choiceId: choice }, high).state); };
+  assert.match(job({}), /He's the one who sat with it all night/);
+  assert.match(job({ b3_bell_aster: true }), /since Aster went from the bell/);
+  assert.match(job({ b3_bell_aster: true }), /it wasn't the fire/);
+  assert.doesNotMatch(job({}), /stew pot/);
+  assert.match(job({ 'method:b4-ballad': 'peace' }), /stew pot/);
+  assert.match(job({ b3_bell_aster: true }, 'dera'), /goes down to the fire at the stream early/);
+  assert.match(job({}, 'dera'), /climbs the tower early/);
+  assert.match(job({ b3_bell_aster: true }, 'tovin'), /the way the fire went out/);
+  assert.match(job({}, 'tovin'), /the way the hour was missed/);
+  assert.match(job({ 'method:b4-ballad': 'peace' }, 'all'), /who did not bang anything/);
+  assert.doesNotMatch(job({}, 'all'), /did not bang anything|stew pot/);
+  assert.match(told(act(act(at(during(SIDE_JOBS['third-verse']), { town: 'briarwatch' }), { type: 'side-job', jobId: 'third-verse' }).state, { type: 'story-choice', choiceId: 'all' }, low).state), /and they sing it anyway\./);
 });
 
 // Side jobs.

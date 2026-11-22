@@ -13,19 +13,24 @@
         "objective": "Rue writes you down.",
         "lines": [
           { "oneOf": [
-            { "narrate": "That night Rue comes up from Brannagh's lodging to find you, with her book, and Brannagh's goat follows her as far as the foot of the stair, where it stops and watches her go up.", "when": { "flag": "b4_rue_council" } },
+            { "narrate": "That night Rue comes up from Brannagh's lodging to find you, with her book.", "when": { "flag": "b4_rue_council" } },
             { "narrate": "That night Rue sits with you at the fire in the room Sorrel has found you, with her book open on her knees and a new stub of lead.", "when": { "flag": "b4_rue_party" } },
-            { "narrate": "That night you go up to the fire at the head of the north road, where Rue is sitting between Sorrel and the sergeant from the gateway. Sorrel gets up and gives you his place without a word, and goes to stand at the wall.", "when": { "flag": "b4_rue_watch" } },
+            { "narrate": "That night you go up to the fire at the head of the north road, where Rue is sitting between Sorrel and the sergeant from the gateway. Sorrel gets up and gives you her place without a word, and goes to stand at the wall.", "when": { "flag": "b4_rue_watch" } },
             { "narrate": "That night Rue comes to find you, with her book." }
           ] },
-          { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out." },
+          { "oneOf": [
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "orin" } },
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "maren" } },
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "nessa" } },
+            { "narrate": "She has made a page for you. She asks your name again, though she has written it, because she wants to hear it said. Then she writes a line beside it, carefully, and reads it out." }
+          ] },
           { "oneOf": [
             { "say": "Rue", "text": "You. Stood in the gate with me. Did not move.", "when": { "flag": "method:b4-walker", "is": "peace" } },
             { "say": "Rue", "text": "You. Fought the white in the gate, so that I was not put out." }
           ] },
-          { "say": "Rue", "text": "Maren. Asks questions she knows the answer to. Listened to me as if I might be lying, and then as if I was not.", "when": { "party": "maren" } },
+          { "say": "Rue", "text": "Maren. Asked what I gave. Listened to me as if I might be lying, and then as if I was not.", "when": { "party": "maren" } },
           { "narrate": "Maren laughs, surprised, and then stops, and looks at Rue for a long moment, the way she looks at people when she is listening for something and hears nothing at all.", "when": { "party": "maren" } },
-          { "say": "Rue", "text": "Nessa. Went first, up the tower. Talks to the dog.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Nessa. Wanted the gate open before anyone. Talks to the dog.", "when": { "party": "nessa" } },
           { "say": "nessa", "text": "He talks back." },
           { "say": "Rue", "text": "I have written that too. Biscuit. Dog. Grey at the mouth. Kind.", "when": { "party": "nessa" } },
           { "say": "Rue", "text": "Orin. Would not let them put me out.", "when": { "party": "orin" } },
@@ -44,13 +49,18 @@
         "title": "Before Anything Hard",
         "objective": "Camp.",
         "lines": [
-          { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you." },
+          { "oneOf": [
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "orin" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "maren" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "nessa" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about you." }
+          ] },
           { "narrate": "Then the last line on her own page, in fresh lead, which she reads twice." },
           { "say": "Rue", "text": "I was let in." },
           { "say": "Rue", "text": "We read our books before anything hard, so we know who we were before it. If I read it first, then whatever happens, I was somebody when it started. Tomorrow is hard. Everything here is." },
           { "oneOf": [
-            { "narrate": "Somewhere below, under the gatehouse, Hesk is reading his appeal over to himself for the last time. You can hear his voice through the floor, steady, not the words.", "when": { "flag": "b3_promise_old" } },
-            { "narrate": "Up on the wall the watch-fire at the head of the north road is lit again, and somebody is sitting by it, being bored, as the founders' orders say." }
+            { "narrate": "Somewhere below, under the gatehouse, Hesk is reading over to himself the speech he gave at his appeal today. You can hear his voice through the floor, steady, not the words.", "when": { "flag": "b3_promise_old" } },
+            { "narrate": "Up on the wall the watch-fire at the head of the north road is lit again, and somebody is sitting by it." }
           ] }
         ],
         "choices": [
@@ -76,6 +86,8 @@
         "objective": "Camp.",
         "lines": [
           { "narrate": "Ilse does not sleep that night either, and neither does Rue. They sit at opposite ends of the long table in the cellar with a lamp each, copying: Ilse the founders' account in her round archive hand, and Rue the Wold's winters in her square one." },
+          { "narrate": "Rue goes back up to Highpass on the morning coach. Brannagh wants her home by the end of the week, and Rue has written it on the back of her hand so as not to forget.", "when": { "flag": "b4_rue_council" } },
+          { "narrate": "Sorrel's rider takes Rue back up to Highpass in the morning. Sorrel wants her at the fire, and Rue has written it on the back of her hand so as not to forget.", "when": { "flag": "b4_rue_watch" } },
           { "oneOf": [
             { "narrate": "Ilse has the printer's proof beside her, to check the type against the page letter by letter. She has found two mistakes already, and gone up to the print shop in her nightgown to say so.", "when": { "flag": "b4_truth_published" } },
             { "narrate": "The account goes up to Highpass under seal in the morning, and Ilse means to have every page of it copied before the rider comes for it.", "when": { "flag": "b4_truth_council" } },
@@ -94,7 +106,7 @@
           { "say": "Rue", "text": "Yes. That is what I mean." }
         ],
         "choices": [
-          { "id": "lamp", "label": "Stay and trim the lamps for them", "lines": [ { "narrate": "You trim the lamps for them until the window over the stairs goes grey. Neither of them thanks you, because neither of them notices, and you do not mind." } ] },
+          { "id": "lamp", "label": "Stay and trim the lamps for them", "lines": [ { "narrate": "You trim the lamps for them until the window over the stairs goes grey. Neither of them looks up." } ] },
           { "id": "sleep", "label": "Go up and sleep", "lines": [ { "narrate": "You go up and sleep at the inn. When you come down in the morning the two of them are asleep at the long table, one at each end, with their heads on their copies." } ] }
         ]
       }
@@ -124,8 +136,9 @@
           ] },
           { "say": "Linus Pardew", "text": "Now. Orin the Bold. Sir. Would you give me your own verse, in your own words? However you'd like to be sung.", "when": { "party": "orin" } },
           { "narrate": "Orin puts down the cup Dera gave him. Everyone at the forge looks at him. He looks at the fire for a while.", "when": { "party": "orin" } },
-          { "say": "orin", "text": "Calder bridge. I was a soldier. I left the farmers on the wrong side of it, and the white had them. Lieutenant Hal went back for them. I didn't." },
+          { "say": "orin", "text": "The ford at Calder. I was a soldier. I left the farmers on the wrong side of it, and the white had them. Lieutenant Hal went back for them. I didn't." },
           { "oneOf": [
+            { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick. I don't remember it. I gave it away, down there. I know I was tried for it. Write that I was tried.", "when": { "flag": "b3_orin_gives", "anyFlag": ["b3_orin_tried"] } },
             { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick, where I asked to be tried for what I did there, and was.", "when": { "flag": "b3_orin_tried" } },
             { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick, which I'll not tell you about, and you'll not write." }
           ] },
@@ -136,7 +149,7 @@
           { "say": "Linus Pardew", "text": "I'm going to, though.", "when": { "party": "orin" } },
           { "say": "Linus Pardew", "text": "And the big one. The one with the door on his back. He's not with you, is he. Is he really eight feet tall?", "when": { "absent": "orin" } },
           { "narrate": "You tell Linus that the big one is six feet tall, carries the packs because somebody has to, and has never had a door on his back in his life. Linus writes it down, and crosses out the eight, and sits looking at what is left.", "when": { "absent": "orin" } },
-          { "say": "Linus Pardew", "text": "That's worse for the song and better for the man. It usually is, I find. I don't usually find it.", "when": { "absent": "orin" } },
+          { "say": "Linus Pardew", "text": "That's worse for the song and better for the man.", "when": { "absent": "orin" } },
           { "say": "Dera", "text": "Put in that he came back. Whoever's in it. That they all came back. That's the verse I'd want, if it was mine." }
         ],
         "choices": [

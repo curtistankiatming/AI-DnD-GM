@@ -47,7 +47,7 @@
             "check": { "skill": "persuasion", "alt": ["insight", "history"] },
             "success": {
               "lines": [
-                { "narrate": "{You find|@ finds} Sorrel on the wall and put it to him. He listens, and then walks {you|@} along the north wall to the old gatehouse at the head of the north road, which nobody has used since the founders' time: an iron-studded door that does not open, and a long blank face of dressed stone on either side of it." },
+                { "narrate": "{You find|@ finds} Sorrel on the wall and {put|puts} it to her. She listens, and then walks {you|@} along the north wall to the old gatehouse at the head of the north road, which nobody has used since the founders' time: an iron-studded door that does not open, and a long blank face of dressed stone on either side of it." },
                 { "say": "Sorrel", "text": "That. It's the founders' gate. Nobody uses it. She can write on every stone of it she can reach, and I'll have a ladder brought for the ones she can't. If it's going to be anybody's door, it should be hers. It's her road." },
                 { "narrate": "Rue stands in front of it for a long time. Then, on the first stone, very small, at the bottom, she writes: HIGHPASS. A FORT. THEY LET ME IN." }
               ],
@@ -55,7 +55,7 @@
             },
             "failure": {
               "lines": [
-                { "narrate": "Sorrel hears {you|@} out and says no. It's a fort, not a slate. But he says it kindly, and on the way back along the wall he stops at the door of his own office, and looks at it, and says she may have that one, if she must. It's his. He'll answer for it." },
+                { "narrate": "Sorrel hears {you|@} out and says no. It's a fort, not a slate. But she says it kindly, and on the way back along the wall she stops at the door of her own office, and looks at it, and says Rue may have that one, if she must. It's hers. She'll answer for it." },
                 { "narrate": "By morning it says: CAPTAIN SORREL. DID THE SUM TWICE. LET ME IN." }
               ],
               "setFlags": { "job:rue-doors-office": true }
@@ -116,14 +116,16 @@
             { "narrate": "It is to be the night Briarwatch rang its pans. Everybody agrees on that much.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
             { "narrate": "It is to be the night the white came into the lanes. Everybody agrees on that much." }
           ] },
-          { "say": "Dera", "text": "It was Pim. He's the one who asked. He's the one who sat out there all night with it. A song about that night that isn't about Pim is a lie, and I've had enough lies about this village sung at my door." },
+          { "say": "Dera", "text": "It was Pim. He's the one who asked. He's the one who sat with it all night. A song about that night that isn't about Pim is a lie, and I've had enough lies about this village sung at my door." },
           { "oneOf": [
-            { "say": "Tovin", "text": "It was the fire. The fire going out. Every night since the bell went quiet we've had a fire on that edge, and the one night we didn't, everybody found out what it was for. That's the verse.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Tovin", "text": "It was the fire. The fire going out. Every night since Aster went from the bell we've had a fire on that edge, and the one night we didn't, everybody found out what it was for. That's the verse.", "when": { "flag": "b3_bell_aster" } },
             { "say": "Tovin", "text": "It was the bell. The bell not ringing. Every hour for years it's rung, and the one night it didn't, everybody found out what it was for. That's the verse. The silence." }
           ] },
           { "oneOf": [
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the fire. It was them. Everybody out in their nightclothes with a pan. Reeve Aveline had the big stew pot. I've never seen her run. Put that in. Put everybody in.", "when": { "flag": "method:b4-ballad", "is": "peace", "anyFlag": ["b3_bell_aster"] } },
             { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was them. Everybody out in their nightclothes with a pan. Reeve Aveline had the big stew pot. I've never seen her run. Put that in. Put everybody in.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
-            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was everybody who came out into the lanes when they could have stayed in and shut the door. Reeve Aveline came out with the big stew pot. Put that in. Put everybody in." }
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the fire. It was everybody who came out into the lanes when they could have stayed in and shut the door. Put that in. Put everybody in.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was everybody who came out into the lanes when they could have stayed in and shut the door. Put that in. Put everybody in." }
           ] },
           { "oneOf": [
             { "say": "Pim", "text": "And put in that it's one night a month now. So people know it's on purpose.", "when": { "flag": "b4_bw_quiet" } },
@@ -139,7 +141,10 @@
             "label": "Give Linus Dera's verse: the boy who asked where away is",
             "lines": [
               { "narrate": "You tell Linus to write the boy who asked. He writes it at the well with Dera reading over his shoulder, and when it is done she reads it through, and nods once, and goes back to her forge." },
-              { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and climbs the tower early." },
+              { "oneOf": [
+                { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and goes down to the fire at the stream early.", "when": { "flag": "b3_bell_aster" } },
+                { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and climbs the tower early." }
+              ] },
               { "say": "Pim", "text": "Away where. He's put that in. He's put my words in." }
             ],
             "setFlags": { "job:third-verse-dera": true }
@@ -148,7 +153,10 @@
             "id": "tovin",
             "label": "Give Linus Tovin's verse: the night Briarwatch's watch went dark",
             "lines": [
-              { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin in the bell-room for an afternoon to get it right, and comes down with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the hour was missed." },
+              { "oneOf": [
+                { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin by the cold fire-pit at the stream for an afternoon to get it right, and comes back with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the fire went out.", "when": { "flag": "b3_bell_aster" } },
+                { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin in the bell-room for an afternoon to get it right, and comes down with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the hour was missed." }
+              ] },
               { "say": "Tovin", "text": "That's it. That's what it was like. He's left the end off. I didn't know you could do that in a song." },
               { "say": "Linus Pardew", "text": "You can't. Everyone will notice. That's the point." }
             ],
@@ -161,13 +169,16 @@
             "success": {
               "lines": [
                 { "narrate": "{You go|@ goes} round the village with Linus all afternoon, door to door, asking every house what it did that night, and Linus writes it all down. By evening he has forty names and forty doorsteps, and a verse forty lines long that does not scan anywhere." },
-                { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Aveline's stew pot gets a line of its own. So does Pim, who did not bang anything." }
+                { "oneOf": [
+                  { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Aveline's stew pot gets a line of its own. So does Pim, who did not bang anything.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+                  { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Pim gets a line of his own, though he asked not to." }
+                ] }
               ],
               "setFlags": { "job:third-verse-all": true }
             },
             "failure": {
               "lines": [
-                { "narrate": "{You go|@ goes} round the village with Linus, but by the tenth house everybody wants to be the first line, and the eleventh wants to be the last, and Linus gives up and writes 'and all of Briarwatch with them', which pleases nobody, and which they sing loudest." }
+                { "narrate": "{You go|@ goes} round the village with Linus, but by the tenth house everybody wants to be the first line, and the eleventh wants to be the last, and Linus gives up and writes 'and all of Briarwatch with them', and they sing it anyway." }
               ],
               "setFlags": { "job:third-verse-all": true }
             }

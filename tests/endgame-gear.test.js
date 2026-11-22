@@ -3,6 +3,11 @@
 // 60, 65, 70, 80, 90, 95 and 100 rather than every type at every level, and six
 // equipment sets in two versions (Book Four, 55 to 65; final, 90 to 95) with
 // set bonuses. Nothing here calls the paid API.
+// Book Four is held back even when the suite runs with the books preview on
+// (BRIARWATCH_PREVIEW_BOOKS=1): once it can be read, gearOpen keeps level 41 to
+// 70 gear until it begins, and these tests read the shops and bounties as
+// players have them now. node --test runs each file in its own process.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), R = require('../src/rules'), W = require('../src/world'), Bounty = require('../src/bounty');
 const Gear = require('../src/gear'), G = require('../src/equipment'), Power = require('../src/power'), Book = require('../src/book');

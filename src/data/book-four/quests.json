@@ -17,20 +17,21 @@
     "faction": "wardens",
     "brief": "Late spring at Highpass, for the council's session. A girl is walking down the old north road with a book under her arm, out of the old places where nobody lives, and the white is coming down the road behind her.",
     "told": {
-      "ballad": "At Highpass a girl came down from the north with a book, and the hero stood in the gate with her while the white went by.",
+      "ballad": "At Highpass a girl came down from the north with a book, and the hero kept the gate for her while the white went by.",
       "tally": "Rue of Thrum went south over the peaks and came to the free wards' gate. It is written that they let her in."
     },
     "opening": [
       { "narrate": "Late spring. Highpass Watch sits in the throat of the pass with its walls up both sides of it, and above the upper gate the old north road goes on climbing, past the last watch-fire, towards the peaks and the Hall of Legends on the saddle between them. Beyond the Hall the road has been snowed shut for as long as anyone at Highpass remembers. The watch keeps a fire at the top of it anyway, because the founders' orders say so, and nobody has ever written new ones." },
       { "oneOf": [
-        { "narrate": "You are here for the spring session of the council. Its chief business, set down for the third day, is Idris Hesk's appeal against the sentence the last session gave him. He has asked to speak for himself. Nobody expects it to take long, and everybody has come to hear it.", "when": { "flag": "b3_promise_old" } },
+        { "narrate": "You are here for the spring session of the council. Its chief business, set down for the third day, is Idris Hesk's appeal against the sentence given at the first sitting this spring. He has asked to speak for himself. Nobody expects it to take long, and everybody has come to hear it.", "when": { "flag": "b3_promise_old" } },
+        { "narrate": "You are here for the spring session of the council. Its first business is honours for Idris Hesk, whose ring of bells holds what towns it can, for as long as it can. The council has voted the money for a dinner and had a medal cut, and Hesk has written from Vell that he will come and be given it, if he must.", "when": { "flag": "b3_promise_hesk", "anyFlag": ["b3_three_told"] } },
         { "narrate": "You are here for the spring session of the council. Its first business is honours for Idris Hesk, whose ring of bells holds the free wards. The council has voted the money for a dinner and had a medal cut, and Hesk has written from Vell that he will come and be given it, if he must.", "when": { "flag": "b3_promise_hesk" } },
         { "narrate": "You are here for the spring session of the council, and for the seal's first inspection: the report on the sealed stair under Vell, read out in the hall with the stonemasons' bills pinned to the back. The stair is shut. Nobody is to go down it again. The report says so on every page.", "when": { "flag": "b3_stair_sealed" } },
         { "narrate": "You are here for the spring session of the council." }
       ] },
       { "oneOf": [
         { "narrate": "Provost Elske Marrow has the chair this session, with the papers in four neat piles.", "when": { "flag": "elske_seat" } },
-        { "narrate": "Brannagh of Fenmere has the chair, because nobody else would take it, and her goat is tied up outside the hall." }
+        { "narrate": "Brannagh of Fenmere has the chair, because nobody else would take it." }
       ] },
       { "narrate": "On the second morning of the session, a little after dawn, the watch on the upper wall sees somebody coming down the old north road." },
       { "narrate": "One person, walking. Small with distance and slow in the snow, coming down out of the white between the peaks, where nothing has come down in living memory, with something square held against the chest as if it mattered more than keeping warm." },
@@ -44,18 +45,19 @@
       ] },
       { "say": "Sorrel", "text": "Nothing comes down that road. Nothing has since the founders' time. That's what the fire's for. Somebody has to sit by it and be bored." },
       { "oneOf": [
+        { "narrate": "Orin came up from Saltwick yesterday for the session, with lamp-black still in the creases of his hands. He owes Saltwick's roof council a season of lamps, and has served a fortnight of it. Mags Peller asked for him back, and he went. He stands at your shoulder on the wall, looks up the road, and puts a hand on the nearest archer's bow and lowers it.", "when": { "party": "orin", "flag": "b3_orin_tried", "anyFlag": ["b3_mags_forgives"] } },
         { "narrate": "Orin came up from Saltwick yesterday for the session, with lamp-black still in the creases of his hands. He owes Saltwick's roof council a season of lamps, and has served a fortnight of it, and has leave to serve the rest when the session is done. He stands at your shoulder on the wall, looks up the road, and puts a hand on the nearest archer's bow and lowers it.", "when": { "party": "orin", "flag": "b3_orin_tried" } },
-        { "narrate": "Orin came up from Saltwick yesterday, where he has spent the spring on Mags Peller's lamps. He stands at your shoulder on the wall, looks up the road, and puts a hand on the nearest archer's bow and lowers it.", "when": { "party": "orin", "flag": "b3_mags_forgives" } },
         { "narrate": "Orin has spent the spring at Dera's forge teaching Pim knots, and came up the road with you. He stands at your shoulder on the wall, looks up the road, and puts a hand on the nearest archer's bow and lowers it.", "when": { "party": "orin" } }
       ] },
       { "say": "orin", "text": "Not yet. Whoever that is, they're walking towards a fire. People don't do that when they mean harm." },
       { "oneOf": [
-        { "narrate": "Maren has been at Highpass all spring. She is the free wards' seal, and three days a week she sits at a table in the gatehouse across from people who have come to give, and hears them. She comes up onto the wall with her list of yeses still in her hand, and folds it, and puts it away.", "when": { "party": "maren", "flag": "b3_seal_taken" } },
+        { "narrate": "Maren has been at Highpass all spring. She is the free wards' seal, and three days a week she sits at a table in the gatehouse across from people who have come to give, and hears them. She comes up onto the wall with her list of yeses still in her hand, and folds it, and puts it away.", "when": { "party": "maren", "flag": "b3_seal_taken", "anyFlag": ["b3_promise_old", "b3_promise_hesk"] } },
+        { "narrate": "Maren has been at Highpass all spring. She is the free wards' seal, and three days a week she sits at a table in the gatehouse that nobody comes to now, with her list of yeses, which has not grown since the stair was shut. She comes up onto the wall with the list still in her hand, and folds it, and puts it away.", "when": { "party": "maren", "flag": "b3_seal_taken" } },
         { "narrate": "Maren came up with you from Briarwatch for the session, because the council asked for a healers' report and she wrote it. She comes up onto the wall with her shawl over her head against the wind.", "when": { "party": "maren" } }
       ] },
       { "oneOf": [
         { "narrate": "Nessa came over the pass from Cinder Fold two days ago, with the forge-signal key on its cord round her neck and Biscuit at her heel. She went back in the spring to take the key from Wren, as she said she would, and she has not stopped touching it since, as if to check it is still there.", "when": { "party": "nessa", "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_waits"] } },
-        { "narrate": "Nessa has the forge-signal key on a cord round her neck, and Biscuit at her heel. She goes back to Cinder Fold to keep the signal when the session is over; she has told Sorrel so twice, and Sorrel has told her twice that he heard.", "when": { "party": "nessa", "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_cast"] } },
+        { "narrate": "Nessa has the forge-signal key on a cord round her neck, and Biscuit at her heel. She goes back to Cinder Fold to keep the signal when the session is over; she has told Sorrel so twice, and Sorrel has told her twice that she heard.", "when": { "party": "nessa", "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_cast"] } },
         { "narrate": "Nessa is already halfway up the ladder to the top of the wall-tower, with Biscuit barking at the foot of it because he cannot follow.", "when": { "party": "nessa" } }
       ] },
       { "say": "nessa", "text": "It's a girl. On her own. Down that road. How is she not dead? Somebody open the—" },
@@ -74,20 +76,20 @@
           { "say": "Rue", "text": "I gave at the Hall's north door before I came down, as we do before a long road, so I do not remember why I set out. It is written here." },
           { "say": "Rue", "text": "It says I am to ask for the bell-ringers. It says: ask them who sends the white. It says: they will not know, and that is not a reason to stop asking. Are you the bell-ringers?" },
           { "narrate": "You tell her you are not, exactly. She writes that down in the margin with a stub of lead, quickly, in a hand like nothing you have seen: small and square, the letters joined at the shoulder." },
-          { "say": "Rue", "text": "I am sorry. I write everything. If I do not write it, I will not have it tomorrow. That is not a sad thing where I am from. It is only what we are." },
+          { "say": "Rue", "text": "I am sorry. I write everything. If I do not write it, I will not have it by the autumn. That is not a sad thing where I am from. It is only what we are." },
           { "say": "maren", "text": "What did you give? At the door. If you don't mind my asking." },
           { "say": "Rue", "text": "I do not know. That is how giving is. It is written that I gave, and the day. Not what.", "when": { "party": "maren" } },
           { "narrate": "Maren listens to her the way she listens to everyone, and then looks at you and shakes her head, very slightly. Not a lie. Not anything. Rue believes every word of it, and Maren cannot hear past that.", "when": { "party": "maren" } },
           { "say": "nessa", "text": "Forty-one days. Over the top. On your own." },
-          { "say": "Rue", "text": "It says so. I would not have believed it either. I have blisters that agree with it.", "when": { "party": "nessa" } }
+          { "say": "Rue", "text": "It says so. My feet say so too.", "when": { "party": "nessa" } }
         ]
       },
       {
         "id": "sorrel",
-        "label": "Ask Captain Sorrel what he means to do with her",
+        "label": "Ask Captain Sorrel what she means to do with her",
         "lines": [
           { "say": "Sorrel", "text": "I mean to have her on the far side of that gate by dark. I've nothing against her. I've something against what's coming down the road behind her." },
-          { "narrate": "He points with his chin. The white has come down off the Hall's saddle. It lies in the road a mile above the last watch-fire, filling it." },
+          { "narrate": "She points with her chin. The white has come down off the Hall's saddle. It lies in the road a mile above the last watch-fire, filling it." },
           { "say": "Sorrel", "text": "The white comes out of the old places. Everybody knows that. Nobody has ever seen anybody come out of them. And today a girl walks out of the old places, and it comes down after her. I did the sum. I don't like the answer." },
           { "say": "Sorrel", "text": "My lower watch is under this wall, by the road. Forty men and their families. If that comes over the upper gate, it goes through the lower watch first. I'll not put them under it for a stranger with a book. I'm sorry. I am." },
           { "say": "orin", "text": "And if she's not what brought it?" },
@@ -99,18 +101,21 @@
         "label": "Ask Sable what he makes of the girl's book",
         "lines": [
           { "oneOf": [
-            { "narrate": "Sable is in Highpass's bell now, in the gatehouse tower, cast there at his own asking in the first snow. You copy Rue's first page onto the back of a council paper and take it up the tower stair and read it aloud under the bell, feeling foolish, and the bell answers before you have finished.", "when": { "flag": "b3_sable_cast" } },
-            { "narrate": "Sable is in his cell under the gatehouse, with his books stacked to the ceiling. Sorrel lets you take him Rue's first page, copied onto the back of a council paper." }
+            { "narrate": "Sable is in Highpass's bell now, the bell in the gatehouse yard, cast there at his own asking in the first snow. Rue copies her first page out for you through the bars of the upper gate, letter for letter, and you take it into the gatehouse yard and read it aloud under the bell, feeling foolish, and the bell answers before you have finished.", "when": { "flag": "b3_sable_cast" } },
+            { "narrate": "Sable is in his cell under the gatehouse, with his books stacked to the ceiling. Rue copies her first page out for you herself, through the bars of the upper gate, in her own square hand, and Sorrel lets you take it down to him." }
           ] },
           { "say": "Sable", "text": "Again. The third line. Slowly. Say every letter.", "when": { "flag": "b3_sable_cast" } },
-          { "say": "Sable", "text": "That is the founders' hand. Not a copy of it: the hand itself. Square letters, joined at the shoulder, the way nobody in the free wards has written for eight hundred years. It is the hand on the last page of the founders' ledger at Cinder Fold, where the tenth mould is drawn. I have only ever seen it in tracings." },
+          { "oneOf": [
+            { "say": "Sable", "text": "Those are the founders' spellings. Every one. Nobody in the free wards has spelled like that for eight hundred years. It is how the last page of the founders' ledger at Cinder Fold is spelled, where the tenth mould is drawn. I have only ever seen it in tracings.", "when": { "flag": "b3_sable_cast" } },
+            { "say": "Sable", "text": "That is the founders' hand. She has not copied it from anything: it is the hand she writes. Square letters, joined at the shoulder, the way nobody in the free wards has written for eight hundred years. It is the hand on the last page of the founders' ledger at Cinder Fold, where the tenth mould is drawn. I have only ever seen it in tracings." }
+          ] },
           { "say": "Sable", "text": "Somebody up there was taught to write by people who learned from the founders, and has gone on writing it, every day, for nine hundred years, without one letter drifting. Our own hand has changed four times since the casting. Theirs has not changed once." },
           { "say": "Sable", "text": "People who write that carefully are people who cannot afford to misread themselves. I should like very much to know why. I expect you will find out, and I expect I will not enjoy it." }
         ]
       },
       {
         "id": "hesk",
-        "label": "Speak to Idris Hesk in his cell, the night before his appeal",
+        "label": "Speak to Idris Hesk in his cell, the day before his appeal",
         "requires": { "flagsAny": ["b3_promise_old"] },
         "lines": [
           { "narrate": "Hesk is in a cell under the gatehouse, with a table, a lamp, and the speech for his appeal written out in a fair hand. He has heard about the girl. Everyone under the gatehouse has; the guards talk." },
@@ -127,14 +132,14 @@
       "alt": ["investigation", "insight"],
       "success": [
         { "narrate": "Rue lets {you|@} read it through the bars, page by page, holding it herself. She will not let go of it. {You go|@ goes} slowly, because the hand is the old one and every word is spelled the way the founders spelled it." },
-        { "narrate": "Most of it is her. Her name, her town, her mother's name, which is Heath. The forty-one days, each with a line: where she slept, what she ate, which toe was worst. Then a page headed THINGS THAT ARE TRUE, and a list under it that starts with 'water boils' and ends with 'the white is heavier every year, and nobody knows why'." },
+        { "narrate": "Most of it is her. Her name, her town, her mother's name, which is Heath. The forty-one days, each with a line: where she slept, what she ate, which toe was worst. Then a page headed THINGS THAT ARE TRUE, and a list under it that starts with 'water boils' and ends with 'the white is heavier than it was in the Tally's first pages, and nobody knows why'." },
         { "narrate": "But the first page is not hers. It is a copy, made carefully, of a line from somewhere else, with a reference under it like a clerk's: the Long Tally, the Long Hall at Orme, the year of the parting." },
         { "say": "Rue", "text": "That is from the Tally. Everyone has that line. It is the first thing a child copies out." },
         { "narrate": "'The year the bells went south, the white doubled.'" },
         { "narrate": "{You read|@ reads} it twice. Nine hundred years ago the founders came south over these peaks with the bell-craft and cast the nine at Cinder Fold; every child in the free wards learns that with their letters. Nobody in the free wards was ever taught what was on the other side of the peaks when they left." }
       ],
       "failure": [
-        { "narrate": "Rue lets {you|@} look at the book through the bars, but the hand is the old one, square and joined, and {you make|@ makes} out almost nothing of it except her name and a great many numbers. The first page is a single line, copied out carefully, which she reads aloud when {you ask|@ asks}: 'The year the bells went south, the white doubled.' She does not know what it means. She says nobody does. It is only the first thing a child copies out." }
+        { "narrate": "Rue lets {you|@} look at the book through the bars, but the hand is the old one, square and joined, and {you make|@ makes} out almost nothing of it except Rue's name and a great many numbers. The first page is a single line, copied out carefully, which she reads aloud when {you ask|@ asks}: 'The year the bells went south, the white doubled.' She does not know what it means. She says nobody does. It is only the first thing a child copies out." }
       ]
     },
     "route": {
@@ -153,10 +158,10 @@
       "text": "You go straight down the switchback stair to the lower watch as the white comes over the wall."
     },
     "approach": [
-      { "narrate": "By noon the white is at the last watch-fire on the north road, and the fire goes out under it without a sound." },
-      { "narrate": "Sorrel opens the upper gate himself, in the end. He does not ask the council. He stands in the gateway with his sword drawn, and Rue walks past him under the arch with her book against her chest, and he shuts the gate behind her." },
+      { "narrate": "That morning the white is at the last watch-fire on the north road, and the fire goes out under it without a sound." },
+      { "narrate": "Sorrel opens the upper gate herself, in the end. She does not ask the council. She stands in the gateway with her sword drawn, and Rue walks past her under the arch with her book against her chest, and Sorrel shuts the gate behind her." },
       { "say": "Sorrel", "text": "I'm not leaving a child on that road. Write that down, if you're writing." },
-      { "narrate": "She does. He puts her in the guardroom of the lower watch, under the wall, with a sergeant at the door and a brazier, until the council decides what she is. Then he goes back up onto the wall to watch the road." },
+      { "narrate": "Rue does. Sorrel puts her in the guardroom of the lower watch, under the wall, with a sergeant at the door and a brazier, until the council decides what she is. Then the captain goes back up onto the wall to watch the road." },
       { "narrate": "At dusk the white comes over the upper gate. It does not hurry. It comes over the top of the wall the way water comes over a weir, and down the inside of it into the lower watch, where forty men of the watch live with their families in a street of stone houses under the wall." }
     ],
     "crisis": [
@@ -168,7 +173,7 @@
       { "say": "Rue", "text": "Please. Let me write it down. If you put me out there I will not know why. Let me write down why." },
       { "oneOf": [
         { "say": "orin", "text": "Let go of her. Now." },
-        { "narrate": "Nobody on the wall moves to stop them." }
+        { "narrate": "Nobody in the street moves to stop them. They are all looking at the third house." }
       ] }
     ],
     "peaceful": {
@@ -176,7 +181,7 @@
       "skill": "persuasion",
       "alt": ["intimidation"],
       "success": [
-        { "narrate": "{You know|@ knows} what is on her first page, and {you say|@ says} it to the sergeant in the gateway, loud enough for the street: the white did not come after her. It has lain up there since the founders came south. It was on that road nine hundred years before she was born.", "when": { "flag": "prepared:b4-walker" } },
+        { "narrate": "{You know|@ knows} what is on Rue's first page, and {you say|@ says} it to the sergeant in the gateway, loud enough for the street: the white did not come after her. It has lain up there since the founders came south. It was on that road nine hundred years before she was born.", "when": { "flag": "prepared:b4-walker" } },
         { "narrate": "{You step|@ steps} into the gateway between Rue and the north road, and {you do|@ does} not move. The sergeant says to get out of the way. {You tell|@ tells} him no, and why: if the white followed her, it will follow her wherever they put her, and if it did not, they are about to put a child out into it for nothing. Either way, she stays." },
         { "narrate": "Then {you do|@ does} the hard thing, which is to stay there. The white comes down the street and through the gateway, round {them} and round Rue and round the sergeant, so cold it burns, and the shapes in it walk past, close enough to touch, with their nearly-faces turned away." },
         { "narrate": "The sergeant stays too. He does not let go of Rue's arm, but he stops pulling. Behind him the watch stand in the street with their lamps out, and nobody moves." },
@@ -224,8 +229,8 @@
         "description": "This decision is permanent. Rue lodges with Brannagh of Fenmere, and the council hears her before anyone else decides what she is.",
         "text": [
           { "narrate": "You tell Rue the council should hear her before anybody decides what she is, and that a delegate's roof is a roof nobody can say she was hidden under." },
-          { "say": "Rue", "text": "The council. Brannagh. A goat. Is the goat true?" },
-          { "say": "Brannagh", "text": "The goat is true. Come on. Bring your book. You can write me in it, and spell me right." },
+          { "say": "Rue", "text": "The council. Brannagh. I have written 'worse lodgers'. Was I meant to?" },
+          { "say": "Brannagh", "text": "You were. Come on. Bring your book. You can write me in it, and spell me right." },
           { "narrate": "The council hears her on the last day of the session, in the hall, standing, reading from her book. It does not know what to do with her. In the end it writes her into the minutes, and Rue watches the clerk do it, and asks him afterwards to read it back to her, twice." }
         ],
         "rep": { "wardens": 1 },
@@ -240,7 +245,7 @@
           { "say": "Rue", "text": "Then I will write you first. Before the council and before the captain. If I lose everything else, I will still have that." },
           { "say": "nessa", "text": "Good. Somebody else who goes first." },
           { "say": "maren", "text": "She'll need boots. Proper ones. And somebody to make her eat." },
-          { "narrate": "Sorrel watches her go up the stair after you with her book under her arm. He does not say anything. He has the bar taken off the guardroom door, and the brazier carried back up to the wall." }
+          { "narrate": "Sorrel watches her go up the stair after you with her book under her arm. She does not say anything. She has the bar taken off the guardroom door, and the brazier carried back up to the wall." }
         ],
         "rep": { "wilds": 1 },
         "flag": "b4_rue_party"
@@ -250,9 +255,9 @@
         "label": "Leave her with Sorrel's watch, at the fire on the north road",
         "description": "This decision is permanent. Rue stays with the watch at Highpass, and Sorrel learns the north road from her.",
         "text": [
-          { "narrate": "You tell Sorrel to keep her. Not in the guardroom: on the wall, with him, at the fire at the head of the north road, where she can see the road she came down and tell him what is on it." },
+          { "narrate": "You tell Sorrel to keep her. Not in the guardroom: on the wall, with the captain, at the fire at the head of the north road, where Rue can see the road she came down and tell Sorrel what is on it." },
           { "say": "Sorrel", "text": "That's not what I asked for. It's what I said, though. I'll have to live with having said it." },
-          { "narrate": "That evening Sorrel sits at the fire at the head of the north road with Rue beside him, and she reads him her forty-one days one at a time, and he asks about the snow on each of them. By the third night the sergeant from the gateway is sitting on her other side. He has brought her a coat with no writing on it. She thanks him, and starts writing on it at once." }
+          { "narrate": "That evening Sorrel sits at the fire at the head of the north road with Rue beside her, and Rue reads the captain her forty-one days one at a time, and Sorrel asks about the snow on each of them. By the third night the sergeant from the gateway is sitting on Rue's other side. He has brought her a coat with no writing on it. She thanks him, and starts writing on it at once." }
         ],
         "rep": { "wardens": 1 },
         "flag": "b4_rue_watch"
@@ -275,7 +280,7 @@
     "faction": "trade",
     "brief": "Late spring. Sister Ilse's archive at Ashford keeps the founders' own account of the year of the casting, lent by Cinder Fold generations ago. Rue's book holds the Wold's record of the same year. Ailith Strake of Cinder Fold has come to take the founders' account home.",
     "told": {
-      "ballad": "In Ashford the founders' page was read in the square at midnight, and a rope-man sat down on the horse-trough to hear it.",
+      "ballad": "In Ashford the founders' page came out of a cellar, and a rope-man sat down on the horse-trough to hear it.",
       "tally": "In the south they have the other half of our first line. Theirs says they rang it back, and did not ask where it went."
     },
     "opening": [
@@ -291,7 +296,7 @@
       { "oneOf": [
         { "narrate": "Rue came down the Highpass road with you, with her book under her arm. She has read it aloud twice since the gate, both times before something hard: once at the top of the switchbacks, and once before supper at an inn where everybody stared.", "when": { "flag": "b4_rue_party" } },
         { "narrate": "Rue is at Highpass, under Brannagh's roof. She copied her book's first pages out for you herself the night before you left, and Brannagh sent them down after you in a satchel with the council's seal on it and a note: 'She wants them back. So do I.'", "when": { "flag": "b4_rue_council" } },
-        { "narrate": "Rue is at Highpass, at the fire on the north road with Sorrel's watch. She copied her book's first pages out for you herself the night before you left, and Sorrel sent them down after you with a rider, wrapped in oilcloth, with a note in his own hand: 'She says don't fold them.'", "when": { "flag": "b4_rue_watch" } },
+        { "narrate": "Rue is at Highpass, at the fire on the north road with Sorrel's watch. She copied her book's first pages out for you herself the night before you left, and Sorrel sent them down after you with a rider, wrapped in oilcloth, with a note in her own hand: 'She says don't fold them.'", "when": { "flag": "b4_rue_watch" } },
         { "narrate": "You have Rue's first pages, copied out in her own square hand." }
       ] },
       { "narrate": "And Ailith Strake has come from Cinder Fold." },
@@ -304,10 +309,10 @@
         "id": "ilse",
         "label": "Go down to the archive with Sister Ilse",
         "lines": [
-          { "narrate": "Sister Ilse has the founders' account out on the long table in the cellar, on a cloth, with a lamp at each end and a sheet of glass laid over the pages so that nobody breathes on them. She has not slept. You can tell by the number of cups." },
+          { "narrate": "Sister Ilse has the founders' account out on the long table in the cellar, on a cloth, with a lamp at each end and a sheet of glass laid over the pages so that nobody breathes on them. She has not slept." },
           { "say": "Sister Ilse", "text": "Two hundred years it's been in this cellar. Lent for safe keeping after the forge fire, and the letter that lent it says 'until it is asked for'. Nobody asked. Nobody read it, either. It's in the founders' hand, and there's nobody in Ashford can read that fast enough to want to." },
           { "say": "Sister Ilse", "text": "I can read it slowly. I've been reading it slowly for nine nights. It's a day-book: weather, stores, who was sick, how many bells. The founders wrote down everything. Like your girl." },
-          { "say": "Sister Ilse", "text": "Sable's books are on the shelf behind you, if you were wondering. He'd have given his other hand for a night with this one.", "when": { "anyFlag": ["job:library-sent", "job:library-noted", "job:library-unread"] } },
+          { "say": "Sister Ilse", "text": "Sable's books are on the shelf behind you, if you were wondering. He'd have given a year for a night with this one.", "when": { "anyFlag": ["job:library-sent", "job:library-noted", "job:library-unread"] } },
           { "say": "Sister Ilse", "text": "Cinder Fold has come for it. That's their right. It's their book. I'd only like to finish reading it first. I don't think that's much to ask. I think Ailith Strake thinks it is." }
         ]
       },
@@ -336,7 +341,10 @@
         "lines": [
           { "narrate": "Ailith's rope-men have taken the long table at the Crossing inn and covered it: the ham, bread, a cheese the size of a cartwheel, a jug. They are big quiet men and women with rope-burn across every palm, and they make room for you without being asked." },
           { "say": "Ailith Strake", "text": "Thirty generations. My family has pulled those ropes since the founders hung the bells. My grandmother pulled the third bell's rope for fifty-one years and died with her hands still shaped to it. We had to bury her like that." },
-          { "say": "Ailith Strake", "text": "Everyone in the free wards is alive because of nine people under that lid and thirty families on the ropes over them. That's not a boast. It's arithmetic. And now a child walks down out of the old places with a book, and everybody wants to read my family's account, and I'd like to know who'll be reading it, and to whom, and why." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "The nine have rested. You'll know; you were there. My families still pull the ropes every dusk over bronze with nobody in it, because nobody's told us to stop, and because the founders said to. That's thirty generations of it. And now a child walks down out of the old places with a book, and everybody wants to read my family's account, and I'd like to know who'll be reading it, and to whom, and why.", "when": { "flag": "b3_promise_old", "anyFlag": ["wards_seat"] } },
+            { "say": "Ailith Strake", "text": "Everyone in the free wards is alive because of nine people under that lid and thirty families on the ropes over them. That's not a boast. It's arithmetic. And now a child walks down out of the old places with a book, and everybody wants to read my family's account, and I'd like to know who'll be reading it, and to whom, and why." }
+          ] },
           { "say": "Ailith Strake", "text": "I'm not hiding anything. I don't know what's in it. Nobody in Cinder Fold has read it in two hundred years. But if there's something in my family's book that my family ought to hear, they ought to hear it from me first. Not from a broadsheet nailed to a post in Merrowgate." },
           { "narrate": "One of the younger rope-men says something under his breath about the north, and Ailith turns and looks at him, and he stops." },
           { "say": "orin", "text": "That's fair." },
@@ -409,9 +417,11 @@
       "success": [
         { "narrate": "{You have|@ has} read the two accounts side by side, and {you know|@ knows} exactly which page it is. Ilse has it out from under the glass before {you are|@ is} at the foot of the cellar steps.", "when": { "flag": "prepared:b4-records" } },
         { "narrate": "{You carry|@ carries} the founders' account up out of the cellar and past the rope-men, who do not stop {you|@}, because nobody has ever walked towards them holding the thing they came for, and out into the middle of the square, where the lights are coming on." },
-        { "narrate": "{You open|@ opens} it at the night of the casting and read it aloud, slowly, so that everybody at the windows can hear: the weather, which was clear; the stores, which were low; the nine names; and the line on its own at the bottom." },
+        { "narrate": "Rue is out of the cellar door with her own pages before {you|@}, and starts reading the Wold's winters to the square before anyone has decided she may.", "when": { "flag": "b4_rue_party" } },
+        { "narrate": "{You open|@ opens} it at the night of the casting and {read|reads} it aloud, slowly, so that everybody at the windows can hear: the weather, which was clear; the stores, which were low; the nine names; and the line on its own at the bottom." },
         { "narrate": "\"We ring it back. Where it goes is not ours to know.\"" },
-        { "narrate": "Then the Wold's winters, from Rue's pages, year by year: 'Bad.' 'Bad.' 'Worse.' 'The lane under.' Read out in Ashford's square in the middle of the night, to a reeve in her nightgown, and an archivist with lamp-black up her sleeves, and six rope-men from Cinder Fold who came to keep it from being read." },
+        { "narrate": "Then the Wold's winters, from Rue's pages, year by year: 'Bad.' 'Bad.' 'Worse.' 'The lane under.' Read out in Ashford's square in the middle of the night, to a reeve in her nightgown, and an archivist with lamp-black up her sleeves, and six rope-men from Cinder Fold who came to keep it from being read.", "when": { "notFlag": "b4_rue_party" } },
+        { "narrate": "Then Rue reads the Wold's winters again from the top, year by year, in her own voice: 'Bad.' 'Bad.' 'Worse.' 'The lane under.' Read out in Ashford's square in the middle of the night, to a reeve in her nightgown, and an archivist with lamp-black up her sleeves, and six rope-men from Cinder Fold who came to keep it from being read.", "when": { "flag": "b4_rue_party" } },
         { "narrate": "Nobody stops {you|@}. When it is finished the foreman sits down on the edge of the horse-trough with the crowbar across his knees." },
         { "say": "The rope-men's foreman", "text": "We ring it back. My grandmother used to say that, ringing. Every night. I never once thought to ask her where." },
         { "narrate": "The others come and stand round him. Nobody tries to take the book. It has been read now, and there is no taking that back." }
@@ -454,9 +464,10 @@
       { "oneOf": [
         { "narrate": "Rue has written all of it down, sitting on the toll-house step, in her book, beside the line from the Long Tally.", "when": { "flag": "b4_rue_party" } },
         { "narrate": "The morning coach from Highpass comes in over the bridge while Ailith is still sitting there, and Rue gets down from it with her book under her arm. She has come down after her pages. She asked Brannagh, and Brannagh could not think of a reason to say no, and sent a council clerk with her.", "when": { "flag": "b4_rue_council" } },
-        { "narrate": "A rider from Highpass comes in over the bridge while Ailith is still sitting there, with Rue up behind him and her book under her arm. She has come down after her pages. Sorrel sent her with the rider, who looks as though he has been read to for two days.", "when": { "flag": "b4_rue_watch" } }
+        { "narrate": "A rider from Highpass comes in over the bridge while Ailith is still sitting there, with Rue up behind him and her book under her arm. She has come down after her pages. Sorrel sent her with the rider.", "when": { "flag": "b4_rue_watch" } }
       ] },
       { "say": "Rue", "text": "That is our line. The other half of it. We have been copying our half for nine hundred years, and we did not know there was another." },
+      { "say": "maren", "text": "Whoever has it next will want to change a word. Somebody always does. Give it to whoever you'd trust not to.", "when": { "party": "maren" } },
       { "narrate": "Three people want the page now, and they are all in the square: Ilse, who has kept it; Ailith, whose family wrote it; and the free wards, who have not heard it yet. Ilse asks you what you would do with it. So does Ailith. Neither of them looks away while you think." }
     ],
     "decisions": [
@@ -477,7 +488,7 @@
       {
         "id": "council",
         "label": "Give it to the council first, and let the council decide how it is told",
-        "description": "This decision is permanent. The council has the page before anyone else. It will be slow, and the council will choose the words.",
+        "description": "This decision is permanent. The council has the page before any other town. It will be slow, and the council will choose the words.",
         "text": [
           { "narrate": "You tell them the council should have it first, both accounts side by side, so that the free wards hear it from the free wards, and not from a printer, or a cellar, or one family." },
           { "say": "Sister Ilse", "text": "Then it goes up the road under seal. I'll copy it first. I'm not sending the only one up a mountain." },
@@ -490,12 +501,12 @@
       {
         "id": "ailith",
         "label": "Give it back to Ailith, to read to Cinder Fold herself",
-        "description": "This decision is permanent. Ailith takes the founders' account home and reads it to Cinder Fold herself, before anyone else hears it.",
+        "description": "This decision is permanent. Ailith takes the founders' account home and reads it to Cinder Fold herself, before any other town hears it.",
         "text": [
           { "narrate": "You give it back to Ailith. It is her family's book, lent and never asked for. Somebody is asking now." },
           { "say": "Ailith Strake", "text": "Thank you. I'll read it to them myself, in the casting hall, under the nine. Not just the line. All of it, the weather and the stores and the names, so they know it was a real night with real people in it. I'll not change a word. You have my hand on that." },
-          { "say": "Sister Ilse", "text": "I'll copy it first. You can wait an hour, Ailith. Two hundred years, you can wait an hour." },
-          { "say": "Ailith Strake", "text": "I can wait an hour." },
+          { "say": "Sister Ilse", "text": "I'll copy it first. You can wait till morning, Ailith. Two hundred years, you can wait a night." },
+          { "say": "Ailith Strake", "text": "I can wait a night." },
           { "narrate": "Ailith goes home to Cinder Fold with the account in her lap on the cart and her rope-men walking beside it. A month later a letter comes down from Cinder Fold in her big round hand. She read it to them, every word. They wept, she writes, and then they went up and rang, because it was dusk." }
         ],
         "rep": { "wilds": 1 },
@@ -519,7 +530,7 @@
     "faction": "wilds",
     "brief": "Early summer. Linus Pardew, a travelling ballad-seller, is singing a song about you in Briarwatch's square, and the square is singing it back. Every verse of it is wrong. Then Pim asks where the white goes when Briarwatch rings it away.",
     "told": {
-      "ballad": "In Briarwatch they rang their pots and pans in the night and the white went back over the stream, and a boy asked where it went.",
+      "ballad": "In Briarwatch the white came up into the lanes one summer night and went back over the stream, and a boy asked where it went.",
       "tally": "In the south there is a boy who rings a bell, and he asked where the white goes. It is written that nobody there could tell him, and that he asked anyway."
     },
     "opening": [
@@ -560,7 +571,9 @@
           { "say": "orin", "text": "Six." },
           { "oneOf": [
             { "say": "Linus Pardew", "text": "And I've had the founders' page off a post at the Crossing like everybody else. 'Where it goes is not ours to know.' I've been trying to fit it into a verse for a week. It won't go. It's the wrong shape for a song. Too true.", "when": { "flag": "b4_truth_published" } },
+            { "say": "Linus Pardew", "text": "Ashford heard a page read in its square at midnight, they say, and now the council's sitting on it. Ashford won't sing me a word of it. I've made up three verses.", "when": { "flag": "method:b4-records", "is": "peace", "anyFlag": ["b4_truth_council"] } },
             { "say": "Linus Pardew", "text": "There's talk on the road of a page out of Ashford that the council's sitting on. Nobody knows what's on it. I've made up three verses about it already. I'd dearly love to know which one's right.", "when": { "flag": "b4_truth_council" } },
+            { "say": "Linus Pardew", "text": "Ashford heard a page read in its square at midnight, they say, and then Cinder Fold took the book home and read it again under its bells, and wept. Ashford won't sing me a word of it, and Cinder Fold won't sing at all. I've made up three verses.", "when": { "flag": "method:b4-records", "is": "peace", "anyFlag": ["b4_truth_ailith"] } },
             { "say": "Linus Pardew", "text": "There's talk on the road of a book out of Ashford that Cinder Fold took home and read aloud under its bells, and wept. Nobody outside Cinder Fold knows what's in it. I've made up three verses about it already.", "when": { "flag": "b4_truth_ailith" } }
           ] }
         ]
@@ -574,7 +587,7 @@
             { "narrate": "Dera has your gear on the bench before you have finished saying hello." }
           ] },
           { "say": "Dera", "text": "Sword of light. One night. And he has you killing the Gloam. Nobody kills the Gloam. You'd know; you've been down there." },
-          { "say": "Dera", "text": "I don't mind him. I mind them singing it. Because they believe it. Every one of them out there thinks it's done: rung away, never coming back. And Pim's been up that tower every night since he was nine, and he's heard them singing 'away, away', and he's started asking me where away is." },
+          { "say": "Dera", "text": "I don't mind him. I mind them singing it. Because they believe it. Every one of them out there thinks it's done: rung away, never coming back. And Pim's been up that tower every night since he was a boy, and he's heard them singing 'away, away', and he's started asking me where away is." },
           { "say": "Dera", "text": "I didn't know what to tell him. I've never not known what to tell Pim." }
         ]
       },
@@ -601,9 +614,15 @@
           ] },
           { "say": "Aster Vey", "text": "I used to think we rang it back into the old places, and that the old places were empty. Pim asked me where away was. I couldn't tell him that. I didn't want to.", "when": { "notFlag": "b3_bell_aster" } },
           { "oneOf": [
-            { "say": "Rue", "text": "Last winter. The winter your bell was empty. Thrum's lane stayed clear further than it ever has. It is in my book. I did not know why. I thought it was a kind winter.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b4_rue_party"] } },
-            { "narrate": "In Rue's pages, in the copy Sister Ilse made at Ashford, there is a line under last winter: 'Thrum's lane clear past the third door. Kindest winter in the Tally. Nobody knows why.' Last winter Briarwatch's bell was empty.", "when": { "flag": "b3_bell_aster" } }
-          ] }
+            { "say": "Rue", "text": "Last winter. The winter your bell was empty. Thrum's lane stayed clear further than it ever has. It is in my book. I did not know why. I thought it was a kind winter.", "when": { "flag": "b3_promise_old" } },
+            { "say": "Rue", "text": "Last winter. The winter your bell was empty. It was the worst winter in the Tally, everywhere but our lane. Thrum's lane stayed clear past the third door until midwinter. It is in my book. Nobody knew why.", "when": { "flag": "b3_promise_hesk" } },
+            { "say": "Rue", "text": "Last winter was worse than the one before. They all are; it is in my book, every year. But Thrum's lane stayed clear past the third door that winter, the winter your bell was empty, and nobody knew why." }
+          ], "when": { "flag": "b3_bell_aster", "anyFlag": ["b4_rue_party"] } },
+          { "oneOf": [
+            { "narrate": "In Rue's pages, in the copy Sister Ilse made at Ashford, there is a line under last winter: 'Thrum's lane clear past the third door. Kindest winter in the Tally. Nobody knows why.' Last winter Briarwatch's bell was empty.", "when": { "flag": "b3_promise_old" } },
+            { "narrate": "In Rue's pages, in the copy Sister Ilse made at Ashford, there is a line under last winter: 'Worst winter in the Tally. Every lane under but ours. Thrum's lane clear past the third door until midwinter. Nobody knows why.' Last winter Briarwatch's bell was empty.", "when": { "flag": "b3_promise_hesk" } },
+            { "narrate": "In Rue's pages, in the copy Sister Ilse made at Ashford, there is a line under last winter: 'Worse than the last. Thrum's lane clear past the third door, which it never is. Nobody knows why.' Last winter Briarwatch's bell was empty." }
+          ], "when": { "flag": "b3_bell_aster", "noneFlag": ["b4_rue_party"] } }
         ]
       },
       {
@@ -613,7 +632,7 @@
           { "say": "Aveline", "text": "I make of it that nobody's done a stroke of work for three days. I've a list." },
           { "say": "Aveline", "text": "And I make of it that Briarwatch is happy. I'd forgotten what that looks like. I'm not going to be the one to tell them the song's wrong. You can. You're in it." },
           { "oneOf": [
-            { "say": "Aveline", "text": "We've kept a night watch on the Briarwood edge since the bell went quiet: a fire at the stream every night, and somebody on it. Pim has the fire on his own this month, for the first time. He asked for it. He's very proud. I'm a little worried.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Aveline", "text": "We've kept a night watch on the Briarwood edge since Aster left the bell: a fire at the stream every night, and somebody on it. Pim has the fire on his own this month, for the first time. He asked for it. He's very proud. I'm a little worried.", "when": { "flag": "b3_bell_aster" } },
             { "say": "Aveline", "text": "Pim's asked me twice this week whether the bell has to ring every night. I told him yes. He said, 'Every night, for ever?' and I said yes, and he went away. I didn't like the way he went away." }
           ] }
         ]
@@ -625,7 +644,7 @@
       "skill": "performance",
       "alt": ["insight"],
       "success": [
-        { "narrate": "{You learn|@ learns} the song from Linus's broadsheet and sing it with the square that evening, all nine verses, and {you listen|@ listens} for what people sing loudest." },
+        { "narrate": "{You learn|@ learns} the song from Linus's broadsheet and {sing|sings} it with the square that evening, all nine verses, and {you listen|@ listens} for what people sing loudest." },
         { "narrate": "It is the last verse, every time. 'And the bell rang it away, away, and it never came back to stay.' The square comes down on 'away' like a hammer. By then they are not singing about you at all. They are singing about the white being gone." },
         { "narrate": "When it is over and everybody is going home, {you see|@ sees} Pim at the foot of the tower steps, with his coat on for the night, not singing. He asks, quite quietly, so that Tovin will not hear:" },
         { "say": "Pim", "text": "Away where?" },
@@ -646,7 +665,7 @@
         { "narrate": "{You are|@ is} running before the white comes up out of the wood, and ahead of it in the lanes." }
       ],
       "failure": [
-        { "narrate": "{You walk|@ walks} the lanes down to the Briarwood edge at dusk and lose the light among the hedges, and {you are|@ is} still down there, scratched and soaked to the knee from the ditch, when the white comes up out of the wood behind {them}." }
+        { "narrate": "{You walk|@ walks} the lanes down to the Briarwood edge at dusk and {lose|loses} the light among the hedges, and {you are|@ is} still down there, scratched and soaked to the knee from the ditch, when the white comes up out of the wood behind {them}." }
       ]
     },
     "direct": {
@@ -661,14 +680,14 @@
       { "narrate": "He has not told anybody. He has not run away. He is sitting where he would be sitting anyway, with his coat on, looking north." }
     ],
     "crisis": [
-      { "narrate": "The white comes up out of the Briarwood in the dark, the way it has not come in two years: through the hedges, over the stream, into the lanes. It is not much. It is enough. It comes up between the houses ankle-deep, then knee-deep, cold enough to stop the breath, and the lamps in the windows begin to go out." },
+      { "narrate": "The white comes up out of the Briarwood in the dark, further than it came even at midwinter: past the stream, into the lanes. It is not much. It is enough. It comes up between the houses ankle-deep, then knee-deep, cold enough to stop the breath, and the lamps in the windows begin to go out." },
       { "narrate": "People come out of their doors and stand in it, not understanding. Three hours ago they were singing that it would never come back." },
       { "oneOf": [
         { "narrate": "Down at the stream the watch-fire is cold. Pim is sitting beside it with his knees up and the white round him to the shoulders.", "when": { "flag": "b3_bell_aster" } },
         { "narrate": "Up in the tower the bell hangs still. Pim is sitting on the top step with the rope in his lap, and the white coming up the tower stair below him." }
       ] },
       { "say": "Pim", "text": "So somebody up there gets a night. That's all. One night. Away's somewhere. Somebody lives there. I just wanted them to have one." },
-      { "narrate": "He is very sure, the way he was sure about the night bell when he was nine, and about everything since." },
+      { "narrate": "He is very sure, the way he was sure about the night bell years ago, and about everything since." },
       { "say": "Tovin", "text": "Pim. Pim, the lanes—" },
       { "say": "Pim", "text": "I know. I'll ring in a minute. I just wanted it to be a whole night." },
       { "say": "nessa", "text": "He's not wrong. He's not wrong, and the lanes are— oh, no." }
@@ -679,7 +698,7 @@
       "alt": ["religion"],
       "success": [
         { "narrate": "{You have|@ has} sung the song with them. {You know|@ knows} what Briarwatch sings loudest when it is frightened.", "when": { "flag": "prepared:b4-ballad" } },
-        { "narrate": "{You do|@ does} not go up to the tower or down to the fire. {You go|@ goes} into the first house in the lane and come out with a pan and a spoon, and beat it." },
+        { "narrate": "{You do|@ does} not go up to the tower or down to the fire. {You go|@ goes} into the first house in the lane and {come|comes} out with a pan and a spoon, and {beat|beats} it." },
         { "narrate": "Then the next house, and the next. 'Bring something that rings.' Pots. Pans. A cow-bell. Dera's hammer on a horseshoe. A child with two lids. Linus Pardew on the well with his fiddle, sawing at the last verse as loud as it will go. And the whole village, in its nightclothes, in the white to the knee, starts banging and singing and walking down the lanes towards the wood, together and out of time, the way Briarwatch rang before it ever had a bell." },
         { "narrate": "The white does not like it. It never has. It goes back down the lanes in front of the noise, slowly, house by house, the way the tide goes out, and over the stream and into the wood." },
         { "narrate": "Nobody has rung the bell. Nobody has lit the fire. Briarwatch has rung itself." },
@@ -711,17 +730,22 @@
         { "narrate": "Morning. The lanes are wet, and grey at the Briarwood end, where the fight was. Four houses down there have their doors open and nobody in them; their people are in the hall in blankets, being taught the words of the song again." }
       ] },
       { "narrate": "Pim is in the forge. Dera gave him something to eat, and he has not eaten it." },
-      { "say": "Pim", "text": "It went north too. Didn't it. The pans. We rang it back and it went north, same as the bell." },
+      { "oneOf": [
+        { "say": "Pim", "text": "It went north too. Didn't it. The pans. We rang it back and it went north, same as the fire.", "when": { "flag": "method:b4-ballad", "is": "peace", "anyFlag": ["b3_bell_aster"] } },
+        { "say": "Pim", "text": "It went north too. Didn't it. The pans. We rang it back and it went north, same as the bell.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+        { "say": "Pim", "text": "It went north too. Didn't it. When it went back over the stream. It went north, same as the fire.", "when": { "flag": "b3_bell_aster" } },
+        { "say": "Pim", "text": "It went north too. Didn't it. When it went back over the stream. It went north, same as the bell." }
+      ] },
       { "narrate": "Nobody tells him no." },
       { "oneOf": [
-        { "say": "Rue", "text": "Yes. It comes down on Thrum. It is in my book, every winter.", "when": { "flag": "b4_rue_party" } },
+        { "say": "Rue", "text": "Yes. It comes down on Thrum. It is in my book, most winters.", "when": { "flag": "b4_rue_party" } },
         { "narrate": "Rue has gone back up to Highpass, but you have her pages, in Ilse's copy, and you tell Pim what is on them. He asks to see them. He reads the winters one by one, with his finger under each." }
       ] },
       { "narrate": "He has never met anybody from away. He looks north for a long time." },
       { "narrate": "Aveline calls Briarwatch to her table in the hall at noon: the long table under the window, where she does the lists. She has a clean sheet of paper in front of her, and nothing written on it." },
       { "oneOf": [
-        { "say": "Aveline", "text": "We keep the watch every night. We always have. It's the first rule this village made, the year the bell went quiet. Now a boy who's kept it since he was a child tells me it's somebody else's winter, and I've no list for that.", "when": { "flag": "b3_bell_aster" } },
-        { "say": "Aveline", "text": "We ring every night. We always have. It's the first rule this village ever made, the year the bell came back. Now a boy who's rung it since he was nine tells me it's somebody else's winter, and I've no list for that." }
+        { "say": "Aveline", "text": "We've kept the watch every night since Aster left the bell. It's the first rule this village made without her. Now a boy who's had the fire one month tells me it's somebody else's winter, and I've no list for that.", "when": { "flag": "b3_bell_aster" } },
+        { "say": "Aveline", "text": "We ring every night. We always have. It's the first rule this village ever made, the year the bell came back. Now Pim, who's rung it since he was a boy, tells me it's somebody else's winter, and I've no list for that." }
       ] },
       { "say": "Aveline", "text": "Briarwatch decides. That's how we do things. But Briarwatch would like to hear what you think first, since you've been under the world and back, and the song says you rang it away." }
     ],
@@ -753,6 +777,7 @@
           { "say": "nessa", "text": "Somebody had to go first. It was always going to be Briarwatch." },
           { "say": "orin", "text": "And the edge houses? They'll be the first it reaches, every month, for the rest of their lives. Has anyone asked them?" },
           { "say": "Aveline", "text": "No. They'll be asked tonight, Stoneward. And if they say no, I'll be back at this table with you.", "when": { "party": "orin" } },
+          { "say": "Aster Vey", "text": "Ask me, then. Yes. One night. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
           { "say": "Aveline", "text": "Write it down, then. Briarwatch, one quiet night a month, by its own vote, the first in the free wards. I'd like it to say 'by its own vote'." },
           { "oneOf": [
             { "narrate": "At the next dark of the moon Pim lets the fire at the stream go out at the first hour, with Aveline's leave, and sits beside it till dawn anyway.", "when": { "flag": "b3_bell_aster" } },
@@ -768,9 +793,13 @@
         "label": "Let Pim decide: it is his watch",
         "description": "This decision is permanent. The watch is Pim's, and so is the choice. Briarwatch will do as he decides.",
         "text": [
-          { "narrate": "You tell Aveline it is Pim's watch. He has kept it since he was a child, every hour, through every winter, and he is the one who asked the question. Let him answer it." },
+          { "oneOf": [
+            { "narrate": "You tell Aveline it is Pim's watch. He has stood it since last winter, and had the fire on his own this month. He is the one who asked. Let him answer it.", "when": { "flag": "b3_bell_aster" } },
+            { "narrate": "You tell Aveline it is Pim's watch. He has rung the bell since he was a boy, every hour, through every winter, and he is the one who asked the question. Let him answer it." }
+          ] },
           { "say": "Aveline", "text": "He's a boy." },
           { "say": "Tovin", "text": "He's not. Look at him. He's been stooping under my beam since the thaw." },
+          { "say": "Aster Vey", "text": "Ask me, then. Yes. One night. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
           { "narrate": "Pim takes a long time. Everybody waits. Briarwatch is used to waiting for Pim." },
           { "say": "Pim", "text": "Summer. Quiet nights in summer only, when the edge houses have their windows open and their fires out anyway, and nobody's cold. One a month. Not in winter. In winter it's ours." },
           { "say": "Pim", "text": "And I'll be on it. Every quiet night. So it's not nobody." },
