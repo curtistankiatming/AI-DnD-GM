@@ -2211,6 +2211,24 @@ Book Four frames it the way Book Three framed the 3rd job:
     as Systems item 4 gives them; each is logged as a combat event. Say
     Their Names takes Maren's action, so she does not attack that turn.
     Tested in `tests/book-four-part-three-companions.test.js`.
+- **Built in step 12 (release pass):**
+  - **The recap card** (`src/recap.js`): while Book Four's first chapter
+    is next and not begun, and `b3_done` is set, `world.bookRecap` is
+    `{ title, lines }`: Book Three's ending, the gift (with
+    `b3_promise_old`), Aster, Hesk, and the epilogue line of each companion
+    still in the party, from the flags. What's next shows it as the first
+    card. Plain text, offline.
+  - **Item cards and the sheet.** A dealt line on an item card says "(all
+    worn gear together deals at most 50% more)", as the taken line names
+    the 30% cap. The equipment tab ends with a Totals card for the member
+    shown (`gearTotals` on the player and party views, from
+    `G.gearTotals`): what worn gear adds up to, and the capped figure with
+    the uncapped one when gear goes over.
+  - **Phone width.** The recap card and What's next shrink with the
+    screen and wrap long words; the Telling's columns stack below two 14rem
+    columns. Checked from the CSS (tests/book-four-release.test.js); there
+    is no browser in the build container.
+  `out` is not set.
 - **Fixed in step 9: roller tokens inside a `oneOf`.** `outcomeForRoller`
   (`src/expansion.js`) told only a check result's top-level lines for the
   roller, so a token or a `roller` / `notRoller` gate inside a `oneOf` group

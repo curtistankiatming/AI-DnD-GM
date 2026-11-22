@@ -108,4 +108,12 @@ function initCompanion(state,member){
   derive(member);
 }
 const MAX_GEAR_TAKEN=-0.3,MAX_GEAR_DEALT=0.5;
-module.exports={MAX_GEAR_TAKEN,MAX_GEAR_DEALT,slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};
+// The sheet's totals for an actor's worn gear: what it adds up to, and the caps,
+// in plain words. Null when worn gear changes neither.
+function gearTotals(a){
+  const gs=Gear.stats(a),pct=v=>Math.round(Math.abs(v)*100),out=[];
+  if(gs.dealt)out.push(gs.dealt>MAX_GEAR_DEALT?`${pct(MAX_GEAR_DEALT)}% more damage dealt (${pct(gs.dealt)}% from worn gear, capped at ${pct(MAX_GEAR_DEALT)}%)`:`${pct(gs.dealt)}% ${gs.dealt>0?'more':'less'} damage dealt (worn gear deals at most ${pct(MAX_GEAR_DEALT)}% more)`);
+  if(gs.taken)out.push(gs.taken<MAX_GEAR_TAKEN?`${pct(MAX_GEAR_TAKEN)}% less damage taken (${pct(gs.taken)}% from worn gear, capped at ${pct(MAX_GEAR_TAKEN)}%)`:`${pct(gs.taken)}% ${gs.taken<0?'less':'more'} damage taken (worn gear takes off at most ${pct(MAX_GEAR_TAKEN)}%)`);
+  return out.length?{dealt:Math.min(MAX_GEAR_DEALT,gs.dealt),taken:Math.max(MAX_GEAR_TAKEN,gs.taken),text:`Worn gear in all: ${out.join('; ')}.`}:null;
+}
+module.exports={MAX_GEAR_TAKEN,MAX_GEAR_DEALT,gearTotals,slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};

@@ -139,9 +139,9 @@ function refreshStory(state) {
 function describe(item) {
   const out = [];
   const pct = (v) => Math.round(Math.abs(v) * 100);
-  if (item.stats?.dealt) out.push(`${pct(item.stats.dealt)}% ${item.stats.dealt > 0 ? 'more' : 'less'} damage dealt`);
-  // Worn gear together takes off at most 30% (MAX_GEAR_TAKEN in src/equipment.js), so say so
-  // where it matters: plate, shield and charm can add up to more than that.
+  // Worn gear together deals at most 50% more and takes off at most 30% (MAX_GEAR_DEALT and
+  // MAX_GEAR_TAKEN in src/equipment.js), so say so on the card: pieces can add up to more.
+  if (item.stats?.dealt) out.push(item.stats.dealt > 0 ? `${pct(item.stats.dealt)}% more damage dealt (all worn gear together deals at most 50% more)` : `${pct(item.stats.dealt)}% less damage dealt`);
   if (item.stats?.taken) out.push(item.stats.taken > 0 ? `${pct(item.stats.taken)}% more damage taken` : `${pct(item.stats.taken)}% less damage taken (all worn gear together takes off at most 30%)`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
