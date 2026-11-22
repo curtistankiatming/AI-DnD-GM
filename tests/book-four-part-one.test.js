@@ -406,8 +406,11 @@ test('chapter 3 follows Aster: in Briarwatch\'s bell she feels where the white g
   assert.match(told(decide('b4-ballad', 'pim', { flags })), /He has stood it since last winter.*He is the one who asked\./);
   assert.match(told(decide('b4-ballad', 'pim')), /He has rung the bell since he was a boy/);
   // Aster, still in her bell, answers the quiet night.
+  // In the quiet night she answers whether or not Orin asked; with Pim she
+  // speaks after his rule, not before it.
+  assert.match(told(decide('b4-ballad', 'quiet')), /^Aster Vey: Ask me too, while you're asking\. Yes\. One night/m);
+  assert.match(told(decide('b4-ballad', 'pim')), /Pim: And I'll be on it\.[^]*^Aster Vey: He asked me first, you know\. I said yes\./m);
   for (const d of ['quiet', 'pim']) {
-    assert.match(told(decide('b4-ballad', d)), /^Aster Vey: Ask me, then\. Yes\. One night/m, d);
     assert.doesNotMatch(told(decide('b4-ballad', d, { flags })), /Aster Vey:/, d);
   }
   for (const raw of [RAWQ, RAWJ]) assert.doesNotMatch(JSON.stringify(raw), /since he was nine|when he was nine|bell went quiet/);
@@ -448,7 +451,7 @@ test('the review\'s fixes hold: Sorrel is she, Sable judges what he can, and eac
   assert.match(talk('b4-records', 'ailith', { flags: { wards_seat: true } }), /The nine have rested/);
   assert.match(talk('b4-records', 'ailith'), /nine people under that lid/);
   const resolved = (id, opts) => told(choose(strong(at(id, { ...opts, phase: 'crisis' })), 'resolve'));
-  assert.match(resolved('b4-records', { flags: { b4_rue_party: true } }), /Rue is out of the cellar door with her own pages before (you|Orin|Maren|Nessa),/);
+  assert.match(resolved('b4-records', { flags: { b4_rue_party: true } }), /Rue is already in the square with her own pages when (you get|Orin gets|Maren gets|Nessa gets) there,/);
   assert.match(resolved('b4-records', { flags: { b4_rue_party: true } }), /Then Rue reads the Wold's winters again/);
   assert.doesNotMatch(resolved('b4-records', { flags: { b4_rue_watch: true } }), /Rue is out of the cellar door|Then Rue reads/);
   assert.match(opening(at('b4-records', { phase: 'after' })), /^Maren: Whoever has it next will want to change a word/m);

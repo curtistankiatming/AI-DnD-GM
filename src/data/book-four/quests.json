@@ -417,7 +417,7 @@
       "success": [
         { "narrate": "{You have|@ has} read the two accounts side by side, and {you know|@ knows} exactly which page it is. Ilse has it out from under the glass before {you are|@ is} at the foot of the cellar steps.", "when": { "flag": "prepared:b4-records" } },
         { "narrate": "{You carry|@ carries} the founders' account up out of the cellar and past the rope-men, who do not stop {you|@}, because nobody has ever walked towards them holding the thing they came for, and out into the middle of the square, where the lights are coming on." },
-        { "narrate": "Rue is out of the cellar door with her own pages before {you|@}, and starts reading the Wold's winters to the square before anyone has decided she may.", "when": { "flag": "b4_rue_party" } },
+        { "narrate": "Rue is already in the square with her own pages when {you get|@ gets} there, and has started reading the Wold's winters to the square before anyone has decided she may.", "when": { "flag": "b4_rue_party" } },
         { "narrate": "{You open|@ opens} it at the night of the casting and {read|reads} it aloud, slowly, so that everybody at the windows can hear: the weather, which was clear; the stores, which were low; the nine names; and the line on its own at the bottom." },
         { "narrate": "\"We ring it back. Where it goes is not ours to know.\"" },
         { "narrate": "Then the Wold's winters, from Rue's pages, year by year: 'Bad.' 'Bad.' 'Worse.' 'The lane under.' Read out in Ashford's square in the middle of the night, to a reeve in her nightgown, and an archivist with lamp-black up her sleeves, and six rope-men from Cinder Fold who came to keep it from being read.", "when": { "notFlag": "b4_rue_party" } },
@@ -777,7 +777,7 @@
           { "say": "nessa", "text": "Somebody had to go first. It was always going to be Briarwatch." },
           { "say": "orin", "text": "And the edge houses? They'll be the first it reaches, every month, for the rest of their lives. Has anyone asked them?" },
           { "say": "Aveline", "text": "No. They'll be asked tonight, Stoneward. And if they say no, I'll be back at this table with you.", "when": { "party": "orin" } },
-          { "say": "Aster Vey", "text": "Ask me, then. Yes. One night. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
+          { "say": "Aster Vey", "text": "Ask me too, while you're asking. Yes. One night. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
           { "say": "Aveline", "text": "Write it down, then. Briarwatch, one quiet night a month, by its own vote, the first in the free wards. I'd like it to say 'by its own vote'." },
           { "oneOf": [
             { "narrate": "At the next dark of the moon Pim lets the fire at the stream go out at the first hour, with Aveline's leave, and sits beside it till dawn anyway.", "when": { "flag": "b3_bell_aster" } },
@@ -799,10 +799,10 @@
           ] },
           { "say": "Aveline", "text": "He's a boy." },
           { "say": "Tovin", "text": "He's not. Look at him. He's been stooping under my beam since the thaw." },
-          { "say": "Aster Vey", "text": "Ask me, then. Yes. One night. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
           { "narrate": "Pim takes a long time. Everybody waits. Briarwatch is used to waiting for Pim." },
           { "say": "Pim", "text": "Summer. Quiet nights in summer only, when the edge houses have their windows open and their fires out anyway, and nobody's cold. One a month. Not in winter. In winter it's ours." },
           { "say": "Pim", "text": "And I'll be on it. Every quiet night. So it's not nobody." },
+          { "say": "Aster Vey", "text": "He asked me first, you know. I said yes. I'd like to know somebody up there slept.", "when": { "notFlag": "b3_bell_aster" } },
           { "say": "Aveline", "text": "Write it down, Pim. It's your rule. You write it." },
           { "narrate": "He writes it on Aveline's clean sheet in letters an inch high, and signs it." }
         ],
