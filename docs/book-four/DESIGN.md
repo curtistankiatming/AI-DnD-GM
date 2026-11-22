@@ -668,9 +668,12 @@ something for what is taken.
 **Decision (the letters).**
 - Bring a satchel up to be read across the free wards: `b4_letters_read`. The
   floor takes a small memory from each who carries them (a line each, with
-  absent versions). The council reads them in 9.
+  absent versions). The council reads them in 9. Maren's turn with the satchel
+  sets `b4_letters_maren` (the colour of her birth-house door), which her line
+  at the north door at the end of Part One names.
 - Copy what you can by lamp and leave them: `b4_letters_copied`. Fennick's
-  clerks copy for a week; his copies are what the council reads in 22.
+  clerks copy for a week (with `b3_stair_sealed`, on a second warrant for six
+  days more); his copies are what the council reads in 22.
 - Leave them and write one letter back, given to the floor:
   `b4_letters_answered`. The first letter south to north in nine hundred
   years. Orme's givers find it (13).
@@ -1489,7 +1492,7 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 5 Davin | b4_davin_comes, b4_davin_home (also set by Mags's lines), b4_davin_mags | 10, 12, 15, 25 (requires), epilogue; b4_davin_mags: davin-camp |
 | 6 Book | b4_book_returned, b4_book_rewritten, b4_book_burned | 15 (the door), 27 (Rue) |
 | 7 Key | b4_key_left (also the answer with Nessa away), b4_key_carried, b4_key_hew | 27 (the signal), epilogue |
-| 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered | 9, 13 (the letter in the tally), 22 |
+| 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered; line: b4_letters_maren | 9, 13 (the letter in the tally), 22; the Part One end (Maren) |
 | 9 Embassy | b4_embassy_council, b4_embassy_own, b4_embassy_refuge | 16 (whose promise), 22, 30 (south) |
 | 10 Peaks | b4_parting_rung, b4_unannounced, b4_gave_door; scene: b4_partone_done | 11 (Lantry), 16 (Sloe), 11 unlock |
 | 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | 12 (Sheddon), 17 (who taught Dunnet), epilogue |
@@ -1607,7 +1610,7 @@ Rules every reward keeps:
 | 3 | b4-ballad | The True Verse | Accessory | Level 40 | Linus's broadsheet with Dera's corrections in the margin. Read aloud, it rallies (Empowered). |
 | 4 | b4-company | North Company Cutlass | Main hand, finesse | Level 41 · Dex 13 | Issued to the Company's guards, who were never told what they were guarding. |
 | 5 | b4-davin | Lamp-store Hook | Main hand | Level 42 · Str 13 | The hook Davin used to pull a burning plank clear. |
-| 6 | b4-book | Rue's Second Book | Accessory | Level 43 | A blank book from Iona's own shelf, given after the first was found or lost. Insight story ability. |
+| 6 | b4-book | Rue's Spare Book | Accessory | Level 43 | The book Rue kept spare, from Iona's own shelf, given for your own tally. Insight story ability. |
 | 7 | b4-key | Brass Key-cord | Accessory | Level 44 | The cord the forge-signal key hung on, whoever has the key now. |
 | 8 | b4-letters | Floor-letter Satchel | Accessory | Level 45 | The satchel Fennick lends for the letters. History and Religion. |
 | 9 | b4-embassy | Embassy Seal | Accessory | Level 46 | The council's seal for the embassy north, cut overnight by a Highpass jeweller. Persuasion story ability. |
@@ -2165,7 +2168,7 @@ below.
     Persuasion +2, Charisma saves +2, Read Aloud: Empowered 2 rounds), the
     cutlass (finesse 1d8, +3/+5, 10% dealt, rogue, bard or ranger, Hamstring:
     Slowed 2 rounds), the hook (Strength 1d10, +3/+5, 5% dealt, fighter or
-    cleric, Pull Clear: Slowed 2 rounds), Rue's second book (Insight and
+    cleric, Pull Clear: Slowed 2 rounds), Rue's spare book (Insight and
     History +3, Wisdom saves +1, 5% dealt, Insight story), the key-cord
     (Perception and Athletics +3, Constitution and Wisdom saves +1, 10% taken,
     Perception story), the satchel (History, Religion and Investigation +3, 5%

@@ -895,7 +895,7 @@
           { "oneOf": [
             { "narrate": "Elske Marrow is home from the spring session, in Merrowgate's chamber, with the Company's charter copied out on the table in front of her and a great many notes in its margins.", "when": { "flag": "elske_seat" } },
             { "narrate": "Elske Marrow is at the Sallows hospice, which the council sentenced her to keep open for five years. She has no seat, and does not ask for one. The slate by the door has been wiped, and a new column started.", "when": { "flag": "elske_judged" } },
-            { "narrate": "Elske Marrow is at home in Merrowgate, with Anwen's cards on the table and the Company's charter copied out beside them." }
+            { "narrate": "Elske Marrow is in the long room at the harbour hospice, where she works now, with Anwen's cards on the table and the Company's charter copied out beside them." }
           ] },
           { "oneOf": [
             { "say": "Elske", "text": "I can't stop it in this chamber. It's a council charter; the Hall had it sealed at Highpass, in the spring, while everyone was looking at a girl with a book. Merrowgate only gets to watch the wagons go.", "when": { "flag": "elske_seat" } },
@@ -2033,7 +2033,7 @@
         { "narrate": "The newest are on slate and bark and the backs of tally-sheets, in children's hands and old people's. They have stopped asking what they did. They ask only for someone to write back." }
       ],
       "failure": [
-        { "narrate": "{You try|@ tries} to read the drift where it lies, but the old hand is close and square, the lamp is poor, and the letters lie nine hundred years deep. By the time the lamp needs trimming {you have|@ has} read four, and all {you are|@ is} sure of is that they are letters, and that they are asking for something." }
+        { "narrate": "{You try|@ tries} to read the drift where it lies, but the old hand is close and square, the lamp is poor, and the letters lie nine hundred years deep. By the time the lamp needs trimming {you have|@ has} read four, and all {they} can be sure of is that they are letters, and that they are asking for something." }
       ]
     },
     "route": {
@@ -2122,7 +2122,7 @@
         "text": [
           { "narrate": "Fennick fills one satchel, not more, from the top of the newest drift, and writes in his ledger where each letter lay. Then the satchel goes up the stair, carried by turns, and the floor takes its price from whoever carries it, one small thing each, on the way." },
           { "narrate": "Orin carries it for the first hour. At the turn of the stair he stops, and frowns, and says there was a tune he whistled when he cleaned his boots, and he cannot think how it went.", "when": { "party": "orin" } },
-          { "narrate": "Maren carries it next. On a landing she puts her hand flat on the wall and says that the door of the house she was born in was painted. She knows it was. She cannot see what colour.", "when": { "party": "maren" } },
+          { "setFlag": "b4_letters_maren", "narrate": "Maren carries it next. On a landing she puts her hand flat on the wall and says that the door of the house she was born in was painted. She knows it was. She cannot see what colour.", "when": { "party": "maren" } },
           { "narrate": "Nessa carries it two flights at a run, and at the top of them stops, and says there was a rhyme the Cinder Fold children skipped to, and she knew all of it, and now she knows the first line.", "when": { "party": "nessa" } },
           { "narrate": "Fennick carries it for one flight, and says afterwards that he must have given something, and that he has no idea what, and writes down that he has." },
           { "narrate": "You carry it for the last hour, to the top. Somewhere on the stair you give the smell of rain on the Briarwood road. You know it rains there. You cannot remember how it smells." },
@@ -2138,6 +2138,7 @@
         "text": [
           { "narrate": "Fennick sends a clerk up the stair for paper and lamp oil and ink, a great deal of ink, and the rest sit down cross-legged on the givers' path along the north edge, and begin." },
           { "say": "Fennick", "text": "A week. Perhaps two. We will not lift one. We will read them where they lie and copy them as they are, spelling and all. I can do that. I have done nothing else my whole life. I did not know it was for this." },
+          { "narrate": "The warrant says one day. Fennick writes a second one on its back, for six days more under the seal's own rules, and sends it up the stair with a clerk, and the masons sit down at the top of the stair to wait, with the lead going cold in its pot.", "when": { "flag": "b3_stair_sealed" } },
           { "narrate": "When you go up, there is a row of lamps along the north edge of the floor of given things, and the scratch of pens, and Fennick at the end of the row with his box, numbering the pages." }
         ],
         "rep": { "wardens": 1 },
@@ -2213,7 +2214,7 @@
           { "oneOf": [
             { "narrate": "Elske comes down from the chair at the noon recess and talks to you on the hall steps, in her good coat, with her papers under her arm.", "when": { "flag": "elske_seat" } },
             { "narrate": "Elske has written from the Sallows hospice in Merrowgate, which the council sentenced her to keep open, and which she has not left for more than a day since. Iona reads you the letter on the hall steps.", "when": { "flag": "elske_judged" } },
-            { "narrate": "Elske has written from home, in Merrowgate. Iona reads you the letter on the hall steps." }
+            { "narrate": "Elske has written from the harbour hospice in Merrowgate, where she works now. Iona reads you the letter on the hall steps." }
           ] },
           { "oneOf": [
             { "say": "Elske", "text": "I rang the Mother Bell. Everybody in this hall knows I did. I said it would save us, and it did. I never asked what it cost anyone else. Nobody did. I'll vote to go. I'll go myself, if they'll have me, and say so to their faces.", "when": { "flag": "elske_seat" } },
@@ -2262,7 +2263,7 @@
         "requires": { "flagsAny": ["b4_rue_council"] },
         "lines": [
           { "narrate": "Rue sits at the end of the council's side bench, where Brannagh has put her, with a book open on her knee, writing down every delegate's name as they speak, and what they said." },
-          { "say": "Rue", "text": "They have been talking about my people for three days. Nobody has asked me anything. I have written that down too." },
+          { "say": "Rue", "text": "They heard me once, in the spring. Since then they have been talking about my people for three days, and nobody has asked me anything else. I have written that down too." },
           { "say": "Rue", "text": "In Orme, when the Long Hall argues, they write down every word, so that next year they know what they argued about. You do not. You will have this argument again in a year and not remember it. I am keeping it for you." }
         ]
       }
@@ -2342,7 +2343,7 @@
         { "narrate": "They are rope-men, from the families who say the founders' business is Cinder Fold's and nobody else's: a dozen of them round the coach, with its horses held, and two delegates inside who have been told to go home." }
       ] },
       { "oneOf": [
-        { "say": "The Company's factor", "text": "Nobody's hurt. Nobody needs to be. They can go back down to Merrowgate and vote another year.", "when": { "anyFlag": ["b4_company_broken", "b4_company_sails"] } },
+        { "say": "A man in a good coat", "text": "Nobody's hurt. Nobody needs to be. They can go back down to Merrowgate and vote another year.", "when": { "anyFlag": ["b4_company_broken", "b4_company_sails"] } },
         { "say": "A rope-man", "text": "Nobody's hurt. They can walk back down. The founders' business is ours. It's not for a hall full of strangers to vote on." }
       ] },
       { "say": "orin", "text": "They're not soldiers. They're holding the horses wrong. Nobody needs to get hurt on this road tonight. Them included." },
@@ -2367,7 +2368,7 @@
     "after": [
       { "oneOf": [
         { "narrate": "Noon at Highpass. The two delegates are on their bench in clean collars. Nobody on the Highpass road last night was hurt, and the men round the coach have gone back down it.", "when": { "flag": "method:b4-embassy", "is": "peace" } },
-        { "narrate": "Noon at Highpass. The two delegates are on their bench, one of them with his arm in a sling, and the watch has four of the men from the road in the cells under the gatehouse, which are getting full." }
+        { "narrate": "Noon at Highpass. The two delegates are on their bench, one of them with his arm in a sling, and the watch has four of the men from the road in the cells under the gatehouse." }
       ] },
       { "narrate": "The vote is called. Shall the free wards send to the Wold? It passes. What has still to be decided is what passes with it, and everybody in the hall looks at you, because you are the one who is going." },
       { "oneOf": [
@@ -2567,7 +2568,7 @@
         { "narrate": "{You take|@ takes} the line from Rue's bearing, a pace at a time, and the rope goes out into the white behind {them}.", "when": { "notFlag": "approach:b4-peaks" } },
         { "narrate": "Nessa goes first, as she said she would, with the end of the rope round her waist, and {you go|@ goes} second, reading the line for her a step behind.", "when": { "party": "nessa", "notRoller": "nessa" } },
         { "narrate": "Nessa goes first, with the end of the rope round her waist, reading the line as she goes, and for once she looks back along the rope every few paces to see who is on it.", "when": { "roller": "nessa", "party": "nessa" } },
-        { "narrate": "{You go|@ goes} first, with the end of the rope round {your} waist.", "when": { "absent": "nessa" } },
+        { "narrate": "{You go|@ goes} first, with the end of the rope round {their} waist.", "when": { "absent": "nessa" } },
         { "narrate": "Everyone is on the rope, a body's length apart, all the way back to the south door. By the bell the white is so thick that the rope in your own hands goes out of sight a yard ahead. Nobody lets go. Every few paces somebody says their name out loud, down the rope, and the next one says theirs." },
         { "narrate": "At the north door the rope comes out of the white into the lee of the north face, and everyone is on it. The white goes on over the saddle behind you and down the south side towards Highpass, and is only weather." }
       ],
@@ -2585,11 +2586,11 @@
       { "narrate": "The north door is three hundred paces away across the open middle of the Hall. Linus and his guide are at the south door, staying in the lee of it until the storm has gone over. Everyone else has to cross, today, or not until the spring." }
     ],
     "crisis": [
-      { "narrate": "The storm comes down through the open middle of the Hall and fills it to the walls. From the south door you cannot see the bell, twenty paces in. You cannot see the north door at all." },
+      { "narrate": "The storm comes down through the open middle of the Hall and fills it to the walls. From the south door you cannot see twenty paces in, let alone the bell. You cannot see the north door at all." },
       { "say": "Rue", "text": "The white on the saddle is not the white in your lanes. It does not want anything. It is only weather. But it will take you if you let go of each other, and it will not give you back. Up here we rope. Everyone. Even the brave ones." },
       { "say": "nessa", "text": "I'm first." },
       { "narrate": "Orin is already uncoiling the rope.", "when": { "party": "orin" } },
-      { "narrate": "Out in the white, between the south door and the bell, something stands up that is taller than the statues." }
+      { "narrate": "Out in the white, between the south door and the bell, the snow heaps itself up taller than the statues, and leans, and falls, and heaps up again." }
     ],
     "objective": {
       "name": "Cross the saddle",
@@ -2610,7 +2611,7 @@
     "after": [
       { "oneOf": [
         { "narrate": "Noon, on the north side of the Hall of Legends. The storm has gone over. Nobody is hurt.", "when": { "flag": "method:b4-peaks", "is": "peace" } },
-        { "narrate": "Noon, on the north side of the Hall of Legends. The storm has gone over. The snow in the middle of the Hall is trampled flat round the bell, where the fight was, and Rue is going down the line of you with a stick of charcoal, writing everyone's name on their sleeves, in case." }
+        { "narrate": "Noon, on the north side of the Hall of Legends. The storm has gone over. The snow in the middle of the Hall is trampled flat round the bell, where the fight was." }
       ] },
       { "narrate": "Below you the north side of the peaks goes down into cloud. Under the cloud is the Wold. Rue says Lantry is under the first of it, a day's walk down, and that they would see you coming if they looked up, and that they will not look up." },
       { "say": "Rue", "text": "Nobody looks north. There is nothing north. That is what we say." },

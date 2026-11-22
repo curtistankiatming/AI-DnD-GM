@@ -405,8 +405,8 @@
           { "narrate": "From a hundred steps up you can see the bottom of the stair, when nobody else can see past the lamp. Longshot.", "when": { "spec": "deadeye", "absent": "nessa" } },
           { "say": "orin", "text": "A day of stair down and a day up, and you're not even tired. Seasoned Traveller, the Wayfinders call that. You'll want it, north.", "when": { "spec": "pathfinder" } },
           { "narrate": "A day of stair down and a day up, and you are not even tired. Seasoned Traveller, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
-          { "say": "maren", "text": "You've been talking to Fennick about the founders' spelling all evening, and he's been taking notes. From you. Vast Learning, the Loremasters call it. I've never seen that clerk take notes from anybody.", "when": { "spec": "lorekeeper" } },
-          { "narrate": "All evening Fennick asks you about the founders' spelling, and takes notes. Vast Learning, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "maren", "text": "On the floor today you talked to Fennick about the founders' spelling, and he took notes. From you. Vast Learning, the Loremasters call it. I've never seen that clerk take notes from anybody.", "when": { "spec": "lorekeeper" } },
+          { "narrate": "On the floor, Fennick asks you about the founders' spelling, and takes notes. Vast Learning, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
           { "say": "orin", "text": "You were humming on the stair. A whole day of it, up. And every one of us kept your time and never felt the steps. Rousing Voice. The Warchanters have it. Hum it again tomorrow.", "when": { "spec": "battlecantor" } },
           { "narrate": "You hum on the stair, a whole day of it, up, and nobody behind you feels the steps. Rousing Voice, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
           { "say": "maren", "text": "Fennick, the clerks, whoever's on the door. They all tell you things they wouldn't tell each other, and nobody minds. Diplomatic Immunity, they call that in Merrowgate, and they mean it as a joke. It isn't one.", "when": { "spec": "envoy" } },
@@ -500,7 +500,10 @@
             { "say": "orin", "text": "Davin. And the knot on his pack, which is Mags's. And a soldier who'd like to be asked in, this time.", "when": { "flag": "b4_davin_comes" } },
             { "say": "orin", "text": "A soldier who'd like to be asked in, this time. That's all. It's enough to be going on with." }
           ] },
-          { "say": "maren", "text": "Ears. I'll hear whether they mean it, and whether we do." },
+          { "oneOf": [
+            { "say": "maren", "text": "Ears. And a door I can't see the colour of any more, so I'll know what it costs when they give. I'll hear whether they mean it, and whether we do.", "when": { "flag": "b4_letters_maren" } },
+            { "say": "maren", "text": "Ears. I'll hear whether they mean it, and whether we do." }
+          ] },
           { "oneOf": [
             { "say": "nessa", "text": "The key. A light, if they want one.", "when": { "flag": "b4_key_carried" } },
             { "say": "nessa", "text": "Me. First through every door. That's what I'm for." }
@@ -529,14 +532,14 @@
         "title": "The First True Verse",
         "objective": "Camp.",
         "lines": [
-          { "narrate": "In the morning Linus comes through the Hall from the south door with his guide, to go back down. Before he goes he stands at the north door with his writing case open and reads you the first verse, so that somebody who was there has heard it." },
+          { "narrate": "Before dark Linus comes through the Hall from the south door with his guide, to go back down while there is light. Before he goes he stands at the north door with his writing case open and reads you the first verse, so that somebody who was there has heard it." },
           { "oneOf": [
             { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that rang once, and every bell in the south answered it. And these went down to knock.'", "when": { "flag": "b4_parting_rung" } },
             { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket. And one of these knelt at the north door and gave, and went down to knock.'", "when": { "flag": "b4_gave_door" } },
             { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that nobody rang. And these went quietly down to knock.'", "when": { "flag": "b4_unannounced" } }
           ] },
           { "say": "Linus Pardew", "text": "That's true. All of it. Dera can't cross out a word. First time in twenty years." },
-          { "say": "Linus Pardew", "text": "I'll sing it in Briarwatch at the harvest. Come back and tell me the next one." },
+          { "say": "Linus Pardew", "text": "I'll sing it in Briarwatch at midwinter. Come back and tell me the next one." },
           { "narrate": "He goes back through the Hall and down the south side into the snow, with the guide carrying his case, and turns round twice to wave." },
           { "narrate": "Below the north door the road goes down into the cloud." }
         ],

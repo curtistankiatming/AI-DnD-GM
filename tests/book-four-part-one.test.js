@@ -218,7 +218,7 @@ test('a decision changes exactly the approval the design gives it: the quiet nig
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won', () => {
   for (const [id, fought] of [['b4-walker', /three houses in it stand empty/], ['b4-records', /heads bound up/], ['b4-ballad', /grey at the Briarwood end, where the fight was/],
     ['b4-company', /a lantern-pole through a wheel/], ['b4-davin', /being told their own names/], ['b4-book', /black to the arch/], ['b4-key', /being told which bells are theirs/],
-    ['b4-letters', /reads them their own entries/], ['b4-embassy', /which are getting full/], ['b4-peaks', /writing everyone's name on their sleeves/]]) {
+    ['b4-letters', /reads them their own entries/], ['b4-embassy', /four of the men from the road in the cells under the gatehouse\./], ['b4-peaks', /trampled flat round the bell, where the fight was\./]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -335,11 +335,11 @@ test('every Book Four flag set is read: each chapter\'s answers change the lines
   const set = new Set(IDS.flatMap((id) => [...flagsSetIn({ x: RAWQ[id] })]));
   assert.deepEqual([...set].sort(), ['b4_book_burned', 'b4_book_returned', 'b4_book_rewritten', 'b4_bw_pim', 'b4_bw_quiet', 'b4_bw_rings', 'b4_company_broken', 'b4_company_council', 'b4_company_sails',
     'b4_davin_comes', 'b4_davin_home', 'b4_davin_mags', 'b4_embassy_council', 'b4_embassy_own', 'b4_embassy_refuge', 'b4_gave_door', 'b4_key_carried', 'b4_key_hew', 'b4_key_left',
-    'b4_letters_answered', 'b4_letters_copied', 'b4_letters_read', 'b4_parting_rung', 'b4_rue_council', 'b4_rue_party', 'b4_rue_watch', 'b4_truth_ailith', 'b4_truth_council', 'b4_truth_published', 'b4_unannounced']);
-  // Nothing else sets a flag any other way (a companion's answer, a scene choice): only Mags's answer for Davin.
+    'b4_letters_answered', 'b4_letters_copied', 'b4_letters_maren', 'b4_letters_read', 'b4_parting_rung', 'b4_rue_council', 'b4_rue_party', 'b4_rue_watch', 'b4_truth_ailith', 'b4_truth_council', 'b4_truth_published', 'b4_unannounced']);
+  // Nothing else sets a flag any other way (a companion's answer, a scene choice): only Mags's answer for Davin, and Maren carrying the letters.
   const lineSets = [];
   for (const [owner, c] of CONTENT) for (const l of everyLine(c)) if (l.setFlag !== undefined) lineSets.push([owner, l.say, l.setFlag]);
-  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home']]);
+  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-letters', undefined, 'b4_letters_maren']]);
   const read = new Set(CONTENT.flatMap(([, c]) => [...readsIn(c)]));
   for (const flag of set) assert.ok(read.has(flag), `${flag} is read`);
 });
@@ -652,7 +652,7 @@ test('no new person in Book Four takes a name the earlier books or the story bib
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
     'Fennick', 'Corvane']);
   const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott']);
-  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man']);
+  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat']);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
@@ -673,7 +673,7 @@ test('chapter 4 reads Merrowgate\'s Book Three, and its charter is read by the c
   assert.match(talk('b4-company', 'haddows', { flags: { b3_debts_bought: true } }), /They burned my paper last summer/);
   assert.match(talk('b4-company', 'haddows'), /You saw to that, last summer/);
   assert.ok(!talkIds('b4-company').includes('elske'));
-  for (const [flag, line] of [['elske_seat', /in Merrowgate's chamber/], ['elske_free', /at home in Merrowgate, with Anwen's cards[^]*They will tell you the land is empty/], ['elske_judged', /the Sallows hospice, which the council sentenced her to keep open for five years[^]*Forty families/]]) assert.match(talk('b4-company', 'elske', { flags: { [flag]: true } }), line, flag);
+  for (const [flag, line] of [['elske_seat', /in Merrowgate's chamber/], ['elske_free', /in the long room at the harbour hospice, where she works now, with Anwen's cards[^]*They will tell you the land is empty/], ['elske_judged', /the Sallows hospice, which the council sentenced her to keep open for five years[^]*Forty families/]]) assert.match(talk('b4-company', 'elske', { flags: { [flag]: true } }), line, flag);
   assert.deepEqual(QUESTS['b4-company'].peaceful.easierWith.flag, 'b4_truth_published');
   // A lost fight leaves the wagons where the after finds them.
   assert.doesNotMatch(QUESTS['b4-company'].objective.failText, /go out at dawn|sails on the tide|gone north/);
@@ -870,6 +870,11 @@ test('chapter 8\'s answers: the satchel costs each carrier a memory, the copies 
   const alone = told(decide('b4-letters', 'read', { party: [] }));
   assert.match(alone, /You carry it for the last hour/); assert.doesNotMatch(alone, /Orin|Maren|Nessa/);
   assert.match(told(decide('b4-letters', 'copied')), /numbering the pages/);
+  // Only Maren's turn with the satchel marks what it took from her; a sealed stair needs a second warrant for the week of copying.
+  assert.equal(decide('b4-letters', 'read').story.flags.b4_letters_maren, true);
+  assert.ok(!decide('b4-letters', 'read', { party: ['orin', 'nessa'] }).story.flags.b4_letters_maren);
+  assert.doesNotMatch(told(decide('b4-letters', 'copied')), /The warrant says one day/);
+  assert.match(told(decide('b4-letters', 'copied', { flags: { b3_promise_old: false, b3_stair_sealed: true } })), /The warrant says one day[^]*six days more/);
   assert.match(told(decide('b4-letters', 'answered')), /You cannot remember a word of what you said/);
   for (const [decision, line] of [['read', /tied with red tape, and nobody touches it/], ['copied', /still at the bottom of the stair, copying/], ['answered', /try to remember what you wrote/]]) assert.match(opening(decide('b4-letters', decision)), line, decision);
   // Every 2nd job branch has its 3rd job's level 48 skill named, by the companion who would see it, or told when they are away.
@@ -892,7 +897,7 @@ test('chapter 8\'s answers: the satchel costs each carrier a memory, the copies 
 test('chapter 9 reads who chairs, Hesk by the ending, the delegates\' votes by every earlier answer, and whose men are on the road', () => {
   assert.match(opening(departed('b4-embassy', { flags: { elske_seat: true } })), /Elske has the chair this session/);
   assert.match(opening(departed('b4-embassy')), /Brannagh of Fenmere has the chair again/);
-  for (const [flag, line] of [['elske_seat', /^Elske: I rang the Mother Bell/m], ['elske_judged', /from the Sallows hospice in Merrowgate/], ['elske_free', /written from home, in Merrowgate/]]) assert.match(talk('b4-embassy', 'elske', { flags: { [flag]: true } }), line, flag);
+  for (const [flag, line] of [['elske_seat', /^Elske: I rang the Mother Bell/m], ['elske_judged', /from the Sallows hospice in Merrowgate/], ['elske_free', /written from the harbour hospice in Merrowgate, where she works now/]]) assert.match(talk('b4-embassy', 'elske', { flags: { [flag]: true } }), line, flag);
   assert.ok(!talkIds('b4-embassy').includes('elske'), 'an old save has no Elske lines');
   assert.match(talk('b4-embassy', 'hesk'), /in his cell under the gatehouse/);
   assert.match(talk('b4-embassy', 'hesk', { flags: { b3_promise_old: false, b3_promise_hesk: true } }), /The willing were a luxury\. Strangers are a luxury\./);
@@ -906,7 +911,7 @@ test('chapter 9 reads who chairs, Hesk by the ending, the delegates\' votes by e
     [{ b4_company_broken: true }, /until the council broke its charter/], [{ b4_company_sails: true }, /went north in the summer with its charter/], [{ b4_company_council: true }, /the council's name painted on/]])
     assert.match(clue(flags), line, JSON.stringify(flags));
   // Cass Ord's men with the charter broken or sailed; rope-men otherwise.
-  for (const flag of ['b4_company_broken', 'b4_company_sails']) assert.match(opening(at('b4-embassy', { phase: 'crisis', flags: { [flag]: true } })), /Cass Ord's men[^]*^The Company's factor:/m, flag);
+  for (const flag of ['b4_company_broken', 'b4_company_sails']) assert.match(opening(at('b4-embassy', { phase: 'crisis', flags: { [flag]: true } })), /Cass Ord's men[^]*^A man in a good coat:/m, flag);
   assert.match(opening(at('b4-embassy', { phase: 'crisis', flags: { b4_company_council: true } })), /They are rope-men[^]*^A rope-man:/m);
   // The vote passes in every answer; by how much follows the letters and the page.
   assert.match(told(decide('b4-embassy', 'council', { flags: { b4_letters_read: true } })), /by a wide margin/);
@@ -951,6 +956,8 @@ test('chapter 10 goes to the Hall with all three, tops the hero up to 50, and en
   const door = (opts) => opening(decide('b4-peaks', 'rung', opts));
   assert.match(door({ flags: { b4_key_carried: true, b4_davin_comes: true } }), /^Orin: Davin\.[^]*^Maren: Ears\.[^]*^Nessa: The key\.[^]*^Davin: Lamps\./m);
   assert.doesNotMatch(door({ party: [] }), /Orin|Maren|Nessa/);
+  assert.match(door({ flags: { b4_letters_maren: true } }), /^Maren: Ears\. And a door I can't see the colour of any more/m);
+  assert.doesNotMatch(door({}), /colour/);
   // A hero behind is carried to 50 by chapter 10, after its own XP.
   const s = playPeaceful('b4-peaks', 'unannounced');
   assert.equal(s.player.level, 50);
@@ -962,7 +969,7 @@ test('each Book Four chapter in Part One gives its own Legendary reward, worn fr
   const { ITEMS } = require('../src/content'), { TOWNS } = require('../src/expansion');
   const rewards = GEAR.filter((i) => QUESTS[i.exclusive?.quest]?.book === 4);
   assert.deepEqual(rewards.map((i) => i.exclusive.quest), IDS, 'one for each chapter, in order');
-  assert.deepEqual(rewards.map((i) => i.name), ["Walker's Tally-cord", "Founders' Account Case", 'The True Verse', 'North Company Cutlass', 'Lamp-store Hook', "Rue's Second Book", 'Brass Key-cord', 'Floor-letter Satchel', 'Embassy Seal', 'Parting-hall Plate']);
+  assert.deepEqual(rewards.map((i) => i.name), ["Walker's Tally-cord", "Founders' Account Case", 'The True Verse', 'North Company Cutlass', 'Lamp-store Hook', "Rue's Spare Book", 'Brass Key-cord', 'Floor-letter Satchel', 'Embassy Seal', 'Parting-hall Plate']);
   const sold = new Set(Object.values(TOWNS).flatMap((t) => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()]));
   for (const item of rewards) {
     const q = QUESTS[item.exclusive.quest];

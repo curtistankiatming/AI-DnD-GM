@@ -4730,12 +4730,12 @@
   },
   {
     "id": "rue-second-book",
-    "name": "Rue's Second Book",
+    "name": "Rue's Spare Book",
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
     "value": 770,
-    "description": "A blank book from Iona's own shelf, given to Rue after the first was found or lost. She has written your name on the first page.",
+    "description": "The book Rue kept spare, from Iona's own shelf. She has written your name on the first page and given it to you, for your own tally.",
     "purpose": "Equip in the accessory slot: +3 Insight and History, +1 Wisdom saving throws.",
     "skillBonuses": {
       "insight": 3,
