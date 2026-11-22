@@ -19,6 +19,7 @@ the pull requests that made them.
 - The peak-stairs beacon choice at Cinder Fold is remembered in the epilogue.
 - Report, including the choices that still change nothing later:
   docs/reviews/claude-choices-2026-11-22.md.
+
 ## Upgrading goes back into the paid book (22 November 2026)
 
 - A free hosted save that begins an AI story of its own no longer loses Book
