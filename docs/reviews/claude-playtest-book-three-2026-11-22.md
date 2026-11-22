@@ -15,7 +15,7 @@ that buys and equips gear upgrades from the shop for the whole party):
 - 18 extra runs with every companion set to Aggressive (an "all damage" team),
   and 18 that skip bounties and side jobs.
 
-About 14,000 fights in all. Rounds are counted per fight; a fight is "by force"
+About 11,200 fights in all. Rounds are counted per fight; a fight is "by force"
 when the hero never worked the objective.
 
 ## Results
@@ -42,7 +42,7 @@ jobs: 3.5 to 6.4 rounds, no losses in about 3,600.
 fight in 2 rounds.** Bard Lorekeeper and Rogue Saboteur ("Unravel: advance the
 objective twice without a roll", two uses) and Ranger Pathfinder (Trailblazer,
 one objective step as a bonus action, two uses) could use their skill twice in
-the same fight. Book Three objectives need 4 steps, so all 352 of their Book
+the same fight. Book Three objectives need 4 steps, so all 317 of their Book
 Three chapter fights ended in exactly 2 rounds, mostly without a roll. Now each
 skill moves an objective once per fight (a second Trailblazer still gives its
 temporary hit points). After the fix the same 9 campaigns take 4.1 to 4.6
@@ -56,7 +56,7 @@ Levels 21 to 40, Standard / Gritty: Bard Battlecantor 7.6 / 8.8, Bard Envoy
 7.6 / 8.5, Ranger Pathfinder 8.1 / 9.2, Cleric Lifewarden 7.2 / 8.2, Ranger
 Beastwarden 6.6 / 8.9 (one Gritty fight took 17 rounds). Wizard Evoker is the
 other way, 3.1 / 3.9. This matches the earlier note that the level 20 Heroic
-bard fights run long. These players still win (5 losses in 317), and the
+bard fights run long. These players still win (4 losses in 246 such fights), and the
 objective route is open to them, so it is not urgent; a damage bump for the
 support branches is the likely fix and should get its own balance pass.
 
