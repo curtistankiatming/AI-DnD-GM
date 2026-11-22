@@ -201,6 +201,12 @@ test('Book Four gear waits for Book Four: a save that can play it sees no 41 to 
   s = ready('b4-records', { level: 60 }); Book.grant(s, 3);
   assert.equal(Book.reads(s, 4), false); assert.equal(Book.started(s, 4), false);
   assert.equal(Book.gearOpen(s, 45), true); assert.equal(Book.gearOpen(s, 70), true);
+  // A save that finished Book Three and went on to its own AI story can read
+  // Book Four but will never begin it: its 41 to 70 gear opens by level too.
+  s = ready('b4-walker', { level: 45 });
+  s.chronicle = { ...(s.chronicle || {}), arc: { title: 'Its own road' } };
+  assert.equal(Book.reads(s, 4), true); assert.equal(Book.aiStory(s), true); assert.equal(Book.started(s, 4), false);
+  assert.equal(Book.gearOpen(s, 45), true); assert.equal(Book.gearOpen(s, 70), true);
 });
 
 test('gear above level 70 keeps Book Three\'s rule, whether or not Book Four has begun', () => {

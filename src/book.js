@@ -116,7 +116,9 @@ const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n 
 const GEAR_BOOK_FOUR = Object.freeze({ from: P.THIRD_JOB_LEVEL + 1, to: P.FOURTH_JOB_LEVEL });
 const gearOpen = (state, level) => {
   const l = Number(level) || 0;
-  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && reads(state, 4);
+  // reads() only says Book Four is out and open to this session; a save on its
+  // own AI story never begins it, so it keeps Book Three's rule.
+  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && reads(state, 4) && !aiStory(state);
   return started(state, four ? 4 : 3);
 };
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
