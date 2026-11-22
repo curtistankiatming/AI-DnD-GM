@@ -1849,3 +1849,12 @@ textarea {
 .session-decision button, .resume-panel button { min-height: 44px; }
 .session-decision button:focus-visible { outline: 3px solid #b9d9ff; outline-offset: 3px; }
 @media (max-width: 600px) { .session-decision-actions { flex-direction: column; } .resume-panel .save-card { flex-wrap: wrap; } }
+
+/* Smith: Masterwork refines first, basic Fine upgrades folded under them (UI review through Book Three). */
+.smith-group { margin:.6rem 0 .3rem; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.smith-fold { margin-top:.6rem; }
+.smith-fold > summary { cursor:pointer; min-height:40px; padding:8px 0; font-weight:650; }
+/* An item's skill gets its own line and chip on pack cards and in shops. */
+.item-skill { margin:.35rem 0 0; font-size:.82rem; line-height:1.45; }
+.item-skill-chip { display:inline-block; margin-right:.2rem; padding:1px 8px; border:1px solid var(--border); border-radius:6px; background:var(--panel-soft, rgba(255,255,255,.05)); color:var(--text); font-size:.72rem; font-weight:700; white-space:nowrap; }
+.item-skill-use { color:var(--muted); font-size:.74rem; white-space:nowrap; }
