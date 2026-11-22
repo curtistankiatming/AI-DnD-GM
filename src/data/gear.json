@@ -5002,6 +5002,159 @@
     }
   },
   {
+    "id": "letting-house-censer",
+    "name": "Letting-house Censer",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 850,
+    "description": "Yarrow's censer on its chain, the one she lit for the grieving on giving nights, blackened inside with thirty years of smoke.",
+    "purpose": "Equip in the accessory slot: +3 Medicine, Religion and Insight, +2 Wisdom and +1 Constitution saving throws.",
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "medicine": 3,
+      "religion": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "con": 1
+    },
+    "skill": {
+      "name": "Every Name Said",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Swing the censer and say a name: become Fortified for one round and take 25% less damage."
+    },
+    "requires": {
+      "level": 51
+    },
+    "story": {
+      "skill": "medicine"
+    },
+    "exclusive": {
+      "quest": "b4-greve"
+    }
+  },
+  {
+    "id": "thrum-lane-cloak",
+    "name": "Thrum Lane Cloak",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 860,
+    "warm": true,
+    "description": "Heath's white-wool cloak, darned at the hem, which she gives to the stranger who brought her daughter home.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Survival, Stealth and Insight, +1 Dexterity, Constitution and Wisdom saving throws.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "survival": 2,
+      "stealth": 2,
+      "insight": 2
+    },
+    "saveBonuses": {
+      "dex": 1,
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 52
+    },
+    "story": {
+      "skill": "insight"
+    },
+    "exclusive": {
+      "quest": "b4-thrum"
+    }
+  },
+  {
+    "id": "reckoners-slate",
+    "name": "Reckoner's Slate",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 870,
+    "description": "The slate Sloe did her sum on, in a frame of black wood worn pale where her thumbs held it. She will not need it again.",
+    "purpose": "Equip: +5 spell attack bonus and +6 spell save DC. +2 Arcana and History.",
+    "spellAttackBonus": 5,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "arcana": 2,
+      "history": 2
+    },
+    "requires": {
+      "level": 53,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "The Sum Comes Out",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Show an enemy the sum: it is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-reckoning"
+    }
+  },
+  {
+    "id": "pot-bell-mace",
+    "name": "Pot-bell Mace",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 880,
+    "description": "Dunnet's clapper on an ash haft, cast from the village's pots and nails; if the bell was broken, a piece of the bell itself, with a pan-handle still in it.",
+    "purpose": "Strength, 1d10 bludgeoning, +3 to hit, +6 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Forty Strokes",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Ring an enemy like a bell: it deals 25% less damage for two rounds."
+    },
+    "requires": {
+      "level": 54,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-potbells"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",

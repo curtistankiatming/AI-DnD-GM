@@ -708,5 +708,232 @@
         ]
       }
     }
+  },
+  "greve-camp": {
+    "id": "greve-camp",
+    "after": "b4-greve",
+    "cast": [],
+    "act": "Camp",
+    "location": "Yarrow's kitchen, Greve, the night after the giving",
+    "start": "kitchen",
+    "nodes": {
+      "kitchen": {
+        "title": "Yarrow's Kitchen",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Yarrow's kitchen, late. The censer is on the shelf over the fire, not lit, and Yarrow keeps looking at it.", "when": { "flag": "b4_names_kept" } },
+            { "narrate": "Yarrow's kitchen, late. The house-book is on the table, open at a clean page, and the slates have gone down the valley to Orme.", "when": { "flag": "b4_names_written" } },
+            { "narrate": "Yarrow's kitchen, late. The censer is on its chain by the door, cleaned and ready for the next giving.", "when": { "flag": "b4_names_given" } }
+          ] },
+          { "say": "maren", "text": "Your soup needs salt.", "when": { "party": "maren" } },
+          { "say": "Yarrow", "text": "My soup is the best soup in the valley. Yours, I'm told, is a danger to the young.", "when": { "party": "maren" } },
+          { "say": "maren", "text": "Rue told you that.", "when": { "party": "maren" } },
+          { "say": "Yarrow", "text": "Rue wrote it down, which is worse.", "when": { "party": "maren" } },
+          { "narrate": "They go on like that all evening, over the soup, and then over the house-book, and then over a woman from up the valley whose hands shake, and what to give her for it. Maren says willow bark. Yarrow says nettle and patience. They agree about nothing and they do not stop talking.", "when": { "party": "maren" } },
+          { "oneOf": [
+            { "say": "Yarrow", "text": "You'll have cost me half my house. They'll not come to be given to if they can't give. They'll come to sit, I suppose. I can do sitting.", "when": { "flag": "b4_names_kept" } },
+            { "say": "Yarrow", "text": "Burdock's sent back for more names. I've written him every one I can remember from thirty years, and I can't remember many. That's my fault and the house's.", "when": { "flag": "b4_names_written" } },
+            { "say": "Yarrow", "text": "I'll light it at the next giving, and they'll give, and go home. I'll not pretend I'm not glad.", "when": { "flag": "b4_names_given" } }
+          ] },
+          { "oneOf": [
+            { "say": "maren", "text": "You're very good at this. I want that written down somewhere, by somebody who'll remember it.", "when": { "party": "maren" } },
+            { "narrate": "Yarrow sits with you by the fire until the lamp burns down, and tells you about the people who have sat on her benches, as many as she can remember. It is not many." }
+          ] },
+          { "say": "Yarrow", "text": "I'll remember you were good company. For a season. It's a long time, a season, when you're grieving.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "stay",
+            "label": "Sit up with them until the lamp burns down",
+            "lines": [
+              { "narrate": "You sit up by the fire until the lamp burns down, and the house is quiet, and nobody on the benches gets up in the night." }
+            ]
+          },
+          {
+            "id": "sleep",
+            "label": "Sleep on the end bench by the door",
+            "lines": [
+              { "narrate": "You sleep on the end bench by the door, where you read the names from, and wake once in the night to hear somebody on the next bench saying one over to themselves, quietly, so as to have it in the morning." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "thrum-nessa": {
+    "id": "thrum-nessa",
+    "after": "b4-thrum",
+    "cast": [],
+    "act": "Camp",
+    "location": "Heath's door step, Thrum, the night after",
+    "start": "step",
+    "nodes": {
+      "step": {
+        "title": "Heath's Step",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Night on Heath's step. The lamp over the door is lit. Inside, Heath and Furze are asleep, and the bread is set to rise for the morning." },
+          { "oneOf": [
+            { "narrate": "Rue and Nessa are sitting on the step under the lamp with a blanket round both of them, and Rue's book open across both their knees.", "when": { "party": "nessa" } },
+            { "narrate": "Rue is sitting on the step under the lamp with a blanket round her shoulders and her book open on her knees, and she moves over to make room for you." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "Read me who she is. I have it in here. I would like to hear it from somebody who does not know her either.", "when": { "flag": "b4_rue_gave" } },
+            { "say": "Rue", "text": "It hurts. You did not say it would hurt this much. I am glad you did not say. I would have given it.", "when": { "flag": "b4_rue_kept" } }
+          ] },
+          { "say": "nessa", "text": "Give it here, then.", "when": { "party": "nessa", "flag": "b4_rue_gave" } },
+          { "narrate": "Nessa reads Rue's mother to her by the lamp, slowly, the page with Heath's bread and Heath's hands on it, stumbling on the long words, and Rue listens with her head on one side, interested and not hurt at all.", "when": { "party": "nessa", "flag": "b4_rue_gave", "noneFlag": ["b4_book_burned"] } },
+          { "narrate": "There is one word to read. Nessa reads it off Rue's wrist, 'Heath', and then makes up the rest, a page of it, out loud, about the bread, and Rue lets her.", "when": { "party": "nessa", "flag": "b4_rue_gave", "anyFlag": ["b4_book_burned"] } },
+          { "narrate": "You read Rue her mother, slowly, by the lamp, and she listens with her head on one side, interested and not hurt at all.", "when": { "absent": "nessa", "flag": "b4_rue_gave" } },
+          { "say": "nessa", "text": "Course it hurts. That's how you know it's still in there.", "when": { "party": "nessa", "flag": "b4_rue_kept" } },
+          { "narrate": "Rue writes in her book by the lamp for a long time. When she has finished she turns it round so that you can read it: 'Kept. It hurts. Somebody went back for me.'", "when": { "flag": "b4_rue_kept" } },
+          { "say": "Rue", "text": "You answered me. Nobody in the Wold would have. They would have said, it is yours, and gone in. You said it anyway. I have written down what you said, in your words, so that I can read it every morning.", "when": { "party": "nessa", "flag": "b4_rue_asked_nessa" } },
+          { "say": "nessa", "text": "Don't read it every morning. Read it on the bad ones.", "when": { "party": "nessa", "flag": "b4_rue_asked_nessa" } },
+          { "say": "nessa", "text": "I'm writing to Biscuit tonight. I'm going to tell him about your brother. He'd like your brother. He likes anybody with chalk on them.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Tell him I said hello. Write it in capitals. He will not be able to read it, but it is polite.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Davin trimmed her lamp. Nobody asked him. Write that down for me tomorrow, in case I forget to.", "when": { "flag": "b4_davin_comes" } }
+        ],
+        "choices": [
+          {
+            "id": "sit",
+            "label": "Sit on the step until the lamp needs trimming",
+            "lines": [
+              { "narrate": "You sit on the step until the lamp needs trimming, and trim it, and the lane is quiet all night to the third door." }
+            ]
+          },
+          {
+            "id": "in",
+            "label": "Go in, and leave them the step",
+            "lines": [
+              { "narrate": "You go in, and leave the step to them. Through the door you can hear them talking until very late, and then not talking, and the lamp still lit." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "reckoning-camp": {
+    "id": "reckoning-camp",
+    "after": "b4-reckoning",
+    "cast": [],
+    "act": "Camp",
+    "location": "The Long Hall's yard, Orme, before dawn",
+    "start": "yard",
+    "nodes": {
+      "yard": {
+        "title": "The Long Hall's Yard",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Before dawn the Long Hall's yard is empty and blue, with the snow trodden flat round the pump, and the post the tally-guard drill at standing in the middle." },
+          { "oneOf": [
+            { "narrate": "Through the window Sloe is at her table, copying her sum onto a second slate, for the council, in case the first is lost on the road.", "when": { "flag": "b4_demand_carried" } },
+            { "narrate": "Through the window Sloe is at her table, reading the promise at the foot of her slate, over and over, as if it were a sum she could not get to come out.", "when": { "flag": "b4_share_promised" } },
+            { "narrate": "Through the window Sloe is at her table, writing her own name and town on the inside of her left arm, the way Rue does, for the road.", "when": { "flag": "b4_sloe_comes" } }
+          ] },
+          { "say": "orin", "text": "You were in the yard before it was light, with your shield up, putting your whole weight behind the rim into a post. The post moved. Shield Slam, the old guard-books call that. I'd not want to be the post.", "when": { "spec": "guardian" } },
+          { "narrate": "In the yard before it is light, you put your whole weight behind the rim of your shield into a post, and the post moves. Shield Slam, the old guard-books call it.", "when": { "spec": "guardian", "absent": "orin" } },
+          { "say": "nessa", "text": "Three cuts at the yard post before I'd blinked. Three. I counted the marks after. Thousand Cuts, the Blademasters call it. I'm not standing near that post again.", "when": { "spec": "duelist" } },
+          { "narrate": "In the yard before it is light, you put three cuts into the post before the first has finished ringing. Thousand Cuts, the Blademasters call it.", "when": { "spec": "duelist", "absent": "nessa" } },
+          { "say": "orin", "text": "You had the clerks in the yard this morning, two from the left and two from the right, round the post, on a word. They didn't even know they'd done it. Pincer Command. The Banner Captains had it. I never saw it done this well.", "when": { "spec": "warlord" } },
+          { "narrate": "In the yard before it is light, you put two clerks on the left of the post and two on the right with one word, and they go without knowing they have. Pincer Command, the Banner Captains call it.", "when": { "spec": "warlord", "absent": "orin" } },
+          { "say": "nessa", "text": "You hit the yard post twice this morning from the dark side of it, and I was watching, and I didn't see you go round. Shadow Flurry. Nightblade work. Don't do that to me.", "when": { "spec": "shadow" } },
+          { "narrate": "In the yard before it is light, you strike the post twice from the side of it nobody is watching. Shadow Flurry, the Nightblades call it.", "when": { "spec": "shadow", "absent": "nessa" } },
+          { "say": "nessa", "text": "You blew the frost off the yard wall this morning with a pinch of something and a bit of string, and it went exactly where you said, and nowhere else. Controlled Blast. Trapwright work. Burdock wrote it down as weather.", "when": { "spec": "saboteur" } },
+          { "narrate": "In the yard before it is light, a pinch of powder and a length of string blow the frost off the wall exactly where you meant, and nowhere else. Controlled Blast, the Trapwrights call it.", "when": { "spec": "saboteur", "absent": "nessa" } },
+          { "say": "maren", "text": "Two of the door-bearers told me this morning, separately, that you'd agreed with each of them. You had. Both. Double Cross, the Spymasters say. I'd like you to tell me which of them was true.", "when": { "spec": "grifter" } },
+          { "narrate": "Before it is light, two door-bearers each go away from you sure you agreed with them, and you did, with both. Double Cross, the Spymasters call it.", "when": { "spec": "grifter", "absent": "maren" } },
+          { "say": "nessa", "text": "You clapped your hands in the yard this morning and every pane in the Hall rang. Every one. Burdock came out in his nightshirt. Thunderclap, the Stormcallers call it. Warn me next time.", "when": { "spec": "evoker" } },
+          { "narrate": "In the yard before it is light, you clap your hands once and every pane in the Long Hall rings. Thunderclap, the Stormcallers call it.", "when": { "spec": "evoker", "absent": "nessa" } },
+          { "say": "maren", "text": "You stopped the snow this morning. In the yard. It hung there, every flake, while you walked through it. Time Stop, the Timeweavers call it. I'm not going to think about it at all.", "when": { "spec": "chronist" } },
+          { "narrate": "In the yard before it is light, the falling snow stops in the air round you, every flake, while you walk through it. Time Stop, the Timeweavers call it.", "when": { "spec": "chronist", "absent": "maren" } },
+          { "say": "orin", "text": "There were more of them this morning. Whatever you call up. A yard full, through a door that wasn't there. Legion of the Gate, the Summoners' word. I'd like them all on our side.", "when": { "spec": "binder" } },
+          { "narrate": "In the yard before it is light, a door that is not there opens, and the yard fills. Legion of the Gate, the Summoners call it.", "when": { "spec": "binder", "absent": "orin" } },
+          { "say": "maren", "text": "You stood in the yard this morning with your hands out, and every one of us felt it, at the breakfast table, through the wall. Sanctuary of Hosts. The Menders of Hosts have it. I've never felt anything like it.", "when": { "spec": "lifewarden" } },
+          { "narrate": "In the yard before it is light, you hold your hands out, and everyone in the Long Hall feels it through the wall. Sanctuary of Hosts, the Menders of Hosts call it.", "when": { "spec": "lifewarden", "absent": "maren" } },
+          { "say": "maren", "text": "You looked at the yard post this morning and said one word to it, and it went black from the top down. Sentence, the old orders called that. It's a good thing the post wasn't lying.", "when": { "spec": "exorcist" } },
+          { "narrate": "In the yard before it is light, you say one word to the post, and it goes black from the top down. Sentence, the old orders call it.", "when": { "spec": "exorcist", "absent": "maren" } },
+          { "say": "orin", "text": "You stood in the yard this morning, and every one of us coming out of the Hall stood up straighter. Me too. Aura of Valor, the Templars call it. I'd follow that through a door.", "when": { "spec": "battlepriest" } },
+          { "narrate": "In the yard before it is light, you stand still, and everyone coming out of the Long Hall stands up straighter. Aura of Valor, the Templars call it.", "when": { "spec": "battlepriest", "absent": "orin" } },
+          { "say": "nessa", "text": "Every dog in Orme was in the yard this morning, sitting round you, waiting for you to say. Call of the Wild, isn't it? Biscuit would have hated it. He'd have come anyway.", "when": { "spec": "beastwarden" } },
+          { "narrate": "In the yard before it is light, every dog in Orme comes and sits round you, waiting for you to say. Call of the Wild, the Beastbond call it.", "when": { "spec": "beastwarden", "absent": "nessa" } },
+          { "say": "nessa", "text": "Two arrows into the yard post this morning, and both of them pinned the same sack to it, and the second went through the first one's fletching. Pinning Shots. Fine. You can go first. For shooting.", "when": { "spec": "deadeye" } },
+          { "narrate": "In the yard before it is light, two arrows pin the same sack to the post, the second through the fletching of the first. Pinning Shots, the Deadeyes call it.", "when": { "spec": "deadeye", "absent": "nessa" } },
+          { "say": "orin", "text": "The tally-guard went round the yard three times this morning looking for you, and you were standing by the pump. They walked past you. Lead Astray, the Wayfinders call it. Do it to the right people.", "when": { "spec": "pathfinder" } },
+          { "narrate": "In the yard before it is light, the tally-guard go round three times looking for you while you stand by the pump. Lead Astray, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
+          { "say": "maren", "text": "You read the oldest wall aloud in the yard this morning, through the window, and every clerk in the Hall stopped writing to listen. Recital of Ages, the Loremasters call it. Burdock cried.", "when": { "spec": "lorekeeper" } },
+          { "narrate": "Before it is light, you read the oldest wall aloud through the window, and every clerk in the Long Hall stops writing to listen. Recital of Ages, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "orin", "text": "You sang in the yard this morning. Low. And the icicles on the Hall came down all at once, the whole row. Dirge, the Warchanters call it. Sing it somewhere else next time.", "when": { "spec": "battlecantor" } },
+          { "narrate": "In the yard before it is light, you sing one low line, and every icicle on the Long Hall comes down at once. Dirge, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
+          { "say": "maren", "text": "Half the door-bearers came to breakfast this morning with a promise to keep for you, and not one of them could say when you'd asked. Alliance, they call that in Merrowgate, as a joke. It isn't one.", "when": { "spec": "envoy" } },
+          { "narrate": "Before it is light, half the door-bearers come to breakfast each with a promise to keep for you, and none of them can say when you asked. Alliance, they call that in Merrowgate, as a joke.", "when": { "spec": "envoy", "absent": "maren" } },
+          { "narrate": "Somewhere in the last few weeks you stopped feeling the cold of the Wold. You are not sure when.", "when": { "spec": "none" } },
+          { "say": "Rue", "text": "I wrote down what I saw you do. I do not know what it is called. I have left a space for the name." }
+        ],
+        "choices": [
+          {
+            "id": "again",
+            "label": "Do it again, now that it has been seen",
+            "lines": [
+              { "narrate": "You do it again in the blue light, slowly, so that whoever is watching can see how. Then you go in to the fire." }
+            ]
+          },
+          {
+            "id": "in",
+            "label": "Go in to the fire",
+            "lines": [
+              { "narrate": "You go in to the fire in the Long Hall, where Burdock is already at his desk, writing the morning." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "potbells-camp": {
+    "id": "potbells-camp",
+    "after": "b4-potbells",
+    "cast": [],
+    "act": "Camp",
+    "location": "Under Dunnet's bell-frame, the night after",
+    "start": "frame",
+    "nodes": {
+      "frame": {
+        "title": "The Bell-frame",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Dunnet's street, late. The bell-frame is empty, and the pieces of the bell are stacked by the smithy door to be made into pots again. Campion is sitting in the empty frame with her mother's pan-handle across her knees.", "when": { "flag": "b4_potbell_broken" } },
+            { "narrate": "Dunnet's street, late. The bell hangs in its frame. Down the shelf, Wem's street is dark, with nobody in it. Campion is sitting on the step under the frame with the rope across her knees.", "when": { "flag": "b4_potbell_kept" } },
+            { "narrate": "The boundary stones, late. The bell-frame stands over the middle stone with the rota chalked on it, and a lamp from each village hung on the frame. Campion is sitting on the stone, on the Dunnet side, next to a boy from Wem who is asleep.", "when": { "flag": "b4_potbell_rota" } }
+          ] },
+          { "say": "Campion", "text": "You know how to ring properly. In the south. Everybody says so. Teach me." },
+          { "oneOf": [
+            { "say": "Campion", "text": "I know there's no bell. I know why. I'd still like to know how. In case. In case one day there's one that doesn't send it anywhere.", "when": { "flag": "b4_potbell_broken" } },
+            { "say": "Campion", "text": "I'm ringing it every night now, whatever happens. I'd like to ring it so it's not ugly. If it's going to be rung.", "when": { "flag": "b4_potbell_kept" } },
+            { "say": "Campion", "text": "Half the nights it's going to be rung onto us. On those nights I want it rung properly. I'm not having Wem's boy say I can't count.", "when": { "flag": "b4_potbell_rota" } }
+          ] },
+          { "say": "Rue", "text": "I will write down whatever you teach her, so that she has it after the season." },
+          { "say": "nessa", "text": "Don't look at me. I go up towers and light lamps. Wren did the bells.", "when": { "party": "nessa" } },
+          { "say": "orin", "text": "I can tie the rope so it doesn't slip. That's all I've got.", "when": { "party": "orin" } },
+          { "narrate": "Campion waits, with her burnt hands round her knees, looking at you." }
+        ],
+        "choices": [
+          {
+            "id": "teach",
+            "label": "Teach her to ring: the pull, the catch, and where the note goes",
+            "lines": [
+              { "narrate": "You show her the pull, and the catch on the sally, and how to let the rope go up without fighting it. Then you show her where the note goes, with your arm, down the valley, and she watches your arm for a long time, and nods, and writes it on her own." }
+            ]
+          },
+          {
+            "id": "where",
+            "label": "Tell her first where away is",
+            "lines": [
+              { "narrate": "You tell her where away is. Not Wem: further. Over the peaks, nine hundred years, every bell in the south. She listens to all of it with her hands round her knees, and at the end she says, 'Then teach me anyway. Somebody should know how, who knows where.'" }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

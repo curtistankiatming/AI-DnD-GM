@@ -518,8 +518,10 @@ function checkPlan(state, choice, forced = null) {
   if(under){dc+=under;reasons.push(`More than ${XP.UNDER_FREE} levels under this adventure raises DC by ${under}`);}
   if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
-  if(check.easierWith?.flag && state.story.flags[check.easierWith.flag]){dc-=2;reasons.push(check.easierWith.reason||'An earlier choice lowers DC by 2');}
-  if(check.harderWith?.flag && state.story.flags[check.harderWith.flag]){dc+=2;reasons.push(check.harderWith.reason||'An earlier choice raises DC by 2');}
+  // easierWith / harderWith: { flag } or { anyFlag: [...] }, and the reason shown.
+  const earlier=(w)=>Boolean(w&&((w.flag&&state.story.flags[w.flag])||(Array.isArray(w.anyFlag)&&w.anyFlag.some((f)=>state.story.flags[f]))));
+  if(earlier(check.easierWith)){dc-=2;reasons.push(check.easierWith.reason||'An earlier choice lowers DC by 2');}
+  if(earlier(check.harderWith)){dc+=2;reasons.push(check.harderWith.reason||'An earlier choice raises DC by 2');}
   if(quest==='beacon'){const n=['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length;dc-=Math.min(3,n);if(n)reasons.push(`Independent allies lower DC by ${Math.min(3,n)}`);}
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
   const effectiveAdvantage = advantage && !disadvantage;

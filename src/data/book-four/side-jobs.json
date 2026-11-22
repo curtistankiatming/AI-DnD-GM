@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and has no until yet, since it closes after chapter 17 (b4-potbells), which is not written.",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand from chapter 15 (from: b4-greve); it has no until yet, since it closes after chapter 18 (b4-hush), which is not written.",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -411,6 +411,7 @@
     "town": "lantry",
     "level": 51,
     "from": "b4-lantry",
+    "until": "b4-potbells",
     "gold": 180,
     "giver": "Lantry's weavers, at the loom-house",
     "brief": "Lantry's weavers need the summer's fleeces brought down from the high pasture before the white closes it for the winter.",
@@ -466,6 +467,137 @@
               { "say": "The weavers' eldest", "text": "It isn't our wool. It's warm, though. We'll call it south-wool. It'll be on the doors by morning what that means." }
             ],
             "setFlags": { "job:white-wool-blankets": true }
+          }
+        ]
+      }
+    }
+  },
+  "burdock-mistake": {
+    "id": "burdock-mistake",
+    "name": "Burdock's Mistake",
+    "town": "orme",
+    "level": 53,
+    "from": "b4-orme",
+    "until": "b4-reckoning",
+    "gold": 150,
+    "giver": "Burdock of the Long Hall",
+    "brief": "Burdock has found an error in the tally from three hundred years ago, and cannot decide whether a correction is a lie.",
+    "start": "desk",
+    "nodes": {
+      "desk": {
+        "title": "Burdock's Mistake",
+        "lines": [
+          { "narrate": "Burdock has not written anything all morning. He is sitting at his desk with an old book open in front of him, three hundred years old, and a lamp pulled close, and both pairs of spectacles on." },
+          { "say": "Burdock", "text": "The winter of the long white. Three hundred and six years ago. The tally says: 'Orme. Lost: forty.' I have read it every year of my life. Everybody has. It is the worst winter in the tally. Children learn it." },
+          { "say": "Burdock", "text": "Then this morning I read the Hall's own porch door, which is older than this book, because a clerk dropped a slate against it. And the porch door says: 'Lost: fourteen.'" },
+          { "say": "Burdock", "text": "Somebody copied it wrong. Three hundred years ago. And everyone since has believed forty. I believed forty. If I write fourteen now, then for three hundred years the tally was false, and everybody who read it believed something untrue. If I do not, I am writing forty knowing that it is false." },
+          { "say": "Burdock", "text": "I have never once in forty years not known what to write. I do not like it." }
+        ],
+        "choices": [
+          {
+            "id": "check",
+            "label": "Find out which number is true before anything is written",
+            "check": { "skill": "history", "alt": ["investigation", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} through every book that mentions that winter, and the porch door, and the doors of the three oldest houses in Orme, which still carry their own winters cut under the chalk. Three of them say fourteen. One house lost four that winter on its own, and its door says so, with the names rubbed out." },
+                { "narrate": "Then {you find|@ finds} it: a clerk's slate, kept in the back of the old book as a page-mark, with the winter's count on it in a hurried hand. 'Lost: 14.' The one and the four are close together. Whoever copied it read the four as a nought and put the one in front." },
+                { "say": "Burdock", "text": "Fourteen. Then I write fourteen, and I write under it why, and whose slate, and that it was forty for three hundred and six years. Both. And then everybody who reads it will know that the tally can be wrong. That is a terrible thing to know. It is also true." }
+              ],
+              "setFlags": { "job:burdock-mistake-found": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} through every book that mentions that winter, but they all copied the same line, forty, and the porch door is the only thing that says fourteen, and nobody can say which is older now that the door has been re-cut twice." },
+                { "say": "Burdock", "text": "Then I write both, and that nobody knows. 'Lost: forty, or fourteen.' I have never written 'or' in the tally. It looks very strange." }
+              ],
+              "setFlags": { "job:burdock-mistake-unsure": true }
+            }
+          },
+          {
+            "id": "beside",
+            "label": "Tell him to leave forty, and write fourteen beside it, dated today",
+            "lines": [
+              { "narrate": "You tell him not to strike anything. The tally is what Orme believed, and Orme believed forty for three hundred years, and that is true too. Write fourteen beside it, in today's ink, with today's date, and where it came from." },
+              { "narrate": "Burdock writes it in the margin, very small, in the square hand: 'The porch door says fourteen. Read this day, by Burdock, with the southerners.' Then he reads the whole line aloud, both numbers, and sits back." },
+              { "say": "Burdock", "text": "Two numbers. And the day I found out. That is a tally of a tally. I think the Reckoner will like it. I think she will be very cross." }
+            ],
+            "setFlags": { "job:burdock-mistake-beside": true }
+          },
+          {
+            "id": "leave",
+            "label": "Tell him to leave the line as it was written",
+            "lines": [
+              { "narrate": "You tell him that it was written forty and believed forty, and that the people who were lost that winter are not any more or less lost for a number in a book, and that a tally that changes its old lines is a tally nobody will trust again." },
+              { "say": "Burdock", "text": "Yes. Yes. That is what I would have said, if I had been able to say anything. Forty." },
+              { "narrate": "He closes the old book, carefully, and puts it back on its stack. Then, when he thinks nobody is looking, he goes to the porch and stands in front of the door for a long time, reading 'fourteen' over and over without writing it down." }
+            ],
+            "setFlags": { "job:burdock-mistake-left": true }
+          }
+        ]
+      }
+    }
+  },
+  "southern-hand": {
+    "id": "southern-hand",
+    "name": "The Southern Hand",
+    "town": "orme",
+    "level": 54,
+    "from": "b4-greve",
+    "gold": 170,
+    "giver": "Rue, at the oldest wall",
+    "brief": "A line on Orme's oldest wall is in free-wards script: a southerner who crossed two hundred years ago and stayed. Find his family, who do not know.",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "The Southern Hand",
+        "lines": [
+          { "narrate": "Low down on the Long Hall's oldest wall, under two hundred years of other lines, there is one that nobody in Orme can read. The clerks dust round it. Rue found it this morning, on her knees, with a lamp." },
+          { "say": "Rue", "text": "That is your writing. Not yours: the south's. The letters are joined. Nobody here joins their letters. Read it to me." },
+          { "narrate": "It is cut small and careful, in the free wards' hand, the way a child is taught to write in a ward school: 'Piers Ashdown, of Briarwatch, came over the old road in the hungry year, and was taken in at Orme, and given a door, and stayed. I have written this in my own hand, because nobody here could.'" },
+          { "say": "Rue", "text": "Two hundred years. He had children. They had children. Somebody in Orme is his, and does not know it, and has a door." },
+          { "say": "Rue", "text": "Nobody came from the south. Burdock says so every morning. He has been wrong for two hundred years, in a hand he could not read." }
+        ],
+        "choices": [
+          {
+            "id": "find",
+            "label": "Find the door that still carries his name, and tell the family who he was",
+            "check": { "skill": "investigation", "alt": ["insight", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} along Orme's doors with Rue, all afternoon, reading the oldest line on each one, the line people copy every winter because it was there when they came. On the chandler's door, at the very bottom, under the chalk, there is a word nobody in Orme has been able to say for two hundred years, copied over and over in a Wold hand that does not join its letters: 'Ashdown'." },
+                { "narrate": "The chandler is called Lovage. She is sixty, and has copied the word every winter of her life, and her mother did, and her mother's mother. She listens to the line from the wall with her hands in her apron, and then asks {you|@} to say it again, and then once more." },
+                { "say": "Lovage", "text": "Briarwatch. Over the old road. And they took him in. We've been writing his name on the door for two hundred years and nobody knew it was a name. I'll write what it means under it now. I'll write it big." }
+              ],
+              "setFlags": { "job:southern-hand-found": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} along Orme's doors with Rue all afternoon, reading the oldest lines, but two hundred years of winters have been chalked over every one of them, and the old words have worn into each other, and at dusk {you have|@ has} found nothing that says Ashdown." },
+                { "say": "Rue", "text": "Somebody is his. We will not know who. I will write the line from the wall in my book, in your letters, and I will read it to the doors." }
+              ],
+              "setFlags": { "job:southern-hand-lost": true }
+            }
+          },
+          {
+            "id": "tally",
+            "label": "Read the line to Burdock, so that it goes into the tally in the Wold's hand",
+            "lines": [
+              { "narrate": "You read the line aloud to Burdock at his desk, slowly, the whole of it. He writes it into the newest book as you say it, in the square hand, and then reads it back, and stops at 'came over the old road'." },
+              { "say": "Burdock", "text": "Then somebody did come from the south. Two hundred years ago. It is in the tally now. I must have been wrong every morning for forty years, and I believed it every time." },
+              { "narrate": "He reads it again. Then he writes, under it, in smaller letters: 'Found by Rue of Thrum, read by the southerners. Nobody here could.'" }
+            ],
+            "setFlags": { "job:southern-hand-tally": true }
+          },
+          {
+            "id": "answer",
+            "label": "Cut an answer under it, in the same southern hand",
+            "lines": [
+              { "narrate": "You borrow a clerk's chisel and kneel at the oldest wall, and under Piers Ashdown's line, in the same joined letters, as small and careful as his, you cut one line of your own: 'Read by a southerner from Briarwatch, two hundred years on. You were not the only one. We came.'" },
+              { "narrate": "Rue holds the lamp the whole time and does not say anything. When it is done she copies both lines into her book, in your letters, which she cannot read, so that she will have the shape of them." },
+              { "say": "Rue", "text": "Nobody here can read it. That is all right. He was not writing to us either." }
+            ],
+            "setFlags": { "job:southern-hand-answered": true }
           }
         ]
       }

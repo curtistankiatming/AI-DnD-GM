@@ -1579,12 +1579,14 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | lantry-camp, 12 (Sheddon: the pots), 13 (Burdock's Lantry slate), 17 (who taught Dunnet), epilogue |
 | 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back, b4_hero_ordered (the answer with Orin away) | sheddon-camp, 13 (Sedge comes in with his mother or on his own), 18 (Sedge's mother; b4_hero_ordered reads as not saved), 25, epilogue |
 | The Painted Door (job, 11 to 13) | job:painted-door-read, job:painted-door-scraped, job:painted-door-left, job:painted-door-chalked | a later Lantry line (not yet written: Lantry's next visit, by chapter 17) |
-| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written). TODO with chapter 17: set `until: "b4-potbells"` on the job |
+| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written). Open to chapter 17 (`until: "b4-potbells"`) |
 | 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | orme-camp (Burdock's page), 16 (peaceful), 22 |
-| 14 Greve | b4_names_kept, b4_names_written, b4_names_given | 16, 19, 26 (walkers), epilogue |
-| 15 Thrum | b4_rue_gave, b4_rue_kept (also set by lines) | 27, epilogue |
-| 16 Reckoning | b4_demand_carried, b4_share_promised, b4_sloe_comes | 19 (where Sloe is), 22, 26 |
-| 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | 23 (white comes south), 30 (peaceful), epilogue |
+| 14 Greve | b4_names_kept, b4_names_written, b4_names_given | greve-camp, 16 (Sloe and Burdock; b4_names_kept makes the vote harder), 19, 26 (walkers), epilogue |
+| Burdock's Mistake (job, 13 to 16) | job:burdock-mistake-found, job:burdock-mistake-unsure, job:burdock-mistake-beside, job:burdock-mistake-left | 19 or 22 (what Burdock does with an old line; not yet written) |
+| The Southern Hand (job, 14 to 18) | job:southern-hand-found, job:southern-hand-lost, job:southern-hand-tally, job:southern-hand-answered | 22 (the free wards' tally; not yet written). TODO with chapter 18: set `until: "b4-hush"` on the job |
+| 15 Thrum | b4_rue_gave, b4_rue_kept (also set by Nessa's answer's flagsIf), b4_rue_asked_nessa | thrum-nessa, 16 (Rue on Sloe), 27, epilogue |
+| 16 Reckoning | b4_demand_carried, b4_share_promised (two answers: under the council's seal, or on the hero's own word), b4_sloe_comes | reckoning-camp, 17 (Rue on Sloe), 19 (where Sloe is), 22, 26 |
+| 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | potbells-camp, 19, 23 (white comes south), 30 (peaceful), epilogue |
 | 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | 19 (tail fight), 25, 26, epilogue |
 | 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | 22 (who reads), 30 (south), epilogue |
 | 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | 21, 23, 25, 30, 21 unlock |
@@ -2340,10 +2342,9 @@ below.
     `rep.wold` by 1. Ringing the pots, ordering the column on and asking the
     tally to wait move the wardens' instead, and waiting at Lantry the
     wilds'.
-35. **White-wool's close** (build step 6). White-wool opens with chapter 11
-    and has no `until` yet: it closes after chapter 17 (`b4-potbells`),
-    which is not written. Add `until: "b4-potbells"` with chapter 17. The
-    blankets answer needs `b4_company_council`.
+35. **White-wool's close** (build steps 6 and 7). White-wool opens with
+    chapter 11 and closes once chapter 17 is done (`until: "b4-potbells"`,
+    set with chapter 17). The blankets answer needs `b4_company_council`.
 36. **The chapter rewards for chapters 11 to 13** (build step 6) follow
     decided question 29: tier 45 numbers for the scarf and shield, tier 50
     for the staff, each with something the six warm shop items lack. The
@@ -2356,3 +2357,56 @@ below.
     bard: +5 spell attack and DC, 10% dealt, History +2, Count the Winters:
     Vulnerable 1 round). The Part One lints (names, roller grammar, companion
     gating, flags read) now run over all of Book Four's written chapters.
+37. **Where chapters 14 to 17 are** (build step 7). All four depart from
+    Orme and return there. Greve is a day up the valley from Orme; Thrum three
+    days east down the long valley; Dunnet a day down the valley road, the
+    road the Company took (chapter 13), with Wem a mile below it at the foot
+    of Dunnet's shelf. The Company's camp, with `b4_company_sails`, is further
+    down that road, in the empty land.
+38. **Chapter 14's people** (build step 7). Madder, a mother up the valley,
+    has come to give her son Comfrey's death; Burdock opens the first page of
+    names with `b4_names_written`. The goat in Madder's line is a dog and
+    ewes, since goats are Brannagh's. Maren's talk has a version for
+    `b3_seal_taken`, `b3_maren_gives` and neither.
+39. **Chapter 15's people** (build step 7). Rue's brother is Furze, ten, who
+    writes the door. Heath gave her grief at Greve in the spring. The line
+    Heath kept under the scrubbing is "Leave the lamp". Nessa's answer is a
+    decision of its own (`b4_rue_asked_nessa`, Nessa only) whose `flagsIf`
+    sets `b4_rue_kept` with `b3_nessa_gives` and `b4_rue_gave` otherwise, so
+    later chapters read only the two Rue flags. Wren went back for Nessa
+    ("the kid her mentor rescued").
+40. **Chapter 16's vote** (build step 7). `easierWith` and `harderWith` now
+    take `anyFlag` as well as `flag` (src/engine.js, a two-line change), so
+    the vote is 2 easier with `b4_tally_truth` or `b4_tally_reasons` and 2
+    harder with `b4_tally_wait` or `b4_names_kept`; both can apply. The share
+    is two answers with one flag: `share-council` needs
+    `b4_embassy_council`, `share-own` needs it absent and costs Orin 1. With
+    `b4_sloe_comes` she waits for the party at the Hall (19), rather than
+    leaving at once. The camp's 3rd job lines name each branch's level 56
+    skill as practised in the yard before dawn, by the companion of decided
+    question 26, with a narrated line when they are away.
+41. **Chapter 17's teacher** (build step 7). The opening picks one: Hesk
+    (`b3_stair_sealed`), then the Company (`b4_company_sails`), then Lantry's
+    pots (`b4_rang_lantry`), then Sloe's reading of the tally. Wem's elder
+    remembers Vetch's house, who came up at Cinder Fold in chapter 7. The
+    fight is the white only; with `b4_company_sails` the Company's guards are
+    at the bell-rope in the lines, and the factor stays chapter 4's decent
+    man. Unnamed speakers: "Wem's elder", "Wem's door-bearer", "Dunnet's
+    door-bearer".
+42. **Orme's jobs** (build step 7). Burdock's Mistake (from `b4-orme`, until
+    `b4-reckoning`): forty or fourteen, three hundred and six years ago. The
+    Southern Hand (from `b4-greve`) has no `until` yet: it closes after
+    chapter 18 (`b4-hush`), which is not written. Piers Ashdown of Briarwatch
+    crossed in the hungry year; his family is Lovage the chandler's.
+43. **The chapter rewards for chapters 14 to 17** (build step 7), tier 50
+    numbers, each with something the sold tier 50 piece of its kind lacks:
+    the Letting-house Censer (level 51: Medicine, Religion and Insight +3,
+    Wisdom saves +2, Constitution +1, 5% dealt, 5% taken, Every Name Said:
+    Fortified 1 round, Medicine story), the Thrum Lane Cloak (warm, light,
+    level 52: base AC 17, 10% dealt, 5% taken, Survival, Stealth and Insight
+    +2, Dexterity, Constitution and Wisdom saves +1, Insight story), the
+    Reckoner's Slate (level 53, wizard: +5 spell attack, +6 spell DC, 10%
+    dealt, Arcana and History +2, The Sum Comes Out: Vulnerable 1 round) and
+    the Pot-bell Mace (level 54, fighter or cleric, Str 13, as the late-gear
+    test's class rule asks: 1d10, +3/+6, 10% dealt, Forty Strokes: Weakened
+    2 rounds).
