@@ -1244,7 +1244,7 @@ function combatActionView(state) {
     });
   }
 
-  for(const skill of actor.gearSkills||[]){const used=!gearSkillReady(state,actor,skill),targetKind=skill.target==='self'?'self':'enemy';actions.push({id:`gear:${skill.itemId}`,name:skill.name,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:`${ITEMS[skill.itemId]?.name}: ${skill.text||Power.EFFECTS[skill.effect].text} Once per fight.`,disabled:Boolean(actor.bonusUsed||used),disabledReason:used?'Already used this fight.':actor.bonusUsed?'Bonus action already used.':''});}
+  for(const skill of actor.gearSkills||[]){const used=!gearSkillReady(state,actor,skill),targetKind=skill.target==='self'?'self':'enemy';actions.push({id:`gear:${skill.itemId}`,name:skill.name,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:`${skill.source||ITEMS[skill.itemId]?.name}: ${skill.text||Power.EFFECTS[skill.effect].text} Once per fight.`,disabled:Boolean(actor.bonusUsed||used),disabledReason:used?'Already used this fight.':actor.bonusUsed?'Bonus action already used.':''});}
   if(state.combat.objective){const plan=objectivePlan(state);actions.push({id:'objective',name:state.combat.objective.label,cost:'action',targetKind:'none',targets:[],description:plan.description+` Success ${Math.round(plan.successProbability*100)}%.`,disabled:actor.actionUsed,disabledReason:actor.actionUsed?'Action already used.':''});}
   for(const [kind,name,targetKind]of [['focus','Order: Focus fire','enemy'],['protect','Order: Protect ally','ally'],['cover','Order: Cover objective','none']]){
     if(kind==='cover'&&!state.combat.objective)continue;

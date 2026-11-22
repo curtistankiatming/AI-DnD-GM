@@ -10,9 +10,10 @@ const { ITEMS, CLASSES, SKILLS, ABILITIES, COMPANIONS } = require('../src/conten
 const { TOWNS, QUESTS } = require('../src/expansion');
 const GEAR = require('../src/data/gear.json');
 
-// Book Three's gear is every catalogue item that needs level 18 or more
-// (chapter rewards wear from two levels below their chapter).
-const B3 = GEAR.filter((i) => (i.requires?.level || 0) >= 18);
+// Book Three's gear is every catalogue item that needs level 18 to 40
+// (chapter rewards wear from two levels below their chapter). Gear past 40 is
+// tested in tests/endgame-gear.test.js.
+const B3 = GEAR.filter((i) => (i.requires?.level || 0) >= 18 && (i.requires?.level || 0) <= 40);
 const TIERS = [20, 25, 30, 35, 40];
 // Levels each tier covers: 20 to 24, 25 to 29, 30 to 34, 35 to 39, and 40.
 const band = (t) => t === 40 ? [38, 40] : [t - 2, t + 4];

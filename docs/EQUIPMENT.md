@@ -78,3 +78,19 @@ They are sold in Briarwatch (dagger, cloak), Ashford (rod, shield), Highpass
 
 The smith refines an Epic or Legendary item once for twice its price;
 see [ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#masterwork-what-late-gold-is-for).
+
+## Equipment sets (22 November 2026)
+
+A set piece names its set in `set` (src/data/gear.json); the sets are in
+src/data/gear-sets.json. Wearing 2 or more different pieces of a set gives every
+bonus of that set whose piece count is reached (src/gear.js `setBonuses`). A
+bonus uses the item fields (`acBonus`, `attackBonus`, `damageBonus`,
+`spellAttackBonus`, `spellDcBonus`, `saveBonuses`, `skillBonuses`, `stats`,
+`skill`), and is added in `derive` like a worn item. The full set's `skill` is a
+bonus action once per fight, with the id `gear:set-<set id>`. Gear, sets
+included, takes off at most 30% of damage taken and adds at most 50% to damage
+dealt (`MAX_GEAR_TAKEN`, `MAX_GEAR_DEALT` in src/equipment.js). Item cards show a
+set line with each bonus, and the equipment screen shows the sets the hero wears
+and the next bonus. The list is in
+[ITEM-CATALOGUE.md](ITEM-CATALOGUE.md#gear-for-levels-45-to-100-22-november-2026).
+

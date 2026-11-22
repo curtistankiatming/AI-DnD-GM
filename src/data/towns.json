@@ -87,6 +87,95 @@
         "keepers-daybook",
         "bramble-silk-gloves",
         "hour-chime"
+      ],
+      "45": [
+        "frostforged-plate",
+        "ridgeguard-scale",
+        "mistweave-jerkin",
+        "gatewarden-shield",
+        "warded-buckler",
+        "hoarfrost-locket",
+        "ghostlace-gloves",
+        "pilgrims-almanac"
+      ],
+      "50": [
+        "rimeheart-longsword",
+        "glacier-maul",
+        "icicle-stiletto",
+        "skyreach-longbow",
+        "aurora-staff",
+        "avalanche-horn",
+        "ambassadors-brooch",
+        "wolfpelt-mantle"
+      ],
+      "55": [
+        "bellwarden-hammer",
+        "thornstep-rapier",
+        "long-watch-bow",
+        "lamplit-staff",
+        "hearthward-staff",
+        "chorus-baton"
+      ],
+      "60": [
+        "bellwarden-plate",
+        "bellwarden-shield",
+        "thornstep-leathers",
+        "long-watch-coat",
+        "lamplit-robe",
+        "hearthward-mail",
+        "hearthward-buckler",
+        "chorus-coat",
+        "riftcleaver"
+      ],
+      "65": [
+        "bellwarden-seal",
+        "thornstep-band",
+        "long-watch-quiver",
+        "lamplit-lens",
+        "hearthward-rosary",
+        "chorus-bell"
+      ],
+      "70": [
+        "summitforged-plate",
+        "summit-scale",
+        "windrunner-leathers",
+        "summit-wall-shield",
+        "wayfarers-compass",
+        "courtiers-mask"
+      ],
+      "80": [
+        "thunderbrand",
+        "ridgebreaker-maul",
+        "starling-knife",
+        "comet-longbow",
+        "eclipse-staff",
+        "stormglass-buckler"
+      ],
+      "90": [
+        "highbell-warhammer",
+        "highbell-plate",
+        "highbell-tower-shield",
+        "nightbriar-blade",
+        "nightbriar-leathers",
+        "farwatch-greatbow",
+        "farwatch-mantle",
+        "starward-staff",
+        "starward-robe",
+        "dawnhearth-rod",
+        "dawnhearth-hauberk",
+        "dawnhearth-aegis",
+        "grand-chorus-baton",
+        "grand-chorus-mantle"
+      ],
+      "100": [
+        "highbell-seal",
+        "nightbriar-ring",
+        "farwatch-horn",
+        "starward-orrery",
+        "dawnhearth-reliquary",
+        "grand-chorus-chime",
+        "kingsfall-greataxe",
+        "hundredfold-scale"
       ]
     }
   },
@@ -223,6 +312,95 @@
         "briar-yew-greatbow",
         "hourbell-staff",
         "wardsmith-scale"
+      ],
+      "45": [
+        "frostforged-plate",
+        "ridgeguard-scale",
+        "mistweave-jerkin",
+        "gatewarden-shield",
+        "warded-buckler",
+        "hoarfrost-locket",
+        "ghostlace-gloves",
+        "pilgrims-almanac"
+      ],
+      "50": [
+        "rimeheart-longsword",
+        "glacier-maul",
+        "icicle-stiletto",
+        "skyreach-longbow",
+        "aurora-staff",
+        "avalanche-horn",
+        "ambassadors-brooch",
+        "wolfpelt-mantle"
+      ],
+      "55": [
+        "bellwarden-hammer",
+        "thornstep-rapier",
+        "long-watch-bow",
+        "lamplit-staff",
+        "hearthward-staff",
+        "chorus-baton"
+      ],
+      "60": [
+        "bellwarden-plate",
+        "bellwarden-shield",
+        "thornstep-leathers",
+        "long-watch-coat",
+        "lamplit-robe",
+        "hearthward-mail",
+        "hearthward-buckler",
+        "chorus-coat",
+        "riftcleaver"
+      ],
+      "65": [
+        "bellwarden-seal",
+        "thornstep-band",
+        "long-watch-quiver",
+        "lamplit-lens",
+        "hearthward-rosary",
+        "chorus-bell"
+      ],
+      "70": [
+        "summitforged-plate",
+        "summit-scale",
+        "windrunner-leathers",
+        "summit-wall-shield",
+        "wayfarers-compass",
+        "courtiers-mask"
+      ],
+      "80": [
+        "thunderbrand",
+        "ridgebreaker-maul",
+        "starling-knife",
+        "comet-longbow",
+        "eclipse-staff",
+        "stormglass-buckler"
+      ],
+      "90": [
+        "highbell-warhammer",
+        "highbell-plate",
+        "highbell-tower-shield",
+        "nightbriar-blade",
+        "nightbriar-leathers",
+        "farwatch-greatbow",
+        "farwatch-mantle",
+        "starward-staff",
+        "starward-robe",
+        "dawnhearth-rod",
+        "dawnhearth-hauberk",
+        "dawnhearth-aegis",
+        "grand-chorus-baton",
+        "grand-chorus-mantle"
+      ],
+      "100": [
+        "highbell-seal",
+        "nightbriar-ring",
+        "farwatch-horn",
+        "starward-orrery",
+        "dawnhearth-reliquary",
+        "grand-chorus-chime",
+        "kingsfall-greataxe",
+        "hundredfold-scale"
       ]
     }
   },

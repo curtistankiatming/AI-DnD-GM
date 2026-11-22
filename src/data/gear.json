@@ -4553,5 +4553,2276 @@
     "exclusive": {
       "quest": "b3-firstbell"
     }
+  },
+  {
+    "id": "frostforged-plate",
+    "name": "Frostforged Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "Plate hammered cold on the high road, so it never softens in a thaw.",
+    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "requires": {
+      "level": 45,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "ridgeguard-scale",
+    "name": "Ridgeguard Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "Overlapping scales cut from a ridge-drake, light enough to climb in.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "con": 1,
+      "dex": 1
+    },
+    "requires": {
+      "level": 45
+    }
+  },
+  {
+    "id": "mistweave-jerkin",
+    "name": "Mistweave Jerkin",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "A grey jerkin that drinks the light at its edges.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Stealth.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "requires": {
+      "level": 45
+    }
+  },
+  {
+    "id": "gatewarden-shield",
+    "name": "Gatewarden Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "A gate-shield with a bar across its back, built to hold a doorway alone.",
+    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw.",
+    "acBonus": 5,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "skill": {
+      "name": "Hold the Gate",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "requires": {
+      "level": 45,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "warded-buckler",
+    "name": "Warded Buckler",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "A light buckler of warded willow and brass, made for hands that also carry a prayer or a staff.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 Wisdom saves, +1 Constitution saves.",
+    "acBonus": 4,
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "wis": 1,
+      "con": 1
+    },
+    "requires": {
+      "level": 45,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    }
+  },
+  {
+    "id": "hoarfrost-locket",
+    "name": "Hoarfrost Locket",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "A locket that is always cold, and keeps its wearer's head clear.",
+    "purpose": "Equip in the accessory slot: +1 AC. +1 Strength saves, +1 Dexterity saves, +2 Constitution saves, +1 Intelligence saves, +1 Wisdom saves, +1 Charisma saves.",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 2,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 45
+    }
+  },
+  {
+    "id": "ghostlace-gloves",
+    "name": "Ghostlace Gloves",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "Gloves so fine they leave no print, on a latch or a purse.",
+    "purpose": "Equip in the accessory slot. +3 Stealth, +3 Sleight of Hand, +3 Acrobatics.",
+    "skillBonuses": {
+      "stealth": 3,
+      "sleightOfHand": 3,
+      "acrobatics": 3
+    },
+    "requires": {
+      "level": 45
+    }
+  },
+  {
+    "id": "pilgrims-almanac",
+    "name": "Pilgrim's Almanac",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "Feast days, star tables, remedies and the names of old saints, in one fat little book.",
+    "purpose": "Equip in the accessory slot. +3 Arcana, +3 History, +3 Religion, +3 Medicine.",
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3,
+      "religion": 3,
+      "medicine": 3
+    },
+    "requires": {
+      "level": 45
+    }
+  },
+  {
+    "id": "rimeheart-longsword",
+    "name": "Rimeheart Longsword",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A longsword with frost in the steel that never quite melts.",
+    "purpose": "Strength, 1d10 slashing, +3 to hit, +6 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Frostbite",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 50,
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "glacier-maul",
+    "name": "Glacier Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A maul with a head of blue ice-iron, heavy as a falling cornice.",
+    "purpose": "Strength, 2d6 bludgeoning, +3 to hit, +6 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Cave In",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 50,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "icicle-stiletto",
+    "name": "Icicle Stiletto",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A thin, clear-steel blade that finds the gap in any guard.",
+    "purpose": "Finesse, 1d8 piercing, +3 to hit, +6 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Numb",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy for one round: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 50,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "skyreach-longbow",
+    "name": "Skyreach Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A tall horn-and-yew bow strung for shots across a valley.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +6 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Pin Down",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 50,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "aurora-staff",
+    "name": "Aurora Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A staff of pale wood whose crystal shows colours that are not in the room.",
+    "purpose": "Equip: +5 spell attack bonus and +5 spell save DC.",
+    "spellAttackBonus": 5,
+    "spellDcBonus": 5,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Dazzle",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy for one round: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 50,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    }
+  },
+  {
+    "id": "avalanche-horn",
+    "name": "Avalanche Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A ram's horn whose note shakes snow off a whole slope.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.2,
+      "taken": -0.05
+    },
+    "skill": {
+      "name": "Rallying Blast",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Empowered for one round: deal 25% more damage."
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "ambassadors-brooch",
+    "name": "Ambassador's Brooch",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A brooch every gatehouse in the north knows on sight.",
+    "purpose": "Equip in the accessory slot. +3 Persuasion, +3 Deception, +3 Insight, +2 History.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "skillBonuses": {
+      "persuasion": 3,
+      "deception": 3,
+      "insight": 3,
+      "history": 2
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "wolfpelt-mantle",
+    "name": "Wolfpelt Mantle",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A grey wolf's pelt worn over the shoulders; dogs and horses settle near it.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Perception, +3 Nature, +3 Animal Handling.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3,
+      "nature": 3,
+      "animalHandling": 3
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "bellwarden-hammer",
+    "name": "Bellwarden Hammer",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "A one-handed hammer with a bell-bronze head, rung once at every oath.",
+    "purpose": "Strength, 1d10 bludgeoning, +3 to hit, +7 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "bellwarden-oath"
+  },
+  {
+    "id": "thornstep-rapier",
+    "name": "Thornstep Rapier",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "A rapier with a guard of steel thorns, light as a switch.",
+    "purpose": "Finesse, 1d8 piercing, +3 to hit, +7 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Thorned Riposte",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy for one round: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "set": "thornstep"
+  },
+  {
+    "id": "long-watch-bow",
+    "name": "Long Watch Bow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "The bow of the watchers on the long wall, each notch a winter kept.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +7 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "set": "long-watch"
+  },
+  {
+    "id": "lamplit-staff",
+    "name": "Lamplit Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "A scholar's staff with a small, steady lamp where the crystal should be.",
+    "purpose": "Equip: +6 spell attack bonus and +5 spell save DC.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 5,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Read the Weakness",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "lamplit-scholar"
+  },
+  {
+    "id": "hearthward-staff",
+    "name": "Hearthward Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "A shepherd's crook of blackthorn hung with a hearth-censer.",
+    "purpose": "Equip: +6 spell attack bonus and +5 spell save DC.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 5,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Censure",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Weaken an enemy for one round: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "hearthward"
+  },
+  {
+    "id": "chorus-baton",
+    "name": "Chorus Baton",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "description": "A conductor's baton of ebony and silver; a room falls quiet when it rises.",
+    "purpose": "Equip: +5 spell attack bonus and +6 spell save DC.",
+    "spellAttackBonus": 5,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Sour Note",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Slow an enemy for one round: 2 less armour."
+    },
+    "requires": {
+      "level": 55,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "chorus"
+  },
+  {
+    "id": "bellwarden-plate",
+    "name": "Bellwarden Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "Plate etched with the names of every warden who wore it before.",
+    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth; +1 to every saving throw.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "bellwarden-oath"
+  },
+  {
+    "id": "bellwarden-shield",
+    "name": "Bellwarden Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "A round shield with a bell-mouth boss that rings when it turns a blow.",
+    "purpose": "Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon.",
+    "acBonus": 6,
+    "stats": {
+      "taken": -0.15
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "bellwarden-oath"
+  },
+  {
+    "id": "thornstep-leathers",
+    "name": "Thornstep Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "Supple black leathers stitched with briar thread.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Stealth, +2 Acrobatics.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "stealth": 2,
+      "acrobatics": 2
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ]
+    },
+    "set": "thornstep"
+  },
+  {
+    "id": "long-watch-coat",
+    "name": "Long Watch Coat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "A long oiled coat that has stood a hundred night watches in the rain.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Perception, +2 Survival.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "perception": 2,
+      "survival": 2
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ]
+    },
+    "set": "long-watch"
+  },
+  {
+    "id": "lamplit-robe",
+    "name": "Lamplit Robe",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "A robe with ward-script sewn into its lining, warm by the page.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Arcana; +1 Intelligence saves, +1 Wisdom saves.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "int": 1,
+      "wis": 1
+    },
+    "skillBonuses": {
+      "arcana": 2
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "lamplit-scholar"
+  },
+  {
+    "id": "hearthward-mail",
+    "name": "Hearthward Mail",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "Mail with a hearth-stone sewn over the heart.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +2 Medicine; +1 Wisdom saves, +1 Constitution saves.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "wis": 1,
+      "con": 1
+    },
+    "skillBonuses": {
+      "medicine": 2
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "hearthward"
+  },
+  {
+    "id": "hearthward-buckler",
+    "name": "Hearthward Buckler",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "A light buckler of warded oak, made for a healer's arm.",
+    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +1 Wisdom saves, +1 Constitution saves.",
+    "acBonus": 5,
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "wis": 1,
+      "con": 1
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "hearthward"
+  },
+  {
+    "id": "chorus-coat",
+    "name": "Chorus Coat",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1000,
+    "description": "A long performer's coat, cut to move and made to be noticed.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Performance, +2 Persuasion.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "performance": 2,
+      "persuasion": 2
+    },
+    "requires": {
+      "level": 60,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "chorus"
+  },
+  {
+    "id": "riftcleaver",
+    "name": "Riftcleaver",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 940,
+    "description": "A two-handed blade forged to split the ice on a frozen pass.",
+    "purpose": "Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Split the Ice",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 60,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "bellwarden-seal",
+    "name": "Bellwarden Seal",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "The wardens' seal in bell-bronze, pressed into every oath they keep.",
+    "purpose": "Equip in the accessory slot: +1 AC. +3 Athletics; +1 to every saving throw.",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "skillBonuses": {
+      "athletics": 3
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "fighter",
+        "cleric"
+      ]
+    },
+    "set": "bellwarden-oath"
+  },
+  {
+    "id": "thornstep-band",
+    "name": "Thornstep Band",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "A ring of twisted thorn-steel that pricks before danger does.",
+    "purpose": "Equip in the accessory slot. +3 Stealth, +3 Acrobatics.",
+    "stats": {
+      "dealt": 0.15
+    },
+    "skillBonuses": {
+      "stealth": 3,
+      "acrobatics": 3
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ]
+    },
+    "set": "thornstep"
+  },
+  {
+    "id": "long-watch-quiver",
+    "name": "Long Watch Quiver",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "A deep quiver with the watch's tally burned into the leather.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Perception.",
+    "stats": {
+      "dealt": 0.15
+    },
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ]
+    },
+    "set": "long-watch"
+  },
+  {
+    "id": "lamplit-lens",
+    "name": "Lamplit Lens",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "A reading lens that shows the ink beneath the ink.",
+    "purpose": "Equip in the accessory slot. +3 Arcana, +3 History; +1 Intelligence saves.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3
+    },
+    "saveBonuses": {
+      "int": 1
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "lamplit-scholar"
+  },
+  {
+    "id": "hearthward-rosary",
+    "name": "Hearthward Rosary",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "Beads of hearth-stone, warm in the coldest chapel.",
+    "purpose": "Equip in the accessory slot. +3 Religion, +3 Medicine; +1 Wisdom saves.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "religion": 3,
+      "medicine": 3
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "hearthward"
+  },
+  {
+    "id": "chorus-bell",
+    "name": "Chorus Bell",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1050,
+    "description": "A hand-bell whose note makes a crowd turn the same way.",
+    "purpose": "Equip in the accessory slot. +3 Performance, +3 Persuasion, +3 Insight.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "performance": 3,
+      "persuasion": 3,
+      "insight": 3
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "chorus"
+  },
+  {
+    "id": "summitforged-plate",
+    "name": "Summitforged Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "Plate forged at the top of the world, where the fire burns thin and white.",
+    "purpose": "Base AC 24, no Dexterity bonus. -2 Stealth; +1 to every saving throw.",
+    "armor": {
+      "base": 24,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 70,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "summit-scale",
+    "name": "Summit Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "Scale armour of white drake-hide that sheds snow and arrows alike.",
+    "purpose": "Base AC 20, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves.",
+    "armor": {
+      "base": 20,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "con": 1,
+      "dex": 1
+    },
+    "requires": {
+      "level": 70
+    }
+  },
+  {
+    "id": "windrunner-leathers",
+    "name": "Windrunner Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "Leathers cut close for running a ridge in a gale.",
+    "purpose": "Base AC 18, full Dexterity bonus. +2 Stealth.",
+    "armor": {
+      "base": 18,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "requires": {
+      "level": 70
+    }
+  },
+  {
+    "id": "summit-wall-shield",
+    "name": "Summit Wall Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "A tower shield of white steel, too heavy for anyone who has not climbed for it.",
+    "purpose": "Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw.",
+    "acBonus": 6,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "skill": {
+      "name": "Wall of Winter",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified for one round: take 25% less damage."
+    },
+    "requires": {
+      "level": 70,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "stormcaller-ring",
+    "name": "Stormcaller Ring",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "A ring with a sliver of lightning-glass; the air prickles round it.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.25,
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 70
+    },
+    "exclusive": {
+      "event": "bounty:briarwatch:70"
+    }
+  },
+  {
+    "id": "glacier-heart",
+    "name": "Glacier Heart",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "A pendant of ice that has not melted in a thousand years.",
+    "purpose": "Equip in the accessory slot: +1 AC. +2 to every saving throw.",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "requires": {
+      "level": 70
+    },
+    "exclusive": {
+      "event": "bounty:highpass:70"
+    }
+  },
+  {
+    "id": "wayfarers-compass",
+    "name": "Wayfarer's Compass",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "A compass that points home, wherever home is today.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Perception, +3 Investigation, +3 Nature.",
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3,
+      "investigation": 3,
+      "nature": 3
+    },
+    "requires": {
+      "level": 70
+    }
+  },
+  {
+    "id": "courtiers-mask",
+    "name": "Courtier's Mask",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1040,
+    "description": "A half-mask of white enamel; behind it, every face is a polite one.",
+    "purpose": "Equip in the accessory slot. +3 Persuasion, +3 Deception, +3 Insight, +3 Performance.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "deception": 3,
+      "insight": 3,
+      "performance": 3
+    },
+    "requires": {
+      "level": 70
+    }
+  },
+  {
+    "id": "thunderbrand",
+    "name": "Thunderbrand",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A longsword that rumbles in its scabbard before a storm.",
+    "purpose": "Strength, 1d10 slashing, +4 to hit, +8 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 4,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Thunderclap",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 80,
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "ridgebreaker-maul",
+    "name": "Ridgebreaker Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A maul that once broke a ridge-road open in a single blow.",
+    "purpose": "Strength, 2d6 bludgeoning, +4 to hit, +7 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 4,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Rockfall",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 80,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "starling-knife",
+    "name": "Starling Knife",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A knife as quick and dark as a starling's wing.",
+    "purpose": "Finesse, 1d8 piercing, +4 to hit, +8 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 4,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Flicker",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Weaken an enemy for two rounds: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 80,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "comet-longbow",
+    "name": "Comet Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "Its arrows leave a pale streak in the air behind them.",
+    "purpose": "Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 4,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Falling Star",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "requires": {
+      "level": 80,
+      "abilities": {
+        "dex": 13
+      }
+    }
+  },
+  {
+    "id": "eclipse-staff",
+    "name": "Eclipse Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A staff topped with a black disc ringed in fire.",
+    "purpose": "Equip: +7 spell attack bonus and +6 spell save DC.",
+    "spellAttackBonus": 7,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Darken",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Weaken an enemy for two rounds: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 80,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    }
+  },
+  {
+    "id": "bounty-hunters-badge",
+    "name": "Bounty Hunter's Badge",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A dented badge that every outlaw in the north has learned to fear.",
+    "purpose": "Equip in the accessory slot, +1 to hit with weapons.",
+    "attackBonus": 1,
+    "stats": {
+      "dealt": 0.15
+    },
+    "requires": {
+      "level": 80
+    },
+    "exclusive": {
+      "event": "bounty:ashford:80"
+    }
+  },
+  {
+    "id": "ironbark-amulet",
+    "name": "Ironbark Amulet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A disc of ironbark that turns a blade like a shield does.",
+    "purpose": "Equip in the accessory slot: +1 AC. +3 Athletics; +2 to every saving throw.",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "skillBonuses": {
+      "athletics": 3
+    },
+    "requires": {
+      "level": 80
+    },
+    "exclusive": {
+      "event": "bounty:merrowgate:80"
+    }
+  },
+  {
+    "id": "sages-circlet",
+    "name": "Sage's Circlet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A thin silver circlet that makes old books easier to read.",
+    "purpose": "Equip in the accessory slot. +3 Arcana, +3 History, +3 Religion, +3 Investigation.",
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3,
+      "religion": 3,
+      "investigation": 3
+    },
+    "requires": {
+      "level": 80
+    },
+    "exclusive": {
+      "event": "bounty:cinderfold:80"
+    }
+  },
+  {
+    "id": "stormglass-buckler",
+    "name": "Stormglass Buckler",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1140,
+    "description": "A buckler of clear storm-glass, light as a book, that turns lightning as well as steel.",
+    "purpose": "Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 Constitution saves, +2 Wisdom saves.",
+    "acBonus": 6,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "con": 2,
+      "wis": 2
+    },
+    "requires": {
+      "level": 80,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    }
+  },
+  {
+    "id": "highbell-warhammer",
+    "name": "Highbell Warhammer",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A warhammer cast from the metal of the highest bell in the north.",
+    "purpose": "Strength, 1d10 bludgeoning, +5 to hit, +8 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 5,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Toll",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "highbell-regalia"
+  },
+  {
+    "id": "highbell-plate",
+    "name": "Highbell Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "Full plate in bell-bronze and white steel; it hums when struck.",
+    "purpose": "Base AC 25, no Dexterity bonus. -2 Stealth; +2 to every saving throw.",
+    "armor": {
+      "base": 25,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "highbell-regalia"
+  },
+  {
+    "id": "highbell-tower-shield",
+    "name": "Highbell Tower Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A tower shield with a bell-mouth rim, made to stand in front of a whole party.",
+    "purpose": "Equip in your off hand for +7 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
+    "acBonus": 7,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "set": "highbell-regalia"
+  },
+  {
+    "id": "nightbriar-blade",
+    "name": "Nightbriar Blade",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A black, thorn-guarded blade that grows back its edge overnight.",
+    "purpose": "Finesse, 1d8 piercing, +5 to hit, +9 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 5,
+    "damageBonus": 9,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Briar Snare",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "set": "nightbriar"
+  },
+  {
+    "id": "nightbriar-leathers",
+    "name": "Nightbriar Leathers",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "Leathers dark as a briar hedge at midnight.",
+    "purpose": "Base AC 18, full Dexterity bonus. +3 Stealth, +2 Acrobatics.",
+    "armor": {
+      "base": 18,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "stealth": 3,
+      "acrobatics": 2
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ]
+    },
+    "set": "nightbriar"
+  },
+  {
+    "id": "farwatch-greatbow",
+    "name": "Farwatch Greatbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A greatbow that can put an arrow through a keyhole a valley away.",
+    "purpose": "Dexterity, 1d8 piercing, +5 to hit, +8 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 5,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Mark the Quarry",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Make an enemy Vulnerable for one round: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "set": "farwatch"
+  },
+  {
+    "id": "farwatch-mantle",
+    "name": "Farwatch Mantle",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A hooded mantle of grey that blends into rock, snow and sky.",
+    "purpose": "Base AC 18, full Dexterity bonus. +2 Survival, +2 Perception.",
+    "armor": {
+      "base": 18,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "survival": 2,
+      "perception": 2
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ]
+    },
+    "set": "farwatch"
+  },
+  {
+    "id": "starward-staff",
+    "name": "Starward Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A staff of star-iron; on clear nights the constellations turn in its crystal.",
+    "purpose": "Equip: +8 spell attack bonus and +7 spell save DC.",
+    "spellAttackBonus": 8,
+    "spellDcBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Starfall",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "starward"
+  },
+  {
+    "id": "starward-robe",
+    "name": "Starward Robe",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A midnight robe stitched with the true positions of the stars.",
+    "purpose": "Base AC 18, full Dexterity bonus. +3 Arcana; +2 Intelligence saves, +1 Wisdom saves.",
+    "armor": {
+      "base": 18,
+      "dexCap": null
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "int": 2,
+      "wis": 1
+    },
+    "skillBonuses": {
+      "arcana": 3
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "starward"
+  },
+  {
+    "id": "dawnhearth-rod",
+    "name": "Dawnhearth Rod",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A rod of rose-gold that is warm as a hearth at first light.",
+    "purpose": "Equip: +7 spell attack bonus and +7 spell save DC.",
+    "spellAttackBonus": 7,
+    "spellDcBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Dawnlight",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Weaken an enemy for two rounds: it deals 25% less damage."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "dawnhearth"
+  },
+  {
+    "id": "dawnhearth-hauberk",
+    "name": "Dawnhearth Hauberk",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A hauberk of fine rings that glow faintly gold at dawn.",
+    "purpose": "Base AC 20, up to +2 from Dexterity. +3 Medicine; +1 Wisdom saves, +1 Constitution saves.",
+    "armor": {
+      "base": 20,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "wis": 1,
+      "con": 1
+    },
+    "skillBonuses": {
+      "medicine": 3
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "dawnhearth"
+  },
+  {
+    "id": "dawnhearth-aegis",
+    "name": "Dawnhearth Aegis",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A light shield with a sunrise in enamel; it needs faith, not muscle.",
+    "purpose": "Equip in your off hand for +7 Armor Class. Cannot be used with a two-handed weapon. +2 Wisdom saves, +1 Constitution saves.",
+    "acBonus": 7,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "con": 1
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "dawnhearth"
+  },
+  {
+    "id": "grand-chorus-baton",
+    "name": "Grand Chorus Baton",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "The baton of the great chorus; an army has marched to its beat.",
+    "purpose": "Equip: +7 spell attack bonus and +7 spell save DC.",
+    "spellAttackBonus": 7,
+    "spellDcBonus": 7,
+    "stats": {
+      "dealt": 0.15
+    },
+    "skill": {
+      "name": "Discord",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "grand-chorus"
+  },
+  {
+    "id": "grand-chorus-mantle",
+    "name": "Grand Chorus Mantle",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1300,
+    "description": "A mantle of deep red that catches every eye in the hall.",
+    "purpose": "Base AC 18, full Dexterity bonus. +3 Performance, +2 Persuasion.",
+    "armor": {
+      "base": 18,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "performance": 3,
+      "persuasion": 2
+    },
+    "requires": {
+      "level": 90,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "grand-chorus"
+  },
+  {
+    "id": "highbell-seal",
+    "name": "Highbell Seal",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "The seal of the highest bell; the last oath is pressed in it.",
+    "purpose": "Equip in the accessory slot: +2 AC. +2 to every saving throw.",
+    "acBonus": 2,
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "fighter",
+        "cleric"
+      ]
+    },
+    "set": "highbell-regalia"
+  },
+  {
+    "id": "nightbriar-ring",
+    "name": "Nightbriar Ring",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "A ring of black thorn that blooms when blood is spilled.",
+    "purpose": "Equip in the accessory slot. +3 Stealth, +3 Acrobatics.",
+    "stats": {
+      "dealt": 0.25
+    },
+    "skillBonuses": {
+      "stealth": 3,
+      "acrobatics": 3
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "fighter",
+        "rogue",
+        "bard"
+      ]
+    },
+    "set": "nightbriar"
+  },
+  {
+    "id": "farwatch-horn",
+    "name": "Farwatch Horn",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "A horn heard on every watchtower from the coast to the peaks.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Perception.",
+    "stats": {
+      "dealt": 0.25
+    },
+    "skillBonuses": {
+      "survival": 3,
+      "perception": 3
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "ranger",
+        "rogue",
+        "fighter"
+      ]
+    },
+    "set": "farwatch"
+  },
+  {
+    "id": "starward-orrery",
+    "name": "Starward Orrery",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "A palm-sized orrery whose planets keep perfect time.",
+    "purpose": "Equip in the accessory slot. +3 Arcana, +3 History; +2 Intelligence saves.",
+    "stats": {
+      "dealt": 0.15
+    },
+    "skillBonuses": {
+      "arcana": 3,
+      "history": 3
+    },
+    "saveBonuses": {
+      "int": 2
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "set": "starward"
+  },
+  {
+    "id": "dawnhearth-reliquary",
+    "name": "Dawnhearth Reliquary",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "A small reliquary holding one ember from the first hearth.",
+    "purpose": "Equip in the accessory slot. +3 Religion, +3 Medicine; +2 Wisdom saves.",
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "religion": 3,
+      "medicine": 3
+    },
+    "saveBonuses": {
+      "wis": 2
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "cleric"
+      ]
+    },
+    "set": "dawnhearth"
+  },
+  {
+    "id": "grand-chorus-chime",
+    "name": "Grand Chorus Chime",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1400,
+    "description": "A silver chime whose note carries over any noise.",
+    "purpose": "Equip in the accessory slot. +3 Performance, +3 Persuasion, +3 Insight.",
+    "stats": {
+      "dealt": 0.15
+    },
+    "skillBonuses": {
+      "performance": 3,
+      "persuasion": 3,
+      "insight": 3
+    },
+    "requires": {
+      "level": 100,
+      "classes": [
+        "bard"
+      ]
+    },
+    "set": "grand-chorus"
+  },
+  {
+    "id": "kingsfall-greataxe",
+    "name": "Kingsfall Greataxe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 1340,
+    "description": "A greataxe whose story nobody tells the same way twice.",
+    "purpose": "Strength, 2d6 slashing, +5 to hit, +8 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 5,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Felling Blow",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Make an enemy Vulnerable for two rounds: it takes 25% more damage."
+    },
+    "requires": {
+      "level": 100,
+      "abilities": {
+        "str": 15
+      }
+    }
+  },
+  {
+    "id": "hundredfold-scale",
+    "name": "Hundredfold Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 1340,
+    "description": "Scale armour of a hundred layered plates, each from a different beast.",
+    "purpose": "Base AC 21, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves.",
+    "armor": {
+      "base": 21,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "con": 1,
+      "dex": 1
+    },
+    "requires": {
+      "level": 100
+    }
+  },
+  {
+    "id": "hundredth-bell",
+    "name": "Hundredth Bell",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 1340,
+    "description": "A tiny bell for a hundred battles won; it has never rung for a loss.",
+    "purpose": "Equip in the accessory slot: +1 AC.",
+    "acBonus": 1,
+    "stats": {
+      "dealt": 0.2,
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 100
+    },
+    "exclusive": {
+      "event": "bounty:briarwatch:100"
+    }
   }
 ]
