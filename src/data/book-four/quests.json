@@ -3251,7 +3251,7 @@
           { "oneOf": [
             { "say": "Burdock", "text": "One came. In the spring, with a lamp, out of the marked way, and is written. One. It does not say any more came after him.", "when": { "flag": "b3_stair_sealed" } },
             { "say": "Burdock", "text": "Wagons came. In the summer, forty, with a map, and asked the way to the empty land, and went on down the valley road. Wagons that ask the way are not people who come to a door.", "when": { "flag": "b4_company_sails" } },
-            { "say": "Burdock", "text": "Carts came, to Lantry, with grain, and went back. Carts are not people. Nobody came to the door.", "when": { "flag": "b4_company_council" } },
+            { "say": "Burdock", "text": "Carts came, to Lantry, with grain, and they are standing at the well. Carts are not people. Nobody came to the door.", "when": { "flag": "b4_company_council" } },
             { "say": "Burdock", "text": "A letter came. From the floor. A letter is not a person. It says 'we are coming'. It does not say you came.", "when": { "flag": "b4_letters_answered" } }
           ] },
           { "narrate": "Rue opens her book and shows him a page. Burdock reads it, and then reads it again, and then puts on a second pair of spectacles over the first and reads it a third time." },
@@ -3457,8 +3457,8 @@
         "text": [
           { "narrate": "You tell Burdock that it is not yours to write. The council at Highpass has to answer for the free wards, in its own words, and until it does, nothing should go in the tally about the south that the south did not say itself." },
           { "narrate": "Burdock writes: 'The south: not yet.' And underlines it, and blots it." },
-          { "narrate": "Sloe takes her own pen out of her sleeve, and reaches across his desk, and writes under it, in a smaller and squarer hand: 'They asked us to wait. We have waited nine hundred years.' Then she goes back to her table, and her slates, and does not look at you again tonight." },
           { "say": "Sloe", "text": "You carry their seal on a cord round your neck. Then they have answered, and you will not say what.", "when": { "flag": "b4_embassy_council" } },
+          { "narrate": "Sloe takes her own pen out of her sleeve, and reaches across his desk, and writes under it, in a smaller and squarer hand: 'They asked us to wait. We have waited nine hundred years.' Then she goes back to her table, and her slates, and does not look at you again tonight." },
           { "say": "Hesk", "text": "That's the free wards. Every time. I told her you'd say that.", "when": { "flag": "b3_stair_sealed" } }
         ],
         "rep": { "wardens": 1 },
