@@ -95,8 +95,9 @@ const ENEMY_TIER_DAMAGE = 3, ENEMY_TRIM_DAMAGE = 3;
 // 40, because enemy attacks stopped at +13 while gear AC kept rising
 // (docs/reviews/claude-enemies-past-40-2026-11-22.md). Each level past
 // LATE_LEVEL adds LATE_HP more health and LATE_DAMAGE more damage per hit,
-// and every LATE_ATTACK_EVERY levels add +1 to hit. Levels 1 to 40 are unchanged.
-const LATE_LEVEL = 40, LATE_HP = 0.006, LATE_DAMAGE = 0.3, LATE_ATTACK_EVERY = 10;
+// and every LATE_ATTACK_EVERY levels add +1 to hit (+4 at 100: every 10, as
+// first tried, overshot level 40's band with shop gear). Levels 1 to 40 are unchanged.
+const LATE_LEVEL = 40, LATE_HP = 0.006, LATE_DAMAGE = 0.3, LATE_ATTACK_EVERY = 15;
 const lateLevels = level => Math.max(0, Math.min(P.MAX_LEVEL, Math.floor(Number(level) || 1)) - LATE_LEVEL);
 const foeTier = p => Math.max(0, Math.floor((p + 1) / 6));
 // Enemy health is trimmed as the party's stat damage arrives, so fights by
