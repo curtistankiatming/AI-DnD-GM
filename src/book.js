@@ -19,6 +19,10 @@ const { QUESTS, TOWNS } = require('./expansion');
 const P = require('./progression');
 
 const FINISHED = 'books:finished';
+// The paid book a free hosted save set aside when it began an AI story of its
+// own. If the account upgrades, the save goes back into that book; once the
+// books are finished again it carries on with its AI story.
+const WAITING = 'books:waiting';
 // The written chapters in story order. Book One is the bell and the roads to
 // level 10; Book Two (book: 2 in quests.json) runs from level 10 to 20; Book
 // Three (book: 3) from 20 to 40, in two parts; Book Four (book: 4) from 40 to
@@ -165,19 +169,31 @@ function finished(state) {
   const f = flags(state);
   const W = writing(state), last = lastLevel(state);
   if (f?.[FINISHED]) {
+    // A free hosted save that begins an AI story while a paid book waits
+    // remembers that book, so an upgrade can still take it back there.
+    const paid = lockedBook(state);
+    if (paid && !f[WAITING] && aiStory(state)) f[WAITING] = paid.n;
+    const back = Number(f[WAITING]) > 0 && allows(state, Number(f[WAITING]));
     // A save marked finished at the end of a book, before the next book was
-    // open to it (not yet written, or not yet paid for), with no AI adventure
-    // of its own yet, carries on into the next book.
+    // open to it (not yet written, or not yet paid for), carries on into the
+    // next book: at once if it has no AI adventure of its own yet, or, if it
+    // set the paid book aside for one, once the account can read that book.
     const bookOneDone = done(state, 'bell') && chapters(state).filter(q => bookNo(q) === 1).every(q => done(state, q.id));
-    if (!bookOneDone || aiStory(state) || (!unwritten(state) && !W) || (Number(state?.player?.level) || 1) > last + (W ? 1 : 0)) return true;
+    if (!bookOneDone || (aiStory(state) && !back) || (!unwritten(state) && !W) || (!back && (Number(state?.player?.level) || 1) > last + (W ? 1 : 0))) return true;
     delete f[FINISHED];
     return false;
   }
   // Saves from before this rule could level past the books on AI adventures
   // alone; a hero above the last written chapter's level is on their own story.
-  const pastBooks = (Number(state?.player?.level) || 1) > last + (W ? 1 : 0);
+  // A save back in the paid book it set aside is not: it plays the book first.
+  const pastBooks = !f?.[WAITING] && (Number(state?.player?.level) || 1) > last + (W ? 1 : 0);
   if (!pastBooks && (unwritten(state) || W)) return false;
-  if (f) f[FINISHED] = true;
+  if (f) {
+    f[FINISHED] = true;
+    // The set-aside book is done with once it is open and finished; while it
+    // is still closed to this account (a lapse before it began), it waits.
+    if (!lockedBook(state)) delete f[WAITING];
+  }
   return true;
 }
 const running = state => !finished(state);
@@ -205,12 +221,12 @@ function trialLine(state) {
   return ` Your ${next === 'fourth' ? '4th' : '3rd'} job trial opens at level ${level}; bounties on the town board can take you there, with or without the AI game master.`;
 }
 // A free hosted account at the end of its open books. The paid book comes
-// first, and so does the one trade-off: an AI adventure of the save's own
-// closes the paid book to that save for good (aiStory, finished).
+// first; an AI adventure of the save's own sets the paid book aside until the
+// account upgrades (WAITING, finished).
 function paidEnding(count, list, next) {
   return `You have finished ${count}, ${list}. The story goes on in ${bookName(next.n)}, ${next.title}, for paid accounts: upgrade, and this save carries straight on into it. ${paidChoice(next)}`;
 }
-const paidChoice = (next) => `If you would rather keep going now, the AI storyteller can write adventures from the choices you made (this needs the Claude AI game master). But once this save starts one, it follows its own story and will not go back to ${bookName(next.n)}. Your hero, party and choices stay saved either way.`;
+const paidChoice = (next) => `If you would rather keep going now, the AI storyteller can write adventures from the choices you made (this needs the Claude AI game master). If you upgrade later, this save goes back into ${bookName(next.n)}, and your own story carries on after it. Your hero, party and choices stay saved either way.`;
 // Told when a book that is not the last one this save can play ends.
 function bookEnd(id, state = null) {
   const b = SHELF.find(x => x.last === id), next = b && books(state).find(x => x.n === b.n + 1);
@@ -321,4 +337,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = {gearOpen, bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started};
+module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, WAITING, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started, gearOpen};

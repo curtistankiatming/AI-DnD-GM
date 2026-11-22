@@ -82,18 +82,53 @@ test('upgrading carries the waiting save straight into the next book', () => {
   assert.equal(paid.story.flags[Book.FINISHED], undefined);
   assert.equal(Book.chapter(paid).id, 'chairs');
   assert.equal(Book.playable(paid, 'chairs'), true);
-  // But not once the save has become an AI story of its own.
+  // A save that went its own way with every book open stays on its own story.
   const own = JSON.parse(JSON.stringify(free)); own.chronicle = { ...(own.chronicle || {}), arc: { title: 'My own road' } };
   assert.equal(Book.aiStory(own), true);
   assert.equal(Book.chapter(own), null);
+  assert.equal(own.story.flags[Book.WAITING], undefined);
 });
 
-test('a free account is told, before it starts an AI story, that doing so closes the paid book to this save', () => {
+test('a free save that began an AI story goes back into the paid book after an upgrade', () => {
+  const free = home(finishChapter(Book.grant(ready('aftermath'), 1), 'aftermath')).state;
+  // The AI writes it an adventure of its own while Book Two is closed to it.
+  const own = Book.grant(JSON.parse(JSON.stringify(free)), 1);
+  own.chronicle = { ...(own.chronicle || {}), arc: { title: 'My own road' } };
+  assert.equal(Book.finished(own), true);
+  assert.equal(own.story.flags[Book.WAITING], 2, 'It remembers the book it set aside.');
+  assert.equal(Book.chapter(own), null);
+  // Saved and loaded again on the free account: still its own story, still remembered.
+  const later = E.normalizeIncomingState(Book.grant(JSON.parse(JSON.stringify(own)), 1));
+  assert.equal(Book.finished(later), true);
+  assert.equal(later.story.flags[Book.WAITING], 2);
+  // An upgrade takes it back into Book Two, even though it has its own story.
+  const paid = E.normalizeIncomingState(Book.grant(JSON.parse(JSON.stringify(later)), Infinity));
+  assert.equal(paid.story.flags[Book.FINISHED], undefined);
+  assert.equal(Book.chapter(paid).id, 'chairs');
+  assert.equal(Book.playable(paid, 'chairs'), true);
+  assert.equal(act(paid, { type: 'depart', questId: 'chairs' }).result.ok, true);
+  // A lapse before it began Book Two: back to its own story, the book still waiting.
+  const lapsed = E.normalizeIncomingState(Book.grant(JSON.parse(JSON.stringify(paid)), 1));
+  assert.equal(Book.finished(lapsed), true);
+  assert.equal(lapsed.story.flags[Book.WAITING], 2);
+  assert.equal(Book.chapter(E.normalizeIncomingState(Book.grant(JSON.parse(JSON.stringify(lapsed)), Infinity))).id, 'chairs');
+  // Once the books are finished again, its own story carries on and the book is done with.
+  const through = JSON.parse(JSON.stringify(paid));
+  for (const q of Book.chapters(through)) through.world.completed[q.id] = true;
+  assert.equal(Book.finished(through), true);
+  assert.equal(through.story.flags[Book.WAITING], undefined);
+  // A hero who levelled past the book on AI adventures still goes back to it.
+  const strong = Book.grant(JSON.parse(JSON.stringify(own)), Infinity); strong.player.level = 25;
+  assert.equal(Book.finished(strong), false);
+  assert.equal(Book.chapter(strong).id, 'chairs');
+});
+
+test('a free account is told, before it starts an AI story, that the paid book waits for an upgrade', () => {
   const { state, events } = home(finishChapter(Book.grant(ready('aftermath'), 1), 'aftermath'));
   const end = events.map((e) => e.text).find((t) => /for paid accounts/.test(t));
   // The paid book first, then the one trade-off, said plainly.
   assert.ok(end.indexOf('Book Two, The Council of Small Voices, for paid accounts') < end.indexOf('AI storyteller'), end);
-  assert.match(end, /once this save starts one, it follows its own story and will not go back to Book Two/);
+  assert.match(end, /If you upgrade later, this save goes back into Book Two, and your own story carries on after it/);
   assert.doesNotMatch(end, /written campaign ends here/);
   // The board says the same every visit, and says when the save has gone its own way.
   assert.equal(E.buildView(state).world.paidBook.closed, undefined);

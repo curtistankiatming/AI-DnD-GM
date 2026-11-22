@@ -90,7 +90,7 @@ test('Claude improvisation: preview first, roll only on confirm, then Claude nar
   assert.ok(card.success&&card.failure&&card.reward&&card.risk);
   assert.match(proposed.narration.text,new RegExp(`About ${card.check.chance}% to succeed`));assert.match(proposed.narration.text,/Nothing has happened yet/);
   assert.equal(proposed.state.improv.log.length,0,'No roll before confirmation.');
-  assert.equal(calls[0].output_config.format.schema,Chat.CLAUDE_SCHEMA);assert.equal(calls[0].system[0].text,Chat.CLAUDE_SYSTEM);
+  assert.equal(calls[0].output_config.format.schema,Chat.CLAUDE_SCHEMA);assert.equal(calls[0].system[0].text,Chat.CLAUDE_SYSTEM+'\n\n'+require('../src/claude-ai').GAME_ONLY);
   assert.match(calls[0].messages[0].content,/"improvisation"/);
   const saved=JSON.parse(JSON.stringify(proposed.state));
   const done=await Chat.resolveChat(saved,{confirm:true},ai,high);
