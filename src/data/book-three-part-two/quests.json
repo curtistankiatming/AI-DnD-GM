@@ -834,7 +834,7 @@
         }
       },
       {
-        "narrate": "In the spring the committee asked Wren who should keep the forge-signal after her. She told them the one she had chosen had said no, and meant it, and that she would not ask a second time. It is in the minutes. Ottilie Brand says it was half the reason for last night's vote.",
+        "narrate": "In the spring the committee asked Wren who should keep the forge-signal after her. She told them the one she had chosen had said no, and meant it, and that she would not ask a second time. It is in the minutes, and half the committee says it was the reason for last night's vote.",
         "when": {
           "flag": "nessa_keeper",
           "is": "declined",
