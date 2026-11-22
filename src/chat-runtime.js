@@ -231,6 +231,9 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   let mode=request.mode||'action',text=request.text;
   if(typeof text!=='string'||!text.trim()||text.length>M.MAX_INSTRUCTIONS)return rejected(state,`Use 1–${M.MAX_INSTRUCTIONS} characters per message.`);
   text=text.trim();
+  // A hosted game turns away attempts to use its AI for anything but the game.
+  const refused=typeof provider?.screen==='function'?provider.screen(text):null;
+  if(refused)return rejected(state,refused);
   const cmd=text.match(/^\/(instructions|act|say|ask|rules|scenario|journey|pause|journal|note|forget-note|adventure|trial)(?:\s+([\s\S]*))?$/i);
   if(cmd){const k=cmd[1].toLowerCase();mode=({instructions:'instructions',act:'action',say:'dialogue',ask:'question',rules:'rules',scenario:'scenario',journey:'journey',pause:'pause',journal:'journal',note:'note','forget-note':'forget-note',adventure:'adventure',trial:'trial'})[k];text=cmd[2]||'';}
   if(!['instructions','action','dialogue','question','rules','scenario','journey','pause','journal','note','forget-note','adventure','trial'].includes(mode))return rejected(state,'Select actions, dialogue, questions or campaign instructions.');

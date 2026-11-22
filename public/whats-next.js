@@ -52,8 +52,8 @@
     }
     if (!d?.canCommission) { card.append(el('p', 'muted', d?.reason || 'A new adventure is not available right now.')); return card; }
     card.append(el('p', '', side ? 'The written story comes first. Claude writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
-    // A free hosted account: the first adventure of its own closes the paid book to this save (src/book.js).
-    if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `Before you ask: once this save starts an adventure of its own, it follows that story and will not go back to ${bookName(w.paidBook.n)}, ${w.paidBook.title}, even after an upgrade.`));
+    // A free hosted account: an adventure of its own sets the paid book aside until an upgrade (src/book.js).
+    if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `${bookName(w.paidBook.n)}, ${w.paidBook.title}, stays waiting: if you upgrade later, this save goes back into it, and your own story carries on after it.`));
     const label = el('label', 'whats-next-field', 'Your wish (optional)'), input = el('input');
     input.id = 'wishInput'; input.type = 'text'; input.maxLength = 200; input.placeholder = 'something in the marshes, or a rival from my past'; input.value = wish; input.disabled = busy;
     input.addEventListener('input', () => { wish = input.value; });
