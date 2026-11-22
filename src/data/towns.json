@@ -351,6 +351,13 @@
     "subtitle": "The Town on Its Roofs",
     "description": "A salt town on the Iron Road below the pass, its houses joined at the eaves by lashed planks over lanes the mist has filled to the height of a man. Lamps on tall poles stand at every corner. Mags Peller's lamplighters walk the planks with long hooks, and the chandler's roof, which has the best view, keeps a small market.",
     "faction": "wilds",
+    "pages": [
+      {
+        "flag": "b3_saltwick_moved",
+        "subtitle": "The Lamps Left Burning",
+        "description": "Saltwick's people have gone up the Iron Road, and the town on its roofs is nearly empty. The planks still run between the eaves over lanes the mist fills to the height of a man, and the lamps on their poles still burn all night: a few lamplighters stayed behind to keep them lit for anyone on the road. The chandler stayed too, and his roof still keeps a small market for them and for the carters."
+      }
+    ],
     "services": [
       "inn",
       "forge",

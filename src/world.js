@@ -1,6 +1,6 @@
 "use strict";
 const { ITEMS, COMPANIONS, STORY_NODES, CLASSES, ENCOUNTERS, ENEMIES }=require('./content');
-const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS, SIDE_JOBS }=require('./expansion');
+const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS, SIDE_JOBS, townPage }=require('./expansion');
 const Away=require('./away');
 const P=require('./progression');
 const Director=require('./director');
@@ -40,13 +40,17 @@ function town(state){const id=STORY_NODES[state.story.nodeId]?.townId;return !st
 // after the evacuation) has no shop, forge, workshop, inn, shrine, side jobs,
 // bounty board, recruits or practice: only a place to sleep, the written
 // chapters and the road out.
-function emptied(state,id){const gone=TOWNS[id]?.emptied;return Boolean(gone&&state.story?.flags?.[gone.flag]);}
-const asNow=(state,t)=>t&&emptied(state,t.id)?{...t,subtitle:t.emptied.subtitle,description:t.emptied.description,services:['storage'],stock:[],emptied:true}:t;
+function emptied(state,id){return Boolean(townPage(state,id)?.emptied);}
+// A town as this save sees it now: its page for a flag that is set ("pages"
+// and "emptied" in towns.json, src/expansion.js townPage), or as written.
+const asNow=(state,t)=>{const page=t&&townPage(state,t.id);if(!page)return t;
+  return {...t,subtitle:page.subtitle||t.subtitle,description:page.description||t.description,...(Array.isArray(page.services)?{services:[...page.services]}:{}),...(page.emptied?{stock:[],emptied:true}:{})};};
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 // What a town sells now: its stock, plus each stockByLevel list (towns.json)
-// once the hero has reached that level. Those lists are Book Three's gear for
-// levels 20 to 40, so they open only once this save has begun Book Three.
-function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;if(!Book.started(state,3))return [...t.stock];return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)).flatMap(([,ids])=>ids)];}
+// once the hero has reached that level. Those lists are a later book's gear
+// (Book Three's for levels 20 to 40, Book Four's above 40), so each opens only
+// once this save has begun the book it belongs to (Book.gearOpen).
+function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids)];}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
   const q=state.world?.activeQuest;const node=STORY_NODES[state.story.nodeId];
@@ -79,7 +83,13 @@ function completed(state,id){return Boolean(state.world.completed[id]);}
 // that pays no XP keep their exact level: they are checkpoints, not stories to
 // fall behind on.
 function minLevel(q){return QUESTS[q.id]&&!q.generated&&!q.trial&&!q.requiresAdvancement&&Number(q.xp)>0?Math.max(1,q.level-XP.UNDER_FREE-XP.UNDER_MAX):q.level;}
-function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=minLevel(q)&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery));}
+// A chapter may need a job first ("requiresJob": 2, 3 or 4; Book Four's first
+// chapter needs the 3rd job, which its trial at level 40 gives).
+function hasJob(state,n){const p=P.ensure(state.player);return n<=1?true:n===2?Boolean(p.specialization):n===3?Boolean(p.thirdJob):Boolean(p.thirdJob&&p.fourthJob);}
+const jobReady=(state,q)=>!q?.requiresJob||hasJob(state,Number(q.requiresJob));
+const JOB_NAMES={2:'Choose your 2nd job branch first.',3:'Pass your 3rd job trial first.',4:'Pass your 4th job trial first.'};
+const jobNeeded=(state,q)=>jobReady(state,q)?null:JOB_NAMES[Number(q.requiresJob)]||'Advance your job first.';
+function unlocked(state,q){return Boolean(Book.playable(state,q.id)&&completed(state,q.unlock)&&state.player.level>=minLevel(q)&&state.world.unlockedTowns.includes(q.town)&&(!q.requiresAdvancement||P.ensure(state.player).mastery)&&jobReady(state,q));}
 function rewardPersonal(state,id,events){
   for(const member of state.party){const def=PERSONAL[member.id];if(!def||def.quest!==id)continue;const record=state.world.personal[member.id] ||= {};record.goalMet=true;if(record.started&&!record.rewarded)emit(events,`${member.name}'s personal quest can now be resolved in town: ${def.name}.`,'party','good');}
 }
@@ -102,6 +112,7 @@ function completeQuest(state,id,events,api){
   const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
   const progress=state.world.progress[id]||{};
   if(q?.requiresAdvancement&&!P.ensure(state.player).mastery)return false;
+  if(!jobReady(state,q))return false;
   const quality=progress.setback?'costly':state.story.flags[`method:${id}`]==='peace'?'peaceful':state.story.flags[`method:${id}`]==='objective'?'objective':'force';
   const xp=id==='bell'?300:q.xp;
   const gold=id==='bell'?60:Math.floor(q.gold*(progress.setback?0.8:1));
@@ -124,6 +135,7 @@ function completeQuest(state,id,events,api){
   const gain=q?.generated?Book.capXp(state,xp):xp;state.world.completed[id].xp=gain;
   if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
   api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved`);
+  levelFloor(state,q,events,api);
   // A chapter's own reward item, or a templated one from an AI adventure (src/gear.js).
   Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);
   Book.finished(state);
@@ -133,6 +145,18 @@ function completeQuest(state,id,events,api){
   // A written chapter settles each companion's approval for it (src/away.js).
   if(QUESTS[id]&&!q.generated)Away.chapterDone(state,id);
   return true;
+}
+// A written chapter's "levelFloor" tops a hero who is behind up to the start of
+// that level once its own XP is paid (Book Three's last chapter to 40, Book
+// Four's part ends to 50, 60 and 70). It only ever raises XP, and every level
+// on the way is gained in order, each with its own level-up.
+function levelFloor(state,q,events,api){
+  const floor=Math.min(P.MAX_LEVEL,Math.floor(Number(q?.levelFloor)||0));
+  if(!QUESTS[q?.id]||q.generated||floor<=1)return 0;
+  const need=(P.XP_NEXT[floor-1]||0)-(Number(state.player.xp)||0);
+  if(need<=0)return 0;
+  api.awardXp(state,need,events,`${q.name}: the story carries you to level ${floor}`);
+  return need;
 }
 // Side jobs (src/data/side-jobs.json): offered in their town while their
 // chapter window is open. A job pays about 12% of a level, never past the
@@ -255,6 +279,7 @@ function depart(state,id,rng,events,api){
     api.enterNode(state,state.world.resumeNode||'briarwatch-square',events);return arrive(state,events,'You return to the bell investigation.');
   }
   const q=Director.quest(state,id);
+  if(q&&!completed(state,id)&&jobNeeded(state,q)&&Book.playable(state,id)&&completed(state,q.unlock))return fail(events,`${q.name} is not open yet. ${jobNeeded(state,q)}`);
   if(!q||!unlocked(state,q)||completed(state,id))return fail(events,'That expedition is not currently available. Complete the prior contract and meet its level requirement.');
   if(t.id!==q.town)return fail(events,`Travel to ${TOWNS[q.town].name} to depart for this expedition.`);
   if(state.world.activeQuest&&state.world.activeQuest!==id)return fail(events,'Finish or resume the current expedition before starting another.');
@@ -471,7 +496,7 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,masterwork:Boolean(up.masterwork),...o,cost:Gear.upgradeCost(item),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),...(q.continues&&!continued(q)?{straightOn:true}:{}),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),underChecks:XP.underChecks(state.player.level,q.level),minLevel:minLevel(q),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),...(q.continues&&!continued(q)?{straightOn:true}:{}),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),underChecks:XP.underChecks(state.player.level,q.level),minLevel:minLevel(q),...(jobNeeded(state,q)?{needs:jobNeeded(state,q)}:{}),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];

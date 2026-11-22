@@ -5750,6 +5750,7 @@
     "unlock": "b3-promise",
     "nextTown": "briarwatch",
     "xp": 11500,
+    "levelFloor": 40,
     "gold": 820,
     "region": "The deep: the heart of Hesk's circle, on the floor of given things",
     "threat": "Hesk stands at the heart of his circle with a page and a half of the rite to read. Whoever is still in the ring when he finishes will be cast.",

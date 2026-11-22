@@ -11,7 +11,7 @@
 // into the story registries whenever a save is loaded, so they survive
 // reloads and work in the offline browser build without a model.
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
-const { QUESTS, TOWNS, installQuest, trialFraming } = require('./expansion');
+const { QUESTS, TOWNS, installQuest, trialFraming, townPage } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
 const Book = require('./book');
@@ -21,7 +21,8 @@ const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
 const MAX_STORED = 40;       // Older completed adventures are pruned beyond this.
 const THEMES = Object.freeze(['wild', 'undead', 'storm', 'construct', 'soldier', 'caster']);
-const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds']);
+// wold: the people north of the Highpass peaks (Book Four, Part Two).
+const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds', 'wold']);
 const TOOLS = Object.freeze(Object.values(ITEMS).filter(i => i.category === 'tool' && i.id !== 'healers-kit').map(i => i.id));
 const SKILL_IDS = Object.freeze(Object.keys(SKILLS));
 const TEXT = Object.freeze({ name: 80, short: 120, label: 120, brief: 400, long: 900, arc: 900, hint: 400 });
@@ -299,7 +300,7 @@ function availability(state) {
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
   // A town a story choice has emptied (Book Three's Vell) has nobody left to ask.
   const here = TOWNS[STORY_NODES[state.story.nodeId].townId];
-  if (here?.emptied && state.story?.flags?.[here.emptied.flag]) return `There is nobody left in ${here.name} to ask for work. Ask in another town.`;
+  if (here && townPage(state, here.id)?.emptied) return `There is nobody left in ${here.name} to ask for work. Ask in another town.`;
   if (openAdventures(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
   return null;
 }
@@ -362,10 +363,11 @@ function fitText(text, room) {
   const space = cut.lastIndexOf(' ');
   return (space > 0 ? cut.slice(0, space) : cut).replace(/[\s,;:]+$/, '');
 }
-// The book's last words before the 3rd job trial (src/expansion.js
-// trialFraming, Book Three's epilogue): what the hero gave or kept, read from
-// the save. The trial opens with it, as the Second Oath framed the 2nd job.
-const framing = (state, kind) => { const text = kind === 'third' ? fitText(clean(trialFraming(state), TEXT.long), TEXT.brief) : ''; return text ? `${text} ` : ''; };
+// The book's last words before a job trial (src/expansion.js trialFraming):
+// Book Three's epilogue frames the 3rd job, Book Four's the 4th, each read
+// from the save. The trial opens with them, as the Second Oath framed the
+// 2nd job; a trial with no framing of its own kind has none.
+const framing = (state, kind) => { const text = Object.hasOwn(TRIALS, kind) ? fitText(clean(trialFraming(state, kind), TEXT.long), TEXT.brief) : ''; return text ? `${text} ` : ''; };
 // Engine action: put the due job trial on the board, from Claude's draft or
 // the written trial.
 function commissionTrial(state, draft, events) {

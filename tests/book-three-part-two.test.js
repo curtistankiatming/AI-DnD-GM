@@ -1076,12 +1076,13 @@ test('after b3_done the 3rd job trial opens with the epilogue\'s framing, read f
   assert.doesNotMatch(D.writtenTrial(later, 'fourth').opening, /Dera/);
 });
 
-test('with the preview on, an agent playtest walks the hero to level 40 and stops at the 3rd job trial', () => {
+test('with the preview on, an agent playtest walks the hero to level 40, takes the written 3rd job trial and stops', () => {
   const { run } = require('./campaign-playtest');
   const r = run('fighter', 'standard', 301, 'prepared');
   assert.deepEqual(r.errors, []);
   assert.equal(r.complete, true); assert.equal(r.waiting, false);
   assert.equal(r.level, 40); assert.equal(r.booksFinished, true); assert.equal(r.trialOffered, true);
+  assert.equal(r.trials, 1); assert.equal(r.thirdJob, true);
   assert.ok(r.completed['b3-firstbell']);
 });
 

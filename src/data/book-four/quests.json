@@ -1,0 +1,3 @@
+{
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand). Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. No chapter is written yet (build step 3 on)."
+}

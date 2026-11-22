@@ -250,3 +250,7 @@ does not change after `b3_saltwick_moved`: it still describes a town living on
 its roofs. It should read as the emptied town, its lamps kept lit by Mags and a
 few lamplighters, the way Vell's page is to change after `b3_bell_evacuate`.
 This needs a town page that can follow a flag.
+Done in Book Four's engine groundwork (docs/book-four/DESIGN.md, "Town pages
+that follow a flag"): `pages` in towns.json gives Saltwick its page after
+`b3_saltwick_moved`. Its market stays open: Saltwick still sells Book Three's
+level 30 gear.

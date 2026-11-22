@@ -151,11 +151,12 @@ function award(state, key, events) {
 // bounty there gives the highest one the hero has reached and not yet had, so
 // a hero who comes back later still collects the rest, one bounty at a time.
 function bountyReward(state, townId, level, events) {
-  // Level bounties are Book Three's (levels 20 to 40): only once this save has begun it.
-  if (!require('./book').started(state, 3)) return null;
+  // Level bounties belong to a later book by their level (Book Three's 20 to
+  // 40, Book Four's above 40): each only once this save has begun that book.
+  const Book = require('./book');
   const given = state.world.gearAwarded || {};
   const keys = Object.keys(REWARDS()).filter((k) => k.startsWith(`bounty:${townId}:`) && !given[k])
-    .map((k) => [k, Number(k.split(':')[2])]).filter(([, at]) => Number.isFinite(at) && at <= level).sort((x, y) => y[1] - x[1]);
+    .map((k) => [k, Number(k.split(':')[2])]).filter(([, at]) => Number.isFinite(at) && at <= level && Book.gearOpen(state, at)).sort((x, y) => y[1] - x[1]);
   return keys.length ? award(state, keys[0][0], events) : null;
 }
 
