@@ -111,7 +111,7 @@
         {"say": "maren", "text": "But there's no shrine down a stair. There's nowhere to go that isn't with you. So I'll come, and I'll say so when I can't stand beside it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-deep"}},
         {"say": "maren", "text": "But it takes things down here, and I want somebody near you who'll notice what it takes. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-promise"}},
         {"say": "maren", "text": "But somebody has to hear Hesk, at the end, and hear whether he means it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-firstbell"}},
-        {"say": "maren", "text": "But Rue's written. She wants me at Highpass. She didn't say why, and she always says why. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-book"}},
+        {"oneOf": [{"say": "maren", "text": "But it's Highpass next, and Rue's asked me to sit with her when she reads her book to the council. She's never asked anybody to sit with her. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-book", "anyFlag": ["b4_rue_party"]}}, {"say": "maren", "text": "But Rue's written. She wants me at Highpass. She didn't say why, and she always says why. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-book"}}]},
         {"say": "maren", "text": "But it's the crossing. There's no shrine on a mountain, and I want to hear the first thing the Wold says to us. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-peaks"}}
       ],
       "choices": [
@@ -192,7 +192,7 @@
       "title": "Nessa comes back",
       "lines": [
         {"narrate": "Nessa comes back over a wall rather than through a gate, because that is how she does everything, with Biscuit behind her and a fresh scratch on her cheek and a great deal to say."},
-        {"oneOf": [{"say": "nessa", "text": "I found a carter in a ditch on the Highpass road. And a lost goat. And two kids from Cinder Fold who'd gone up the stair to look for the north. And I took them all back, not in that order. Nobody made me wait for anything. It was brilliant.", "when": {"flag": "b3_done"}}, {"say": "nessa", "text": "I found a carter in a ditch. And a lost goat, not Brannagh's, a different goat. And two kids who'd run off from a farm. And I took them all back, not in that order. Nobody made me wait for anything. It was brilliant."}]},
+        {"oneOf": [{"say": "nessa", "text": "I found a carter in a ditch on the Highpass road. And a lost goat. And two kids from Cinder Fold who'd set off up the Highpass road to look for the north. And I took them all back, not in that order. Nobody made me wait for anything. It was brilliant.", "when": {"flag": "b3_done"}}, {"say": "nessa", "text": "I found a carter in a ditch. And a lost goat, not Brannagh's, a different goat. And two kids who'd run off from a farm. And I took them all back, not in that order. Nobody made me wait for anything. It was brilliant."}]},
         {"say": "nessa", "text": "And then I kept turning round to tell someone about it, and there wasn't anyone. Which was stupid. So."},
         {"say": "nessa", "text": "Did you read my letter? Don't answer that."}
       ],

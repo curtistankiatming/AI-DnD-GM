@@ -278,11 +278,11 @@
       "lid": {
         "title": "The Ninth Bell",
         "lines": [
-          { "narrate": "The ninth bell on the lid has had one rope family on it since the founders hung it. Old Perrin Rowe has rung it for fifty-one years. His hands have gone, and he has nobody of his own to give the rope to." },
+          { "narrate": "The ninth bell on the lid has had one rope family on it since the founders hung it. Old Perrin Rowe has rung it for forty-six years. His hands have gone, and he has nobody of his own to give the rope to." },
           { "narrate": "The best ringer in Cinder Fold is a miner's son called Garth Mott, who is fourteen, and has never been let touch the ninth bell's rope, because the ropes go to the rope families, and he is not from one." },
           { "oneOf": [
             { "narrate": "He rang the nine by hand all last winter with the miners, while Wren's casting waited, and took Ned Thorne's rope the night Ned fell. When the spring came the rope families took their ropes back, and the committee thanked the miners, and that was all.", "when": { "flag": "b3_wren_waits" } },
-            { "narrate": "He learnt on his family's hearth bell, ringing it against the nine from the top of the stair every hour, until he could keep their time better than they could." }
+            { "narrate": "He learnt by ringing the miners' gallery bell against the nine, every shift, until he could keep their time better than they could." }
           ] },
           { "say": "Ottilie Brand", "text": "Perrin Rowe wants the boy on his rope. Ailith Strake says the ropes are the families' and always have been, and she has the founders' rule on her side. I've a committee of fourteen and seven of them are miners. Somebody find me a way through this that doesn't end with half the town not speaking to the other half." },
           { "oneOf": [
@@ -316,7 +316,7 @@
             "id": "perrin",
             "label": "Ask Perrin Rowe to give his rope himself, in front of the committee",
             "lines": [
-              { "narrate": "Perrin Rowe comes up the hill to the committee's table on two sticks, with the ninth's rope coiled over his shoulder, and puts it down in front of Garth Mott, and says the words his father said to him, which nobody in the hall has heard said for fifty years." },
+              { "narrate": "Perrin Rowe comes up the hill to the committee's table on two sticks, with the ninth's rope coiled over his shoulder, and puts it down in front of Garth Mott, and says the words his father said to him, which nobody in the hall has heard said for forty-six years." },
               { "say": "Ailith Strake", "text": "That's a giving. I can't undo a giving. Nobody can." }
             ],
             "setFlags": { "job:ninth-rope-given": true }
@@ -326,7 +326,7 @@
             "label": "Tell Garth the ropes are the rope families' to give",
             "lines": [
               { "narrate": "You tell Garth the ropes are the families' to give, and that you will not take one from them for him. He nods, as if he had expected it." },
-              { "narrate": "That night he rings against the nine from the top of the stair on his family's hearth bell, every hour, in time, and the whole lid can hear him." }
+              { "narrate": "He goes back down to the galleries. That night, and every shift after it, he rings the miners' gallery bell against the nine, in time, and the whole lid can hear him." }
             ],
             "setFlags": { "job:ninth-rope-stair": true }
           }

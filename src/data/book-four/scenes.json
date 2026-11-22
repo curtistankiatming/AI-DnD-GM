@@ -231,7 +231,10 @@
             { "narrate": "That night Davin finds you on the parapet with a length of lamp-rope. The pack is unpacked. He has come up to say something, and has not decided what.", "when": { "absent": "orin" } },
             { "narrate": "That night Orin sits with Davin on the parapet with a length of lamp-rope across both their knees.", "when": { "party": "orin" } }
           ] },
-          { "say": "orin", "text": "That's my knot on your pack." },
+          { "oneOf": [
+            { "say": "orin", "text": "That's my knot on your pack.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "That was my knot on your pack." }
+          ] },
           { "say": "Davin", "text": "I learned it off you. From watching.", "when": { "party": "orin" } },
           { "say": "orin", "text": "Then watch again. Slowly." },
           { "narrate": "He ties it on the parapet rail, slowly, so that Davin can see each turn: a round turn, two half-hitches, and the stopper.", "when": { "party": "orin" } },
@@ -276,7 +279,7 @@
             { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with nothing in her hands, and asks her in out of the wind.", "when": { "flag": "b4_book_burned" } },
             { "narrate": "That night Quartermaster Iona finds Rue on the step of her office, and asks her in out of the wind." }
           ] },
-          { "say": "Iona", "text": "I keep ledgers. I've kept the council's since before you were born. I'd like to see yours, if I may." },
+          { "say": "Iona", "text": "I keep ledgers. I've kept Highpass's since before you were born, and the council's since there was a council. I'd like to see yours, if I may." },
           { "oneOf": [
             { "narrate": "Rue pushes back her sleeve and shows Iona her wrist, with the one word on it. Iona looks at it as carefully as she looks at anything. Then she takes a new ledger off her shelf, a good one, bound, with nothing in it, and puts it on the table between them, and does not say what it is for. Rue writes the date on the first leaf, and under it, HEATH.", "when": { "flag": "b4_book_burned" } },
             { "narrate": "Rue puts her book on the table, and Iona puts the council's ledger beside it, and they read each other's for an hour without speaking." }

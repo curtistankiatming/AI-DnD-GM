@@ -220,7 +220,8 @@ test('each crisis can be fought instead, and winning reaches the same ending tol
   // The clue makes the peaceful way's opening line: told only when the chapter's lead was found.
   for (const id of IDS) {
     const lines = QUESTS[id].peaceful.success.filter((l) => l.when?.flag === `prepared:${id}`);
-    assert.equal(lines.length, 1, `${id}: a line for the prepared peaceful way`);
+    // One line, or one for each Book Three ending it is told for (chapter 7: the sealed hatch).
+    assert.equal(lines.length, id === 'b4-key' ? 2 : 1, `${id}: a line for the prepared peaceful way`);
   }
 });
 
@@ -242,7 +243,8 @@ test('every line that names or answers Orin, Maren or Nessa is told only with th
   for (const [owner, content] of CONTENT) for (const l of everyLine(content)) for (const [who, name] of Object.entries(COMPANION_NAMES)) {
     if (l.say === who) { gated++; continue; }
     if (!name.test(l.text || l.narrate)) continue;
-    assert.ok(l.when.party === who || l.when.absent === who, `${owner}: "${(l.text || l.narrate).slice(0, 70)}" names ${who} without a party gate`);
+    // A line told only when that companion rolls the check is told only with them there.
+    assert.ok(l.when.party === who || l.when.absent === who || l.when.roller === who, `${owner}: "${(l.text || l.narrate).slice(0, 70)}" names ${who} without a party gate`);
     gated++;
   }
   assert.ok(gated > 40, `${gated} companion lines`);
@@ -651,11 +653,14 @@ test('no new person in Book Four takes a name the earlier books or the story bib
 function walkThrough(s) { for (let i = 0; i < 6 && E.buildView(s).scene.id.startsWith('scene-'); i++) s = choose(s, E.buildView(s).scene.choices.find((c) => !c.locked).id); return s; }
 
 test('chapter 4 reads Merrowgate\'s Book Three, and its charter is read by the camp, chapter 6 and Bett\'s Berth', () => {
-  assert.match(talk('b4-company', 'haddows', { flags: { b3_debts_bought: true } }), /They burned my paper last autumn/);
+  assert.match(talk('b4-company', 'haddows', { flags: { b3_debts_bought: true } }), /They burned my paper last summer/);
   assert.match(talk('b4-company', 'haddows'), /You saw to that, last summer/);
   assert.ok(!talkIds('b4-company').includes('elske'));
-  for (const [flag, line] of [['elske_seat', /in Merrowgate's chamber/], ['elske_free', /the long room at the Sallows/], ['elske_judged', /in a cell at Highpass/]]) assert.match(talk('b4-company', 'elske', { flags: { [flag]: true } }), line, flag);
+  for (const [flag, line] of [['elske_seat', /in Merrowgate's chamber/], ['elske_free', /at home in Merrowgate, with Anwen's cards[^]*They will tell you the land is empty/], ['elske_judged', /the Sallows hospice, which the council sentenced her to keep open for five years[^]*Forty families/]]) assert.match(talk('b4-company', 'elske', { flags: { [flag]: true } }), line, flag);
   assert.deepEqual(QUESTS['b4-company'].peaceful.easierWith.flag, 'b4_truth_published');
+  // A lost fight leaves the wagons where the after finds them.
+  assert.doesNotMatch(QUESTS['b4-company'].objective.failText, /go out at dawn|sails on the tide|gone north/);
+  assert.match(talk('b4-company', 'haddows', { flags: { b3_debts_bought: true } }), /last summer/);
   // The camp: Bett asks Nessa, or the hero with Nessa away.
   for (const [decision, line] of [['broken', /unloading by lamplight/], ['council', /chalking the council's seal/], ['sails', /crossed out/]]) assert.match(opening(decide('b4-company', decision)), line, decision);
   assert.match(opening(decide('b4-company', 'broken')), /^Nessa: Never been\./m);
@@ -700,7 +705,7 @@ test('chapter 6 reads Rue\'s doors and where she lodges; the book\'s answer is r
   const start = (flags) => opening(departed('b4-book', { flags }));
   for (const [flag, line] of [['job:rue-doors-gate', /to the founders' gate already/], ['job:rue-doors-office', /the door of Sorrel's office already/], ['job:rue-doors-door', /her own oak door on its frame/], ['job:rue-doors-kitchen', /read her his own door/]]) assert.match(start({ [flag]: true }), line, flag);
   assert.match(start({}), /The doors are all clean/);
-  for (const [flag, line] of [['b4_rue_party', /the room Sorrel found for you/], ['b4_rue_council', /with Brannagh of Fenmere/], ['b4_rue_watch', /in the watch-house at the head of the north road/]]) assert.match(start({ [flag]: true }), line, flag);
+  for (const [flag, line] of [['b4_rue_party', /come back up the pass with you/], ['b4_rue_council', /with Brannagh of Fenmere/], ['b4_rue_watch', /in the watch-house at the head of the north road/]]) assert.match(start({ [flag]: true }), line, flag);
   assert.match(start({ b4_davin_comes: true }), /Davin came up from Saltwick with you/);
   assert.match(start({ b4_davin_home: true }), /Davin is on the far roofs in Saltwick/);
   assert.match(told(decide('b4-book', 'burned')), /^Rue: Heath\. That is my mother/m);
@@ -751,7 +756,7 @@ test('Bett\'s Berth follows the charter, and The Ninth Rope the winter the miner
   const job = (id, flags, choice, rng = high) => told(act(act(at(during(SIDE_JOBS[id]), { flags, town: SIDE_JOBS[id].town }), { type: 'side-job', jobId: id }).state, { type: 'story-choice', choiceId: choice }, rng).state);
   assert.match(job('bett-berth', { b4_company_sails: true }, 'speak'), /her aunt's kitchen/);
   assert.match(job('bett-berth', {}, 'speak', low), /Ask me next year/);
-  assert.match(start('ninth-rope', {}), /He learnt on his family's hearth bell/);
+  assert.match(start('ninth-rope', {}), /He learnt by ringing the miners' gallery bell/);
   assert.match(start('ninth-rope', { b3_wren_waits: true }), /took Ned Thorne's rope the night Ned fell/);
   assert.match(start('ninth-rope', { b4_truth_ailith: true }), /It does not say who rings them/);
   assert.match(job('ninth-rope', {}, 'ailith'), /so it's the rule and not a favour/);
@@ -782,4 +787,23 @@ test('a companion down on chapter 4, 5 or 6 stays for their own chapter and says
   assert.equal(raw.orin.leave.lines[1].oneOf[1].text, "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it.");
   assert.equal(raw.orin.leave.lines[1].oneOf[1].when, undefined, 'Book Two\'s line is the ungated default');
   for (const who of ['orin', 'maren', 'nessa']) for (const kind of ['leave', 'back']) for (const l of everyLine(raw[who][kind])) if (/Highpass road|up north|nine hundred years/.test(l.text || l.narrate)) assert.equal(l.when.flag, 'b3_done', `${who} ${kind}`);
+});
+
+test('the chapter\'s own companion is in one place when they roll the peaceful way', () => {
+  const said = (id, who) => outcomeForRoller(STORY_NODES[`q-${id}-crisis`].choices.find((c) => c.id === 'resolve').success, { id: who }).text;
+  // Orin out on the plank, or Orin at the near end, never both.
+  assert.match(said('b4-davin', 'player'), /He does not go out/);
+  assert.doesNotMatch(said('b4-davin', 'orin'), /He does not go out|Orin is at the near end/);
+  assert.match(said('b4-davin', 'orin'), /Maren takes the near end of the rope[^]*Orin goes out/);
+  assert.match(said('b4-key', 'player'), /Nessa does not go down/);
+  assert.doesNotMatch(said('b4-key', 'nessa'), /Nessa does not go down/);
+  assert.match(said('b4-key', 'nessa'), /Nessa goes down first, because she always does/);
+  // The rope is held by as many miners as came.
+  assert.match(told(choose(strong(at('b4-key', { phase: 'crisis', flags: { 'approach:b4-key': true } })), 'resolve')), /sixty miners/);
+  assert.match(told(choose(strong(at('b4-key', { phase: 'crisis' })), 'resolve')), /eleven miners/);
+  // With Nessa away and Wren cast, nobody climbs the hill.
+  const away = opening(at('b4-key', { phase: 'after', flags: { 'method:b4-key': 'peace', b3_wren_cast: true }, party: ['orin', 'maren'] }));
+  assert.match(away, /the tenth bell rings once/); assert.doesNotMatch(away, /Wren keeps the key|on her stick/);
+  // The chapter 5 answers do not name Orin on their labels.
+  for (const d of QUESTS['b4-davin'].decisions.filter((x) => x.id !== 'mags')) assert.doesNotMatch(`${d.label} ${d.description}`, /Orin/, d.id);
 });
