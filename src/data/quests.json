@@ -7200,7 +7200,7 @@
       },
       {
         "say": "Aster Vey",
-        "text": "You made Corvane wait for me. I keep thinking about that. Nobody has ever kept anybody waiting for me before.",
+        "text": "You made Corvane wait for me. I keep thinking about that. I told you nobody waited for me before deciding. I didn't know a person could make somebody else wait too.",
         "when": {
           "flag": "b3_asked_aster"
         }

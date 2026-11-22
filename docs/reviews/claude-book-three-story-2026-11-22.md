@@ -95,6 +95,11 @@ Test: `tests/book-three.test.js`, "Book Three story review". Chapter 16's
 test now expects the corrected counts, and chapter 17's test the new key
 line. `docs/book-three/DESIGN-PART-TWO.md` is updated to match.
 
+9. **From the two PR reviewers.** Aster's new chapter 2 line now echoes her
+   chapter 1 line instead of repeating it. The round key now opens Vell's
+   vault "a few nights later", not "before dawn", because Vell is days from
+   the foot of the pass (Oswin's line matches).
+
 ## Noted, not changed
 
 - **Jory.** Ysolde's brother Jory Carr shares a first name with Jory Tanner,
