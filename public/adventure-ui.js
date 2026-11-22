@@ -124,7 +124,9 @@
  // Replacement instructions have their own editor, not an everyday message mode.
  backing.querySelector('option[value=instructions]')?.remove();
  const modeButtons={};
- function selectMode(id,focus=false){const selected=U.mode(id);backing.value=selected.id;for(const [key,b]of Object.entries(modeButtons)){b.setAttribute('aria-checked',String(key===selected.id));b.tabIndex=key===selected.id?0:-1;b.title=U.mode(key).help;}modeHelp.textContent=selected.help;dom.actionInput.placeholder=selected.placeholder;if(focus)modeButtons[selected.id].focus();}
+ // Narrow phones get a shorter hint so it fits on one line beside Send.
+ const narrow=matchMedia('(max-width:400px)');narrow.addEventListener?.('change',()=>selectMode(backing.value));
+ function selectMode(id,focus=false){const selected=U.mode(id);backing.value=selected.id;for(const [key,b]of Object.entries(modeButtons)){b.setAttribute('aria-checked',String(key===selected.id));b.tabIndex=key===selected.id?0:-1;b.title=U.mode(key).help;}modeHelp.textContent=selected.help;dom.actionInput.placeholder=narrow.matches&&selected.short||selected.placeholder;if(focus)modeButtons[selected.id].focus();}
  for(const id of ['action','dialogue','question']){const m=U.mode(id),b=button(m.label,()=>selectMode(id));b.id='mode-'+id;b.setAttribute('role','radio');b.setAttribute('aria-describedby','messageModeHelp');modeButtons[id]=b;modes.append(b);}
  const modeHelp=el('p','mode-help workspace-sr-only');modeHelp.id='messageModeHelp';
  const settingsLink=button('Campaign instructions',()=>openInstructions(),false);settingsLink.id='editInstructionsBtn';

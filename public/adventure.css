@@ -644,3 +644,15 @@ body.in-combat .adventure-composer #chatStatus:empty { display:none; }
 /* Act / Say / Ask as one small segmented switch on every screen size. */
 .composer-row .message-modes { gap:2px; padding:2px; border:1px solid var(--border); border-radius:10px; }
 .composer-row .message-modes button { border-color:transparent; }
+
+/* UI review through Book Three (22 November 2026). */
+/* Narrow phones: four party chips with three-digit HP left one letter of each name. The HP sits under the name. */
+@media(max-width:400px){
+ .party-chip { grid-template-columns:minmax(0,1fr); gap:1px; }
+ .party-chip-hp { text-align:left; font-size:.66rem; }
+}
+/* Phones: End Turn, Retreat and orders stay in reach at the bottom of the board while the action cards scroll.
+   Short screens scroll the whole page with the composer pinned, so they keep the footer in place. */
+@media(max-width:760px) and (min-height:651px){
+ .combat-board-ui .combat-footer { position:sticky; bottom:-18px; z-index:3; padding-bottom:8px; background:var(--panel, var(--bg-elevated)); box-shadow:0 -8px 12px -8px rgba(0,0,0,.45); }
+}

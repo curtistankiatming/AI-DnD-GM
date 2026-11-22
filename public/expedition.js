@@ -22,7 +22,7 @@ function chooseEquipmentOwner(item){
 function v4Shop(root,stock,market){
   const box=createElement('div','v4-shop');
   for(const item of stock){
-    const c=v4Card(item.name,purposeWithoutRequirement(item));const req=requirementLine(item);if(req)c.appendChild(req);const price=createElement('div','tag-row');price.append(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));if(item.rarity&&item.rarity!=='Common')price.append(rarityTag(item.rarity));c.appendChild(price);
+    const c=v4Card(item.name,purposeWithoutSkill(item));const skill=itemSkillLine(item);if(skill)c.appendChild(skill);const req=requirementLine(item);if(req)c.appendChild(req);const price=createElement('div','tag-row');price.append(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));if(item.rarity&&item.rarity!=='Common')price.append(rarityTag(item.rarity));c.appendChild(price);
     // Who in the party meets the item's requirements, before you pay for it (src/gear.js).
     if(item.requires&&item.comparisons.length){const fit=item.comparisons.filter(x=>!x.unmet).map(x=>x.name);c.appendChild(createElement('p',fit.length?'muted':'prep-warning',!fit.length?'No one in your party can use this yet.':fit.length===item.comparisons.length?'Everyone in your party can use this.':`Can be used by ${fit.length>1?fit.slice(0,-1).join(', ')+' and '+fit.at(-1):fit[0]}.`));}
     if(item.comparisons.length){const details=createElement('details','comparison');details.appendChild(createElement('summary','','Compare with party equipment'));for(const cmp of item.comparisons)details.appendChild(createElement('p','',compareDescription(cmp)));c.appendChild(details);}
@@ -97,7 +97,12 @@ function renderExpansion(){
       const take=v4Button('Take a bounty',{type:'bounty'});take.classList.replace('btn-secondary','btn-primary');bc.append(pay,take);expeditions.appendChild(bc);}
     const shop=v4Section(root,'shop','Outfitter & apothecary — buy supplies and equipment');v4Shop(shop,w.shop,'town');
     const smith=v4Section(root,'smith','Blacksmith & workshop','One quality upgrade per item: Fine for basic gear, Masterwork for Epic and Legendary gear. No endless upgrade ladder.');
-    for(const u of w.upgrades){const c=v4Card(`${u.name} → ${u.newName}`,`${u.owner} · ${u.cost} gold. ${u.purpose}`);c.appendChild(v4Button('Commission upgrade',{type:'upgrade',itemId:u.itemId,actorId:u.actorId},hero.gold<u.cost));smith.appendChild(c);}
+    // Masterwork refines first; with Book Three gear the basic Fine upgrades of starting gear fold away below them.
+    const upCard=u=>{const c=v4Card(u.masterwork?`${u.name} → Masterwork`:`${u.name} → ${u.newName}`,`${u.owner} · ${u.cost} gold. ${u.purpose}`);c.appendChild(v4Button('Commission upgrade',{type:'upgrade',itemId:u.itemId,actorId:u.actorId},hero.gold<u.cost));return c;};
+    const refines=w.upgrades.filter(u=>u.masterwork),basics=w.upgrades.filter(u=>!u.masterwork);
+    if(refines.length){smith.appendChild(createElement('p','smith-group',`Masterwork refines · ${refines.length}`));for(const u of refines)smith.appendChild(upCard(u));}
+    if(refines.length&&basics.length){const fold=createElement('details','smith-fold');fold.appendChild(createElement('summary','',`Fine upgrades for basic gear · ${basics.length}`));for(const u of basics)fold.appendChild(upCard(u));smith.appendChild(fold);}
+    else for(const u of basics)smith.appendChild(upCard(u));
     for(const r of w.recipes){const c=v4Card(r.name,`${r.ingredients.map(i=>`${i.quantity} × ${titleCase(i.itemId)}`).join(', ')} + ${r.gold} gold. ${r.description||''}`);c.appendChild(v4Button('Craft',{type:'craft',recipeId:r.id},!r.ready));smith.appendChild(c);}
     const companions=v4Section(root,'personal','Companion stories & equipment');
     for(const a of w.away||[])companions.appendChild(v4Card(`${a.name} is away`,`${a.name} has left the party for a while. They will be back once ${a.untilName} is done.`));
