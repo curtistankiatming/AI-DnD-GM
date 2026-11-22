@@ -656,7 +656,8 @@ function resolveJobAction(state,actor,def,target,rng,events){
     }else if(e.do==='objective'){
       const o=state.combat.objective;
       // Each skill pushes an objective once per fight; a second use keeps its other effects.
-      const pushed=state.combat.objectiveSkills||(state.combat.objectiveSkills=[]),key=def.id||def.name;
+      if(!Array.isArray(state.combat.objectiveSkills))state.combat.objectiveSkills=[];
+      const pushed=state.combat.objectiveSkills,key=def.id||def.name;
       if(o&&!o.failed&&o.progress<o.target&&!pushed.includes(key)){pushed.push(key);o.progress=Math.min(o.target,o.progress+(e.steps||1));events.push({type:'objective',tone:'good',text:`${def.name} advances the objective: ${o.progress}/${o.target}.`});}
       else if(o&&!o.failed&&o.progress<o.target)events.push({type:'objective',tone:'info',text:`${def.name} has already moved the objective this fight.`});
     }
@@ -1259,7 +1260,7 @@ function combatActionView(state) {
     const targetKind=member.id==='maren'?'ally':'enemy';const disabled=actor.bonusUsed||state.combat.comboUsed||actorResourceCurrent(actor,'technique')<1||combatActor(state,`companion:${member.id}`)?.hp<=0;
     actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.replace(/^Sister /,'').split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
   }
-  if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use, once per fight.',disabled:actor.actionUsed||Boolean(state.combat.specObjectiveUsed)||actorResourceCurrent(actor,'advancement')<1});
+  if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use, once per fight.',disabled:actor.actionUsed||Boolean(state.combat.specObjectiveUsed)||actorResourceCurrent(actor,'advancement')<1,disabledReason:state.combat.specObjectiveUsed?'Already used this fight.':undefined});
   actions.push({id:'retreat',name:'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
   actions.push({ id: "end-turn", name: "End Turn", cost: "free", targetKind: "none", description: "Resolve all companion and enemy turns until your next initiative." });
 

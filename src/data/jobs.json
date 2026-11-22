@@ -656,7 +656,7 @@
          "steps": 1
         }
        ],
-       "description": "Strike three times with advantage as the party presses in; the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Strike three times with advantage as the party presses in; the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 100,
@@ -992,7 +992,7 @@
          "steps": 1
         }
        ],
-       "description": "Every enemy's next attack has disadvantage, and the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Every enemy's next attack has disadvantage, and the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 35,
@@ -1059,7 +1059,7 @@
          "steps": 2
         }
        ],
-       "description": "A planted charge burns every enemy without a roll and advances the combat objective two steps. Its objective step counts once per fight."
+       "description": "A planted charge burns every enemy without a roll and advances the combat objective two steps. Its objective push works once per fight."
       },
       {
        "level": 64,
@@ -1127,7 +1127,7 @@
          "on": "enemies"
         }
        ],
-       "description": "Bring the place down around them: the combat objective advances two steps and every enemy has disadvantage on its next attack. Its objective step counts once per fight."
+       "description": "Bring the place down around them: the combat objective advances two steps and every enemy has disadvantage on its next attack. Its objective push works once per fight."
       },
       {
        "level": 100,
@@ -1259,7 +1259,7 @@
          "steps": 1
         }
        ],
-       "description": "Every enemy makes a Wisdom save or has disadvantage on its next attack; you slip out of sight (Hidden) and the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Every enemy makes a Wisdom save or has disadvantage on its next attack; you slip out of sight (Hidden) and the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 48,
@@ -1338,7 +1338,7 @@
          "on": "self"
         }
        ],
-       "description": "Your informants expose every enemy: the next attack against each has advantage, the combat objective advances one step, and you become Hidden. Its objective step counts once per fight."
+       "description": "Your informants expose every enemy: the next attack against each has advantage, the combat objective advances one step, and you become Hidden. Its objective push works once per fight."
       },
       {
        "level": 80,
@@ -1398,7 +1398,7 @@
          "on": "party"
         }
        ],
-       "description": "Ultimate. Every enemy loses its next action, the combat objective advances three steps, and every ally gains temporary HP. Once per long rest. Its objective step counts once per fight.",
+       "description": "Ultimate. Every enemy loses its next action, the combat objective advances three steps, and every ally gains temporary HP. Once per long rest. Its objective push works once per fight.",
        "ultimate": true
       }
      ]
@@ -3284,7 +3284,7 @@
          "steps": 1
         }
        ],
-       "description": "Every ally gains temporary HP equal to half your level, and the combat objective advances one step. Two uses per long rest. Its objective step counts once per fight."
+       "description": "Every ally gains temporary HP equal to half your level, and the combat objective advances one step. Two uses per long rest. Its objective push works once per fight."
       },
       {
        "level": 25,
@@ -3368,7 +3368,7 @@
          "on": "enemies"
         }
        ],
-       "description": "You find a way no one else saw: the combat objective advances one step, you become Hidden, every enemy takes piercing damage without a roll, and every ally gains temporary HP equal to a third of your level. Its objective step counts once per fight."
+       "description": "You find a way no one else saw: the combat objective advances one step, you become Hidden, every enemy takes piercing damage without a roll, and every ally gains temporary HP equal to a third of your level. Its objective push works once per fight."
       },
       {
        "level": 48,
@@ -3504,7 +3504,7 @@
          "on": "enemies"
         }
        ],
-       "description": "Ultimate. You open a road no one else can see: the combat objective advances four steps, every ally gains temporary HP equal to your level, and every enemy loses its next action. Once per long rest. Its objective step counts once per fight.",
+       "description": "Ultimate. You open a road no one else can see: the combat objective advances four steps, every ally gains temporary HP equal to your level, and every enemy loses its next action. Once per long rest. Its objective push works once per fight.",
        "ultimate": true
       }
      ]
@@ -3676,7 +3676,7 @@
          "steps": 1
         }
        ],
-       "description": "Every enemy makes an Intelligence save against psychic damage (half on a success), and the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Every enemy makes an Intelligence save against psychic damage (half on a success), and the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 64,
@@ -3744,7 +3744,7 @@
          "steps": 1
         }
        ],
-       "description": "Every ally heals 3d8 + Charisma and the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Every ally heals 3d8 + Charisma and the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 100,
@@ -4034,7 +4034,7 @@
          "steps": 1
         }
        ],
-       "description": "The enemy makes a Charisma save or loses its next action, and the combat objective advances one step. Two uses per long rest. Its objective step counts once per fight."
+       "description": "The enemy makes a Charisma save or loses its next action, and the combat objective advances one step. Two uses per long rest. Its objective push works once per fight."
       },
       {
        "level": 25,
@@ -4102,7 +4102,7 @@
          "steps": 1
         }
        ],
-       "description": "Offer terms: every enemy makes a Charisma save or loses its next action, and the combat objective advances one step. Its objective step counts once per fight."
+       "description": "Offer terms: every enemy makes a Charisma save or loses its next action, and the combat objective advances one step. Its objective push works once per fight."
       },
       {
        "level": 48,
@@ -4174,7 +4174,7 @@
          "on": "party"
         }
        ],
-       "description": "Every enemy makes a Charisma save or loses its next action; the combat objective advances one step and every ally gains temporary HP. Its objective step counts once per fight."
+       "description": "Every enemy makes a Charisma save or loses its next action; the combat objective advances one step and every ally gains temporary HP. Its objective push works once per fight."
       },
       {
        "level": 80,
@@ -4233,7 +4233,7 @@
          "on": "party"
         }
        ],
-       "description": "Ultimate. One word and the field kneels: every enemy loses its next action, the combat objective advances four steps and every ally heals your level plus Charisma. Once per long rest. Its objective step counts once per fight.",
+       "description": "Ultimate. One word and the field kneels: every enemy loses its next action, the combat objective advances four steps and every ally heals your level plus Charisma. Once per long rest. Its objective push works once per fight.",
        "ultimate": true
       }
      ]

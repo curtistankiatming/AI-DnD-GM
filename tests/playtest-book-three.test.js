@@ -43,4 +43,8 @@ test('a job skill that moves the objective does so once per fight, and keeps its
   const second = use(s); assert.equal(second.state.combat.objective.progress, 1);
   assert.ok(second.events.some(e => /already moved the objective/.test(e.text)));
   assert.match(trail.description, /once per fight/);
+  // The second use still grants its temporary hit points.
+  const before = first.state.combat.actors.find(a => a.id === 'player');
+  before.temporaryHp = 0;
+  const again = use(first.state); assert.ok(again.state.combat.actors.find(a => a.id === 'player').temporaryHp > 0, 'The second use still gives temporary HP.');
 });
