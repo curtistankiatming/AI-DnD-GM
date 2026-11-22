@@ -3,8 +3,8 @@
 Written 22 November 2026 for review. Curtis asked for Book Four "until the
 next job advancement": levels 40 to 70, ending at the 4th job trial. It has
 the same scope as Book Three (story, items, characters, systems, UI, UX and
-gameplay, all designed, built and reviewed). The reviewers settle this design,
-including the open questions at the end, before any chapter is written.
+gameplay, all designed, built and reviewed). The PR #85 review settled its
+open questions ("Decided questions" at the end) before any chapter is written.
 
 Book Three's design is canon for everything Book Four reads:
 `docs/book-three/DESIGN.md` (its "Revisions" section overrides the rest of it)
@@ -27,9 +27,15 @@ Other rules:
   `P.levelBand(level)` exactly (listed under "XP" below). After chapter N the
   hero is level 40+N, and the epilogue leaves them at 70, ready for the 4th
   job trial.
-- Gold per chapter continues Book Three's curve, 20 x level + 40: 840 at
-  level 40, 1,420 at level 69.
-- Chapter 1 unlocks when `b3-firstbell` is done and `b3_done` is set.
+- Gold per chapter continues Book Three Part Two's curve (not Part One's),
+  20 x level + 40: 820 at level 39 in Book Three, 840 at level 40 here,
+  1,420 at level 69.
+- Chapter 1 has `unlock: "b3-firstbell"`, so it opens when Book Three's last
+  chapter is done (no `unlockFlag` change is needed; `b3_done` is set by the
+  same chapter and is read only by lines). It also has `requiresJob: 3`.
+- **The Telling** (see "Systems") needs one line per chapter, not one per
+  decision: where a decision option needs no `told` text of its own, the
+  chapter's one line covers it.
 - A chapter has at most one scene. Its cast is empty, its nodes are chained by
   `next`, and the camp beat is the last node.
 - **Companions.** Every line that names, quotes or answers Orin, Maren or Nessa
@@ -103,15 +109,46 @@ Book Four adds four things.
    write everything down: on their doors, their walls, their arms, and in
    the Long Tally at Orme, nine hundred years of it. They name themselves by
    their town ("Rue of Thrum") because the town is written on the door.
-4. **The Parting Bell.** In the Hall of Legends, on the border peaks, hangs
-   the first bell the founders cast, small enough to carry. They rang it once,
-   when they parted from the Wold, and never again. Every bell in the free
-   wards is joined to the nine, and the nine are joined to it. Rung again, it
-   moves all of them at once:
-   - rung "backward", every bell in the free wards goes quiet for one winter;
-   - rung "forward", every bell rings louder for good, and the Wold is buried;
+4. **The Mother Bell and the Parting Bell.** Book Two's Mother Bell is "the
+   first and largest ward ever cast". It hangs over the first forge in Cinder
+   Fold's casting hall, and its midwinter note silences every other ward and
+   drives the Gloam back everywhere at once. Book Four adds where "back" is:
+   north, onto the Wold, all of it in one night. When Elske rang it in Book
+   Two (she always does, by vote or against one), the Wold had the worst
+   winter in the Long Tally, in a single night: "the night of the great note,
+   the white came down on Orme and Lantry and did not lift until the giving".
+   That entry, dated by the tally to the same midwinter, is Sloe's evidence
+   (13, 16) that the free wards send the white, and that they can choose to.
+
+   The **Parting Bell** is not the first bell. It is the small bell the
+   founders cast for the parting from the Wold, tuned against the Mother
+   Bell's note, small enough to carry, and it hangs in the Hall of Legends on
+   the border peaks. They rang it once, with the Mother Bell, when they
+   parted, and never again. On its own it is only a bell. Rung at Cinder Fold
+   at midwinter, at the same moment as the Mother Bell, it turns the Mother
+   Bell's note, and through it every ward joined to the nine:
+   - rung "backward", the Mother Bell's note goes quiet instead of pushing:
+     every ward in the free wards is silent for one winter, nothing is pushed
+     north, and the white lies over the free wards instead;
+   - rung "forward", the Mother Bell pushes harder for good, every bell rings
+     louder, and the Wold is buried;
    - whoever rings it, either way, gives the bell everything: every memory
      they have. That is why the founders rang it once.
+
+   Sloe needs the Parting Bell because the Mother Bell alone can only push
+   north. Her people have no bells to answer with; the only note that can
+   send nothing north is the Parting Bell's, rung with the Mother Bell, at
+   Cinder Fold, at midwinter. That is why Book Four ends there.
+
+   How Book Two left the Mother Bell (`mother_*`) changes Part Three:
+   - `mother_chorus` (and old saves): the rope is up, any town may ask for the
+     note, and Ailith's rope families hold it;
+   - `mother_silenced`: the rope is coiled and locked in the forge-signal
+     house, and the hero holds the only key (Wren gave it in Book Two). Ailith
+     needs that key, or the signal house, which is why chapter 27 is fought
+     at the signal tower;
+   - `mother_recalled`: the rope is up and the council recalled the Warden
+     who rang it; lines only (Elske, Brannagh and Ailith say so).
 
    This is the Single Voice again, the book's old enemy: one note that
    decides for everyone. The book never lets the forward ring be chosen.
@@ -125,17 +162,30 @@ part. Lines that mention the Wold's last winter have three versions:
 | `b3_promise_hesk` | A ring of new bells under the stair holds the free wards for a generation. Hesk is the hero of the free wards. | The worst winter in the Long Tally: more bells, more white rung north. |
 | `b3_stair_sealed` | The nine carry it alone. Hesk was sent down the stair alone with a lamp. | Worse every year. And in the spring a man with a lamp came out of the marked way into the Wold: Hesk is in Orme. |
 
-Every one of them sends someone south.
+| `b3_promise_hesk` with `b3_three_told` | A partial ring: only those who stayed in the circle were cast, so it holds fewer towns for a shorter time. | A bad winter, less bad than with the full ring; Sloe's sum says how much less. |
+
+Every one of them sends someone south. Every version also carries the night
+of the great note (Book Two's Mother Bell), which every save has.
 
 **World rules kept.** The dead stay dead. What the Gloam takes does not come
 back (Book Three, "nothing comes back"). Given things are never taken back
 without a cost. No rule here says all wards are people. The bound voices
-(Aster, Vell's cast, Wren, Sable, Hesk's ring, the nine) are people and are
-asked before anything is rung through them.
+(Aster, Vell's cast, Wren, Sable, Hesk's ring, the nine, and the thirty-one
+iron bells) are people and are asked before anything is rung through them.
+Who is still there to be asked follows Book Three:
+- **Aster:** in Briarwatch's bell; with `b3_bell_aster` in Vell's great bell;
+  with `b3_bell_aster` and `b3_promise_old` at rest (Book Three's epilogue).
+  At rest she has no lines; Tovin speaks in her place, and the chapter names
+  the silence once (3, 8, 23, 24, 29, 30).
+- **The nine:** with `b3_promise_old` and `wards_seat` they have rested, and
+  the bells overhead at Cinder Fold are bronze only; otherwise they are awake.
+- **The thirty-one iron bells:** with `b3_vault_held` and neither
+  `b3_rite_law` nor `b3_promise_old`, they are still bound and awake (in
+  Vell's vault); otherwise they were let go.
 
 ## Parts and seasons
 
-Thirty chapters, one level each, in three parts of ten (open question 1):
+Thirty chapters, one level each, in three parts of ten (decided question 1):
 
 | Part | Title | Chapters | Levels | Where | Season |
 | --- | --- | --- | --- | --- | --- |
@@ -180,8 +230,33 @@ Four chapter that names them is playable, `Book.townOpen`):
 **Wold places reached by chapters** (not towns, no shop): Sheddon (12), Greve
 (14), Thrum (15), Dunnet and Wem (17), the Hush (18), the Orme road (19).
 
+**`town` and `nextTown` for every chapter.** A chapter set in a place that is
+not a town uses the town it departs from. The Hall of Legends departs from
+Highpass in Part One and from Orme in Part Two.
+
+| Ch | town → nextTown | Ch | town → nextTown | Ch | town → nextTown |
+| --- | --- | --- | --- | --- | --- |
+| 1 | highpass → ashford | 11 | lantry → lantry | 21 | highpass → highpass |
+| 2 | ashford → briarwatch | 12 | lantry → orme | 22 | highpass → briarwatch |
+| 3 | briarwatch → merrowgate | 13 | orme → orme | 23 | briarwatch → highpass |
+| 4 | merrowgate → saltwick | 14 | orme → orme | 24 | highpass → ashford |
+| 5 | saltwick → highpass | 15 | orme → orme | 25 | ashford → merrowgate |
+| 6 | highpass → cinderfold | 16 | orme → orme | 26 | merrowgate → cinderfold |
+| 7 | cinderfold → vell | 17 | orme → orme | 27 | cinderfold → cinderfold |
+| 8 | vell → highpass | 18 | orme → orme | 28 | cinderfold → cinderfold (`continues`) |
+| 9 | highpass → highpass | 19 | orme → orme (`continues`) | 29 | cinderfold → cinderfold (`continues`) |
+| 10 | highpass → lantry | 20 | orme → highpass | 30 | cinderfold → briarwatch |
+
+Chapter 10's `nextTown` opens Lantry for chapter 11 (only while a Part Two
+chapter is playable); chapter 20's returns the party to Highpass for Part
+Three.
+
 Travel between the free wards and the Wold is by the old north road, through
 the Hall of Legends, and is allowed between chapters like any other travel.
+"The north road" in this book always means the **old north road over the
+Highpass peaks**, from Highpass's upper gate to the Hall and down into the
+Wold. It is not the Briarwood road and not the Iron Road, and its lines never
+call it by either name.
 
 ## People
 
@@ -189,7 +264,7 @@ the Hall of Legends, and is allowed between chapters like any other travel.
 
 | Name | Who they are | What makes them human |
 | --- | --- | --- |
-| **Rue of Thrum** | Seventeen. Walks down the old north road in chapter 1 with a tally book, sent south by the Reckoner to find out who sends the white. | Reads her own book aloud every morning to know who she is. Acts first and writes it down after. Nessa sees herself in her, and so does Rue. |
+| **Rue of Thrum** | Seventeen. Walks down the old north road in chapter 1 with a tally book, sent south by the Reckoner to find out who sends the white. | Keeps about a season, as all the Wold does, and reads her own book aloud before anything hard, to know who she was before it. Acts first and writes it down after. Nessa sees herself in her, and so does Rue. |
 | **Sloe of Orme, the Reckoner** | About fifty. The one who does the Long Tally's sums. Book Four's antagonist. | She has done the arithmetic, and she is right: nine hundred years of the free wards' winters, doubled. She wants one winter back, for her people, and she will pay for it with everything she remembers. Never cruel; never wrong about the numbers. |
 | **Burdock of the Long Hall** | Seventy. Keeper of the Long Tally for forty years. | Remembers none of it and trusts the tally over his own eyes. Insists the party cannot be from the south, because the tally says nobody came; then writes them in, and believes it completely. |
 | **Yarrow of Greve** | Keeps the house where the Wold's grieving give their griefs to the white. | Gentle, practical, and certain she is doing good. She is, in a way Maren has to learn to see. |
@@ -198,7 +273,7 @@ the Hall of Legends, and is allowed between chapters like any other travel.
 | **Teasel of Lantry** | Lantry's door-reader, who reads the town its doors each morning. | Reads in a schoolmaster's voice, including the doors that say "Owe Sedge one hen". |
 | **Campion of Dunnet** | Fifteen; rings Dunnet's pot-bell. | Proud of it, and has never been told where the white goes. |
 | **Ailith Strake** | Master of Cinder Fold's rope families, who have pulled the nine's ropes for thirty generations. Part Three's antagonist in the free wards. | Warm, generous, the best ringer alive. The founders are her family. "I didn't do this. My grandchildren didn't." She means to ring the Parting Bell forward, and believes it is the only way her town's children are safe. |
-| **Kester Fitch** | A travelling ballad-seller who has written a song about the hero. | Gets everything wrong at first (the hero kills the Gloam with a sword; "Orin the Bold" is eight feet tall). Follows the story to put it right. The song changes as the book does, which is the running thread. |
+| **Linus Pardew** | A travelling ballad-seller who has written a song about the hero. | Gets everything wrong at first (the hero kills the Gloam with a sword; "Orin the Bold" is eight feet tall). Follows the story to put it right. The song changes as the book does, which is the running thread. |
 
 ### Returning
 
@@ -213,7 +288,7 @@ the Hall of Legends, and is allowed between chapters like any other travel.
   Elske's healer, at the harbour hospice).
 - Saltwick: Mags Peller, Davin; Varn by his Book Three flag.
 - Cinder Fold: Wren (alive, or in the tenth bell with `b3_wren_cast`),
-  Ottilie Brand, Hew (now ten), the Coppin children (with `job:mould-*`).
+  Ottilie Brand, Hew (now nine), the Coppin children (with `job:mould-*`).
 - Vell: Fennick, Corvane (by `b3_corvane_*`), Pike.
 
 **Hesk in Book Four.** He is never the main antagonist; he is the loudest
@@ -227,7 +302,7 @@ voice of "strangers are a luxury", and his place follows Book Three's ending:
   and 16; he taught Dunnet its pot-bell (17); he comes south with her in Part
   Three.
 
-**Comedy, where it comes from.** Kester's song and Orin's mortification at
+**Comedy, where it comes from.** Linus's song and Orin's mortification at
 it. Burdock trusting the tally over his eyes. Sister Ilse and Rue copying each
 other within an hour. Iona's invoice for nine hundred years (22), which is
 devastating and is also, she insists, an invoice. Davin correcting Orin's
@@ -244,14 +319,20 @@ Each happens once, unless it has changed.
 | Nessa | Proving, then choosing (Two); Wren's bell (Three). | From going first to staying: at a post, beside a friend, when she would rather go. She becomes the one somebody went back for, from the other side. | 7, The Signal Key | 15, Rue's Mother | 27, The Signal (Rue's choice) |
 
 What each starts from:
-- **Orin:** with `b3_mags_forgives` he spent the spring on Saltwick's lamps;
-  otherwise he has been at Dera's forge teaching Pim knots. With
+- **Orin:** with `b3_orin_tried` he owes Saltwick a season of lamps (the
+  roof council's sentence, served after Book Three) and comes up to Highpass
+  from Saltwick for the session, with a season still to serve (chapter 5 is
+  where he finishes it); otherwise, with `b3_mags_forgives` he spent the
+  spring on Saltwick's lamps; otherwise he has been at Dera's forge teaching
+  Pim knots. With
   `b3_orin_gives` he gave the Saltwick night in the deep and knows he did.
 - **Maren:** with `b3_seal_taken` she is the free wards' seal and has a list
   of yeses; with `b3_maren_gives` she has forgotten the day her gift woke;
   otherwise she keeps no list.
 - **Nessa:** with `nessa_keeper` "later" and `b3_wren_cast` or
-  `b3_wren_waits` she holds Cinder Fold's forge-signal key; with
+  `b3_wren_waits` she holds Cinder Fold's forge-signal key (with
+  `b3_wren_waits`, she went back to Cinder Fold in the spring to take it, and
+  comes to Highpass from there in chapter 1); with
   `b3_wren_refused` Wren keeps it from a chair and Nessa's yes is held for
   her; without `nessa_keeper` Wren (or the committee, if Wren was cast) keeps
   it. With `b3_nessa_gives` she has forgotten one thing about Wren.
@@ -260,8 +341,11 @@ What each starts from:
 Three. Nobody walks out in the Wold: there is nowhere to go. No companion
 walks out before their own chapter (5, 6, 7; 25, 26, 27), after chapters 9 or
 10 (they would miss the crossing), or after chapter 26 (the last four
-chapters run together at Cinder Fold, `together` from 27). Book Four needs its
-own walkout and return lines (`away.json` is written for Book Two's places).
+chapters run together at Cinder Fold, `together` from 27). `away.json` has one
+leave, stay and back scene per companion, written for Book Two's places, so
+Book Four adds its lines inside those scenes with `when` gates (for example
+`when: { flagsAll: ["b4_partone_done"] }` or a chapter's `away:stay-<id>`
+flag), keeping Book Two's lines as the ungated default.
 
 ## Chapters
 
@@ -280,14 +364,21 @@ made to wait while others suffer).
 **Opening.** The old north road above Highpass, snowed shut beyond the Hall
 of Legends for as long as anyone remembers, has a figure on it, walking, with
 a book under her arm. The hero is at Highpass for the spring session: Hesk's
-judgment (`b3_promise_old`), the council's honours for Hesk (`b3_promise_hesk`)
+appeal against the sentence he was given at the last session
+(`b3_promise_old`), the council's honours for Hesk (`b3_promise_hesk`)
 or the seal's first inspection (`b3_stair_sealed`). Sorrel's watch is on the
-wall with bows. How Sorrel greets the hero follows `second_oath`.
+wall with bows. How Sorrel greets the hero follows `second_oath`. The
+companions arrive by their Book Three flags (see "What each starts from"):
+Orin from Saltwick's lamps with `b3_orin_tried`, owing a season still; Nessa
+from Cinder Fold with `nessa_keeper` "later" and `b3_wren_waits`, the key on
+its cord. The hero comes into the chapter partway into level 40, because the
+3rd job trial paid XP.
 
 **Talks.**
 - Rue, who reads from her book: "My name is Rue. I am from Thrum. I have walked
-  forty-one days. I do not remember the first thirty." She asks for "the
-  bell-ringers".
+  forty-one days. I gave at the Hall's north door before I came down, as we
+  do before a long road, so I do not remember why I set out. It is written
+  here." She asks for "the bell-ringers".
 - Sorrel, who wants her out of the gate before dark.
 - Sable (cell, or Highpass's bell): Rue's script is the founders' own hand,
   the one on the tenth mould.
@@ -354,7 +445,7 @@ are copying each other.
 
 ### 3. The Song About You (b4-ballad, level 42, Briarwatch, early summer)
 
-**Opening.** Kester Fitch is singing a song about the hero in Briarwatch's
+**Opening.** Linus Pardew is singing a song about the hero in Briarwatch's
 square, and the square is singing it back. It is wrong in every verse. Dera
 corrects it from the forge door. Tovin rings the hour, and Pim rings it with
 him.
@@ -364,7 +455,15 @@ the peaks. With `b3_bell_aster` the bell is Tovin's by hand and he feels
 nothing; Rue's book says instead that the winter Briarwatch's bell was empty,
 Thrum's lane stayed clear further than it ever had.
 
-**Talks.** Kester, who wants the true story and will sell either. Dera.
+**The night watch.** With `b3_bell_aster`, Briarwatch has kept a night watch
+on the Briarwood edge since Book Three. Pim is on it for the first time, and
+the crisis is his: he lets the watch-fire go out for one night instead of
+stopping a bell, "so somebody up there gets a night". The decision is the
+same three answers about the watch (`b4_bw_rings`: the fire every night;
+`b4_bw_quiet`: one dark night a month; `b4_bw_pim`: Pim's watch, Pim's
+decision).
+
+**Talks.** Linus, who wants the true story and will sell either. Dera.
 Tovin and Pim. Aster or the empty bell. Aveline.
 
 **Clue (performance, alt. insight).** The song's last verse rings the white
@@ -386,7 +485,7 @@ somebody up there gets a night". The white comes into the lanes.
 Read in 9 (Briarwatch as an example), 22 (the rota), 23 and the epilogue.
 
 **Scene ballad-camp.** Orin, asked to sing his own verse, recites the facts
-instead, and Kester writes them down.
+instead, and Linus writes them down.
 
 ### 4. The North Company (b4-company, level 43, Merrowgate, summer)
 
@@ -429,7 +528,7 @@ him there) and has packed to come north with Orin.
 
 **Talks.**
 - Mags, who has an answer ready and does not say it yet.
-- Davin, who has learnt the Wold from Kester's song and is wrong about most of
+- Davin, who has learnt the Wold from Linus's song and is wrong about most of
   it.
 - Orin.
 - Varn: with `b3_orin_tried`, on the lamps beside Orin for the season; "Take
@@ -458,16 +557,18 @@ him, and Davin corrects it.
 
 ### 6. Rue's Book (b4-book, level 45, Highpass, summer). Maren's story
 
-**Opening.** Rue's book is gone in the night. By morning she will not know
-where she is. Maren sits with her (wherever `b4_rue_*` put her).
+**Opening.** Rue's book is gone in the night. She still has this summer at
+Highpass, but not who she was before it: her mother, Thrum, why she came
+south. She gave those at the north door (1), and the book is all she has of
+them. Maren sits with her (wherever `b4_rue_*` put her).
 
 **Maren's limit.** Rue believes every word she says, because her book told
 her. There is nothing for Maren to hear. With `b3_seal_taken` that is a
 seal's nightmare; with `b3_maren_gives` she has already lost the day she
 first heard a lie, and says so.
 
-**Talks.** Maren. Rue, before and after the morning: she asks who Maren is,
-gently, more than once. Iona, who keeps ledgers too and understands. Sorrel.
+**Talks.** Maren. Rue, who knows Maren from this summer and asks her, gently,
+more than once, what her mother's name was. Iona, who keeps ledgers too and understands. Sorrel.
 
 **Clue (investigation, alt. insight).** A Highpass carter took it. He lost
 someone to the white last winter and believes the book is a charm that called
@@ -485,9 +586,10 @@ a crowd.
 - Give it back as it was: `b4_book_returned`.
 - Help Rue write a new first page, about today, with Maren beside her:
   `b4_book_rewritten`. Maren +1. Rue's book now begins with Maren (15, 26).
-- Let it burn, and Rue begins from this morning: `b4_book_burned`. Maren -1
+- Let it burn, and Rue begins from this summer: `b4_book_burned`. Maren -1
   ("You let someone else choose what she keeps"). Rue keeps only what she
-  remembers since, and her mother's name (15).
+  has lived since she came south, and her mother's name, which she wrote on
+  her arm the first night (15).
 
 **Scene book-camp.** Iona and Rue compare ledgers. Iona sends nobody a bill.
 
@@ -499,13 +601,16 @@ at the casting hall: Cinder Fold has heard the founders' page (in her voice
 with `b4_truth_ailith`, from a council letter with `b4_truth_council`, from a
 broadsheet with `b4_truth_published`).
 
-**Talks.** Nessa. Wren, or the tenth bell. Ottilie Brand. Ailith. Hew, ten,
+**Talks.** Nessa. Wren, or the tenth bell. Ottilie Brand. Ailith. Hew, nine,
 who wants a rope. The Coppin children with `job:mould-bought` or
 `job:mould-sold`.
 
 **Clue (survival, alt. investigation).** Under the lid, on the north branch of
 the marked way, there are fresh given things: a child's slate in tally script,
-dated "the giving before last".
+dated "the giving before last". With `b3_stair_sealed` the hatch and the
+north branch are inside the seal: Ottilie's committee opens the hatch for one
+hour on Corvane's warrant, and the trapped family brings the slate up with
+them instead of the party finding it.
 
 **Crisis.** A Wold family, givers who came the deep way, is trapped under the
 lid as it shifts, and the rope families will not open the founders' hatch for
@@ -519,7 +624,7 @@ the same three answers apply.
 - Leave it with Wren, or Ottilie's committee if Wren was cast, and come north:
   `b4_key_left`.
 - Take it north: `b4_key_carried`. The signal goes unkept (27).
-- Give it to Hew: `b4_key_hew`. "He's ten. I was ten." The committee is
+- Give it to Hew: `b4_key_hew`. "He's nine. I was nine." The committee is
   furious and Wren is not. Hew keeps it every night (27).
 
 If Nessa is away (she cannot walk out before this chapter, but the scene is
@@ -544,7 +649,9 @@ side of the bells". The Wold has been writing south since the parting and
 giving the letters to the floor, because it had nowhere else to send them.
 
 **Talks.** Fennick, who counts them. Corvane (by `b3_corvane_*`). Rue reading
-one aloud. Aster, through the joined bells.
+one aloud. Aster, through the joined bells (from Vell's great bell with
+`b3_bell_aster`). With `b3_bell_aster` and `b3_promise_old` she is at rest:
+Vell's great bell is dark, and Fennick reads her last letter instead.
 
 **Clue (history, alt. religion).** The oldest letters ask what the Wold did
 wrong. The newest ask only that someone write back.
@@ -560,7 +667,7 @@ something for what is taken.
   floor takes a small memory from each who carries them (a line each, with
   absent versions). The council reads them in 9.
 - Copy what you can by lamp and leave them: `b4_letters_copied`. Fennick's
-  clerks copy for a week.
+  clerks copy for a week; his copies are what the council reads in 22.
 - Leave them and write one letter back, given to the floor:
   `b4_letters_answered`. The first letter south to north in nine hundred
   years. Orme's givers find it (13).
@@ -609,11 +716,11 @@ Nobody knows.
 
 **Opening.** The old north road to the founders' hall: the nine statues on
 the south face, the Wold's nine on the north face with its tally line beneath,
-and the Parting Bell in the middle, small and black with age. Kester has
+and the Parting Bell in the middle, small and black with age. Linus has
 paid a guide to follow and see it for his song. Davin is here with
 `b4_davin_comes`.
 
-**Talks.** Rue. Kester. Davin. The companions about going north.
+**Talks.** Rue. Linus. Davin. The companions about going north.
 
 **Clue (arcana, alt. history).** The inscription on the Parting Bell: "Rung
 once, to part. Ring it again and all will answer."
@@ -626,13 +733,14 @@ once, to part. Ring it again and all will answer."
 - Ring the Parting Bell once, to say you are coming: `b4_parting_rung`. Every
   bell in the free wards answers, and the white on the north side rolls down
   onto Lantry (11). Sloe learns the bell can still be rung (16).
-- Go down unannounced: `b4_unannounced`.
+- Go down unannounced: `b4_unannounced`. Lantry has heard nothing (the
+  default opening of 11).
 - Give something at the north door, the Wold's way: `b4_gave_door`. The hero
   gives a small memory. Lantry's top door says a giver came from the south
   (11).
 
 **Scene b4-partone-end (empty cast).** At the north door, each companion says
-what they are bringing. Kester goes back down with the first true verse. Sets
+what they are bringing. Linus goes back down with the first true verse. Sets
 `b4_partone_done`. "To be continued."
 
 ## Part Two: The Wold (levels 50 to 59)
@@ -766,8 +874,9 @@ like each other.
 
 **Opening.** Rue comes home after a year. Her mother, Heath, gave her grief
 for a lost daughter to the white, and does not know her. Rue's page on the
-door was scrubbed off. What Rue has to show her depends on her book
-(`b4_book_*`).
+door was scrubbed off. What Rue has to show her depends on her book: the old
+book (`b4_book_returned`, and the default), the new first page with Maren in
+it (`b4_book_rewritten`), or her arm (`b4_book_burned`).
 
 **Talks.** Rue. Heath. Rue's little brother, who writes the door. Nessa, who
 was the kid somebody went back for. Davin, with `b4_davin_comes`.
@@ -790,7 +899,8 @@ mother's door.
   `b3_nessa_gives`, "Keep it. I gave one of mine and I'd want it back" (sets
   `b4_rue_kept`); otherwise "It's yours. I kept all of mine, and some nights
   I'd give anything" (sets `b4_rue_gave`). Without Nessa, this choice is not
-  offered (`requires: { party: "nessa" }`, engine change 15).
+  offered (`requires: { companion: "nessa" }`, which `requirementStatus`
+  already supports).
 
 **Scene thrum-nessa.** Nessa and Rue on the door step.
 
@@ -857,7 +967,7 @@ copied: the same sin, a mile wide.
 **Opening.** Where everything rung back for nine hundred years has gathered.
 The white is so thick it is quiet. People live here who have given
 everything: they walk and work and are kind, and have no names. The shapes
-wear faces the party knows: Fenmere's baker, the council at Hollin's Reach,
+wear faces the party knows: Fenmere's baker, the people of Hollin's Reach,
 and with `b3_turned_left` the sixteen from the deep. With `b4_orin_ordered`,
 Sedge's mother is here, walking. Aster's voice does not reach. Played
 straight.
@@ -876,8 +986,9 @@ The faces.
 - Lead them south to Orme: `b4_walkers_led`. Slow (19 is harder); they come
   south with the Wold (25, 26).
 - Mark a way for them and go on: `b4_walkers_marked`. Some follow.
-- Ring a bell here so they wake for one night: `b4_hush_rang`. They say their
-  names to you, and the white goes onto the Orme road (19).
+- Ring a bell here so they wake for one night: `b4_hush_rang`. Their own
+  names are gone, so they learn the names you give them and say them back,
+  new things, as a child does; the white goes onto the Orme road (19).
 
 **Scene hush-camp.** No banter. Each companion says one name they will keep.
 
@@ -1001,16 +1112,18 @@ chair.
 ### 23. The Quiet Night (b4-quietnight, level 62, Briarwatch, summer)
 
 **Opening.** Briarwatch, with the Wold's families in the fields (with
-`b4_crossed`). Kester has a new verse, about the Wold. With `b4_potbell_kept`,
+`b4_crossed`). Linus has a new verse, about the Wold. With `b4_potbell_kept`,
 the first white ever pushed south comes over the peaks from the Wold's own
 bells.
 
 **Aster.** Hesk's ring, Vell's cast, Wren and Sable are bound voices too, and
 the Parting Bell would move them all. Aster asks to be asked. With
 `b3_bell_aster`, Briarwatch's bell is empty and the chapter's voice is Tovin,
-the keeper who was asked, in Book Three, what it is like to be a bell.
+the keeper who was asked, in Book Three, what it is like to be a bell; Aster
+answers from far off, from Vell's great bell, or, with `b3_promise_old`, not
+at all, because she is at rest, and Tovin says so.
 
-**Talks.** Aster or Tovin. Pim. Dera. Kester. Aveline.
+**Talks.** Aster or Tovin. Pim. Dera. Linus. Aveline.
 
 **Clue (religion, alt. performance).** Through the joined bells, Aster can ask
 every bound voice what it wants rung through it.
@@ -1039,7 +1152,9 @@ One's villain took power in secret to keep a village safe "properly"; Ailith
 is doing the same, and he knows it.
 
 **Talks.** Sable: his case for telling her, which nearly convinces you, the
-way his cases always do. Aster, through a bell or by letter. Sloe, who wants
+way his cases always do. Aster, through a bell or by letter (at rest with
+`b3_bell_aster` and `b3_promise_old`: Sable speaks of her instead, the one
+voice he never argued with). Sloe, who wants
 the backward note's true form from him. Hesk in the next cell with
 `b3_promise_old`. With `b4_rue_council` or `b4_rue_watch`, Rue, who learnt
 the founders' script from him.
@@ -1087,7 +1202,7 @@ refused, three hundred years ago, by giving up the lower town.
   good at this. Let somebody else be good at that." Sorrel's watch holds the
   doors, less well (28).
 - Orin takes it and makes Davin his sergeant: `b4_orin_davin`
-  (`requires: { flagsAll: ["b4_davin_comes"], party: "orin" }`). Orin has to
+  (`requires: { flagsAll: ["b4_davin_comes"], companion: "orin" }`). Orin has to
   give him the order to hold the rear door (28), and does.
 
 Absent Orin: Sorrel offers the commission to the hero, and none of the three
@@ -1109,9 +1224,10 @@ hear? Sloe believes every word she says.
 
 **Talks.** Maren. Anwen. Sloe. Cass Ord. Coll and Bett. Elske.
 
-**Clue (insight, alt. medicine).** The walkers have begun saying words back,
-from Maren reading names to them (stronger with `b4_names_kept` or
-`b4_names_written`).
+**Clue (insight, alt. medicine).** The walkers have begun saying names back.
+Not their own, which are gone, but new ones they are learning from Maren
+reading names to them, as a child learns words (stronger with `b4_names_kept`
+or `b4_names_written`).
 
 **Crisis.** The Lantern Hall's men try to take Sloe to sell her note.
 - Peaceful: Maren speaks for Sloe in front of the harbour (insight, alt.
@@ -1138,13 +1254,17 @@ it and saw the rope families' preparations; with `b4_key_carried`, it went
 unkept and the rope families hold the casting hall already; with `b4_key_hew`,
 Hew has kept it every night and has news. Rue has gone over to Sloe's
 ringers. She means to ring the note herself in Sloe's place: "I've only got a
-year to lose."
+season to lose."
 
 **Talks.** Nessa. Rue (what she remembers of her mother follows `b4_rue_*`).
 Wren, Hew or Ottilie. Ailith at the hall doors.
 
 **Clue (survival, alt. investigation).** The rope families have opened the
-founders' hatch. They mean to ring from under the nine.
+founders' hatch (with `b3_stair_sealed`, they broke the seal to reach it,
+which the committee can name as a crime in 28). They mean to ring from under
+the nine. With `mother_silenced` they also need the Mother Bell's rope from
+the forge-signal house, whose only key the hero holds: the signal tower and
+the signal house are one building, and that is why they come for it.
 
 **Crisis.** The signal tower.
 - Peaceful: Nessa gets the signal lit to warn the miners (athletics, alt.
@@ -1164,8 +1284,16 @@ as `b4_nessa_signal`. No lighter moment from here to the end.
 ### 28. The Rope Families (b4-ropes, level 67, Cinder Fold casting hall, midwinter)
 
 **Opening.** Ailith holds the casting hall with the Parting Bell. The nine (or
-ten) overhead; the lid below. Her case, in full. Hesk beside her with
-`b3_promise_hesk`.
+ten) overhead, and over the first forge the Mother Bell, which her families
+have rung for the free wards every midwinter since Elske's note; the lid
+below. Her case, in full: the Parting Bell rung forward with the Mother Bell,
+once, and her town's children are safe for good. Hesk beside her with
+`b3_promise_hesk`. The Mother Bell by `mother_*`: with `mother_chorus` (and
+old saves) its rope is up and her families hold it; with `mother_silenced`
+the rope is still locked in the forge-signal house, unless she took it in 27
+(she did not if the signal was lit), and she cannot ring without it; with
+`mother_recalled` Elske's recall is the first thing Ailith throws at the
+council ("You took the rope off one woman. Now you'd take it off a town").
 
 **Talks.** Ailith. Ottilie. Ailith's son on the ropes. Sloe at the north door
 with `b4_maren_vouched`.
@@ -1194,13 +1322,21 @@ Straight on (`continues`) to chapter 29.
 **Opening.** Someone has struck the Parting Bell half a note (Ailith's test,
 worse with `b4_sable_silent`), and the lid heaves. The white of both
 countries, rung back from both sides, meets under Cinder Fold. Sloe's ringers
-come in by the north door (`b4_maren_vouched`, `b4_told_sloe`) or up through
-the lid by the marked way (`b4_maren_doubts`).
+come in by the north door (`b4_maren_vouched` or `b4_told_sloe`) or up through
+the lid by the marked way (`b4_maren_doubts` without `b4_told_sloe`). When
+both `b4_told_sloe` and `b4_maren_doubts` are set, `b4_told_sloe` wins: she
+trusts the hero's word over the harbour's watch and comes by the north door,
+and one line says Maren doubted her. The Mother Bell hangs over all of it,
+its rope up (`mother_chorus`, `mother_recalled`) or bare (`mother_silenced`).
 
-**Talks.** Sloe. Rue. Aster, through the joined bells. Burdock, if he came.
+**Talks.** Sloe. Rue. Aster, through the joined bells (at rest with
+`b3_bell_aster` and `b3_promise_old`: Tovin's line from Briarwatch instead,
+carried by the joined bells). Burdock, if he came.
 
 **Clue (performance, alt. arcana).** The nine are out of time with the half
-note. Ring them in time and the lid settles.
+note. Ring them in time and the lid settles. (With `b3_promise_old` and
+`wards_seat` the nine have rested and are bronze only; the ringers ring them
+in time by hand, and nobody answers.)
 
 **Crisis.**
 - Peaceful: the miners and the Wold's ringers on every rope together
@@ -1217,13 +1353,23 @@ Straight on to chapter 30.
 ### 30. The Parting Bell (b4-parting, level 69, Cinder Fold casting hall, midwinter midnight)
 
 **Opening.** Every bell in the free wards listening, and the Wold's pot-bells
-with them (`b4_potbell_*`). The bell in someone's hands (`b4_holder_*`).
+with them (`b4_potbell_*`). The Parting Bell in someone's hands
+(`b4_holder_*`), under the Mother Bell, whose midwinter note is due at
+midnight. With `mother_silenced` the hero brings the rope from the signal
+house, or does not: the Mother Bell's note this midwinter is the hero's to
+allow, and the lines say so. With `mother_chorus` the towns have asked for it
+as every year since Book Two; with `mother_recalled` the council asks for it
+in Brannagh's voice.
 
-**Talks.** Sloe. Ailith (with `b4_ailith_ropes`). Rue, with Nessa by
-`b4_nessa_*`. Burdock. Aster.
+**Talks.** Sloe. Ailith (with `b4_ailith_ropes`; with `b4_ailith_judged` or
+`b4_ailith_committee` she watches from the door under guard). Rue, with Nessa
+by `b4_nessa_*`. Burdock. Aster (at rest with `b3_bell_aster` and
+`b3_promise_old`: no line from her, and Tovin's bell at Briarwatch is the one
+that does not answer).
 
-**Clue (arcana, alt. performance).** The bell can be rung backward, forward,
-or not at all. Forward is never offered.
+**Clue (arcana, alt. performance).** The Parting Bell only turns the Mother
+Bell's note: it can be rung backward with it, forward with it, or not at all,
+and the Mother Bell rings either way. Forward is never offered.
 
 **Crisis.** When the bell is touched, the Founders' Shade comes up through the
 lid: the nine founders with the faces the free wards' songs give them. The
@@ -1238,8 +1384,11 @@ legends, fighting you.
 **Decision (how the winter is shared).** Each has a loser, and each is written
 as right for someone.
 - **Share it** (`b4_winter_shared`). Nobody rings the Parting Bell. It goes
-  back to the Hall of Legends, silent. The free wards keep quiet nights by
-  rota, town by town, and both countries give at the floor. Strongest with
+  back to the Hall of Legends, silent. The Mother Bell's midwinter note is
+  rung softer, by the rota, so less goes north. The free wards keep quiet
+  nights by rota, town by town, and both countries give at the floor (with
+  `b3_stair_sealed`, the free wards' givers cross the peaks and give from the
+  north branch, the Wold's way, because the stair stays sealed). Strongest with
   `b4_vote_share`; partial with `b4_rota_towns`. Named free-wards towns have
   hard winters, the Wold still loses people, and it must be renewed every
   generation.
@@ -1249,23 +1398,34 @@ as right for someone.
   `b4_embassy_refuge`. Iona's arithmetic holds, just. The Long Tally comes
   south (`b4_tally_carried`, `b4_tally_last`) or ends in Orme with Burdock
   (`b4_tally_left`). Sloe does not come.
-- **Sloe's note** (`b4_note_rung`). The Parting Bell is rung backward. Every
-  bell in the free wards goes quiet for one winter: the Wold's first clear
-  winter in nine hundred years, the free wards' worst, and named towns fall.
-  The bound voices are silent for a winter. Who rings it, by `oneOf`: Rue with
+- **Sloe's note** (`b4_note_rung`). The Parting Bell is rung backward with
+  the Mother Bell. Every ward in the free wards goes quiet for one winter:
+  the Wold's first clear winter in nine hundred years, the free wards' worst,
+  and named towns fall. The bound voices are silent for a winter, each in the
+  way it asked in 23: with `b4_voice_rings` Briarwatch's bell is silenced
+  against Aster's wish and the lines say so; with `b4_voice_quiet` she had
+  asked for it; with `b4_voice_rests` she has already gone. Who rings it, by `oneOf`: Rue with
   `b4_nessa_with_rue` or `b4_nessa_signal`, with Nessa beside her in the first
   case; otherwise Sloe. The ringer forgets everything.
 
 **Scene parting (straight after, empty cast).**
-- **Node 1, the bound voices.** Each answers for itself, by Book Three's flags
-  and `b4_voice_*`: Aster, Vell's cast, Wren, Sable, Hesk's ring, the nine.
+- **Node 1, the bound voices** (reads `b4_voice_*`, `b4_ailith_*`). Each
+  answers for itself, by Book Three's flags and `b4_voice_*` (default
+  `b4_voice_rings`): Aster (at rest with `b3_bell_aster` and
+  `b3_promise_old`: Tovin speaks), Vell's cast, Wren, Sable, Hesk's ring (a
+  partial ring with `b3_three_told`), the nine (with `b3_promise_old` and
+  `wards_seat` they have rested, and the node says so), and the thirty-one
+  iron bells (only with `b3_vault_held` and neither `b3_rite_law` nor
+  `b3_promise_old`; still bound, and they ask to be let go).
 - **Node 2, the Telling.** Who keeps your story. The choice sets
   `fourth_telling`:
-  - `ballad`: Kester's song, sung in the free wards;
+  - `ballad`: Linus's song, sung in the free wards;
   - `tally`: the Long Tally, written in the Wold (or in its southern last book);
   - `companions`: Orin, Maren and Nessa each keep a piece (a line each, with
     absent versions);
-  - `none`: you ask that it not be told.
+  - `none`: you ask that it not be told. The AI storyteller is still given
+    neutral legend text ("the hero of the Long Tally, who asked that the story
+    not be told"), so it has something to continue from.
 - **Node 3, the epilogue** (Dera's forge, early spring, `framesTrial`):
   - The way home, and the winter that followed, by the ending.
   - Dera has your gear on the bench.
@@ -1275,8 +1435,9 @@ as right for someone.
   - Nessa by `b4_nessa_*` and `b4_key_*`; Biscuit at the forge door.
   - Rue: forgetting everything and beginning a new book with Nessa writing its
     first page; or home in Thrum; or in Briarwatch's fields.
-  - Sloe, Ailith, Burdock, Hesk.
-  - Kester's last verse, which follows `fourth_telling`.
+  - Sloe, Ailith (by `b4_ailith_*`, default `b4_ailith_judged`), Burdock,
+    Hesk.
+  - Linus's last verse, which follows `fourth_telling`.
   - The last line sets `b4_done`: "There is a trial waiting at the Hall of
     Legends for the next thing you will be."
 
@@ -1289,7 +1450,7 @@ to Book Four), never past `jobRoom`, and is never assumed by the main story.
 | Town | Job (id) | Open during | What it is |
 | --- | --- | --- | --- |
 | Highpass | Rue's Doors (`rue-doors`) | 1 to 3 | The innkeeper wants Rue to stop writing on his doors. Find her somewhere she may. |
-| Briarwatch | The Third Verse (`third-verse`) | 3 to 6 | Kester wants the true story. Dera, Tovin and Pim each tell him a different one. |
+| Briarwatch | The Third Verse (`third-verse`) | 3 to 6 | Linus wants the true story. Dera, Tovin and Pim each tell him a different one. |
 | Merrowgate | Bett's Berth (`bett-berth`) | 4 to 7 | Bett wants to sign on as ship's girl north (the Company's or the council's, by `b4_company_*`). Coll does not want her to. |
 | Cinder Fold | The Ninth Rope (`ninth-rope`) | 7 to 9 | The rope families refuse a miner's son a place on the nine's ropes. He is the best ringer in the Fold. |
 | Lantry | The Painted Door (`painted-door`) | 11 to 13 | One door in Lantry has been painted over. Nobody knows who lived there. |
@@ -1351,17 +1512,37 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 `b4_maren_silent`; `b4_nessa_*` (27) as `b4_nessa_signal`; `b4_davin_*` as
 `b4_davin_home`.
 
+**Where the quieter flags are read** (each is also a default branch, so a
+chapter needs no line for it beyond the default):
+- `b4_unannounced`: chapter 11's default opening (Lantry has heard nothing).
+- `b4_embassy_own`: 16 (the promise is yours, Orin -1 if broken) and 22 (the
+  council owes the Wold nothing in writing); the default of `b4_embassy_*`.
+- `b4_letters_copied`: 22, where Fennick's copies are read to the council.
+- `b4_book_returned`: 15, the default of `b4_book_*` (Rue shows her mother the
+  old book).
+- `b4_ailith_*`: 30 (Talks, the epilogue); default `b4_ailith_judged`.
+- `b4_voice_rings`: the chapter 30 bound-voices node, and Sloe's note; the
+  default of `b4_voice_*`.
+- `b4_told_sloe` with `b4_maren_doubts`: `b4_told_sloe` wins (29).
+
 **Read from Books One to Three** (Book Four always follows a finished Book
 Three, so every `b3_` chapter decision is present; only companion answers and
 side jobs can be missing):
 - Book Two: `second_oath`, `wards_seat`, `elske_seat`/`elske_free`/
   `elske_judged`, `nessa_keeper`. Missing: the bible's old-save default (no
   Elske lines; Brannagh chairs).
+- Book Two's Mother Bell: `mother_chorus`, `mother_silenced`,
+  `mother_recalled` (lore item 4; 27 to 30). Missing reads as
+  `mother_chorus`. Every save has the night of the great note, because Elske
+  always rings it.
 - Book Three endings: `b3_promise_old`, `b3_promise_hesk`, `b3_stair_sealed`;
-  the gifts `b3_gave_*` (Dera's lines); `b3_done` (unlock).
+  the gifts `b3_gave_*` (Dera's lines); `b3_done` (lines only; the unlock is
+  `unlock: "b3-firstbell"`).
 - Book Three places and people: `b3_bell_aster`/`cast`/`evacuate`,
   `b3_door_kept`/`closed`, `b3_sable_cast`/`lives`, `b3_saltwick_moved`,
-  `b3_corvane_*`, `b3_ashford_*`, `b3_turned_left`, `b3_wren_*`.
+  `b3_corvane_*`, `b3_ashford_*`, `b3_turned_left`, `b3_wren_*`,
+  `b3_vault_held`, `b3_rite_law` (the thirty-one), `b3_three_told` (the
+  partial ring).
 - Companions: `b3_mags_forgives` (missing reads as not forgiven),
   `b3_orin_tried`, `b3_varn_*`, `b3_seal_*`, `b3_maren_gives`,
   `b3_nessa_gives`, `b3_orin_gives` (missing gives/keeps read as keeps).
@@ -1398,8 +1579,15 @@ Rules every reward keeps:
   can wear (Maren has Strength 10, Nessa 9). Chapters 25 to 27 give companion
   keepsakes that only that companion can wear (`requires.members`, a small
   engine change).
-- **Warm** (`warm: true`, see "Systems"): the rewards for chapters 11, 15 and
-  18 are white-wool, made in the Wold.
+- **Fortified is outside the cap.** Fortified (25% less damage taken for a
+  round, `src/power.js`) is a combat condition, applied after
+  `equipment.derive`, so it is not counted in the 30% gear cap. The
+  arc moves (Orin's Hold the Column) rely on that.
+- **Warm** (`warm: true`, see "Systems") is a tag, not a kind of item. A warm
+  item is as good as any other item of its slot at its tier: white-wool
+  armour (cloaks included), and accessories. The rewards for chapters 11, 15
+  and 18 are warm, in the accessory and armour slots, so wearing warmth never
+  costs a slot's worth of damage.
 
 ### One reward per chapter
 
@@ -1407,11 +1595,11 @@ Rules every reward keeps:
 |---|---|---|---|---|---|
 | 1 | b4-walker | Walker's Tally-cord | Accessory | Level 38 | The cord Rue ties round her book so she cannot lose it on the road. She gives you her spare. |
 | 2 | b4-records | Founders' Account Case | Accessory | Level 39 | The oiled case Ilse kept the founders' page in for two hundred years. |
-| 3 | b4-ballad | The True Verse | Accessory | Level 40 | Kester's broadsheet with Dera's corrections in the margin. Read aloud, it rallies (Empowered). |
+| 3 | b4-ballad | The True Verse | Accessory | Level 40 | Linus's broadsheet with Dera's corrections in the margin. Read aloud, it rallies (Empowered). |
 | 4 | b4-company | North Company Cutlass | Main hand, finesse | Level 41 · Dex 13 | Issued to the Company's guards, who were never told what they were guarding. |
 | 5 | b4-davin | Lamp-store Hook | Main hand | Level 42 · Str 13 | The hook Davin used to pull a burning plank clear. |
 | 6 | b4-book | Rue's Second Book | Accessory | Level 43 | A blank book from Iona's own shelf, given after the first was found or lost. Insight story ability. |
-| 7 | b4-key | Signal-keeper's Lanyard | Accessory | Level 44 | The cord the forge-signal key hung on, whoever has the key now. |
+| 7 | b4-key | Brass Key-cord | Accessory | Level 44 | The cord the forge-signal key hung on, whoever has the key now. |
 | 8 | b4-letters | Floor-letter Satchel | Accessory | Level 45 | The satchel Fennick lends for the letters. History and Religion. |
 | 9 | b4-embassy | Embassy Seal | Accessory | Level 46 | The council's seal for the embassy north, cut overnight by a Highpass jeweller. Persuasion story ability. |
 | 10 | b4-peaks | Parting-hall Plate | Armour, heavy | Level 47 · Fighter or Cleric · Str 13 | Armour left in the Hall of Legends by the founders' last guard. Brace. |
@@ -1419,21 +1607,21 @@ Rules every reward keeps:
 | 12 | b4-sheddon | Sheddon Column Shield | Off hand | Level 49 · Fighter or Cleric · Str 13 | A farm gate, faced with iron, carried at the column's rear. |
 | 13 | b4-orme | Long Tally Staff | Main hand, focus | Level 50 · Wizard, Cleric or Bard | A tally-keeper's measuring staff, notched for nine hundred years of winters. |
 | 14 | b4-greve | Letting-house Censer | Accessory | Level 51 | Yarrow's censer, the one she lights for the grieving. Medicine story ability. |
-| 15 | b4-thrum | Thrum Lane Cloak | Accessory, warm | Level 52 | Heath's cloak, which she gives to the stranger who brought her daughter home. |
+| 15 | b4-thrum | Thrum Lane Cloak | Armour, light, warm | Level 52 | Heath's cloak, which she gives to the stranger who brought her daughter home. |
 | 16 | b4-reckoning | Reckoner's Slate | Main hand, focus | Level 53 · Wizard | The slate Sloe did her sum on, which she will not need again. |
 | 17 | b4-potbells | Pot-bell Mace | Main hand | Level 54 · Str 13 | Dunnet's clapper (if the bell was broken, a piece of the bell). |
-| 18 | b4-hush | Hush-wool Mantle | Accessory, warm | Level 55 | Woven by a walker who has no name, and given without a word. |
+| 18 | b4-hush | Hush-wool Mantle | Armour, medium, warm | Level 55 | Woven by a walker who has no name, and given without a word. |
 | 19 | b4-column | Column Longbow | Main hand, bow | Level 56 · Dex 13 | The bow of the Wold's rearguard on the switchbacks. Pinning Shot. |
 | 20 | b4-northdoor | North-door Greataxe | Main hand, two-handed | Level 57 · Str 15 | The axe that has hung by the Hall's north door since the parting. |
 | 21 | b4-knot | Founders' Rope-knot | Accessory | Level 58 | The rope left on the empty hook, in the knot Orin knows and cannot name. Athletics. |
 | 22 | b4-invoice | Council Ledger-case | Accessory | Level 59 | The case Iona's invoice came in. Investigation story ability. |
 | 23 | b4-quietnight | Quiet-night Lantern | Accessory | Level 60 | The lantern Pim carries on the watch line on quiet nights. Perception. |
 | 24 | b4-gatehouse | Gatehouse Grammar | Main hand, focus | Level 61 · Wizard | Sable's founders' grammar, annotated, from his cell (or from the bell-room). Unravel. |
-| 25 | b4-ford | Captain's Commission | Accessory, Orin only | Level 62 | Sorrel's commission, whatever Orin did with it. Fortified for the party once a fight. |
+| 25 | b4-ford | Captain's Commission | Accessory, Orin only | Level 62 | Sorrel's commission, whatever Orin did with it. Saves, and an Intimidation story ability; its item skill Weakens one enemy (not Fortified, which is his arc move). |
 | 26 | b4-hospice | Hospice Physic-bag | Accessory, Maren only | Level 63 | Anwen's old bag, given to Maren. Wisdom saves and Medicine. |
 | 27 | b4-signal | Signal-fire Longbow | Main hand, bow, Nessa only | Level 64 · Dex 13 | Wren's bow from the forge-signal tower. Signal Shot (Vulnerable). |
 | 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
-| 29 | b4-lid | Lid-iron Plate | Armour, heavy | Level 66 · Str 15 | Plate cut from the lid's iron after it settled. Brace. |
+| 29 | b4-lid | Settling-iron Plate | Armour, heavy | Level 66 · Str 15 | Plate cut from the lid's iron after it settled. Brace. |
 | 30 | b4-parting | Midwinter Tuning Fork | Main hand, focus | Level 67 · Wizard, Cleric or Bard | The fork the ringers tuned the nine with on midwinter night. First Note. |
 
 ### Where Book Four goes, by level
@@ -1455,16 +1643,21 @@ Highpass to where the story is.
 | Hall of Legends | Region, from Highpass; not a town | 10 (49), 20 (59); the 4th job trial | 49, 59, 70 |
 | `wold` | Region id for the white and the faction | 11 to 20 | 50 to 59 |
 
-A natural split for the stock: tier 45 in Highpass and Cinder Fold; tiers 50
-and 55 in Lantry and Orme, which no hero can miss in Part Two; tier 60 in
-Highpass and Briarwatch; tier 65 in Merrowgate and Cinder Fold; tier 70 in
-Briarwatch and Highpass for the trial. Two requests go with this to the gear
-thread:
-- white-wool warm accessories in Lantry's and Orme's stock, so every party
-  member can be warm in the Wold (the three warm rewards cover three, by
-  chapter 18);
-- a cap on gear damage dealt (open question 9), since sold gear, sets and
-  rewards together can pass 50%.
+The gear thread's layout (PR #86), which this design follows:
+- tiers 45 and 50 are single items;
+- the Book Four sets have weapons at 55, armour and shields at 60, and
+  accessories at 65;
+- singles return at 70, with level bounties `briarwatch:70` and
+  `highpass:70`;
+- once Lantry and Orme are in `towns.json`, the 50 to 59 tiers move to
+  Lantry and Orme, which no hero can miss in Part Two; Highpass keeps 45 and
+  60, and Briarwatch keeps 70 for the trial.
+
+The gear thread also adds warm pieces (`warm: true`) as tier-level white-wool
+armour, cloaks and accessories to Lantry's and Orme's stock once those towns
+exist, so every party member can be warm in the Wold without giving up a
+slot's worth of power. `MAX_GEAR_DEALT = 0.5` is in #86 (`src/equipment.js`,
+counting set bonuses), so the Book Four rewards sit under it.
 
 ## Systems and gameplay
 
@@ -1486,13 +1679,22 @@ chapter 1 at the start of level 40 ends chapter 30 at the start of level 70.
   level ahead; it never compounds, because the next chapter's cap is its own
   level.
 - **The trial** pays half of level 70's band (9,630 XP) once, after the
-  book.
+  book. It is a generated quest, so its XP is capped by `Book.capXp` like AI
+  XP; it can never carry the hero past what the books allow.
+- **Entering chapter 1.** The 3rd job trial (at 40) pays XP too, so the hero
+  starts chapter 1 partway into level 40, not at its start, and ends chapter
+  30 the same distance into 70.
 - **Falling behind.** Book Three's direct playtests ended at 38, because heroes
   entered it behind from Book Two. Book Four closes that gap twice: chapter 1
-  needs the 3rd job, which needs level 40 (open question 2), and the last
+  needs the 3rd job, which needs level 40 (decided question 2), and the last
   chapter of each part tops a behind hero up to the part's end level
-  (`levelFloor`: 50, 60, 70; open question 3). Within a part, side content
-  still matters because fights more than five levels under are harder.
+  (`levelFloor`: 50, 60, 70; decided question 3). `b3-firstbell` gets
+  `levelFloor: 40`, and Book Four's chapter 1 applies the 40 floor too, for
+  saves that finished Book Three before the field existed; and for those
+  saves the after-the-books bounties are capped at the next job trial's level
+  (40, then 70), not the current level, so a hero who ended Book Three at 38
+  is never stuck short of the trial. Within a part, side content still
+  matters because fights more than five levels under are harder.
 
 **Enemy scaling at 40 to 70** (`src/xp.js`, unchanged). A standard leader:
 
@@ -1521,34 +1723,56 @@ rounds at 40 to 69, the objective route 3 to 5. Bosses (chapters 10, 20, 29,
 1. **The white** (Part Two). A chapter with `white: true` starts its deciding
    fight with each party member who wears no warm item Slowed for one round
    (the existing debuff), shown at the top of the fight with its reason.
-   Warm items (`warm: true`) are Wold-made white-wool: the rewards for
-   chapters 11, 15 and 18, and (asked of the gear thread) stock in Lantry and
-   Orme. Bells do not count: a bell pushes the white onto someone else. It
-   gives the accessory slot a real choice (warmth or damage) for ten
-   chapters.
+   Warm items carry `warm: true`: Wold-made white-wool armour, cloaks and
+   accessories, each as good as its tier (the rewards for chapters 11, 15 and
+   18, and the gear thread's Lantry and Orme stock). Bells do not count: a
+   bell pushes the white onto someone else. Slowed for a round is worth about
+   15 HP, so warmth must never cost a slot's worth of damage (20 to 25% in an
+   accessory); that is why warm is a tag on tier-level items, not a choice
+   against damage. The point is that the Wold feels different and that
+   buying in Lantry matters. If the Part Two playtest shows the white makes
+   no difference to fights, it falls back to story text only.
 2. **The Wold's reputation.** A fourth faction, `wold`, beside wardens, trade
    and wilds. Chapter decisions move it; it sets Lantry's and Orme's prices
    (the existing rule) and changes a few lines in Part Three.
 3. **The Telling.** Each chapter decision may carry `told: { ballad, tally }`:
-   one sentence of how Kester's song tells it and one of how the Long Tally
-   records it. The Journal shows them under "What they tell of you". After the
+   one sentence of how Linus's song tells it and one of how the Long Tally
+   records it. Where an option needs none, the chapter carries one `told`
+   for all its options. The Journal shows them under "What they tell of you". After the
    epilogue only the chosen keeper's version continues (`fourth_telling`),
    and it is what the AI storyteller is given as the hero's legend.
-4. **Companion arc moves.** When a companion's Part Three chapter is done,
-   they learn one combat move, the same power whichever way their arc went
-   (open question 8):
-   - Orin, Hold the Column: the party is Fortified for one round, once a
-     fight.
-   - Maren, Say Their Names: heals the party, once a fight.
-   - Nessa, Signal Fire: one enemy is Vulnerable for two rounds, once a fight.
+4. **Companion arc moves.** When a companion's Part Three chapter is done
+   (Orin on completing 25, Maren 26, Nessa 27), they learn one combat move,
+   the same power whichever way their arc went (decided question 8). Each is
+   once a fight, used by the companion AI on its trigger:
+   - Orin, Hold the Column (bonus action): the party is Fortified for one
+     round. Trigger: two or more allies under half HP. It overlaps his Shield
+     Accord, which also gives Fortified: the two do not stack, and he does not
+     use Hold the Column on a round Shield Accord is up.
+   - Maren, Say Their Names (action): heals each party member 3d8 + her
+     Wisdom modifier + `lateGrowth`. Trigger: two or more allies under half
+     HP, or one down.
+   - Nessa, Signal Fire (bonus action): the boss, or else the leader, is
+     Vulnerable for two rounds. Trigger: her first turn of the fight.
 5. **Level floors** (`levelFloor` on a chapter): see "Falling behind".
 
 **Playtest target.** Scripted campaigns (`tests/campaign-playtest.js` with
 `BRIARWATCH_PREVIEW_BOOKS=1`), six classes, two seeds, careful, direct and
-skip players, from a Book Three save to the legendary trial:
-- every run reaches level 70 at the end of chapter 30, with no soft-locks;
-- nobody is more than five levels under a chapter on the main path;
-- force fights in the target rounds;
+skip players, from a Book Three save to the legendary trial. The scripted
+player (`tests/player-policy.js`) must first learn to request and play the
+written 3rd and 4th job trials offline (build step 2); today it never asks
+for a trial and stops at 40. Targets:
+- **Entry level per chapter.** Careful: at the chapter's level or one above.
+  Direct: at the chapter's level (chapter 1 partway into 40). Skip: never
+  more than five under, and at the part's start level at chapters 11 and 21
+  (the floors). No soft-locks; every run that reaches chapter 30 takes the
+  4th trial at 70.
+- **Defeats and rescues per part.** Careful: at most 1 defeat a part.
+  Direct: at most 3 a part. Skip: at most 5 a part, and every defeat ends in
+  a rescue or a ledge, never a lost save.
+- **Force-fight rounds.** Median 4 to 7 at 40 to 69, objective routes 3 to
+  5, bosses (10, 20, 29, 30) 6 to 9; no class above 9 on a non-boss at the
+  median;
 - each chapter-30 ending reached at least once;
 - with the gear thread's level 70 kit and a full party, the Heroic legendary trial is won in at
   least two of three attempts by every class on Standard, and a loss always
@@ -1568,8 +1792,9 @@ skip players, from a Book Three save to the legendary trial:
 - **Telling players more is coming.** Before Book Four is out, a save that
   finished Book Three and starts an AI adventure can never go back to the
   books. Once Part One is in review, the Book Three ending should say that
-  Book Four is being written and what an AI adventure would cost (open
-  question 11).
+  more of the written story may follow, and that an AI adventure would
+  close it for this save (decided question 11). It never names an unreleased
+  book.
 - **Map and travel.** The Wold north of the peaks, the old north road through
   the Hall of Legends, Lantry and Orme on the map only once a chapter that
   names them is playable.
@@ -1581,12 +1806,12 @@ skip players, from a Book Three save to the legendary trial:
   epilogue); the Wold's reputation; Sloe's midwinter deadline under Leads in
   Part Three.
 - **Combat.** The white's Slowed shown with its cause; warm shown on item
-  cards; the companion arc moves in the combat log; "Fall back to the ledge"
-  instead of "Retreat to town" for chapters 28 and 29 (Book Three's open
-  follow-up, needed again).
-- **Item cards and character sheet.** Show the totals and when the 30% taken
-  and 50% dealt caps apply (an open follow-up from Book Three, more likely
-  with Book Four gear).
+  cards; the companion arc moves in the combat log. "Fall back to the ledge"
+  already exists (`W.atLedge`, #81) and covers chapters 28 and 29 through
+  `continues`; nothing new is needed.
+- **Item cards and character sheet.** Item cards already show the 30% taken
+  cap (#78). Add the 50% dealt cap from #86 to the same line, and the sheet's
+  totals.
 - **The legendary trial card.** Shows the framing text from the epilogue and
   "Legendary trial · Heroic", as the 3rd job card shows its framing.
 - **Job screen.** The next 3rd job skill (48, 56, 64) and, after the trial,
@@ -1631,40 +1856,59 @@ Book Four frames it the way Book Three framed the 3rd job:
    Part Two merge to a list of directories in story order.
 3. **3rd job gate.** `requiresJob: 3` on `b4-walker`: checked in
    `world.unlocked` and `completeQuest`, like `requiresAdvancement`; the board
-   card says "Pass your 3rd job trial first" (open question 2).
-4. **Level floors.** `levelFloor` on a chapter tops the hero's XP up to the
-   start of that level on completion: `b4-peaks` 50, `b4-northdoor` 60,
-   `b4-parting` 70 (and `b3-firstbell` 40 if open question 3 says so).
+   card says "Pass your 3rd job trial first" (decided question 2). The unlock
+   itself is the existing `unlock: "b3-firstbell"`; no flag unlock is added.
+4. **Level floors.** `levelFloor` on a chapter, applied in `completeQuest`
+   after the chapter's own XP is paid. It only ever raises XP (to the start
+   of that level), never lowers it, and handles several level-ups at once
+   (each level-up event fires in order). Values: `b3-firstbell` 40,
+   `b4-walker` 40 (for saves that finished Book Three before the field
+   existed), `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
+   past its book, the after-the-books bounty cap becomes the next job trial's
+   level (40, then 70), so an old save at 38 can reach the trial.
 5. **Trial framing by kind.** `trialFraming.trial` ('third' by default);
-   `framing(state, kind)` in `src/director.js` uses it for both kinds, so the
-   4th trial is never framed with Book Three's lines.
+   `framing(state, kind)` in `src/director.js`, which today handles only
+   'third', uses it for both kinds, so the 4th trial is never framed with
+   Book Three's lines.
 6. **Gear hooks for the rewards.** The thirty `exclusive.quest` rewards;
-   `requires.members` for the keepsakes; `warm`. Shop stock, level bounties,
-   sets and any `MAX_GEAR_DEALT` cap belong to the gear thread; whatever it
-   moves to Book Four's towns checks `Book.started(state, 4)` (today
-   `bountyReward` checks Book Three for every level).
+   `requires.members` for the keepsakes; the `warm: true` field. Shop stock,
+   level bounties, sets and `MAX_GEAR_DEALT = 0.5` come from the gear thread
+   (#86, already in `equipment.derive` beside `MAX_GEAR_TAKEN`, counting set
+   bonuses); whatever it moves to Book Four's towns checks
+   `Book.started(state, 4)` (today `bountyReward` checks Book Three for every
+   level).
 7. **The white.** Quest `white: true`; Slowed at the start of the deciding
-   fight for party members without a warm item.
-8. **Faction.** `wold` in `world.reputation`, Lantry's and Orme's `faction`.
-9. **The Telling.** Decision `told`; the Journal section; `fourth_telling` and
-   the told lines in the AI's facts after the books.
-10. **Walkouts.** `walkouts(q)` covers Book Four parts 1 and 3; `needs` on
-    chapters 5, 6, 7, 25, 26, 27; no walkout after chapters 9, 10 or 26;
-    `together` from 27. Book Four walkout and return lines in `away.json`.
-11. **Straight on.** `continues` on chapters 28 and 29, with ledges, as Book
-    Three's 17 to 19.
+   fight for party members without a `warm: true` item.
+8. **Faction.** `wold` added to `director.FACTIONS` (the frozen list beside
+   wardens, trade and wilds) and to `world.reputation`; Lantry's and Orme's
+   `faction`.
+9. **The Telling.** Decision `told` (or one per chapter); the Journal section;
+   `fourth_telling` and the told lines in the AI's facts after the books,
+   with neutral legend text for `none`.
+10. **Walkouts.** Fix the existing bug first: `walkoutsOn()` in
+    `src/away.js` hard-codes Book Two (`now.book === 2 && next.book === 2`),
+    so `canWalk` and the "uneasy" warnings never fire in Book Three's Part
+    Two either. It should use `walkouts(q)` for both chapters, with the same
+    book. Then: `walkouts(q)` covers Book Four parts 1 and 3; `needs` on
+    chapters 5, 6, 7, 25, 26, 27, and `needs: ["orin", "maren", "nessa"]` on
+    `b4-peaks` (10), so nobody walks out before the crossing; no walkout
+    after chapters 9, 10 or 26; `together` from 27. Book Four's leave, stay
+    and back lines go into the existing per-companion scenes in `away.json`
+    behind `when` gates.
+11. **Straight on.** `continues` on chapters 19 (into 20 at the Hall), 28 and
+    29, with ledges, as Book Three's 17 to 19.
 12. **Town pages by flag** (above), and Lantry, Orme and their bounty boards
     (`BOARDS` in `src/bounty.js`).
 13. **Ending text.** `ending()` and `paidEnding()` count four books; the
-    optional "Book Four is being written" line (open question 11).
-14. **Companion arc moves** (if open question 8 says yes): one move per
-    companion in the companion turn, unlocked by any of their Part Three
-    flags.
-15. **Decision `requires.party`.** A decision or scene choice offered only
-    when a companion is in the party (chapters 15 and 25). Today `requires`
-    checks flags and clues only (`src/engine.js`).
-16. **Reused as they are:** `oneOf`, line `setFlag`, scene-choice `requires`,
-    `flagScale`, `access` lines, the parts engine.
+    optional generic "more of the written story may follow" line (open
+    question 11).
+14. **Companion arc moves** (decided question 8): one move per companion in the
+    companion turn, unlocked on completing chapters 25, 26 and 27.
+15. **Reused as they are:** `oneOf`, line `setFlag`, scene-choice `requires`,
+    decision `requires` (`requirementStatus` already supports `flagsAll`,
+    `flagsNone`, `flagsAny`, `cluesAll`, `companion` and `absent`; chapters
+    15 and 25 use `companion:`), `flagScale`, `access` lines, `W.atLedge`,
+    the parts engine.
 
 ## Test plan
 
@@ -1689,8 +1933,13 @@ the local stub server, and never with a real key.
   or answering Orin, Maren or Nessa has a `party` gate and an absent version,
   and that no companion's answer flag is set while that companion is away.
 - **Names:** a test listing taken names (Tamsin, Brask, Hesper, Pell, Pellow,
-  Tam, Ansel, Garrow, and every named person in Books One to Three) fails if
-  one is reused for a new person in Book Four data.
+  Tam, Ansel, Garrow, Edda, Hob, Bryony, Brack, Tansy, every named person in
+  Books One to Three, and the Saltwick names from #79: Kester Ostler, Hugh
+  Carr, Owen Pask, Robin Moran, Nan Dobbin, Mae Ilvey, Joan and Alfie Marrin,
+  Mallory, Abner Garland, Hilde Vane, Rosa Teller, Dunstan Marley and widow
+  Cobb) fails if one is reused for a new person in Book Four data. A first
+  name already taken counts even with a new surname (hence Linus Pardew, not
+  Kester).
 - **Flags:** every `b4_` flag set is read somewhere; every flag read is set
   in Books One to Four or is a `job:` flag.
 - **Endings:** each chapter-30 ending is reachable; the forward ring is never
@@ -1699,8 +1948,18 @@ the local stub server, and never with a real key.
 - **Trial framing:** after `b4_done` the 4th trial opens with Dera's Book Four
   line for each `fourth_telling`, offline and in the AI brief; the 3rd trial
   still uses Book Three's.
-- **Walkouts:** none in Part Two, none before a companion's own chapter, none
-  after chapters 9, 10 or 26.
+- **Walkouts:** `walkoutsOn` is true for Book Three Part Two and Book Four
+  parts 1 and 3 (a regression test for the Book Two hard-coding); none in
+  Part Two, none before a companion's own chapter or before `b4-peaks`, none
+  after chapters 9, 10 or 26; Book Four's lines in `away.json` show only
+  behind their `when` gates and Book Two's lines are unchanged.
+- **Mother Bell:** each of `mother_chorus`, `mother_silenced`,
+  `mother_recalled` and an old save with none renders 27 to 30 with its own
+  lines; a missing flag reads as `mother_chorus`.
+- **Floors:** `levelFloor` is applied after the chapter's XP, never lowers
+  XP, and lifts a hero several levels at once with every level-up event; an
+  old save at 38 past Book Three can bounty to 40 and take the trial.
+- **Trial XP:** the 4th trial's XP is capped by `Book.capXp`.
 - **Straight on:** a defeat in chapters 28 or 29 wakes the hero at the last
   ledge.
 - **Chapter rewards** (`tests/book-four-rewards.test.js`): each b4-* chapter
@@ -1712,7 +1971,11 @@ the local stub server, and never with a real key.
   Book Four has none. Stock, bounty and set coverage are the gear thread's
   tests.
 - **The white:** Slowed at fight start only in `white` chapters, only for
-  members without a warm item.
+  members without a `warm: true` item; warm items of each slot are within
+  their tier's numbers.
+- **Arc moves:** each unlocks on completing its chapter (25, 26, 27), fires
+  on its trigger once a fight, and Hold the Column never stacks with Shield
+  Accord.
 - **Playtest:** the targets under "Systems and gameplay", run before each
   part's release.
 
@@ -1724,8 +1987,12 @@ until Curtis changes `out`.
 
 1. **This design**, reviewed and revised.
 2. **Engine groundwork:** shelf entry, data directory, 3rd job gate, level
-   floors, trial framing by kind, gear gates and caps, walkouts, ending text,
-   town pages by flag. Tests with fixture chapters only.
+   floors (with `b3-firstbell` 40 and the after-the-books bounty cap), trial
+   framing by kind, gear gates (the dealt cap comes from #86), the
+   `walkoutsOn` fix and Book Four walkouts, `wold` in `director.FACTIONS`,
+   ending text, town pages by flag. Teach the player policy
+   (`tests/player-policy.js`) to request and play the written 3rd and 4th
+   trials offline. Tests with fixture chapters only.
 3. **Part One, chapters 1 to 3**, their scenes and two side jobs.
 4. **Part One, chapters 4 to 7**, two side jobs, Book Four walkout lines.
 5. **Part One, chapters 8 to 10**, the end-of-part scene and chapter
@@ -1746,58 +2013,45 @@ until Curtis changes `out`.
 Before step 6 and step 9, the part's chapters get a short "Revisions" section
 in this file for anything Part One's writing changed, as Book Three did.
 
-## Open questions for Curtis
+## Decided questions
 
-The reviewers settle these; each has a recommended answer.
+These were open questions for Curtis; the PR #85 review settled them as
+below.
 
-1. **How do thirty levels map to chapters?**
-   - Recommended: thirty chapters, one level each, three parts of ten. It
-     keeps Book Three's rule (exactly one level per chapter, so the story
-     lands on 70), lets each part come out on its own, and puts the 3rd job
-     skills at 48, 56 and 64 on camp beats.
-   - Alternatives: twenty chapters at one and a half levels each (breaks the
-     whole-level rule and `jobRoom`), or fifteen chapters at two levels each
-     (much less story per level).
+1. **How do thirty levels map to chapters?** Decided: thirty chapters, one
+   level each, three parts of ten. It keeps Book Three's rule (exactly one
+   level per chapter, so the story lands on 70), lets each part come out on
+   its own, and puts the 3rd job skills at 48, 56 and 64 on camp beats.
 2. **Must the hero pass the 3rd job trial before Book Four's first chapter?**
-   Recommended yes. Its camp lines name 3rd job skills, the trial works
-   offline, and it means every hero starts Book Four at level 40.
-3. **Should a hero who is behind be topped up at the end of each part (50, 60,
-   70), and at the end of Book Three to 40?** Recommended yes for both. It
-   guarantees the trial at 70 and removes the 38-at-the-end gap the Book Three
-   playtest found, while side content still matters inside each part. The
-   Book Three change is one field on its last chapter.
-4. **Should "Sloe's note", every free-wards bell quiet for a winter, be an
-   ending the player can choose?** Recommended yes. Book Three offered Hesk's
-   way; every ending has a loser, and this one is right for her.
-5. **Should Ailith's forward ring, the Wold buried for good, ever be
-   offered?** Recommended no. It is the Single Voice at its worst, and the
-   book is about not doing that to strangers.
-6. **The title.** Recommended "The Long Tally". Alternatives: "The Parting
-   Bell", "The Far Side of the White".
-7. **Add the white (Slowed without warm gear) in Part Two?** Recommended yes:
-   small, testable, it makes the Wold feel different to play and gives the
-   accessory slot a choice. The alternative is story text only.
-8. **Give each companion one combat move when their arc completes?**
-   Recommended yes, the same power whichever way the arc went. Book Three
-   found Orin gains little after 30; companions otherwise get only HP from 40
-   to 70.
-9. **Cap gear damage dealt at 50%, as damage taken is capped at 30%?**
-   Recommended yes, for the gear thread to decide with its sets. Today it is
-   uncapped and tier 40 already reaches 45%.
-10. **Walkouts in Book Four?** Recommended: Parts One and Three only, never in
-    the Wold, never in the last four chapters.
-11. **Should the Book Three ending say that Book Four is being written,
-    before it is out?** Recommended yes, once Part One is in review: one line
-    that an AI adventure now would mean this hero cannot play Book Four. Today
-    a hidden book is not mentioned at all, and a player could lose it without
-    knowing.
-12. **Is Book Four paid on the hosted game, under the same paid account as
-    Book Three?** Recommended yes; `FREE_BOOKS` stays 2 and the open-source
-    game plays it free.
-13. **Frame the 4th job with "who keeps your story" (the Telling)?**
-    Recommended yes: it echoes the Second Oath, follows from the legend
-    thread, and gives the AI storyteller the hero's legend to continue. The
-    alternative is framing by the ending only.
-14. **Davin, sixteen, may come north.** Recommended yes, as an option the
-    player and Orin choose, written with Orin's responsibility at its centre.
-    He is hurt at most, never killed.
+   Decided yes (`requiresJob: 3`). The trial works offline, and the scripted
+   player learns to take it (build step 2).
+3. **Top up a hero who is behind at 50, 60 and 70, and at the end of Book
+   Three to 40?** Decided yes for both, with chapter 1's own 40 floor and the
+   after-the-books bounty cap for older saves (engine change 4).
+4. **Is "Sloe's note" an ending the player can choose?** Decided yes.
+5. **Is Ailith's forward ring ever offered?** Decided no.
+6. **The title.** Decided: "The Long Tally".
+7. **The white in Part Two.** Decided: yes, as `warm: true` on tier-level
+   armour, cloaks and accessories, so warmth never costs damage (see
+   "Systems"). If the Part Two playtest shows no effect, it falls back to
+   story text only.
+8. **One combat move per companion when their arc completes?** Decided yes,
+   the same power whichever way the arc went, unlocked on completing 25, 26
+   and 27 (see "Systems").
+9. **Cap gear damage dealt at 50%?** Decided yes. The gear thread's PR #86
+   provides `MAX_GEAR_DEALT = 0.5` in `src/equipment.js`, beside
+   `MAX_GEAR_TAKEN`, counting set bonuses; Book Four adds nothing for it.
+10. **Walkouts in Book Four?** Decided: Parts One and Three only, never in
+    the Wold, never in the last four chapters, never before the crossing.
+11. **Should the Book Three ending say more is coming?** Decided yes, once
+    Part One is in review, in generic words: "more of the written story may
+    follow; an AI adventure would close it for this save". It never names an
+    unreleased book.
+12. **Is Book Four paid on the hosted game?** Decided yes, under the same paid
+    account as Book Three; `FREE_BOOKS` stays 2 and the open-source game
+    plays it free.
+13. **Frame the 4th job with "who keeps your story" (the Telling)?** Decided
+    yes. The `none` keeper still gives the AI storyteller neutral legend text.
+14. **Davin, sixteen, may come north.** Decided yes, as an option the player
+    and Orin choose, written with Orin's responsibility at its centre. He is
+    hurt at most, never killed.
