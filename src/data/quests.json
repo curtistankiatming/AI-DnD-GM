@@ -7199,6 +7199,13 @@
         "text": "I can hear the mountain. It's very loud. I didn't know stone was this loud."
       },
       {
+        "say": "Aster Vey",
+        "text": "You made Corvane wait for me. I keep thinking about that. I told you nobody waited for me before deciding. I didn't know a person could make somebody else wait too.",
+        "when": {
+          "flag": "b3_asked_aster"
+        }
+      },
+      {
         "narrate": "Sable's cell was a powder store once: dry, windowless, with a door a foot thick. It has become a library. There are books on the bunk and under it, books stacked against every wall to the height of a man, books on the floor with slips of paper in them like tongues. Every scholar in the free wards who wanted his opinion on anything has sent him a book, and he has given his opinion, in the margins."
       },
       {
@@ -11617,7 +11624,7 @@
         "text": "He took the fourth key and all. The round one. Thirty-one years it's hung on its nail at the bottom of the stair and nobody's touched it, not me, not anybody. Nobody knows what it's for. He took it off the nail first, before anything, and put it round his neck."
       },
       {
-        "narrate": "Corvane's letter from the free wards is still in your coat. You give it to Oswin Pike to keep for the High Warden, because there is nobody else to give it to."
+        "narrate": "The free wards' letter for Corvane is still in your coat. You give it to Oswin Pike to keep for the High Warden, because there is nobody else to give it to."
       },
       {
         "narrate": "It says that the free wards will take Vell in, if Vell must come. Oswin Pike reads it standing in the yard, and folds it very carefully, and puts it inside his sling.",
@@ -11765,7 +11772,7 @@
         "label": "Hear Commander Hesk out at the far end of the vault",
         "lines": [
           {
-            "narrate": "Hesk has a table at the end of the vault, under the last lamp, with nine pages spread on it in Sable's small neat hand. Corvane's copy of the rite. He took it from the High Warden's room this morning, he says, and the High Warden can have it back when it has done some good. He does not look up while he talks. He is marking the pages with a stub of pencil."
+            "narrate": "Hesk has a table at the end of the vault, under the last lamp, with eleven pages spread on it in Sable's small neat hand. Corvane's copy of the rite. He took it from the High Warden's room this morning, he says, and the High Warden can have it back when it has done some good. He does not look up while he talks. He is marking the pages with a stub of pencil."
           },
           {
             "say": "Hesk",
@@ -12031,7 +12038,7 @@
         "narrate": "Corvane comes down the stair. Nobody stops him now. He walks down the rows to the last bell, Number Thirty-One, the boy from Osgood's Cross, and stands in front of it with his ledger under his arm, and does not say anything at all."
       },
       {
-        "narrate": "Hesk gathers up the pages of Corvane's copy from the table and the floor, all nine, and puts them in the leather satchel at his hip, and buckles it. Nobody stops him either. His vault guard come to their feet when he moves, and fall in behind him without being told."
+        "narrate": "Hesk gathers up the pages of Corvane's copy from the table and the floor, all eleven, and puts them in the leather satchel at his hip, and buckles it. Nobody stops him either. His vault guard come to their feet when he moves, and fall in behind him without being told."
       },
       {
         "say": "Hesk",
@@ -12217,7 +12224,8 @@
         "say": "Corvane",
         "text": "Your council recalled its Warden and her Mother Bell last winter, I'm told, and the wards have been uneasy since. Uneasy. I'd give the city for uneasy. We had nothing left that could hear it at all.",
         "when": {
-          "flag": "mother_recalled"
+          "flag": "mother_recalled",
+          "notFlag": "mother_silenced"
         }
       },
       {
@@ -13019,7 +13027,7 @@
       },
       {
         "say": "Corvane",
-        "text": "He thinks he has. He put my copy in his satchel in the vault, all nine pages, and buckled it, and went up the stair. I was down at bell Thirty-One with my back to him. I saw a brown coat go up at the back of the press, and thought nothing of it. I didn't know what I'd seen until Fennick read me the gate log."
+        "text": "He thinks he has. He put my copy in his satchel in the vault, all eleven pages, and buckled it, and went up the stair. I was down at bell Thirty-One with my back to him. I saw a brown coat go up at the back of the press, and thought nothing of it. I didn't know what I'd seen until Fennick read me the gate log."
       },
       {
         "say": "Fennick",
@@ -13413,7 +13421,7 @@
       },
       {
         "say": "The carter",
-        "text": "They read the rite out on the Hall steps every noon. All of it. Nine pages. People come to listen. You'd be surprised how many."
+        "text": "They read the rite out on the Hall steps every noon. All of it. Eleven pages. People come to listen. You'd be surprised how many."
       },
       {
         "say": "Roke",

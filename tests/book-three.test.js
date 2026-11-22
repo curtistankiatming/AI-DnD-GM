@@ -996,3 +996,24 @@ test('PR #67: Dera\'s level-30 lines hold on every route, and Corvane learns of 
   assert.doesNotMatch(all, /south gate|congregation|Nobody makes a joke|fourteenth|only trained caster|The last nineteen years|for the harvest, and stayed/);
   assert.doesNotMatch(JSON.stringify(RAWS['b3-partone-end']), /"To be continued\."/);
 });
+
+// The Book Three story review (docs/reviews/claude-book-three-story-2026-11-22.md).
+test('Book Three story review: one count for the rite, one key, one Mags, and no borrowed names', () => {
+  const P2Q = require('../src/data/book-three-part-two/quests.json'), P2S = require('../src/data/book-three-part-two/scenes.json');
+  const book = JSON.stringify([IDS.map((id) => RAWQ[id]), RAWS, RAWJ, P2Q, P2S]);
+  // Sable's letter, and Corvane's copy of it, is eleven pages from the ledger room to the Hall steps.
+  assert.doesNotMatch(book, /nine pages|Nine pages|all nine, and puts them/);
+  // The bound in the vault, the lost in Corvane's ledger and a Briarwatch farmer no longer share a name with somebody else.
+  assert.doesNotMatch(JSON.stringify(IDS.map((id) => RAWQ[id])), /Pell Moran|Anwen Teller|Hanne Coyle|Hanne Ilvey|Tam Hollis|Hobb|widow Marsh/);
+  assert.match(book, /Robin Moran, 14, of Osgood's Cross/); assert.match(book, /Mae Ilvey, 14, of Lindmoor/);
+  // The round key is in the custody ledger at the foot of the pass (chapter 10), so chapter 17 says how it went missing after.
+  assert.match(JSON.stringify(RAWQ['b3-paid']), /one key, iron, round, on a chain/);
+  assert.match(JSON.stringify(P2Q['b3-company']), /written into the council's custody ledger at the foot of the pass/);
+  assert.doesNotMatch(book, /before anything was listed/);
+  // Mags said she would think about it on the ridge above Saltwick, whichever way the town went.
+  assert.doesNotMatch(book, /in the spring, on the salt-hall roof/);
+  // A save that recalled Elske and also took the rope down hears Corvane once, not twice.
+  const s = at('b3-greatbell', 'opening', { flags: { mother_recalled: true, mother_silenced: true } });
+  const lines = liveLines(s, RAWQ['b3-greatbell'].opening).map((l) => l.text || '').filter((t) => /^Your council/.test(t));
+  assert.equal(lines.length, 1);
+});
