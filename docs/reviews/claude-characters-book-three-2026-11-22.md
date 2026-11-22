@@ -30,16 +30,16 @@ important is only a joke. The problems were continuity, not character.
 
 | # | Finding | Fixed |
 | --- | --- | --- |
-| 1 | **Orin's past happens twice, eight years ago, in two different companies.** Book One: "Eight years ago we held a ford at Calder" with the Second Company; Hal went back, Orin didn't. Book Three: eight years ago he was in Odell Varn's hired road company at Saltwick, and calls it the meaning of "we left civilians behind once". Both stood unreconciled. | Yes. Orin now says the player thought he meant Calder and he let them: Saltwick was that spring, he signed for the Second Company that summer because he thought a proper company wouldn't do it, and then it did. "Twice in one year. Not once. Calder was the one I could tell, because Hal was in it." His camp line now goes to the guild "after Calder". |
+| 1 | **Orin's past happens twice, eight years ago, in two different companies.** Book One: "Eight years ago we held a ford at Calder" with the Second Company; Hal went back, Orin didn't. Book Three: eight years ago he was in Odell Varn's hired road company at Saltwick, and calls it the meaning of "we left civilians behind once". Both stood unreconciled. | Yes. Book One counts Calder from Book One, and Book Three is about two years later, so Calder came first. Orin now says everyone thought he meant Calder and he let them: "After Calder I left the Second. Thought a hired company would at least be honest about it. It was. Twice. Not once. Calder was the one I could tell, because Hal went back." |
 | 2 | **Jory reused.** Book One's first chapter has Jory Tanner, the driver; Book Three's Jory Carr is Ysolde's brother. | Ysolde's brother is now Hugh Carr (also the side-job giver). |
 | 3 | **Tam reused three times.** Tam Orrey is the Fenmere baker who never came back (Book One); Book Three added Tam Ostler (Saltwick lamplighter) and Tam Hollis (a bell in the vault). | Kester Ostler and Owen Pask. |
-| 4 | **Pell reused.** Pell Moran (the boy in bell Thirty-One) shares a first name with Book Two's Pell Haverick. | Ewan Moran. |
+| 4 | **Pell reused.** Pell Moran (the boy in bell Thirty-One) shares a first name with Book Two's Pell Haverick. | Robin Moran. |
 | 5 | **Three Hannes in one book,** two of them from Lindmoor: Hanne Ostrow (the mother at the pass), Hanne Coyle (ninety, Saltwick; Coyle is also Haverick's fixer in Book Two) and Hanne Ilvey (fourteen, the vault, and Maren's line in the vault camp scene). | Hanne Ostrow kept; the others are Nan Dobbin and Mae Ilvey. |
 | 6 | **Ada reused.** Ada Rusk is the mother in Book Two's Letters job; Book Three added Ada Marrin (the census puzzle) and Ada Brennick (Corvane's list), and the Brennick surname twice (the list and Joss Brennick, the Saltwick carter). | Joan Marrin; the family on Corvane's list is now Mallory. |
 | 7 | **Two Hobbs in Briarwatch.** Old Hobb the baker sits on the council (Book One); Book Three's Hobb Garland is a Briarwatch farmer "who has known you since the bell". | Abner Garland. |
-| 8 | **Smaller reuses on lists:** Edda Vane (Edda runs the relic merchant), Anwen Teller (Anwen Holt is Maren's teacher), Joss Marley (next to Joss Brennick), Tobin Marrin (one letter from Tovin). | Marta Vane, Rosa Teller, Dunstan Marley, Alfie Marrin. |
+| 8 | **Smaller reuses on lists:** Edda Vane (Edda runs the relic merchant), Anwen Teller (Anwen Holt is Maren's teacher), Joss Marley (next to Joss Brennick), Tobin Marrin (one letter from Tovin). | Hilde Vane, Rosa Teller, Dunstan Marley, Alfie Marrin. |
 
-All renames touch Book Three text only. Books One and Two are unchanged, and
+After the two reviewers' notes, Robin Moran and Hilde Vane replaced two first picks that sounded like Owen Pask and Maren Vale, and Book Three's "widow Marsh" (next to Ella Marsh) became the widow Cobb. All renames touch Book Three text only. Books One and Two are unchanged, and
 no flag, id or save field uses these names.
 
 ## Checked and fine
