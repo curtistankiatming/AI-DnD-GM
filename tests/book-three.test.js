@@ -93,7 +93,7 @@ test('the Second Oath epilogue hands the hero straight on to the letter from Vel
   const r = act(s, { type: 'story-choice', choiceId: 'seat' });
   assert.equal(r.state.story.flags[Book.FINISHED], undefined, 'Not handed to the AI storyteller.');
   // Book Two is finished, so it says so on the decision itself, as before Part One.
-  assert.equal(r.events.filter((e) => /Book 2, .* is complete\. Book 3, .* begins\./.test(e.text || '')).length, 1, 'Book Two ends on the oath decision.');
+  assert.equal(r.events.filter((e) => /Book Two, .* is complete\. Book Three, .* begins\./.test(e.text || '')).length, 1, 'Book Two ends on the oath decision.');
   assert.equal(r.state.story.flags['books:part-end-due'], undefined);
   s = act(r.state, { type: 'story-choice', choiceId: 'town' }).state;
   s = toTown(s);
@@ -843,6 +843,8 @@ test('"To be continued" is told once, back in town after the end of Part One, no
   assert.ok(E.buildView(last.state).world.town, 'The letter is folded at home.');
   assert.equal(last.state.story.flags.b3_partone_done, true);
   assert.equal(last.events.filter((e) => /To be continued/.test(e.text || '')).length, 1);
+  // It names the part that is finished and the one still being written, in words, and what stays open meanwhile.
+  assert.ok(last.events.some((e) => /You have finished The Bronze, Part One of Book Three, The Names in the Bronze\. Part Two, The Stair, is being written; .*bounties and side jobs stay open/.test(e.text || '')), last.events.map((e) => e.text).join('\n'));
   assert.ok(!last.state.story.flags['books:part-end-due']);
   assert.equal(Book.chapter(last.state).id, 'to-be-continued');
   assert.equal(Book.chapter(last.state).waiting, true);

@@ -46,8 +46,13 @@ const DEFS = [
   // finale: the book's last chapter. Until it is written the book is still
   // being written, even when every part has some chapters (Part Two is
   // written a few chapters at a time), so the hero waits after the last one.
-  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell' }
+  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell', partTitles: ['The Bronze', 'The Stair'] }
 ];
+// "Book Three", "Part Two": books and parts are named in words to players.
+const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+const word = n => WORDS[n] || String(n);
+const bookName = n => `Book ${word(n)}`;
+const partName = (b, n) => `Part ${word(n)}${b?.partTitles?.[n - 1] ? `, ${b.partTitles[n - 1]}` : ''}`;
 // limits: { book number: parts } a preview opens at most.
 function buildShelf(defs, chapters, preview = false, limits = {}) {
   return Object.freeze(defs.map(b => {
@@ -165,23 +170,36 @@ function ending(state) {
   const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
   const count = ['', 'the first book', 'both books', 'all three books'][titles.length] || `all ${titles.length} books`;
   const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
-  return next ? paidEnding(count, list, next) : base;
+  return next ? paidEnding(count, list, next) : `${base}${trialLine(state)}`;
+}
+// A book that ends at a job trial (Book Three ends at level 40, the 3rd job)
+// says how to reach it, which needs no AI game master: the trial is written,
+// and bounties lift a hero who finished a little short (src/bounty.js).
+function trialLine(state) {
+  const player = state?.player;
+  if (!player || !P.branchOf(player)) return '';
+  const p = P.ensure(player), kind = P.nextTrial(player);
+  if (kind) return ` Your ${kind === 'fourth' ? '4th' : '3rd'} job trial is ready: begin it from What's next or the expedition board. It is written into the game, so it does not need the AI game master.`;
+  const next = !p.thirdJob ? 'third' : !p.fourthJob ? 'fourth' : null, level = next && P.TRIAL_LEVELS[next];
+  if (!level || level > lastLevel(state) + 1) return '';
+  return ` Your ${next === 'fourth' ? '4th' : '3rd'} job trial opens at level ${level}; bounties on the town board can take you there, with or without the AI game master.`;
 }
 // A free hosted account at the end of its open books. The paid book comes
 // first, and so does the one trade-off: an AI adventure of the save's own
 // closes the paid book to that save for good (aiStory, finished).
 function paidEnding(count, list, next) {
-  return `You have finished ${count}, ${list}. The story goes on in Book ${next.n}, ${next.title}, for paid accounts: upgrade, and this save carries straight on into it. ${paidChoice(next)}`;
+  return `You have finished ${count}, ${list}. The story goes on in ${bookName(next.n)}, ${next.title}, for paid accounts: upgrade, and this save carries straight on into it. ${paidChoice(next)}`;
 }
-const paidChoice = (next) => `If you would rather keep going now, the AI storyteller can write adventures from the choices you made (this needs the Claude AI game master). But once this save starts one, it follows its own story and will not go back to Book ${next.n}. Your hero, party and choices stay saved either way.`;
+const paidChoice = (next) => `If you would rather keep going now, the AI storyteller can write adventures from the choices you made (this needs the Claude AI game master). But once this save starts one, it follows its own story and will not go back to ${bookName(next.n)}. Your hero, party and choices stay saved either way.`;
 // Told when a book that is not the last one this save can play ends.
 function bookEnd(id, state = null) {
   const b = SHELF.find(x => x.last === id), next = b && books(state).find(x => x.n === b.n + 1);
-  if (b?.writing) return `To be continued. You have reached the end of what is written of Book ${b.n}, ${b.title}, so far; its next chapters are being written and will appear on the expedition board. Your hero, party and choices stay saved.`;
+  if (b?.writing && b.parts > 1 && b.open < b.parts) return `To be continued. You have finished ${b.partTitles?.[b.open - 1] ? `${b.partTitles[b.open - 1]}, ` : ''}Part ${word(b.open)} of ${bookName(b.n)}, ${b.title}. ${partName(b, b.open + 1)}, is being written; its chapters will appear on the expedition board when it comes out. Until then, bounties and side jobs stay open, and your hero, party and choices stay saved.`;
+  if (b?.writing) return `To be continued. You have reached the end of what is written of ${bookName(b.n)}, ${b.title}, so far; its next chapters are being written and will appear on the expedition board. Your hero, party and choices stay saved.`;
   if (!next) return null;
   const first = ALL.find(q => bookNo(q) === next.n);
   const where = first ? ` Its first chapter, ${first.name}, is on the expedition board in ${TOWNS[first.town]?.name || first.town}.` : '';
-  return `Book ${b.n}, ${b.title}, is complete. Book ${next.n}, ${next.title}, begins.${where}`;
+  return `${bookName(b.n)}, ${b.title}, is complete. ${bookName(next.n)}, ${next.title}, begins.${where}`;
 }
 
 // The written chapter the hero is on now: the bell, then each authored
@@ -189,7 +207,7 @@ function bookEnd(id, state = null) {
 function chapter(state) {
   if (locked(state)) {
     const b = lockedBook(state), q = ALL.find(x => bookNo(x) === b.n && partOpen(x) && !done(state, x.id));
-    return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save is part-way through Book ${b.n}, ${b.title}, which needs a paid account here. It is kept exactly as it is and carries on when the book is open again.`, book: b.title, n: b.n, locked: true };
+    return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save is part-way through ${bookName(b.n)}, ${b.title}, which needs a paid account here. It is kept exactly as it is and carries on when the book is open again.`, book: b.title, n: b.n, locked: true };
   }
   if (finished(state)) return null;
   if (!done(state, 'bell')) return BELL;
@@ -283,4 +301,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = {paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started};
+module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started};
