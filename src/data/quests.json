@@ -11094,7 +11094,7 @@
             }
           },
           {
-            "narrate": "A letter comes for you from Highpass, where the council keeps Elske Marrow. It is in her own hand, small and upright, with the corrections made neatly in the margin.",
+            "narrate": "A letter comes for you from the Sallows hospice in Merrowgate, which the council sentenced Elske Marrow to keep open for five years. It is in her own hand, small and upright, with the corrections made neatly in the margin.",
             "when": {
               "flag": "elske_judged"
             }
@@ -11164,7 +11164,7 @@
             }
           },
           {
-            "narrate": "The letter is signed \"E. Marrow, held at Highpass\", in the same small hand, as if she wanted to be exact about it.",
+            "narrate": "The letter is signed \"E. Marrow, the Sallows\", in the same small hand, as if she wanted to be exact about it.",
             "when": {
               "flag": "elske_judged"
             }

@@ -173,7 +173,7 @@ says how he got out.
     ban.
   - `elske_free`: she works at the harbour hospice and has counted the
     volunteers.
-  - `elske_judged`: she writes from Highpass.
+  - `elske_judged`: she writes from the Sallows hospice (Book Two's sentence).
   - Old save: no Elske lines.
 
 **Clue (investigation, alt. insight).** The guild buys debts from the

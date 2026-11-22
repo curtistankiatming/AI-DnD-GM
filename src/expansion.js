@@ -86,14 +86,19 @@ const PERSONAL=require('./data/personal.json');
 // Numerical rewards are objective-based: social and combat solutions pay the same XP.
 // "aftermath" is the post-advancement mission, so the level-10 reward is not a dead end.
 const QUESTS=require('./data/quests.json');
-// Book Three, Part Two (chapters 11 to 20) is written in its own files under
-// src/data/book-three-part-two/ and merged here, after the main tables, so it
-// follows Part One in story order. It is merged into the same objects, so
-// anything that reads the JSON tables after this module sees one set. "_"
-// keys are notes.
-const PART_TWO={quests:require('./data/book-three-part-two/quests.json'),scenes:require('./data/book-three-part-two/scenes.json'),jobs:require('./data/book-three-part-two/side-jobs.json')};
+// Later stretches of the story are written in folders of their own, each with
+// quests.json, scenes.json and side-jobs.json, and merged here after the main
+// tables in story order: Book Three, Part Two (chapters 11 to 20), then Book
+// Four. They are merged into the same objects, so anything that reads the JSON
+// tables after this module sees one set. "_" keys are notes. Each require is
+// written out in full so the browser build (scripts/build-public.js) bundles it.
+const LATER=[
+  {quests:require('./data/book-three-part-two/quests.json'),scenes:require('./data/book-three-part-two/scenes.json'),jobs:require('./data/book-three-part-two/side-jobs.json')},
+  {quests:require('./data/book-four/quests.json'),scenes:require('./data/book-four/scenes.json'),jobs:require('./data/book-four/side-jobs.json')}
+];
 function mergeTable(into,from,what){for(const [id,v]of Object.entries(from)){if(id.startsWith('_'))continue;if(Object.prototype.hasOwnProperty.call(into,id))throw new Error(`${what} ${id} is written twice`);into[id]=v;}return into;}
-mergeTable(QUESTS,PART_TWO.quests,'Chapter');
+const mergeLater=(into,key,what)=>{for(const dir of LATER)mergeTable(into,dir[key],what);return into;};
+mergeLater(QUESTS,'quests','Chapter');
 // Books One and Two pay a share of each chapter's level (src/xp.js
 // CHAPTER_SHARE), so side content matters there. A chapter written to pay
 // nothing (the trial, an aftermath) still pays nothing. Book Three on keeps
@@ -302,7 +307,7 @@ for(const q of Object.values(QUESTS))installQuest(q);
 // not all in the party is skipped (engine enterNode follows skipTo).
 // A scene may also follow another scene ("after" names that scene): it plays
 // straight after it, as the second choice of a chapter runs before its camp.
-const SCENES=mergeTable(require('./data/scenes.json'),PART_TWO.scenes,'Scene');
+const SCENES=mergeLater(require('./data/scenes.json'),'scenes','Scene');
 const sceneNode=(scene,key)=>`scene-${scene.id}-${key}`;
 const chapterOf=scene=>{for(let s=scene,i=0;s&&i<10;s=SCENES[s.after],i++)if(QUESTS[s.after])return QUESTS[s.after];return null;};
 function installScene(scene){
@@ -320,14 +325,18 @@ function installScene(scene){
   if(QUESTS[scene.after])for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
 for(const scene of Object.values(SCENES))if(scene&&scene.nodes)installScene(scene);
-// The 3rd job trial is framed the way the Second Oath framed the 2nd job: a
-// scene's "trialFraming" ({flag, lines}) is what the hero carries into it,
-// read from the save once that flag is set (Book Three's epilogue, b3_done).
-// Plain text, the same offline and with the AI game master; '' otherwise.
-function trialFraming(state){
+// The job trials are framed the way the Second Oath framed the 2nd job: a
+// scene's "trialFraming" ({flag, lines, trial}) is what the hero carries into
+// the trial it names ("third", the default, or "fourth"), read from the save
+// once that flag is set (Book Three's epilogue, b3_done, frames the 3rd job;
+// Book Four's, b4_done, the 4th). A trial is never framed with another
+// trial's lines. Plain text, the same offline and with the AI game master;
+// '' otherwise.
+const framesKind=f=>f?.trial==='fourth'?'fourth':'third';
+function trialFraming(state,kind='third'){
   for(const scene of Object.values(SCENES)){
     const f=scene?.trialFraming;
-    if(!f||!state?.story?.flags?.[f.flag])continue;
+    if(!f||framesKind(f)!==kind||!state?.story?.flags?.[f.flag])continue;
     const text=dialogueText(liveLines(state,f.lines.map(storyLine)));
     if(text)return text;
   }
@@ -338,7 +347,7 @@ function trialFraming(state){
 // finishes the job, which pays it (src/world.js completeJob) and goes back to
 // the job's town. Checks use a DC by the job's level. A choice that costs gold
 // needs that much in the purse.
-const SIDE_JOBS=Object.fromEntries(Object.entries(mergeTable(require('./data/side-jobs.json'),PART_TWO.jobs,'Side job')).filter(([,j])=>j&&j.nodes));
+const SIDE_JOBS=Object.fromEntries(Object.entries(mergeLater(require('./data/side-jobs.json'),'jobs','Side job')).filter(([,j])=>j&&j.nodes));
 function installJob(job){
   const town=TOWNS[job.town];if(!town)throw new Error(`Side job ${job.id} is in unknown town ${job.town}`);
   for(const id of [job.from,job.until])if(id&&!QUESTS[id])throw new Error(`Side job ${job.id} names unknown chapter ${id}`);
@@ -365,16 +374,24 @@ for(const node of Object.values(STORY_NODES)){
   if(Array.isArray(node.lines)){node.dialogue=node.lines.map(storyLine);node.opening=dialogueText(node.dialogue);}
   for(const c of node.choices||[])for(const key of ['success','failure','result']){const o=c[key];if(o&&Array.isArray(o.lines)){o.dialogue=o.lines.map(storyLine);o.text=dialogueText(o.dialogue);}}
 }
-// A town a story choice has emptied ("emptied": {flag, subtitle, description},
-// Book Three's Vell after the evacuation) is told as it is now when the party
-// arrives; src/world.js closes its shops, services, side jobs and boards.
+// Town pages that follow a flag: "pages" in towns.json is a list of
+// {flag, subtitle, description, services}. Once a page's flag is set the town
+// is told as that page when the party arrives, and shows that page's subtitle
+// and, if the page lists them, its services; the first page in the list whose
+// flag is set wins. "emptied" ({flag, subtitle, description}, Book Three's
+// Vell after the evacuation) is the page of a town a story choice has
+// emptied: it comes before the others, and src/world.js closes its shops,
+// services, side jobs and boards.
+const townPages=town=>[...(town?.emptied?[{...town.emptied,services:['storage'],emptied:true}]:[]),...(Array.isArray(town?.pages)?town.pages:[])];
+// The page a town shows this save now, or null for its usual page.
+const townPage=(state,id)=>{const f=state?.story?.flags||{};return townPages(TOWNS[id]).find(p=>p.flag&&f[p.flag])||null;};
 for(const town of Object.values(TOWNS)){
-  const gone=town.emptied;
+  const pages=townPages(town),flags=pages.map(p=>p.flag);
   STORY_NODES[`town-${town.id}`]={id:`town-${town.id}`,act:'Downtime & preparation',title:town.name,location:town.subtitle,objective:'Recover, develop the party, choose an expedition and prepare for known threats.',opening:town.description,safeRest:true,townId:town.id,choices:[],
-    ...(gone?{locationIf:{flag:gone.flag,location:gone.subtitle},dialogue:[{narration:town.description,when:{notFlag:gone.flag}},{narration:gone.description,when:{flag:gone.flag}}]}:{})};
+    ...(pages.length?{locationPages:pages.map(p=>({flag:p.flag,location:p.subtitle||town.subtitle})),dialogue:[{narration:town.description,when:{noneFlag:flags}},...pages.map((p,i)=>({narration:p.description||town.description,when:{flag:p.flag,...(i?{noneFlag:flags.slice(0,i)}:{})}}))]}:{})};
 }
-// Where a node is, as this save sees it (a town node's "locationIf").
-const nodeLocation=(state,node)=>node?.locationIf&&state?.story?.flags?.[node.locationIf.flag]?node.locationIf.location:node?.location;
+// Where a node is, as this save sees it (a town node's pages).
+const nodeLocation=(state,node)=>{const f=state?.story?.flags||{};return node?.locationPages?.find(p=>f[p.flag])?.location||node?.location;};
 
 // Continue the original story rather than reset the party or fake a level grant.
 STORY_NODES.ending.ending=false;
@@ -398,4 +415,4 @@ ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['
 // (src/data/standing.json): told to the AI game master and shown in the Journal.
 const STANDING=require('./data/standing.json').entries;
 function standing(state,who){return STANDING.filter(e=>e.who===who&&lineApplies(state,{when:e.when})).map(e=>e.text);}
-module.exports={trialFraming,standing,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};
+module.exports={trialFraming,townPage,townPages,standing,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};

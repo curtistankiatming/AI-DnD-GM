@@ -74,7 +74,7 @@ function renderExpansion(){
       else if(q.underBy>0)c.appendChild(createElement('p','muted',`You are ${q.underBy} level${q.underBy===1?'':'s'} under this chapter, so its fights are harder. More than 5 under adds a penalty.`));
       const need=q.minLevel||q.level;
       c.appendChild(v4Button(q.returning?'Continue expedition':'Depart',{type:'depart',questId:q.id},!q.canDepart,`Departure point: ${q.townName}. ${need<q.level?`Can start from level ${need}; written for level ${q.level}.`:`Level ${q.level} required.`}`));
-      if(!q.canDepart)c.appendChild(createElement('p','muted',`Departure point: ${q.townName}; ${need<q.level?`can start from level ${need} (written for ${q.level})`:`required level ${q.level}`}.${q.id==='aftermath'?' Complete the Oath of the Road trial first.':''}`));expeditions.appendChild(c);}
+      if(!q.canDepart)c.appendChild(createElement('p','muted',`Departure point: ${q.townName}; ${need<q.level?`can start from level ${need} (written for ${q.level})`:`required level ${q.level}`}.${q.id==='aftermath'?' Complete the Oath of the Road trial first.':''}${q.needs?` ${q.needs}`:''}`));expeditions.appendChild(c);}
     // Side jobs: short optional stories in this stretch of the story (src/data/side-jobs.json).
     if(w.sideJobs?.length){expeditions.appendChild(createElement('h3','','Side jobs'));
       for(const j of w.sideJobs){const c=v4Card(`${j.name} · ${j.townName}`,j.brief);c.dataset.sideJob=j.id;c.appendChild(createElement('p','muted',`From ${j.giver}. Optional. Pays ${j.reward.gold} gold and a little XP. The story never depends on it.`));

@@ -201,6 +201,7 @@ function startCombat(state, encounterId, rng, events) {
     for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
     events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
   }
+  whiteCold(state,encounter,allies,events);
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
   if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
     const orin = actors.find((actor) => actor.refId === "orin");
@@ -218,6 +219,26 @@ function startCombat(state, encounterId, rng, events) {
   events.push({ type: "roll", tone: "neutral", text: `Initiative: ${initiativeText}` });
   advanceAutomaticTurns(state, rng, events);
   return true;
+}
+
+// The white (Book Four's Part Two, docs/book-four/DESIGN.md): a chapter with
+// "white": true starts its deciding fight with every party member who wears
+// no warm item ("warm": true, src/gear.js) Slowed for one round, and the fight
+// says so at the top, with the reason. Bells do not count: only warm gear.
+function whiteCold(state,encounter,allies,events){
+  const q=encounter.questId&&!encounter.practice&&!encounter.bounty?Director.quest(state,encounter.questId):null;
+  if(!q?.white)return [];
+  const source=a=>a.id==='player'?state.player:state.party.find(m=>m.id===a.refId);
+  const cold=allies.filter(a=>a.hp>0&&!Gear.warmItem(source(a)));
+  for(const a of cold)addCondition(a,{id:'slowed',name:'Slowed by the white (no warm gear)',expiresRound:2,white:true});
+  const names=cold.map(a=>a.id==='player'?'you':a.name);
+  const list=names.length>1?`${names.slice(0,-1).join(', ')} and ${names.at(-1)}`:names[0]||'';
+  const text=!cold.length?'The white comes down cold, but everyone is wrapped in warm Wold wool: nobody is slowed.'
+    :`The white comes down cold. ${list[0].toUpperCase()}${list.slice(1)} ${cold.length===1&&names[0]!=='you'?'is':'are'} Slowed for the first round (2 less armour): no warm gear. Warm Wold-made wool, sold in Lantry and Orme, keeps the cold off.`;
+  pushLog(state,'The white',text,'combat');
+  events.push({type:'combat',tone:cold.length?'warning':'good',text});
+  state.combat.white={cold:cold.map(a=>a.id),text};
+  return cold;
 }
 
 function normalizeCombat(state) {
@@ -1301,6 +1322,8 @@ function combatView(state) {
     currentActorId: current?.id,
     currentActorName: current?.name,
     objective: state.combat.objective ? {...state.combat.objective,check:objectivePlan(state)} : null,
+    // The white's cold at the start of a Wold fight, with its reason (round 1 only).
+    white: state.combat.white && state.combat.round === 1 ? state.combat.white.text : null,
     order:state.combat.order||null,
     awaitingPlayer: state.combat.awaitingPlayer,
     actors: state.combat.actors.map((actor) => ({
@@ -1322,4 +1345,4 @@ function combatView(state) {
   };
 }
 
-Object.assign(module.exports, { currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan, flagScale });
+Object.assign(module.exports, { whiteCold, currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan, flagScale });

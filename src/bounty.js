@@ -17,6 +17,10 @@ const BOARDS = Object.freeze({
   highpass: { main: 'Ridge Stalker', retainer: 'Snow Wolf', attack: 'Rending Claws', type: 'slashing', place: 'the high passes', retainers: "Snow Wolves" },
   merrowgate: { main: 'Wrecker Captain', retainer: 'Tidewrack Smuggler', attack: 'Gaff Hook', type: 'piercing', place: 'the harbour flats', retainers: "Tidewrack Smugglers" },
   cinderfold: { main: 'Slag Golem', retainer: 'Cinder Imp', attack: 'Molten Fist', type: 'fire', place: 'the forge wastes', retainers: "Cinder Imps" },
+  // Book Four's Wold (docs/book-four/DESIGN.md): its towns post the beasts that
+  // come down with the white, and the takers who rob givers on the road.
+  lantry: { main: 'White-coat Bear', retainer: 'Snow Fox', attack: 'Crushing Swipe', type: 'bludgeoning', place: 'the white beyond the doors', retainers: 'Snow Foxes' },
+  orme: { main: 'Road Taker', retainer: 'Taker\'s Hound', attack: 'Slate Axe', type: 'slashing', place: 'the Orme road', retainers: "Takers' Hounds" },
   default: { main: 'Wanted Outlaw', retainer: 'Outlaw Bravo', attack: 'Notched Blade', type: 'slashing', place: 'the roads', retainers: "Outlaw Bravos" }
 });
 const board = townId => BOARDS[townId] || BOARDS.default;
@@ -38,12 +42,22 @@ const CATCH_UP = 1.5;
 // reach the trial without the AI game master.
 const AFTER_BOOKS_LEVEL = P.SECOND_JOB_LEVEL || 20;
 const afterBooksLevel = state => Math.min(P.MAX_LEVEL, Math.max(AFTER_BOOKS_LEVEL, Book.lastLevel(state) + 1));
+// For a save past its books, bounties stop at the next job trial's level (40
+// for the 3rd job, then 70 for the 4th), but never above afterBooksLevel: so a
+// hero who ended Book Three at 38 can reach the 3rd job trial, a hidden Book
+// Four never lets bounties run on past 40, and a save that finished Book Four
+// without its 3rd job (an old save) still stops at that trial.
+function bountyLevel(state) {
+  const books = afterBooksLevel(state), p = state?.player ? P.ensure(state.player) : null;
+  const trial = !p ? null : !p.thirdJob ? P.THIRD_JOB_LEVEL : !p.fourthJob ? P.FOURTH_JOB_LEVEL : null;
+  return trial ? Math.max(AFTER_BOOKS_LEVEL, Math.min(trial, books)) : books;
+}
 // A loss or retreat costs a tenth of the gold carried, never more than a win pays.
 const lossCost = state => Math.min(Math.floor(state.player.gold * 0.1), gold(state.player.level));
 function room(state) {
   const r = Book.xpRoom(state);
   if (Number.isFinite(r)) return r;
-  return Math.max(0, (P.XP_NEXT[afterBooksLevel(state)] || Infinity) - 1 - (Number(state.player.xp) || 0));
+  return Math.max(0, (P.XP_NEXT[bountyLevel(state)] || Infinity) - 1 - (Number(state.player.xp) || 0));
 }
 
 // Shapes a bounty's enemies for the hero's level as an adventure battle would be.
@@ -61,7 +75,7 @@ function shape(state, enemies, scale = 1) {
 function reward(state) {
   const level = state.player.level, f = XP.foeStats(XP.challenge({ level }));
   const { rating, xp: base } = XP.battleXp(level, [f.main, f.retainer, f.retainer], 'normal', level);
-  const cap = Book.levelCap(state), behind = cap !== null ? level < cap : level < afterBooksLevel(state) && level > AFTER_BOOKS_LEVEL;
+  const cap = Book.levelCap(state), behind = cap !== null ? level < cap : level < bountyLevel(state) && level > AFTER_BOOKS_LEVEL;
   return { rating, xp: behind ? Math.round(base * CATCH_UP / 10) * 10 : base, gold: gold(level), behind };
 }
 
@@ -77,7 +91,7 @@ function view(state) {
     reward: { xp, gold: r.gold },
     capped: xp < r.xp,
     // After the books: the level bounties stop at (20, or 40 once Book Three is done).
-    afterBooks: afterBooksLevel(state),
+    afterBooks: bountyLevel(state),
     catchUp: r.behind,
     loss: lossCost(state),
     reason: open ? null : !w.completed?.bell ? 'The bounty board opens once the bell investigation is finished.' : 'Return to town to take a bounty.'
@@ -112,7 +126,7 @@ function finish(state, result, events, api) {
   const r = reward(state), xp = Math.max(0, Math.min(r.xp, room(state)));
   state.player.gold += r.gold;
   if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
-  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${afterBooksLevel(state)}; AI adventures or the next book go further.`) : ''}` });
+  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${bountyLevel(state)}; AI adventures or the next book go further.`) : ''}` });
   // The first bounty claimed in a town gives that town's bounty item (src/gear.js).
   const townId = b.nodeId.replace(/^town-/, '');
   Gear.award(state, `bounty:${townId}`, events);
@@ -121,4 +135,4 @@ function finish(state, result, events, api) {
   api.enterNode(state, b.nodeId, events);
 }
 
-module.exports = { afterBooksLevel, ID, BOARDS, board, shape, reward, view, start, finish, gold, lossCost, room, CATCH_UP, AFTER_BOOKS_LEVEL };
+module.exports = { afterBooksLevel, bountyLevel, ID, BOARDS, board, shape, reward, view, start, finish, gold, lossCost, room, CATCH_UP, AFTER_BOOKS_LEVEL };

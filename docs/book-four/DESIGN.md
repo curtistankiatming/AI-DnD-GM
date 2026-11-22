@@ -668,9 +668,12 @@ something for what is taken.
 **Decision (the letters).**
 - Bring a satchel up to be read across the free wards: `b4_letters_read`. The
   floor takes a small memory from each who carries them (a line each, with
-  absent versions). The council reads them in 9.
+  absent versions). The council reads them in 9. Maren's turn with the satchel
+  sets `b4_letters_maren` (the colour of her birth-house door), which her line
+  at the north door at the end of Part One names.
 - Copy what you can by lamp and leave them: `b4_letters_copied`. Fennick's
-  clerks copy for a week; his copies are what the council reads in 22.
+  clerks copy for a week (with `b3_stair_sealed`, on a second warrant for six
+  days more); his copies are what the council reads in 22.
 - Leave them and write one letter back, given to the floor:
   `b4_letters_answered`. The first letter south to north in nine hundred
   years. Orme's givers find it (13).
@@ -749,6 +752,84 @@ what they are bringing. Linus goes back down with the first true verse. Sets
 ## Part Two: The Wold (levels 50 to 59)
 
 Every Part Two chapter has `white: true` (see "Systems").
+
+### Revisions for Part Two (override the chapters below)
+
+Part One's writing (build steps 3 to 5) settled these things, and Part Two
+keeps them. Where a chapter below says otherwise, this list wins.
+
+**Where Part One leaves the party.**
+- `b4-partone-end` ends at the Hall's north door the night before the
+  descent, and the engine leaves the hero at Highpass (decided question 28).
+  Chapter 11 is taken from Highpass's board, and its opening is the descent
+  from the north door the next morning. No line says the party went back
+  down to Highpass in between.
+- With `b4_parting_rung`, the cloud rolled down onto Lantry at noon the day
+  the bell was rung (chapter 10's decision), so Lantry's worst night was the
+  night before the party arrives, not "three days ago". Rue said Lantry would
+  write "the bell" on every door in the morning, and it has.
+- With `b4_gave_door`, Rue said she would write "a giver came from the
+  south" on Lantry's top door when you came there. She writes it herself as
+  the party comes down to that door. Nobody has written it before.
+- Linus Pardew went back down the south side from the Hall
+  (`b4-partone-end`). He sings the first true verse at Briarwatch at
+  midwinter and is not in the Wold. The Telling's ballad lines are still his
+  song.
+- Biscuit did not cross. Part One never says so, so it is decided here.
+  Nessa left him at Highpass with the watch, by the guardroom brazier,
+  because he is grey at the muzzle and the saddle was in snow. Her letter in
+  `lantry-camp` is addressed there. In `orme-camp`, Burdock asks how to spell
+  Biscuit's name without ever having seen him.
+
+**People as Part One left them.**
+- **Davin.** With `b4_davin_comes` he is north on Orin's word: "When I say
+  go back, you go back." His pack is tied in Mags's knot. With
+  `b4_davin_home`, Orin has already given one order, the "No" on the ladder
+  that he called "the first one I ever gave". So chapter 12 never says Orin
+  has never given an order. With `b4_davin_home`, the order on the Orme road
+  is his second.
+- **Rue's book** has three states (`b4_book_*`). She reads it aloud before
+  anything hard:
+  - With `b4_book_burned` she has only the pages written since the fire at
+    Highpass (chapter 6), in a new book, and "Heath" on the inside of her
+    left wrist.
+  - With `b4_book_rewritten`, today comes first in it, and "Maren sat with
+    me" (or "Somebody sat with me").
+  - With `b4_book_returned`, it is the old book with every page.
+- **The letter back** (`b4_letters_answered`). Its words are fixed by
+  chapter 8: "To whoever is on the other side of the bells. This is the
+  south. We did not know you were there. We are sorry it took nine hundred
+  years to ask. We are coming north, to ask properly." The hero cannot
+  remember a word of it, so in chapter 13 they hear it read aloud for the
+  first time.
+- **What the satchel cost** (`b4_letters_read`). Orin lost the tune he
+  whistled when he cleaned his boots. Maren lost the colour of her
+  birth-house door (`b4_letters_maren`). Nessa lost all but the first line of
+  a skipping rhyme. The hero lost the smell of rain on the Briarwood road.
+  Givings in the Wold take other things, never these again.
+- **The seal.** The hero carries a seal on a cord in every version of
+  chapter 9:
+  - the council's seal (`b4_embassy_council`), with Iona's "Whatever you
+    promise with that, I pay for";
+  - a seal with only the free wards' bell on it (`b4_embassy_own`);
+  - a seal with an open door under the bell (`b4_embassy_refuge`), for
+    which Iona costed ten thousand.
+- **The Company.**
+  - With `b4_company_sails` it crossed in the summer, before the party, with
+    Coll Haddow on wagon four and Cass Ord's "I'll have the lamps lit".
+  - With `b4_company_council` the relief convoy crossed under the council's
+    seal with grain, oil, blankets and seed, and Coll as a wagon-hand.
+  - With `b4_company_broken` nobody crossed.
+- **Hesk** with `b3_stair_sealed`. Chapter 8 shows one set of boot-prints
+  going north on the north branch, and Fennick's entry "went down, one", and
+  nothing in the free wards says where he went. Chapter 13 is where the
+  party learns it.
+- **The white is two things.** Rue, on the saddle (chapter 10): "It does not
+  want anything. It is only weather." The storm over the Hall was weather.
+  The white in the Wold's streets is what the bells ring north, and it takes.
+  Part Two keeps the two apart, and Rue says so once, in Lantry.
+- The Wold's nine on the Hall's north face have nothing in their hands,
+  "because they gave them away" (Rue, chapter 10).
 
 ### 11. Written on the Doors (b4-lantry, level 50, Lantry)
 
@@ -1452,8 +1533,8 @@ to Book Four), never past `jobRoom`, and is never assumed by the main story.
 
 | Town | Job (id) | Open during | What it is |
 | --- | --- | --- | --- |
-| Highpass | Rue's Doors (`rue-doors`) | 1 to 3 | The innkeeper wants Rue to stop writing on his doors. Find her somewhere she may. |
-| Briarwatch | The Third Verse (`third-verse`) | 3 to 6 | Linus wants the true story. Dera, Tovin and Pim each tell him a different one. |
+| Highpass | Rue's Doors (`rue-doors`) | 2 to 3 | The innkeeper wants Rue to stop writing on his doors. Find her somewhere she may. |
+| Briarwatch | The Third Verse (`third-verse`) | 4 to 6 | Linus wants the true story. Dera, Tovin and Pim each tell him a different one. |
 | Merrowgate | Bett's Berth (`bett-berth`) | 4 to 7 | Bett wants to sign on as ship's girl north (the Company's or the council's, by `b4_company_*`). Coll does not want her to. |
 | Cinder Fold | The Ninth Rope (`ninth-rope`) | 7 to 9 | The rope families refuse a miner's son a place on the nine's ropes. He is the best ringer in the Fold. |
 | Lantry | The Painted Door (`painted-door`) | 11 to 13 | One door in Lantry has been painted over. Nobody knows who lived there. |
@@ -1481,11 +1562,15 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 1 Walker | b4_rue_council, b4_rue_party, b4_rue_watch | 6 (where Rue is), 9 (council heard her), 21 (Sorrel), 24 |
 | 2 Records | b4_truth_published, b4_truth_council, b4_truth_ailith | 4 (dockers), 7 (Cinder Fold), 9 (votes), 22, 28 |
 | 3 Ballad | b4_bw_rings, b4_bw_quiet, b4_bw_pim | 9, 22 (rota), 23, epilogue |
+| Rue's Doors (job, 2 to 3) | job:rue-doors-gate, job:rue-doors-office, job:rue-doors-door, job:rue-doors-kitchen | 6 (Highpass: Rue's lines on the founders' gate or Sorrel's office door, her oak door in the inn yard, or the kitchen door left as it was) |
+| The Third Verse (job, 4 to 6) | job:third-verse-dera, job:third-verse-tovin, job:third-verse-all | 23 (Briarwatch: which third verse the square sings on the quiet night) |
+| Bett's Berth (job, 4 to 7) | job:bett-berth-signed, job:bett-berth-next, job:bett-berth-loft, job:bett-berth-home | 26 (Merrowgate: where Bett is, on a ship's deck, in the rope-loft or at home) |
+| The Ninth Rope (job, 7 to 9) | job:ninth-rope-rope, job:ninth-rope-spare, job:ninth-rope-given, job:ninth-rope-stair | 28 (the casting hall: who is on the ninth bell's rope) |
 | 4 Company | b4_company_broken, b4_company_council, b4_company_sails | 6, 9 (waylayers), 11 (Lantry), 17 (pot-bells), 26 |
-| 5 Davin | b4_davin_comes, b4_davin_home (also set by lines) | 10, 12, 15, 25 (requires), epilogue |
+| 5 Davin | b4_davin_comes, b4_davin_home (also set by Mags's lines), b4_davin_mags | 10, 12, 15, 25 (requires), epilogue; b4_davin_mags: davin-camp |
 | 6 Book | b4_book_returned, b4_book_rewritten, b4_book_burned | 15 (the door), 27 (Rue) |
-| 7 Key | b4_key_left, b4_key_carried, b4_key_hew | 27 (the signal), epilogue |
-| 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered | 9, 13 (the letter in the tally), 22 |
+| 7 Key | b4_key_left (also the answer with Nessa away), b4_key_carried, b4_key_hew | 27 (the signal), epilogue |
+| 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered; line: b4_letters_maren | 9, 13 (the letter in the tally), 22; the Part One end (Maren) |
 | 9 Embassy | b4_embassy_council, b4_embassy_own, b4_embassy_refuge | 16 (whose promise), 22, 30 (south) |
 | 10 Peaks | b4_parting_rung, b4_unannounced, b4_gave_door; scene: b4_partone_done | 11 (Lantry), 16 (Sloe), 11 unlock |
 | 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | 12 (Sheddon), 17 (who taught Dunnet), epilogue |
@@ -1517,7 +1602,9 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 
 **Where the quieter flags are read** (each is also a default branch, so a
 chapter needs no line for it beyond the default):
-- `b4_unannounced`: chapter 11's default opening (Lantry has heard nothing).
+- `b4_unannounced`: chapter 11's default opening (Lantry has heard nothing),
+  and Linus's first true verse in `b4-partone-end` ("these went quietly down
+  to knock").
 - `b4_embassy_own`: 16 (the promise is yours, Orin -1 if broken) and 22 (the
   council owes the Wold nothing in writing); the default of `b4_embassy_*`.
 - `b4_letters_copied`: 22, where Fennick's copies are read to the council.
@@ -1601,7 +1688,7 @@ Rules every reward keeps:
 | 3 | b4-ballad | The True Verse | Accessory | Level 40 | Linus's broadsheet with Dera's corrections in the margin. Read aloud, it rallies (Empowered). |
 | 4 | b4-company | North Company Cutlass | Main hand, finesse | Level 41 · Dex 13 | Issued to the Company's guards, who were never told what they were guarding. |
 | 5 | b4-davin | Lamp-store Hook | Main hand | Level 42 · Str 13 | The hook Davin used to pull a burning plank clear. |
-| 6 | b4-book | Rue's Second Book | Accessory | Level 43 | A blank book from Iona's own shelf, given after the first was found or lost. Insight story ability. |
+| 6 | b4-book | Rue's Spare Book | Accessory | Level 43 | The book Rue kept spare, from Iona's own shelf, given for your own tally. Insight story ability. |
 | 7 | b4-key | Brass Key-cord | Accessory | Level 44 | The cord the forge-signal key hung on, whoever has the key now. |
 | 8 | b4-letters | Floor-letter Satchel | Accessory | Level 45 | The satchel Fennick lends for the letters. History and Religion. |
 | 9 | b4-embassy | Embassy Seal | Accessory | Level 46 | The council's seal for the embassy north, cut overnight by a Highpass jeweller. Persuasion story ability. |
@@ -1692,9 +1779,9 @@ chapter 1 at the start of level 40 ends chapter 30 at the start of level 70.
   needs the 3rd job, which needs level 40 (decided question 2), and the last
   chapter of each part tops a behind hero up to the part's end level
   (`levelFloor`: 50, 60, 70; decided question 3). `b3-firstbell` gets
-  `levelFloor: 40`, and Book Four's chapter 1 applies the 40 floor too, for
-  saves that finished Book Three before the field existed; and for those
-  saves the after-the-books bounties are capped at the next job trial's level
+  `levelFloor: 40`. Book Four's chapter 1 needs no floor of its own:
+  `requiresJob: 3` already means the hero is at least 40 when it starts. For
+  saves that finished Book Three before the field existed, the after-the-books bounties are capped at the next job trial's level
   (40, then 70), but never above the last level of the books this save can
   play plus one (today's `afterBooksLevel`), so a hidden Book Four never lets
   bounties run on to 69, so a hero who ended Book Three at 38
@@ -1867,13 +1954,13 @@ Book Four frames it the way Book Three framed the 3rd job:
    after the chapter's own XP is paid. It only ever raises XP (to the start
    of that level), never lowers it, and handles several level-ups at once
    (each level-up event fires in order). Values: `b3-firstbell` 40,
-   `b4-walker` 40 (for saves that finished Book Three before the field
-   existed), `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
+   `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
    past its book, the after-the-books bounty cap becomes the next job trial's
    level (40, then 70), but never above `afterBooksLevel` (the last level of
    the books this save can play, plus one), so an old save at 38 can reach the
    trial and a hidden Book Four never lets bounties run past 40. A test checks
-   both.
+   both. (`b4-walker` has no floor: its `requiresJob: 3` already needs level
+   40, so a floor of 40 there could never raise anything.)
 5. **Trial framing by kind.** `trialFraming.trial` ('third' by default);
    `framing(state, kind)` in `src/director.js`, which today handles only
    'third', uses it for both kinds, so the 4th trial is never framed with
@@ -1888,8 +1975,11 @@ Book Four frames it the way Book Three framed the 3rd job:
 7. **The white.** Quest `white: true`; Slowed at the start of the deciding
    fight for party members without a `warm: true` item.
 8. **Faction.** `wold` added to `director.FACTIONS` (the frozen list beside
-   wardens, trade and wilds) and to `world.reputation`; Lantry's and Orme's
-   `faction`.
+   wardens, trade and wilds) and to `world.reputation` together, in build
+   step 6; Lantry's and Orme's `faction`. (Moved from step 2: `FACTIONS`
+   feeds the AI's tool schema, so adding it alone would offer every save's AI
+   a faction that `world.reputation` drops, and the reputation list is shown
+   to players, so it waits for Part Two.)
 9. **The Telling.** Decision `told` (or one per chapter); the Journal section;
    `fourth_telling` and the told lines in the AI's facts after the books,
    with neutral legend text for `none`.
@@ -1917,6 +2007,56 @@ Book Four frames it the way Book Three framed the 3rd job:
     `flagsNone`, `flagsAny`, `cluesAll`, `companion` and `absent`; chapters
     15 and 25 use `companion:`), `flagScale`, `access` lines, `W.atLedge`,
     the parts engine.
+
+### Engine changes: status (build step 6)
+
+- **Built in step 2:** 1 (shelf), 2 (data directory), 3 (3rd job gate),
+  4 (level floors), 5 (trial framing by kind), 6 (gear gates; `warm` was
+  added in step 6), 10 (walkouts), 12's town pages by flag, 13 (ending text).
+- **Built in step 6:**
+  - 7, **the white.** `white: true` on a chapter: when its deciding fight
+    (`quest:<id>`) starts, every party member who wears no `warm: true`
+    item is Slowed until the start of their round-2 turn (`whiteCold` in
+    `src/combat.js`). It never applies to bounties, practice or AI
+    adventures. The fight's first event and log line name who is cold and
+    why; the combat view's `white` repeats it in round 1; the condition
+    reads "Slowed by the white (no warm gear)". Item cards of warm gear say
+    "Warm: in the Wold's white, the wearer is not Slowed at the start of a
+    deciding fight." (`Gear.describe`).
+  - 8, **the Wold faction.** `wold` is in `director.FACTIONS`, and
+    `world.reputation` is built from that list, so old saves gain `wold: 0`.
+    Lantry and Orme have `faction: "wold"`, so the existing price rule
+    applies. The Wold is shown (town screen, Journal, AI brief) only once
+    the party has reached one of its towns or a choice has moved it
+    (`director.shownReputation`). Before then the AI's draft schema
+    (`director.schema(state)`) leaves it out of the faction enums, and an AI
+    adventure cannot favour it.
+  - 9, **the Telling.** `src/telling.js`. A chapter's `told` (or the chosen
+    decision's own `told`, which wins) is shown in the Journal under "What
+    they tell of you": the song and the Long Tally side by side, stacked on
+    a narrow screen. Once `fourth_telling` is set, only the keeper's version
+    is shown (`companions` keeps both, `none` none), and after the books the
+    AI brief gets `legend` (the keeper's last twelve lines, or the neutral
+    text for `none`). While the books run, the AI is not given told lines.
+  - 12, **Lantry and Orme** in `towns.json`, with shops, bounty boards
+    (`BOARDS` in `src/bounty.js`) and town pages. Each has `book: 4`: a town
+    written for a later book is closed until a chapter names it, and then
+    follows the existing `Book.townOpen` rule (open while one of its chapters
+    is playable). Each has `from: "highpass"`: while a Wold town is closed to
+    a save, or its gear does not wait for Book Four (`Book.ownsGear` false:
+    Book Four hidden or unpaid, or an AI story), Highpass sells that town's
+    level stock too, except warm gear, so a hero beyond the written story
+    still finds every tier. Shops drop entries they no longer sell. The shop stock for 45 to
+    70 is on the story's route (docs/EQUIPMENT.md).
+- **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
+  the engine is Book Three's) and 14 (the companion arc moves).
+
+**Departures in step 6.** Tier 50 stays on sale in Highpass as well as Lantry
+and Orme, because the hero reaches level 50 at Highpass (chapter 10) and plays
+chapter 11 before Lantry opens; warm gear is sold only in Lantry and Orme, so
+chapter 11's fight always has the cold unless warm gear is already worn (the
+chapter 11 reward, the Door-reader's Scarf, comes after it). Tier 65 is sold
+in Merrowgate and Cinder Fold, where Part Three is at 65 to 69.
 
 ## Test plan
 
@@ -1999,8 +2139,9 @@ until Curtis changes `out`.
 2. **Engine groundwork:** shelf entry, data directory, 3rd job gate, level
    floors (with `b3-firstbell` 40 and the after-the-books bounty cap), trial
    framing by kind, gear gates (the dealt cap comes from #86), the
-   `walkoutsOn` fix and Book Four walkouts, `wold` in `director.FACTIONS`,
-   ending text, town pages by flag. Teach the player policy
+   `walkoutsOn` fix and Book Four walkouts, ending text, town pages by
+   flag (`wold` in `director.FACTIONS` moved to step 6, with
+   `world.reputation`). Teach the player policy
    (`tests/player-policy.js`) to request and play the written 3rd and 4th
    trials offline. Tests with fixture chapters only.
 3. **Part One, chapters 1 to 3**, their scenes and two side jobs.
@@ -2008,7 +2149,8 @@ until Curtis changes `out`.
 5. **Part One, chapters 8 to 10**, the end-of-part scene and chapter
    rewards 1 to 10. Playtest to 50. Curtis may set `out: 1`.
 6. **Part Two groundwork and chapters 11 to 13:** Lantry and Orme, the white,
-   warm items, the Wold faction, the Telling in the Journal.
+   warm items, the Wold faction (`wold` in `director.FACTIONS` and
+   `world.reputation` together), the Telling in the Journal.
 7. **Part Two, chapters 14 to 17**, and the Wold's side jobs.
 8. **Part Two, chapters 18 to 20**, the end-of-part scene and chapter
    rewards 11 to 20. Playtest to 60. Curtis may set `out: 2`.
@@ -2065,3 +2207,101 @@ below.
 14. **Davin, sixteen, may come north.** Decided yes, as an option the player
     and Orin choose, written with Orin's responsibility at its centre. He is
     hurt at most, never killed.
+15. **Rue reaches Ashford in chapter 2 when she did not walk with the
+    party.** Accepted as written (review of build step 3). With
+    `b4_rue_council` or `b4_rue_watch` she comes down after her pages on the
+    morning after the rope-men (by coach or behind Sorrel's rider), speaks in
+    chapter 2's after and camp, and goes back up to Highpass the next morning,
+    so chapter 3 finds her there.
+16. **Pim's fire.** Accepted as written (review of build step 3). With
+    `b3_bell_aster`, Briarwatch has kept the night watch only since Aster left
+    the bell, and Pim has had the fire on his own for one month; his crisis,
+    the decisions and The Third Verse are about the fire going out, while
+    Tovin still rings the bell by hand. Without it, they are about the bell.
+17. **Leaving Davin to Mags** (build step 4). A decision always sets its own
+    flag, so this answer sets `b4_davin_mags` (Maren +1, read in davin-camp)
+    as well as the `b4_davin_comes` or `b4_davin_home` that Mags's own line
+    sets.
+18. **The key with Nessa away** (build step 4). Chapter 7 has a fourth
+    answer, "Leave the key where it is", open only with Nessa away
+    (`requires: { absent: "nessa" }`); her three answers need her there. It
+    sets `b4_key_left` instead of no flag, which is how later lines were to
+    read it anyway.
+19. **The sealed hatch** (build step 4). With `b3_stair_sealed`, Ottilie's
+    committee opens the founders' hatch for an hour on "the warrant from
+    Vell", the seal's own authority, rather than Corvane's by name, so the
+    line holds whatever `b3_corvane_*` made of him.
+20. **Orin's knot** (build step 4). In davin-camp the knot is Orin's own (as
+    chapter 5's opening has it) and Davin corrects it to Mags's way, with the
+    stopper on the far side. The camp does not say where Orin learnt it,
+    since no earlier book does.
+21. **Bett's ship** (build step 4). With `b4_company_broken` there is no
+    Company or council ship north: the Company's ship has been sold to a
+    Tanneries coaster master who means to try the coast north. With
+    `b4_company_sails`, Coll has gone north on wagon four and Bett's aunt
+    holds his letter, so the one to persuade is the aunt.
+22. **The Ninth Rope's people** (build step 4). The miner's son is Garth
+    Mott, and the ninth bell's old ringer Perrin Rowe (a "Tobin" was dropped:
+    one letter from Tovin). The job has no `until` until chapter 9 is
+    written (build step 5).
+23. **Book Four's walkout lines** (build step 4). The leave and back lines
+    Book Four tells (Orin's, Nessa's letter and both of their returns, and
+    Maren's return) are gated on `b3_done`, which only Book Four can see,
+    inside a `oneOf` whose ungated default is Book Two's line. Maren's leave
+    is Book Two's. The stay lines are keyed on `away:stay-<id>`: Orin for
+    `b4-davin`, Maren for `b4-book`, Nessa for `b4-key` (with or without
+    `b3_wren_cast`), and all three for `b4-peaks`.
+24. **Vell's way down in chapter 8** (build step 5). With `b3_stair_sealed`
+    the seal is opened for one day on "the council's warrant", under the
+    seal's own rules, with Fennick counting everyone through and back, rather
+    than on Corvane's and Fennick's authority by name, as decided for
+    chapter 7 (19). With `b3_door_closed` the iron door is opened by Oswin
+    Pike, who barred and chained it from the Vell side in Book Three, rather
+    than with Fennick's key. With `b3_stair_sealed` the floor shows one set of
+    boot-prints going north on the north branch, months old, and Fennick's
+    last entry is "went down, one"; nothing says where Hesk went.
+25. **Aster at rest in chapter 8** (build step 5). With `b3_bell_aster` and
+    `b3_promise_old` her talk names the dark bell once, and Fennick reads the
+    last thing she said from the bell before she rested, which he wrote down;
+    she has no lines of her own, as the lore section says.
+26. **The 3rd job skill in letters-camp** (build step 5). Each 2nd job branch
+    has one line naming its 3rd job's level 48 skill (`src/data/jobs.json`),
+    said by one companion (Orin for guardian, warlord, binder, battlepriest,
+    pathfinder and battlecantor; Maren for grifter, chronist, lifewarden,
+    exorcist, lorekeeper and envoy; Nessa for the rest), with a narrated line
+    when that companion is away, and a line for `spec: "none"`. None of them
+    mentions the fight, so they hold for the peaceful way.
+27. **Chapter 9's people** (build step 5). The late delegates are unnamed
+    (Ashford's second delegate and Merrowgate's dockers' delegate). Without
+    `b4_company_broken` or `b4_company_sails` the waylayers' speaker is "A
+    rope-man", not the rope-men's foreman, who opened the hatch in chapter 7.
+    With `elske_seat` the chair "came round to Merrowgate at midsummer".
+    Nessa answers Brannagh's goats ("There's always goats"), so the goat test
+    checks who says each goat line rather than counting one.
+28. **The end of Part One** (build step 5). `b4-partone-end` ends at the
+    north door the night before the descent, and its last choice sets
+    `b4_partone_done` (the one scene choice in Part One that sets a flag, as
+    Book Three's end of Part One does). Chapter 10 has no `nextTown`, so the
+    engine leaves the party at Highpass, where it waits at "to be continued";
+    chapter 11 starts from Highpass's board, as the town table says.
+29. **The chapter rewards for chapters 1 to 10** (build step 5) are in
+    `src/data/gear.json`, after Book Three's, each `exclusive.quest`,
+    Legendary, priced at the Legendary floor plus 40, and worn from two levels
+    below the chapter. Their numbers are the tier below them (40, or 45 from
+    chapter 8), each with its own skill, story ability or skill mix, so none
+    is matched by a sold item or beats tier 50's: the tally-cord
+    (Investigation and Survival +3, Wisdom saves +1, 5% dealt, Investigation
+    story), the account case (History and Arcana +3, Intelligence and Wisdom
+    saves +1, 5% taken, History story), the True Verse (Performance +3,
+    Persuasion +2, Charisma saves +2, Read Aloud: Empowered 2 rounds), the
+    cutlass (finesse 1d8, +3/+5, 10% dealt, rogue, bard or ranger, Hamstring:
+    Slowed 2 rounds), the hook (Strength 1d10, +3/+5, 5% dealt, fighter or
+    cleric, Pull Clear: Slowed 2 rounds), Rue's spare book (Insight and
+    History +3, Wisdom saves +1, 5% dealt, Insight story), the key-cord
+    (Perception and Athletics +3, Constitution and Wisdom saves +1, 10% taken,
+    Perception story), the satchel (History, Religion and Investigation +3, 5%
+    dealt, Religion story), the Embassy Seal (Persuasion, Insight and History
+    +3, Wisdom and Charisma saves +1, 5% dealt, Persuasion story) and the
+    Parting-hall Plate (heavy, base AC 23, 15% taken, Constitution and Wisdom
+    saves +1, Brace: Fortified 2 rounds). The late-gear test's tier rule
+    allows a Book Four chapter reward at its chapter's level minus 2.

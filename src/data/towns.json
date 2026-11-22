@@ -88,53 +88,6 @@
         "bramble-silk-gloves",
         "hour-chime"
       ],
-      "45": [
-        "frostforged-plate",
-        "ridgeguard-scale",
-        "mistweave-jerkin",
-        "gatewarden-shield",
-        "warded-buckler",
-        "hoarfrost-locket",
-        "ghostlace-gloves",
-        "pilgrims-almanac"
-      ],
-      "50": [
-        "rimeheart-longsword",
-        "glacier-maul",
-        "icicle-stiletto",
-        "skyreach-longbow",
-        "aurora-staff",
-        "avalanche-horn",
-        "ambassadors-brooch",
-        "wolfpelt-mantle"
-      ],
-      "55": [
-        "bellwarden-hammer",
-        "thornstep-rapier",
-        "long-watch-bow",
-        "lamplit-staff",
-        "hearthward-staff",
-        "chorus-baton"
-      ],
-      "60": [
-        "bellwarden-plate",
-        "bellwarden-shield",
-        "thornstep-leathers",
-        "long-watch-coat",
-        "lamplit-robe",
-        "hearthward-mail",
-        "hearthward-buckler",
-        "chorus-coat",
-        "riftcleaver"
-      ],
-      "65": [
-        "bellwarden-seal",
-        "thornstep-band",
-        "long-watch-quiver",
-        "lamplit-lens",
-        "hearthward-rosary",
-        "chorus-bell"
-      ],
       "70": [
         "summitforged-plate",
         "summit-scale",
@@ -337,14 +290,6 @@
         "ambassadors-brooch",
         "wolfpelt-mantle"
       ],
-      "55": [
-        "bellwarden-hammer",
-        "thornstep-rapier",
-        "long-watch-bow",
-        "lamplit-staff",
-        "hearthward-staff",
-        "chorus-baton"
-      ],
       "60": [
         "bellwarden-plate",
         "bellwarden-shield",
@@ -355,22 +300,6 @@
         "hearthward-buckler",
         "chorus-coat",
         "riftcleaver"
-      ],
-      "65": [
-        "bellwarden-seal",
-        "thornstep-band",
-        "long-watch-quiver",
-        "lamplit-lens",
-        "hearthward-rosary",
-        "chorus-bell"
-      ],
-      "70": [
-        "summitforged-plate",
-        "summit-scale",
-        "windrunner-leathers",
-        "summit-wall-shield",
-        "wayfarers-compass",
-        "courtiers-mask"
       ],
       "80": [
         "thunderbrand",
@@ -462,6 +391,14 @@
         "dockrunner-jerkin",
         "factor-ring",
         "hospice-censer"
+      ],
+      "65": [
+        "bellwarden-seal",
+        "thornstep-band",
+        "long-watch-quiver",
+        "lamplit-lens",
+        "hearthward-rosary",
+        "chorus-bell"
       ]
     }
   },
@@ -528,6 +465,14 @@
         "hearthbell-shield",
         "hearthbell-charm",
         "winterwatch-plate"
+      ],
+      "65": [
+        "bellwarden-seal",
+        "thornstep-band",
+        "long-watch-quiver",
+        "lamplit-lens",
+        "hearthward-rosary",
+        "chorus-bell"
       ]
     }
   },
@@ -537,6 +482,13 @@
     "subtitle": "The Town on Its Roofs",
     "description": "A salt town on the Iron Road below the pass, its houses joined at the eaves by lashed planks over lanes the mist has filled to the height of a man. Lamps on tall poles stand at every corner. Mags Peller's lamplighters walk the planks with long hooks, and the chandler's roof, which has the best view, keeps a small market.",
     "faction": "wilds",
+    "pages": [
+      {
+        "flag": "b3_saltwick_moved",
+        "subtitle": "The Lamps Left Burning",
+        "description": "Saltwick is empty. Its people went over the ridge with you, and the town on its roofs waits for them. The planks still run between the eaves over lanes the mist fills to the height of a man, and the lamps on their poles still burn all night: Mags comes back over the ridge every week with six of her lamplighters to keep them lit, so that there is a town for Saltwick to come back to. On lamp nights the chandler's roof opens its stall again, for them and for the carters on the Iron Road."
+      }
+    ],
     "services": [
       "inn",
       "forge",
@@ -637,6 +589,115 @@
       "flag": "b3_bell_evacuate",
       "subtitle": "The Empty City",
       "description": "Vell is empty. Its iron gates stand open, and the fifty gate-bells ring the hours over streets with nobody in them. The white lies in the lanes to the sills and in the drill-yard to the knee, and the casting wall is still chalked from top to bottom with names. There is nothing to buy and nobody to sell it. Somewhere off the drill-yard a single lamp is burning."
+    }
+  },
+  "lantry": {
+    "id": "lantry",
+    "name": "Lantry",
+    "subtitle": "The Written Doors",
+    "description": "Lantry sits under the north face where the old road comes down out of the white. Every door, post and wall in it is written over in chalk: names, debts, what happened yesterday, who is owed a hen. Each morning the door-reader walks the street and reads the town its doors, because nobody here remembers last year without them.",
+    "faction": "wold",
+    "book": 4,
+    "from": "highpass",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "herb-bundle",
+      "lantern",
+      "silk-rope",
+      "climbing-kit",
+      "smoke-bomb",
+      "ward-coating",
+      "storm-grounder"
+    ],
+    "rumor": "Lantry gives every fortnight, at the well, and writes on its doors what it gave. The children who chalk the day's news say the white came closer this winter than the doors remember.",
+    "stockByLevel": {
+      "50": [
+        "rimeheart-longsword",
+        "glacier-maul",
+        "icicle-stiletto",
+        "skyreach-longbow",
+        "aurora-staff",
+        "avalanche-horn",
+        "ambassadors-brooch",
+        "wolfpelt-mantle",
+        "whitewool-plate",
+        "fleece-lined-scale",
+        "whitewool-jerkin",
+        "door-chalk-mittens"
+      ]
+    }
+  },
+  "orme": {
+    "id": "orme",
+    "name": "Orme",
+    "subtitle": "The Long Hall",
+    "description": "Orme is the Wold's chief town, low stone houses banked with snow around the Long Hall, where nine hundred years of the Long Tally are cut into the walls and written in books stacked to the roof-beams. Lamps burn in the Hall all night. People come in from the tally towns to read what happened to them, and to have it written down.",
+    "faction": "wold",
+    "book": 4,
+    "from": "highpass",
+    "services": [
+      "inn",
+      "forge",
+      "supplies",
+      "guild",
+      "tavern",
+      "shrine",
+      "workshop",
+      "storage"
+    ],
+    "stock": [
+      "healing-potion",
+      "greater-healing",
+      "antitoxin",
+      "healers-kit",
+      "holy-water",
+      "herb-bundle",
+      "lantern",
+      "silk-rope",
+      "climbing-kit",
+      "smoke-bomb",
+      "ward-coating",
+      "storm-grounder"
+    ],
+    "rumor": "The Reckoner has been doing a sum in the Long Hall for a month, and the tally-keepers say she has not liked any of the answers.",
+    "stockByLevel": {
+      "50": [
+        "rimeheart-longsword",
+        "glacier-maul",
+        "icicle-stiletto",
+        "skyreach-longbow",
+        "aurora-staff",
+        "avalanche-horn",
+        "ambassadors-brooch",
+        "wolfpelt-mantle",
+        "whitewool-plate",
+        "fleece-lined-scale",
+        "whitewool-jerkin",
+        "door-chalk-mittens"
+      ],
+      "55": [
+        "bellwarden-hammer",
+        "thornstep-rapier",
+        "long-watch-bow",
+        "lamplit-staff",
+        "hearthward-staff",
+        "chorus-baton",
+        "long-hall-muffler",
+        "orme-hearthstone"
+      ]
     }
   }
 }

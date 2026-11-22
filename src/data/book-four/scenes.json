@@ -1,0 +1,559 @@
+{
+  "_note": "Book Four camp scenes (docs/book-four/DESIGN.md), merged into scenes.json's table by src/expansion.js. One scene per chapter at most, with an empty cast: companions' parts are lines gated on when.party, each with an absent version. Nodes are chained by 'next', and the camp beat is the last node. A scene's trialFraming may name its trial: \"fourth\" for the epilogue that frames the 4th job (Book Three's frames the 3rd, the default).",
+  "walker-camp": {
+    "id": "walker-camp",
+    "after": "b4-walker",
+    "cast": [],
+    "act": "Camp",
+    "location": "Highpass Watch, the night after the gate",
+    "start": "names",
+    "nodes": {
+      "names": {
+        "title": "A Line Each",
+        "objective": "Rue writes you down.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night Rue comes up from Brannagh's lodging to find you, with her book.", "when": { "flag": "b4_rue_council" } },
+            { "narrate": "That night Rue sits with you at the fire in the room Sorrel has found you, with her book open on her knees and a new stub of lead.", "when": { "flag": "b4_rue_party" } },
+            { "narrate": "That night you go up to the fire at the head of the north road, where Rue is sitting between Sorrel and the sergeant from the gateway. Sorrel gets up and gives you her place without a word, and goes to stand at the wall.", "when": { "flag": "b4_rue_watch" } },
+            { "narrate": "That night Rue comes to find you, with her book." }
+          ] },
+          { "oneOf": [
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "orin" } },
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "maren" } },
+            { "narrate": "She has made a page for each of you. She asks your names again, though she has written them, because she wants to hear them said. Then she writes a line beside each, carefully, and reads them out.", "when": { "party": "nessa" } },
+            { "narrate": "She has made a page for you. She asks your name again, though she has written it, because she wants to hear it said. Then she writes a line beside it, carefully, and reads it out." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "You. Stood in the gate with me. Did not move.", "when": { "flag": "method:b4-walker", "is": "peace" } },
+            { "say": "Rue", "text": "You. Fought the white in the gate, so that I was not put out." }
+          ] },
+          { "say": "Rue", "text": "Maren. Asked what I gave. Listened to me as if I might be lying, and then as if I was not.", "when": { "party": "maren" } },
+          { "narrate": "Maren laughs, surprised, and then stops, and looks at Rue for a long moment, the way she looks at people when she is listening for something and hears nothing at all.", "when": { "party": "maren" } },
+          { "say": "Rue", "text": "Nessa. Wanted the gate open before anyone. Talks to the dog.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He talks back." },
+          { "say": "Rue", "text": "I have written that too. Biscuit. Dog. Grey at the mouth. Kind.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Orin. Would not let them put me out.", "when": { "party": "orin" } },
+          { "narrate": "Orin goes quiet. He sits with his hands on his knees and looks at the fire, and does not say anything for so long that Rue looks up from her book to see whether she has written it wrong.", "when": { "party": "orin" } },
+          { "say": "Rue", "text": "Is it wrong? I can cross it out. I do not like to, but I can.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "No. Leave it. Put the day beside it." },
+          { "narrate": "She writes the day beside it. Orin watches her do it.", "when": { "party": "orin" } },
+          { "narrate": "Then she closes the book, and holds it shut on her knees with both hands." }
+        ],
+        "choices": [
+          { "id": "ask", "label": "Ask her what she wrote on her own page tonight", "next": "read" },
+          { "id": "fire", "label": "Build the fire up, and let her be", "next": "read" }
+        ]
+      },
+      "read": {
+        "title": "Before Anything Hard",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "orin" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "maren" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about each of you.", "when": { "party": "nessa" } },
+            { "narrate": "Before she sleeps, Rue opens the book at the beginning and reads it aloud to herself, under her breath, the way she did on the guardroom step. My name is Rue. I am from Thrum. Her mother's name. The forty-one days. Then the gate, and the captain, and the white, and the line about you." }
+          ] },
+          { "narrate": "Then the last line on her own page, in fresh lead, which she reads twice." },
+          { "say": "Rue", "text": "I was let in." },
+          { "say": "Rue", "text": "We read our books before anything hard, so we know who we were before it. If I read it first, then whatever happens, I was somebody when it started. Tomorrow is hard. Everything here is." },
+          { "oneOf": [
+            { "narrate": "Somewhere below, under the gatehouse, Hesk is reading over to himself the speech he gave at his appeal today. You can hear his voice through the floor, steady, not the words.", "when": { "flag": "b3_promise_old" } },
+            { "narrate": "Up on the wall the watch-fire at the head of the north road is lit again, and somebody is sitting by it." }
+          ] }
+        ],
+        "choices": [
+          { "id": "sleep", "label": "Sleep", "lines": [ { "narrate": "You sleep. When you wake in the grey before dawn Rue is already awake, sitting up with her book, reading yesterday again." } ] },
+          { "id": "write", "label": "Ask her to show you how she makes her letters", "lines": [
+            { "narrate": "She shows you. Square, joined at the shoulder, every letter standing up against the next one as if it might fall without it. You make your name in it, badly, in the margin of her page." },
+            { "say": "Rue", "text": "That is terrible. I will keep it." }
+          ] }
+        ]
+      }
+    }
+  },
+  "records-camp": {
+    "id": "records-camp",
+    "after": "b4-records",
+    "cast": [],
+    "act": "Camp",
+    "location": "The archive under the toll-house, Ashford Crossing",
+    "start": "copy",
+    "nodes": {
+      "copy": {
+        "title": "Copying",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Ilse does not sleep that night either, and neither does Rue. They sit at opposite ends of the long table in the cellar with a lamp each, copying: Ilse the founders' account in her round archive hand, and Rue the Wold's winters in her square one." },
+          { "narrate": "Rue goes back up to Highpass on the morning coach. Brannagh wants her home by the end of the week, and Rue has written it on the back of her hand so as not to forget.", "when": { "flag": "b4_rue_council" } },
+          { "narrate": "Sorrel's rider takes Rue back up to Highpass in the morning. Sorrel wants her at the fire, and Rue has written it on the back of her hand so as not to forget.", "when": { "flag": "b4_rue_watch" } },
+          { "oneOf": [
+            { "narrate": "Ilse has the printer's proof beside her, to check the type against the page letter by letter. She has found two mistakes already, and gone up to the print shop in her nightgown to say so.", "when": { "flag": "b4_truth_published" } },
+            { "narrate": "The account goes up to Highpass under seal in the morning, and Ilse means to have every page of it copied before the rider comes for it.", "when": { "flag": "b4_truth_council" } },
+            { "narrate": "Ailith's cart goes at first light, and Ilse means to have every page copied before then. She has told Ailith so twice.", "when": { "flag": "b4_truth_ailith" } }
+          ] },
+          { "narrate": "For an hour they work in silence. Then Ilse looks up." },
+          { "say": "Sister Ilse", "text": "You join your f's to the next letter." },
+          { "say": "Rue", "text": "Everyone does." },
+          { "say": "Sister Ilse", "text": "Nobody does. Not here. Not for eight hundred years." },
+          { "narrate": "Rue looks at Ilse's page for a while. Then she goes back to her own and joins the next f, and then, after a moment's thought, does not join the one after it." },
+          { "narrate": "By the second hour Ilse is joining her f's. By the third Rue has started leaving a space after her full stops the way Ilse does, and Ilse has started squaring off her g's, and neither of them has said a word about it." },
+          { "narrate": "Maren comes down at midnight with two cups, and puts one at each end of the table, and sits on the cellar stairs to watch them, and does not interrupt.", "when": { "party": "maren" } },
+          { "narrate": "At dawn they swap pages to check each other's copies, and for a moment neither of them can tell whose is whose." },
+          { "say": "Rue", "text": "This one is mine." },
+          { "say": "Sister Ilse", "text": "That one's mine. Look at the f." },
+          { "say": "Rue", "text": "Yes. That is what I mean." }
+        ],
+        "choices": [
+          { "id": "lamp", "label": "Stay and trim the lamps for them", "lines": [ { "narrate": "You trim the lamps for them until the window over the stairs goes grey. Neither of them looks up." } ] },
+          { "id": "sleep", "label": "Go up and sleep", "lines": [ { "narrate": "You go up and sleep at the inn. When you come down in the morning the two of them are asleep at the long table, one at each end, with their heads on their copies." } ] }
+        ]
+      }
+    }
+  },
+  "ballad-camp": {
+    "id": "ballad-camp",
+    "after": "b4-ballad",
+    "cast": [],
+    "act": "Camp",
+    "location": "Dera's forge, the night after",
+    "start": "verse",
+    "nodes": {
+      "verse": {
+        "title": "In Your Own Words",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "That night Linus Pardew comes to Dera's forge with his fiddle, a clean broadsheet and a stub of pencil, and asks whether he may sit. Dera says he may sit if he stops singing. He sits." },
+          { "oneOf": [
+            { "say": "Linus Pardew", "text": "I want the true one. I mean it. I watched a village ring its own pans last night, and there wasn't a sword of light in it anywhere, and it was better. I want to write that. I want the verses right.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+            { "say": "Linus Pardew", "text": "I want the true one. I mean it. I stood on that well last night and watched you fight the white at the Briarwood end with a village in its nightclothes behind you, and there wasn't a sword of light in it anywhere. I want to write that. I want the verses right." }
+          ] },
+          { "oneOf": [
+            { "say": "Linus Pardew", "text": "And the quiet night. The first town in the free wards. That's a verse on its own, if I can find a rhyme for 'share' that isn't 'there'.", "when": { "flag": "b4_bw_quiet" } },
+            { "say": "Linus Pardew", "text": "And a boy who wrote his village's rule himself, in letters an inch high. I've that verse already. I wrote it this afternoon and it made me cry, which is a bad sign in a man of my trade.", "when": { "flag": "b4_bw_pim" } },
+            { "say": "Linus Pardew", "text": "And the watch kept every night, as it always was. Nobody wants a song about a thing staying the same. I'll make them want one.", "when": { "flag": "b4_bw_rings" } }
+          ] },
+          { "say": "Linus Pardew", "text": "Now. Orin the Bold. Sir. Would you give me your own verse, in your own words? However you'd like to be sung.", "when": { "party": "orin" } },
+          { "narrate": "Orin puts down the cup Dera gave him. Everyone at the forge looks at him. He looks at the fire for a while.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "The ford at Calder. I was a soldier. I left the farmers on the wrong side of it, and the white had them. Lieutenant Hal went back for them. I didn't." },
+          { "oneOf": [
+            { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick. I don't remember it. I gave it away, down there. I know I was tried for it. Write that I was tried.", "when": { "flag": "b3_orin_gives", "anyFlag": ["b3_orin_tried"] } },
+            { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick, where I asked to be tried for what I did there, and was.", "when": { "flag": "b3_orin_tried" } },
+            { "say": "orin", "text": "Then Briarwatch. Then the council. Then Saltwick, which I'll not tell you about, and you'll not write." }
+          ] },
+          { "say": "orin", "text": "I'm six foot. I carry the packs because somebody has to. I've never had a door on my back in my life." },
+          { "narrate": "Linus writes it down, all of it, word for word, with his tongue between his teeth. When Orin stops, he reads it back. It does not rhyme. It is a list of facts, said plainly, by a man who cannot lie.", "when": { "party": "orin" } },
+          { "say": "Linus Pardew", "text": "I can't sing that.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "No." },
+          { "say": "Linus Pardew", "text": "I'm going to, though.", "when": { "party": "orin" } },
+          { "say": "Linus Pardew", "text": "And the big one. The one with the door on his back. He's not with you, is he. Is he really eight feet tall?", "when": { "absent": "orin" } },
+          { "narrate": "You tell Linus that the big one is six feet tall, carries the packs because somebody has to, and has never had a door on his back in his life. Linus writes it down, and crosses out the eight, and sits looking at what is left.", "when": { "absent": "orin" } },
+          { "say": "Linus Pardew", "text": "That's worse for the song and better for the man.", "when": { "absent": "orin" } },
+          { "say": "Dera", "text": "Put in that he came back. Whoever's in it. That they all came back. That's the verse I'd want, if it was mine." }
+        ],
+        "choices": [
+          { "id": "play", "label": "Ask Linus to play the true one, as far as he has it", "lines": [
+            { "narrate": "He plays it. It is two verses and a half, and the half is the line about the pans, and it does not scan. Dera sings the last line with him under her breath, and then says she did not." }
+          ] },
+          { "id": "leave", "label": "Leave them to it, and go up to bed", "lines": [
+            { "narrate": "You leave them at the forge, Linus with his pencil and Dera with her arms folded, arguing about whether a smith's hammer can rhyme with anything. When you look back from the inn door the forge is still lit." }
+          ] }
+        ]
+      }
+    }
+  },
+  "company-camp": {
+    "id": "company-camp",
+    "after": "b4-company",
+    "cast": [],
+    "act": "Camp",
+    "location": "The north quay, Merrowgate, the night after",
+    "start": "north",
+    "nodes": {
+      "north": {
+        "title": "What the North Is Like",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night the north quay is unloading by lamplight, crate by crate, back off the wagons and onto the stones. Coll Haddow carries his own crate home on his shoulder. Bett comes back down to the quay after him, and sits on the bollard by the empty wagons.", "when": { "flag": "b4_company_broken" } },
+            { "narrate": "That night the council's clerks are on the north quay with lamps, chalking the council's seal on the wagons' tailboards. Coll Haddow is helping them, for wages. Bett is sitting on the bollard by wagon four, watching him.", "when": { "flag": "b4_company_council" } },
+            { "narrate": "That night Coll Haddow is loading wagon four by lamplight, for the end of the week. Bett is sitting on the bollard beside it with the roll in her lap, and her name on it in pencil, crossed out.", "when": { "flag": "b4_company_sails" } },
+            { "narrate": "That night Bett comes down to the north quay and sits on the bollard by the wagons." }
+          ] },
+          { "narrate": "Nessa is sitting on the quay edge beside her with her boots over the water and Biscuit's head on her knee. Bett has been looking at her for some time.", "when": { "party": "nessa" } },
+          { "say": "Bett", "text": "You're going north. Up over the peaks. What's it like?", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Never been." },
+          { "say": "Bett", "text": "Then what's it like?", "when": { "party": "nessa" } },
+          { "narrate": "Nessa thinks about it for a while. Then she tells her anyway.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Cold. Colder than here. White on the ground all year, and not the bad white, the ordinary kind: snow, so deep you walk on top of it. Writing on every door, so you always know whose house it is. People who give away the day they were born and write it on their arm so they can read it back. And dogs. I've decided there are dogs." },
+          { "say": "Bett", "text": "You don't know any of that.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "No. I'll write and tell you which bits I got right." },
+          { "narrate": "Biscuit thumps his tail once on the stones.", "when": { "party": "nessa" } },
+          { "narrate": "You sit down on the quay edge beside her. She has been waiting for somebody to.", "when": { "absent": "nessa" } },
+          { "say": "Bett", "text": "You're going north. Up over the peaks. What's it like?", "when": { "absent": "nessa" } },
+          { "narrate": "You tell her you have never been. She asks again, as if that were no answer, and so you tell her what Rue has told you: the white on the ground all year, the writing on every door, the people who write on their own arms so as to read back who they are.", "when": { "absent": "nessa" } },
+          { "say": "Bett", "text": "Will you write and tell me if it's true?", "when": { "absent": "nessa" } },
+          { "oneOf": [
+            { "say": "Bett", "text": "Nobody's going now. Not Da, not anybody. He's glad. I can tell he's glad, and he's pretending he isn't, for me.", "when": { "flag": "b4_company_broken" } },
+            { "say": "Bett", "text": "Da's going on the council's wagons, when the peaks open. He says the council doesn't take girls either. I asked the clerk. The clerk says it's not up to him, it's up to Da.", "when": { "flag": "b4_company_council" } },
+            { "say": "Bett", "text": "The clerk crossed me out. Neatly. I watched him do it. Da didn't say anything.", "when": { "flag": "b4_company_sails" } }
+          ] }
+        ],
+        "choices": [
+          { "id": "sit", "label": "Sit with her until her father calls her in", "lines": [
+            { "narrate": "You sit on the quay until Coll calls her in. She goes slowly, and looks back once at the north end of the harbour." }
+          ] },
+          { "id": "inn", "label": "Go up to the inn", "lines": [
+            { "narrate": "You leave Nessa on the quay with her. When you look back from the top of the steps they are both looking north.", "when": { "party": "nessa" } },
+            { "narrate": "You leave her on the quay. When you look back from the top of the steps she is looking north.", "when": { "absent": "nessa" } }
+          ] }
+        ]
+      }
+    }
+  },
+  "davin-camp": {
+    "id": "davin-camp",
+    "after": "b4-davin",
+    "cast": [],
+    "act": "Camp",
+    "location": "Saltwick, the night after the fire",
+    "start": "knot",
+    "nodes": {
+      "knot": {
+        "title": "The Knot",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night Orin sits with Davin on the parapet, with Davin's pack between them and a length of lamp-rope across both their knees.", "when": { "party": "orin", "flag": "b4_davin_comes" } },
+            { "narrate": "That night Orin sits with Davin on the parapet with a length of lamp-rope across both their knees. The pack is unpacked. Davin has not said a word to him since noon, and came up anyway.", "when": { "party": "orin", "flag": "b4_davin_home" } },
+            { "narrate": "That night Davin finds you on the parapet, with his pack and a length of lamp-rope.", "when": { "absent": "orin", "flag": "b4_davin_comes" } },
+            { "narrate": "That night Davin finds you on the parapet with a length of lamp-rope. The pack is unpacked. He has come up to say something, and has not decided what.", "when": { "absent": "orin" } },
+            { "narrate": "That night Orin sits with Davin on the parapet with a length of lamp-rope across both their knees.", "when": { "party": "orin" } }
+          ] },
+          { "oneOf": [
+            { "say": "orin", "text": "That's my knot on your pack.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "That was my knot on your pack." }
+          ] },
+          { "say": "Davin", "text": "I learned it off you. From watching.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Then watch again. Slowly." },
+          { "narrate": "He ties it on the parapet rail, slowly, so that Davin can see each turn: a round turn, two half-hitches, and the stopper.", "when": { "party": "orin" } },
+          { "say": "Davin", "text": "It's nearly it. The stopper goes on the other side. Like that it holds the lamp, but it won't come undone when you want it to. Gran ties it the other way, so you can get a lamp off in the dark with one hand. Watch.", "when": { "party": "orin" } },
+          { "narrate": "He ties it again, the other way. Orin looks at it for a long time. Then he unties it, and ties it himself, Davin's way, twice, and tugs it.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Your way." },
+          { "say": "orin", "text": "Tomorrow, then. The rear of the column. You stay where I can see you.", "when": { "flag": "b4_davin_comes" } },
+          { "say": "Davin", "text": "Where you can see me.", "when": { "party": "orin", "flag": "b4_davin_comes" } },
+          { "say": "orin", "text": "They'll want somebody on the far roofs who ties it right.", "when": { "flag": "b4_davin_home" } },
+          { "say": "Davin", "text": "They've got somebody.", "when": { "party": "orin", "flag": "b4_davin_home" } },
+          { "narrate": "He shows you the knot on his pack: a round turn, two half-hitches and a stopper, with the stopper on the far side, so that it comes off in the dark with one hand. His grandmother ties it that way. He shows you twice, until you have it.", "when": { "absent": "orin" } },
+          { "say": "Davin", "text": "Everybody ties it wrong. They tie it the soldiers' way, so it holds. It's meant to hold and let go. That's the whole trick of it.", "when": { "absent": "orin" } },
+          { "say": "Davin", "text": "I'll tie yours, on the road. Every morning. You'll see.", "when": { "absent": "orin", "flag": "b4_davin_comes" } },
+          { "narrate": "Mags comes up the ladder before it is quite dark, to look at the knot. She looks at it for a while, and nods, and goes down again. She has not said a word about what she said at noon, and nobody has asked her to.", "when": { "flag": "b4_davin_mags" } }
+        ],
+        "choices": [
+          { "id": "learn", "label": "Ask Davin to show you too", "lines": [
+            { "narrate": "He shows you. It takes you four tries, and he does not laugh at any of them." }
+          ] },
+          { "id": "lamps", "label": "Go round the lamps with him at midnight", "lines": [
+            { "narrate": "You go round the long planks with him at midnight, lamp by lamp. He checks every knot, and reties two of them." }
+          ] }
+        ]
+      }
+    }
+  },
+  "book-camp": {
+    "id": "book-camp",
+    "after": "b4-book",
+    "cast": [],
+    "act": "Camp",
+    "location": "The quartermaster's office, Highpass, the night after",
+    "start": "ledgers",
+    "nodes": {
+      "ledgers": {
+        "title": "Two Ledgers",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with her book under her arm, and asks her in out of the wind.", "when": { "flag": "b4_book_returned" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with her book, and the new first page in it, and asks her in out of the wind.", "when": { "flag": "b4_book_rewritten" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office with nothing in her hands, and asks her in out of the wind.", "when": { "flag": "b4_book_burned" } },
+            { "narrate": "That night Quartermaster Iona finds Rue on the step of her office, and asks her in out of the wind." }
+          ] },
+          { "say": "Iona", "text": "I keep ledgers. I've kept Highpass's since before you were born, and the council's since there was a council. I'd like to see yours, if I may." },
+          { "oneOf": [
+            { "narrate": "Rue pushes back her sleeve and shows Iona her wrist, with the one word on it. Iona looks at it as carefully as she looks at anything. Then she takes a new ledger off her shelf, a good one, bound, with nothing in it, and puts it on the table between them, and does not say what it is for. Rue writes the date on the first leaf, and under it, HEATH.", "when": { "flag": "b4_book_burned" } },
+            { "narrate": "Rue puts her book on the table, and Iona puts the council's ledger beside it, and they read each other's for an hour without speaking." }
+          ] },
+          { "say": "Iona", "text": "You've no column for what's owed." },
+          { "say": "Rue", "text": "Nothing is owed. Things are given. Then they are written down, so that nobody forgets they were given." },
+          { "say": "Iona", "text": "Here it's the other way about. Nothing's given. Everything's owed, and written down so that nobody forgets they owe it." },
+          { "say": "Iona", "text": "And I've Cass Ord's bill in that case, for forty wagons and a ship, to the copper. That one I'm paying.", "when": { "flag": "b4_company_council" } },
+          { "oneOf": [
+            { "narrate": "Iona takes a sheet off the top of the pile at her elbow: the bill for the watch's night at the north gate, made out to the carter. She reads it over once, and puts it in the stove.", "when": { "flag": "method:b4-book", "is": "peace" } },
+            { "narrate": "Iona takes a sheet off the top of the pile at her elbow: the bill for the north gate's new timbers, made out to the carter. She reads it over once, and puts it in the stove." }
+          ] },
+          { "say": "Iona", "text": "Given. Write that down." },
+          { "narrate": "Rue writes it down." },
+          { "narrate": "Maren is on the bench by the stove. She has not said anything for an hour.", "when": { "party": "maren" } },
+          { "say": "maren", "text": "She means it. I can hear that much." },
+          { "say": "Iona", "text": "I should hope so. I don't say things twice.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          { "id": "ask", "label": "Ask Rue what she wrote", "lines": [
+            { "say": "Rue", "text": "The quartermaster gave a thing. I wrote it under her name. Tomorrow I will write it on her door. She does not know yet." }
+          ] },
+          { "id": "leave", "label": "Leave them to their ledgers", "lines": [
+            { "narrate": "You leave them at it. The lamp in Iona's window is still lit when the watch changes at midnight." }
+          ] }
+        ]
+      }
+    }
+  },
+  "key-camp": {
+    "id": "key-camp",
+    "after": "b4-key",
+    "cast": [],
+    "act": "Camp",
+    "location": "The casting hall, Cinder Fold, the night after",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "At the Hall Door",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Biscuit would not go near the founders' hatch. When it came up he sat down on the lid with all four legs set and his ears flat, and nothing would shift him, and in the end Nessa picked him up, grey muzzle and all, and carried him across the lid to the casting hall door under one arm, with the lid moving under her boots.", "when": { "party": "nessa" } },
+          { "narrate": "Now he is lying across the hall door with his nose on his paws, watching the lid, and Nessa is sitting beside him.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Coward. Great soft coward. Wouldn't go near it. Had to be carried, like a sack of meal, in front of the whole town." },
+          { "narrate": "She says it into his neck, with both arms round him.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He was right, mind. He's always right about holes." },
+          { "oneOf": [
+            { "narrate": "Hew comes down from the signal house at half past midnight with the key round his neck, and sits down on Biscuit's other side, and Biscuit puts his head on Hew's knee instead of Nessa's.", "when": { "party": "nessa", "flag": "b4_key_hew" } },
+            { "narrate": "Hew comes in off the lid at midnight with his hearth bell, and sits down on Biscuit's other side, and Biscuit puts his head on Hew's knee instead of Nessa's.", "when": { "party": "nessa" } }
+          ] },
+          { "say": "nessa", "text": "Traitor." },
+          { "narrate": "She watches the two of them for a while.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He's old. The peaks'll be cold, and the Wold's colder, Rue says, and he won't go near a hole, and I bet it's all holes up there. When we go north, he stays here. With Hew. If Hew'll have him." },
+          { "say": "Hew", "text": "I'll have him.", "when": { "party": "nessa" } },
+          { "oneOf": [
+            { "say": "nessa", "text": "He'll go up the stair with you every night. He'll want to. Let him.", "when": { "flag": "b4_key_hew" } },
+            { "say": "nessa", "text": "He can sit under the lamp-room for me, since there's nobody up it. Somebody should mind it, even dark.", "when": { "flag": "b4_key_carried" } },
+            { "say": "nessa", "text": "You'll both go up the stair with whoever's keeping the key, every night. Count the steps for me.", "when": { "flag": "b4_key_left" } }
+          ] },
+          { "narrate": "The family from Wem are asleep in miners' blankets by the forge fire. Hew sits up with them on the hall step with his hearth bell in his lap, and keeps very still so as not to wake the child.", "when": { "absent": "nessa" } },
+          { "say": "Hew", "text": "I'll go up the stair with them again tomorrow. Somebody has to learn it. I'm learning it.", "when": { "absent": "nessa" } }
+        ],
+        "choices": [
+          { "id": "sit", "label": "Sit by the hall door", "lines": [
+            { "narrate": "You sit by the hall door with them until the forge fire is low. Biscuit falls asleep across the feet of all three of you.", "when": { "party": "nessa" } },
+            { "narrate": "You sit by the forge fire until it is low. Hew falls asleep sitting up, with the bell in his lap.", "when": { "absent": "nessa" } }
+          ] },
+          { "id": "lid", "label": "Go out and listen to the nine", "lines": [
+            { "oneOf": [
+              { "narrate": "You go out onto the lid at the turn of the hour and listen to the nine ring it, and the tenth a beat ahead of them. They are in time.", "when": { "flag": "b3_wren_cast" } },
+              { "narrate": "You go out onto the lid at the turn of the hour and listen to the nine ring it. They are in time." }
+            ] }
+          ] }
+        ]
+      }
+    }
+  },
+  "letters-camp": {
+    "id": "letters-camp",
+    "after": "b4-letters",
+    "cast": [],
+    "act": "Camp",
+    "location": "The vault under the drill-yard, Vell, the night after",
+    "start": "stair",
+    "nodes": {
+      "stair": {
+        "title": "At the Top of the Stair",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night the satchel sits on the vault table under Fennick's lamp, tied with red tape, and nobody touches it.", "when": { "flag": "b4_letters_read" } },
+            { "narrate": "That night the vault is quiet. Fennick and his clerks are still at the bottom of the stair, copying, and will be for a week.", "when": { "flag": "b4_letters_copied" } },
+            { "narrate": "That night you sit at the vault table and try to remember what you wrote, and cannot.", "when": { "flag": "b4_letters_answered" } }
+          ] },
+          { "narrate": "You are not as tired as you should be. Nobody says so at first." },
+          { "say": "orin", "text": "A day of stair, up, in armour, and you came out at the top like you'd walked across a yard. I've done stairs in armour. I sat down at the top of every one. The old guard-books call that Iron Hide, when the body stops minding.", "when": { "spec": "guardian" } },
+          { "narrate": "A day of stair, up, in armour, and you come out at the top as if you had walked across a yard. The old guard-books call that Iron Hide: the body has stopped minding.", "when": { "spec": "guardian", "absent": "orin" } },
+          { "say": "nessa", "text": "You trimmed the lamp wick with your knife on the stair. One cut, in the dark, and you never looked. That's a Blademaster's hand. Keen Edge. The edge goes where you want it before you've thought it.", "when": { "spec": "duelist" } },
+          { "narrate": "On the stair you trim the lamp wick with your knife, one cut, in the dark, without looking. A Blademaster's hand: Keen Edge, the edge going where you want it before you have thought it.", "when": { "spec": "duelist", "absent": "nessa" } },
+          { "say": "orin", "text": "On the floor, Fennick's clerks did what you said without looking round to see who'd said it. That's the thing. Not the voice. When people stop checking. Veteran Captain, the old companies called it. Banner Captains have it.", "when": { "spec": "warlord" } },
+          { "narrate": "On the floor, Fennick's clerks did what you told them without looking round to see who had said it. The old companies called that Veteran Captain: people stop checking.", "when": { "spec": "warlord", "absent": "orin" } },
+          { "say": "nessa", "text": "I lost you on the stair today. Twice. I was right behind you with a lamp. Blade in the Dark, the Nightblades call that. I'm the one who goes first. I don't like not knowing where you are.", "when": { "spec": "shadow" } },
+          { "narrate": "On the stair the lamp behind you loses you twice, and finds you again ahead of it. Blade in the Dark, the Nightblades call that.", "when": { "spec": "shadow", "absent": "nessa" } },
+          { "say": "nessa", "text": "You mended Fennick's lamp on the way up with a hairpin and a bit of his red tape, and it burns better than it did new. Master Tinker. That's Trapwright work. I'm keeping the hairpin.", "when": { "spec": "saboteur" } },
+          { "narrate": "On the way up you mend Fennick's lamp with a hairpin and a length of his red tape, and it burns better than it did new. Master Tinker: Trapwright work.", "when": { "spec": "saboteur", "absent": "nessa" } },
+          { "say": "maren", "text": "Two of Fennick's clerks told you, separately, what the other one was afraid of, and neither of them meant to. You have people now. Everywhere you go. Informants, the Spymasters say. I'd like to know which of them is me.", "when": { "spec": "grifter" } },
+          { "narrate": "Two of Fennick's clerks tell you, separately, what the other one is afraid of, and neither of them means to. A Spymaster has people everywhere: Informants.", "when": { "spec": "grifter", "absent": "maren" } },
+          { "say": "nessa", "text": "Your lamp went out on the stair and you lit it again off your own fingers. You didn't even think about it. The hair on my arms stood up. Overchannel, the Stormcallers call it. Warn me next time.", "when": { "spec": "evoker" } },
+          { "narrate": "Your lamp goes out on the stair and you light it again off your own fingers without thinking. Overchannel, the Stormcallers call it.", "when": { "spec": "evoker", "absent": "nessa" } },
+          { "say": "maren", "text": "You caught Fennick's box before it fell. Before. I saw your hand move, and then I saw the box start to go. Temporal Poise, the Timeweavers call that. I'm not going to think about it too hard.", "when": { "spec": "chronist" } },
+          { "narrate": "You catch Fennick's box on the stair before it starts to fall. Temporal Poise, the Timeweavers call that: the hand moves first.", "when": { "spec": "chronist", "absent": "maren" } },
+          { "say": "orin", "text": "Whatever you call up, it's stronger now. I felt it on the stair, behind you, like a wall at my back. Pact Strength, isn't it? The Summoners' word. I'd like it to stay on our side.", "when": { "spec": "binder" } },
+          { "narrate": "Whatever you call up is stronger now. On the stair you can feel it behind you like a wall. Pact Strength, the Summoners call it.", "when": { "spec": "binder", "absent": "orin" } },
+          { "say": "maren", "text": "You put your hand on that clerk's head, the one who forgot his sister's name, and he stopped shaking. Blessed Hands. The Menders of Hosts have it. I've sat with a lot of people who were shaking. I've never once done that.", "when": { "spec": "lifewarden" } },
+          { "narrate": "You put your hand on the head of the clerk who forgot his sister's name, and he stops shaking. Blessed Hands, the Menders of Hosts call it.", "when": { "spec": "lifewarden", "absent": "maren" } },
+          { "say": "maren", "text": "When the white came up off the floor you looked at it the way I look at somebody who's lying to me. Inquisitor's Zeal. I don't know if I find that comforting.", "when": { "spec": "exorcist" } },
+          { "narrate": "When the white came up off the floor you looked at it the way you look at a liar. Inquisitor's Zeal, the old orders call it.", "when": { "spec": "exorcist", "absent": "maren" } },
+          { "say": "orin", "text": "There's a warmth off your mail. I noticed it on the stair, standing next to you in the cold. Consecrated Plate, the Templars call it. I'd stand next to you on a cold night again.", "when": { "spec": "battlepriest" } },
+          { "narrate": "There is a warmth off your mail that the stair could not take out of it. Consecrated Plate, the Templars call it.", "when": { "spec": "battlepriest", "absent": "orin" } },
+          { "say": "nessa", "text": "Every rat on that stair got out of your way. Not running. Getting out of your way, like you were the big one. Alpha Bond, isn't it? I've never seen a rat step aside before.", "when": { "spec": "beastwarden" } },
+          { "narrate": "Every rat on the stair gets out of your way: not running, stepping aside, as if you were the big one. Alpha Bond, the Beastbond call it.", "when": { "spec": "beastwarden", "absent": "nessa" } },
+          { "say": "nessa", "text": "You saw the bottom of the stair from a hundred steps up. I watched you do it. I've got the best eyes in Cinder Fold, and I couldn't. Longshot. Fine. You can go first. For looking.", "when": { "spec": "deadeye" } },
+          { "narrate": "From a hundred steps up you can see the bottom of the stair, when nobody else can see past the lamp. Longshot.", "when": { "spec": "deadeye", "absent": "nessa" } },
+          { "say": "orin", "text": "A day of stair down and a day up, and you're not even tired. Seasoned Traveller, the Wayfinders call that. You'll want it, north.", "when": { "spec": "pathfinder" } },
+          { "narrate": "A day of stair down and a day up, and you are not even tired. Seasoned Traveller, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
+          { "say": "maren", "text": "On the floor today you talked to Fennick about the founders' spelling, and he took notes. From you. Vast Learning, the Loremasters call it. I've never seen that clerk take notes from anybody.", "when": { "spec": "lorekeeper" } },
+          { "narrate": "On the floor, Fennick asks you about the founders' spelling, and takes notes. Vast Learning, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "orin", "text": "You were humming on the stair. A whole day of it, up. And every one of us kept your time and never felt the steps. Rousing Voice. The Warchanters have it. Hum it again tomorrow.", "when": { "spec": "battlecantor" } },
+          { "narrate": "You hum on the stair, a whole day of it, up, and nobody behind you feels the steps. Rousing Voice, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
+          { "say": "maren", "text": "Fennick, the clerks, whoever's on the door. They all tell you things they wouldn't tell each other, and nobody minds. Diplomatic Immunity, they call that in Merrowgate, and they mean it as a joke. It isn't one.", "when": { "spec": "envoy" } },
+          { "narrate": "Fennick, the clerks, whoever is on the door: they all tell you things they would not tell each other, and nobody minds. Diplomatic Immunity, the Diplomats call it.", "when": { "spec": "envoy", "absent": "maren" } },
+          { "narrate": "Somewhere on the stair today you stopped counting the steps. You are not sure when.", "when": { "spec": "none" } }
+        ],
+        "choices": [
+          {
+            "id": "wall",
+            "label": "Go up and listen to the bells",
+            "lines": [
+              { "oneOf": [
+                { "narrate": "You go up onto the wall and listen to the fifty gate-bells ring the hour over an empty city.", "when": { "flag": "b3_bell_evacuate" } },
+                { "narrate": "You go up onto the wall. The gate-bells ring the hour. The great bell in the heart of the city does not.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+                { "narrate": "You go up onto the wall and listen to Vell's bells ring the hour." }
+              ] }
+            ]
+          },
+          {
+            "id": "sleep",
+            "label": "Sleep by the vault stove",
+            "lines": [
+              { "narrate": "You sleep by the stove in the vault, with the iron door below you, and dream of a floor that goes on further than any lamp." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "embassy-camp": {
+    "id": "embassy-camp",
+    "after": "b4-embassy",
+    "cast": [],
+    "act": "Camp",
+    "location": "Brannagh's lodging, Highpass, the night after the vote",
+    "start": "kitchen",
+    "nodes": {
+      "kitchen": {
+        "title": "Brannagh's Kitchen",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Brannagh has the Fenmere delegates round her kitchen table the night after the vote, and you with them, and a pot of barley on the fire." },
+          { "oneOf": [
+            { "say": "Brannagh", "text": "Well. You're ours now. Seal and all. Don't lose it; Iona will charge you.", "when": { "flag": "b4_embassy_council" } },
+            { "say": "Brannagh", "text": "Well. You're your own. I'd not have voted for it. I'd not have voted against it either.", "when": { "flag": "b4_embassy_own" } },
+            { "say": "Brannagh", "text": "Well. Ten thousand beds. Fenmere's got about forty. I'll find more.", "when": { "flag": "b4_embassy_refuge" } }
+          ] },
+          { "narrate": "She ladles barley into bowls for a while without saying anything." },
+          { "say": "Brannagh", "text": "Are there goats? Up there. In the north." },
+          { "narrate": "Nobody knows." },
+          { "say": "Rue", "text": "I do not know. I have not written it down. If there are, they will have their names on them.", "when": { "anyFlag": ["b4_rue_council", "b4_rue_party"] } },
+          { "say": "nessa", "text": "There's always goats. Everywhere's got goats." },
+          { "say": "Brannagh", "text": "Then I'll get on with them.", "when": { "party": "nessa" } },
+          { "say": "Brannagh", "text": "I only ask. You can tell a lot about people from whether they keep goats. Fenmere's kept goats since before the bells. If they keep them up there, I'll know what to say first." },
+          { "narrate": "Out of the window, the peaks above the pass are white to the saddle. The Hall of Legends is up there in the dark, under the first of the snow." }
+        ],
+        "choices": [
+          {
+            "id": "eat",
+            "label": "Eat the barley",
+            "lines": [
+              { "narrate": "You eat the barley. Brannagh fills your bowl again before it is empty, and the Fenmere delegates argue about the vote until the fire is low." }
+            ]
+          },
+          {
+            "id": "window",
+            "label": "Watch the peaks from the window",
+            "lines": [
+              { "narrate": "You watch the peaks until the cloud comes down over the saddle. In a few days you will be up there." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b4-partone-end": {
+    "id": "b4-partone-end",
+    "after": "b4-peaks",
+    "cast": [],
+    "act": "The end of Part One",
+    "location": "The north door of the Hall of Legends",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "The North Door",
+        "objective": "Say what you are bringing.",
+        "lines": [
+          { "narrate": "Evening at the north door. You make camp in the lee of the Wold's nine, out of the wind, with the Wold under its cloud below you and the free wards behind you under the snow, and nobody wants to sleep." },
+          { "narrate": "Rue asks, the way the Wold asks at a door, what you are bringing. Not what is in your pack. What you are bringing." },
+          { "oneOf": [
+            { "say": "orin", "text": "Davin. And the knot on his pack, which is Mags's. And a soldier who'd like to be asked in, this time.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "A soldier who'd like to be asked in, this time. That's all. It's enough to be going on with." }
+          ] },
+          { "oneOf": [
+            { "say": "maren", "text": "Ears. And a door I can't see the colour of any more, so I'll know what it costs when they give. I'll hear whether they mean it, and whether we do.", "when": { "flag": "b4_letters_maren" } },
+            { "say": "maren", "text": "Ears. I'll hear whether they mean it, and whether we do." }
+          ] },
+          { "oneOf": [
+            { "say": "nessa", "text": "The key. A light, if they want one.", "when": { "flag": "b4_key_carried" } },
+            { "say": "nessa", "text": "Me. First through every door. That's what I'm for." }
+          ] },
+          { "narrate": "Rue writes in her book, on a new page, a line at a time." },
+          { "say": "Davin", "text": "Lamps. I brought six. Nobody asked me to.", "when": { "flag": "b4_davin_comes" } },
+          { "say": "Rue", "text": "And you?" }
+        ],
+        "choices": [
+          {
+            "id": "answer",
+            "label": "Tell her what you are bringing",
+            "next": "linus",
+            "lines": [
+              { "oneOf": [
+                { "narrate": "You tell her: the free wards' word, under its seal, and whatever it will cost Iona.", "when": { "flag": "b4_embassy_council" } },
+                { "narrate": "You tell her: a door open in the south for anyone who wants it, and ten thousand beds that nobody has found yet.", "when": { "flag": "b4_embassy_refuge" } },
+                { "narrate": "You tell her: yourself, and your own word, and nothing in writing." }
+              ] },
+              { "say": "Rue", "text": "I have written it down." }
+            ]
+          }
+        ]
+      },
+      "linus": {
+        "title": "The First True Verse",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Before dark Linus comes through the Hall from the south door with his guide, to go back down while there is light. Before he goes he stands at the north door with his writing case open and reads you the first verse, so that somebody who was there has heard it." },
+          { "oneOf": [
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that rang once, and every bell in the south answered it. And these went down to knock.'", "when": { "flag": "b4_parting_rung" } },
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket. And one of these knelt at the north door and gave, and went down to knock.'", "when": { "flag": "b4_gave_door" } },
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that nobody rang. And these went quietly down to knock.'", "when": { "flag": "b4_unannounced" } }
+          ] },
+          { "say": "Linus Pardew", "text": "That's true. All of it. Dera can't cross out a word. First time in twenty years." },
+          { "say": "Linus Pardew", "text": "I'll sing it in Briarwatch at midwinter. Come back and tell me the next one." },
+          { "narrate": "He goes back through the Hall and down the south side into the snow, with the guide carrying his case, and turns round twice to wave." },
+          { "narrate": "Below the north door the road goes down into the cloud." }
+        ],
+        "choices": [
+          {
+            "id": "down",
+            "label": "Look down at the road into the Wold",
+            "setFlags": { "b4_partone_done": true },
+            "lines": [
+              { "narrate": "You look down at the road for a long time. Tomorrow, the Wold." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

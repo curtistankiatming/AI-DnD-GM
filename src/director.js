@@ -11,17 +11,33 @@
 // into the story registries whenever a save is loaded, so they survive
 // reloads and work in the offline browser build without a model.
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
-const { QUESTS, TOWNS, installQuest, trialFraming, standing } = require('./expansion');
+const { QUESTS, TOWNS, installQuest, trialFraming, townPage, standing } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
 const Book = require('./book');
 const Chronicle = require('./chronicle');
+const Telling = require('./telling');
 
 const VERSION = 1;
 const OPEN_LIMIT = 1;        // Unfinished generated adventures at one time.
 const MAX_STORED = 40;       // Older completed adventures are pruned beyond this.
 const THEMES = Object.freeze(['wild', 'undead', 'storm', 'construct', 'soldier', 'caster']);
-const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds']);
+// The factions a save holds reputation with (world.reputation is built from
+// this list). It feeds the AI's tool schema, so a faction here always holds
+// reputation. Book Four's Wold (docs/book-four/DESIGN.md, engine change 8)
+// sets Lantry's and Orme's prices.
+const FACTIONS = Object.freeze(['wardens', 'trade', 'wilds', 'wold']);
+// Factions a player only hears of in a later book: shown (on the town screen,
+// in the Journal and to the AI storyteller) once the party has reached one of
+// that faction's towns, or a choice has moved it.
+const LATER_FACTIONS = Object.freeze(['wold']);
+function factionKnown(state, id) {
+  // Without a save (a stored adventure re-bounded on its own) nothing is hidden.
+  if (!LATER_FACTIONS.includes(id) || !state?.world) return true;
+  const w = state.world;
+  return Boolean(Number(w.reputation?.[id]) || (w.unlockedTowns || []).some(t => TOWNS[t]?.faction === id));
+}
+const shownReputation = state => Object.fromEntries(Object.entries(state?.world?.reputation || {}).filter(([id]) => factionKnown(state, id)));
 const TOOLS = Object.freeze(Object.values(ITEMS).filter(i => i.category === 'tool' && i.id !== 'healers-kit').map(i => i.id));
 const SKILL_IDS = Object.freeze(Object.keys(SKILLS));
 const TEXT = Object.freeze({ name: 80, short: 120, label: 120, brief: 400, long: 900, arc: 900, hint: 400 });
@@ -124,6 +140,22 @@ const SCHEMA = Object.freeze({
   },
   required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed', 'storyArc']
 });
+// The draft schema for this save: the faction enums list only factions this
+// save has met (factionKnown), so the AI is never offered the Wold before the
+// party reaches it. SCHEMA is the full list, for code without a save.
+function schema(state) {
+  const known = FACTIONS.filter(f => factionKnown(state, f));
+  if (known.length === FACTIONS.length) return SCHEMA;
+  const item = SCHEMA.properties.decisions.items;
+  return {
+    ...SCHEMA,
+    properties: {
+      ...SCHEMA.properties,
+      faction: { ...SCHEMA.properties.faction, enum: known },
+      decisions: { ...SCHEMA.properties.decisions, items: { ...item, properties: { ...item.properties, favors: { ...item.properties.favors, enum: known }, also: { ...item.properties.also, enum: ['none', ...known] } } } }
+    }
+  };
+}
 
 const SYSTEM = [
   'You are the story director for Briarwatch, a story-first d20 fantasy campaign. Write the NEXT adventure (an expedition) for this party, as JSON that matches the schema.',
@@ -246,20 +278,23 @@ function bound(state, draft, forcedId = null) {
     failText: text(o.failText, TEXT.brief, 'The opportunity narrows; the fight continues.'), successText: text(o.successText, TEXT.brief, 'The objective is complete.')
   };
   const raw = (Array.isArray(draft.decisions) ? draft.decisions : []).slice(0, 3);
+  // A faction the player has not met yet (the Wold before its towns) is never
+  // favoured by an AI adventure; the decision falls back to the next one named.
+  const known = FACTIONS.filter(f => factionKnown(state, f));
   const decisions = raw.map((d, i) => {
     // Drafts name factions; stored adventures carry the derived rep object.
     const stored = d?.rep && typeof d.rep === 'object' ? Object.entries(d.rep).sort((a, b) => b[1] - a[1]).map(([k]) => k) : [];
-    const favors = FACTIONS.includes(d?.favors) ? d.favors : FACTIONS.includes(stored[0]) ? stored[0] : null;
+    const favors = known.includes(d?.favors) ? d.favors : known.includes(stored[0]) ? stored[0] : known.includes(d?.also) ? d.also : null;
     if (!favors) return null;
     const also = d.also ?? stored[1];
     const rep = { [favors]: 2 };
-    if (FACTIONS.includes(also) && also !== favors) rep[also] = 1;
+    if (known.includes(also) && also !== favors) rep[also] = 1;
     return { id: `d${i + 1}`, label: text(d.label, TEXT.label, `Choice ${i + 1}`), text: text(d.text, TEXT.long, 'The choice is recorded.'), rep };
   }).filter(Boolean);
   if (decisions.length < 2) return fail('The new adventure needs at least two final decisions. Nothing was added.');
   const body = {
     name, level, ...(power > level ? { power } : {}), ...(tier.id !== 'normal' ? { tier: tier.id } : {}), ...(trial ? { trial } : {}), ...(side ? { side: true } : {}), town, unlock: 'bell', region: text(draft.region, TEXT.short, 'The wider roads'),
-    faction: FACTIONS.includes(draft.faction) ? draft.faction : 'wardens',
+    faction: known.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
     investigate, route, crisis: text(draft.crisis, TEXT.long, 'The moment of decision arrives.'), peaceful, objective,
@@ -299,7 +334,7 @@ function availability(state) {
   if (!STORY_NODES[state.story?.nodeId]?.townId) return 'Ask for a new adventure from a town.';
   // A town a story choice has emptied (Book Three's Vell) has nobody left to ask.
   const here = TOWNS[STORY_NODES[state.story.nodeId].townId];
-  if (here?.emptied && state.story?.flags?.[here.emptied.flag]) return `There is nobody left in ${here.name} to ask for work. Ask in another town.`;
+  if (here && townPage(state, here.id)?.emptied) return `There is nobody left in ${here.name} to ask for work. Ask in another town.`;
   if (openAdventures(state).length >= OPEN_LIMIT) return 'An adventure written for you is already waiting. Finish it or dismiss it before asking for another.';
   return null;
 }
@@ -362,10 +397,11 @@ function fitText(text, room) {
   const space = cut.lastIndexOf(' ');
   return (space > 0 ? cut.slice(0, space) : cut).replace(/[\s,;:]+$/, '');
 }
-// The book's last words before the 3rd job trial (src/expansion.js
-// trialFraming, Book Three's epilogue): what the hero gave or kept, read from
-// the save. The trial opens with it, as the Second Oath framed the 2nd job.
-const framing = (state, kind) => { const text = kind === 'third' ? fitText(clean(trialFraming(state), TEXT.long), TEXT.brief) : ''; return text ? `${text} ` : ''; };
+// The book's last words before a job trial (src/expansion.js trialFraming):
+// Book Three's epilogue frames the 3rd job, Book Four's the 4th, each read
+// from the save. The trial opens with them, as the Second Oath framed the
+// 2nd job; a trial with no framing of its own kind has none.
+const framing = (state, kind) => { const text = Object.hasOwn(TRIALS, kind) ? fitText(clean(trialFraming(state, kind), TEXT.long), TEXT.brief) : ''; return text ? `${text} ` : ''; };
 // Engine action: put the due job trial on the board, from Claude's draft or
 // the written trial.
 function commissionTrial(state, draft, events) {
@@ -471,11 +507,14 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     // What the books' choices made of each of them, so the AI story carries it on.
     party: state.party.map(m => ({ name: m.name, role: m.role, pronouns: m.pronouns, voice: m.personality, bond: m.bond, standing: standing(state, m.id) })),
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.filter(id => Book.townOpen(state, id)).map(id => TOWNS[id].name),
-    reputation: w.reputation,
+    reputation: shownReputation(state),
     completedAdventures: completed.slice(-15),
     book: Book.facts(state),
     chronicle: Chronicle.forPrompt(state),
     ...(!trial && !Book.running(state) ? { storyArc: Chronicle.arcBrief(state) } : {}),
+    // After the books, how the hero is told of (the Telling): only the keeper
+    // the epilogue chose, or a neutral legend if they asked it not be told.
+    ...(!Book.running(state) && Telling.legend(state) ? { legend: Telling.legend(state) } : {}),
     // Only chapters this save can play: never an unreleased book or part, a
     // paid book on a free hosted account, or a side job.
     upcomingAuthoredAdventures: Book.chapters(state).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
@@ -507,4 +546,4 @@ function view(state) {
   };
 }
 
-module.exports = { destination, SCHEMA, SYSTEM, THEMES, FACTIONS, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };
+module.exports = { destination, SCHEMA, schema, SYSTEM, THEMES, FACTIONS, LATER_FACTIONS, factionKnown, shownReputation, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };

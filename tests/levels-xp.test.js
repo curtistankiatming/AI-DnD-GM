@@ -48,8 +48,10 @@ test('adventure enemies grow by power tier up to level 20 and stay inside the d2
   assert.equal(XP.foeStats(XP.challenge({ level: 4 })).main.maxHp, 46, 'no health trim up to power 4');
   assert.equal(XP.foeStats(XP.challenge({ level: 6 })).main.maxHp, Math.round(58 * 0.875), 'the trim eases in');
   assert.equal(XP.foeStats(XP.challenge({ level: 3 })).main.damage, '1d6+3', 'no tier bonus below power 5');
-  const f100 = XP.foeStats(XP.challenge({ level: 100 })), f20 = XP.foeStats(XP.challenge({ level: 20 }));
-  assert.equal(f100.main.ac, f20.main.ac); assert.equal(f100.main.attackBonus, f20.main.attackBonus);
+  const f100 = XP.foeStats(XP.challenge({ level: 100 })), f40 = XP.foeStats(XP.challenge({ level: 40 })), f20 = XP.foeStats(XP.challenge({ level: 20 }));
+  assert.equal(f40.main.ac, f20.main.ac); assert.equal(f40.main.attackBonus, f20.main.attackBonus);
+  // Past 40 only +1 to hit per LATE_ATTACK_EVERY levels, to keep up with late gear AC; AC never grows.
+  assert.equal(f100.main.ac, f20.main.ac); assert.equal(f100.main.attackBonus, f20.main.attackBonus + 4);
   assert.ok(f100.main.maxHp > f20.main.maxHp);
 });
 

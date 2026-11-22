@@ -1,6 +1,7 @@
 "use strict";
 // Decision policy consumes ONLY the public view shown by the interface.
 // No XP grants, state edits, hidden content lookups or forced rolls.
+const TRIAL_LEVELS={third:40,fourth:70};
 function chooseAction(v,m={},style='prepared'){
   m.steps=(m.steps||0)+1;
   const hero=v.player,w=v.world,p=v.progression;
@@ -50,9 +51,18 @@ function chooseAction(v,m={},style='prepared'){
     if(r.level===8)opt=r.options.find(x=>x.id==='bulwark')||opt;
     return done('choose-reward',{level:r.level,optionId:opt.id});}
   if(p.specializationOptions.length)return done('specialize',{specializationId:p.specializationOptions[0].id});
+  // The job trials (the 3rd at level 40, the 4th at 70) are written into the
+  // game, so the player asks for one from town as soon as the board offers it
+  // and plays it like any expedition, with no AI game master. After the books,
+  // a hero short of the next trial takes bounties up to it while they still
+  // pay XP. memory.noTrials leaves the trials alone.
+  const job=p.job,trial=w.director?.trial,next=job?.branch?(!job.thirdJob?TRIAL_LEVELS.third:!job.fourthJob?TRIAL_LEVELS.fourth:null):null;
+  const trialDue=!m.noTrials&&Boolean(trial?.canRequest||w.quests?.some(q=>q.trial));
+  const climb=!m.noTrials&&w.booksComplete&&next&&hero.level<next&&w.bounty?.available&&w.bounty.reward.xp>0&&w.bounty.afterBooks>=next;
   // memory.bookOneOnly stops after Book One (the level 10 trial and the road after it).
-  // The last book stops in town, after its final scene (Book Three's epilogue is one).
-  if((p.specialization||p.job?.mastery)&&(w.booksComplete&&w.town||m.bookOneOnly&&w.campaignComplete))return null;
+  // The last book stops in town, after its final scene (Book Three's epilogue is one),
+  // and after the job trial it leads to.
+  if((p.specialization||p.job?.mastery)&&(w.booksComplete&&w.town&&!trialDue&&!climb||m.bookOneOnly&&w.campaignComplete))return null;
   if(w.town){
     if([hero,...v.party].some(a=>a.hp<a.maxHp)||Object.values(hero.resources).some(r=>r.current<r.max))return done('town-service',{serviceId:'civic-rest'});
     const treatment=w.services.find(s=>s.id==='treatment'&&!s.disabled);if(treatment&&hero.gold>=treatment.cost)return done('town-service',{serviceId:'treatment'});
@@ -67,6 +77,7 @@ function chooseAction(v,m={},style='prepared'){
       const upgrade=w.upgrades.find(u=>u.actorId==='player'&&hero.gold>=u.cost+65&&!m[`upgrade:${u.itemId}`]);if(upgrade){m[`upgrade:${upgrade.itemId}`]=true;return done('upgrade',{itemId:upgrade.itemId,actorId:'player'});}
     }
     if(w.pendingBattle||w.activeQuest&&w.activeQuest!=='bell')return done('resume');
+    if(!m.noTrials&&trial?.canRequest){m.trials=(m.trials||0)+1;return done('job-trial');}
     // A diligent player takes the optional side jobs offered where they are.
     if(style==='prepared'){const job=(w.sideJobs||[]).find(j=>j.canStart);if(job)return done('side-job',{jobId:job.id});}
     const q=w.quests.find(q=>q.available);
@@ -83,6 +94,7 @@ function chooseAction(v,m={},style='prepared'){
     }
     // Nothing can start yet (a level checkpoint such as the Oath of the Road): any player takes bounties.
     if(w.bounty?.available&&w.bounty.reward.xp>0&&w.quests.some(q=>!q.available&&q.level>hero.level))return done('bounty');
+    if(climb)return done('bounty');
     if(w.activeQuest==='bell')return done('resume');
   }
   // Prioritize investigation and assistance based on visible choices; no hidden outcomes.

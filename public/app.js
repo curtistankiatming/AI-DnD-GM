@@ -635,6 +635,7 @@ function renderCombat() {
   }
 
   clear(dom.turnEconomy);
+  if (combat.white) dom.turnEconomy.appendChild(createElement("p", "combat-white", combat.white));
   if (combat.economy) {
     const action = createElement("span", `economy-chip ${combat.economy.actionUsed ? "is-used" : ""}`, combat.economy.actionUsed ? "Action used" : "Action ready");
     const bonus = createElement("span", `economy-chip ${combat.economy.bonusUsed ? "is-used" : ""}`, combat.economy.bonusUsed ? "Bonus used" : "Bonus ready");

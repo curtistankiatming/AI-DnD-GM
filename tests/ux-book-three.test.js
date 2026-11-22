@@ -5,6 +5,8 @@
 // stair, the warning before the stair, and the end of Book Three pointing at
 // the 3rd job trial, which bounties can reach without the AI game master.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
+// Book Four is held back (it is being written), so Book Three ends the books here as it does for players.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Book = require('../src/book'), Bounty = require('../src/bounty');
 const { QUESTS } = require('../src/expansion');

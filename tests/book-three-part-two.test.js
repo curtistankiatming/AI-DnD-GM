@@ -3,6 +3,9 @@
 // These tests read it the way agent playtests do. node --test runs each file
 // in its own process, so this reaches no other test file.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
+// Book Four is held back (it is being written), so Book Three ends the books here
+// as it does for players; tests/book-four*.test.js show Book Four following it.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 // Book Three, Part Two, "The Stair", chapters 11 to 20
 // (docs/book-three/DESIGN-PART-TWO.md): the price of a yes, Wren's bell, the
 // order, the town that said no, the witness's seal, the winter watch,
@@ -277,7 +280,7 @@ test('Elske speaks in Merrowgate only as the Second Oath left her, and an old sa
   const talk = (flags) => { const s = act(ready('b3-price', { flags }), { type: 'depart', questId: 'b3-price' }).state; return E.buildView(s).scene.choices.some((c) => c.id === 'talk-elske') ? told(act(s, { type: 'story-choice', choiceId: 'talk-elske' }).state) : null; };
   assert.match(talk({ elske_seat: true }), /vote against it/); assert.doesNotMatch(talk({ elske_seat: true }), /hospice|cell at Highpass/);
   assert.match(talk({ elske_free: true }), /Nineteen\. Volunteers since midsummer/); assert.doesNotMatch(talk({ elske_free: true }), /vote against it|cell at Highpass/);
-  assert.match(talk({ elske_judged: true }), /cell at Highpass/); assert.doesNotMatch(talk({ elske_judged: true }), /vote against it|Nineteen/);
+  assert.match(talk({ elske_judged: true }), /at the Sallows hospice, which the council sentenced her/); assert.doesNotMatch(talk({ elske_judged: true }), /vote against it|Nineteen/);
   assert.equal(talk({}), null, 'No Elske talk on an old save.');
   const after = (flags) => opening(peaceAt('b3-price', { flags }));
   assert.match(after({ elske_seat: true }), /Elske Marrow, in Merrowgate's chair/); assert.doesNotMatch(after({}), /Elske/);
@@ -742,7 +745,7 @@ test('Elske speaks at Briarwatch only as the Second Oath left her; on an old sav
   const s0 = (flags) => act(ready('b3-winter', { flags }), { type: 'depart', questId: 'b3-winter' }).state;
   const talk = (flags, id) => { const s = s0(flags); return E.buildView(s).scene.choices.some((c) => c.id === `talk-${id}`) ? told(act(s, { type: 'story-choice', choiceId: `talk-${id}` }).state) : null; };
   assert.match(talk({ elske_seat: true }, 'elske'), /council has given her its chair/);
-  assert.match(talk({ elske_free: true }, 'elske'), /harbour hospice/); assert.match(talk({ elske_judged: true }, 'elske'), /her cell at Highpass/);
+  assert.match(talk({ elske_free: true }, 'elske'), /harbour hospice/); assert.match(talk({ elske_judged: true }, 'elske'), /at the Sallows, and has no seat/);
   assert.equal(talk({}, 'elske'), null, 'No Elske on an old save.');
   for (const flags of [{}, { elske_free: true }, { elske_judged: true }]) assert.match(talk(flags, 'brannagh'), /I'm in the chair/, JSON.stringify(flags));
   assert.doesNotMatch(talk({ elske_seat: true }, 'brannagh'), /I'm in the chair/);
@@ -1101,12 +1104,13 @@ test('after b3_done the 3rd job trial opens with the epilogue\'s framing, read f
   assert.doesNotMatch(D.writtenTrial(later, 'fourth').opening, /Dera/);
 });
 
-test('with the preview on, an agent playtest walks the hero to level 40 and stops at the 3rd job trial', () => {
+test('with the preview on, an agent playtest walks the hero to level 40, takes the written 3rd job trial and stops', () => {
   const { run } = require('./campaign-playtest');
   const r = run('fighter', 'standard', 301, 'prepared');
   assert.deepEqual(r.errors, []);
   assert.equal(r.complete, true); assert.equal(r.waiting, false);
   assert.equal(r.level, 40); assert.equal(r.booksFinished, true); assert.equal(r.trialOffered, true);
+  assert.equal(r.trials, 1); assert.equal(r.thirdJob, true);
   assert.ok(r.completed['b3-firstbell']);
 });
 

@@ -8,10 +8,11 @@ const { makeSandbox } = require('../src/public-preview');
 const GEAR = require('../src/data/gear.json');
 
 // 80 for levels 1 to 20 (step 5), about a hundred more for Book Three's levels
-// 20 to 40, and about 75 for levels 45 to 100 (sparse tiers and sets, 22 November 2026).
-test('the catalogue holds 240 to 280 pieces of equipment', () => {
+// 20 to 40, about 75 for levels 45 to 100 (sparse tiers and sets, 22 November 2026),
+// and Book Four's thirty chapter rewards and the Wold's warm pieces.
+test('the catalogue holds 240 to 310 pieces of equipment', () => {
   const n = Object.values(ITEMS).filter(i => i.slot && !i.upgradeTier && !i.forged).length;
-  assert.ok(n >= 240 && n <= 280, `${n} equippable items`);
+  assert.ok(n >= 240 && n <= 310, `${n} equippable items`);
 });
 
 test('prices rise with rarity and with the level an item needs', () => {

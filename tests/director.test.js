@@ -148,7 +148,7 @@ test('/adventure asks Claude (fake client) once and puts the bounded adventure o
   const {ai,calls}=await claudeService(t,[JSON.stringify(draft())]);
   const out=await Chat.resolveChat(inTown(),{mode:'action',text:'/adventure something with salt'},ai,high);
   assert.equal(out.result.ok,true,out.result.error);assert.equal(out.narration.source,'ai-director');
-  assert.equal(calls.length,1);assert.equal(calls[0].output_config.format.schema,D.SCHEMA);
+  assert.equal(calls.length,1);assert.deepEqual(calls[0].output_config.format.schema,D.schema({world:{reputation:{},unlockedTowns:['briarwatch']}}),'The schema for a save that has not met the Wold');assert.ok(!JSON.stringify(calls[0].output_config.format.schema).includes('"wold"'));
   assert.equal(calls[0].output_config.effort,'medium');assert.equal(calls[0].system[0].text,D.SYSTEM+'\n\n'+require('../src/claude-ai').GAME_ONLY);
   assert.match(calls[0].messages[0].content,/something with salt/);
   assert.equal(Object.keys(out.state.director.quests).length,1);

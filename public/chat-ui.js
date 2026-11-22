@@ -88,7 +88,7 @@
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
     const j=view.journal||{};clear(journalRecords);
     if(j.current)journalRecords.append(createElement('p','',`Current: ${j.current.scene}. ${j.current.objective}`));
-    const headings={...((j.chronicle||[]).length?{chronicle:'Your story so far'}:{}),leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes'};
+    const headings={...((j.chronicle||[]).length?{chronicle:'Your story so far'}:{}),...((j.telling||[]).length?{telling:'What they tell of you'}:{}),leads:'Unresolved leads',promises:'Promises',rumors:'Rumors and reports',relationships:'Relationships',facts:'Verified facts',completed:'Completed adventures',notes:'Your notes'};
     let total=0;
     for(const [group,title]of Object.entries(headings)){
       const entries=j[group]||[];total+=entries.length;
@@ -97,6 +97,13 @@
       if(!entries.length)block.append(createElement('p','muted','Nothing yet.'));
       for(const entry of entries){
         const row=createElement('div','journal-record');row.dataset.journalId=entry.id;
+        if(group==='telling'){
+          // The Telling: Linus's song and the Long Tally side by side (stacked on a narrow screen).
+          row.append(createElement('strong','',entry.title||entry.id));
+          const cols=createElement('div','telling-columns');
+          for(const [key,label]of [['ballad','The song'],['tally','The Long Tally']])if(entry[key]){const col=createElement('div','telling-column');col.append(createElement('small','muted',label),createElement('p','',entry[key]));cols.append(col);}
+          row.append(cols);block.append(row);continue;
+        }
         row.append(createElement('strong','',`${entry.title||entry.id} [${entry.status}${entry.value!==undefined?', '+entry.value:''}]`),createElement('p','',entry.text));
         if(entry.source)row.append(createElement('small','muted',entry.source));
         if(group==='notes')row.append(button('Remove '+entry.id,()=>send('/forget-note '+entry.id)));

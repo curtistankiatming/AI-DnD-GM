@@ -1,0 +1,338 @@
+{
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy).",
+  "rue-doors": {
+    "id": "rue-doors",
+    "name": "Rue's Doors",
+    "town": "highpass",
+    "level": 41,
+    "from": "b4-walker",
+    "until": "b4-ballad",
+    "gold": 140,
+    "giver": "The innkeeper at Highpass's upper gate",
+    "brief": "The innkeeper at Highpass's upper gate wants Rue to stop writing on his doors. Rue cannot see why she should.",
+    "start": "doors",
+    "nodes": {
+      "doors": {
+        "title": "Written Over",
+        "lines": [
+          { "narrate": "The inn at Highpass's upper gate has eleven doors, counting the cellar and the privy, and every one of them has writing on it now." },
+          { "narrate": "Small and square and joined, in lead and in ink and in one place scratched with a nail: names, days, the weather, which stair is loose, who was kind. Across the middle panel of the best room's door, in letters a thumb high: THE MAN IN THIS ROOM SNORES. HE IS FROM ASHFORD. HE IS KIND ABOUT IT." },
+          { "say": "The innkeeper", "text": "Every door. Every one. I've a guest from Merrowgate won't come out of his room because it says on the door what he paid. It's true. That's not the point." },
+          { "oneOf": [
+            { "say": "The innkeeper", "text": "She lodges with the old delegate from Fenmere, three streets off, and walks up here every morning to do one. Brannagh says it's not her house, so it's not her business. Brannagh's own door is clean, I notice.", "when": { "flag": "b4_rue_council" } },
+            { "say": "The innkeeper", "text": "She sits up at the fire with the captain all night, and comes down here for her breakfast, and does a door. A door a day. Like a tithe.", "when": { "flag": "b4_rue_watch" } },
+            { "say": "The innkeeper", "text": "She was here three nights with you at the session and did every door in the house by lamplight. Now you're back, and so is she. I've hidden the ink.", "when": { "flag": "b4_rue_party" } },
+            { "say": "The innkeeper", "text": "She comes in every morning and does a door." }
+          ] },
+          { "say": "The innkeeper", "text": "I've asked her to stop. She says she can't. She says if it isn't on a door it isn't anywhere. I've no notion what that means. Will you talk to her? She listens to you. It says so on the cellar door." }
+        ],
+        "choices": [
+          { "id": "talk", "label": "Find Rue and ask her about the doors", "next": "rue" }
+        ]
+      },
+      "rue": {
+        "title": "Whose House It Is",
+        "lines": [
+          { "narrate": "Rue is sitting on the inn's back step, writing on the inside of the yard gate." },
+          { "say": "Rue", "text": "Where I am from, everything is on the doors. Your name is on your door, and your mother's, and what you owe and are owed, and who died, and what you gave and when. Every morning you read your door before you go out, so that you know whose house it is." },
+          { "say": "Rue", "text": "Here nothing is on the doors. I walk down a street and every house is a stranger, and I cannot bear it. So I write the true things on them, so that somebody will know. I thought it was a kindness. He says it is not." },
+          { "say": "Rue", "text": "He is not wrong. I have read his door. It says he is not wrong about most things. I wrote that." },
+          { "say": "maren", "text": "You could ask him for one door. Just one. One that's yours." },
+          { "say": "Rue", "text": "One? Where would I put everything else?", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "sorrel",
+            "label": "Ask Captain Sorrel for a wall of the fort she may write on",
+            "check": { "skill": "persuasion", "alt": ["insight", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You find|@ finds} Sorrel on the wall and {put|puts} it to her. She listens, and then walks {you|@} along the north wall to the old gatehouse at the head of the north road, which nobody has used since the founders' time: an iron-studded door that does not open, and a long blank face of dressed stone on either side of it." },
+                { "say": "Sorrel", "text": "That. It's the founders' gate. Nobody uses it. She can write on every stone of it she can reach, and I'll have a ladder brought for the ones she can't. If it's going to be anybody's door, it should be hers. It's her road." },
+                { "narrate": "Rue stands in front of it for a long time. Then, on the first stone, very small, at the bottom, she writes: HIGHPASS. A FORT. THEY LET ME IN." }
+              ],
+              "setFlags": { "job:rue-doors-gate": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "Sorrel hears {you|@} out and says no. It's a fort, not a slate. But she says it kindly, and on the way back along the wall she stops at the door of her own office, and looks at it, and says Rue may have that one, if she must. It's hers. She'll answer for it." },
+                { "narrate": "By morning it says: CAPTAIN SORREL. DID THE SUM TWICE. LET ME IN." }
+              ],
+              "setFlags": { "job:rue-doors-office": true }
+            }
+          },
+          {
+            "id": "door",
+            "label": "Pay the inn's joiner for a door of her own, on a frame in the yard",
+            "gold": -30,
+            "lines": [
+              { "narrate": "You give the inn's joiner thirty gold for a door: a good one, oak, on its own frame, standing in the yard where anyone can read it. It is not a door to anywhere. Rue does not mind that at all." },
+              { "say": "Rue", "text": "It is a door. It is mine. When I go home I will carry it." },
+              { "say": "The innkeeper", "text": "You'll not. It's oak. It weighs more than you do." },
+              { "say": "Rue", "text": "Then I will write on it that it is mine, and leave it here, and somebody will know." }
+            ],
+            "setFlags": { "job:rue-doors-door": true }
+          },
+          {
+            "id": "read",
+            "label": "Ask the innkeeper to read his own doors with you before he paints them over",
+            "check": { "skill": "insight", "alt": ["persuasion", "performance"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} the innkeeper round his own house, door by door, and {you read|@ reads} him what is on them. The privy: the latch sticks; lift and push. The cellar: the third barrel is the good one; he knows. The kitchen: his wife's name, and the day she died, eleven years ago, and under it, WHERE HE STILL PUTS OUT TWO CUPS." },
+                { "narrate": "He stops at the kitchen door for a long time." },
+                { "say": "The innkeeper", "text": "Nobody's written her name since the stone." },
+                { "narrate": "He paints over the best room's door, and the Merrowgate man's, and the rest. He leaves the kitchen door as it is, and tells Rue she may have that one and no other, and write on it whatever she likes. She thanks him, and writes nothing else on it at all." }
+              ],
+              "setFlags": { "job:rue-doors-kitchen": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "The innkeeper will not go round his doors with {you|@}. He has a bucket of whitewash and a brush and his mind made up. But he stops at the kitchen door with the brush raised and reads what is on it, his wife's name and the day, and puts the brush down. He paints the other ten. He leaves that one." }
+              ],
+              "setFlags": { "job:rue-doors-kitchen": true }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "third-verse": {
+    "id": "third-verse",
+    "name": "The Third Verse",
+    "town": "briarwatch",
+    "level": 43,
+    "from": "b4-ballad",
+    "until": "b4-book",
+    "gold": 150,
+    "giver": "Linus Pardew, at his table by the well",
+    "brief": "Linus Pardew wants the true story for the third verse of his song. Dera, Tovin and Pim each tell him a different one.",
+    "start": "well",
+    "nodes": {
+      "well": {
+        "title": "Three Stories",
+        "lines": [
+          { "narrate": "Linus Pardew is still in Briarwatch. He has taken a room over the inn and a table by the well, and he has rewritten your song four times. The first two verses are right now, or near enough. The third is a blank line on the broadsheet with three different versions pencilled round it, and three people from Briarwatch standing round the table, each of them sure theirs is the one." },
+          { "oneOf": [
+            { "narrate": "It is to be the night Briarwatch rang its pans. Everybody agrees on that much.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+            { "narrate": "It is to be the night the white came into the lanes. Everybody agrees on that much." }
+          ] },
+          { "say": "Dera", "text": "It was Pim. He's the one who asked. He's the one who sat with it all night. A song about that night that isn't about Pim is a lie, and I've had enough lies about this village sung at my door." },
+          { "oneOf": [
+            { "say": "Tovin", "text": "It was the fire. The fire going out. Every night since Aster went from the bell we've had a fire on that edge, and the one night we didn't, everybody found out what it was for. That's the verse.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Tovin", "text": "It was the bell. The bell not ringing. Every hour for years it's rung, and the one night it didn't, everybody found out what it was for. That's the verse. The silence." }
+          ] },
+          { "oneOf": [
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the fire. It was them. Everybody out in their nightclothes with a pan. Reeve Aveline had the big stew pot. I've never seen her run. Put that in. Put everybody in.", "when": { "flag": "method:b4-ballad", "is": "peace", "anyFlag": ["b3_bell_aster"] } },
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was them. Everybody out in their nightclothes with a pan. Reeve Aveline had the big stew pot. I've never seen her run. Put that in. Put everybody in.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the fire. It was everybody who came out into the lanes when they could have stayed in and shut the door. Put that in. Put everybody in.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was everybody who came out into the lanes when they could have stayed in and shut the door. Put that in. Put everybody in." }
+          ] },
+          { "oneOf": [
+            { "say": "Pim", "text": "And put in that it's one night a month now. So people know it's on purpose.", "when": { "flag": "b4_bw_quiet" } },
+            { "say": "Pim", "text": "And don't put my rule in. It's a rule, not a song.", "when": { "flag": "b4_bw_pim" } },
+            { "say": "Pim", "text": "And put in that we keep it every night. So people know we still do.", "when": { "flag": "b4_bw_rings" } }
+          ] },
+          { "say": "Linus Pardew", "text": "Three verses, and room for one. A song can hold one true thing at a time. Two, if it's long and they're drunk. Which one?" },
+          { "say": "nessa", "text": "Put Pim in. He'll hate it. Put him in anyway." }
+        ],
+        "choices": [
+          {
+            "id": "dera",
+            "label": "Give Linus Dera's verse: the boy who asked where away is",
+            "lines": [
+              { "narrate": "You tell Linus to write the boy who asked. He writes it at the well with Dera reading over his shoulder, and when it is done she reads it through, and nods once, and goes back to her forge." },
+              { "oneOf": [
+                { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and goes down to the fire at the stream early.", "when": { "flag": "b3_bell_aster" } },
+                { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and climbs the tower early." }
+              ] },
+              { "say": "Pim", "text": "Away where. He's put that in. He's put my words in." }
+            ],
+            "setFlags": { "job:third-verse-dera": true }
+          },
+          {
+            "id": "tovin",
+            "label": "Give Linus Tovin's verse: the night Briarwatch's watch went dark",
+            "lines": [
+              { "oneOf": [
+                { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin by the cold fire-pit at the stream for an afternoon to get it right, and comes back with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the fire went out.", "when": { "flag": "b3_bell_aster" } },
+                { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin in the bell-room for an afternoon to get it right, and comes down with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the hour was missed." }
+              ] },
+              { "say": "Tovin", "text": "That's it. That's what it was like. He's left the end off. I didn't know you could do that in a song." },
+              { "say": "Linus Pardew", "text": "You can't. Everyone will notice. That's the point." }
+            ],
+            "setFlags": { "job:third-verse-tovin": true }
+          },
+          {
+            "id": "all",
+            "label": "Ask Linus to put everybody in: every house, and what it did that night",
+            "check": { "skill": "performance", "alt": ["persuasion", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} round the village with Linus all afternoon, door to door, asking every house what it did that night, and Linus writes it all down. By evening he has forty names and forty doorsteps, and a verse forty lines long that does not scan anywhere." },
+                { "oneOf": [
+                  { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Aveline's stew pot gets a line of its own. So does Pim, who did not bang anything.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+                  { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Pim gets a line of his own, though he asked not to." }
+                ] }
+              ],
+              "setFlags": { "job:third-verse-all": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} round the village with Linus, but by the tenth house everybody wants to be the first line, and the eleventh wants to be the last, and Linus gives up and writes 'and all of Briarwatch with them', and they sing it anyway." }
+              ],
+              "setFlags": { "job:third-verse-all": true }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "bett-berth": {
+    "id": "bett-berth",
+    "name": "Bett's Berth",
+    "town": "merrowgate",
+    "level": 44,
+    "from": "b4-ballad",
+    "until": "b4-key",
+    "gold": 160,
+    "giver": "Bett Haddow, on the north quay",
+    "brief": "Bett Haddow wants to sign on as ship's girl north. Her father does not want her to.",
+    "start": "quay",
+    "nodes": {
+      "quay": {
+        "title": "Hands Wanted",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "The Company's ship is still at the north quay, sold at the Hall's auction to a coaster master from the Tanneries who means to try the coast north before anybody else does. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_broken" } },
+            { "narrate": "Cass Ord's ship is at the north quay with the council's seal chalked on her stern, loading grain for the relief convoy, to sail north up the coast when the peaks open. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_council" } },
+            { "narrate": "The Company's second ship is at the north quay, the one that carries the lamp-oil and the glass, and will sail north on the next spring tide. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on.", "when": { "flag": "b4_company_sails" } },
+            { "narrate": "The North Company's ship is at the north quay, loading for the Wold. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on." }
+          ] },
+          { "say": "Bett", "text": "Ship's girl. They take ship's boys at ten, and I'm eleven. I can splice, and I can climb, and I can tie every knot on this quay, and I can read, which most of them can't. I've asked the mate. He says I can sign if my father signs as well." },
+          { "narrate": "Her father is not here to sign. Coll went north on wagon four at the end of the week, and left a letter with Bett's aunt in the Tanneries, which Bett has read, and has in her pocket, and reads out to you without being asked: Bett is to stop with you till I send. She is not to go on any ship. She will ask. Tell her no from me.", "when": { "flag": "b4_company_sails" } },
+          { "narrate": "Coll Haddow is sitting on a bollard at the foot of the gangway with his arms folded, which is where he has been since the board went up.", "when": { "notFlag": "b4_company_sails" } },
+          { "say": "Coll Haddow", "text": "I'm going north myself with the convoy, when the peaks open. One Haddow up there is enough. She stops with her aunt.", "when": { "flag": "b4_company_council" } },
+          { "say": "Coll Haddow", "text": "She's eleven. Nobody knows what's up there, and I'll not sign her onto it. She stops with her aunt.", "when": { "noneFlag": ["b4_company_sails", "b4_company_council"] } },
+          { "say": "nessa", "text": "She can climb, though. I watched her go up that rigging. She'd be good." },
+          { "say": "Bett", "text": "I would be good.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "speak",
+            "label": "Make Bett's case to whoever has to sign",
+            "check": { "skill": "persuasion", "alt": ["insight", "performance"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up to the Tanneries with Bett, and {sit|sits} in her aunt's kitchen, and {tell|tells} her what {you have|@ has} seen the girl do on the quay. Her aunt reads Coll's letter again. Then she signs the mate's paper under it, and writes beside her name: one voyage. Then home.", "when": { "flag": "b4_company_sails" } },
+                { "narrate": "{You sit|@ sits} down on the bollard beside Coll, and {tell|tells} him what {you have|@ has} seen her do on the quay. He listens to all of it. Then he signs the mate's paper, slowly, with the mate's pen, and writes beside his name: one voyage. Then home.", "when": { "notFlag": "b4_company_sails" } },
+                { "say": "Bett", "text": "One voyage. Then home. Then another one." }
+              ],
+              "setFlags": { "job:bett-berth-signed": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up to the Tanneries with Bett, but her aunt has Coll's letter on the mantel and will not be talked past it. She does not sign. She gives Bett a cup of tea instead, and the mate's paper back, folded, for next year.", "when": { "flag": "b4_company_sails" } },
+                { "narrate": "{You sit|@ sits} down on the bollard beside Coll and {put|puts} her case to him. He hears all of it, and does not sign. But he takes the mate's paper, folded, and puts it in his coat. Next year, he says. Ask me next year.", "when": { "notFlag": "b4_company_sails" } },
+                { "say": "Bett", "text": "Next year. I'll be twelve. I'll be better." }
+              ],
+              "setFlags": { "job:bett-berth-next": true }
+            }
+          },
+          {
+            "id": "loft",
+            "label": "Ask the harbour's rope-loft to take her on, here in Merrowgate",
+            "lines": [
+              { "narrate": "You go along the harbour with Bett to the rope-loft over the harbour master's office, where the riggers make up every line that goes out of Merrowgate, and ask the loft master to watch her splice. He watches her for a quarter of an hour. Then he hands her a marlinspike of her own, and tells her the lines she makes will go north on every ship that does, whoever's it is." },
+              { "say": "Bett", "text": "It's not north." },
+              { "say": "Bett", "text": "But my knots'll go first. That's something." }
+            ],
+            "setFlags": { "job:bett-berth-loft": true }
+          },
+          {
+            "id": "home",
+            "label": "Tell Bett her father is right",
+            "lines": [
+              { "narrate": "You tell Bett her father is right, and that the north will still be there when she is older." },
+              { "say": "Bett", "text": "You don't know that. Nobody knows anything about it. That's why I want to go." },
+              { "narrate": "She takes her pack off, and goes home, and does not look back at the ship." },
+              { "narrate": "Coll unfolds his arms at last, and goes after her.", "when": { "notFlag": "b4_company_sails" } }
+            ],
+            "setFlags": { "job:bett-berth-home": true }
+          }
+        ]
+      }
+    }
+  },
+  "ninth-rope": {
+    "id": "ninth-rope",
+    "name": "The Ninth Rope",
+    "town": "cinderfold",
+    "level": 46,
+    "from": "b4-book",
+    "until": "b4-embassy",
+    "gold": 170,
+    "giver": "Ottilie Brand, for the committee",
+    "brief": "The rope families will not give a miner's son a place on the nine's ropes. He is the best ringer in Cinder Fold.",
+    "start": "lid",
+    "nodes": {
+      "lid": {
+        "title": "The Ninth Bell",
+        "lines": [
+          { "narrate": "The ninth bell on the lid has had one rope family on it since the founders hung it. Old Perrin Rowe has rung it for forty-six years. His hands have gone, and he has nobody of his own to give the rope to." },
+          { "narrate": "The best ringer in Cinder Fold is a miner's son called Garth Mott, who is fourteen, and has never been let touch the ninth bell's rope, because the ropes go to the rope families, and he is not from one." },
+          { "oneOf": [
+            { "narrate": "He rang the nine by hand all last winter with the miners, while Wren's casting waited, and took Ned Thorne's rope the night Ned fell. When the spring came the rope families took their ropes back, and the committee thanked the miners, and that was all.", "when": { "flag": "b3_wren_waits" } },
+            { "narrate": "He learnt by ringing the miners' gallery bell against the nine, every shift, until he could keep their time better than they could." }
+          ] },
+          { "say": "Ottilie Brand", "text": "Perrin Rowe wants the boy on his rope. Ailith Strake says the ropes are the families' and always have been, and she has the founders' rule on her side. I've a committee of fourteen and seven of them are miners. Somebody find me a way through this that doesn't end with half the town not speaking to the other half." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "The founders' page says who hung each bell. I've read it, aloud, to my own families. It does not say who rings them. I know what it doesn't say. That doesn't make it easier.", "when": { "flag": "b4_truth_ailith" } },
+            { "say": "Ailith Strake", "text": "Thirty generations. The ropes are the families'. That's the rule, and the rule is what's kept the nine in time for nine hundred years." }
+          ] },
+          { "say": "Garth Mott", "text": "I don't want anybody's rope taken off them. I want the ninth's, because Perrin's asked, and nobody else is going to ring it." },
+          { "say": "nessa", "text": "Give him the rope. He's better than the lot of them. Listen to him." },
+          { "say": "Ailith Strake", "text": "I have listened. That's why it's hard.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "ailith",
+            "label": "Ask Ailith Strake to stand by the ninth bell while Garth rings the hour",
+            "check": { "skill": "persuasion", "alt": ["performance", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} Ailith up onto the lid at dusk and {stand|stands} with her by the ninth bell while Perrin Rowe puts the rope in Garth's hands. He rings the hour. He does not miss a beat of it. When it is done Ailith takes the rope from him, and looks at it, and gives it back." },
+                { "say": "Ailith Strake", "text": "The rope's the family's. Perrin's family is whoever he says it is. Write it in the minutes that way, Ottilie, so it's the rule and not a favour." }
+              ],
+              "setFlags": { "job:ninth-rope-rope": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} Ailith up onto the lid at dusk, but she will not stand by the ninth while a miner's boy has its rope. She will agree to this much: when a ringer is sick or short, Garth may take a rope, any rope, until they are well. It is not the ninth's. He takes it anyway." }
+              ],
+              "setFlags": { "job:ninth-rope-spare": true }
+            }
+          },
+          {
+            "id": "perrin",
+            "label": "Ask Perrin Rowe to give his rope himself, in front of the committee",
+            "lines": [
+              { "narrate": "Perrin Rowe comes up the hill to the committee's table on two sticks, with the ninth's rope coiled over his shoulder, and puts it down in front of Garth Mott, and says the words his father said to him, which nobody in the hall has heard said for forty-six years." },
+              { "say": "Ailith Strake", "text": "That's a giving. I can't undo a giving. Nobody can." }
+            ],
+            "setFlags": { "job:ninth-rope-given": true }
+          },
+          {
+            "id": "stair",
+            "label": "Tell Garth the ropes are the rope families' to give",
+            "lines": [
+              { "narrate": "You tell Garth the ropes are the families' to give, and that you will not take one from them for him. He nods, as if he had expected it." },
+              { "narrate": "He goes back down to the galleries. That night, and every shift after it, he rings the miners' gallery bell against the nine, in time, and the whole lid can hear him." }
+            ],
+            "setFlags": { "job:ninth-rope-stair": true }
+          }
+        ]
+      }
+    }
+  }
+}

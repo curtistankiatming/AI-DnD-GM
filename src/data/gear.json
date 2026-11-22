@@ -4555,6 +4555,341 @@
     }
   },
   {
+    "id": "walker-tally-cord",
+    "name": "Walker's Tally-cord",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 720,
+    "description": "The cord Rue ties round her book so she cannot lose it on the road. She gives you her spare.",
+    "purpose": "Equip in the accessory slot: +3 Investigation and Survival, +1 Wisdom saving throws.",
+    "skillBonuses": {
+      "investigation": 3,
+      "survival": 3
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 38
+    },
+    "story": {
+      "skill": "investigation"
+    },
+    "exclusive": {
+      "quest": "b4-walker"
+    }
+  },
+  {
+    "id": "founders-account-case",
+    "name": "Founders' Account Case",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 730,
+    "description": "The oiled case Sister Ilse kept the founders' page in for two hundred years.",
+    "purpose": "Equip in the accessory slot: +3 History and Arcana, +1 Intelligence and Wisdom saving throws.",
+    "skillBonuses": {
+      "history": 3,
+      "arcana": 3
+    },
+    "saveBonuses": {
+      "int": 1,
+      "wis": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "requires": {
+      "level": 39
+    },
+    "story": {
+      "skill": "history"
+    },
+    "exclusive": {
+      "quest": "b4-records"
+    }
+  },
+  {
+    "id": "the-true-verse",
+    "name": "The True Verse",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 740,
+    "description": "Linus Pardew's broadsheet, with Dera's corrections in the margin in a smith's square pencil.",
+    "purpose": "Equip in the accessory slot: +3 Performance, +2 Persuasion and +2 Charisma saving throws.",
+    "skillBonuses": {
+      "performance": 3,
+      "persuasion": 2
+    },
+    "saveBonuses": {
+      "cha": 2
+    },
+    "requires": {
+      "level": 40
+    },
+    "skill": {
+      "name": "Read Aloud",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 2,
+      "text": "Read the true verse aloud: become Empowered for two rounds and deal 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-ballad"
+    }
+  },
+  {
+    "id": "north-company-cutlass",
+    "name": "North Company Cutlass",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 750,
+    "description": "Issued to the North Company's guards, who were never told what they were guarding.",
+    "purpose": "Finesse, 1d8 slashing, +3 to hit, +5 damage.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "slashing",
+      "ability": "finesse",
+      "properties": [
+        "finesse"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 5,
+    "stats": {
+      "dealt": 0.1
+    },
+    "requires": {
+      "level": 41,
+      "classes": [
+        "rogue",
+        "bard",
+        "ranger"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "skill": {
+      "name": "Hamstring",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Slow an enemy for two rounds: 2 less armour."
+    },
+    "exclusive": {
+      "quest": "b4-company"
+    }
+  },
+  {
+    "id": "lamp-store-hook",
+    "name": "Lamp-store Hook",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 760,
+    "description": "The lamplighter's hook Davin carried over the burning plank to the lamp-store, the night it burned, and carried back.",
+    "purpose": "Strength, 1d10 piercing, +3 to hit, +5 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "piercing",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 5,
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 42,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Pull Clear",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Hook an enemy off its feet: Slowed for two rounds, 2 less armour."
+    },
+    "exclusive": {
+      "quest": "b4-davin"
+    }
+  },
+  {
+    "id": "rue-second-book",
+    "name": "Rue's Spare Book",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 770,
+    "description": "The book Rue kept spare, from Iona's own shelf. She has written your name on the first page and given it to you, for your own tally.",
+    "purpose": "Equip in the accessory slot: +3 Insight and History, +1 Wisdom saving throws.",
+    "skillBonuses": {
+      "insight": 3,
+      "history": 3
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 43
+    },
+    "story": {
+      "skill": "insight"
+    },
+    "exclusive": {
+      "quest": "b4-book"
+    }
+  },
+  {
+    "id": "brass-key-cord",
+    "name": "Brass Key-cord",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 780,
+    "description": "The cord the forge-signal key hung on, whoever has the key now.",
+    "purpose": "Equip in the accessory slot: +3 Perception and Athletics, +1 Constitution and Wisdom saving throws.",
+    "skillBonuses": {
+      "perception": 3,
+      "athletics": 3
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "requires": {
+      "level": 44
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "quest": "b4-key"
+    }
+  },
+  {
+    "id": "floor-letter-satchel",
+    "name": "Floor-letter Satchel",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 790,
+    "description": "The satchel Clerk-Major Fennick lends for the letters from the floor of given things, with his number for each letter inside the flap.",
+    "purpose": "Equip in the accessory slot: +3 History, Religion and Investigation.",
+    "skillBonuses": {
+      "history": 3,
+      "religion": 3,
+      "investigation": 3
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 45
+    },
+    "story": {
+      "skill": "religion"
+    },
+    "exclusive": {
+      "quest": "b4-letters"
+    }
+  },
+  {
+    "id": "embassy-seal",
+    "name": "Embassy Seal",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 800,
+    "description": "The seal for the embassy north, cut overnight by a Highpass jeweller, with the free wards' bell on its face.",
+    "purpose": "Equip in the accessory slot: +3 Persuasion, Insight and History, +1 Wisdom and Charisma saving throws.",
+    "skillBonuses": {
+      "persuasion": 3,
+      "insight": 3,
+      "history": 3
+    },
+    "saveBonuses": {
+      "wis": 1,
+      "cha": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 46
+    },
+    "story": {
+      "skill": "persuasion"
+    },
+    "exclusive": {
+      "quest": "b4-embassy"
+    }
+  },
+  {
+    "id": "parting-hall-plate",
+    "name": "Parting-hall Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 810,
+    "description": "Armour left on its stand in the Hall of Legends by the founders' last guard, grey with nine hundred years of frost.",
+    "purpose": "Base AC 23, no Dexterity bonus. +1 Constitution and Wisdom saving throws. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 47,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "exclusive": {
+      "quest": "b4-peaks"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",
@@ -5019,6 +5354,114 @@
     }
   },
   {
+    "id": "whitewool-plate",
+    "name": "White-wool Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Lantry plate over a quilted coat of the Wold's white wool, with the smith's name chalked inside so that the smith will know it next year.",
+    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth; +1 Strength saves, +1 Constitution saves.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1
+    },
+    "requires": {
+      "level": 50,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "fleece-lined-scale",
+    "name": "Fleece-lined Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Horn scales sewn onto a sheepskin coat, fleece side in, the way Lantry's carters wear them on the Orme road.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Wisdom saves.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "whitewool-jerkin",
+    "name": "White-wool Jerkin",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "A close-knit jerkin of undyed white wool, the colour of the weather, so that a walker in it is hard to see and easy to keep warm.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Survival.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "survival": 2
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "door-chalk-mittens",
+    "name": "Door-chalk Mittens",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Thick Lantry mittens with the finger-ends left open, white with the chalk of every door their last owner wrote on.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Insight, +3 History, +3 Investigation.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "skillBonuses": {
+      "survival": 3,
+      "insight": 3,
+      "history": 3,
+      "investigation": 3
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
     "id": "bellwarden-hammer",
     "name": "Bellwarden Hammer",
     "category": "weapon",
@@ -5209,6 +5652,60 @@
       ]
     },
     "set": "chorus"
+  },
+  {
+    "id": "long-hall-muffler",
+    "name": "Long Hall Muffler",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 950,
+    "warm": true,
+    "description": "A long white muffler from Orme, knitted with one dark stitch for every winter, as the tally-keepers knit them.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.2,
+      "taken": -0.05
+    },
+    "skill": {
+      "name": "Into the Wind",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified for one round: take 25% less damage."
+    },
+    "story": {
+      "skill": "survival"
+    },
+    "requires": {
+      "level": 55
+    }
+  },
+  {
+    "id": "orme-hearthstone",
+    "name": "Orme Hearthstone",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 950,
+    "warm": true,
+    "description": "A flat stone from an Orme hearth, kept hot in a wool pouch on a cord; it stays warm for a day and a night.",
+    "purpose": "Equip in the accessory slot: +1 AC. +1 to every saving throw (+2 Wisdom).",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 2,
+      "cha": 1
+    },
+    "requires": {
+      "level": 55
+    }
   },
   {
     "id": "bellwarden-plate",

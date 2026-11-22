@@ -25,8 +25,8 @@ const FINISHED = 'books:finished';
 const WAITING = 'books:waiting';
 // The written chapters in story order. Book One is the bell and the roads to
 // level 10; Book Two (book: 2 in quests.json) runs from level 10 to 20; Book
-// Three (book: 3) from 20 to 40, in two parts. Written side jobs are optional and never hold
-// up the story.
+// Three (book: 3) from 20 to 40, in two parts; Book Four (book: 4) from 40 to
+// 70, in three. Written side jobs are optional and never hold up the story.
 const ALL = Object.values(QUESTS).filter(q => !q.sideJob);
 const bookNo = q => Number(q?.book) || 1;
 
@@ -50,7 +50,11 @@ const DEFS = [
   // finale: the book's last chapter. Until it is written the book is still
   // being written, even when every part has some chapters (Part Two is
   // written a few chapters at a time), so the hero waits after the last one.
-  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell', partTitles: ['The Bronze', 'The Stair'] }
+  { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell', partTitles: ['The Bronze', 'The Stair'] },
+  // Book Four (docs/book-four/DESIGN.md): levels 40 to 70, three parts of ten
+  // chapters, ending at the 4th job trial. Paid on the hosted game, like Book
+  // Three; FREE_BOOKS stays 2.
+  { n: 4, title: 'The Long Tally', paid: true, parts: 3, out: 0, finale: 'b4-parting', partTitles: ['The North Road', 'The Wold', 'The Parting Bell'] }
 ];
 // "Book Three", "Part Two": books and parts are named in words to players.
 const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
@@ -106,6 +110,23 @@ const writing = state => books(state).find(b => b.writing) || null;
 // A finished chapter means the book was playable for this save, so the
 // released-parts check is not needed (and a save keeps its gear if a preview ends).
 const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n && done(state, q.id));
+// Whether gear for a level (towns.json stockByLevel, level bounties) is open.
+// Every list waits for Book Three to begin, as Book Three's levels 20 to 40
+// always have. Levels 41 to 70 are Book Four's: while this save can read
+// Book Four (released, and open to this session) they wait for it to begin
+// too. A save that cannot read it (Book Four hidden or unpaid, or an AI story
+// that will never begin it) keeps Book Three's rule, so gear still opens by
+// level; and so does every level above 70 (docs/EQUIPMENT.md, "Gear by level").
+const GEAR_BOOK_FOUR = Object.freeze({ from: P.THIRD_JOB_LEVEL + 1, to: P.FOURTH_JOB_LEVEL });
+// Whether book n's gear waits for book n in this save: the book is released
+// and open to this session (reads), and the save is not on its own AI story,
+// which never begins it.
+const ownsGear = (state, n) => reads(state, n) && !aiStory(state);
+const gearOpen = (state, level) => {
+  const l = Number(level) || 0;
+  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && ownsGear(state, 4);
+  return started(state, four ? 4 : 3);
+};
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
 // The open-source view, for code and tests that do not hold a save.
 const BOOKS = Object.freeze(books(null));
@@ -184,7 +205,7 @@ function ending(state) {
   const open = books(state), next = lockedBook(state);
   const titles = open.map(b => b.title);
   const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
-  const count = ['', 'the first book', 'both books', 'all three books'][titles.length] || `all ${titles.length} books`;
+  const count = ['', 'the first book', 'both books'][titles.length] || `all ${word(titles.length).toLowerCase()} books`;
   const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
   const trial = next ? '' : trialLine(state);
   return next ? paidEnding(count, list, next) : trial ? `${base.replace('Without it, your written campaign ends here', 'Without it, the written books end here, apart from your job trial')}${trial}` : base;
@@ -211,7 +232,7 @@ const paidChoice = (next) => `If you would rather keep going now, the AI storyte
 // Told when a book that is not the last one this save can play ends.
 function bookEnd(id, state = null) {
   const b = SHELF.find(x => x.last === id), next = b && books(state).find(x => x.n === b.n + 1);
-  if (b?.writing && b.parts > 1 && b.open < b.parts) return `To be continued. You have finished ${b.partTitles?.[b.open - 1] ? `${b.partTitles[b.open - 1]}, ` : ''}Part ${word(b.open)} of ${bookName(b.n)}, ${b.title}. ${partName(b, b.open + 1)}, is being written; its chapters will appear on the expedition board when it comes out. Until then, bounties and side jobs stay open, and your hero, party and choices stay saved.`;
+  if (b?.writing && b.parts > 1 && b.open < b.parts) return `To be continued. You have finished ${b.partTitles?.[b.open - 1] ? `${b.partTitles[b.open - 1]}, ` : ''}Part ${word(b.open)} of ${bookName(b.n)}, ${b.title}. ${partName(b, b.open + 1)}${b.partTitles?.[b.open] ? ',' : ''} is being written; its chapters will appear on the expedition board when it comes out. Until then, bounties and side jobs stay open, and your hero, party and choices stay saved.`;
   if (b?.writing) return `To be continued. You have reached the end of what is written of ${bookName(b.n)}, ${b.title}, so far; its next chapters are being written and will appear on the expedition board. Your hero, party and choices stay saved.`;
   if (!next) return null;
   const first = ALL.find(q => bookNo(q) === next.n);
@@ -243,7 +264,10 @@ const reads = (state, n) => books(state).some(b => b.n === Number(n));
 // released, nor on a hosted account without that book.
 const TOWN_CHAPTERS = {};
 for (const q of ALL) for (const id of new Set([q.town, q.nextTown])) if (id) (TOWN_CHAPTERS[id] ||= []).push(q.id);
-const townOpen = (state, id) => Boolean(TOWNS[id]) && (!TOWN_CHAPTERS[id] || TOWN_CHAPTERS[id].some(q => playable(state, q)));
+// A town written for a later book ("book" in towns.json: Book Four's Lantry
+// and Orme) that no chapter names yet is closed, so it is never shown or
+// offered to the AI storyteller before its chapters are written.
+const townOpen = (state, id) => Boolean(TOWNS[id]) && (TOWN_CHAPTERS[id] ? TOWN_CHAPTERS[id].some(q => playable(state, q)) : !TOWNS[id].book);
 
 // The level the current chapter is written for. AI XP may bring the hero up to
 // this level but never into the next one.
@@ -318,4 +342,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, WAITING, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started};
+module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, WAITING, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started, gearOpen, ownsGear};

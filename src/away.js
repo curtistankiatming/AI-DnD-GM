@@ -4,7 +4,8 @@
 //
 // Approval is counted over one chapter at a time: every change from the end
 // of the last chapter (its camp scene included) through this one, side jobs
-// and all. In Book Two and Book Three, Part Two, a companion who ends a chapter LIMIT or more down
+// and all. In Book Two, Book Three's Part Two and Book Four's Parts One and
+// Three, a companion who ends a chapter LIMIT or more down
 // leaves for the next chapter and comes back when it is done. A chapter may
 // list companions it "needs" (their own story, the last chapters); before one
 // of those they stay and say so instead, as they do from a "together" chapter
@@ -53,16 +54,17 @@ function ensure(state) {
   return w;
 }
 
-// Whether the chapter being counted now can end in a walkout: a Book Two
-// chapter with another Book Two chapter after it (the same rule as pending).
-// Between a chapter's end and the walk into town (its camp scene), the count
-// is still that chapter's (awayCheck).
+// Whether the chapter being counted now can end in a walkout: a chapter in a
+// stretch with walkouts and the next chapter in the same stretch of the same
+// book (walkoutBetween, the same rule as pending). Between a chapter's end
+// and the walk into town (its camp scene), the count is still that chapter's
+// (awayCheck).
 function walkoutsOn(state) {
   const w = state?.world;
   if (!w?.completed) return false;
   const open = Book.chapters(state).filter((q) => !w.completed[q.id]);
   const [now, next] = w.awayCheck && QUESTS[w.awayCheck] ? [QUESTS[w.awayCheck], open[0]] : open;
-  return Boolean(now && next && (now.book || 1) === 2 && (next.book || 1) === 2) ? next : null;
+  return walkoutBetween(now, next) ? next : null;
 }
 // Whether this companion could walk out after this chapter: not before a
 // chapter that needs them (they stay instead), and not once settled.
@@ -98,10 +100,17 @@ function chapterDone(state, questId) {
   if (state.world && QUESTS[questId]) state.world.awayCheck = questId;
 }
 
-// Walkouts run in Book Two and in Book Three, Part Two (both the chapter
-// just done and the next one in that stretch); a chapter's "needs" are its
-// own companions (docs/book-three/DESIGN-PART-TWO.md, "Walkouts").
-const walkouts = (q) => { const book = Number(q?.book) || 1; return book === 2 || (book === 3 && (Number(q.part) || 1) === 2); };
+// Walkouts run in Book Two, in Book Three, Part Two, and in Book Four, Parts
+// One and Three (never in the Wold): both the chapter just done and the next
+// one, in the same book. A chapter's "needs" are its own companions
+// (docs/book-three/DESIGN-PART-TWO.md and docs/book-four/DESIGN.md, "Walkouts").
+const WALKOUT_PARTS = Object.freeze({ 2: null, 3: [2], 4: [1, 3] });
+const walkouts = (q) => {
+  if (!q) return false;
+  const book = Number(q.book) || 1, parts = WALKOUT_PARTS[book];
+  return parts !== undefined && (parts === null || parts.includes(Number(q.part) || 1));
+};
+const walkoutBetween = (now, next) => Boolean(now && next && walkouts(now) && walkouts(next) && (Number(now.book) || 1) === (Number(next.book) || 1));
 const nextChapter = (state) => Book.chapters(state).find((q) => !state.world.completed[q.id]) || null;
 // From a chapter marked "together" on, to the end of its book, nobody walks
 // out: in Book Three the party goes down the stair at chapter 17 and cannot be
@@ -123,7 +132,7 @@ function pending(state, events = []) {
   // Someone coming back is in the party for their own scene.
   for (const [id, a] of Object.entries(w.away)) if (a.until === done) { back(state, id, events); w.awayHandled.push(id); return nodeId(id, 'back'); }
   const next = nextChapter(state);
-  if (walkouts(QUESTS[done]) && next && walkouts(next)) {
+  if (walkoutBetween(QUESTS[done], next)) {
     for (const member of state.party) {
       if (!SCENES[member.id] || w.awayHandled.includes(member.id) || (w.approvalWindow[member.id] || 0) > -LIMIT) continue;
       if ((next.needs || []).includes(member.id) || together(state, next)) { state.story.flags[`away:stay-${member.id}`] = next.id; return nodeId(member.id, 'stay'); }
@@ -180,4 +189,4 @@ function view(state) {
   return Object.entries(w.away || {}).map(([id, a]) => ({ id, name: COMPANIONS[id].name, role: COMPANIONS[id].role, until: a.until, untilName: QUESTS[a.until]?.name || a.until }));
 }
 
-module.exports = { LIMIT, SCENES, ensure, count, uneasy, walkoutsOn, chapterDone, pending, apply, view, nodeId };
+module.exports = { walkouts, walkoutBetween, LIMIT, SCENES, ensure, count, uneasy, walkoutsOn, chapterDone, pending, apply, view, nodeId };

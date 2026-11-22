@@ -1835,6 +1835,9 @@ textarea {
 .journal-section { margin: 14px 0; }
 .journal-record { padding: 8px 0; border-top: 1px solid var(--border, #465158); overflow-wrap: anywhere; }
 .journal-record p { margin: 4px 0; }
+.telling-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 4px 16px; }
+.telling-column { min-width: 0; overflow-wrap: anywhere; }
+.combat-white { margin: 0 0 6px; font-style: italic; }
 .journal-record small { display: block; }
 
 /* Batch 1: visible session safety without a full layout redesign. */

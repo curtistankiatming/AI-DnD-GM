@@ -3,6 +3,11 @@
 // 60, 65, 70, 80, 90, 95 and 100 rather than every type at every level, and six
 // equipment sets in two versions (Book Four, 55 to 65; final, 90 to 95) with
 // set bonuses. Nothing here calls the paid API.
+// Book Four is held back even when the suite runs with the books preview on
+// (BRIARWATCH_PREVIEW_BOOKS=1): once it can be read, gearOpen keeps level 41 to
+// 70 gear until it begins, and these tests read the shops and bounties as
+// players have them now. node --test runs each file in its own process.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), R = require('../src/rules'), W = require('../src/world'), Bounty = require('../src/bounty');
 const Gear = require('../src/gear'), G = require('../src/equipment'), Power = require('../src/power'), Book = require('../src/book');
@@ -14,6 +19,12 @@ const SETS = require('../src/data/gear-sets.json').sets;
 
 const LATE = GEAR.filter((i) => (i.requires?.level || 0) > 40);
 const TIERS = [45, 50, 55, 60, 65, 70, 80, 90, 95, 100];
+// Book Four's chapter rewards are worn from two levels below their chapter
+// (docs/book-four/DESIGN.md, "Gear: chapter rewards"), so they sit between the
+// tiers; the rest of the late gear is at a tier. Read from the file: the
+// chapters may not be merged with Book Four held back.
+const B4 = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
+const chapterReward = (item) => Boolean(B4[item.exclusive?.quest]) && item.requires.level === B4[item.exclusive.quest].level - 2;
 // An upgrade for each kind of kit at least every 20 levels.
 const WINDOWS = [[41, 60], [61, 80], [81, 100]];
 const lv = (i) => i.requires?.level || 0;
@@ -58,7 +69,7 @@ const wearable = (actor, lo, hi) => LATE.filter((i) => lv(i) >= lo && lv(i) <= h
 test('every late requirement is one a hero of that class can meet, and every piece is Legendary and priced for its level', () => {
   for (const item of LATE) {
     const r = item.requires;
-    assert.ok(TIERS.includes(r.level), `${item.id}: level ${r.level} is a tier`);
+    assert.ok(TIERS.includes(r.level) || chapterReward(item), `${item.id}: level ${r.level} is a tier, or two below its Book Four chapter`);
     for (const c of r.classes || []) assert.ok(CLASSES[c], `${item.id}: ${c}`);
     for (const [id, n] of Object.entries(r.abilities || {})) assert.ok(ABILITIES[id] && n >= 10 && n <= 15, `${item.id}: ${id} ${n}`);
     assert.ok(Object.keys(CLASSES).some((c) => Gear.unmet(hero(c, r.level).player, item) === null), `${item.id}: some class can wear it`);
@@ -72,7 +83,9 @@ test('every late requirement is one a hero of that class can meet, and every pie
   // classes; armour goes by weight and accessories stay shared (22 November 2026).
   for (const item of LATE.filter((i) => i.slot === 'mainHand')) assert.ok(item.requires.classes?.length >= 1 && item.requires.classes.length <= 3, `${item.id}: class family`);
   // Sparse: about eight pieces a tier, not one of each type at every level.
-  assert.ok(LATE.length >= 60 && LATE.length <= 90, `${LATE.length} late pieces`);
+  // Book Four's one-per-chapter rewards are counted apart from the sold tiers.
+  const sold = LATE.filter((i) => !chapterReward(i));
+  assert.ok(sold.length >= 60 && sold.length <= 90, `${sold.length} late pieces`);
 });
 
 test('each tier has something for every class and companion, and each kind of kit improves at least every 20 levels', () => {
@@ -262,16 +275,42 @@ test('item cards and the equipment screen show the set and its bonuses', () => {
   assert.deepEqual(view.player.sets.map((x) => [x.id, x.worn, x.active.length, x.next.pieces]), [['farwatch', 2, 1, 3]]);
 });
 
-test('Briarwatch and Highpass sell each late tier from its level, once Book Three has begun', () => {
+// Levels 45 to 70 are sold where Book Four goes (docs/book-four/DESIGN.md,
+// "Where Book Four goes"; tests/book-four-wold.test.js plays the route). With
+// Book Four hidden, as here, Lantry and Orme are closed, and Highpass (the
+// town they are reached from) sells their stock too, so a hero beyond the
+// books still finds every tier in a free-wards town. The Wold's warm gear is
+// the one exception: it is sold only in Lantry and Orme.
+const OPEN_TOWNS = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold', 'saltwick'];
+test('each late tier is sold from its level in a town a save beyond the books can reach, once Book Three has begun', () => {
   const sold = LATE.filter((i) => !i.exclusive);
-  for (const town of ['briarwatch', 'highpass']) for (const item of sold) assert.ok(TOWNS[town].stockByLevel[String(lv(item))]?.includes(item.id), `${town}: ${item.id}`);
-  const at44 = begun('fighter', 44), at45 = begun('fighter', 45), at100 = begun('fighter', 100);
-  assert.ok(!W.townStock(at44, 'briarwatch').includes('frostforged-plate'));
-  assert.ok(W.townStock(at45, 'briarwatch').includes('frostforged-plate'));
+  const at100 = begun('fighter', 100);
+  assert.equal(Book.townOpen(at100, 'lantry'), false); assert.equal(Book.townOpen(at100, 'orme'), false);
+  const reach = new Set(OPEN_TOWNS.flatMap((t) => W.townStock(at100, t)));
+  for (const item of sold) assert.equal(reach.has(item.id), !item.warm, `${item.id} is sold somewhere open, unless it is the Wold's warm gear`);
+  // Each from its own level, in the towns its tier is listed for.
+  for (const item of sold) for (const town of Object.values(TOWNS).filter((t) => Object.values(t.stockByLevel || {}).flat().includes(item.id))) {
+    const key = Object.entries(town.stockByLevel).find(([, ids]) => ids.includes(item.id))[0];
+    assert.equal(Number(key), lv(item), `${town.id}: ${item.id} at its own level`);
+  }
+  const at44 = begun('fighter', 44), at45 = begun('fighter', 45);
+  assert.ok(!W.townStock(at44, 'highpass').includes('frostforged-plate'));
+  assert.ok(W.townStock(at45, 'highpass').includes('frostforged-plate'));
   assert.ok(!W.townStock(at45, 'highpass').includes('rimeheart-longsword'));
+  assert.ok(W.townStock(begun('fighter', 55), 'highpass').includes('lamplit-staff'), 'Orme\'s stock stands in at Highpass');
+  assert.ok(!W.townStock(begun('fighter', 54), 'highpass').includes('lamplit-staff'));
   assert.ok(W.townStock(at100, 'highpass').includes('highbell-seal'));
+  assert.ok(W.townStock(at100, 'briarwatch').includes('summitforged-plate'));
+  assert.ok(W.townStock(begun('fighter', 65), 'merrowgate').includes('thornstep-band'));
+  // Warm gear is the Wold's own: never sold at Highpass, and nothing there names the Wold.
+  for (const level of [50, 55, 100]) {
+    const stock = W.townStock(begun('fighter', level), 'highpass');
+    assert.ok(!stock.some((id) => ITEMS[id].warm), `no warm gear at Highpass at ${level}`);
+    for (const id of stock) assert.doesNotMatch(`${ITEMS[id].name} ${ITEMS[id].description || ''} ${Gear.purpose(ITEMS[id])}`, /Wold|Lantry|Orme/, `${id} at ${level}`);
+  }
   // Not for a save that has never begun Book Three, at any level.
   assert.deepEqual(W.townStock(hero('fighter', 100), 'briarwatch'), TOWNS.briarwatch.stock);
+  assert.deepEqual(W.townStock(hero('fighter', 100), 'highpass'), TOWNS.highpass.stock);
 });
 
 test('level bounties past the books give their item once, at or above its level', () => {

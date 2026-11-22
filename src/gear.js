@@ -79,6 +79,12 @@ function setBonuses(a) {
 // Everything that adds to an actor's numbers: worn items, then active set bonuses.
 const sources = (a) => [...worn(a), ...setBonuses(a).map((b) => b.bonus)];
 
+// Warm items ("warm": true, Book Four's Wold-made white wool): a party member
+// wearing one is not Slowed by the white at the start of a deciding fight in a
+// chapter with "white": true (src/combat.js). The first warm item worn, or null.
+const warmItem = (a) => worn(a).find((i) => i.warm) || null;
+const WARM_TEXT = 'Warm: in the Wold\'s white, the wearer is not Slowed at the start of a deciding fight';
+
 // Special stats summed over what an actor wears (src/equipment.js derive).
 function stats(a) {
   let dealt = 0, taken = 0;
@@ -133,6 +139,7 @@ function describe(item) {
   if (item.stats?.taken) out.push(item.stats.taken > 0 ? `${pct(item.stats.taken)}% more damage taken` : `${pct(item.stats.taken)}% less damage taken (all worn gear together takes off at most 30%)`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
+  if (item.warm) out.push(WARM_TEXT);
   const set = SETS[item.set];
   if (set) out.push(setText(set));
   const src = source(item);
@@ -209,11 +216,14 @@ function award(state, key, events) {
 // bounty there gives the highest one the hero has reached and not yet had, so
 // a hero who comes back later still collects the rest, one bounty at a time.
 function bountyReward(state, townId, level, events) {
-  // Level bounties are Book Three's (levels 20 to 40): only once this save has begun it.
-  if (!require('./book').started(state, 3)) return null;
+  // Level bounties belong to a later book by their level (Book Three's 20 to
+  // 40, Book Four's 41 to 70): each only once this save has begun that book
+  // (Book.gearOpen, which keeps Book Three's rule for a save that cannot read
+  // Book Four, and above 70).
+  const Book = require('./book');
   const given = state.world.gearAwarded || {};
   const keys = Object.keys(REWARDS()).filter((k) => k.startsWith(`bounty:${townId}:`) && !given[k])
-    .map((k) => [k, Number(k.split(':')[2])]).filter(([, at]) => Number.isFinite(at) && at <= level).sort((x, y) => y[1] - x[1]);
+    .map((k) => [k, Number(k.split(':')[2])]).filter(([, at]) => Number.isFinite(at) && at <= level && Book.gearOpen(state, at)).sort((x, y) => y[1] - x[1]);
   return keys.length ? award(state, keys[0][0], events) : null;
 }
 
@@ -296,4 +306,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = {setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};
+module.exports = {warmItem, WARM_TEXT, setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};
