@@ -68,6 +68,9 @@ test('every late requirement is one a hero of that class can meet, and every pie
     for (const k of Object.keys(item.skillBonuses || {})) assert.ok(SKILLS[k], `${item.id}: ${k}`);
     assert.equal(item.slot, { weapon: 'mainHand', focus: 'mainHand', armor: 'armor', shield: 'offHand', accessory: 'accessory' }[item.category], item.id);
   }
+  // Every weapon and focus past 40 belongs to one class or a clear family of
+  // classes; armour goes by weight and accessories stay shared (22 November 2026).
+  for (const item of LATE.filter((i) => i.slot === 'mainHand')) assert.ok(item.requires.classes?.length >= 1 && item.requires.classes.length <= 3, `${item.id}: class family`);
   // Sparse: about eight pieces a tier, not one of each type at every level.
   assert.ok(LATE.length >= 60 && LATE.length <= 90, `${LATE.length} late pieces`);
 });

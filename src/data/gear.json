@@ -4788,6 +4788,10 @@
     },
     "requires": {
       "level": 50,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
         "str": 13
       }
@@ -4824,6 +4828,9 @@
     },
     "requires": {
       "level": 50,
+      "classes": [
+        "fighter"
+      ],
       "abilities": {
         "str": 15
       }
@@ -4860,6 +4867,10 @@
     },
     "requires": {
       "level": 50,
+      "classes": [
+        "rogue",
+        "bard"
+      ],
       "abilities": {
         "dex": 13
       }
@@ -4897,6 +4908,10 @@
     },
     "requires": {
       "level": 50,
+      "classes": [
+        "ranger",
+        "rogue"
+      ],
       "abilities": {
         "dex": 13
       }
@@ -5462,6 +5477,9 @@
     },
     "requires": {
       "level": 60,
+      "classes": [
+        "fighter"
+      ],
       "abilities": {
         "str": 15
       }
@@ -5866,6 +5884,10 @@
     },
     "requires": {
       "level": 80,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
         "str": 13
       }
@@ -5902,6 +5924,9 @@
     },
     "requires": {
       "level": 80,
+      "classes": [
+        "fighter"
+      ],
       "abilities": {
         "str": 15
       }
@@ -5938,6 +5963,10 @@
     },
     "requires": {
       "level": 80,
+      "classes": [
+        "rogue",
+        "bard"
+      ],
       "abilities": {
         "dex": 13
       }
@@ -5975,6 +6004,10 @@
     },
     "requires": {
       "level": 80,
+      "classes": [
+        "ranger",
+        "rogue"
+      ],
       "abilities": {
         "dex": 13
       }
@@ -6742,6 +6775,9 @@
     },
     "requires": {
       "level": 100,
+      "classes": [
+        "fighter"
+      ],
       "abilities": {
         "str": 15
       }
@@ -6778,6 +6814,10 @@
     },
     "requires": {
       "level": 100,
+      "classes": [
+        "rogue",
+        "bard"
+      ],
       "abilities": {
         "dex": 13
       }

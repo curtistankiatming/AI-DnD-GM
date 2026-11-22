@@ -371,7 +371,7 @@ Highpass, Ashford, Merrowgate and Cinder Fold, at 70, 80 and 100. Gear found on
 AI adventures now keeps improving past level 40 (up to +4 to hit, +7 damage at
 100), a step behind the shops.
 
-**Equipment sets.** Every class has its own sets (Curtis, 22 November 2026): fighter, rogue, wizard, cleric, ranger and bard each have one set that only that class can wear, in a Book Four version (55 to 65) and a final version (90 to 95). A set has 3 pieces (weapon or focus,
+**Equipment sets.** Every weapon and focus past 40 belongs to one class or a clear family (Strength one-handers: fighter and cleric; two-handers: fighter; finesse blades: rogue and bard; bows: ranger and rogue; foci: casters). Armour goes by weight and accessories stay shared, so companions and party swaps stay flexible. Every class has its own sets (Curtis, 22 November 2026): fighter, rogue, wizard, cleric, ranger and bard each have one set that only that class can wear, in a Book Four version (55 to 65) and a final version (90 to 95). A set has 3 pieces (weapon or focus,
 armour, accessory); the fighter and cleric sets have a shield as a 4th. Wearing 2
 pieces turns on a small bonus; each further piece adds one, and the full set
 gives a set skill, a bonus action once per fight. Set bonuses count toward the
@@ -404,10 +404,10 @@ not gear (a follow-up for the Book Four and gameplay threads).
 
 | Item | Slot | What it does | Who | Where |
 |---|---|---|---|---|
-| Rimeheart Longsword | Main hand | Strength, 1d10 slashing, +3 to hit, +6 damage. 5% more damage dealt; Skill, Frostbite: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | STR 13 | Briarwatch, Highpass |
-| Glacier Maul | Main hand | Strength, 2d6 bludgeoning, +3 to hit, +6 damage. Two-handed. 5% more damage dealt; Skill, Cave In: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | STR 15 | Briarwatch, Highpass |
-| Icicle Stiletto | Main hand | Finesse, 1d8 piercing, +3 to hit, +6 damage. 10% more damage dealt; Skill, Numb: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | DEX 13 | Briarwatch, Highpass |
-| Skyreach Longbow | Main hand | Dexterity, 1d8 piercing, +3 to hit, +6 damage. Two-handed ranged weapon. 10% more damage dealt; Skill, Pin Down: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | DEX 13 | Briarwatch, Highpass |
+| Rimeheart Longsword | Main hand | Strength, 1d10 slashing, +3 to hit, +6 damage. 5% more damage dealt; Skill, Frostbite: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Glacier Maul | Main hand | Strength, 2d6 bludgeoning, +3 to hit, +6 damage. Two-handed. 5% more damage dealt; Skill, Cave In: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Icicle Stiletto | Main hand | Finesse, 1d8 piercing, +3 to hit, +6 damage. 10% more damage dealt; Skill, Numb: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
+| Skyreach Longbow | Main hand | Dexterity, 1d8 piercing, +3 to hit, +6 damage. Two-handed ranged weapon. 10% more damage dealt; Skill, Pin Down: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Ranger, Rogue · DEX 13 | Briarwatch, Highpass |
 | Aurora Staff | Main hand | Equip: +5 spell attack bonus and +5 spell save DC. 10% more damage dealt; Skill, Dazzle: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Wizard, Cleric, Bard | Briarwatch, Highpass |
 | Avalanche Horn | Accessory | Equip in the accessory slot. 20% more damage dealt; 5% less damage taken; Skill, Rallying Blast: Become Empowered for one round: deal 25% more damage. Bonus action, once per fight.; Story: advantage on the first Perception check after each long rest.. | Anyone | Briarwatch, Highpass |
 | Ambassador's Brooch | Accessory | Equip in the accessory slot. +3 Persuasion, +3 Deception, +3 Insight, +2 History. 5% more damage dealt. | Anyone | Briarwatch, Highpass |
@@ -436,7 +436,7 @@ not gear (a follow-up for the Book Four and gameplay threads).
 | Hearthward Mail (Hearthward set) | Armour | Base AC 19, up to +2 from Dexterity. +2 Medicine; +1 Wisdom saves, +1 Constitution saves. 10% less damage taken. | Cleric | Briarwatch, Highpass |
 | Hearthward Buckler (Hearthward set) | Off hand | Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +1 Wisdom saves, +1 Constitution saves. 10% less damage taken. | Cleric | Briarwatch, Highpass |
 | Chorus Coat (The Chorus set) | Armour | Base AC 17, full Dexterity bonus. +2 Performance, +2 Persuasion. 5% more damage dealt; 5% less damage taken. | Bard | Briarwatch, Highpass |
-| Riftcleaver | Main hand | Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed. 10% more damage dealt; Skill, Split the Ice: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | STR 15 | Briarwatch, Highpass |
+| Riftcleaver | Main hand | Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed. 10% more damage dealt; Skill, Split the Ice: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
 
 ### Level 65: 6 items
 
@@ -466,10 +466,10 @@ not gear (a follow-up for the Book Four and gameplay threads).
 
 | Item | Slot | What it does | Who | Where |
 |---|---|---|---|---|
-| Thunderbrand | Main hand | Strength, 1d10 slashing, +4 to hit, +8 damage. 5% more damage dealt; Skill, Thunderclap: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | STR 13 | Briarwatch, Highpass |
-| Ridgebreaker Maul | Main hand | Strength, 2d6 bludgeoning, +4 to hit, +8 damage. Two-handed. 10% more damage dealt; Skill, Rockfall: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | STR 15 | Briarwatch, Highpass |
-| Starling Knife | Main hand | Finesse, 1d8 piercing, +4 to hit, +8 damage. 10% more damage dealt; Skill, Flicker: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | DEX 13 | Briarwatch, Highpass |
-| Comet Longbow | Main hand | Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon. 5% more damage dealt; Skill, Falling Star: Set an enemy Burning for two rounds. Bonus action, once per fight.. | DEX 13 | Briarwatch, Highpass |
+| Thunderbrand | Main hand | Strength, 1d10 slashing, +4 to hit, +8 damage. 5% more damage dealt; Skill, Thunderclap: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Ridgebreaker Maul | Main hand | Strength, 2d6 bludgeoning, +4 to hit, +8 damage. Two-handed. 10% more damage dealt; Skill, Rockfall: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Starling Knife | Main hand | Finesse, 1d8 piercing, +4 to hit, +8 damage. 10% more damage dealt; Skill, Flicker: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
+| Comet Longbow | Main hand | Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon. 5% more damage dealt; Skill, Falling Star: Set an enemy Burning for two rounds. Bonus action, once per fight.. | Ranger, Rogue · DEX 13 | Briarwatch, Highpass |
 | Eclipse Staff | Main hand | Equip: +7 spell attack bonus and +6 spell save DC. 10% more damage dealt; Skill, Darken: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Wizard, Cleric, Bard | Briarwatch, Highpass |
 | Bounty Hunter's Badge | Accessory | Equip in the accessory slot, +1 to hit with weapons. 15% more damage dealt; Reward for the first bounty claimed in Ashford Crossing at level 80 or above. | Anyone | First bounty in ashford at 80+ |
 | Ironbark Amulet | Accessory | Equip in the accessory slot: +1 AC. +3 Athletics; +2 to every saving throw. 15% less damage taken; Reward for the first bounty claimed in Merrowgate at level 80 or above. | Anyone | First bounty in merrowgate at 80+ |
@@ -510,8 +510,8 @@ not gear (a follow-up for the Book Four and gameplay threads).
 
 | Item | Slot | What it does | Who | Where |
 |---|---|---|---|---|
-| Kingsfall Greataxe | Main hand | Strength, 2d6 slashing, +5 to hit, +9 damage. Two-handed. 10% more damage dealt; Skill, Felling Blow: Make an enemy Vulnerable for two rounds: it takes 25% more damage. Bonus action, once per fight.. | STR 15 | Briarwatch, Highpass |
-| Songsteel Rapier | Main hand | Finesse, 1d8 piercing, +5 to hit, +9 damage. 15% more damage dealt; Skill, Ringing Parry: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | DEX 13 | Briarwatch, Highpass |
+| Kingsfall Greataxe | Main hand | Strength, 2d6 slashing, +5 to hit, +9 damage. Two-handed. 10% more damage dealt; Skill, Felling Blow: Make an enemy Vulnerable for two rounds: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Songsteel Rapier | Main hand | Finesse, 1d8 piercing, +5 to hit, +9 damage. 15% more damage dealt; Skill, Ringing Parry: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
 | Hallowsteel Plate | Armour | Base AC 25, no Dexterity bonus. -2 Stealth; +1 to every saving throw. 15% less damage taken. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
 | Hundredfold Scale | Armour | Base AC 21, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves. 15% less damage taken. | Anyone | Briarwatch, Highpass |
 | Hundredth Bell | Accessory | Equip in the accessory slot: +1 AC. 20% more damage dealt; 10% less damage taken; Reward for the first bounty claimed in Briarwatch at level 100 or above. | Anyone | First bounty in briarwatch at 100+ |
