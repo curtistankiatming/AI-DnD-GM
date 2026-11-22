@@ -960,7 +960,7 @@
           { "say": "nessa", "text": "Don't say anything. Come on. Bring a lamp. Don't light it." },
           { "narrate": "Under Vell's east wall the river comes in through an iron grating and goes out again through the sluices, and Nessa has found the one place where the grating has rusted through. A flat-bottomed boat is tied up under it, stolen from somewhere, with two sacks in it, and a boy's coat with a button newly sewn on.", "when": { "party": "nessa" } },
           { "narrate": "Ysolde Carr is standing on the sluice ledge, in her shawl, with her arms folded, looking at the boat.", "when": { "party": "nessa" } },
-          { "say": "nessa", "text": "Jory and Wil are at the end of the sluice with Orin's rope. We take the boat down to the Iron Road ford and we're over the pass in four days. Briarwatch takes people. Briarwatch takes everybody. They'd be fed. You'd be — you'd be you. Get in the boat, Ysolde." },
+          { "say": "nessa", "text": "Hugh and Wil are at the end of the sluice with Orin's rope. We take the boat down to the Iron Road ford and we're over the pass in four days. Briarwatch takes people. Briarwatch takes everybody. They'd be fed. You'd be — you'd be you. Get in the boat, Ysolde." },
           { "say": "Ysolde", "text": "I came down here because you asked me to, and you've been kind to the boys, and I wanted to see it. I've seen it. It's a good boat.", "when": { "party": "nessa" } },
           { "say": "Ysolde", "text": "No.", "when": { "party": "nessa" } },
           { "say": "nessa", "text": "You don't get to say no to living, that's not — someone's made you think this is the only door, and it isn't, I'm standing in another one, look—" },
@@ -970,7 +970,7 @@
           { "narrate": "There is a knock at your door an hour before dawn, very soft, and when you open it Ysolde Carr is standing in the corridor in her shawl with her arms folded.", "when": { "absent": "nessa" } },
           { "say": "Ysolde", "text": "Sorry. I couldn't sleep. There's a place under the east wall where the sluice grating's rusted through. My brothers found it. They want me to go out through it tonight, and take them over the pass, and they've stolen a boat to do it. I went down and looked at it. It's a good boat.", "when": { "absent": "nessa" } },
           { "say": "Ysolde", "text": "I'm not going. I wanted to tell someone from the free wards that. So somebody over there knows I could have, and didn't. It's mine. It's the only thing I've ever had that's mine.", "when": { "absent": "nessa" } },
-          { "narrate": "She asks you to help her take the boat back to where the boys stole it from, before anyone notices, so that Jory and Wil are not in trouble for it. You do. On the way back she tells you about the Sixth District, every street of it, as if she were learning it by heart.", "when": { "absent": "nessa" } }
+          { "narrate": "She asks you to help her take the boat back to where the boys stole it from, before anyone notices, so that Hugh and Wil are not in trouble for it. You do. On the way back she tells you about the Sixth District, every street of it, as if she were learning it by heart.", "when": { "absent": "nessa" } }
         ],
         "choices": [
           {
@@ -994,7 +994,7 @@
             "lines": [
               { "say": "nessa", "text": "Her choice. Her choice. Someone put her in a corner and painted a door on the wall and you're calling that—" },
               { "say": "nessa", "text": "Fine. Fine. It's her choice." },
-              { "narrate": "She unties the boat herself, with fast angry hands, and pushes it off down the sluice towards where Jory and Wil are waiting, empty, and doesn't watch it go." },
+              { "narrate": "She unties the boat herself, with fast angry hands, and pushes it off down the sluice towards where Hugh and Wil are waiting, empty, and doesn't watch it go." },
               { "say": "Ysolde", "text": "Thank you. Both of you. Nessa, you as well. Especially you." },
               { "say": "nessa", "text": "Don't. Don't thank me. I didn't do anything. That's the whole—" },
               { "narrate": "Ysolde takes Nessa's hand anyway, and holds it, and after a moment Nessa lets her." }
@@ -1277,7 +1277,7 @@
           { "narrate": "After a long time, somebody says one thing they will remember, and then everybody does, one each, round the rim of the door." },
           { "say": "orin", "text": "The plates. A number and a date on every one of them, riveted on. Somebody stood there with a hammer thirty-one times. I'll remember that somebody did that, and went home for supper." },
           { "say": "orin", "text": "And the two who said no. They kept saying it, the whole time he was reading. I'll remember that I heard them and I let it happen.", "when": { "flag": "b3_vault_held" } },
-          { "say": "maren", "text": "The girl from Lindmoor. Hanne. Fourteen. She carried the keeper's water. She asked Aster to hold her hand, and Aster said she was. I'll remember that Aster said she was.", "when": { "flag": "b3_vault_closed" } },
+          { "say": "maren", "text": "The girl from Lindmoor. Mae. Fourteen. She carried the keeper's water. She asked Aster to hold her hand, and Aster said she was. I'll remember that Aster said she was.", "when": { "flag": "b3_vault_closed" } },
           { "say": "maren", "text": "One of the ones who didn't answer, when Aster asked. I don't know her name. She's on the river wall now. I'll remember that I don't know what she wanted.", "when": { "notFlag": "b3_vault_closed" } },
           { "say": "nessa", "text": "The one who was singing. The evening hymn, flat, over and over, all the time we were down there. I've got it in my head and I'm not going to let it go. Somebody should have it." },
           { "say": "Aster Vey", "text": "The boy at the end. Number Thirty-One, from Osgood's Cross. He asked me whether he'd done something wrong. I said no. I said he'd been in the wrong room. He said that was what they told him, too." },

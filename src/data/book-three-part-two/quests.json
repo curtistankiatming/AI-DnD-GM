@@ -4024,7 +4024,7 @@
           {
             "oneOf": [
               {
-                "narrate": "Ysolde Carr came back over the pass in the autumn with Fennick's clerks to help him count the empty city. Jory and Wil are at Briarwatch, in the fields, at school in the afternoon sitting.",
+                "narrate": "Ysolde Carr came back over the pass in the autumn with Fennick's clerks to help him count the empty city. Hugh and Wil are at Briarwatch, in the fields, at school in the afternoon sitting.",
                 "when": {
                   "flag": "b3_bell_evacuate"
                 }

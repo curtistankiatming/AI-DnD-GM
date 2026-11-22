@@ -158,5 +158,7 @@ test('the forge cannot get round a requirement', () => {
 
 test('special stats read as more or less', () => {
   assert.match(Gear.purpose(ITEMS['oathbound-mail']), /10% less damage taken/);
+  // The card says that worn gear takes off at most 30% of damage taken in all.
+  assert.match(Gear.purpose(ITEMS['oathbound-mail']), /at most 30%/);
   assert.match(Gear.purpose(ITEMS['warden-signet']), /10% more damage dealt/);
 });
