@@ -469,7 +469,7 @@ function view(state){
     const item=ITEMS[e.itemId],up=ITEMS[`${item.id}-fine`];if(!up)return [];
     const owners=G.actors(state).filter(a=>Object.values(a.equipment).includes(item.id));
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
-    return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,...o,cost:Gear.upgradeCost(item),purpose:up.purpose}));
+    return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,masterwork:Boolean(up.masterwork),...o,cost:Gear.upgradeCost(item),purpose:up.purpose}));
   });
   const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),underChecks:XP.underChecks(state.player.level,q.level),minLevel:minLevel(q),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{

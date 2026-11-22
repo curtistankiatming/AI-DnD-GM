@@ -4,6 +4,16 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## UI review through Book Three (22 November 2026)
+
+- Narrow phones: party names no longer shrink to one letter at Book Three HP; the message box
+  hints are shorter ("Your move", "Say it", "Your question").
+- The smith lists Masterwork refines first and folds the Fine upgrades for basic gear under them.
+- Phones: End Turn, Retreat and orders stay at the bottom of the combat board while the action
+  cards scroll.
+- An item's skill has its own line and chip on pack cards and in shops.
+- Report: `docs/reviews/claude-ui-book-three-2026-11-22.md`.
+
 ## Book Three gear: levels 20 to 40 (22 November 2026)
 
 - 105 new pieces of equipment in five tiers (20, 25, 30, 35 and 40), 185 in
