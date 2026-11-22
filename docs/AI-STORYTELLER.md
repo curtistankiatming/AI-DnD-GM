@@ -113,8 +113,11 @@ and Two are free and Book Three onward needs a paid account.
   save can never grant itself access: access is held on the game state in a
   way a save file cannot carry (`Book.grant`, `Book.ACCESS` in `src/book.js`).
 - A free hosted account that finishes Book Two is told the story goes on in
-  Book Three for paid accounts. If it upgrades before the AI has written it a
-  full adventure of its own, the save carries straight on into Book Three.
+  Book Three for paid accounts. If it upgrades, the save carries straight on
+  into Book Three. If it began an AI story of its own first, the save
+  remembers the book it set aside (`books:waiting`); after an upgrade it goes
+  back into that book, and its AI story carries on once the books are finished
+  again.
 - A save already inside a paid book whose account lapses waits untouched: it
   is never marked finished or handed to the AI storyteller, the AI writes only
   small side stories that leave the book alone, and it carries on when access

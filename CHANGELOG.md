@@ -18,6 +18,13 @@ the pull requests that made them.
 - Until Book Four's towns exist, Briarwatch and Highpass sell the new tiers, for saves that have
   begun Book Three. List: [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md#gear-for-levels-45-to-100-22-november-2026).
 
+## Upgrading goes back into the paid book (22 November 2026)
+
+- A free hosted save that begins an AI story of its own no longer loses Book
+  Three for good. It remembers the book it set aside; after an upgrade it goes
+  back into that book, and its own story carries on once the books are
+  finished. The end-of-book text, What's next and the expedition board say so.
+
 ## Hosted game: sealed saves and a protected AI key (22 November 2026)
 
 - New hosted mode for running the game for other people on the owner's Claude
