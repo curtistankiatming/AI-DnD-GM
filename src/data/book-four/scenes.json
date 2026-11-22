@@ -555,5 +555,155 @@
         ]
       }
     }
+  },
+  "lantry-camp": {
+    "id": "lantry-camp",
+    "after": "b4-lantry",
+    "cast": [],
+    "act": "Camp",
+    "location": "Teasel's kitchen, Lantry, the night after the giving",
+    "start": "kitchen",
+    "nodes": {
+      "kitchen": {
+        "title": "Teasel's Kitchen",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Teasel's kitchen, the night after the giving. The town is quiet. Teasel is at the table chalking tomorrow's doors on a slate, and Rue is asleep against the wall with her book under her arm.", "when": { "flag": "b4_gave_lantry" } },
+            { "narrate": "Teasel's kitchen, the night after the pots. The town is very quiet, the way a house is quiet after an argument. Teasel is at the table, writing on a slate what she will read in the morning, and rubbing it out, and writing it again.", "when": { "flag": "b4_rang_lantry" } },
+            { "narrate": "Teasel's kitchen, the night after the giving. Nobody says much. Teasel is at the table writing tomorrow's doors on a slate, and the smith's is the first.", "when": { "flag": "b4_waited_lantry" } }
+          ] },
+          { "narrate": "Nessa borrows a sheet of Teasel's paper and a stub of lead and sits on the floor by the stove with her back to the room, and writes a letter. It takes her a long time. She does not let anyone see it.", "when": { "party": "nessa" } },
+          { "narrate": "When it is done she folds it small and writes on the outside, in capitals: 'BISCUIT. HIGHPASS. THE GUARDROOM, BY THE BRAZIER.' Then she reads it, the inside, to herself, moving her lips, and nobody else.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Who is Biscuit?", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "My dog. He's old. He couldn't do the saddle. He'll not get it. Nobody's carrying letters over the peaks in this. I know that." },
+          { "say": "Rue", "text": "Then why write it?", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "So it's written. You'd know about that." },
+          { "narrate": "Rue looks at her for a while. Then she opens her book at a new page, and writes something, and turns it round so that Nessa can read it. Nessa reads it, and goes red, and puts the letter inside her shirt next to the key.", "when": { "party": "nessa", "flag": "b4_key_carried" } },
+          { "narrate": "Rue looks at her for a while. Then she opens her book at a new page, and writes something, and turns it round so that Nessa can read it. Nessa reads it, and goes red, and puts the letter inside her shirt.", "when": { "party": "nessa", "noneFlag": ["b4_key_carried"] } },
+          { "narrate": "Rue sits by the stove with her book open, reading back over the day, and writes a line at the bottom of the page, and turns it round so that you can read it: 'The southerners stayed for the giving.'", "when": { "absent": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Sleep by the stove",
+            "lines": [
+              { "narrate": "You sleep by Teasel's stove. In the morning she reads you your own door: the top door's, with your names on it now, in the children's hand, and one of them spelt wrong." }
+            ]
+          },
+          {
+            "id": "doors",
+            "label": "Read the doors in the street before you sleep",
+            "lines": [
+              { "narrate": "You go out and read the doors down the street by lamplight, every one, and come back in, and find that you have already forgotten the first ones." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "sheddon-camp": {
+    "id": "sheddon-camp",
+    "after": "b4-sheddon",
+    "cast": [],
+    "act": "Camp",
+    "location": "The porch of the Long Hall, Orme, the night Sheddon came in",
+    "start": "porch",
+    "nodes": {
+      "porch": {
+        "title": "The Long Hall's Porch",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Orme has taken Sheddon in for the night in the porch of the Long Hall, two hundred people on straw under the lamps, and the Hall's clerks going along the rows writing everyone's name on a board by their head." },
+          { "oneOf": [
+            { "narrate": "Sedge's mother is asleep on the straw with her coat still on. Sedge sits beside her, with his back to the wall, and does not sleep.", "when": { "anyFlag": ["b4_orin_went_back", "b4_hero_went_back"] } },
+            { "narrate": "Sedge sits against the wall by himself, with his sleeve pushed up, reading his own arm." }
+          ] },
+          { "narrate": "Orin sits on the porch step outside, in the cold, with his elbows on his knees. After a while you go and sit with him.", "when": { "party": "orin" } },
+          { "oneOf": [
+            { "say": "orin", "text": "Varn said the contract was the salt. Today I said the contract was two hundred. Same words. Same order. I understand him now. I didn't, all these years. I do now.", "when": { "flag": "b4_orin_ordered", "party": "orin" } },
+            { "say": "orin", "text": "Varn wouldn't have gone back. A captain who goes back has left his column. I know that. I did it anyway, and gave you mine, and lost the name of his. I understand him better than I did this morning. That's the worst of it.", "when": { "flag": "b4_orin_went_back", "party": "orin" } },
+            { "say": "orin", "text": "I was going to say 'on'. I had it in my mouth. You went before I could. I'm glad. I'm angry, and I'm glad. I understand Varn now. Someone has to stand at the front and not go back. I didn't know how much it weighed.", "when": { "flag": "b4_hero_went_back", "party": "orin" } }
+          ] },
+          { "say": "orin", "text": "I don't forgive him. Understanding's not the same. He went over the ridge and never once asked whose town it was. I knew whose mother she was. That's the difference. It's not much. It's what I've got.", "when": { "party": "orin" } },
+          { "oneOf": [
+            { "say": "Davin", "text": "You came back. With her. Gran would've said that's the whole job.", "when": { "flag": "b4_orin_went_back", "party": "orin" } },
+            { "say": "Davin", "text": "You did all right. At the front. Gran would've said.", "when": { "flag": "b4_davin_comes", "party": "orin" } }
+          ], "when": { "flag": "b4_davin_comes" } },
+          { "say": "orin", "text": "Go to sleep, Davin.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+          { "narrate": "Rue sits a little way along the porch with her book, and writes the day into it, and does not read any of it back to anyone.", "when": { "absent": "orin" } },
+          { "narrate": "When she has done, she turns the book round so that you can read the last line: 'At the farm-track cairn the southerner said on. Sedge went on.' She does not say anything about it. She has written it.", "when": { "flag": "b4_hero_ordered" } }
+        ],
+        "choices": [
+          {
+            "id": "stay",
+            "label": "Sit on the step until the lamps go down",
+            "lines": [
+              { "narrate": "You sit on the step until the Hall's lamps are turned down, one by one, and the porch is asleep." }
+            ]
+          },
+          {
+            "id": "straw",
+            "label": "Find a place on the straw",
+            "lines": [
+              { "narrate": "You find a place on the straw between two Sheddon families, and a clerk writes your name on the board by your head, and asks you to spell it." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "orme-camp": {
+    "id": "orme-camp",
+    "after": "b4-orme",
+    "cast": [],
+    "act": "Camp",
+    "location": "Burdock's desk in the Long Hall, Orme, after midnight",
+    "start": "desk",
+    "nodes": {
+      "desk": {
+        "title": "Burdock's Desk",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "After midnight the Long Hall is nearly empty. Burdock is still at his desk, because the day is not finished until everyone in it is written, and he has not finished you." },
+          { "oneOf": [
+            { "narrate": "The page about the south lies open beside him, the whole of it, bells and all, and every so often he stops and reads a line of it again, and believes it a little more.", "when": { "flag": "b4_tally_truth" } },
+            { "narrate": "The page about the south lies open beside him in its two columns, and every so often he reads a line across from one column to the other, and nods.", "when": { "flag": "b4_tally_reasons" } },
+            { "narrate": "The page about the south lies open beside him with two lines on it: 'The south: not yet.' And under it, in the Reckoner's hand, the nine hundred years. He has not turned the page.", "when": { "flag": "b4_tally_wait" } }
+          ] },
+          { "say": "Burdock", "text": "Each of you. Properly. Not just 'southerners'. Name, and town, and one thing about you that is true, so that whoever reads it after me knows you." },
+          { "say": "orin", "text": "Orin Stoneward. Of Briarwatch, I suppose. Write that I carried a lantern once and I'm sorry for it.", "when": { "party": "orin" } },
+          { "say": "Burdock", "text": "'Sorry for it.' Good. People are always glad to read that somebody was sorry.", "when": { "party": "orin" } },
+          { "say": "maren", "text": "Maren Vale. Of the Sisters' house. Write that I listen. Don't write what I hear.", "when": { "party": "maren" } },
+          { "say": "nessa", "text": "Nessa Reed. Cinder Fold. Write that I go first. And Biscuit." },
+          { "say": "Burdock", "text": "Biscuit. Is that a person?", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He's my dog. He's at Highpass." },
+          { "say": "Burdock", "text": "How do you spell Biscuit?", "when": { "party": "nessa" } },
+          { "narrate": "Nessa spells it for him, one letter at a time, and he writes it as she says it, and blots it.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Grey at the mouth. Kind. Put that, Burdock. I have it from the spring.", "when": { "party": "nessa" } },
+          { "narrate": "Burdock writes it. He reads the line back aloud: 'Biscuit, a dog, of Highpass, grey at the mouth, kind.' Then he looks up, and believes in Biscuit completely, and asks whether he will be coming north.", "when": { "party": "nessa" } },
+          { "say": "Davin", "text": "Davin. Saltwick. I do the lamps. Write that I held the rear.", "when": { "flag": "b4_davin_comes", "anyFlag": ["b4_orin_went_back"] } },
+          { "say": "Davin", "text": "Davin. Saltwick. I do the lamps.", "when": { "flag": "b4_davin_comes", "noneFlag": ["b4_orin_went_back"] } },
+          { "narrate": "Then it is you. Burdock waits with his pen. You tell him your name, and your town, and he asks for the one true thing, and you have to think about it for a long time." },
+          { "say": "Burdock", "text": "You are the letter. I have it on the wall. 'We are coming north, to ask properly.' I shall write: came, as it said.", "when": { "flag": "b4_letters_answered" } }
+        ],
+        "choices": [
+          {
+            "id": "true",
+            "label": "Tell him the one true thing",
+            "lines": [
+              { "narrate": "You tell him. He writes it, and reads it back to you, and it sounds truer in his voice than it did in yours." }
+            ]
+          },
+          {
+            "id": "ask",
+            "label": "Ask him to choose it for you",
+            "lines": [
+              { "narrate": "You ask him to choose. He looks at you for a while over both pairs of spectacles, and writes: 'Came from the south, and asked.' Then he reads it back, and is satisfied." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

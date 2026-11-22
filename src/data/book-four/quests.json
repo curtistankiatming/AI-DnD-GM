@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50.",
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written to chapter 13 (build step 6). Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
   "b4-walker": {
     "id": "b4-walker",
     "book": 4,
@@ -2657,6 +2657,785 @@
         ],
         "rep": { "wilds": 1 },
         "flag": "b4_gave_door"
+      }
+    ]
+  },
+  "b4-lantry": {
+    "id": "b4-lantry",
+    "book": 4,
+    "part": 2,
+    "name": "Written on the Doors",
+    "level": 50,
+    "town": "highpass",
+    "nextTown": "lantry",
+    "unlock": "b4-peaks",
+    "white": true,
+    "xp": 14250,
+    "gold": 1040,
+    "region": "Lantry, the first town under the north face of the peaks, where the old north road comes down out of the cloud",
+    "threat": "It is Lantry's giving night. At dusk the town gives at the well, and the white comes down the street for what it is owed. Anyone in the street who is not giving is taken from.",
+    "faction": "wold",
+    "brief": "Below the Hall's north door the old north road goes down into the cloud, to Lantry, the first town in the Wold. Rue says it is a day's walk, and that they will not look up.",
+    "told": {
+      "ballad": "They came down out of the cloud to Lantry, where every door is written on, and stood in the street on the giving night.",
+      "tally": "Lantry, the giving night. Southerners came down the old road and stood in the ring at the well. Written on the well-house: givers."
+    },
+    "opening": [
+      { "narrate": "Morning, below the Hall's north door. The old north road goes down the north face in long zigzags, cut into the rock, and a mile down it goes into the cloud, and you go into it after Rue." },
+      { "narrate": "Inside the cloud the light is grey and even and comes from nowhere. Sound does not carry. You walk all day in it, roped, a body's length apart, and towards evening the road levels out and there are walls on either side of it, and then doors." },
+      { "narrate": "Every door in Lantry is written on. So is every post, every shutter, every wall, in chalk and charcoal and old paint, in the square hand Rue writes in, from the top of the door to the step: names, debts, the weather, what happened yesterday. Nothing in the street is blank." },
+      { "oneOf": [
+        { "narrate": "Every door also has two words on it, new, in fresh chalk, the same on each: 'the bell'. The cloud came down off the slope onto Lantry at noon yesterday, all at once, and the town has not slept. There are people sitting on their steps in blankets, reading their own doors.", "when": { "flag": "b4_parting_rung" } },
+        { "narrate": "Rue goes ahead of you to the first door in the street, the top door, and takes her lead out of her coat and writes on it, under everything else, in letters as big as her hand: 'A giver came from the south.' Then she knocks.", "when": { "flag": "b4_gave_door" } },
+        { "narrate": "Rue goes ahead of you to the first door in the street, the top door, and knocks, the way she said you would. After a while somebody opens it. They have heard nothing. Nobody in Lantry looked up." }
+      ] },
+      { "oneOf": [
+        { "narrate": "At the well in the middle of the town there are carts drawn up, with the free wards' bell painted on their sides: the council's relief convoy, grain and oil and blankets and seed. Lantry has chalked on each cart what is in it. On the last one somebody has added: 'From the bell-country. Why?'", "when": { "flag": "b4_company_council" } },
+        { "narrate": "On the well-house wall, in chalk, there is a long new entry: 'Forty wagons from the south. A map. They asked the way to the empty land. We showed them the valley road. There is no empty land.' The North Company has been and gone.", "when": { "flag": "b4_company_sails" } }
+      ] },
+      { "narrate": "Davin keeps close behind Orin all the way down the last of the road, and stops when Orin stops, and reads the doors over his shoulder.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+      { "narrate": "Davin reads the doors all the way down the street, out loud, under his breath, as if he was learning them.", "when": { "flag": "b4_davin_comes", "absent": "orin" } }
+    ],
+    "talks": [
+      {
+        "id": "teasel",
+        "label": "Walk the street with Teasel, the door-reader",
+        "lines": [
+          { "narrate": "Teasel of Lantry is the town's door-reader. Every morning she walks the street from the top door to the well and reads the town its doors, aloud, so that everyone hears what they did yesterday and what they owe and who they are married to. She is about sixty, with a reading-stick and a schoolmaster's voice, and she does not lower it for anything." },
+          { "say": "Teasel", "text": "Top door. 'Mother's knee bad again. Owe Sedge one hen. The south door of the Hall has statues on it; do not go and look, you have looked.' Next door. 'Married to the top door. Do not forget again.'" },
+          { "oneOf": [
+            { "say": "Teasel", "text": "And every door: 'The bell.' I wrote that one myself, yesterday, forty times. My hand is sore. I don't know what it means yet. In a fortnight I'll have forgotten that I didn't know, and it will just say 'the bell', and we will all be frightened of it.", "when": { "flag": "b4_parting_rung" } },
+            { "say": "Teasel", "text": "'A giver came from the south.' That's the top door, new last night. In Rue's hand. I know Rue's hand. It's on my door from the spring: 'Rue of Thrum went south to ask. Feed her if she comes back.'", "when": { "flag": "b4_gave_door" } },
+            { "say": "Teasel", "text": "You'll be on the doors by morning. Somebody will have to decide what you are first. That's usually me." }
+          ] },
+          { "say": "Teasel", "text": "We write it all, because we keep about a season. You'll find you keep less, here, the longer you stay. Everybody does. Read your doors." },
+          { "narrate": "She taps the well-house wall with her stick, where the oldest writing is, cut into the stone under the chalk: a line in the square hand, worn almost smooth." },
+          { "say": "Teasel", "text": "'The year the bells went south, the white doubled.' That's the first thing every child in Lantry learns to read. Nobody knows what bells are. We know they went south." }
+        ]
+      },
+      {
+        "id": "children",
+        "label": "Read the day's news with the chalk-children",
+        "lines": [
+          { "narrate": "The day's news is written on the well-house wall by the town's children, who go round the doors every afternoon with chalk and write up what has happened since the morning, in a hand that gets squarer every year until it is the grown-ups' hand." },
+          { "narrate": "Today's news, in five different hands: 'Southerners. Four of them. Or five. One is tall.' 'They came down the old road, which nobody uses.' 'One of them is Rue of Thrum, who went south.' 'They are going to stay for the giving.' 'They do not know how.'" },
+          { "narrate": "A girl of about eight is adding to it while you watch. She writes your name, as near as she can spell it from hearing it once, and then stops, and turns round, and asks you how many of you there are, so that she can get it right before her mother reads it." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Sit with Rue on the top door's step",
+        "lines": [
+          { "narrate": "Rue sits on the step of the top door with her book on her knees, and reads it, from the first page, aloud, under her breath, the way she does before anything hard.", "when": { "noneFlag": ["b4_book_burned"] } },
+          { "narrate": "Rue sits on the step of the top door and reads the pages she has written since the fire at Highpass, aloud, under her breath, and then pushes back her left sleeve and reads the word on her wrist.", "when": { "flag": "b4_book_burned" } },
+          { "say": "Rue", "text": "This is not Thrum. Thrum is further down, and further east. But it is the same. The doors are the same. I did not remember that they were all written on. I had it written down that they were. That is not the same." },
+          { "say": "Rue", "text": "Tonight is Lantry's giving. Every fortnight, at the well. Everyone gives a little, and the white goes past. If you are in the street, you give, or it takes from you. It does not take small." },
+          { "say": "Rue", "text": "On the saddle I told you the white was only weather. That was weather. This is not. This is the white that comes from the south. It wants what it is owed." },
+          { "oneOf": [
+            { "say": "Rue", "text": "My mother will not know me. It is a long time since the spring. I have her name on my arm. She does not have mine anywhere.", "when": { "flag": "b4_book_burned" } },
+            { "say": "Rue", "text": "My mother will not know me. It is a long time since the spring. I will show her my book, and she will read it, and she will be kind to the girl in it, because she is kind." }
+          ] }
+        ]
+      },
+      {
+        "id": "orin",
+        "label": "Ask Orin what he had for breakfast",
+        "requires": { "companion": "orin" },
+        "lines": [
+          { "narrate": "Orin is standing at the well-house wall, reading the news, with his arms folded and a frown he does not seem to know he has." },
+          { "say": "orin", "text": "I can't remember breakfast. Yesterday's. At the north door. I know we had it, because I remember washing the pot. I can't remember what was in it." },
+          { "say": "orin", "text": "It's this place. Teasel says you keep less, the longer you stay. Well. I've started. I thought you ought to know. If I start asking you the same thing twice, tell me, and don't be kind about it." },
+          { "oneOf": [
+            { "say": "orin", "text": "And tell Davin to write down anything I tell him to do. In case I forget I told him. That'd be the worst of it. Telling him to go back, and forgetting I said.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "I'm going to write on my sleeve. Like Rue. I feel a fool. I'm going to do it anyway." }
+          ] }
+        ]
+      },
+      {
+        "id": "maren",
+        "label": "Ask Maren what she hears in Lantry",
+        "requires": { "companion": "maren" },
+        "lines": [
+          { "say": "maren", "text": "Nothing. Everyone I've talked to today has told me the truth. Every one. Teasel, the children, the woman with the knee. My gift's been quiet since we came down out of the cloud." },
+          { "say": "maren", "text": "At home that would mean nobody was lying. Here I think it means they can't. You can't lie about yesterday if you don't remember it. You just read your door." },
+          { "say": "maren", "text": "I don't know what to do with a whole town I believe. I've never had to." }
+        ]
+      },
+      {
+        "id": "nessa",
+        "label": "Ask Nessa about the giving",
+        "requires": { "companion": "nessa" },
+        "lines": [
+          { "say": "nessa", "text": "Every fortnight. All of them. Even the children. At home we gave once, and it was the worst thing anybody ever asked us, and we argued about it for a year." },
+          { "say": "nessa", "text": "They don't argue. I asked the girl with the chalk. She said what's there to argue about, it's the giving. Like it was the weather." },
+          { "say": "nessa", "text": "I'm going to stand in the street tonight. I'm not hiding indoors while an eight-year-old gives for me." }
+        ]
+      }
+    ],
+    "clue": "Lantry gives every fortnight, at the well. What it gives goes into the white, and the white does not go: it only goes past, and comes back.",
+    "investigate": {
+      "label": "Read the well-house wall back through the givings",
+      "skill": "insight",
+      "alt": ["history", "investigation"],
+      "success": [
+        { "narrate": "{You go|@ goes} back along the well-house wall from today's chalk to the oldest paint, a fortnight at a time, and {read|reads} what Lantry has given. One line for every giving, for as far back as the wall goes: the date by the tally, and 'the white went past'." },
+        { "narrate": "Never 'the white went'. Never 'the white is gone'. It went past, every fortnight, and came back, and Lantry gave again. Whatever Lantry gives, the white takes it and goes on, and comes back for more." }
+      ],
+      "failure": [
+        { "narrate": "{You try|@ tries} to read the well-house wall back through the givings, but it is a fortnight's chalk over a fortnight's chalk, all the way down to the paint, and by the time the light goes {you have|@ has} learnt only that Lantry gives, and has always given, and writes it down." }
+      ]
+    },
+    "route": {
+      "label": "Walk the streets before dusk and learn which way the white comes in",
+      "skill": "perception",
+      "alt": ["survival", "investigation"],
+      "safe": true,
+      "success": [
+        { "narrate": "{You walk|@ walks} every street in Lantry before dusk, and {read|reads} the bottoms of the doors, where the white has left a grey tide-mark at the height it came to last time. It comes in from the low end of the town, up the street towards the well. {You chalk|@ chalks} an arrow at every corner, pointing to the well, the shortest way." }
+      ],
+      "failure": [
+        { "narrate": "{You walk|@ walks} the streets before dusk, but every street in Lantry looks like every other, written over from top to bottom, and {you come|@ comes} back to the well with no more than the street {you started|@ started} from." }
+      ]
+    },
+    "peaceful": {
+      "label": "Bring everyone in the street to the well, and stand with the givers",
+      "skill": "religion",
+      "alt": ["insight", "persuasion"],
+      "success": [
+        { "narrate": "{You know|@ knows} what the well-house wall says: the giving does not send the white away, only past. {You promise|@ promises} nobody in the ring more than that.", "when": { "flag": "prepared:b4-lantry" } },
+        { "narrate": "{You have|@ has} the arrows chalked at every corner, and the people still in the streets follow them to the well.", "when": { "flag": "approach:b4-lantry" } },
+        { "narrate": "{You go|@ goes} street by street, knocking, and {bring|brings} the last of Lantry to the well.", "when": { "notFlag": "approach:b4-lantry" } },
+        { "narrate": "The ring at the well is the whole town, standing close, with their hands on the well's rim or on the shoulder of whoever is in front. {You stand|@ stands} where Teasel puts {them}, at the edge of the ring, and {stand|stands} the way the givers stand, and {keep|keeps} everyone in the street on the well side of {them}." },
+        { "narrate": "Orin stands at the low end of the ring, where the street comes in, and nobody gets past him into the white.", "when": { "party": "orin", "notRoller": "orin" } },
+        { "narrate": "Maren goes round the ring speaking to the children, quietly, so that none of them looks round at the street.", "when": { "party": "maren", "notRoller": "maren" } },
+        { "narrate": "Nessa stands in the gap where the street comes up to the well, first in it, and stays there.", "when": { "party": "nessa", "notRoller": "nessa" } },
+        { "narrate": "The white comes up the street at dusk, as the arrows said it would, and stops at the edge of the ring, and waits. One by one, all night, Lantry gives." },
+        { "narrate": "At midnight the white is still in the street, at the edge of the ring, the height of a door." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} street by street to bring the last of Lantry to the well, but the white comes up the street early, faster than anyone has written it coming, and {you are|@ is} still two streets from the well with three people behind {them} when it stands up out of the gutter and comes for whoever is not giving." }
+      ]
+    },
+    "direct": {
+      "label": "Go down to Lantry",
+      "text": "You go down from the Hall's north door into the cloud, to Lantry."
+    },
+    "approach": [
+      { "narrate": "At dusk the lamps in Lantry are put out, one door at a time, from the top of the street to the bottom." },
+      { "narrate": "The town goes to the well. Everybody, carrying nothing, the children with chalk-marks on the backs of their hands that their mothers put there, so they will remember which house to come back to." },
+      { "narrate": "Teasel goes last, with her reading-stick, and stops at the top door, and reads it once more, aloud, to nobody." }
+    ],
+    "crisis": [
+      { "narrate": "The white comes up the street from the low end of the town, the height of a man, then the height of a door, quite slowly, the way water comes up a beach." },
+      { "say": "Teasel", "text": "In the ring, all of you. You give, or you go indoors and shut the door and let us give for you. Not in the street. Nobody stays in the street." },
+      { "say": "Rue", "text": "Some of them are not in the ring yet. There, and there. The old ones are slow." },
+      { "narrate": "Orin is already walking down the street towards the slowest of them.", "when": { "party": "orin" } },
+      { "narrate": "At the bottom of the street the white stands up off the ground in the shape of a man, and then another, and turns towards the people who are not yet at the well." }
+    ],
+    "objective": {
+      "name": "The way to the well",
+      "label": "Get the people still in the street to the ring at the well",
+      "description": "Four successful actions get the last of Lantry up the street and into the ring at the well before the white reaches them.",
+      "skill": "athletics",
+      "alt": ["persuasion", "survival", "perception"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The last of them come into the ring at the well in the end, carried, and two of them do not know their own doors in the morning, and Teasel reads the doors to them twice.",
+      "successText": "The last of them are in the ring at the well, with their hands on the rim, and the white in the street has nothing left to take but whoever is not giving."
+    },
+    "foe": "b4-lantry-white",
+    "foeName": "The White in the Street",
+    "enemyTheme": "gloam",
+    "attackName": "The Cold That Takes",
+    "retainerName": "Shape off the Gutter",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Midnight at the well. The whole town is in the ring, giving, one at a time, and the white stands at the edge of the ring the height of a door, and waits. Nobody is hurt.", "when": { "flag": "method:b4-lantry", "is": "peace" } },
+        { "narrate": "Midnight at the well. The street below it is scraped and trampled where the fight was, and the white has drawn back to the low end of the town, and it is coming up again. The whole town is in the ring, giving, one at a time." }
+      ] },
+      { "say": "Teasel", "text": "It wants its share. It always wants its share. It'll take ours, and go past. It'll want yours too. You're in the street." },
+      { "say": "Rue", "text": "There are three ways. You give, with us, the way we do. You shut yourselves in, and Lantry gives your share for you. Or you do what the south does." },
+      { "narrate": "She does not say what the south does. She looks at you." },
+      { "narrate": "Behind the well-house, on a hook, the town keeps its cooking pots for the giving supper, a long row of them, iron and copper." }
+    ],
+    "decisions": [
+      {
+        "id": "gave",
+        "label": "Give with Lantry, in the ring at the well",
+        "description": "This decision is permanent. You each give something small at the well, as Lantry does, and the white goes past.",
+        "text": [
+          { "narrate": "Teasel opens the ring for you. You put your hands on the rim of the well with everyone else." },
+          { "say": "Teasel", "text": "Something small. Something you'll miss. Not a name. Never a name. You'll know what it is when you're there." },
+          { "narrate": "Orin gives the sound of the lamp-store door at Saltwick shutting at dawn. He gives it twice, once for himself, and once for Davin, because Davin is sixteen and Orin will not let him give. Teasel lets him. She writes it down.", "when": { "flag": "b4_davin_comes", "party": "orin" } },
+          { "narrate": "Orin gives the sound of the lamp-store door at Saltwick shutting at dawn. He stands there afterwards with his hand on the rim, listening for it.", "when": { "party": "orin", "noneFlag": ["b4_davin_comes"] } },
+          { "narrate": "Davin gives the smell of lamp oil on his hands at the end of a night. He says it was the thing he liked best and that is why it is the right one.", "when": { "flag": "b4_davin_comes", "absent": "orin" } },
+          { "narrate": "Maren gives the second verse of a hymn from the Sisters' house. She sings the first, under her breath, when she has done it, to see if it is still there. It is.", "when": { "party": "maren" } },
+          { "narrate": "Nessa gives the taste of the bread from the bakery at the top of the Cinder Fold steps. She says she can buy more. She says it again later, as if she has forgotten she said it.", "when": { "party": "nessa" } },
+          { "narrate": "You give the colour of the first boots you ever owned. You know they had a colour. You know you liked it." },
+          { "narrate": "The white stands at the edge of the ring for a long moment. Then it goes past, along the street and out of the low end of the town, the way the wall says it always does." },
+          { "say": "Teasel", "text": "There. You're givers. I'll put it on the well-house in the morning, in my own hand, so the children don't spell it wrong." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_gave_lantry"
+      },
+      {
+        "id": "rang",
+        "label": "Ring Lantry's pots, the way the free wards ring, and drive the white off",
+        "description": "This decision is permanent. You ring the white out of Lantry tonight, the way bells do. It has to go somewhere.",
+        "text": [
+          { "narrate": "You take the pots down off their hooks behind the well-house and hand them round the ring, iron and copper, with a ladle each, and you show Lantry how the free wards ring a ward with whatever they have: everyone at once, in time, as loud as they can." },
+          { "narrate": "Lantry has never heard a bell. It learns in a minute. The sound goes up the street and down it and out over the roofs, and the white in the street stops, and shivers, and goes back down the street the way it came, faster than it came up, and out of the low end of the town, and away down the valley to the east." },
+          { "say": "Rue", "text": "That is the way to Sheddon. Down there. They will have it tonight. Ours, and theirs." },
+          { "narrate": "Nobody gives at the well. For the first night in the wall's memory, nobody in Lantry gives anything at all. In the morning, under 'the giving' on the well-house, Teasel writes: 'Not needed. The southerners rang.' Then she stands and looks at it for a long time, and does not rub it out." },
+          { "say": "Teasel", "text": "I don't know what that was. I know it worked. I know it went somewhere. I'll write that down too." }
+        ],
+        "told": {
+          "ballad": "They came down out of the cloud to Lantry and rang its cooking pots like bells, and the white ran from the street.",
+          "tally": "Lantry, the giving night. Nobody gave. The southerners rang, and the white went down the valley to Sheddon."
+        },
+        "rep": { "wardens": 1 },
+        "flag": "b4_rang_lantry"
+      },
+      {
+        "id": "waited",
+        "label": "Go indoors with Teasel, and let Lantry give your share",
+        "description": "This decision is permanent. You shelter behind a shut door while Lantry gives for you. The white takes more than usual.",
+        "text": [
+          { "narrate": "You go indoors with Teasel, and she shuts her door, and bars it, and sits down at her table with her reading-stick across her knees, and does not light a lamp." },
+          { "say": "nessa", "text": "There's an eight-year-old out there giving for me. I said I wouldn't. I said it.", "when": { "party": "nessa" } },
+          { "say": "Teasel", "text": "You're guests. Guests go in. It's no shame. It's on my door from my grandmother: 'Guests go in.'", "when": { "party": "nessa" } },
+          { "narrate": "All night, through the door, you hear the town give at the well, one at a time, and the white in the street outside, going past and not going." },
+          { "narrate": "In the morning every door is as it was, except one, near the top of the street. Under everything else on it, in Teasel's hand, fresh: 'Here lives the smith. His name was given in the night, for the guests' share. Call him smith.'" },
+          { "narrate": "The smith is at his forge when you go past, working, as he does every morning. He nods to you. He does not know that you are the reason. Teasel does, and has written it on her own door, small, at the bottom." }
+        ],
+        "told": {
+          "ballad": "They came down out of the cloud to Lantry on its giving night, and Lantry gave for them, as it gives for guests.",
+          "tally": "Lantry, the giving night. The southerners went in, as guests do. The smith's name was given for their share."
+        },
+        "rep": { "wilds": 1 },
+        "approval": { "nessa": -1 },
+        "flag": "b4_waited_lantry"
+      }
+    ]
+  },
+  "b4-sheddon": {
+    "id": "b4-sheddon",
+    "book": 4,
+    "part": 2,
+    "name": "The Captain's Order",
+    "level": 51,
+    "town": "lantry",
+    "nextTown": "orme",
+    "unlock": "b4-lantry",
+    "white": true,
+    "xp": 14500,
+    "gold": 1060,
+    "region": "Sheddon, a farming village on the valley floor east of Lantry, and the Orme road north from it",
+    "threat": "Sheddon is going under the white. Its two hundred people must walk the Orme road in one day, before the white closes it at dark.",
+    "faction": "wold",
+    "brief": "Down the valley from Lantry, Sheddon is going under the white, field by field. Its people mean to walk to Orme, and they have nobody who has led a column before.",
+    "told": {
+      "ballad": "At Sheddon two hundred went out on the Orme road ahead of the white, every child on a rope, and Orin Stoneward walked at the front of them.",
+      "tally": "Sheddon went under. Two hundred walked the Orme road in a day, roped, and came in at dark. A southern soldier led them."
+    },
+    "opening": [
+      { "narrate": "Sheddon lies on the valley floor a day east of Lantry: forty houses and their fields, and the low fields under the white." },
+      { "oneOf": [
+        { "narrate": "The white came down the valley from Lantry's way the night the pots were rung, as well as its own, and it took the low fields in a night. In the morning it was at the garden walls. Every door in Sheddon says the same thing in the same fresh chalk: 'Go to Orme.'", "when": { "flag": "b4_rang_lantry" } },
+        { "narrate": "For a month the white has come up out of the low fields a little every night, and not gone back down. Every morning the doors say how far: 'the white is at the fourth field'; 'the third'; 'the wall'. This morning the doors say: 'Go to Orme.'" }
+      ] },
+      { "narrate": "Two hundred people are in the road with what they can carry, at first light. Orme is a long day north. The white will be over the Orme road by dark." },
+      { "narrate": "Sheddon's eldest are at the head of the road, three old women and a man with a stick, arguing about who goes first. When they see you coming down the Lantry road they stop arguing, and look at Orin.", "when": { "party": "orin" } },
+      { "narrate": "Sheddon's eldest are at the head of the road, three old women and a man with a stick, arguing about who goes first. When they see you coming down the Lantry road they stop arguing, and look at you.", "when": { "absent": "orin" } },
+      { "narrate": "Davin is behind Orin, as he has been all the way from the Hall, with his pack in Mags's knot.", "when": { "flag": "b4_davin_comes", "party": "orin" } }
+    ],
+    "talks": [
+      {
+        "id": "eldest",
+        "label": "Hear what Sheddon's eldest want",
+        "lines": [
+          { "say": "Sheddon's eldest", "text": "You've done this. We can see it. We haven't. Nobody here has ever walked anywhere they couldn't walk back from by dark." },
+          { "say": "Sheddon's eldest", "text": "Take the front. Tell us when to stop and when not to. We'll do what we're told. We'll write it on our arms if we have to." },
+          { "say": "orin", "text": "I was at the back. The one time. With the lantern. I've never been at the front of anything.", "when": { "party": "orin" } },
+          { "say": "Sheddon's eldest", "text": "You look like you have.", "when": { "party": "orin" } }
+        ]
+      },
+      {
+        "id": "sedge",
+        "label": "Talk to Sedge, standing on his own at the end of the road",
+        "lines": [
+          { "narrate": "Sedge of Sheddon is a big, quiet farmer of about forty, with a coil of rope over his shoulder and nothing else. He is standing at the end of the road, where the farm track goes off east into the white, looking down it." },
+          { "say": "Sedge", "text": "My mother. She went home in the night. She read the door wrong, the farm door, out at the edge, and walked home to it. Her door says she lives there. She does. Did." },
+          { "say": "Sedge", "text": "It's an hour out and an hour back, the farm. In the white. I'm not leaving without her. I'm not asking anybody to go and get her either. Those are both true. I don't know what to do with both." },
+          { "say": "Sedge", "text": "Lantry owes me a hen. It's on Teasel's door. I'll not be collecting it now." }
+        ]
+      },
+      {
+        "id": "orin",
+        "label": "Ask Orin if he will take the front",
+        "requires": { "companion": "orin" },
+        "lines": [
+          { "say": "orin", "text": "They want a captain. They looked at me and saw one. I don't know what they saw." },
+          { "oneOf": [
+            { "say": "orin", "text": "I've given one order in my life. 'No.' To a boy on a ladder. It was the right one and I hated it. I'll give more today. I know I will.", "when": { "flag": "b4_davin_home" } },
+            { "say": "orin", "text": "I gave Davin my word at Saltwick. When I say go back, he goes back. I've never had to say it yet. Today, I might.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "I've never given an order. I said I never would. Today I'm going to have to." }
+          ] },
+          { "say": "orin", "text": "Varn said a captain's someone who can do the same again tomorrow and sleep after. I always thought that was the worst thing anyone ever said to me. I'm about to find out if it's true." }
+        ]
+      },
+      {
+        "id": "davin",
+        "label": "Find Davin by the rope cart",
+        "requires": { "flagsAny": ["b4_davin_comes"] },
+        "lines": [
+          { "narrate": "Davin is at the rope cart, cutting lengths and knotting them, one for every child, in Mags's knot, with the stopper on the far side." },
+          { "say": "Davin", "text": "I heard about the old woman. At the farm. I could go. I'm quick. I've gone first on worse." },
+          { "say": "orin", "text": "You'll do what you're told. That was the word.", "when": { "party": "orin" } },
+          { "say": "Davin", "text": "I know. I'm only saying I could.", "when": { "party": "orin" } },
+          { "say": "Davin", "text": "Nobody's told me not to. That's not the same as being told to, is it. I'll do the ropes.", "when": { "absent": "orin" } }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Ask Rue how the Wold walks a column",
+        "lines": [
+          { "say": "Rue", "text": "Roped. Everyone. A child between two grown people. Nobody unties for anything, not to drink, not to help. If you untie, you are gone." },
+          { "say": "Rue", "text": "And someone at the back who says the names, all day, down the rope, so the front knows who is still on it. In Thrum that is the oldest. Here they will want it to be you." },
+          { "say": "Rue", "text": "If someone goes back for anyone, they go off the rope. Alone. And they come after us in the white, with whoever they find. Sometimes they come. It is written when they do." }
+        ]
+      },
+      {
+        "id": "nessa",
+        "label": "Ask Nessa where she wants to be",
+        "requires": { "companion": "nessa" },
+        "lines": [
+          { "say": "nessa", "text": "Front. Always. Except I've got the end house's three behind me, and the littlest won't walk unless she can hold my hand, so I'm not really first, am I. I'm second, with a child." },
+          { "say": "nessa", "text": "And there's a woman out at a farm on her own and her son's standing at the end of the road looking at it. Nobody's said a word about her. I've noticed." }
+        ]
+      }
+    ],
+    "clue": "The white will close the Orme road by dark. Sedge's farm is an hour out and an hour back, from the cairn where the farm track leaves the road.",
+    "investigate": {
+      "label": "Read the white on the Orme road, and how long the day is",
+      "skill": "survival",
+      "alt": ["insight", "nature"],
+      "success": [
+        { "narrate": "{You walk|@ walks} out to the first bend of the Orme road and {read|reads} the white the way Rue reads it: the grey line on the posts where it lay last night, and the line under it, and how far it came between. By dark it will be over the road at the low ford, two hours short of Orme." },
+        { "narrate": "A column of two hundred, roped, with children, walks at the pace of the slowest child. If it stops for nothing it is past the ford at dusk. The cairn where the farm track leaves the road is at noon. The farm is an hour out from the cairn, and an hour back." }
+      ],
+      "failure": [
+        { "narrate": "{You try|@ tries} to read the white on the Orme road, but the posts are written over with a hundred winters' lines and {you cannot|@ cannot} tell last night's from any other. All {they} can be sure of is that it will be over the road by dark." }
+      ]
+    },
+    "route": {
+      "label": "Go house to house and count who is in the column before it moves",
+      "skill": "insight",
+      "alt": ["investigation", "persuasion"],
+      "safe": true,
+      "success": [
+        { "narrate": "{You go|@ goes} down the column house by house before it moves, and {chalk|chalks} each house's count on the shoulder of whoever is at its front. Two hundred and three. Everyone in Sheddon is in the road, except one old woman at a farm at the edge." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} down the column house by house before it moves, but the houses keep changing places in the line, and the count comes out different each time {you make|@ makes} it. By the time {you give|@ gives} up, the front has started walking." }
+      ]
+    },
+    "peaceful": {
+      "label": "Keep the column moving, every child roped, all the way to the ford",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion"],
+      "success": [
+        { "narrate": "{You know|@ knows} what the posts said: past the ford at dusk, or not at all. {You do|@ does} not let the column stop for anything.", "when": { "flag": "prepared:b4-sheddon" } },
+        { "narrate": "Every house knows its count, chalked on the shoulder of whoever is at its front, and calls it down the rope at every post.", "when": { "flag": "approach:b4-sheddon" } },
+        { "narrate": "{You call|@ calls} the names down the rope at every post, as near as {they} can remember them.", "when": { "notFlag": "approach:b4-sheddon" } },
+        { "narrate": "Orin walks at the front, and sets the pace, and does not look back, because the people behind him are looking at him.", "when": { "party": "orin", "notRoller": "orin" } },
+        { "narrate": "{You walk|@ walks} at the front, and {set|sets} the pace, and {do|does} not look back.", "when": { "absent": "orin" } },
+        { "narrate": "Davin walks the rope from end to end all morning, re-tying the children's knots where they have pulled loose.", "when": { "flag": "b4_davin_comes" } },
+        { "narrate": "When the white comes across the road in a long arm from the low fields, the column does not stop. It walks into it, roped, saying its names, and out of the other side, and every name that went in comes out." },
+        { "narrate": "By noon the column is at the cairn where the farm track goes off east. Sedge stops." }
+      ],
+      "failure": [
+        { "narrate": "{You try|@ tries} to keep the column moving, but the white comes across the road in a long arm from the low fields, and the front stops dead in it, and the rope goes slack all the way back, and in the white beside the road things begin to stand up." }
+      ]
+    },
+    "direct": {
+      "label": "Go down the valley to Sheddon",
+      "text": "You go down the valley from Lantry to Sheddon, a day east."
+    },
+    "approach": [
+      { "narrate": "The column moves at first light. Two hundred and some, roped, a child between every two grown people, with Sheddon's eldest in a cart in the middle and the rope cart at the back." },
+      { "narrate": "The Orme road goes north out of the valley between low walls, with the white lying in the fields on both sides of it, flat and still, like snow that has not decided to be snow." },
+      { "narrate": "Behind the column, Sheddon goes under. Nobody looks back. It is on their doors where they are going." }
+    ],
+    "crisis": [
+      { "narrate": "Mid-morning, the white comes across the road. Not all of it: one long arm, out of the fields on the east side, lying across the Orme road a hundred paces deep and moving." },
+      { "say": "Rue", "text": "Do not stop. If the front stops in it, the back walks into the front, and someone unties to see why." },
+      { "say": "orin", "text": "Nobody stops. Nobody unties. Names, down the rope. Now.", "when": { "party": "orin" } },
+      { "narrate": "Sedge is at the back of the column, roped, walking. Every few paces he turns round and looks east." }
+    ],
+    "objective": {
+      "name": "Through the white",
+      "label": "Get the column through the white across the road, everyone on the rope",
+      "description": "Four successful actions get two hundred people, roped, through the arm of white across the Orme road without the column stopping or anyone untying.",
+      "skill": "athletics",
+      "alt": ["survival", "persuasion", "perception"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The column comes out of the white in the end, every name on the rope, but it stopped in the middle, and it has lost an hour it did not have, and two of the children cannot remember the house they walked out of.",
+      "successText": "The column comes out of the white on the far side, roped, still walking, and every name that went in comes out."
+    },
+    "foe": "b4-sheddon-white",
+    "foeName": "The White on the Orme Road",
+    "enemyTheme": "gloam",
+    "attackName": "Drift Across the Road",
+    "retainerName": "Shape in the Ditch",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Noon, at the cairn where the farm track leaves the Orme road. The column has not stopped since dawn, and nobody is hurt.", "when": { "flag": "method:b4-sheddon", "is": "peace" } },
+        { "narrate": "Noon, at the cairn where the farm track leaves the Orme road. The road behind the column is trampled grey where the fight was, and the column has been walking again since, faster than it wants to." }
+      ] },
+      { "narrate": "Sedge stops at the cairn. He does not untie. He stands there, roped, with the column going on past him, looking down the farm track into the white." },
+      { "say": "Sedge", "text": "An hour out. An hour back. I'm not asking. I said I wouldn't." },
+      { "say": "Rue", "text": "Whoever goes, goes off the rope, and comes after us alone, in the white, with her. The column cannot wait. It has two hundred on it." },
+      { "narrate": "Orin has stopped, too, at the front, and turned round, and everyone behind him has stopped because he has. He looks at Sedge, and then at the track, and then at you.", "when": { "party": "orin" } },
+      { "say": "orin", "text": "This is mine, isn't it. They gave it me at the head of the road. It's mine.", "when": { "party": "orin" } }
+    ],
+    "decisions": [
+      {
+        "id": "ordered",
+        "label": "Let Orin give the order: the column goes on",
+        "requires": { "companion": "orin" },
+        "description": "This decision is permanent. Orin orders the column on. Nobody goes back for Sedge's mother.",
+        "told": {
+          "ballad": "At the farm-track cairn Orin Stoneward said 'on', and two hundred went on, and one old woman stayed in the white.",
+          "tally": "Sheddon. At the farm-track cairn the southern soldier ordered the column on. Sedge's mother was not fetched. Written: he said it himself, and he said her name."
+        },
+        "text": [
+          { "say": "orin", "text": "Column moves. Now. Nobody unties. Sedge, you're on the rope. You stay on it." },
+          { "say": "Sedge", "text": "Yes.", "when": { "party": "orin" } },
+          { "narrate": "Sedge goes on with the column. He walks the rest of the day with his face to the north, and does not look east again. He does not have to. The farm is on his arm, in his own hand, and he can read it without looking." },
+          { "say": "orin", "text": "Her name. What was her name.", "when": { "party": "orin" } },
+          { "say": "Sedge", "text": "Mother. At the edge farm. She hasn't a name of her own now. She gave it, the winter my father died.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Sedge's mother, at the edge farm. I gave the order. Write that. Not 'the column went on'. I said it.", "when": { "party": "orin" } },
+          { "say": "nessa", "text": "Somebody could have gone. Somebody always can.", "when": { "party": "nessa" } },
+          { "say": "orin", "text": "I know. That's why it was mine to say.", "when": { "party": "nessa" } },
+          { "narrate": "The column comes past the ford at dusk, and into Orme after dark, two hundred and three." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "orin": 1, "nessa": -1 },
+        "flag": "b4_orin_ordered"
+      },
+      {
+        "id": "orinback",
+        "label": "Let Orin go back for her, and take the column yourself",
+        "requires": { "companion": "orin" },
+        "description": "This decision is permanent. Orin goes off the rope, down the farm track into the white, for Sedge's mother. You take the front.",
+        "told": {
+          "ballad": "At the farm-track cairn Orin Stoneward untied, and went into the white for an old woman, and came out of it carrying her, and lighter by a name.",
+          "tally": "Sheddon. At the farm-track cairn the southern soldier went off the rope for Sedge's mother, and brought her in after dark. Written: he gave a name to the white for her."
+        },
+        "text": [
+          { "say": "orin", "text": "No. Not this time. Not again. You take the front. Names down the rope. Past the ford at dusk. Don't wait for me. That's an order too." },
+          { "oneOf": [
+            { "say": "orin", "text": "Davin. Rear of the column. You hold it. Nobody falls off the back. That's your order, and it's the word, and you keep it.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "Somebody take the rear. Somebody who'll not untie for anyone." }
+          ] },
+          { "say": "Davin", "text": "Yes. The rear. Yes.", "when": { "flag": "b4_davin_comes" } },
+          { "narrate": "Davin holds the rear of the column all afternoon, saying the names down the rope, and does not once look back for Orin. It is the hardest thing you have seen anyone do today.", "when": { "flag": "b4_davin_comes" } },
+          { "narrate": "Orin unties at the cairn and goes down the farm track into the white, alone, without a lamp, and is gone in ten paces." },
+          { "narrate": "You take the front. The column comes past the ford at dusk. In the last of the light, behind it, a shape comes out of the white on the road, carrying another on its back." },
+          { "narrate": "It is Orin, with an old woman on his back who keeps asking him, politely, who he is. He tells her. Then, at the gates of Orme, he stops, and frowns, and asks you what Varn's company was called. There was a name. They painted it on the carts. He cannot find it." },
+          { "say": "orin", "text": "Forty of us. I'd have told you yesterday. It's gone. The white had it. Fair price, I suppose. I never liked it." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_orin_went_back"
+      },
+      {
+        "id": "heroback",
+        "label": "Go back for her yourself",
+        "description": "This decision is permanent. You go off the rope, down the farm track into the white, for Sedge's mother.",
+        "told": {
+          "ballad": "At the farm-track cairn the stranger from the south untied, and went into the white for an old woman, and came out with her, and with a day gone.",
+          "tally": "Sheddon. At the farm-track cairn a southerner went off the rope for Sedge's mother and brought her in. Written: they gave a whole day to the white for her, and did not ask which."
+        },
+        "text": [
+          { "narrate": "You untie at the cairn before anyone can say anything." },
+          { "say": "orin", "text": "You took it off me. I'd made my mind up. I was going to say it. You took it off me.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Go on, then. I've got them. Past the ford at dusk.", "when": { "party": "orin" } },
+          { "narrate": "Rue takes the front of the column, with her book in her coat, and calls the names down the rope herself.", "when": { "absent": "orin" } },
+          { "narrate": "You go down the farm track into the white, alone. It is an hour to the farm. The old woman is sitting at her kitchen table with her coat on, reading the inside of her door, and she is very glad to see you, and has no idea who you are." },
+          { "narrate": "It is more than an hour back. You carry her the last of it. In the last of the light you come out onto the Orme road behind the column, past the ford, and walk into Orme after dark with Sedge's mother asleep on your back." },
+          { "narrate": "At the gate Rue asks you, gently, what you did on the day of the vote at Highpass. You know there was a vote. You know how it went, because she has it written down, and reads it to you. You cannot remember the hall, or the day, or anything in it. A whole day of your own, given, on the farm track, without your asking which." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "orin": -1 },
+        "flag": "b4_hero_went_back"
+      },
+      {
+        "id": "onward",
+        "label": "Order the column on yourself",
+        "requires": { "absent": "orin" },
+        "description": "This decision is permanent. You give the order. The column goes on, and nobody goes back for Sedge's mother.",
+        "told": {
+          "ballad": "At the farm-track cairn the stranger from the south said 'on', and two hundred went on, and one old woman stayed in the white.",
+          "tally": "Sheddon. At the farm-track cairn a southerner ordered the column on. Sedge's mother was not fetched."
+        },
+        "text": [
+          { "narrate": "You tell the column to go on. Nobody unties. Sedge's mouth goes tight, and he goes on with it, and walks the rest of the day with his face to the north." },
+          { "say": "nessa", "text": "Somebody could have gone. Somebody always can.", "when": { "party": "nessa" } },
+          { "narrate": "The column comes past the ford at dusk, and into Orme after dark, two hundred and three. Sedge writes something on his arm at the gate, and shows it to nobody." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "nessa": -1 },
+        "flag": "b4_hero_ordered"
+      }
+    ]
+  },
+  "b4-orme": {
+    "id": "b4-orme",
+    "book": 4,
+    "part": 2,
+    "name": "The Long Tally",
+    "level": 52,
+    "town": "orme",
+    "nextTown": "orme",
+    "unlock": "b4-sheddon",
+    "white": true,
+    "xp": 14750,
+    "gold": 1080,
+    "region": "Orme, the Wold's chief town, and the Long Hall, where nine hundred years of the Long Tally are kept",
+    "threat": "The Reckoner's tally-guard mean to hold the party in the Long Hall as surety for whatever the bell-country answers.",
+    "faction": "wold",
+    "brief": "Orme's Long Hall holds the Long Tally, nine hundred years of it. Burdock keeps it, and Sloe the Reckoner does its sums. She sent Rue south to find out who sends the white, and Rue has come back with you.",
+    "told": {
+      "ballad": "In Orme they keep a tally nine hundred years long, and they wrote the strangers from the south into it, and asked them what to write about the south.",
+      "tally": "Orme, the Long Hall. Southerners came, with Rue of Thrum, who went south to ask. Burdock wrote them in."
+    },
+    "opening": [
+      { "narrate": "Orme is low stone houses banked with snow round one long building, the Long Hall, with lamps in every window. Inside, the walls are cut with writing from the floor to the roof-beams, and the books stand in stacks to the roof-beams too, nine hundred years of them, and the lamps burn all night." },
+      { "narrate": "Burdock of the Long Hall has kept the tally for forty years. He is seventy, small, and very clean, with ink to the second knuckle of every finger. He remembers none of it. He reads it every morning, from wherever he left off, and believes every word." },
+      { "narrate": "Sloe of Orme, the Reckoner, has a table at the far end of the Hall, under the oldest wall, covered in slates, and she is doing a sum on them. She has been doing it, the clerks say, for a month. She does not look up when you come in. Then she does." },
+      { "narrate": "By the lamp nearest her table a man sits on a bench with his back to the wall, in a southern coat gone grey with the road, with a lamp on the floor between his boots: the lamp they sent him down Vell's stair with. It is Hesk.", "when": { "flag": "b3_stair_sealed" } },
+      { "narrate": "Pinned to the wall above Sloe's table, at the end of the newest line of the tally, there is a sheet of paper in a southern hand, pebble-marked at one corner. It is your letter, from the floor of given things. You do not remember writing a word of it. Sloe has read it. It is the first thing in nine hundred years of tally that came from the south.", "when": { "flag": "b4_letters_answered" } }
+    ],
+    "talks": [
+      {
+        "id": "burdock",
+        "label": "Let Burdock write you in",
+        "lines": [
+          { "say": "Burdock", "text": "From the south? No. Nobody has come from the south. It is not in the tally. I have read the tally. If they had come, it would say so." },
+          { "oneOf": [
+            { "say": "Burdock", "text": "One came. In the spring, with a lamp, out of the marked way, and is written. One. It does not say any more came after him.", "when": { "flag": "b3_stair_sealed" } },
+            { "say": "Burdock", "text": "A letter came. From the floor. A letter is not a person. It says 'we are coming'. It does not say you came.", "when": { "flag": "b4_letters_answered" } }
+          ] },
+          { "narrate": "Rue opens her book and shows him a page. Burdock reads it, and then reads it again, and then puts on a second pair of spectacles over the first and reads it a third time." },
+          { "say": "Burdock", "text": "Rue of Thrum went south, and came back with these, from the south. In her hand. Then it is true." },
+          { "oneOf": [
+            { "say": "Burdock", "text": "And Lantry has sent a slate ahead of you by the carter: 'The southerners gave at our well.' Givers. Well. Givers are written in.", "when": { "flag": "b4_gave_lantry" } },
+            { "say": "Burdock", "text": "And Lantry has sent a slate ahead of you by the carter: 'The southerners rang. The white went to Sheddon.' I do not know what rang means. Sloe does.", "when": { "flag": "b4_rang_lantry" } },
+            { "say": "Burdock", "text": "And Lantry has sent a slate ahead of you by the carter: 'The southerners went in, as guests do. The smith gave for them.' Guests, then.", "when": { "flag": "b4_waited_lantry" } }
+          ] },
+          { "narrate": "He takes down the newest book, and opens it, and writes you in, carefully, in the square hand, and blots it, and reads it back aloud. Then he looks up at you with complete and delighted belief, as if you had just walked in." },
+          { "oneOf": [
+            { "say": "Burdock", "text": "From the south! Sit down. You must be very tired. Nobody but the man with the lamp has ever come from the south. Well. You have. It is written.", "when": { "flag": "b3_stair_sealed" } },
+            { "say": "Burdock", "text": "From the south! Sit down. You must be very tired. Nobody has ever come from the south. Well. You have. It is written." }
+          ] }
+        ]
+      },
+      {
+        "id": "sloe",
+        "label": "Sit down at the Reckoner's table",
+        "lines": [
+          { "say": "Sloe", "text": "Rue says you can do sums. Good. Look." },
+          { "narrate": "She turns a slate round. On it, in columns, is every winter in the tally since the bells went south: how deep the white lay, how often Orme gave, and how much." },
+          { "say": "Sloe", "text": "Every winter since the bells, doubled. You can do the arithmetic yourself. I have done it every way there is. It comes out the same." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "And then last winter. The lightest in the tally. In nine hundred years, the lightest. Somebody in the south did something. I would like to know who, and what, and whether they will do it again, or undo it.", "when": { "flag": "b3_promise_old" } },
+            { "say": "Sloe", "text": "And then last winter. Bad. Worse than the one before. Less bad than the sum says it should have been, by about a third. Somebody in the south made more bells, and fewer than they meant to.", "when": { "flag": "b3_promise_hesk", "anyFlag": ["b3_three_told"] } },
+            { "say": "Sloe", "text": "And then last winter. The worst in the tally. Something in the south got louder. I would like to know what.", "when": { "flag": "b3_promise_hesk" } },
+            { "say": "Sloe", "text": "And then last winter, worse again, as every winter is. And in the spring a man came out of the marked way with a lamp, and told me why. I did not need him to. I had the sum.", "when": { "flag": "b3_stair_sealed" } }
+          ] },
+          { "say": "Sloe", "text": "And this. 'The night of the great note, the white came down on Orme and Lantry and did not lift until the giving.' The tally dates it to a midwinter. Rue wrote me down your midwinter, the night your Mother Bell was rung. They are the same night." },
+          { "say": "Sloe", "text": "So I know where it comes from. I know it can be sent harder, because it was. Then it can be sent softer. Somebody down there chose. I want them to choose again." },
+          { "say": "Sloe", "text": "I am not angry. Write that down, Burdock. I want it written that I was not angry. I want one winter back for my people, and I will pay for it with whatever it costs." }
+        ]
+      },
+      {
+        "id": "hesk",
+        "label": "Talk to Hesk",
+        "requires": { "flagsAny": ["b3_stair_sealed"] },
+        "lines": [
+          { "narrate": "Hesk does not get up. He looks at you for a long time, and moves his lamp an inch with his boot, so that it is between you." },
+          { "say": "Hesk", "text": "They sent me down a stair alone, with that, to carry the free wards on my own back. I came out the other end. These people fed me before they asked my name. Then they asked, and wrote it down." },
+          { "say": "Hesk", "text": "I told them what bells are. What they cost and who pays. I told them the free wards will never stop ringing, because I wouldn't, in their place. Strangers are a luxury, and nobody south of those peaks can afford them." },
+          { "say": "Hesk", "text": "I told them the truth. They wrote it down. That's more than you did." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Ask Rue what she will tell the Reckoner",
+        "lines": [
+          { "say": "Rue", "text": "She sent me to find out who sends the white. I found out. It is everybody. It is the bells. Every bell. And they did not know." },
+          { "say": "Rue", "text": "I will tell her both. She will write the first. She will not write the second, because the second does not change the sum." },
+          { "oneOf": [
+            { "say": "Rue", "text": "I read her my book this morning. All of it. She listened to every page, and at the end she said, 'So you were kind to them,' as if it was a figure that would not add up.", "when": { "noneFlag": ["b4_book_burned"] } },
+            { "say": "Rue", "text": "I told her my book burned. She asked who burned it. I told her. She wrote it down, and did not say anything, and that was worse.", "when": { "flag": "b4_book_burned" } }
+          ] }
+        ]
+      },
+      {
+        "id": "maren",
+        "label": "Ask Maren what she hears in the Long Hall",
+        "requires": { "companion": "maren" },
+        "lines": [
+          { "say": "maren", "text": "Sloe isn't lying. About anything. Not the numbers, not the winters, not that she isn't angry. She means every word, and every word is true." },
+          { "say": "maren", "text": "Burdock believes us now, completely. Ten minutes ago he believed the opposite, completely. Both times, true. He's not lying either way. He's reading." },
+          { "say": "maren", "text": "Hesk believes what he says. He always did. That was never the trouble with him.", "when": { "flag": "b3_stair_sealed" } }
+        ]
+      }
+    ],
+    "clue": "Two lines on the oldest wall: the year the bells went south, and, three hundred years ago, 'the bell-country asked us once to come south; we wrote it down, and forgot'.",
+    "investigate": {
+      "label": "Read the Long Hall's oldest wall by Burdock's lamp",
+      "skill": "history",
+      "alt": ["investigation", "arcana"],
+      "success": [
+        { "narrate": "{You take|@ takes} Burdock's lamp along the oldest wall, where the cutting is worn so shallow that the letters show only when the light is held sideways, and {read|reads} it back to the line every child copies: 'The year the bells went south, the white doubled.'" },
+        { "narrate": "Then forward, six hundred years, to a line nobody reads, because it is in the middle: 'The bell-country asked us once to come south. We wrote it down, and forgot.' Under it, smaller, in another hand: 'Who asked? Not written.'" }
+      ],
+      "failure": [
+        { "narrate": "{You take|@ takes} Burdock's lamp along the oldest wall, but the cutting is worn so shallow that the letters come and go with the flame, and all {they} can be sure of is the line every child copies: 'The year the bells went south, the white doubled.'" }
+      ]
+    },
+    "route": {
+      "label": "Find out where the Reckoner's tally-guard are mustering",
+      "skill": "perception",
+      "alt": ["stealth", "insight"],
+      "safe": true,
+      "success": [
+        { "narrate": "{You watch|@ watches} the Long Hall's doors through the afternoon, and {see|sees} the tally-guard come in by the clerks' door at the back, one at a time, with their slates under their arms and their spears wrapped in sacking, and stand along the oldest wall where Sloe can see them." }
+      ],
+      "failure": [
+        { "narrate": "{You watch|@ watches} the Long Hall's doors through the afternoon, but Orme comes and goes through every one of them, to read and to be written, and {you cannot|@ cannot} tell a tally-guard from a clerk until it is dark." }
+      ]
+    },
+    "peaceful": {
+      "label": "Ask Burdock to read what the tally says about guests",
+      "skill": "history",
+      "alt": ["persuasion", "religion"],
+      "success": [
+        { "narrate": "{You remember|@ remembers} the line in the middle of the oldest wall, and that the bell-country asked once, and {say|says} so, loud enough for the guard to hear.", "when": { "flag": "prepared:b4-orme" } },
+        { "narrate": "{You have|@ has} seen the guard come in by the clerks' door, and {you are|@ is} standing between them and Burdock's desk before they are across the Hall.", "when": { "flag": "approach:b4-orme" } },
+        { "narrate": "{You go|@ goes} to Burdock's desk, past the guard, and {put|puts} the oldest book in front of him.", "when": { "notFlag": "approach:b4-orme" } },
+        { "narrate": "{You ask|@ asks} Burdock to read what the tally says about guests. Not about the south. About guests." },
+        { "narrate": "Burdock finds it in four minutes, because nobody has ever asked him for it, and so it is in exactly the place it was put. He reads it aloud in the voice he uses for the oldest lines." },
+        { "narrate": "'A guest at Orme is written in on the day they come. What is written in is not held. A guest is not surety. Whoever holds a guest writes their own name under it.'" },
+        { "narrate": "The tally-guard look at Sloe. Sloe looks at the line for a long time. Then she takes her own pen out of her sleeve, and does not write her name under it, and puts the pen away." },
+        { "say": "Sloe", "text": "Very well. You are guests. Then answer me as guests." }
+      ],
+      "failure": [
+        { "narrate": "{You ask|@ asks} Burdock to read what the tally says about guests, but he cannot find it, because there are nine hundred years of it and he does not know what he is looking for, and while he looks the tally-guard put down their slates and unwrap their spears." }
+      ]
+    },
+    "direct": {
+      "label": "Go to the Long Hall",
+      "text": "You go up through Orme to the Long Hall, where the Long Tally is kept."
+    },
+    "approach": [
+      { "narrate": "At dusk the Long Hall fills. Orme comes in to read what happened to it today, and to be written, and the clerks go up and down the ladders with lamps." },
+      { "narrate": "Sheddon comes in too, two hundred of them, to be written into Orme's tally as Orme's now, one at a time, at Burdock's desk." },
+      { "oneOf": [
+        { "narrate": "Sedge comes in with his mother on his arm. She gives Burdock her name as 'Sedge's mother, of the edge farm', and he writes it that way, and she watches him do it as if it was a kindness.", "when": { "anyFlag": ["b4_orin_went_back", "b4_hero_went_back"] } },
+        { "narrate": "Sedge comes in on his own, and gives Burdock his name, and his farm, and then, after a long time, his mother's farm, so that it is written somewhere that she lived there." }
+      ] },
+      { "narrate": "Sloe has stopped doing her sum. She is watching the door." }
+    ],
+    "crisis": [
+      { "narrate": "The tally-guard come in by the clerks' door at the back of the Hall: a dozen of them, in long grey coats with the tally's square hand stitched down the front, each with a slate under one arm and a spear in the other hand." },
+      { "say": "Sloe", "text": "The bell-country owes the Wold nine hundred years. It has sent you. Until it answers, you stay here, in the Hall, written, and fed. You are surety for the answer." },
+      { "say": "Sloe", "text": "Nobody will hurt you. Nobody here hurts anybody. But you will stay." },
+      { "say": "orin", "text": "Stay where you are. They want us sitting down, not hurt. So do I.", "when": { "party": "orin" } },
+      { "narrate": "The tally-guard spread out along the oldest wall, between you and the doors, with their spears down and their slates up." }
+    ],
+    "objective": {
+      "name": "The doors of the Long Hall",
+      "label": "Get to the Long Hall's doors without hurting anyone who keeps the tally",
+      "description": "Four successful actions get the party past the tally-guard to the doors of the Long Hall, without a clerk or a book harmed.",
+      "skill": "acrobatics",
+      "alt": ["athletics", "persuasion", "intimidation"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "You reach the doors in the end, but a stack of the tally went over in the fight, two hundred years of it on the floor, and the clerks are on their knees picking it up in order, crying.",
+      "successText": "You are at the doors of the Long Hall, and the tally-guard have stepped back from them, and not a book is out of its place."
+    },
+    "foe": "b4-tally-guard",
+    "foeName": "The Tally-guard",
+    "enemyTheme": "soldier",
+    "attackName": "Slate and Spear",
+    "retainerName": "Tally-guard Spear",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Midnight in the Long Hall. The tally-guard have gone back out by the clerks' door with their spears wrapped up again. Nobody is hurt, and nobody is held.", "when": { "flag": "method:b4-orme", "is": "peace" } },
+        { "narrate": "Midnight in the Long Hall. The tally-guard are sitting along the oldest wall with their heads in their hands and their slates in their laps, and the clerks are going round them with bandages and lamps, and writing down who was hurt, and by whom." }
+      ] },
+      { "narrate": "Burdock has the newest book open on his desk, at a clean page, with his pen wet." },
+      { "say": "Burdock", "text": "Now. The south. It has to be written. What is to be written about the south? I will write whatever you say. I always do. Whatever I write, they will believe, after a season. That is how it works." },
+      { "narrate": "Sloe sits at her table with her hands flat on her slates, and waits." },
+      { "narrate": "Your letter is on the wall above her head: 'To whoever is on the other side of the bells. This is the south. We did not know you were there. We are sorry it took nine hundred years to ask. We are coming north, to ask properly.'", "when": { "flag": "b4_letters_answered" } }
+    ],
+    "decisions": [
+      {
+        "id": "truth",
+        "label": "The whole truth: the bells, the Mother Bell, all of it",
+        "description": "This decision is permanent. Burdock writes everything you know: what the bells do, where the white goes, and that the free wards rang it.",
+        "told": {
+          "ballad": "In Orme they asked what to write of the south, and the strangers told them all of it, the bells and the great note and the nine, and it was written.",
+          "tally": "Written, at the southerners' word: the bell-country rings the white north. It always has. The great note was theirs. They told us themselves."
+        },
+        "text": [
+          { "narrate": "You tell Burdock all of it, and he writes it down as you say it: the bells, and the lanes, and the nine on the lid at Cinder Fold, and the founders who cast them, and the Mother Bell that Elske rang at midwinter, and that every bell in the free wards rings the white north and always has." },
+          { "say": "Sloe", "text": "Thank you." },
+          { "narrate": "She does not say anything else. She turns one of her slates over and starts a new sum on the back of it." },
+          { "say": "Rue", "text": "That is what I would have written. All of it. That is the first time anyone from the south has said it, in nine hundred years. It is written that you said it." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_tally_truth"
+      },
+      {
+        "id": "reasons",
+        "label": "The truth, and the free wards' reasons with it",
+        "description": "This decision is permanent. Burdock writes what the bells do, and beside it why the free wards ring them: their children, their lanes, and that they did not know.",
+        "told": {
+          "ballad": "In Orme they asked what to write of the south, and the strangers told them the truth, and why, and Burdock wrote both sides of the page.",
+          "tally": "Written, at the southerners' word: the bell-country rings the white north, to keep its children out of it. Written beside it: they did not know where it went."
+        },
+        "text": [
+          { "narrate": "You tell Burdock what the bells do, and where the white goes. Then you tell him why: that the free wards ring them because the white takes their children too, out of the lanes, the way it takes Lantry's; that the founders did it, nine hundred years ago, to save the people in front of them; and that nobody in the south knew where it went, until a girl from Thrum walked down the old north road and asked." },
+          { "narrate": "Burdock writes it in two columns, on facing pages: what the bells do, and why. Then he reads both columns aloud, across the page, line by line." },
+          { "say": "Sloe", "text": "The second column does not change the sum." },
+          { "say": "Burdock", "text": "No. But it is written. That is what a tally is. Both columns, Sloe." },
+          { "say": "maren", "text": "She means it. It doesn't change the sum. She means that too.", "when": { "party": "maren" } }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_tally_reasons"
+      },
+      {
+        "id": "wait",
+        "label": "Nothing, until the free wards answer for themselves",
+        "description": "This decision is permanent. Nothing is written about the south until the council answers. The Reckoner will not forget that you asked her to wait.",
+        "told": {
+          "ballad": "In Orme they asked what to write of the south, and the strangers said, not yet, not until the south can answer for itself.",
+          "tally": "Asked what to write of the south, the southerners said: nothing, until the bell-country answers. Written by the Reckoner: they asked us to wait. We have waited nine hundred years."
+        },
+        "text": [
+          { "narrate": "You tell Burdock that it is not yours to write. The council at Highpass has to answer for the free wards, in its own words, and until it does, nothing should go in the tally about the south that the south did not say itself." },
+          { "narrate": "Burdock writes: 'The south: not yet.' And underlines it, and blots it." },
+          { "narrate": "Sloe takes her own pen out of her sleeve, and reaches across his desk, and writes under it, in a smaller and squarer hand: 'They asked us to wait. We have waited nine hundred years.' Then she goes back to her table, and her slates, and does not look at you again tonight." },
+          { "say": "Hesk", "text": "That's the free wards. Every time. I told her you'd say that.", "when": { "flag": "b3_stair_sealed" } }
+        ],
+        "rep": { "wardens": 1 },
+        "flag": "b4_tally_wait"
       }
     ]
   }
