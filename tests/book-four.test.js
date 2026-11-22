@@ -1,7 +1,7 @@
 'use strict';
 // Book Four, The Long Tally: the engine groundwork (docs/book-four/DESIGN.md,
-// build step 2). Book Four has no written chapters yet, so these tests play
-// thirty fixture chapters (tests/fixtures/book-four.js) with the preview on,
+// build step 2). These tests play Book Four's thirty chapters with the preview
+// on: the ones written so far, and fixtures (tests/fixtures/book-four.js) for the rest,
 // as agent playtests read the books. node --test runs each file in its own
 // process, so neither the fixtures nor the preview reach any other test file.
 const FX = require('./fixtures/book-four').install({ BRIARWATCH_PREVIEW_BOOKS: '1', BRIARWATCH_PREVIEW_PARTS: null });
@@ -57,8 +57,11 @@ test('Book Four is on the shelf: paid, three parts, none out, ending at the part
 
 test('the data directory merges after Book Three, and the browser build bundles it', () => {
   const os = require('node:os'), fs = require('node:fs'), path = require('node:path');
-  // The real files hold only their notes until chapters are written (these tests read fixtures in their place).
-  for (const f of ['quests', 'scenes', 'side-jobs']) assert.deepEqual(Object.keys(JSON.parse(fs.readFileSync(path.join(__dirname, `../src/data/book-four/${f}.json`), 'utf8'))), ['_note'], f);
+  // The written chapters are read from the real files; fixtures stand in for the rest, in story order.
+  const real = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
+  assert.deepEqual(FX.WRITTEN, Object.keys(real).filter((k) => !k.startsWith('_')));
+  assert.deepEqual(FX.WRITTEN, FX.IDS.slice(0, FX.WRITTEN.length), 'Chapters are written in story order.');
+  for (const id of FX.IDS) assert.equal(/^Fixture/.test(QUESTS[id].name), !FX.WRITTEN.includes(id), id);
   const { buildPublic } = require('../scripts/build-public');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'b4-build-'));
   try {
@@ -246,7 +249,7 @@ test('a companion down on a Book Four chapter walks out for the next and is back
   s = atEnd(s, 'b4-records'); s.world.approvalWindow = { maren: -1 };
   const warned = []; Away.count(s, 'maren', -1, warned);
   assert.ok(warned.some((e) => /Maren/.test(e.text) && /may leave/.test(e.text)), 'The warning fires in Book Four.');
-  s = act(s, { type: 'story-choice', choiceId: 'one' }).state;
+  s = act(s, { type: 'story-choice', choiceId: QUESTS['b4-records'].decisions[0].id }).state;
   s = throughScenes(s);
   assert.equal(s.story.nodeId, 'away-maren-leave');
   s = act(s, { type: 'story-choice', choiceId: E.buildView(s).scene.choices[0].id }).state;

@@ -5,7 +5,8 @@
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
 // Part Two is held back, so Part One ends at "To be continued" as it will for
 // players; tests/book-three-part-two.test.js shows Part Two following it.
-process.env.BRIARWATCH_PREVIEW_PARTS = '3:1';
+// Book Four (being written) is held back too, so Book Three's end is read as players will have it.
+process.env.BRIARWATCH_PREVIEW_PARTS = '3:1,4:0';
 // Book Three, "The Names in the Bronze", Part One, chapters 1 to 10
 // (docs/book-three/DESIGN.md): the letter, Sable's rite, the pass in spring,
 // Saltwick, the casting yard, the witness, home for help, the quiet bells, the

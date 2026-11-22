@@ -3,6 +3,9 @@
 // These tests read it the way agent playtests do. node --test runs each file
 // in its own process, so this reaches no other test file.
 process.env.BRIARWATCH_PREVIEW_BOOKS = '1';
+// Book Four is held back (it is being written), so Book Three ends the books here
+// as it does for players; tests/book-four*.test.js show Book Four following it.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 // Book Three, Part Two, "The Stair", chapters 11 to 20
 // (docs/book-three/DESIGN-PART-TWO.md): the price of a yes, Wren's bell, the
 // order, the town that said no, the witness's seal, the winter watch,

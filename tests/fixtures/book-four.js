@@ -1,12 +1,15 @@
 'use strict';
 // Fixture chapters for Book Four's engine tests (build step 2 of
-// docs/book-four/DESIGN.md). Book Four has no written chapters yet, so these
-// tests stand thirty plain chapters in for them: the ids, levels, parts, towns
-// and engine fields the design gives (xp, requiresJob, levelFloor, needs,
-// together), with placeholder text and none of the story. They are never
-// shipped: install() puts them in Node's module cache in place of
-// src/data/book-four/quests.json and scenes.json, before anything from src/
-// is loaded, so it must be called at the top of a test file.
+// docs/book-four/DESIGN.md). Book Four is written a few chapters at a time, so
+// these tests stand plain chapters in for the ones not written yet: the ids,
+// levels, parts, towns and engine fields the design gives (xp, requiresJob,
+// levelFloor, needs, together), with placeholder text and none of the story.
+// A chapter or scene written in src/data/book-four/ is used as written, in
+// its place in story order, so the engine tests also play the real chapters.
+// The fixtures are never shipped: install() puts the merged tables in Node's
+// module cache in place of src/data/book-four/quests.json and scenes.json,
+// before anything from src/ is loaded, so it must be called at the top of a
+// test file.
 //
 // This relies on node --test running each test file in its own process (its
 // default isolation, which scripts/verify.js uses). The fixtures and the
@@ -43,10 +46,15 @@ function chapter(id, i) {
     decisions: [{ id: 'one', label: 'Fixture choice one', text: 'Fixture: one.', flag: `${id.replace('-', '_')}_one` }, { id: 'two', label: 'Fixture choice two', text: 'Fixture: two.', flag: `${id.replace('-', '_')}_two` }]
   };
 }
-const QUESTS = () => Object.fromEntries(IDS.map((id, i) => [id, chapter(id, i)]));
+// The written files, read fresh (the engine changes the tables it is given).
+const written = (file) => JSON.parse(require('node:fs').readFileSync(path.resolve(__dirname, `../../src/data/book-four/${file}.json`), 'utf8'));
+// The chapters already written in src/data/book-four/quests.json.
+const WRITTEN = Object.keys(written('quests')).filter((id) => !id.startsWith('_'));
+const QUESTS = () => { const real = written('quests'); return Object.fromEntries(IDS.map((id, i) => [id, real[id] || chapter(id, i)])); };
 // The epilogue's framing of the 4th job (engine change 5), in one fixture scene.
 const FRAMING = 'Fixture: Dera says go and make the next verse true.';
 const SCENES = () => ({
+  ...Object.fromEntries(Object.entries(written('scenes')).filter(([id]) => !id.startsWith('_'))),
   'b4-fixture-parting': { id: 'b4-fixture-parting', after: 'b4-parting', cast: [], act: 'Fixture', location: 'Fixture hall', start: 'end',
     trialFraming: { flag: 'b4_done', trial: 'fourth', lines: [{ say: 'Dera', text: FRAMING }] },
     nodes: { end: { title: 'Fixture end', objective: 'Go on.', lines: [{ narrate: 'Fixture epilogue.' }], framesTrial: true, choices: [{ id: 'go', label: 'Go on', setFlags: { b4_done: true } }] } } }
@@ -64,7 +72,7 @@ function install(env = { BRIARWATCH_PREVIEW_BOOKS: '1' }) {
   for (const [k, v] of Object.entries(env)) { if (v === null) delete process.env[k]; else process.env[k] = v; }
   cache(path.join(src, 'data/book-four/quests.json'), QUESTS());
   cache(path.join(src, 'data/book-four/scenes.json'), SCENES());
-  return { IDS, FLOORS, NEEDS, FRAMING };
+  return { IDS, WRITTEN, FLOORS, NEEDS, FRAMING };
 }
 
-module.exports = { install, IDS, FLOORS, NEEDS, FRAMING };
+module.exports = { install, IDS, WRITTEN, FLOORS, NEEDS, FRAMING };

@@ -4,6 +4,9 @@
 // later to paid accounts only. The server grants access per session; a save
 // can never grant itself access. Book Three has no chapters yet, so these
 // tests stand a free account at Book One (grant 1) to lock Book Two.
+// Book Four is being written: with the preview on it is held back, so the books
+// end where players' do and a save that finishes them is finished, not waiting.
+process.env.BRIARWATCH_PREVIEW_PARTS = '4:0';
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Book = require('../src/book');
 const { QUESTS } = require('../src/expansion');

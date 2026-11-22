@@ -1,3 +1,179 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom."
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's from chapter 4, after Linus has sung his song; it closes after chapter 6 (until: b4-book), which is added when chapter 6 is written (build step 4), since a job may only name a written chapter.",
+  "rue-doors": {
+    "id": "rue-doors",
+    "name": "Rue's Doors",
+    "town": "highpass",
+    "level": 41,
+    "from": "b4-walker",
+    "until": "b4-ballad",
+    "gold": 140,
+    "giver": "The innkeeper at Highpass's upper gate",
+    "brief": "The innkeeper at Highpass's upper gate wants Rue to stop writing on his doors. Rue cannot see why she should.",
+    "start": "doors",
+    "nodes": {
+      "doors": {
+        "title": "Written Over",
+        "lines": [
+          { "narrate": "The inn at Highpass's upper gate has eleven doors, counting the cellar and the privy, and every one of them has writing on it now." },
+          { "narrate": "Small and square and joined, in lead and in ink and in one place scratched with a nail: names, days, the weather, which stair is loose, who was kind. Across the middle panel of the best room's door, in letters a thumb high: THE MAN IN THIS ROOM SNORES. HE IS FROM ASHFORD. HE IS KIND ABOUT IT." },
+          { "say": "The innkeeper", "text": "Every door. Every one. I've a guest from Merrowgate won't come out of his room because it says on the door what he paid. It's true. That's not the point." },
+          { "oneOf": [
+            { "say": "The innkeeper", "text": "She lodges with the old delegate from Fenmere, three streets off, and walks up here every morning to do one. Brannagh says it's not her house, so it's not her business. Brannagh's own door is clean, I notice.", "when": { "flag": "b4_rue_council" } },
+            { "say": "The innkeeper", "text": "She sits up at the fire with the captain all night, and comes down here for her breakfast, and does a door. A door a day. Like a tithe.", "when": { "flag": "b4_rue_watch" } },
+            { "say": "The innkeeper", "text": "She was here three nights with you at the session and did every door in the house by lamplight. Now you're back, and so is she. I've hidden the ink.", "when": { "flag": "b4_rue_party" } },
+            { "say": "The innkeeper", "text": "She comes in every morning and does a door." }
+          ] },
+          { "say": "The innkeeper", "text": "I've asked her to stop. She says she can't. She says if it isn't on a door it isn't anywhere. I've no notion what that means. Will you talk to her? She listens to you. It says so on the cellar door." }
+        ],
+        "choices": [
+          { "id": "talk", "label": "Find Rue and ask her about the doors", "next": "rue" }
+        ]
+      },
+      "rue": {
+        "title": "Whose House It Is",
+        "lines": [
+          { "narrate": "Rue is sitting on the inn's back step, writing on the inside of the yard gate." },
+          { "say": "Rue", "text": "Where I am from, everything is on the doors. Your name is on your door, and your mother's, and what you owe and are owed, and who died, and what you gave and when. Every morning you read your door before you go out, so that you know whose house it is." },
+          { "say": "Rue", "text": "Here nothing is on the doors. I walk down a street and every house is a stranger, and I cannot bear it. So I write the true things on them, so that somebody will know. I thought it was a kindness. He says it is not." },
+          { "say": "Rue", "text": "He is not wrong. I have read his door. It says he is not wrong about most things. I wrote that." },
+          { "say": "maren", "text": "You could ask him for one door. Just one. One that's yours." },
+          { "say": "Rue", "text": "One? Where would I put everything else?", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "sorrel",
+            "label": "Ask Captain Sorrel for a wall of the fort she may write on",
+            "check": { "skill": "persuasion", "alt": ["insight", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You find|@ finds} Sorrel on the wall and put it to him. He listens, and then walks {you|@} along the north wall to the old gatehouse at the head of the north road, which nobody has used since the founders' time: an iron-studded door that does not open, and a long blank face of dressed stone on either side of it." },
+                { "say": "Sorrel", "text": "That. It's the founders' gate. Nobody uses it. She can write on every stone of it she can reach, and I'll have a ladder brought for the ones she can't. If it's going to be anybody's door, it should be hers. It's her road." },
+                { "narrate": "Rue stands in front of it for a long time. Then, on the first stone, very small, at the bottom, she writes: HIGHPASS. A FORT. THEY LET ME IN." }
+              ],
+              "setFlags": { "job:rue-doors-gate": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "Sorrel hears {you|@} out and says no. It's a fort, not a slate. But he says it kindly, and on the way back along the wall he stops at the door of his own office, and looks at it, and says she may have that one, if she must. It's his. He'll answer for it." },
+                { "narrate": "By morning it says: CAPTAIN SORREL. DID THE SUM TWICE. LET ME IN." }
+              ],
+              "setFlags": { "job:rue-doors-office": true }
+            }
+          },
+          {
+            "id": "door",
+            "label": "Pay the inn's joiner for a door of her own, on a frame in the yard",
+            "gold": -30,
+            "lines": [
+              { "narrate": "You give the inn's joiner thirty gold for a door: a good one, oak, on its own frame, standing in the yard where anyone can read it. It is not a door to anywhere. Rue does not mind that at all." },
+              { "say": "Rue", "text": "It is a door. It is mine. When I go home I will carry it." },
+              { "say": "The innkeeper", "text": "You'll not. It's oak. It weighs more than you do." },
+              { "say": "Rue", "text": "Then I will write on it that it is mine, and leave it here, and somebody will know." }
+            ],
+            "setFlags": { "job:rue-doors-door": true }
+          },
+          {
+            "id": "read",
+            "label": "Ask the innkeeper to read his own doors with you before he paints them over",
+            "check": { "skill": "insight", "alt": ["persuasion", "performance"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You walk|@ walks} the innkeeper round his own house, door by door, and {you read|@ reads} him what is on them. The privy: the latch sticks; lift and push. The cellar: the third barrel is the good one; he knows. The kitchen: his wife's name, and the day she died, eleven years ago, and under it, WHERE HE STILL PUTS OUT TWO CUPS." },
+                { "narrate": "He stops at the kitchen door for a long time." },
+                { "say": "The innkeeper", "text": "Nobody's written her name since the stone." },
+                { "narrate": "He paints over the best room's door, and the Merrowgate man's, and the rest. He leaves the kitchen door as it is, and tells Rue she may have that one and no other, and write on it whatever she likes. She thanks him, and writes nothing else on it at all." }
+              ],
+              "setFlags": { "job:rue-doors-kitchen": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "The innkeeper will not go round his doors with {you|@}. He has a bucket of whitewash and a brush and his mind made up. But he stops at the kitchen door with the brush raised and reads what is on it, his wife's name and the day, and puts the brush down. He paints the other ten. He leaves that one." }
+              ],
+              "setFlags": { "job:rue-doors-kitchen": true }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "third-verse": {
+    "id": "third-verse",
+    "name": "The Third Verse",
+    "town": "briarwatch",
+    "level": 43,
+    "from": "b4-ballad",
+    "gold": 150,
+    "giver": "Linus Pardew, at his table by the well",
+    "brief": "Linus Pardew wants the true story for the third verse of his song. Dera, Tovin and Pim each tell him a different one.",
+    "start": "well",
+    "nodes": {
+      "well": {
+        "title": "Three Stories",
+        "lines": [
+          { "narrate": "Linus Pardew is still in Briarwatch. He has taken a room over the inn and a table by the well, and he has rewritten your song four times. The first two verses are right now, or near enough. The third is a blank line on the broadsheet with three different versions pencilled round it, and three people from Briarwatch standing round the table, each of them sure theirs is the one." },
+          { "oneOf": [
+            { "narrate": "It is to be the night Briarwatch rang its pans. Everybody agrees on that much.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+            { "narrate": "It is to be the night the white came into the lanes. Everybody agrees on that much." }
+          ] },
+          { "say": "Dera", "text": "It was Pim. He's the one who asked. He's the one who sat out there all night with it. A song about that night that isn't about Pim is a lie, and I've had enough lies about this village sung at my door." },
+          { "oneOf": [
+            { "say": "Tovin", "text": "It was the fire. The fire going out. Every night since the bell went quiet we've had a fire on that edge, and the one night we didn't, everybody found out what it was for. That's the verse.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Tovin", "text": "It was the bell. The bell not ringing. Every hour for years it's rung, and the one night it didn't, everybody found out what it was for. That's the verse. The silence." }
+          ] },
+          { "oneOf": [
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was them. Everybody out in their nightclothes with a pan. Reeve Aveline had the big stew pot. I've never seen her run. Put that in. Put everybody in.", "when": { "flag": "method:b4-ballad", "is": "peace" } },
+            { "say": "Pim", "text": "It wasn't me, and it wasn't the bell. It was everybody who came out into the lanes when they could have stayed in and shut the door. Reeve Aveline came out with the big stew pot. Put that in. Put everybody in." }
+          ] },
+          { "oneOf": [
+            { "say": "Pim", "text": "And put in that it's one night a month now. So people know it's on purpose.", "when": { "flag": "b4_bw_quiet" } },
+            { "say": "Pim", "text": "And don't put my rule in. It's a rule, not a song.", "when": { "flag": "b4_bw_pim" } },
+            { "say": "Pim", "text": "And put in that we keep it every night. So people know we still do.", "when": { "flag": "b4_bw_rings" } }
+          ] },
+          { "say": "Linus Pardew", "text": "Three verses, and room for one. A song can hold one true thing at a time. Two, if it's long and they're drunk. Which one?" },
+          { "say": "nessa", "text": "Put Pim in. He'll hate it. Put him in anyway." }
+        ],
+        "choices": [
+          {
+            "id": "dera",
+            "label": "Give Linus Dera's verse: the boy who asked where away is",
+            "lines": [
+              { "narrate": "You tell Linus to write the boy who asked. He writes it at the well with Dera reading over his shoulder, and when it is done she reads it through, and nods once, and goes back to her forge." },
+              { "narrate": "Pim hears it sung that evening from the well, with his name in it. He goes red to the ears and climbs the tower early." },
+              { "say": "Pim", "text": "Away where. He's put that in. He's put my words in." }
+            ],
+            "setFlags": { "job:third-verse-dera": true }
+          },
+          {
+            "id": "tovin",
+            "label": "Give Linus Tovin's verse: the night Briarwatch's watch went dark",
+            "lines": [
+              { "narrate": "You tell Linus to write the night the watch went dark. He sits with Tovin in the bell-room for an afternoon to get it right, and comes down with a verse that has no rhyme at the end of it at all: a line, and then nothing, the way the hour was missed." },
+              { "say": "Tovin", "text": "That's it. That's what it was like. He's left the end off. I didn't know you could do that in a song." },
+              { "say": "Linus Pardew", "text": "You can't. Everyone will notice. That's the point." }
+            ],
+            "setFlags": { "job:third-verse-tovin": true }
+          },
+          {
+            "id": "all",
+            "label": "Ask Linus to put everybody in: every house, and what it did that night",
+            "check": { "skill": "performance", "alt": ["persuasion", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} round the village with Linus all afternoon, door to door, asking every house what it did that night, and Linus writes it all down. By evening he has forty names and forty doorsteps, and a verse forty lines long that does not scan anywhere." },
+                { "narrate": "He sings the whole of it that night from the well, and it takes a quarter of an hour, and nobody in Briarwatch goes home, because every one of them is waiting for their own line. Aveline's stew pot gets a line of its own. So does Pim, who did not bang anything." }
+              ],
+              "setFlags": { "job:third-verse-all": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} round the village with Linus, but by the tenth house everybody wants to be the first line, and the eleventh wants to be the last, and Linus gives up and writes 'and all of Briarwatch with them', which pleases nobody, and which they sing loudest." }
+              ],
+              "setFlags": { "job:third-verse-all": true }
+            }
+          }
+        ]
+      }
+    }
+  }
 }
