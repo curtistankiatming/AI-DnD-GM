@@ -1084,3 +1084,34 @@ test('with the preview on, an agent playtest walks the hero to level 40 and stop
   assert.equal(r.level, 40); assert.equal(r.booksFinished, true); assert.equal(r.trialOffered, true);
   assert.ok(r.completed['b3-firstbell']);
 });
+
+// Systems review, 22 November 2026.
+test('a long AI trial opening keeps the framing and is cut at a sentence end, never mid-word', () => {
+  let s = decide('b3-firstbell', 'old'); s = through(s, { 'scene-firstbell-gift': 'forge' }); s.player.progression.specialization = 'guardian';
+  const before = hero('fighter', 40); before.player.progression.specialization = 'guardian';
+  const long = Array.from({ length: 40 }, (_, i) => `The road bends east at marker ${i}.`).join(' ');
+  const out = D.commissionTrial(s, { ...D.writtenTrial(before), opening: long }, []);
+  assert.equal(out.ok, true); assert.equal(out.written, false);
+  const opening = s.director.quests[out.questId].opening;
+  assert.match(opening, /^Dera: You gave this place/);
+  assert.ok(opening.length <= 900, `${opening.length}`);
+  assert.match(opening, /marker \d+\.$/, 'ends on a whole sentence');
+});
+
+test('below the stair, a stay scene whose next chapter can no longer be played goes to town instead of stopping', () => {
+  let s = at('b3-company', 'after');
+  s.world.approvalWindow = { orin: -3 }; s.story.flags['method:b3-company'] = 'peace';
+  s = act(s, { type: 'story-choice', choiceId: 'keep' }).state;
+  assert.equal(s.story.nodeId, 'away-orin-stay');
+  Book.grant(s, Book.FREE_BOOKS); // the subscription lapses in the middle of the scene
+  s = act(s, { type: 'story-choice', choiceId: E.buildView(s).scene.choices[0].id }).state;
+  assert.equal(s.story.nodeId, `town-${s.world.townId}`);
+  assert.equal(s.world.goingOn, undefined);
+});
+
+test('below the stair the retreat order says it falls back to the ledge; above it, to town', () => {
+  const retreat = (id) => { const s = act(at(id, 'crisis'), { type: 'story-choice', choiceId: 'confront' }).state; return E.buildView(s).combat.actions.find((a) => a.id === 'retreat'); };
+  assert.equal(retreat('b3-deep').name, 'Fall back to the ledge');
+  assert.match(retreat('b3-deep').description, /last safe ledge/);
+  assert.equal(retreat('b3-winter').name, 'Retreat to town');
+});
