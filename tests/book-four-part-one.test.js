@@ -988,3 +988,16 @@ test('each Book Four chapter in Part One gives its own Legendary reward, worn fr
     assert.equal(Gear.award(s, `quest:${id}`, []), null, `${id}: once`);
   }
 });
+
+test('with only Part One out, a save after chapter 10 never sees Lantry or Orme, and the Wold\'s reputation is not shown', () => {
+  const s = ready(50, 'b4-peaks'); s.player.progression.thirdJob = true;
+  for (const id of ['lantry', 'orme']) assert.equal(Book.townOpen(s, id), false, id);
+  const D = require('../src/director');
+  assert.ok(!D.SCHEMA.properties.destination.enum.includes('lantry'), 'Never offered to the AI storyteller.');
+  const view = E.buildView(s);
+  assert.ok(!view.world.towns.some((t) => ['lantry', 'orme'].includes(t.id)));
+  assert.ok(!('wold' in view.world.reputation));
+  // A save that somehow holds the town still cannot travel there.
+  s.world.unlockedTowns.push('lantry');
+  assert.equal(E.resolveAction(s, { type: 'travel-town', townId: 'lantry' }).result.ok, false);
+});

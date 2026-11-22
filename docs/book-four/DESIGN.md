@@ -1930,6 +1930,54 @@ Book Four frames it the way Book Three framed the 3rd job:
     15 and 25 use `companion:`), `flagScale`, `access` lines, `W.atLedge`,
     the parts engine.
 
+### Engine changes: status (build step 6)
+
+- **Built in step 2:** 1 (shelf), 2 (data directory), 3 (3rd job gate),
+  4 (level floors), 5 (trial framing by kind), 6 (gear gates; `warm` was
+  added in step 6), 10 (walkouts), 12's town pages by flag, 13 (ending text).
+- **Built in step 6:**
+  - 7, **the white.** `white: true` on a chapter: when its deciding fight
+    (`quest:<id>`) starts, every party member who wears no `warm: true`
+    item is Slowed until the start of their round-2 turn (`whiteCold` in
+    `src/combat.js`). It never applies to bounties, practice or AI
+    adventures. The fight's first event and log line name who is cold and
+    why; the combat view's `white` repeats it in round 1; the condition
+    reads "Slowed by the white (no warm gear)". Item cards of warm gear say
+    "Warm: in the Wold's white, the wearer is not Slowed at the start of a
+    deciding fight." (`Gear.describe`).
+  - 8, **the Wold faction.** `wold` is in `director.FACTIONS`, and
+    `world.reputation` is built from that list, so old saves gain `wold: 0`.
+    Lantry and Orme have `faction: "wold"`, so the existing price rule
+    applies. The Wold is shown (town screen, Journal, AI brief) only once
+    the party has reached one of its towns or a choice has moved it
+    (`director.shownReputation`), and an AI adventure cannot favour it
+    before then.
+  - 9, **the Telling.** `src/telling.js`. A chapter's `told` (or the chosen
+    decision's own `told`, which wins) is shown in the Journal under "What
+    they tell of you": the song and the Long Tally side by side, stacked on
+    a narrow screen. Once `fourth_telling` is set, only the keeper's version
+    is shown (`companions` keeps both, `none` none), and after the books the
+    AI brief gets `legend` (the keeper's last twelve lines, or the neutral
+    text for `none`). While the books run, the AI is not given told lines.
+  - 12, **Lantry and Orme** in `towns.json`, with shops, bounty boards
+    (`BOARDS` in `src/bounty.js`) and town pages. Each has `book: 4`: a town
+    written for a later book is closed until a chapter names it, and then
+    follows the existing `Book.townOpen` rule (open while one of its chapters
+    is playable). Each has `from: "highpass"`: for a save whose gear does not
+    wait for Book Four (`Book.ownsGear` false: Book Four hidden or unpaid, or
+    an AI story), Highpass sells Lantry's and Orme's level stock too, so a
+    hero beyond the books still finds every tier. The shop stock for 45 to
+    70 is on the story's route (docs/EQUIPMENT.md).
+- **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
+  the engine is Book Three's) and 14 (the companion arc moves).
+
+**Departures in step 6.** Tier 50 stays on sale in Highpass as well as Lantry
+and Orme, because the hero reaches level 50 at Highpass (chapter 10) and plays
+chapter 11 before Lantry opens; warm gear is sold only in Lantry and Orme, so
+chapter 11's fight always has the cold unless warm gear is already worn (the
+chapter 11 reward, the Door-reader's Scarf, comes after it). Tier 65 is sold
+in Merrowgate and Cinder Fold, where Part Three is at 65 to 69.
+
 ## Test plan
 
 No test calls the paid API: tests run with the AI game master off or against

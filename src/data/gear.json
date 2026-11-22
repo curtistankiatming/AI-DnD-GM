@@ -5354,6 +5354,114 @@
     }
   },
   {
+    "id": "whitewool-plate",
+    "name": "White-wool Plate",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Lantry plate over a quilted coat of the Wold's white wool, with the smith's name chalked inside so that the smith will know it next year.",
+    "purpose": "Base AC 23, no Dexterity bonus. -2 Stealth; +1 Strength saves, +1 Constitution saves.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1
+    },
+    "requires": {
+      "level": 50,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    }
+  },
+  {
+    "id": "fleece-lined-scale",
+    "name": "Fleece-lined Scale",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Horn scales sewn onto a sheepskin coat, fleece side in, the way Lantry's carters wear them on the Orme road.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Wisdom saves.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "whitewool-jerkin",
+    "name": "White-wool Jerkin",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "A close-knit jerkin of undyed white wool, the colour of the weather, so that a walker in it is hard to see and easy to keep warm.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Survival.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "survival": 2
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
+    "id": "door-chalk-mittens",
+    "name": "Door-chalk Mittens",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 840,
+    "warm": true,
+    "description": "Thick Lantry mittens with the finger-ends left open, white with the chalk of every door their last owner wrote on.",
+    "purpose": "Equip in the accessory slot. +3 Survival, +3 Insight, +3 History, +3 Investigation.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "skillBonuses": {
+      "survival": 3,
+      "insight": 3,
+      "history": 3,
+      "investigation": 3
+    },
+    "requires": {
+      "level": 50
+    }
+  },
+  {
     "id": "bellwarden-hammer",
     "name": "Bellwarden Hammer",
     "category": "weapon",
@@ -5544,6 +5652,60 @@
       ]
     },
     "set": "chorus"
+  },
+  {
+    "id": "long-hall-muffler",
+    "name": "Long Hall Muffler",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 950,
+    "warm": true,
+    "description": "A long white muffler from Orme, knitted with one dark stitch for every winter, as the tally-keepers knit them.",
+    "purpose": "Equip in the accessory slot.",
+    "stats": {
+      "dealt": 0.2,
+      "taken": -0.05
+    },
+    "skill": {
+      "name": "Into the Wind",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Become Fortified for one round: take 25% less damage."
+    },
+    "story": {
+      "skill": "survival"
+    },
+    "requires": {
+      "level": 55
+    }
+  },
+  {
+    "id": "orme-hearthstone",
+    "name": "Orme Hearthstone",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 950,
+    "warm": true,
+    "description": "A flat stone from an Orme hearth, kept hot in a wool pouch on a cord; it stays warm for a day and a night.",
+    "purpose": "Equip in the accessory slot: +1 AC. +1 to every saving throw (+2 Wisdom).",
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 2,
+      "cha": 1
+    },
+    "requires": {
+      "level": 55
+    }
   },
   {
     "id": "bellwarden-plate",

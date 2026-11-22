@@ -79,6 +79,12 @@ function setBonuses(a) {
 // Everything that adds to an actor's numbers: worn items, then active set bonuses.
 const sources = (a) => [...worn(a), ...setBonuses(a).map((b) => b.bonus)];
 
+// Warm items ("warm": true, Book Four's Wold-made white wool): a party member
+// wearing one is not Slowed by the white at the start of a deciding fight in a
+// chapter with "white": true (src/combat.js). The first warm item worn, or null.
+const warmItem = (a) => worn(a).find((i) => i.warm) || null;
+const WARM_TEXT = 'Warm: in the Wold\'s white, the wearer is not Slowed at the start of a deciding fight';
+
 // Special stats summed over what an actor wears (src/equipment.js derive).
 function stats(a) {
   let dealt = 0, taken = 0;
@@ -133,6 +139,7 @@ function describe(item) {
   if (item.stats?.taken) out.push(item.stats.taken > 0 ? `${pct(item.stats.taken)}% more damage taken` : `${pct(item.stats.taken)}% less damage taken (all worn gear together takes off at most 30%)`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
+  if (item.warm) out.push(WARM_TEXT);
   const set = SETS[item.set];
   if (set) out.push(setText(set));
   const src = source(item);
@@ -299,4 +306,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = {setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};
+module.exports = {warmItem, WARM_TEXT, setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};

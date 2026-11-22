@@ -16,7 +16,7 @@ function init(state){
   w.cycle=Number.isInteger(w.cycle)&&w.cycle>=0?w.cycle:0;
   w.townId=TOWNS[w.townId]?w.townId:'briarwatch';
   w.completed ||= {};w.progress ||= {};w.stock ||= {};w.meetings ||= {};w.personal ||= {};w.rumors ||= {};w.favors ||= {};w.servicesUsed ||= {};
-  w.reputation={wardens:0,trade:0,wilds:0,...w.reputation};
+  w.reputation={...Object.fromEntries(Director.FACTIONS.map(id=>[id,0])),...w.reputation};
   if(w.completed?.trial&&state.player)P.ensure(state.player).mastery=true;
   w.unlockedTowns=Array.from(new Set(['briarwatch',...(w.unlockedTowns||[]).filter(x=>TOWNS[x])]));
   w.storage=G.inventory(w.storage||[]);
@@ -51,7 +51,16 @@ function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')retur
 // (Book Three's for levels 20 to 40, Book Four's for 41 to 70), so each opens
 // only once this save has begun the book it belongs to (Book.gearOpen, which
 // keeps Book Three's rule for a save that cannot read Book Four).
-function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids)];}
+// A later book's own town ("book" in towns.json: Book Four's Lantry and Orme)
+// sells its level stock only to a save whose gear waits for that book
+// (Book.ownsGear). For any other save (the book hidden or unpaid, or an AI
+// story that will never begin it) the town it is reached from ("from":
+// Highpass) sells that stock too, so a hero beyond the books can still buy
+// every tier.
+const standIns=(state,id)=>Object.values(TOWNS).filter(x=>x.from===id&&x.book&&!Book.ownsGear(state,x.book));
+function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;
+  const byLevel=[t,...standIns(state,id)].flatMap(x=>Object.entries(x.stockByLevel||{})).filter(([at])=>level>=Number(at)&&Book.gearOpen(state,Number(at))).flatMap(([,ids])=>ids);
+  return [...new Set([...t.stock,...byLevel])];}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
   const q=state.world?.activeQuest;const node=STORY_NODES[state.story.nodeId];
@@ -517,7 +526,7 @@ function view(state){
   });
   return {day:w.day,cycle:w.cycle,town:t?{...asNow(state,t),rumor:undefined}:null,townId:w.townId,onExpedition:w.onExpedition,activeQuest:w.activeQuest,pendingBattle:w.pendingBattle||null,canReturn:!t&&!state.combat?.active&&!below(state)&&!STORY_NODES[state.story.nodeId]?.defeat&&!sceneDecides(state.story.nodeId),
     towns:w.unlockedTowns.filter(id=>townOpen(state,id)).map(id=>({id,name:TOWNS[id].name,current:t?.id===id})),
-    reputation:w.reputation,services,
+    reputation:Director.shownReputation(state),services,
     shop:t&&!empty?Object.entries(ensureStock(state,t.id)).map(([id,qty])=>previewItem(state,id,qty,'town')):[],
     merchant:m?{id:m.id,name:m.name,role:m.role,personality:m.personality,offer:m.offer,bargained:m.meeting.bargained,bartered:m.meeting.bartered,favorDone:Boolean(w.favors.caravan),stock:Object.entries(m.meeting.stock).map(([id,qty])=>previewItem(state,id,qty,'merchant'))}:null,
     upgrades:t&&!empty?eq:[],recipes:t&&!empty?RECIPES.map(r=>({...r,ready:r.ingredients.every(i=>G.available(state,i.itemId)>=i.quantity)&&state.player.gold>=r.gold})):[],

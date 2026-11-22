@@ -8,6 +8,7 @@ const RoadState=require('./road-state');
 const Improvise=require('./improvise');
 const Director=require('./director');
 const Chronicle=require('./chronicle');
+const Telling=require('./telling');
 const MAX_NOTES=12,MAX_NOTE_LENGTH=400;
 const safeText=(value,limit)=>typeof value==='string'?value.slice(0,limit):'';
 function normalizeNotes(raw){
@@ -23,7 +24,7 @@ function normalizeNotes(raw){
   return out;
 }
 function sync(state){
-  const j={version:1,chronicle:[],facts:[],rumors:[],promises:[],relationships:[],leads:[],completed:[],notes:normalizeNotes(state.journal?.notes)};
+  const j={version:1,chronicle:[],telling:[],facts:[],rumors:[],promises:[],relationships:[],leads:[],completed:[],notes:normalizeNotes(state.journal?.notes)};
   const node=STORY_NODES[state.story?.nodeId];
   j.current={scene:node?.title||'Current adventure',objective:node?.objective||'Consult the available approaches.',combat:Boolean(state.combat?.active)};
   for(const id of [...new Set(state.story?.clues||[])]){
@@ -88,6 +89,13 @@ function sync(state){
   const activeDef=Director.quest(state,active);
   if(activeDef&&!state.world?.completed?.[active])j.leads.push({id:'quest:'+active,title:activeDef.name,status:state.world.onExpedition?'active':'paused',text:activeDef.brief});
   for(const q of Director.open(state))if(q.id!==active)j.leads.push({id:'quest:'+q.id,title:q.name,status:'offered',text:q.brief,source:'Expedition board (AI-directed)'});
+  // The Telling (src/telling.js): "What they tell of you", how Linus's song and
+  // the Long Tally tell each finished chapter, side by side until the epilogue
+  // names one keeper.
+  for(const x of Telling.shown(state))j.telling.push({id:'told:'+x.id,title:x.chapter,status:'told',ballad:x.ballad,tally:x.tally,text:[x.ballad&&'The song: '+x.ballad,x.tally&&'The Long Tally: '+x.tally].filter(Boolean).join(' '),source:'How the story is told of you'});
+  // The Wold's reputation, once the party has met it (src/director.js shownReputation).
+  const wold=Director.shownReputation(state).wold;
+  if(wold!==undefined)j.relationships.push({id:'faction:wold',title:'The Wold',value:wold,status:wold>=5?'trusted':wold>0?'friendly':wold<0?'wary':'unknown',text:wold>0?'The tally towns north of the peaks write you down as a giver, not a taker. Lantry and Orme sell to you for less.':wold<0?'The tally towns north of the peaks have written you down as a taker. They remember it on their doors.':'The tally towns north of the peaks have not decided what to write about you yet.',source:'The Wold\'s reputation, moved by your choices there'});
   // The hero's own story (src/chronicle.js): chapters, the people met and open threads.
   const story=Chronicle.journal(state);
   j.chronicle.push(...story.chronicle);j.relationships.push(...story.relationships);j.leads.push(...story.leads);

@@ -17,6 +17,10 @@ const BOARDS = Object.freeze({
   highpass: { main: 'Ridge Stalker', retainer: 'Snow Wolf', attack: 'Rending Claws', type: 'slashing', place: 'the high passes', retainers: "Snow Wolves" },
   merrowgate: { main: 'Wrecker Captain', retainer: 'Tidewrack Smuggler', attack: 'Gaff Hook', type: 'piercing', place: 'the harbour flats', retainers: "Tidewrack Smugglers" },
   cinderfold: { main: 'Slag Golem', retainer: 'Cinder Imp', attack: 'Molten Fist', type: 'fire', place: 'the forge wastes', retainers: "Cinder Imps" },
+  // Book Four's Wold (docs/book-four/DESIGN.md): its towns post the beasts that
+  // come down with the white, and the takers who rob givers on the road.
+  lantry: { main: 'White-coat Bear', retainer: 'Snow Fox', attack: 'Crushing Swipe', type: 'bludgeoning', place: 'the white beyond the doors', retainers: 'Snow Foxes' },
+  orme: { main: 'Road Taker', retainer: 'Taker\'s Hound', attack: 'Slate Axe', type: 'slashing', place: 'the Orme road', retainers: "Takers' Hounds" },
   default: { main: 'Wanted Outlaw', retainer: 'Outlaw Bravo', attack: 'Notched Blade', type: 'slashing', place: 'the roads', retainers: "Outlaw Bravos" }
 });
 const board = townId => BOARDS[townId] || BOARDS.default;

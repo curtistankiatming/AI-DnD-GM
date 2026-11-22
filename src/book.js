@@ -118,11 +118,13 @@ const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n 
 // that will never begin it) keeps Book Three's rule, so gear still opens by
 // level; and so does every level above 70 (docs/EQUIPMENT.md, "Gear by level").
 const GEAR_BOOK_FOUR = Object.freeze({ from: P.THIRD_JOB_LEVEL + 1, to: P.FOURTH_JOB_LEVEL });
+// Whether book n's gear waits for book n in this save: the book is released
+// and open to this session (reads), and the save is not on its own AI story,
+// which never begins it.
+const ownsGear = (state, n) => reads(state, n) && !aiStory(state);
 const gearOpen = (state, level) => {
   const l = Number(level) || 0;
-  // reads() only says Book Four is out and open to this session; a save on its
-  // own AI story never begins it, so it keeps Book Three's rule.
-  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && reads(state, 4) && !aiStory(state);
+  const four = l >= GEAR_BOOK_FOUR.from && l <= GEAR_BOOK_FOUR.to && ownsGear(state, 4);
   return started(state, four ? 4 : 3);
 };
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
@@ -262,7 +264,10 @@ const reads = (state, n) => books(state).some(b => b.n === Number(n));
 // released, nor on a hosted account without that book.
 const TOWN_CHAPTERS = {};
 for (const q of ALL) for (const id of new Set([q.town, q.nextTown])) if (id) (TOWN_CHAPTERS[id] ||= []).push(q.id);
-const townOpen = (state, id) => Boolean(TOWNS[id]) && (!TOWN_CHAPTERS[id] || TOWN_CHAPTERS[id].some(q => playable(state, q)));
+// A town written for a later book ("book" in towns.json: Book Four's Lantry
+// and Orme) that no chapter names yet is closed, so it is never shown or
+// offered to the AI storyteller before its chapters are written.
+const townOpen = (state, id) => Boolean(TOWNS[id]) && (TOWN_CHAPTERS[id] ? TOWN_CHAPTERS[id].some(q => playable(state, q)) : !TOWNS[id].book);
 
 // The level the current chapter is written for. AI XP may bring the hero up to
 // this level but never into the next one.
@@ -337,4 +342,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, WAITING, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started, gearOpen};
+module.exports = {bookName, partName, trialLine, paidChoice, townOpen, buildShelf, writing, FINISHED, WAITING, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts, started, gearOpen, ownsGear};

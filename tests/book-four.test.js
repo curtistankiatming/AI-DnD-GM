@@ -274,13 +274,28 @@ test('no walkout after chapters 9, 10 or 26: the companion stays and says so', (
   assert.ok(s.party.some((m) => m.id === 'maren'));
 });
 
-test('the Wold is not offered to the AI storyteller until it holds reputation (build step 6)', () => {
-  assert.deepEqual([...D.FACTIONS], ['wardens', 'trade', 'wilds']);
+test('the Wold joins the factions together with its reputation (build step 6)', () => {
+  assert.deepEqual([...D.FACTIONS], ['wardens', 'trade', 'wilds', 'wold']);
   assert.ok(Object.isFrozen(D.FACTIONS));
-  assert.ok(!D.SCHEMA.properties.faction.enum.includes('wold'));
-  // Every faction the AI may name holds reputation.
+  assert.ok(D.SCHEMA.properties.faction.enum.includes('wold'));
+  // Every faction the AI may name holds reputation, an old save's included.
   const s = ready('b4-walker');
   for (const f of D.FACTIONS) assert.ok(f in s.world.reputation, f);
+  const old = ready('b4-walker'); old.world.reputation = { wardens: 3, trade: 1, wilds: 0 }; W.init(old);
+  assert.deepEqual(old.world.reputation, { wardens: 3, trade: 1, wilds: 0, wold: 0 });
+  // It is shown, and an AI adventure may favour it, only once the party has met the Wold.
+  assert.ok(!('wold' in E.buildView(s).world.reputation));
+  assert.ok(!('wold' in JSON.parse(D.prompt(s)).reputation));
+  const draft = { ...require('./fixtures/director-draft')(), faction: 'wold', decisions: [{ label: 'One', text: 'One.', favors: 'wold', also: 'trade' }, { label: 'Two', text: 'Two.', favors: 'wardens', also: 'wold' }] };
+  let out = D.bound(s, draft);
+  assert.equal(out.ok, true, out.error);
+  assert.equal(out.quest.faction, 'wardens');
+  assert.deepEqual(out.quest.decisions.map((d) => d.rep), [{ trade: 2 }, { wardens: 2 }]);
+  s.world.unlockedTowns.push('lantry');
+  assert.equal(E.buildView(s).world.reputation.wold, 0);
+  out = D.bound(s, draft);
+  assert.equal(out.quest.faction, 'wold');
+  assert.deepEqual(out.quest.decisions.map((d) => d.rep), [{ wold: 2, trade: 1 }, { wardens: 2, wold: 1 }]);
 });
 
 test('the ending counts four books in words, and a Book Three account is told Book Four is for paid accounts', () => {

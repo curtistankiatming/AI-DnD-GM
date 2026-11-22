@@ -275,16 +275,35 @@ test('item cards and the equipment screen show the set and its bonuses', () => {
   assert.deepEqual(view.player.sets.map((x) => [x.id, x.worn, x.active.length, x.next.pieces]), [['farwatch', 2, 1, 3]]);
 });
 
-test('Briarwatch and Highpass sell each late tier from its level, once Book Three has begun', () => {
+// Levels 45 to 70 are sold where Book Four goes (docs/book-four/DESIGN.md,
+// "Where Book Four goes"; tests/book-four-wold.test.js plays the route). With
+// Book Four hidden, as here, Lantry and Orme are closed, and Highpass (the
+// town they are reached from) sells their stock too, so a hero beyond the
+// books still finds every tier in a free-wards town.
+const OPEN_TOWNS = ['briarwatch', 'ashford', 'highpass', 'merrowgate', 'cinderfold', 'saltwick'];
+test('each late tier is sold from its level in a town a save beyond the books can reach, once Book Three has begun', () => {
   const sold = LATE.filter((i) => !i.exclusive);
-  for (const town of ['briarwatch', 'highpass']) for (const item of sold) assert.ok(TOWNS[town].stockByLevel[String(lv(item))]?.includes(item.id), `${town}: ${item.id}`);
-  const at44 = begun('fighter', 44), at45 = begun('fighter', 45), at100 = begun('fighter', 100);
-  assert.ok(!W.townStock(at44, 'briarwatch').includes('frostforged-plate'));
-  assert.ok(W.townStock(at45, 'briarwatch').includes('frostforged-plate'));
+  const at100 = begun('fighter', 100);
+  assert.equal(Book.townOpen(at100, 'lantry'), false); assert.equal(Book.townOpen(at100, 'orme'), false);
+  const reach = new Set(OPEN_TOWNS.flatMap((t) => W.townStock(at100, t)));
+  for (const item of sold) assert.ok(reach.has(item.id), `${item.id} is sold somewhere open`);
+  // Each from its own level, in the towns its tier is listed for.
+  for (const item of sold) for (const town of Object.values(TOWNS).filter((t) => Object.values(t.stockByLevel || {}).flat().includes(item.id))) {
+    const key = Object.entries(town.stockByLevel).find(([, ids]) => ids.includes(item.id))[0];
+    assert.equal(Number(key), lv(item), `${town.id}: ${item.id} at its own level`);
+  }
+  const at44 = begun('fighter', 44), at45 = begun('fighter', 45);
+  assert.ok(!W.townStock(at44, 'highpass').includes('frostforged-plate'));
+  assert.ok(W.townStock(at45, 'highpass').includes('frostforged-plate'));
   assert.ok(!W.townStock(at45, 'highpass').includes('rimeheart-longsword'));
+  assert.ok(W.townStock(begun('fighter', 55), 'highpass').includes('long-hall-muffler'), 'Orme\'s stock stands in at Highpass');
+  assert.ok(!W.townStock(begun('fighter', 54), 'highpass').includes('lamplit-staff'));
   assert.ok(W.townStock(at100, 'highpass').includes('highbell-seal'));
+  assert.ok(W.townStock(at100, 'briarwatch').includes('summitforged-plate'));
+  assert.ok(W.townStock(begun('fighter', 65), 'merrowgate').includes('thornstep-band'));
   // Not for a save that has never begun Book Three, at any level.
   assert.deepEqual(W.townStock(hero('fighter', 100), 'briarwatch'), TOWNS.briarwatch.stock);
+  assert.deepEqual(W.townStock(hero('fighter', 100), 'highpass'), TOWNS.highpass.stock);
 });
 
 test('level bounties past the books give their item once, at or above its level', () => {

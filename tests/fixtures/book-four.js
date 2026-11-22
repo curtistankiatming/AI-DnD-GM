@@ -22,13 +22,15 @@ const Module = require('node:module');
 const IDS = ['b4-walker', 'b4-records', 'b4-ballad', 'b4-company', 'b4-davin', 'b4-book', 'b4-key', 'b4-letters', 'b4-embassy', 'b4-peaks',
   'b4-lantry', 'b4-sheddon', 'b4-orme', 'b4-greve', 'b4-thrum', 'b4-reckoning', 'b4-potbells', 'b4-hush', 'b4-column', 'b4-northdoor',
   'b4-knot', 'b4-invoice', 'b4-quietnight', 'b4-gatehouse', 'b4-ford', 'b4-hospice', 'b4-signal', 'b4-ropes', 'b4-lid', 'b4-parting'];
-// The design's towns; Lantry and Orme are not in towns.json yet, so the
-// fixtures leave from Highpass there.
+// The design's towns ("Regions and towns"): chapter 11 is taken from
+// Highpass's board and played in Lantry (its nextTown), 12 leaves from Lantry,
+// 13 to 20 from Orme, and 20 returns the party to Highpass.
 const TOWNS = ['highpass', 'ashford', 'briarwatch', 'merrowgate', 'saltwick', 'highpass', 'cinderfold', 'vell', 'highpass', 'highpass',
-  ...Array(10).fill('highpass'),
+  'highpass', 'lantry', ...Array(8).fill('orme'),
   'highpass', 'highpass', 'briarwatch', 'highpass', 'ashford', 'merrowgate', 'cinderfold', 'cinderfold', 'cinderfold', 'cinderfold'];
 const NEXT = [...TOWNS.slice(1), 'briarwatch'];
-// The design's engine fields (engine changes 3, 4 and 10).
+// The design's engine fields (engine changes 3, 4, 7 and 10): every Part Two
+// chapter has "white": true.
 const FLOORS = { 'b4-peaks': 50, 'b4-northdoor': 60, 'b4-parting': 70 };
 const NEEDS = { 'b4-davin': ['orin'], 'b4-book': ['maren'], 'b4-key': ['nessa'], 'b4-peaks': ['orin', 'maren', 'nessa'], 'b4-ford': ['orin'], 'b4-hospice': ['maren'], 'b4-signal': ['nessa'] };
 const band = (level) => 4000 + 250 * (level - 9); // P.levelBand from level 10
@@ -37,7 +39,7 @@ function chapter(id, i) {
   const level = 40 + i, check = (label, skill) => ({ label, skill, alt: [], success: `Fixture: ${label} works.`, failure: `Fixture: ${label} does not, but the way on stays open.` });
   return {
     id, book: 4, part: Math.floor(i / 10) + 1, name: `Fixture ${i + 1}`, level, town: TOWNS[i], nextTown: NEXT[i], unlock: i ? IDS[i - 1] : 'b3-firstbell',
-    ...(i === 0 ? { requiresJob: 3 } : {}), ...(FLOORS[id] ? { levelFloor: FLOORS[id] } : {}), ...(NEEDS[id] ? { needs: NEEDS[id] } : {}), ...(id === 'b4-signal' ? { together: true } : {}),
+    ...(i === 0 ? { requiresJob: 3 } : {}), ...(i >= 10 && i < 20 ? { white: true } : {}), ...(FLOORS[id] ? { levelFloor: FLOORS[id] } : {}), ...(NEEDS[id] ? { needs: NEEDS[id] } : {}), ...(id === 'b4-signal' ? { together: true } : {}),
     xp: band(level), gold: 20 * level + 40, region: 'Fixture road', threat: 'Fixture threat.', faction: 'wardens', brief: `Fixture chapter ${i + 1}.`,
     opening: 'Fixture opening.', clue: 'Fixture lead.', investigate: check('Look around', 'insight'), route: { ...check('Walk the road', 'athletics'), tools: [] },
     crisis: 'Fixture crisis.', peaceful: check('Talk it down', 'persuasion'),
