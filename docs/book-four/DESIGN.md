@@ -245,11 +245,9 @@ Highpass in Part One and from Orme in Part Two.
 | 7 | cinderfold → vell | 17 | orme → orme | 27 | cinderfold → cinderfold |
 | 8 | vell → highpass | 18 | orme → orme | 28 | cinderfold → cinderfold (`continues`) |
 | 9 | highpass → highpass | 19 | orme → orme (`continues`) | 29 | cinderfold → cinderfold (`continues`) |
-| 10 | highpass → lantry | 20 | orme → highpass | 30 | cinderfold → briarwatch |
+| 10 | highpass → highpass | 20 | orme → highpass | 30 | cinderfold → briarwatch |
 
-Chapter 10's `nextTown` opens Lantry for chapter 11 (only while a Part Two
-chapter is playable); chapter 20's returns the party to Highpass for Part
-Three.
+Chapter 10 ends at Highpass (no `nextTown`), so while Part One is out alone the hero waits at "to be continued" in a free-wards town, not in the Wold. Lantry is opened by chapter 11 itself (its `town` is lantry, reached from Highpass once Part Two is released, the way `Book.townOpen` opens a playable chapter's town); chapter 20's `nextTown` returns the party to Highpass for Part Three.
 
 Travel between the free wards and the Wold is by the old north road, through
 the Hall of Legends, and is allowed between chapters like any other travel.
@@ -1327,7 +1325,7 @@ the lid by the marked way (`b4_maren_doubts` without `b4_told_sloe`). When
 both `b4_told_sloe` and `b4_maren_doubts` are set, `b4_told_sloe` wins: she
 trusts the hero's word over the harbour's watch and comes by the north door,
 and one line says Maren doubted her. The Mother Bell hangs over all of it,
-its rope up (`mother_chorus`, `mother_recalled`) or bare (`mother_silenced`).
+its rope up or bare: `mother_silenced` alone decides the rope (bare), otherwise it is up; `mother_recalled` only adds lines, since a save can have it together with either rope flag.
 
 **Talks.** Sloe. Rue. Aster, through the joined bells (at rest with
 `b3_bell_aster` and `b3_promise_old`: Tovin's line from Briarwatch instead,
@@ -1692,7 +1690,9 @@ chapter 1 at the start of level 40 ends chapter 30 at the start of level 70.
   `levelFloor: 40`, and Book Four's chapter 1 applies the 40 floor too, for
   saves that finished Book Three before the field existed; and for those
   saves the after-the-books bounties are capped at the next job trial's level
-  (40, then 70), not the current level, so a hero who ended Book Three at 38
+  (40, then 70), but never above the last level of the books this save can
+  play plus one (today's `afterBooksLevel`), so a hidden Book Four never lets
+  bounties run on to 69, so a hero who ended Book Three at 38
   is never stuck short of the trial. Within a part, side content still
   matters because fights more than five levels under are harder.
 
@@ -1865,7 +1865,10 @@ Book Four frames it the way Book Three framed the 3rd job:
    `b4-walker` 40 (for saves that finished Book Three before the field
    existed), `b4-peaks` 50, `b4-northdoor` 60, `b4-parting` 70. For a save
    past its book, the after-the-books bounty cap becomes the next job trial's
-   level (40, then 70), so an old save at 38 can reach the trial.
+   level (40, then 70), but never above `afterBooksLevel` (the last level of
+   the books this save can play, plus one), so an old save at 38 can reach the
+   trial and a hidden Book Four never lets bounties run past 40. A test checks
+   both.
 5. **Trial framing by kind.** `trialFraming.trial` ('third' by default);
    `framing(state, kind)` in `src/director.js`, which today handles only
    'third', uses it for both kinds, so the 4th trial is never framed with
