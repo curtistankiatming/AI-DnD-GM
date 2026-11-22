@@ -58,15 +58,40 @@ function unmet(actor, item) {
 
 const worn = (a) => slots.map((s) => ITEMS[a?.equipment?.[s]]).filter(Boolean);
 
+// Equipment sets (src/data/gear-sets.json, levels 55 to 100): a set piece
+// names its set in "set". Wearing 2 or more different pieces of one set gives
+// every bonus of that set whose piece count is reached. A bonus uses the same
+// fields as an item (acBonus, attackBonus, damageBonus, spellAttackBonus,
+// spellDcBonus, saveBonuses, skillBonuses, stats, skill), and counts toward
+// the same caps on damage dealt and taken. A refined copy counts as its base piece.
+const SETS = Object.freeze(Object.fromEntries(require('./data/gear-sets.json').sets.map((s) => [s.id, Object.freeze(s)])));
+function setCounts(a) {
+  const seen = {};
+  for (const item of worn(a)) if (item.set && SETS[item.set]) (seen[item.set] ||= new Set()).add(item.baseId || item.id);
+  return Object.fromEntries(Object.entries(seen).map(([id, pieces]) => [id, pieces.size]));
+}
+// The set bonuses `a` has now: [{ set, pieces, bonus }], fewest pieces first.
+function setBonuses(a) {
+  const counts = setCounts(a), out = [];
+  for (const [id, n] of Object.entries(counts)) for (const bonus of SETS[id].bonuses) if (n >= bonus.pieces) out.push({ set: SETS[id], pieces: bonus.pieces, bonus });
+  return out;
+}
+// Everything that adds to an actor's numbers: worn items, then active set bonuses.
+const sources = (a) => [...worn(a), ...setBonuses(a).map((b) => b.bonus)];
+
 // Special stats summed over what an actor wears (src/equipment.js derive).
 function stats(a) {
   let dealt = 0, taken = 0;
-  for (const item of worn(a)) { dealt += Number(item.stats?.dealt) || 0; taken += Number(item.stats?.taken) || 0; }
+  for (const item of sources(a)) { dealt += Number(item.stats?.dealt) || 0; taken += Number(item.stats?.taken) || 0; }
   return { dealt, taken };
 }
 
-// Combat skills of worn items, for the combat actor.
-const skills = (a) => worn(a).filter((i) => i.skill && Power.EFFECTS[i.skill.effect]).map((i) => ({ itemId: i.id, ...i.skill }));
+// Combat skills of worn items and full sets, for the combat actor. A set
+// skill's itemId is "set-<set id>", so it is used once per fight like an item's.
+const skills = (a) => [
+  ...worn(a).filter((i) => i.skill && Power.EFFECTS[i.skill.effect]).map((i) => ({ itemId: i.id, source: i.name, ...i.skill })),
+  ...setBonuses(a).filter((b) => b.bonus.skill && Power.EFFECTS[b.bonus.skill.effect]).map((b) => ({ itemId: `set-${b.set.id}`, source: `${b.set.name} set`, ...b.bonus.skill }))
+];
 
 // Story abilities: the first check with the item's skill after each long rest
 // has advantage. Uses are counted per item for the whole party
@@ -108,9 +133,42 @@ function describe(item) {
   if (item.stats?.taken) out.push(item.stats.taken > 0 ? `${pct(item.stats.taken)}% more damage taken` : `${pct(item.stats.taken)}% less damage taken (all worn gear together takes off at most 30%)`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
+  const set = SETS[item.set];
+  if (set) out.push(setText(set));
   const src = source(item);
   if (src) out.push(src);
   return out;
+}
+
+// "Part of the Thornstep set (3 pieces: ...). 2 pieces: 5% more damage dealt. 3 pieces: ..."
+function bonusText(b) {
+  const out = [];
+  const sign = (n) => `${n > 0 ? '+' : ''}${n}`;
+  if (b.acBonus) out.push(`${sign(b.acBonus)} AC`);
+  if (b.attackBonus) out.push(`${sign(b.attackBonus)} to hit with weapons`);
+  if (b.damageBonus) out.push(`${sign(b.damageBonus)} weapon damage`);
+  if (b.spellAttackBonus) out.push(`${sign(b.spellAttackBonus)} spell attack`);
+  if (b.spellDcBonus) out.push(`${sign(b.spellDcBonus)} spell save DC`);
+  const saves = Object.entries(b.saveBonuses || {});
+  if (saves.length === 6 && new Set(saves.map(([, v]) => v)).size === 1) out.push(`${sign(saves[0][1])} to every saving throw`);
+  else for (const [k, v] of saves) out.push(`${sign(v)} ${abilityName(k)} saves`);
+  for (const [k, v] of Object.entries(b.skillBonuses || {})) out.push(`${sign(v)} ${SKILLS[k]?.name || k}`);
+  if (b.stats?.dealt) out.push(`${Math.round(b.stats.dealt * 100)}% more damage dealt`);
+  if (b.stats?.taken) out.push(`${Math.round(-b.stats.taken * 100)}% less damage taken`);
+  if (b.skill) out.push(`set skill ${b.skill.name}: ${b.skill.text} Bonus action, once per fight`);
+  return out.join(', ');
+}
+// An item's equipment set, for its card: the set's text as it appears in the
+// purpose (so the card can show it on its own line), and how many pieces `actor` wears.
+function setCard(item, actor) {
+  const set = SETS[item?.set];
+  if (!set) return null;
+  return { id: set.id, name: set.name, text: `${setText(set)}.`, pieces: set.pieces.length, worn: (actor && setCounts(actor)[set.id]) || 0,
+    bonuses: set.bonuses.map((b) => ({ pieces: b.pieces, text: bonusText(b) })) };
+}
+function setText(set) {
+  const names = set.pieces.map((id) => ITEMS[id]?.name || id);
+  return `Part of the ${set.name} set (${set.pieces.length} pieces: ${orList(names).replace(/ or ([^,]*)$/, ' and $1')}). ${set.bonuses.map((b) => `${b.pieces} pieces: ${bonusText(b)}`).join('. ')}`;
 }
 
 // Where an exclusive item comes from, in plain words.
@@ -175,7 +233,10 @@ function forge(spec) {
   const level = Math.max(1, Math.min(100, Math.floor(Number(spec?.level) || 1)));
   const template = TEMPLATES.includes(spec?.template) ? spec.template : 'charm';
   const h = hash(`${template}|${level}`);
-  const plus = Math.min(2, 1 + Math.floor(level / 12)), dmg = Math.min(3, Math.floor(level / 8));
+  // Up to level 40 as before; past 40 (22 November 2026) found gear keeps
+  // growing to level 100, a step behind the shop's best at each tier.
+  const plus = level <= 40 ? Math.min(2, 1 + Math.floor(level / 12)) : Math.min(4, 2 + Math.floor((level - 40) / 20));
+  const dmg = level <= 40 ? Math.min(3, Math.floor(level / 8)) : Math.min(7, 3 + Math.floor((level - 40) / 15));
   // The name steps with the level, so one template's items have different
   // names for at least 16 levels in a row (a bow) and 24 (the others).
   const nouns = NOUNS[template], a = (level + hash(template)) % ADJECTIVES.length;
@@ -187,7 +248,7 @@ function forge(spec) {
   else if (template === 'focus') item = { ...base, category: 'focus', slot: 'mainHand', spellAttackBonus: plus, spellDcBonus: plus, purpose: `Equip: +${plus} spell attack bonus and +${plus} spell save DC.` };
   else if (template === 'mail') item = { ...base, category: 'armor', slot: 'armor', armor: { base: 13 + plus, dexCap: 2 }, purpose: `Base AC ${13 + plus} and up to +2 from Dexterity.` };
   else { const skill = CHARM_SKILLS[h % CHARM_SKILLS.length], n = Math.min(3, 1 + Math.floor(level / 10)); item = { ...base, category: 'accessory', slot: 'accessory', skillBonuses: { [skill]: n }, story: { skill }, purpose: `Equip in the accessory slot: +${n} ${SKILLS[skill].name}.` }; }
-  if (level >= 15) item.stats = { dealt: 0.05 };
+  if (level >= 15) item.stats = { dealt: level >= 60 ? 0.1 : 0.05 };
   item.value = minValue(item) + 20;
   return item;
 }
@@ -238,4 +299,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = {specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};
+module.exports = {setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};

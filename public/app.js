@@ -722,7 +722,19 @@ function purposeWithoutRequirement(item) {
 // so it doesn't hide in the middle of the item's text. Returns null when the item has no skill.
 const ITEM_SKILL = /\s*Skill, ([^:]+): (.*?)\s*Bonus action, once per fight\./;
 function purposeWithoutSkill(item) {
-  return String(purposeWithoutRequirement(item) || "").replace(ITEM_SKILL, " ").replace(/\s+/g, " ").trim();
+  return String(purposeWithoutRequirement(item) || "").replace(ITEM_SKILL, " ").replace(item.set?.text || "\u0000", " ").replace(/\s+/g, " ").trim();
+}
+// An equipment set piece's set, as its own line: "Set · Thornstep, 1 of 3 worn" and each bonus.
+function itemSetLine(item) {
+  if (!item.set) return null;
+  const line = createElement("p", "item-set");
+  line.append(createElement("span", "item-set-chip", `Set · ${item.set.name} · you wear ${item.set.worn} of ${item.set.pieces}`));
+  for (const b of item.set.bonuses) {
+    const row = createElement("span", `item-set-bonus${item.set.worn >= b.pieces ? " is-active" : ""}`);
+    row.append(createElement("strong", "", `${b.pieces} pieces:`), ` ${b.text}`);
+    line.append(row);
+  }
+  return line;
 }
 function itemSkillLine(item) {
   const m = ITEM_SKILL.exec(String(item.purpose || ""));
@@ -751,7 +763,7 @@ function renderEquipment() {
     else top.appendChild(createElement("strong", "muted", "Empty"));
     card.appendChild(top);
     if (slot.item) {
-      card.appendChild(createElement("p", "", purposeWithoutRequirement(slot.item)));
+      card.appendChild(createElement("p", "", String(purposeWithoutRequirement(slot.item) || "").replace(slot.item.set?.text || "\u0000", "").trim()));
       const unequip = createElement("button", "text-button", "Unequip");
       unequip.type = "button";
       unequip.dataset.disabled = String(Boolean(view.combat?.active));
@@ -760,6 +772,16 @@ function renderEquipment() {
       unequip.addEventListener("click", () => sendAction({ type: "unequip", slot: slot.slot }));
       card.appendChild(unequip);
     }
+    dom.equipmentSlots.appendChild(card);
+  }
+  // Equipment sets the hero wears pieces of: which bonuses are on, and the next one.
+  for (const set of view.player?.sets || []) {
+    const card = createElement("div", "equipment-slot equipment-set");
+    const top = createElement("div", "equipment-slot-head");
+    top.append(createElement("span", "", "Set"), createElement("strong", "", `${set.name}, ${set.worn} of ${set.pieces} worn`));
+    card.appendChild(top);
+    for (const b of set.active) card.appendChild(createElement("p", "item-set-bonus is-active", `${b.pieces} pieces: ${b.text}.`));
+    if (set.next) card.appendChild(createElement("p", "item-set-bonus", `Next, at ${set.next.pieces} pieces: ${set.next.text}.`));
     dom.equipmentSlots.appendChild(card);
   }
 }
@@ -803,6 +825,8 @@ function renderInventory() {
     purpose.append(createElement("span", "", "Purpose"), createElement("p", "", purposeWithoutSkill(item)));
     const skill = itemSkillLine(item);
     if (skill) purpose.append(skill);
+    const set = itemSetLine(item);
+    if (set) purpose.append(set);
     const requires = requirementLine(item);
     if (requires) purpose.append(requires);
     const actions = createElement("div", "inventory-actions");

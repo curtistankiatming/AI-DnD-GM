@@ -329,6 +329,31 @@ test('Wren\'s bell: Nessa answers her long yes in every decision, and only if sh
   assert.match(told(decide('b3-wren', 'cast', { flags: { nessa_keeper: 'later' } })), /Nessa Reed, keeper of the forge-signal/);
 });
 
+// Curtis, 22 November 2026: Nessa's epilogue answer is the player's to shape,
+// so a sent "no" (nessa_keeper "declined") is its own story here, not silence.
+test('Wren\'s bell: if Nessa said no to the post, Wren kept the no and the committee has it in the minutes', () => {
+  const start = (flags, party) => opening(act(ready('b3-wren', { flags, party }), { type: 'depart', questId: 'b3-wren' }).state);
+  const no = start({ nessa_keeper: 'declined' });
+  assert.match(no, /I kept your no/); assert.match(no, /would not ask a second time/); assert.match(no, /You said no to the post, girl\. You didn't say no to me\./);
+  assert.doesNotMatch(no, /manage another winter|Stand at the pit with me|asked once/);
+  const away = start({ nessa_keeper: 'declined' }, ['orin', 'maren']);
+  assert.match(away, /No Reed\./); assert.match(away, /asked once/); assert.doesNotMatch(away, /^Nessa:|I kept your no|held for her/m);
+});
+
+test('Wren\'s bell: Nessa\'s no is answered in every decision, and the long yes is not', () => {
+  const answer = { cast: /Keep your no, Reed\. It was an honest one\./, refuse: /I said no to your post, Wren\. I never said no to you\./, wait: /I'm still not taking the signal/ };
+  for (const [decision, line] of Object.entries(answer)) {
+    const no = told(decide('b3-wren', decision, { flags: { nessa_keeper: 'declined' } }));
+    assert.match(no, line, decision);
+    assert.doesNotMatch(no, /Now, not later|It's not yet, Wren|So here's a real one|long yes owing/, decision);
+    for (const other of Object.values(answer).filter((x) => x !== line)) assert.doesNotMatch(no, other, decision);
+    assert.doesNotMatch(told(decide('b3-wren', decision, { flags: { nessa_keeper: 'later' } })), line, `${decision}: only after a no`);
+    const away = told(decide('b3-wren', decision, { flags: { nessa_keeper: 'declined' }, party: ['orin', 'maren'] }));
+    assert.doesNotMatch(away, /^Nessa:|Keep your no|on the roster/m, `${decision}: without Nessa`);
+  }
+  assert.match(told(decide('b3-wren', 'cast', { flags: { nessa_keeper: 'declined' }, party: ['orin', 'maren'] })), /Reed said no to it/);
+});
+
 test('Wren\'s bell agrees with Books One and Two: twenty years on the tower, and Ottilie Brand\'s fourteen-seat committee', () => {
   const s = act(ready('b3-wren'), { type: 'depart', questId: 'b3-wren' }).state;
   const all = `${opening(s)}\n${RAWQ['b3-wren'].talks.flatMap((t) => everyLine(t.lines)).map((l) => l.narrate || l.text).join('\n')}`;

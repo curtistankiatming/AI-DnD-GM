@@ -11,7 +11,7 @@
 // into the story registries whenever a save is loaded, so they survive
 // reloads and work in the offline browser build without a model.
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
-const { QUESTS, TOWNS, installQuest, trialFraming, townPage } = require('./expansion');
+const { QUESTS, TOWNS, installQuest, trialFraming, townPage, standing } = require('./expansion');
 const P = require('./progression');
 const XP = require('./xp');
 const Book = require('./book');
@@ -469,10 +469,11 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
   return JSON.stringify({
     request: clean(hint, TEXT.hint) || 'Surprise us with what happens next.',
     preferences: clean(instructions, 1200),
-    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player), job: P.jobView(state.player)?.title, branchStyle: P.branchOf(state.player)?.style || null },
+    hero: { name: state.player.name, class: state.player.className, background: state.player.backgroundName, level: state.player.level, renownRank: P.renownRank(state.player), job: P.jobView(state.player)?.title, branchStyle: P.branchOf(state.player)?.style || null, standing: standing(state, 'hero') },
     ...(trial ? { trial: trialBrief(state) } : {}),
     // The companions' voices, so they sound like themselves after the books end.
-    party: state.party.map(m => ({ name: m.name, role: m.role, pronouns: m.pronouns, voice: m.personality, bond: m.bond })),
+    // What the books' choices made of each of them, so the AI story carries it on.
+    party: state.party.map(m => ({ name: m.name, role: m.role, pronouns: m.pronouns, voice: m.personality, bond: m.bond, standing: standing(state, m.id) })),
     day: w.day, town: TOWNS[w.townId]?.name, knownTowns: w.unlockedTowns.filter(id => Book.townOpen(state, id)).map(id => TOWNS[id].name),
     reputation: w.reputation,
     completedAdventures: completed.slice(-15),

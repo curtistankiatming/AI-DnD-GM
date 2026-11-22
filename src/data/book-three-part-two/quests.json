@@ -817,6 +817,48 @@
         }
       },
       {
+        "narrate": "Wren is waiting at her kitchen door. Pinned to the frame beside her, where anyone coming in has to see it, is a letter in handwriting you know from across the yard. It runs uphill. It is short.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "Wren",
+        "text": "Reed. Come in. I kept your no. Best letter you ever sent me. First one you ever sealed.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
+          "party": "nessa"
+        }
+      },
+      {
+        "narrate": "In the spring the committee asked Wren who should keep the forge-signal after her. She told them the one she had chosen had said no, and meant it, and that she would not ask a second time. It is in the minutes. Ottilie Brand says it was half the reason for last night's vote.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
+          "party": "nessa"
+        }
+      },
+      {
+        "say": "nessa",
+        "text": "That's not fair. You can't put that on my letter.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined"
+        }
+      },
+      {
+        "say": "Wren",
+        "text": "I'm not putting anything on it. I'm telling you what's in the minutes. You said no to the post, girl. You didn't say no to me. I know the difference. Learn it.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
+          "party": "nessa"
+        }
+      },
+      {
         "narrate": "Wren is waiting at her kitchen door. She looks past you, down the yard, for somebody who is not there, and then back at you.",
         "when": {
           "absent": "nessa"
@@ -834,6 +876,14 @@
         "when": {
           "flag": "nessa_keeper",
           "is": "later",
+          "absent": "nessa"
+        }
+      },
+      {
+        "narrate": "Nessa's no is in the committee's minutes too: in the spring she wrote that she would not take the forge-signal after Wren. Beside it the committee's chair has written, in pencil: asked once.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
           "absent": "nessa"
         }
       }
@@ -1206,6 +1256,15 @@
         }
       },
       {
+        "say": "Wren",
+        "text": "And you, Reed. Not a word about that letter. It was a good no. Don't spoil it now.",
+        "when": {
+          "flag": "nessa_keeper",
+          "is": "declined",
+          "party": "nessa"
+        }
+      },
+      {
         "narrate": "The Hall's man clears his throat and says that the casting master can be here by tomorrow night, at no cost, if the committee will let the Hall say so afterwards."
       },
       {
@@ -1252,6 +1311,39 @@
               "flag": "nessa_keeper",
               "is": "later",
               "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Before she goes to the mould, Wren takes the signal key off the string round her neck and gives it to Ottilie Brand, for the committee. She does not look at Nessa while she does it, which is how you know she is being kind.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "I could still— I could say yes. Now. If you'd only—",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "You could. You'd be saying it to get me out of that mould, and I'd be in it anyway. Keep your no, Reed. It was an honest one.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
+              "party": "nessa"
+            }
+          },
+          {
+            "narrate": "Before she goes to the mould, Wren gives the signal key to Ottilie Brand, for the committee. 'Reed said no to it,' she says. 'Good. Somebody in this town ought to get to.'",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
+              "absent": "nessa"
             }
           },
           {
@@ -1310,6 +1402,23 @@
             "when": {
               "flag": "nessa_keeper",
               "is": "later",
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "I said no to your post, Wren. I never said no to you. You'll keep the signal from a chair at the top, and the committee can do the stairs, and you can shout at them. You'll love it.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined"
+            }
+          },
+          {
+            "say": "Wren",
+            "text": "Shout at them from a chair. I taught you that. More fool me.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
               "party": "nessa"
             }
           },
@@ -1381,6 +1490,23 @@
             "when": {
               "flag": "nessa_keeper",
               "is": "later",
+              "party": "nessa"
+            }
+          },
+          {
+            "say": "nessa",
+            "text": "One season. Fine. I'm still not taking the signal, so don't look at me like that. But I'll take a rope, every night I'm here, and you can call the beat at me.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined"
+            }
+          },
+          {
+            "say": "Ottilie Brand",
+            "text": "Then you're on the roster. Night hours. Wren's put herself there too. You can argue about it on the stair.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
               "party": "nessa"
             }
           }

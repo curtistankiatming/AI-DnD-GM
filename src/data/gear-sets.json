@@ -1,0 +1,400 @@
+{
+  "_": "Equipment sets (src/gear.js): wearing `pieces` of a set gives every bonus whose count is reached. Bonus fields are the item fields acBonus, attackBonus, damageBonus, spellAttackBonus, spellDcBonus, saveBonuses, skillBonuses, stats and skill.",
+  "sets": [
+    {
+      "id": "bellwarden-oath",
+      "name": "Bellwarden's Oath",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "acBonus": 1
+        },
+        {
+          "pieces": 3,
+          "attackBonus": 1,
+          "damageBonus": 1
+        },
+        {
+          "pieces": 4,
+          "stats": {
+            "dealt": 0.05
+          },
+          "skill": {
+            "name": "Oathbell",
+            "effect": "fortified",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Fortified for two rounds: take 25% less damage."
+          }
+        }
+      ],
+      "pieces": [
+        "bellwarden-hammer",
+        "bellwarden-plate",
+        "bellwarden-shield",
+        "bellwarden-seal"
+      ]
+    },
+    {
+      "id": "thornstep",
+      "name": "Thornstep",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "stats": {
+            "dealt": 0.05
+          }
+        },
+        {
+          "pieces": 3,
+          "attackBonus": 1,
+          "skill": {
+            "name": "Thornstep Dance",
+            "effect": "empowered",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Empowered for two rounds: deal 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "thornstep-rapier",
+        "thornstep-leathers",
+        "thornstep-band"
+      ]
+    },
+    {
+      "id": "long-watch",
+      "name": "The Long Watch",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "attackBonus": 1
+        },
+        {
+          "pieces": 3,
+          "stats": {
+            "dealt": 0.05
+          },
+          "skill": {
+            "name": "Watcher's Mark",
+            "effect": "vulnerable",
+            "target": "enemy",
+            "rounds": 2,
+            "text": "Make an enemy Vulnerable for two rounds: it takes 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "long-watch-bow",
+        "long-watch-coat",
+        "long-watch-quiver"
+      ]
+    },
+    {
+      "id": "lamplit-scholar",
+      "name": "The Lamplit Scholar",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "spellDcBonus": 1
+        },
+        {
+          "pieces": 3,
+          "spellAttackBonus": 1,
+          "skill": {
+            "name": "Footnote",
+            "effect": "slowed",
+            "target": "enemy",
+            "rounds": 2,
+            "text": "Slow an enemy for two rounds: 2 less armour."
+          }
+        }
+      ],
+      "pieces": [
+        "lamplit-staff",
+        "lamplit-robe",
+        "lamplit-lens"
+      ]
+    },
+    {
+      "id": "hearthward",
+      "name": "Hearthward",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "acBonus": 1
+        },
+        {
+          "pieces": 3,
+          "spellDcBonus": 1,
+          "saveBonuses": {
+            "wis": 1,
+            "con": 1
+          }
+        },
+        {
+          "pieces": 4,
+          "stats": {
+            "dealt": 0.05
+          },
+          "skill": {
+            "name": "Hearth and Home",
+            "effect": "fortified",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Fortified for two rounds: take 25% less damage."
+          }
+        }
+      ],
+      "pieces": [
+        "hearthward-staff",
+        "hearthward-mail",
+        "hearthward-buckler",
+        "hearthward-rosary"
+      ]
+    },
+    {
+      "id": "chorus",
+      "name": "The Chorus",
+      "grade": "Book Four",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "skillBonuses": {
+            "performance": 2,
+            "persuasion": 2
+          }
+        },
+        {
+          "pieces": 3,
+          "spellDcBonus": 1,
+          "skill": {
+            "name": "Swell",
+            "effect": "empowered",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Empowered for two rounds: deal 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "chorus-baton",
+        "chorus-coat",
+        "chorus-bell"
+      ]
+    },
+    {
+      "id": "highbell-regalia",
+      "name": "Highbell Regalia",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "acBonus": 1,
+          "saveBonuses": {
+            "str": 1,
+            "dex": 1,
+            "con": 1,
+            "int": 1,
+            "wis": 1,
+            "cha": 1
+          }
+        },
+        {
+          "pieces": 3,
+          "attackBonus": 1,
+          "damageBonus": 2
+        },
+        {
+          "pieces": 4,
+          "stats": {
+            "dealt": 0.1
+          },
+          "skill": {
+            "name": "Highbell Toll",
+            "effect": "fortified",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Fortified for two rounds: take 25% less damage."
+          }
+        }
+      ],
+      "pieces": [
+        "highbell-warhammer",
+        "highbell-plate",
+        "highbell-tower-shield",
+        "highbell-seal"
+      ]
+    },
+    {
+      "id": "nightbriar",
+      "name": "Nightbriar",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "stats": {
+            "dealt": 0.05
+          },
+          "attackBonus": 1
+        },
+        {
+          "pieces": 3,
+          "damageBonus": 2,
+          "skill": {
+            "name": "Night Bloom",
+            "effect": "empowered",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Empowered for two rounds: deal 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "nightbriar-blade",
+        "nightbriar-leathers",
+        "nightbriar-ring"
+      ]
+    },
+    {
+      "id": "farwatch",
+      "name": "Farwatch",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "attackBonus": 1,
+          "stats": {
+            "dealt": 0.05
+          }
+        },
+        {
+          "pieces": 3,
+          "damageBonus": 2,
+          "skill": {
+            "name": "Farwatch Volley",
+            "effect": "empowered",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Empowered for two rounds: deal 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "farwatch-greatbow",
+        "farwatch-mantle",
+        "farwatch-horn"
+      ]
+    },
+    {
+      "id": "starward",
+      "name": "Starward",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "spellDcBonus": 1,
+          "stats": {
+            "dealt": 0.05
+          }
+        },
+        {
+          "pieces": 3,
+          "spellAttackBonus": 1,
+          "spellDcBonus": 1,
+          "skill": {
+            "name": "Conjunction",
+            "effect": "vulnerable",
+            "target": "enemy",
+            "rounds": 2,
+            "text": "Make an enemy Vulnerable for two rounds: it takes 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "starward-staff",
+        "starward-robe",
+        "starward-orrery"
+      ]
+    },
+    {
+      "id": "dawnhearth",
+      "name": "Dawnhearth",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "acBonus": 1,
+          "saveBonuses": {
+            "wis": 1,
+            "con": 1
+          }
+        },
+        {
+          "pieces": 3,
+          "spellDcBonus": 1,
+          "spellAttackBonus": 1
+        },
+        {
+          "pieces": 4,
+          "stats": {
+            "dealt": 0.1
+          },
+          "skill": {
+            "name": "First Light",
+            "effect": "fortified",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Fortified for two rounds: take 25% less damage."
+          }
+        }
+      ],
+      "pieces": [
+        "dawnhearth-rod",
+        "dawnhearth-hauberk",
+        "dawnhearth-aegis",
+        "dawnhearth-reliquary"
+      ]
+    },
+    {
+      "id": "grand-chorus",
+      "name": "The Grand Chorus",
+      "grade": "Final",
+      "bonuses": [
+        {
+          "pieces": 2,
+          "spellDcBonus": 1,
+          "skillBonuses": {
+            "performance": 2,
+            "insight": 2
+          }
+        },
+        {
+          "pieces": 3,
+          "spellAttackBonus": 1,
+          "stats": {
+            "dealt": 0.05
+          },
+          "skill": {
+            "name": "Crescendo",
+            "effect": "empowered",
+            "target": "self",
+            "rounds": 2,
+            "text": "Become Empowered for two rounds: deal 25% more damage."
+          }
+        }
+      ],
+      "pieces": [
+        "grand-chorus-baton",
+        "grand-chorus-mantle",
+        "grand-chorus-chime"
+      ]
+    }
+  ]
+}

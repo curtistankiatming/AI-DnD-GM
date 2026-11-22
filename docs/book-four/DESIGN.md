@@ -332,7 +332,10 @@ What each starts from:
   `b3_wren_waits`, she went back to Cinder Fold in the spring to take it, and
   comes to Highpass from there in chapter 1); with
   `b3_wren_refused` Wren keeps it from a chair and Nessa's yes is held for
-  her; without `nessa_keeper` Wren (or the committee, if Wren was cast) keeps
+  her; with `nessa_keeper` "declined" (she sent Wren a no in Book Two's
+  epilogue) Wren (or the committee, if Wren was cast) keeps it, Wren has
+  promised never to ask again, and Nessa has been on the road with the hero
+  since; without `nessa_keeper` Wren (or the committee, if Wren was cast) keeps
   it. With `b3_nessa_gives` she has forgotten one thing about Wren.
 
 **Walkouts** (the Book Two rule, src/away.js): only in Part One and Part
@@ -618,7 +621,9 @@ strangers.
 - Fight: the deep's shapes at the hatch.
 
 **Decision (the key).** Without `nessa_keeper`, Wren offers Nessa the key and
-the same three answers apply.
+the same three answers apply. With `nessa_keeper` "declined" nobody offers it
+(the minutes say "asked once"): the same three answers are Nessa's own, said to
+the committee, and "Take it north" means she takes back her no.
 - Leave it with Wren, or Ottilie's committee if Wren was cast, and come north:
   `b4_key_left`.
 - Take it north: `b4_key_carried`. The signal goes unkept (27).

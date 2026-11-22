@@ -3,7 +3,7 @@
 // narration or the short chat transcript. Notes are kept separately and cannot
 // authorize mechanics. This is save continuity, not anti-cheat for edited saves.
 const {CLUES,STORY_NODES}=require('./content');
-const {PERSONAL}=require('./expansion');
+const {PERSONAL,standing}=require('./expansion');
 const RoadState=require('./road-state');
 const Improvise=require('./improvise');
 const Director=require('./director');
@@ -64,7 +64,7 @@ function sync(state){
   for(const member of state.party||[]){
     const bond=Number.isFinite(Number(member.bond))?Number(member.bond):0;
     const personal=state.world?.personal?.[member.id],def=PERSONAL[member.id];
-    j.relationships.push({id:'companion:'+member.id,title:safeText(member.name,60),value:bond,status:bond>0?'friendly':bond<0?'strained':'neutral',text:personal?.rewarded?'Personal request completed; '+(personal.style==='watchful'?'Watchful':'Decisive')+' development was chosen.':'Companion bond reflects confirmed adventure choices; dialogue alone does not grant equipment or abilities.',source:'Companion bond and resolved personal request'});
+    j.relationships.push({id:'companion:'+member.id,title:safeText(member.name,60),value:bond,status:bond>0?'friendly':bond<0?'strained':'neutral',text:[...standing(state,member.id),personal?.rewarded?'Personal request completed; '+(personal.style==='watchful'?'Watchful':'Decisive')+' development was chosen.':'Companion bond reflects confirmed adventure choices; dialogue alone does not grant equipment or abilities.'].join(' '),source:'Companion bond and resolved personal request'});
     if(def&&personal?.started){
       if(personal.rewarded)j.completed.push({id:'personal:'+member.id,title:def.name,status:'completed',text:'Discussed and resolved with '+safeText(member.name,60)+'.'});
       else j.leads.push({id:'personal:'+member.id,title:def.name,status:state.world?.completed?.[def.quest]?'ready-to-discuss':'active',text:state.world?.completed?.[def.quest]?'Return to town and discuss the outcome with '+safeText(member.name,60)+'.':def.goal});

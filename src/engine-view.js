@@ -13,7 +13,7 @@ const Journal = require("./journal");
 const Away = require("./away");
 const { restHelps, titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
-const { dialogueText, liveLines, nodeLocation } = require("./expansion");
+const { dialogueText, liveLines, nodeLocation, standing } = require("./expansion");
 const currentNode = (...args) => Engine.currentNode(...args);
 const requirementStatus = (...args) => Engine.requirementStatus(...args);
 const completedChoice = (...args) => Engine.completedChoice(...args);
@@ -97,6 +97,7 @@ function itemView(state, entry) {
     charges: entry.charges,
     description: item.description,
     purpose: Gear.purpose(item, state),
+    set: Gear.setCard(item, state.player),
     requires: Gear.requirementText(item) || null,
     slot: item.slot || null,
     equippedSlots,
@@ -108,6 +109,16 @@ function itemView(state, entry) {
     canUseStory: Boolean(item.usable?.contexts?.includes("story")),
     targetKind: item.usable?.target || null
   };
+}
+
+// The sets an actor wears pieces of, with the bonuses on now and the next one.
+function wornSetsView(actor) {
+  return Object.entries(Gear.setCounts(actor)).map(([id, worn]) => {
+    const set = Gear.SETS[id];
+    return { id, name: set.name, worn, pieces: set.pieces.length,
+      active: set.bonuses.filter((b) => worn >= b.pieces).map((b) => ({ pieces: b.pieces, text: Gear.bonusText(b) })),
+      next: set.bonuses.filter((b) => worn < b.pieces).map((b) => ({ pieces: b.pieces, text: Gear.bonusText(b) }))[0] || null };
+  });
 }
 
 function playerSheetView(state) {
@@ -136,7 +147,8 @@ function playerSheetView(state) {
     skills: Object.fromEntries(Object.keys(SKILLS).map((id) => [id, { ...SKILLS[id], proficient: state.player.skills.includes(id), expertise: state.player.expertise.includes(id), bonus: actorSkillBonus(state.player, id) }])),
     attack,
     resources: state.player.resources,
-    conditions: state.player.conditions
+    conditions: state.player.conditions,
+    sets: wornSetsView(state.player)
   };
 }
 
@@ -150,10 +162,13 @@ function partyView(state) {
       role: member.role,
       level:member.level,
       equipment:member.equipment,
+      sets:wornSetsView(member),
       personalStyle:member.personalStyle||null,
       temporaryHp:actor?.temporaryHp??member.temporaryHp??0,
       summary: member.summary,
       personality: member.personality,
+      // What the books' choices made of them (src/data/standing.json).
+      standing: standing(state, member.id),
       strengths: strengths(member),
       hp: actor?.hp ?? member.hp,
       maxHp: actor?.maxHp ?? member.maxHp,

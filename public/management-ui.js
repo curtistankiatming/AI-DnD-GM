@@ -33,8 +33,12 @@
   const key=members.map(a=>a.id+':'+a.name).join('|');if(actorSelect.dataset.members!==key){clear(actorSelect);for(const a of members){const o=el('option','',a.name);o.value=a.id;actorSelect.append(o);}actorSelect.dataset.members=key;}actorSelect.value=actorId;
   const actor=members.find(a=>a.id===actorId);gearStatus.textContent=`${actor?.name||'Party member'} · HP ${actor?.hp}/${actor?.maxHp} · AC ${actor?.ac}. Equipment changes are unavailable during combat or a model wait.`;
   clear(dom.equipmentSlots);for(const slot of M.slots(view,actorId)){const card=el('div','equipment-slot');card.dataset.owner=actorId;card.dataset.slot=slot.slot;card.append(el('span','muted',slot.label),el('strong','',slot.item?.name||'Empty'));
-   if(slot.item){card.append(el('p','',slot.item.purpose));const id=actorId,b=button('Unequip',()=>{if(!busy&&!view.combat?.active)void sendAction({type:'unequip',actorId:id,slot:slot.slot});},false);b.dataset.disabled=String(Boolean(view.combat?.active));b.disabled=busy||Boolean(view.combat?.active);card.append(b);}dom.equipmentSlots.append(card);
+   if(slot.item){card.append(el('p','',String(slot.item.purpose||'').replace(slot.item.set?.text||'\u0000','').trim()));const id=actorId,b=button('Unequip',()=>{if(!busy&&!view.combat?.active)void sendAction({type:'unequip',actorId:id,slot:slot.slot});},false);b.dataset.disabled=String(Boolean(view.combat?.active));b.disabled=busy||Boolean(view.combat?.active);card.append(b);}dom.equipmentSlots.append(card);
   }
+  // Equipment sets this member wears pieces of: the bonuses on now, and the next one.
+  for(const set of actor?.sets||[]){const card=el('div','equipment-slot equipment-set');card.append(el('span','muted','Set'),el('strong','',`${set.name}, ${set.worn} of ${set.pieces} worn`));
+   for(const b of set.active)card.append(el('p','item-set-bonus is-active',`${b.pieces} pieces: ${b.text}.`));
+   if(set.next)card.append(el('p','item-set-bonus',`Next, at ${set.next.pieces} pieces: ${set.next.text}.`));dom.equipmentSlots.append(card);}
  };
  const baseInventory=renderInventory;
  renderInventory=function(){baseInventory();const sorted=[...view.inventory].sort((a,b)=>a.category.localeCompare(b.category)||a.name.localeCompare(b.name));[...dom.inventoryCards.children].forEach((card,i)=>{const item=sorted[i];if(!item)return;card.dataset.inventoryId=item.id;card.append(el('p','item-usage',M.usage(item)));const owners=M.owners(view,item.id);card.append(el('p','item-owners',owners.length?'Owned by: '+owners.map(a=>`${a.name} (${a.label})`).join('; '):'No equipped owner.'));

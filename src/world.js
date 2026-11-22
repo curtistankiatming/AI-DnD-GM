@@ -487,7 +487,7 @@ function handle(state,action,rng,events,api){
   }
   return fail(events,'That action is unavailable.');
 }
-function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:Gear.purpose(item),rarity:item.rarity||'Common',requires:Gear.requirementText(item)||null,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
+function previewItem(state,id,qty,kind){const item=ITEMS[id];return {id,name:item.name,purpose:Gear.purpose(item),set:Gear.setCard(item,state.player),rarity:item.rarity||'Common',requires:Gear.requirementText(item)||null,category:item.category,stock:qty,price:price(state,id,kind),comparisons:item.slot?G.actors(state).map(a=>G.comparison(state,id,a.id)):[]};}
 function view(state){
   const w=state.world,t=town(state),m=activeMerchant(state);
   // A written chapter in a book this save cannot open (unreleased, or paid) is not on the board.
