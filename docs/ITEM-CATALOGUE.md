@@ -155,6 +155,8 @@ tier is a step up for every kind of item:
 | Light armour (AC + Dex) | 15 | 15, 5% more dealt | 15, 5% more dealt and less taken | 16, 5% more dealt and less taken | 16, 10% more dealt, 5% less taken |
 | Shield | +4, 10% less taken | +4, 10% less taken, Brace for two rounds | +4, 10 to 15% less taken | +4, 15% less taken, +1 saves | +5, 15% less taken, +1 saves |
 
+**A cap on damage taken.** However many worn pieces cut damage taken, gear takes off at most 30% (`MAX_GEAR_TAKEN` in `src/equipment.js`). Plate, shield and charm at level 40 add up to 45%, which with AC 28 and Masterwork refines left a heavy wearer taking about a tenth of normal damage.
+
 Every tier has a heavy armour that Fighters and Clerics can wear at Strength 13
 (a Cleric starts with 13), and one at Strength 15 that anyone strong enough
 can. Accessories reach 20% more damage dealt only at 40 (15% from level 22

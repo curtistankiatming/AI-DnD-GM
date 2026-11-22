@@ -53,7 +53,9 @@ function derive(a){
   }
   if(a.personalStyle==='watchful')ac+=1;
   if(a.personalStyle==='decisive'){a.gearAttackBonus+=1;a.gearSpellAttack+=1;a.gearSpellDc+=1;}
-  const gs=Gear.stats(a);a.gearDealt=gs.dealt;a.gearTaken=gs.taken;
+  // Gear can take off at most 30% of the damage a wearer takes, however many
+  // pieces add to it (plate, shield and charm at level 40 would reach 45%).
+  const gs=Gear.stats(a);a.gearDealt=gs.dealt;a.gearTaken=Math.max(MAX_GEAR_TAKEN,gs.taken);
   a.ac=Math.max(1,ac);return a;
 }
 function weaponProfile(a){
@@ -103,4 +105,5 @@ function initCompanion(state,member){
   for(const id of Object.values(loadout).filter(Boolean))addTo(state.player.inventory,id,1);
   derive(member);
 }
-module.exports={slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};
+const MAX_GEAR_TAKEN=-0.3;
+module.exports={MAX_GEAR_TAKEN,slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};

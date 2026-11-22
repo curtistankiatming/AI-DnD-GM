@@ -304,6 +304,16 @@ test('no Book Three item is matched or beaten by one already available at its le
   assert.deepEqual(found, []);
 });
 
+test('gear takes off at most 30% of the damage a wearer takes', () => {
+  assert.equal(G.MAX_GEAR_TAKEN, -0.3);
+  const s = JSON.parse(JSON.stringify(hero('fighter', 40)));
+  const a = s.player;
+  a.equipment = { ...a.equipment, armor: 'wardsmith-plate', offHand: 'bell-iron-shield', accessory: 'second-winter-charm' };
+  assert.ok(Gear.stats(a).taken < -0.3, 'the three pieces add up past the cap');
+  G.derive(a);
+  assert.equal(a.gearTaken, -0.3);
+});
+
 test('Book Three stays hidden: the new gear changes no book', () => {
   assert.equal(Book.SHELF.find((b) => b.n === 3).out, 0);
 });

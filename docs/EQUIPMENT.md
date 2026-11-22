@@ -38,7 +38,8 @@ Common, Uncommon, Rare, Epic and Legendary. Shown on item cards and in shops.
 
 `stats: { dealt, taken }`: a share of damage dealt or taken, such as 10% more
 damage dealt or 10% less damage taken. They add to the buffs and debuffs of
-`src/power.js`.
+`src/power.js`. All worn pieces together take off at most 30% of damage taken
+(`MAX_GEAR_TAKEN` in `src/equipment.js`).
 
 ## Item skills
 
