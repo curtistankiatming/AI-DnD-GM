@@ -718,6 +718,19 @@ function rarityTag(rarity) {
 function purposeWithoutRequirement(item) {
   return item.requires ? String(item.purpose || "").replace(` Requires: ${item.requires}.`, "").replace(`Requires: ${item.requires}.`, "").trim() : item.purpose;
 }
+// An item's skill ("Skill, Bank the Fire: … Bonus action, once per fight.") as its own line with a chip,
+// so it doesn't hide in the middle of the item's text. Returns null when the item has no skill.
+const ITEM_SKILL = /\s*Skill, ([^:]+): (.*?)\s*Bonus action, once per fight\./;
+function purposeWithoutSkill(item) {
+  return String(purposeWithoutRequirement(item) || "").replace(ITEM_SKILL, " ").replace(/\s+/g, " ").trim();
+}
+function itemSkillLine(item) {
+  const m = ITEM_SKILL.exec(String(item.purpose || ""));
+  if (!m) return null;
+  const line = createElement("p", "item-skill");
+  line.append(createElement("span", "item-skill-chip", `Skill · ${m[1]}`), ` ${m[2]} `, createElement("span", "item-skill-use", "Bonus action, once per fight"));
+  return line;
+}
 // "Requires: Level 8 · Strength 13", marked when the hero can't wear it yet.
 function requirementLine(item) {
   if (!item.requires) return null;
@@ -787,7 +800,9 @@ function renderInventory() {
     const quantity = createElement("span", "quantity-badge", item.charges !== undefined ? `×${item.quantity} · ${item.charges} uses in open kit` : `×${item.quantity}`);
     head.append(identity, quantity);
     const purpose = createElement("div", "purpose-box");
-    purpose.append(createElement("span", "", "Purpose"), createElement("p", "", purposeWithoutRequirement(item)));
+    purpose.append(createElement("span", "", "Purpose"), createElement("p", "", purposeWithoutSkill(item)));
+    const skill = itemSkillLine(item);
+    if (skill) purpose.append(skill);
     const requires = requirementLine(item);
     if (requires) purpose.append(requires);
     const actions = createElement("div", "inventory-actions");

@@ -542,7 +542,7 @@ test('the sluices: back Nessa or Ysolde\'s choice, and with Nessa away Ysolde\'s
   const alone = sluice({ party: ['orin', 'maren'] });
   assert.equal(alone.story.nodeId, 'scene-vell-ysolde-sluice');
   const text = opening(alone);
-  assert.match(text, /I'm not going\. I wanted to tell someone from the free wards/); assert.doesNotMatch(text, /Jory and Wil are at the end of the sluice|I came down here because you asked me/);
+  assert.match(text, /I'm not going\. I wanted to tell someone from the free wards/); assert.doesNotMatch(text, /Hugh and Wil are at the end of the sluice|I came down here because you asked me/);
   assert.deepEqual(E.buildView(alone).scene.choices.map((c) => c.id), ['back']);
   assert.equal(E.resolveAction(alone, { type: 'story-choice', choiceId: 'pressed' }, high).result.ok, false);
   const after = act(alone, { type: 'story-choice', choiceId: 'back' }).state;
@@ -612,7 +612,7 @@ test('the side jobs of chapters 4 to 6 open and close with their windows, and Be
   assert.ok(!offered('oil', upTo('b3-pass'), 'saltwick')); assert.ok(offered('oil', upTo('b3-saltwick'), 'saltwick')?.canStart); assert.ok(!offered('oil', upTo('b3-witness'), 'saltwick'));
   assert.ok(!offered('census', upTo('b3-pass'), 'vell')); assert.ok(offered('census', upTo('b3-saltwick'), 'vell')?.canStart);
   assert.ok(!offered('brothers', upTo('b3-saltwick'), 'vell')); assert.ok(offered('brothers', upTo('b3-vell'), 'vell')?.canStart);
-  // Fennick's Census runs to chapter 9, and Jory and Wil from chapter 6 to 9.
+  // Fennick's Census runs to chapter 9, and Hugh and Wil from chapter 6 to 9.
   for (const id of ['census', 'brothers']) {
     assert.ok(offered(id, upTo('b3-vault'), 'vell')?.canStart, `${id} is open during the great bell`);
     assert.ok(!offered(id, upTo('b3-greatbell'), 'vell'), `${id} closes once the great bell is decided`);
