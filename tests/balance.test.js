@@ -55,7 +55,9 @@ test('enemies gain extra health from level 70, up to +25% at 100', () => {
   assert.equal(XP.vigor(20), 1); assert.equal(XP.vigor(70), 1);
   assert.equal(XP.vigor(85), 1.125); assert.equal(XP.vigor(100), 1.25); assert.equal(XP.vigor(140), 1.25);
   const at = level => XP.foeStats(XP.challenge({ level })).main.maxHp;
-  assert.equal(at(100), Math.round((22 + P.powerLevel(100) * 6) * 1.25 * XP.HP_TRIM));
-  assert.equal(at(60), Math.round((22 + P.powerLevel(60) * 6) * XP.HP_TRIM), 'No change before level 70.');
+  // Past 40 the late growth (src/xp.js LATE_HP) multiplies in as well.
+  const late = level => 1 + XP.LATE_HP * (level - XP.LATE_LEVEL);
+  assert.equal(at(100), Math.round((22 + P.powerLevel(100) * 6) * 1.25 * XP.HP_TRIM * late(100)));
+  assert.equal(at(60), Math.round((22 + P.powerLevel(60) * 6) * XP.HP_TRIM * late(60)), 'No vigor before level 70.');
   assert.equal(XP.rate(100, Object.values(XP.foeStats(XP.challenge({ level: 100 }))).flatMap((d, i) => i ? [d, d] : [d])), 'hard', 'The standard battle still rates hard.');
 });

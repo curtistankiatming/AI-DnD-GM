@@ -66,12 +66,13 @@ const share = (level, fraction) => Math.round(band(level) * fraction / 10) * 10;
 
 // Challenge of an adventure. Levels 1-20 behave exactly as before; past 20,
 // AC, attack and DCs stop growing and health and damage grow slowly.
-// Renown (q.power above q.level) and the chosen tier add on top.
+// Past 40, `late` (levels past LATE_LEVEL) adds health, damage and a little
+// to hit (foeStats). Renown (q.power above q.level) and the chosen tier add on top.
 function challenge(q) {
   const level = Math.max(1, Math.floor(Number(q?.level) || 1));
   const renown = Math.max(0, Math.floor(Number(q?.power) || level) - level);
   const t = tier(q?.tier);
-  return { accuracy: P.accuracyLevel(level) + t.accuracy, power: P.powerLevel(level) + renown + t.power, vigor: vigor(level) };
+  return { accuracy: P.accuracyLevel(level) + t.accuracy, power: P.powerLevel(level) + renown + t.power, vigor: vigor(level), late: lateLevels(level) };
 }
 
 // Extra enemy health for the 4th job's levels: none up to 70, rising to +25%
@@ -88,6 +89,15 @@ function vigor(level) {
 // The health trim below adds up to ENEMY_TRIM_DAMAGE more per tier as it eases
 // in (3 + 3 = 6 from power 8), so shorter fights stay as dangerous.
 const ENEMY_TIER_DAMAGE = 3, ENEMY_TRIM_DAMAGE = 3;
+// Past level 40 the gear of levels 45 to 100 (AC, damage dealt, damage taken
+// cut), set bonuses and the 3rd and 4th jobs outgrew the enemies: fights by
+// force stayed short, but the hero lost a fifth as much health at 100 as at
+// 40, because enemy attacks stopped at +13 while gear AC kept rising
+// (docs/reviews/claude-enemies-past-40-2026-11-22.md). Each level past
+// LATE_LEVEL adds LATE_HP more health and LATE_DAMAGE more damage per hit,
+// and every LATE_ATTACK_EVERY levels add +1 to hit. Levels 1 to 40 are unchanged.
+const LATE_LEVEL = 40, LATE_HP = 0.006, LATE_DAMAGE = 0.3, LATE_ATTACK_EVERY = 10;
+const lateLevels = level => Math.max(0, Math.min(P.MAX_LEVEL, Math.floor(Number(level) || 1)) - LATE_LEVEL);
 const foeTier = p => Math.max(0, Math.floor((p + 1) / 6));
 // Enemy health is trimmed as the party's stat damage arrives, so fights by
 // force last about 4 to 7 rounds (playtest 21 November 2026): none up to
@@ -97,12 +107,13 @@ function hpTrim(p) {
   if (p <= HP_TRIM_FROM) return 1;
   return 1 - (1 - HP_TRIM) * Math.min(1, (p - HP_TRIM_FROM) / (HP_TRIM_FULL - HP_TRIM_FROM));
 }
-function foeStats({ accuracy: a, power: p, vigor: v = 1 }) {
-  const trim = hpTrim(p), hp = v * trim;
-  const extra = Math.floor(foeTier(p) * (ENEMY_TIER_DAMAGE + ENEMY_TRIM_DAMAGE * (1 - trim) / (1 - HP_TRIM)));
+function foeStats({ accuracy: a, power: p, vigor: v = 1, late = 0 }) {
+  const trim = hpTrim(p), hp = v * trim * (1 + LATE_HP * late);
+  const extra = Math.floor(foeTier(p) * (ENEMY_TIER_DAMAGE + ENEMY_TRIM_DAMAGE * (1 - trim) / (1 - HP_TRIM)) + LATE_DAMAGE * late);
+  const hit = Math.floor(late / LATE_ATTACK_EVERY);
   return {
-    main: { maxHp: Math.round((22 + p * 6) * hp), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2), damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3) + extra}` },
-    retainer: { maxHp: Math.round((10 + p * 4) * hp), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3), damage: `1d6+${2 + Math.floor(p / 3) + extra}` }
+    main: { maxHp: Math.round((22 + p * 6) * hp), ac: 12 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 2) + hit, damage: `${1 + Math.floor(p / 5)}d6+${2 + Math.floor(p / 3) + extra}` },
+    retainer: { maxHp: Math.round((10 + p * 4) * hp), ac: 11 + Math.floor(a / 3), attackBonus: 3 + Math.floor(a / 3) + hit, damage: `1d6+${2 + Math.floor(p / 3) + extra}` }
   };
 }
 
@@ -119,8 +130,7 @@ const threat = def => Math.max(1, Number(def?.maxHp) || 1) * averageDamage(def?.
 // A standard adventure battle (boss and two retainers) for a hero of this
 // level rates "hard"; a battle far below the hero's level rates "trivial".
 function reference(level) {
-  const l = Math.max(1, Math.floor(Number(level) || 1));
-  const f = foeStats({ accuracy: P.accuracyLevel(l), power: P.powerLevel(l), vigor: vigor(l) });
+  const f = foeStats(challenge({ level }));
   return threat(f.main) + 2 * threat(f.retainer);
 }
 // A battle written for a level well below the hero's is capped as well:
@@ -140,4 +150,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, UNDER_LATE_MAX, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, UNDER_LATE_MAX, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, LATE_LEVEL, LATE_HP, LATE_DAMAGE, LATE_ATTACK_EVERY, lateLevels, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
