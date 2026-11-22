@@ -170,7 +170,8 @@ function ending(state) {
   const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
   const count = ['', 'the first book', 'both books', 'all three books'][titles.length] || `all ${titles.length} books`;
   const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
-  return next ? paidEnding(count, list, next) : `${base}${trialLine(state)}`;
+  const trial = next ? '' : trialLine(state);
+  return next ? paidEnding(count, list, next) : trial ? `${base.replace('Without it, your written campaign ends here', 'Without it, the written books end here, apart from your job trial')}${trial}` : base;
 }
 // A book that ends at a job trial (Book Three ends at level 40, the 3rd job)
 // says how to reach it, which needs no AI game master: the trial is written,

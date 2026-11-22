@@ -183,7 +183,7 @@ function restHelps(state) {
   if (p.hitDice?.current > 0 && p.hp < p.maxHp) return true;
   if (Object.values(p.resources || {}).some((r) => r && r.refresh === "short" && r.current < r.max)) return true;
   if ((p.conditions || []).some((c) => REST_CLEARS.includes(c.id))) return true;
-  return (state.party || []).some((m) => m.hp > 0 && (m.hp < m.maxHp || Object.entries(P.companionResources(m.id, m.level || 1)).some(([id, max]) => id === "secondWind" && (m.resources?.[id] ?? 0) < max)));
+  return (state.party || []).some((m) => (m.hp > 0 && m.hp < m.maxHp) || Object.entries(P.companionResources(m.id, m.level || 1)).some(([id, max]) => id === "secondWind" && (m.resources?.[id] ?? 0) < max));
 }
 
 Object.assign(module.exports, { restHelps, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats, checkActor, strengths, EXPERTISE_LEVEL });

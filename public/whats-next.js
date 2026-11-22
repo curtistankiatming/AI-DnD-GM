@@ -83,8 +83,8 @@
     if (w.booksComplete && !w.activeQuest) list.append(el('p', 'whats-next-end', w.paidBook
       ? (w.paidBook.closed ? `The written books open here are complete, and this save carries on with its own AI story.` : `The written books open here are complete. ${bookName(w.paidBook.n)}, ${w.paidBook.title}, goes on for paid accounts; upgrade, and this save carries straight on into it.`)
       : 'The written story is complete. New adventures come from the AI game master; the bounty board stays open.'));
-    // A job trial waiting to be asked for (the 3rd job at level 40, at the end of Book Three) is offered here
-    // as well as on Prepare, so the end of the book points at it. One that is too far off says what it needs.
+    // A job trial waiting to be asked for (the 3rd job at level 40, the 4th at 70) is offered here as well as
+    // on Prepare, so the end of Book Three points at it. One that is too far off says what it needs.
     const t = w.director?.trial;
     if (t && !t.questId && w.bellComplete) {
       const row = el('div', 'whats-next-quest'), text = el('div'); row.id = 'whatsNextTrial';
@@ -92,7 +92,7 @@
       const b = el('button', 'btn btn-primary btn-small', 'Begin your trial'); b.type = 'button'; b.disabled = busy || !t.canRequest; b.dataset.disabled = String(!t.canRequest);
       b.addEventListener('click', () => { if (!busy && t.canRequest) void window.BriarwatchChat?.trial(); });
       row.append(text, b); list.append(row);
-    } else if (w.booksComplete && !w.activeQuest && !w.paidBook && view.progression?.job?.branch && !view.progression?.job?.thirdJob && (view.player?.level || 0) < 40) {
+    } else if (w.booksComplete && !w.activeQuest && !w.paidBook && view.progression?.job?.branch && !view.progression?.job?.thirdJob && (view.player?.level || 0) < 40 && (w.bounty?.afterBooks || 0) >= 40) {
       list.append(el('p', 'muted', `Your 3rd job trial opens at level 40. Bounties can take you there.`));
     }
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {

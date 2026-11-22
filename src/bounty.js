@@ -76,6 +76,8 @@ function view(state) {
     level: state.player.level,
     reward: { xp, gold: r.gold },
     capped: xp < r.xp,
+    // After the books: the level bounties stop at (20, or 40 once Book Three is done).
+    afterBooks: afterBooksLevel(state),
     catchUp: r.behind,
     loss: lossCost(state),
     reason: open ? null : !w.completed?.bell ? 'The bounty board opens once the bell investigation is finished.' : 'Return to town to take a bounty.'

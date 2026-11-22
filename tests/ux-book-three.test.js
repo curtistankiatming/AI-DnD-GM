@@ -108,3 +108,15 @@ test('players read books and parts in words', () => {
   assert.equal(Book.partName(Book.SHELF.find((b) => b.n === 3), 2), 'Part Two, The Stair');
   assert.match(Book.bookEnd('aftermath'), /^Book One, The Bell Beneath Briarwatch, is complete\. Book Two/);
 });
+
+test('the end message does not say the campaign ends when the trial is still to come, and the level-40 hint needs bounties that reach 40', () => {
+  const s = ready('b3-firstbell', 38);
+  s.player.progression.specialization = P.JOBS.fighter.branches[0].id;
+  s.world.completed['b3-firstbell'] = { xp: 0, gold: 0 };
+  assert.doesNotMatch(Book.ending(s), /your written campaign ends here/);
+  assert.match(Book.ending(s), /apart from your job trial/);
+  assert.equal(E.buildView(s).world.bounty.afterBooks, 40);
+  const two = Book.grant(ready('chairs', 20), 2);
+  for (const q of Object.values(QUESTS)) if ((q.book || 1) <= 2 && !q.sideJob) two.world.completed[q.id] = { xp: 0, gold: 0 };
+  assert.equal(E.buildView(two).world.bounty.afterBooks, 20, 'After Book Two the hint stays hidden.');
+});
