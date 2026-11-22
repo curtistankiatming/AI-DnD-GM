@@ -21,13 +21,14 @@ const PART_TWO = { 'b3-price': 30, 'b3-wren': 31, 'b3-order': 32, 'b3-ashford': 
 
 const allStock = (t) => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()];
 // Where an item can be had today without missing it: a town that is never
-// emptied, a Part One chapter, or a bounty. Vell's shop closes if the city is
-// evacuated, so it does not count. Part Two's rewards count once given.
+// emptied, a chapter, or a bounty in such a town. Vell's shop and bounty board
+// close if the city is evacuated, so neither counts.
+const missable = (townId) => Boolean(TOWNS[townId]?.emptied);
 function obtainable(item) {
   const x = item.exclusive;
   if (x?.pending) return false;
   if (x?.quest) return Boolean(QUESTS[x.quest]);
-  if (x?.event) return true;
+  if (x?.event) return !missable(x.event.split(':')[1]);
   return Object.values(TOWNS).some((t) => !t.emptied && allStock(t).includes(item.id));
 }
 
@@ -59,7 +60,7 @@ const CLASS_NEEDS = {
   fighter: { weapon: [ROLE.str1h, ROLE.str2h], armour: [ROLE.heavy], shield: [ROLE.shield] },
   rogue: { weapon: [ROLE.finesse], armour: [ROLE.light] },
   wizard: { focus: [ROLE.focus], armour: [ROLE.light] },
-  cleric: { focus: [ROLE.focus], armour: [ROLE.medium], shield: [ROLE.shield] },
+  cleric: { focus: [ROLE.focus], armour: [ROLE.medium, ROLE.heavy], shield: [ROLE.shield] },
   ranger: { weapon: [ROLE.bow], armour: [ROLE.light, ROLE.medium] },
   bard: { focus: [ROLE.focus], weapon: [ROLE.finesse], armour: [ROLE.light] }
 };
@@ -88,6 +89,8 @@ function hero(classId, level) {
   }
   return heroes.get(key);
 }
+// A copy of that hero whose save has begun Book Three (its first chapter done).
+const begun = (classId, level) => { const s = JSON.parse(JSON.stringify(hero(classId, level))); s.world.completed['b3-letter'] = { xp: 0, gold: 0 }; return s; };
 // The upgrades in tier `t` that `actor` can wear at the top of that tier.
 function upgrades(actor, t) {
   const [lo, hi] = band(t);
@@ -134,7 +137,8 @@ test('every Book Three requirement is one a hero of that class can meet', () => 
     const r = item.requires;
     assert.ok(Number.isInteger(r.level) && r.level >= 18 && r.level <= 40, `${item.id}: level ${r.level}`);
     for (const c of r.classes || []) assert.ok(CLASSES[c], `${item.id}: ${c}`);
-    // Ability scores never rise, so no requirement goes past a preset's best score (15).
+    // A preset's best score is 15, and a hero may never take an ability rise,
+    // so no requirement goes past 15.
     for (const [id, n] of Object.entries(r.abilities || {})) assert.ok(ABILITIES[id] && n >= 10 && n <= 15, `${item.id}: ${id} ${n}`);
     const someone = Object.keys(CLASSES).some((c) => Gear.unmet(hero(c, Math.max(20, r.level)).player, item) === null);
     assert.ok(someone, `${item.id}: some class can wear it`);
@@ -150,24 +154,28 @@ test('every Book Three requirement is one a hero of that class can meet', () => 
 test('Book Three gear follows the curve of levels 1 to 20 and does not run away with it', () => {
   for (const item of B3) {
     const id = item.id;
-    if (item.weapon) assert.ok(item.attackBonus <= 3 && item.damageBonus <= 4 && ['1d6', '1d8', '1d10', '1d12', '2d6'].includes(item.weapon.damage), id);
+    if (item.weapon) assert.ok(item.attackBonus <= 3 && item.damageBonus <= 5 && ['1d6', '1d8', '1d10', '1d12', '2d6'].includes(item.weapon.damage), id);
     if (item.weapon && item.requires.level < 40) assert.ok(item.attackBonus <= 2, `${id}: +3 to hit waits for level 40`);
-    if (item.category === 'focus') assert.ok(item.spellAttackBonus <= 4 && item.spellDcBonus <= 4, id);
+    if (item.category === 'focus') assert.ok(item.spellAttackBonus <= (item.requires.level < 40 ? 4 : 5) && item.spellDcBonus <= 4, id);
     if (item.armor?.dexCap === 0) assert.ok(item.armor.base <= 22, id);
     if (item.armor?.dexCap > 0) assert.ok(item.armor.base <= 18 && item.armor.dexCap <= 2, id);
     if (item.armor?.dexCap === null) assert.ok(item.armor.base <= 16, id);
-    assert.ok((item.acBonus || 0) <= (item.category === 'shield' ? 4 : 1), id);
+    assert.ok((item.acBonus || 0) <= (item.category === 'shield' ? (item.requires.level < 40 ? 4 : 5) : 1), id);
     assert.ok((item.stats?.dealt || 0) <= 0.2 && (item.stats?.taken || 0) >= -0.15, id);
     assert.ok(Object.values(item.skillBonuses || {}).every((v) => v <= 3), id);
     assert.ok(Object.values(item.saveBonuses || {}).every((v) => v <= 2), id);
   }
-  // Each tier's best is at least as good as the last tier's, and only a little better.
-  const score = (i) => i.category === 'focus' ? i.spellAttackBonus + i.spellDcBonus : i.weapon ? i.attackBonus + i.damageBonus : i.armor ? i.armor.base : i.acBonus;
+  // Each tier's best is a step up on the last tier's (weapons and foci strictly,
+  // armour and shields at least as good), and only a small step. 5% more damage
+  // dealt or less taken counts as one point.
+  const pct = (i) => Math.round(((i.stats?.dealt || 0) - (i.stats?.taken || 0)) * 20);
+  const score = (i) => pct(i) + (i.category === 'focus' ? i.spellAttackBonus + i.spellDcBonus : i.weapon ? i.attackBonus + i.damageBonus : i.armor ? i.armor.base : i.acBonus);
   for (const role of ['str1h', 'str2h', 'finesse', 'bow', 'focus', 'heavy', 'medium', 'light', 'shield']) {
     let last = null;
     for (const t of TIERS) {
       const [lo, hi] = band(t), best = Math.max(...B3.filter((i) => ROLE[role](i) && obtainable(i) && i.requires.level >= lo && i.requires.level <= hi).map(score));
-      if (last !== null) assert.ok(best >= last && best <= last + 2, `${role} at ${t}: ${best} after ${last}`);
+      const strict = ['str1h', 'str2h', 'finesse', 'bow', 'focus'].includes(role);
+      if (last !== null) assert.ok((strict ? best > last : best >= last) && best <= last + 2, `${role} at ${t}: ${best} after ${last}`);
       last = best;
     }
   }
@@ -214,7 +222,7 @@ test('Part Two rewards are given when their chapters finish: never sold, and one
 });
 
 test('a town sells its later gear only once the hero reaches that level', () => {
-  const s = hero('fighter', 29);
+  const s = begun('fighter', 29);
   const at = (state, town) => { state.world.unlockedTowns = [...new Set([...state.world.unlockedTowns, town])]; state.world.townId = town; state.story.nodeId = `town-${town}`; return E.buildView(state).world.shop.map((o) => o.id); };
   const before = at(JSON.parse(JSON.stringify(s)), 'merrowgate');
   assert.ok(!before.includes('seawall-greatsword'), 'not at 29');
@@ -230,14 +238,68 @@ test('a level bounty gives its item once, at or above its level, and never below
   const api = { awardXp: E.awardXp, enterNode: E.enterNode, actors: G.actors };
   const claim = (s) => { s.world.townId = 'merrowgate'; s.story.nodeId = 'town-merrowgate'; s.world.bounty = { nodeId: 'town-merrowgate', townId: 'merrowgate', level: s.player.level }; Bounty.finish(s, 'victory', [], api); };
   const count = (s, id) => s.player.inventory.filter((e) => e.itemId === id).reduce((n, e) => n + e.quantity, 0);
-  const low = JSON.parse(JSON.stringify(hero('rogue', 25)));
+  const low = begun('rogue', 25);
   claim(low);
   assert.equal(count(low, 'wrecker-gaff'), 1, 'the town\'s first bounty item');
   assert.equal(count(low, 'wrecker-spyglass'), 0, 'not below level 30');
-  const high = JSON.parse(JSON.stringify(hero('rogue', 30)));
+  const high = begun('rogue', 30);
   claim(high); claim(high);
   assert.equal(count(high, 'wrecker-spyglass'), 1, 'once');
   assert.match(Gear.purpose(ITEMS['wrecker-spyglass']), /first bounty claimed in Merrowgate at level 30 or above/);
+});
+
+test('a hero who has not begun Book Three never sees its gear, however high their level', () => {
+  const api = { awardXp: E.awardXp, enterNode: E.enterNode, actors: G.actors };
+  const shop = (state, town) => { state.world.unlockedTowns = [...new Set([...state.world.unlockedTowns, town])]; state.world.townId = town; state.story.nodeId = `town-${town}`; return E.buildView(state).world.shop.map((o) => o.id); };
+  // Levelled past 20 on bounties or AI adventures, with Book Three hidden or unpaid.
+  for (const level of [25, 30, 40]) {
+    const s = JSON.parse(JSON.stringify(hero('fighter', level)));
+    for (const town of ['briarwatch', 'highpass', 'merrowgate', 'ashford', 'cinderfold']) {
+      assert.deepEqual(W.townStock(s, town), TOWNS[town].stock, `${town} at ${level}`);
+      assert.deepEqual(shop(s, town).sort(), [...TOWNS[town].stock].sort(), `${town} shop at ${level}`);
+    }
+    s.world.townId = 'merrowgate'; s.story.nodeId = 'town-merrowgate'; s.world.bounty = { nodeId: 'town-merrowgate', townId: 'merrowgate', level };
+    Bounty.finish(s, 'victory', [], api);
+    assert.ok(!s.player.inventory.some((e) => e.itemId === 'wrecker-spyglass'), `no level bounty at ${level}`);
+  }
+  // A free hosted account (Books One and Two) with a Book Three save sees none either.
+  const free = Book.grant(begun('fighter', 30), Book.FREE_BOOKS);
+  assert.deepEqual(W.townStock(free, 'merrowgate'), TOWNS.merrowgate.stock);
+  assert.equal(Gear.bountyReward(free, 'merrowgate', 30, []), null);
+  // Once begun, it opens.
+  assert.ok(W.townStock(begun('fighter', 30), 'merrowgate').includes('seawall-greatsword'));
+});
+
+// a is at least as good as b for everyone who can wear b, at the same or a lower level.
+const avg = (d) => { const m = /^(\d+)d(\d+)$/.exec(d); return m ? m[1] * (+m[2] + 1) / 2 : 1; };
+const lv = (i) => i.requires?.level || 0;
+function atLeast(a, b) {
+  if (a.slot !== b.slot || a.category !== b.category || lv(a) > lv(b)) return false;
+  const ca = a.requires?.classes, cb = b.requires?.classes;
+  if (ca && (!cb || !cb.every((c) => ca.includes(c)))) return false;
+  for (const [k, v] of Object.entries(a.requires?.abilities || {})) if ((b.requires?.abilities?.[k] || 0) < v) return false;
+  if (a.weapon || b.weapon) {
+    if (!a.weapon || !b.weapon || a.weapon.ability !== b.weapon.ability) return false;
+    if (a.weapon.properties.includes('twoHanded') !== b.weapon.properties.includes('twoHanded') || avg(a.weapon.damage) < avg(b.weapon.damage)) return false;
+  }
+  if (a.armor || b.armor) {
+    if (!a.armor || !b.armor || (a.armor.dexCap === 0) !== (b.armor.dexCap === 0) || (a.armor.dexCap === null) !== (b.armor.dexCap === null)) return false;
+    if (a.armor.base < b.armor.base || (a.armor.dexCap !== null && a.armor.dexCap < b.armor.dexCap)) return false;
+  }
+  for (const k of ['attackBonus', 'damageBonus', 'spellAttackBonus', 'spellDcBonus', 'acBonus']) if ((a[k] || 0) < (b[k] || 0)) return false;
+  if ((a.stats?.dealt || 0) < (b.stats?.dealt || 0) || (a.stats?.taken || 0) > (b.stats?.taken || 0)) return false;
+  for (const [k, v] of Object.entries(b.saveBonuses || {})) if ((a.saveBonuses?.[k] || 0) < v) return false;
+  for (const [k, v] of Object.entries(b.skillBonuses || {})) if (v > 0 && (a.skillBonuses?.[k] || 0) < v) return false;
+  if (b.skill && (!a.skill || a.skill.effect !== b.skill.effect || a.skill.target !== b.skill.target || (a.skill.rounds || 1) < (b.skill.rounds || 1))) return false;
+  if (b.story && a.story?.skill !== b.story.skill) return false;
+  return true;
+}
+
+test('no Book Three item is matched or beaten by one already available at its level to the same wearers', () => {
+  const pool = Object.values(ITEMS).filter((i) => i.slot && !i.forged && (i.upgradeTier || obtainable(i) || GEAR.includes(i)) && !(i.exclusive?.town && missable(i.exclusive.town)));
+  const found = [];
+  for (const b of B3) for (const a of pool) if (a.id !== b.id && atLeast(a, b)) found.push(`${b.id} (level ${lv(b)}) is no better than ${a.id} (level ${lv(a)})`);
+  assert.deepEqual(found, []);
 });
 
 test('Book Three stays hidden: the new gear changes no book', () => {

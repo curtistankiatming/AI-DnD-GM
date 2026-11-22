@@ -13,7 +13,9 @@ the pull requests that made them.
 - Every Part One chapter now gives its own item. Part Two's ten chapters have
   theirs ready, waiting until those chapters are in.
 - Towns can sell more as the hero levels (`stockByLevel`), and some bounty
-  boards give a level bounty item. Book Three stays hidden. List:
+  boards give a level bounty item, both only for a save that has begun Book
+  Three. Every tier is a step up, and a test checks that no new item is
+  matched by one already available at its level. Book Three stays hidden. List:
   [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md#book-three-gear-levels-20-to-40).
 
 ## Equipment step 5: the item catalogue (21 November 2026)

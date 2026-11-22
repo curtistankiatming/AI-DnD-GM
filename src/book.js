@@ -90,6 +90,13 @@ const lastLevel = state => Math.max(1, ...chapters(state).map(q => Number(q.leve
 const writing = state => books(state).find(b => b.writing) || null;
 // The next released book this session may not open (a paid book on a free
 // hosted account), or null.
+// Whether this save has begun book n: it may play the book and has finished
+// one of its chapters. Gear for a book's levels (towns.json stockByLevel, level
+// bounties) waits for this, so a hero who levels past a book another way
+// (bounties, AI adventures, a free hosted account) never sees it.
+// A finished chapter means the book was playable for this save, so the
+// released-parts check is not needed (and a save keeps its gear if a preview ends).
+const started = (state, n) => allows(state, n) && ALL.some(q => bookNo(q) === n && done(state, q.id));
 const lockedBook = state => SHELF.find(b => released(b) && !allows(state, b.n)) || null;
 // The open-source view, for code and tests that do not hold a save.
 const BOOKS = Object.freeze(books(null));
@@ -269,4 +276,4 @@ function facts(state, chat = null) {
   };
 }
 
-module.exports = { townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };
+module.exports = { started, townOpen, buildShelf, writing, FINISHED, ENDING, SHELF, BOOKS, WRITING, CHAPTERS, LAST_LEVEL, ACCESS, FREE_BOOKS, grant, allows, books, chapters, lastLevel, lockedBook, locked, playable, reads, ending, bookEnd, bookOf, aiStory, STEER_FROM, STEERING, finished, running, chapter, levelCap, xpRoom, capXp, jobRoom, capJobXp, behind, detour, countDetour, normalizeDetour, steerLevel, facts };

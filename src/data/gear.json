@@ -1349,8 +1349,12 @@
     },
     "requires": {
       "level": 21,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     }
   },
@@ -1656,7 +1660,7 @@
     "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
     "acBonus": 4,
     "stats": {
-      "taken": -0.05
+      "taken": -0.1
     },
     "requires": {
       "level": 20,
@@ -1740,7 +1744,7 @@
     "rarity": "Epic",
     "value": 440,
     "description": "Dera's work: a long blade with bell-bronze run into the fuller, so it rings when it parries.",
-    "purpose": "Strength, 1d10 slashing, +2 to hit, +3 damage.",
+    "purpose": "Strength, 1d10 slashing, +2 to hit, +4 damage.",
     "weapon": {
       "damage": "1d10",
       "damageType": "slashing",
@@ -1748,15 +1752,19 @@
       "properties": []
     },
     "attackBonus": 2,
-    "damageBonus": 3,
-    "stats": {
-      "dealt": 0.05
-    },
+    "damageBonus": 4,
     "requires": {
       "level": 25,
       "abilities": {
         "str": 13
       }
+    },
+    "skill": {
+      "name": "Ringing Parry",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Turn a blow on the ringing blade: become Fortified until your next turn and take 25% less damage."
     }
   },
   {
@@ -1767,7 +1775,7 @@
     "rarity": "Epic",
     "value": 440,
     "description": "Briarwood yew, cut the winter the Gloam came to the edge of the wood.",
-    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +3 damage. Two-handed ranged weapon.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -1778,10 +1786,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 3,
-    "stats": {
-      "dealt": 0.05
-    },
+    "damageBonus": 4,
     "requires": {
       "level": 25,
       "abilities": {
@@ -1847,8 +1852,12 @@
     },
     "requires": {
       "level": 26,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     },
     "skill": {
@@ -1909,8 +1918,8 @@
       "name": "Brace",
       "effect": "fortified",
       "target": "self",
-      "rounds": 1,
-      "text": "Become Fortified until your next turn: take 25% less damage."
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
     }
   },
   {
@@ -1967,7 +1976,7 @@
     "rarity": "Epic",
     "value": 450,
     "description": "A Highpass greatsword with a pitch-soaked grip, made to be set alight against the frost.",
-    "purpose": "Strength, 2d6 slashing, +2 to hit, +3 damage. Two-handed.",
+    "purpose": "Strength, 2d6 slashing, +2 to hit, +4 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "slashing",
@@ -1977,10 +1986,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 3,
-    "stats": {
-      "dealt": 0.05
-    },
+    "damageBonus": 4,
     "requires": {
       "level": 26,
       "abilities": {
@@ -2003,7 +2009,7 @@
     "rarity": "Epic",
     "value": 440,
     "description": "A light thrusting blade carried by the runners who bring word over the pass ahead of the Gloam.",
-    "purpose": "Finesse, 1d8 piercing, +2 to hit, +3 damage.",
+    "purpose": "Finesse, 1d8 piercing, +2 to hit, +4 damage.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -2013,10 +2019,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 3,
-    "stats": {
-      "dealt": 0.05
-    },
+    "damageBonus": 4,
     "requires": {
       "level": 25,
       "abilities": {
@@ -2143,7 +2146,7 @@
     "rarity": "Legendary",
     "value": 590,
     "description": "A maul forged at the casting-pit furnace under the drill-yard.",
-    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +3 damage. Two-handed.",
+    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +4 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "bludgeoning",
@@ -2153,7 +2156,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 3,
+    "damageBonus": 4,
     "requires": {
       "level": 25,
       "abilities": {
@@ -2205,18 +2208,15 @@
     "rarity": "Legendary",
     "value": 590,
     "description": "The iron clapper of one of the thirty-one bells in Vell's vault, wrapped in the page of its keeper's record.",
-    "purpose": "Strength, 1d8 bludgeoning, +2 to hit, +3 damage.",
+    "purpose": "Strength, 1d10 bludgeoning, +2 to hit, +4 damage.",
     "weapon": {
-      "damage": "1d8",
+      "damage": "1d10",
       "damageType": "bludgeoning",
       "ability": "str",
       "properties": []
     },
     "attackBonus": 2,
-    "damageBonus": 3,
-    "stats": {
-      "dealt": 0.05
-    },
+    "damageBonus": 4,
     "requires": {
       "level": 25,
       "abilities": {
@@ -2242,8 +2242,8 @@
     "rarity": "Legendary",
     "value": 600,
     "description": "An iron-shod Vell watch staff hung with one of the city's fifty gate-bells, carried on the night of the great surge.",
-    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
-    "spellAttackBonus": 4,
+    "purpose": "Equip: +3 spell attack bonus and +3 spell save DC. +1 Wisdom saving throws.",
+    "spellAttackBonus": 3,
     "spellDcBonus": 3,
     "stats": {
       "dealt": 0.05
@@ -2265,6 +2265,9 @@
     },
     "exclusive": {
       "quest": "b3-greatbell"
+    },
+    "saveBonuses": {
+      "wis": 1
     }
   },
   {
@@ -2322,6 +2325,9 @@
     },
     "exclusive": {
       "town": "cinderfold"
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2349,6 +2355,9 @@
       "target": "enemy",
       "rounds": 1,
       "text": "Flash the gallery signal: an enemy deals 25% less damage until your next turn."
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2372,8 +2381,12 @@
     },
     "requires": {
       "level": 31,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     },
     "exclusive": {
@@ -2391,7 +2404,7 @@
     "purpose": "Equip in the accessory slot.",
     "stats": {
       "dealt": 0.15,
-      "taken": -0.1
+      "taken": -0.05
     },
     "requires": {
       "level": 31
@@ -2400,8 +2413,8 @@
       "name": "Bank the Fire",
       "effect": "empowered",
       "target": "self",
-      "rounds": 1,
-      "text": "Become Empowered until your next turn: deal 25% more damage."
+      "rounds": 2,
+      "text": "Become Empowered for two rounds: deal 25% more damage."
     }
   },
   {
@@ -2451,6 +2464,9 @@
       "abilities": {
         "str": 15
       }
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2487,6 +2503,9 @@
     },
     "exclusive": {
       "town": "merrowgate"
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2561,13 +2580,19 @@
     "rarity": "Epic",
     "value": 510,
     "description": "A lamplighter's long coat with iron plates sewn in, worn by the roof council's watch.",
-    "purpose": "Base AC 17 and up to +2 from Dexterity.",
+    "purpose": "Base AC 17 and up to +2 from Dexterity. +1 Dexterity saving throws.",
     "armor": {
       "base": 17,
       "dexCap": 2
     },
     "requires": {
       "level": 32
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "saveBonuses": {
+      "dex": 1
     }
   },
   {
@@ -2650,6 +2675,9 @@
       "target": "enemy",
       "rounds": 1,
       "text": "Pin an enemy in place until your next turn: 2 less armour."
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2660,7 +2688,7 @@
     "rarity": "Epic",
     "value": 510,
     "description": "A spellbook copied in the Ashford archive from older books nobody else will read.",
-    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC. +1 Intelligence saving throws.",
     "spellAttackBonus": 4,
     "spellDcBonus": 3,
     "stats": {
@@ -2678,6 +2706,9 @@
       "target": "enemy",
       "rounds": 1,
       "text": "Make an enemy Vulnerable until your next turn: it takes 25% more damage."
+    },
+    "saveBonuses": {
+      "int": 1
     }
   },
   {
@@ -2691,7 +2722,7 @@
     "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
     "acBonus": 4,
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 33,
@@ -2837,6 +2868,9 @@
     },
     "exclusive": {
       "event": "bounty:ashford:30"
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -2847,7 +2881,7 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "A long blade Dera made for the night watch on the Briarwood edge, plain and very sharp.",
-    "purpose": "Strength, 1d10 slashing, +2 to hit, +4 damage.",
+    "purpose": "Strength, 1d10 slashing, +2 to hit, +5 damage.",
     "weapon": {
       "damage": "1d10",
       "damageType": "slashing",
@@ -2855,7 +2889,7 @@
       "properties": []
     },
     "attackBonus": 2,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -2874,7 +2908,7 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "A yew longbow for the watch line, strung against midwinter cold.",
-    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +5 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -2885,7 +2919,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -2904,9 +2938,9 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "A staff topped with a watch lantern's iron cage, carried along the Briarwood edge.",
-    "purpose": "Equip: +4 spell attack bonus and +3 spell save DC.",
+    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
     "spellAttackBonus": 4,
-    "spellDcBonus": 3,
+    "spellDcBonus": 4,
     "stats": {
       "dealt": 0.05
     },
@@ -2944,6 +2978,10 @@
     },
     "requires": {
       "level": 35
+    },
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
     }
   },
   {
@@ -2954,9 +2992,9 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "Light scale under white wool, worn by the guides who walk the watch line in snow.",
-    "purpose": "Base AC 17 and up to +2 from Dexterity.",
+    "purpose": "Base AC 18 and up to +2 from Dexterity.",
     "armor": {
-      "base": 17,
+      "base": 18,
       "dexCap": 2
     },
     "stats": {
@@ -3041,7 +3079,7 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "A long knife quenched in snow-melt at the Highpass forge; frost does not cling to it.",
-    "purpose": "Finesse, 1d8 slashing, +2 to hit, +4 damage.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +5 damage.",
     "weapon": {
       "damage": "1d8",
       "damageType": "slashing",
@@ -3051,7 +3089,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3076,8 +3114,8 @@
     "slot": "mainHand",
     "rarity": "Legendary",
     "value": 710,
-    "description": "A spellbook from Sable's library, its margins full of his notes. Read them first.",
-    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
+    "description": "A spellbook from Sable's library, its margins full of his notes.",
+    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC. +1 Intelligence and Wisdom saving throws.",
     "spellAttackBonus": 4,
     "spellDcBonus": 4,
     "requires": {
@@ -3095,6 +3133,13 @@
     },
     "exclusive": {
       "town": "highpass"
+    },
+    "stats": {
+      "dealt": 0.1
+    },
+    "saveBonuses": {
+      "int": 1,
+      "wis": 1
     }
   },
   {
@@ -3114,12 +3159,16 @@
       "stealth": -2
     },
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 36,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     }
   },
@@ -3154,7 +3203,7 @@
     "rarity": "Legendary",
     "value": 700,
     "description": "A two-handed hammer with nine bands on the haft, one for each of the bells on the lid.",
-    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +4 damage. Two-handed.",
+    "purpose": "Strength, 2d6 bludgeoning, +2 to hit, +5 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "bludgeoning",
@@ -3164,7 +3213,7 @@
       ]
     },
     "attackBonus": 2,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3201,7 +3250,7 @@
       "cha": 1
     },
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 35,
@@ -3229,7 +3278,7 @@
     "rarity": "Legendary",
     "value": 690,
     "description": "A hearth bell no bigger than a thumbnail. Nobody in Cinder Fold remembers why every house keeps one.",
-    "purpose": "Equip in the accessory slot: +1 AC.",
+    "purpose": "Equip in the accessory slot: +1 AC and +1 Constitution and Wisdom saving throws.",
     "acBonus": 1,
     "stats": {
       "taken": -0.1
@@ -3239,6 +3288,10 @@
     },
     "exclusive": {
       "town": "cinderfold"
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
     }
   },
   {
@@ -3272,7 +3325,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "Dera's best longsword, forged the spring after the stair, with a ward-mark on the ricasso.",
-    "purpose": "Strength, 1d10 slashing, +3 to hit, +4 damage.",
+    "purpose": "Strength, 1d10 slashing, +3 to hit, +5 damage.",
     "weapon": {
       "damage": "1d10",
       "damageType": "slashing",
@@ -3280,7 +3333,7 @@
       "properties": []
     },
     "attackBonus": 3,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3306,7 +3359,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "A greatsword Dera made from iron carried up out of the deep.",
-    "purpose": "Strength, 2d6 slashing, +3 to hit, +4 damage. Two-handed.",
+    "purpose": "Strength, 2d6 slashing, +3 to hit, +5 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "slashing",
@@ -3316,7 +3369,7 @@
       ]
     },
     "attackBonus": 3,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3342,7 +3395,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "A rapier with a briar-twist guard, light enough to forget you are holding it.",
-    "purpose": "Finesse, 1d8 piercing, +3 to hit, +4 damage.",
+    "purpose": "Finesse, 1d8 piercing, +3 to hit, +5 damage.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -3352,7 +3405,7 @@
       ]
     },
     "attackBonus": 3,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3378,7 +3431,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "A tall bow of Briarwood yew, backed with horn from the high passes.",
-    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +4 damage. Two-handed ranged weapon.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +5 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -3389,7 +3442,7 @@
       ]
     },
     "attackBonus": 3,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.05
     },
@@ -3415,11 +3468,11 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "A staff with a small bell cast from the same bronze as Briarwatch's own.",
-    "purpose": "Equip: +4 spell attack bonus and +4 spell save DC.",
-    "spellAttackBonus": 4,
+    "purpose": "Equip: +5 spell attack bonus and +4 spell save DC.",
+    "spellAttackBonus": 5,
     "spellDcBonus": 4,
     "stats": {
-      "dealt": 0.05
+      "dealt": 0.1
     },
     "requires": {
       "level": 40,
@@ -3445,7 +3498,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "Full plate from Dera's forge, every rivet set by hand over one winter.",
-    "purpose": "Base AC 22, no Dexterity bonus. Heavy: −2 Stealth.",
+    "purpose": "Base AC 22, no Dexterity bonus. +1 to every saving throw. Heavy: −2 Stealth.",
     "armor": {
       "base": 22,
       "dexCap": 0
@@ -3458,16 +3511,28 @@
     },
     "requires": {
       "level": 40,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
       "abilities": {
-        "str": 15
+        "str": 13
       }
     },
     "skill": {
       "name": "Brace",
       "effect": "fortified",
       "target": "self",
-      "rounds": 1,
-      "text": "Become Fortified until your next turn: take 25% less damage."
+      "rounds": 2,
+      "text": "Become Fortified for two rounds: take 25% less damage."
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
     }
   },
   {
@@ -3478,16 +3543,19 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "Scale Dera fits to the wearer on the bench, link by link.",
-    "purpose": "Base AC 18 and up to +2 from Dexterity.",
+    "purpose": "Base AC 18 and up to +2 from Dexterity. +1 Constitution saving throws.",
     "armor": {
       "base": 18,
       "dexCap": 2
     },
     "stats": {
-      "taken": -0.05
+      "taken": -0.1
     },
     "requires": {
       "level": 40
+    },
+    "saveBonuses": {
+      "con": 1
     }
   },
   {
@@ -3507,7 +3575,8 @@
       "stealth": 2
     },
     "stats": {
-      "dealt": 0.05
+      "dealt": 0.1,
+      "taken": -0.05
     },
     "requires": {
       "level": 40
@@ -3521,8 +3590,8 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "A heavy shield of bell-iron, faced with the Briarwatch ward-mark.",
-    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
-    "acBonus": 4,
+    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
+    "acBonus": 5,
     "saveBonuses": {
       "str": 1,
       "dex": 1,
@@ -3532,7 +3601,7 @@
       "cha": 1
     },
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 40,
@@ -3591,7 +3660,7 @@
       "cha": 1
     },
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 40
@@ -3725,7 +3794,7 @@
     "rarity": "Legendary",
     "value": 740,
     "description": "The longbow of the poacher who ran the briar woods for twenty years.",
-    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +4 damage. Two-handed ranged weapon.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +5 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -3736,7 +3805,7 @@
       ]
     },
     "attackBonus": 3,
-    "damageBonus": 4,
+    "damageBonus": 5,
     "stats": {
       "dealt": 0.1
     },
@@ -3785,7 +3854,7 @@
     "rarity": "Legendary",
     "value": 630,
     "description": "The longbow from the forge-signal keeper's rack at Cinder Fold, kept strung for thirty years by Wren.",
-    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon.",
+    "purpose": "Dexterity, 1d8 piercing, +2 to hit, +4 damage. Two-handed ranged weapon. +2 Perception.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -3797,9 +3866,6 @@
     },
     "attackBonus": 2,
     "damageBonus": 4,
-    "stats": {
-      "dealt": 0.05
-    },
     "requires": {
       "level": 29,
       "abilities": {
@@ -3815,6 +3881,9 @@
     },
     "exclusive": {
       "quest": "b3-wren"
+    },
+    "skillBonuses": {
+      "perception": 2
     }
   },
   {
@@ -3825,7 +3894,7 @@
     "rarity": "Legendary",
     "value": 640,
     "description": "The shield Saltwick's roof council keeps for whoever holds the long plank on a tide night.",
-    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon.",
+    "purpose": "Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
     "acBonus": 4,
     "stats": {
       "taken": -0.1
@@ -3849,6 +3918,14 @@
     },
     "exclusive": {
       "quest": "b3-order"
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 1,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
     }
   },
   {
@@ -3868,7 +3945,7 @@
       "con": 1
     },
     "stats": {
-      "taken": -0.05
+      "taken": -0.1
     },
     "requires": {
       "level": 31
@@ -3907,6 +3984,9 @@
     },
     "exclusive": {
       "quest": "b3-seal"
+    },
+    "stats": {
+      "dealt": 0.05
     }
   },
   {
@@ -3917,13 +3997,13 @@
     "rarity": "Legendary",
     "value": 670,
     "description": "One of the night watch's lanterns from the Briarwood edge, carried the night the council met.",
-    "purpose": "Equip in the accessory slot: +1 AC and +2 Perception.",
+    "purpose": "Equip in the accessory slot: +1 AC and +3 Perception.",
     "acBonus": 1,
     "skillBonuses": {
-      "perception": 2
+      "perception": 3
     },
     "stats": {
-      "taken": -0.05
+      "taken": -0.1
     },
     "requires": {
       "level": 33
@@ -3943,7 +4023,7 @@
     "rarity": "Legendary",
     "value": 680,
     "description": "A sabre from one of Hesk's hired captains at the iron door, who had no more use for it.",
-    "purpose": "Finesse, 1d8 slashing, +2 to hit, +4 damage.",
+    "purpose": "Finesse, 1d8 slashing, +2 to hit, +4 damage. +2 Acrobatics.",
     "weapon": {
       "damage": "1d8",
       "damageType": "slashing",
@@ -3972,6 +4052,9 @@
     },
     "exclusive": {
       "quest": "b3-company"
+    },
+    "skillBonuses": {
+      "acrobatics": 2
     }
   },
   {
@@ -4017,7 +4100,7 @@
       "stealth": -2
     },
     "stats": {
-      "taken": -0.1
+      "taken": -0.15
     },
     "requires": {
       "level": 36,
@@ -4048,7 +4131,7 @@
     "spellAttackBonus": 4,
     "spellDcBonus": 4,
     "stats": {
-      "dealt": 0.05
+      "dealt": 0.1
     },
     "requires": {
       "level": 37,

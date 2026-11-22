@@ -44,8 +44,9 @@ function emptied(state,id){const gone=TOWNS[id]?.emptied;return Boolean(gone&&st
 const asNow=(state,t)=>t&&emptied(state,t.id)?{...t,subtitle:t.emptied.subtitle,description:t.emptied.description,services:['storage'],stock:[],emptied:true}:t;
 function maxStock(id){const item=ITEMS[id];if(item.category==='consumable')return 5;if(item.category==='material')return 4;if(item.charges)return 3;return 2;}
 // What a town sells now: its stock, plus each stockByLevel list (towns.json)
-// once the hero has reached that level (Book Three's gear for levels 20 to 40).
-function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)).flatMap(([,ids])=>ids)];}
+// once the hero has reached that level. Those lists are Book Three's gear for
+// levels 20 to 40, so they open only once this save has begun Book Three.
+function townStock(state,id){const t=TOWNS[id],level=Number(state.player?.level)||1;if(!Book.started(state,3))return [...t.stock];return [...t.stock,...Object.entries(t.stockByLevel||{}).filter(([at])=>level>=Number(at)).flatMap(([,ids])=>ids)];}
 function ensureStock(state,id){const w=state.world;w.stock[id] ||= {};for(const itemId of townStock(state,id))if(w.stock[id][itemId]===undefined)w.stock[id][itemId]=maxStock(itemId);return w.stock[id];}
 function activeMerchant(state){
   const q=state.world?.activeQuest;const node=STORY_NODES[state.story.nodeId];
