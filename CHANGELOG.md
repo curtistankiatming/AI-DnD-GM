@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Gear to level 100 and equipment sets (22 November 2026)
+
+- 79 new pieces of equipment for levels 45 to 100 in ten tiers (45, 50, 55, 60, 65, 70, 80, 90,
+  95 and 100), about eight a tier rather than every type at every level. Every tier has something for
+  every class and companion, and each kind of kit improves at least every 20 levels.
+- Every class has its own equipment sets, one per class in two versions (Book Four, levels 55 to 65; final, 90 to 95). Two pieces
+  turn on a bonus, more pieces add more, and the full set gives a set skill once per fight. Cards
+  and the equipment screen show the set and its bonuses.
+- Maren can carry a shield again: three late shields need no Strength.
+- Gear now adds at most 50% to damage dealt, next to the 30% cap on damage taken.
+- Gear found on AI adventures keeps improving to level 100.
+- Until Book Four's towns exist, Briarwatch and Highpass sell the new tiers, for saves that have
+  begun Book Three. List: [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md#gear-for-levels-45-to-100-22-november-2026).
+
 ## Upgrading goes back into the paid book (22 November 2026)
 
 - A free hosted save that begins an AI story of its own no longer loses Book

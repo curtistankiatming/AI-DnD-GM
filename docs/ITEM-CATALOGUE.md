@@ -340,3 +340,195 @@ Each is given when its chapter is completed (`src/world.js` calls
 | Ward-captain's Signet | Accessory | Legendary | 740 |  | 20% more dealt; 5% less taken; story: Insight | Level 40 | Briarwatch (from 40) |
 | Wardsmith's Plate | Armour | Legendary | 740 | AC 22, heavy | 15% less taken; Brace (fortified) | Level 40 · Fighter or Cleric · Strength 13 | Briarwatch (from 40) |
 | Wardsmith's Scale | Armour | Legendary | 740 | AC 18 + Dex (max 2), +1 CON save | 10% less taken | Level 40 | Briarwatch (from 40), Highpass Watch (from 40) |
+
+## Gear for levels 45 to 100 (22 November 2026)
+
+Curtis asked for gear up to level 100 without one item of every type at every
+level, and for equipment sets with set bonuses. There are 79 new pieces at nine
+tiers (45, 50, 55, 60, 65, 70, 80, 90, 95 and 100), about eight a tier:
+
+- **45:** armour of all three weights, two shields (one, the Warded Buckler,
+  needs no Strength, so Maren and other casters can carry a shield) and three accessories.
+- **50:** a weapon or focus for every style, and three accessories.
+- **55 to 65: the Book Four sets.** Weapons and foci at 55, armour and shields at 60, accessories at 65.
+- **70:** armour, a shield and four accessories (two from level bounties).
+- **80:** a weapon or focus for every style, a Strength-free buckler, and three bounty accessories.
+- **90 to 95: the final sets.** Weapons, armour and shields at 90, accessories at 95, so a full
+  final set is worn before the level cap (reviewer fix).
+- **100:** a greataxe, a rapier, heavy plate for fighters and clerics, a scale coat and a bounty bell.
+
+Every tier has something for every class and for Orin, Maren and Nessa, and each
+kind of kit (each weapon style, each armour weight, shields, accessories) gets
+an upgrade at least every 20 levels. Each upgrade is a small step on the last
+(tests/endgame-gear.test.js), and nothing is matched by an older piece.
+
+**Where it comes from.** Until Book Four's towns are written, Briarwatch and
+Highpass sell every tier from its level, and only for a save that has begun Book
+Three (like the level 20 to 40 stock). The Book Four thread will move the 45 to
+70 stock into its own towns (Lantry, Orme and the others in
+docs/book-four/DESIGN.md). Six accessories are level bounty rewards in Briarwatch,
+Highpass, Ashford, Merrowgate and Cinder Fold, at 70, 80 and 100. Gear found on
+AI adventures now keeps improving past level 40 (up to +4 to hit, +7 damage at
+100), a step behind the shops.
+
+**Equipment sets.** Every weapon and focus past 40 belongs to one class or a clear family (Strength one-handers: fighter and cleric; two-handers: fighter; finesse blades: rogue and bard; bows: ranger and rogue; foci: casters). Armour goes by weight and accessories stay shared, so companions and party swaps stay flexible. Every class has its own sets (Curtis, 22 November 2026): fighter, rogue, wizard, cleric, ranger and bard each have one set that only that class can wear, in a Book Four version (55 to 65) and a final version (90 to 95). A set has 3 pieces (weapon or focus,
+armour, accessory); the fighter and cleric sets have a shield as a 4th. Wearing 2
+pieces turns on a small bonus; each further piece adds one, and the full set
+gives a set skill, a bonus action once per fight. Set bonuses count toward the
+caps on gear: at most 30% less damage taken and, new, at most 50% more damage
+dealt (Book Four design). Set pieces need the set's classes; other accessories
+still need only a level. A Masterwork refine of a set piece is still that piece.
+
+**Balance.** A simulation of the standard AI-adventure battle (one class branch
+each, 6 seeds, Normal and Heroic) at levels 50, 70 and 100 compared the level 40
+kit with the new kit: both win every fight, in 2 to 6 rounds, with 85% to 99% of
+the party's health left. The new gear adds a few points of health left and
+shortens some fights by a round. It does not change the result: fights past
+level 40 are already easy with the level 40 kit, which is about enemy strength,
+not gear (a follow-up for the Book Four and gameplay threads).
+
+### Level 45: 8 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Frostforged Plate | Armour | Base AC 23, no Dexterity bonus. -2 Stealth. 15% less damage taken. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Ridgeguard Scale | Armour | Base AC 19, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves. 10% less damage taken. | Anyone | Briarwatch, Highpass |
+| Mistweave Jerkin | Armour | Base AC 17, full Dexterity bonus. +2 Stealth. 10% more damage dealt; 5% less damage taken. | Anyone | Briarwatch, Highpass |
+| Gatewarden Shield | Off hand | Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw. 15% less damage taken; Skill, Hold the Gate: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Warded Buckler | Off hand | Equip in your off hand for +4 Armor Class. Cannot be used with a two-handed weapon. +1 Wisdom saves, +1 Constitution saves. 10% less damage taken. | Wizard, Cleric, Bard | Briarwatch, Highpass |
+| Hoarfrost Locket | Accessory | Equip in the accessory slot: +1 AC. +1 to every saving throw (+2 Constitution). 15% less damage taken. | Anyone | Briarwatch, Highpass |
+| Ghostlace Gloves | Accessory | Equip in the accessory slot. +3 Stealth, +3 Sleight of Hand, +3 Acrobatics. | Anyone | Briarwatch, Highpass |
+| Pilgrim's Almanac | Accessory | Equip in the accessory slot. +3 Arcana, +3 History, +3 Religion, +3 Medicine. | Anyone | Briarwatch, Highpass |
+
+### Level 50: 8 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Rimeheart Longsword | Main hand | Strength, 1d10 slashing, +3 to hit, +6 damage. 5% more damage dealt; Skill, Frostbite: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Glacier Maul | Main hand | Strength, 2d6 bludgeoning, +3 to hit, +6 damage. Two-handed. 5% more damage dealt; Skill, Cave In: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Icicle Stiletto | Main hand | Finesse, 1d8 piercing, +3 to hit, +6 damage. 10% more damage dealt; Skill, Numb: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
+| Skyreach Longbow | Main hand | Dexterity, 1d8 piercing, +3 to hit, +6 damage. Two-handed ranged weapon. 10% more damage dealt; Skill, Pin Down: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Ranger, Rogue · DEX 13 | Briarwatch, Highpass |
+| Aurora Staff | Main hand | Equip: +5 spell attack bonus and +5 spell save DC. 10% more damage dealt; Skill, Dazzle: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Wizard, Cleric, Bard | Briarwatch, Highpass |
+| Avalanche Horn | Accessory | Equip in the accessory slot. 20% more damage dealt; 5% less damage taken; Skill, Rallying Blast: Become Empowered for one round: deal 25% more damage. Bonus action, once per fight.; Story: advantage on the first Perception check after each long rest.. | Anyone | Briarwatch, Highpass |
+| Ambassador's Brooch | Accessory | Equip in the accessory slot. +3 Persuasion, +3 Deception, +3 Insight, +2 History. 5% more damage dealt. | Anyone | Briarwatch, Highpass |
+| Wolfpelt Mantle | Accessory | Equip in the accessory slot. +3 Survival, +3 Perception, +3 Nature, +3 Animal Handling. 5% more damage dealt. | Anyone | Briarwatch, Highpass |
+
+### Level 55: 6 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Bellwarden Hammer (Bellwarden's Oath set) | Main hand | Strength, 1d10 bludgeoning, +3 to hit, +7 damage. 5% more damage dealt. | Fighter · STR 13 | Briarwatch, Highpass |
+| Thornstep Rapier (Thornstep set) | Main hand | Finesse, 1d8 piercing, +3 to hit, +7 damage. 10% more damage dealt; Skill, Thorned Riposte: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Rogue · DEX 13 | Briarwatch, Highpass |
+| Long Watch Bow (The Long Watch set) | Main hand | Dexterity, 1d8 piercing, +3 to hit, +7 damage. Two-handed ranged weapon. 10% more damage dealt. | Ranger · DEX 13 | Briarwatch, Highpass |
+| Lamplit Staff (The Lamplit Scholar set) | Main hand | Equip: +6 spell attack bonus and +5 spell save DC. 10% more damage dealt; Skill, Read the Weakness: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Wizard | Briarwatch, Highpass |
+| Hearthward Staff (Hearthward set) | Main hand | Equip: +6 spell attack bonus and +5 spell save DC. 5% more damage dealt; Skill, Censure: Weaken an enemy for one round: it deals 25% less damage. Bonus action, once per fight.. | Cleric | Briarwatch, Highpass |
+| Chorus Baton (The Chorus set) | Main hand | Equip: +5 spell attack bonus and +6 spell save DC. 10% more damage dealt; Skill, Sour Note: Slow an enemy for one round: 2 less armour. Bonus action, once per fight.. | Bard | Briarwatch, Highpass |
+
+### Level 60: 9 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Bellwarden Plate (Bellwarden's Oath set) | Armour | Base AC 23, no Dexterity bonus. -2 Stealth; +1 to every saving throw. 15% less damage taken. | Fighter · STR 13 | Briarwatch, Highpass |
+| Bellwarden Shield (Bellwarden's Oath set) | Off hand | Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. 15% less damage taken. | Fighter · STR 13 | Briarwatch, Highpass |
+| Thornstep Leathers (Thornstep set) | Armour | Base AC 17, full Dexterity bonus. +2 Stealth, +2 Acrobatics. 10% more damage dealt; 5% less damage taken. | Rogue | Briarwatch, Highpass |
+| Long Watch Coat (The Long Watch set) | Armour | Base AC 17, full Dexterity bonus. +2 Perception, +2 Survival. 5% more damage dealt; 5% less damage taken. | Ranger | Briarwatch, Highpass |
+| Lamplit Robe (The Lamplit Scholar set) | Armour | Base AC 17, full Dexterity bonus. +2 Arcana; +1 Intelligence saves, +1 Wisdom saves. 10% less damage taken. | Wizard | Briarwatch, Highpass |
+| Hearthward Mail (Hearthward set) | Armour | Base AC 19, up to +2 from Dexterity. +2 Medicine; +1 Wisdom saves, +1 Constitution saves. 10% less damage taken. | Cleric | Briarwatch, Highpass |
+| Hearthward Buckler (Hearthward set) | Off hand | Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +1 Wisdom saves, +1 Constitution saves. 10% less damage taken. | Cleric | Briarwatch, Highpass |
+| Chorus Coat (The Chorus set) | Armour | Base AC 17, full Dexterity bonus. +2 Performance, +2 Persuasion. 5% more damage dealt; 5% less damage taken. | Bard | Briarwatch, Highpass |
+| Riftcleaver | Main hand | Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed. 10% more damage dealt; Skill, Split the Ice: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+
+### Level 65: 6 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Bellwarden Seal (Bellwarden's Oath set) | Accessory | Equip in the accessory slot: +1 AC. +3 Athletics; +1 to every saving throw. 10% less damage taken. | Fighter | Briarwatch, Highpass |
+| Thornstep Band (Thornstep set) | Accessory | Equip in the accessory slot. +3 Stealth, +3 Acrobatics. 15% more damage dealt. | Rogue | Briarwatch, Highpass |
+| Long Watch Quiver (The Long Watch set) | Accessory | Equip in the accessory slot. +3 Survival, +3 Perception. 15% more damage dealt. | Ranger | Briarwatch, Highpass |
+| Lamplit Lens (The Lamplit Scholar set) | Accessory | Equip in the accessory slot. +3 Arcana, +3 History; +1 Intelligence saves. 10% more damage dealt. | Wizard | Briarwatch, Highpass |
+| Hearthward Rosary (Hearthward set) | Accessory | Equip in the accessory slot. +3 Religion, +3 Medicine; +1 Wisdom saves. 10% less damage taken. | Cleric | Briarwatch, Highpass |
+| Chorus Bell (The Chorus set) | Accessory | Equip in the accessory slot. +3 Performance, +3 Persuasion, +3 Insight. 10% more damage dealt. | Bard | Briarwatch, Highpass |
+
+### Level 70: 8 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Summitforged Plate | Armour | Base AC 24, no Dexterity bonus. -2 Stealth; +1 to every saving throw. 15% less damage taken. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Summit Scale | Armour | Base AC 20, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves. 10% less damage taken. | Anyone | Briarwatch, Highpass |
+| Windrunner Leathers | Armour | Base AC 18, full Dexterity bonus. +2 Stealth. 10% more damage dealt; 5% less damage taken. | Anyone | Briarwatch, Highpass |
+| Summit Wall Shield | Off hand | Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw. 15% less damage taken; Skill, Wall of Winter: Become Fortified for one round: take 25% less damage. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Stormcaller Ring | Accessory | Equip in the accessory slot. 25% more damage dealt; 5% less damage taken; Reward for the first bounty claimed in Briarwatch at level 70 or above. | Anyone | First bounty in briarwatch at 70+ |
+| Glacier Heart | Accessory | Equip in the accessory slot: +1 AC. +2 to every saving throw. 15% less damage taken; Reward for the first bounty claimed in Highpass Watch at level 70 or above. | Anyone | First bounty in highpass at 70+ |
+| Wayfarer's Compass | Accessory | Equip in the accessory slot. +3 Survival, +3 Perception, +3 Investigation, +3 Nature. | Anyone | Briarwatch, Highpass |
+| Courtier's Mask | Accessory | Equip in the accessory slot. +3 Persuasion, +3 Deception, +3 Insight, +3 Performance. | Anyone | Briarwatch, Highpass |
+
+### Level 80: 9 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Thunderbrand | Main hand | Strength, 1d10 slashing, +4 to hit, +8 damage. 5% more damage dealt; Skill, Thunderclap: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Ridgebreaker Maul | Main hand | Strength, 2d6 bludgeoning, +4 to hit, +8 damage. Two-handed. 10% more damage dealt; Skill, Rockfall: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Starling Knife | Main hand | Finesse, 1d8 piercing, +4 to hit, +8 damage. 10% more damage dealt; Skill, Flicker: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
+| Comet Longbow | Main hand | Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon. 5% more damage dealt; Skill, Falling Star: Set an enemy Burning for two rounds. Bonus action, once per fight.. | Ranger, Rogue · DEX 13 | Briarwatch, Highpass |
+| Eclipse Staff | Main hand | Equip: +7 spell attack bonus and +6 spell save DC. 10% more damage dealt; Skill, Darken: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Wizard, Cleric, Bard | Briarwatch, Highpass |
+| Bounty Hunter's Badge | Accessory | Equip in the accessory slot, +1 to hit with weapons. 15% more damage dealt; Reward for the first bounty claimed in Ashford Crossing at level 80 or above. | Anyone | First bounty in ashford at 80+ |
+| Ironbark Amulet | Accessory | Equip in the accessory slot: +1 AC. +3 Athletics; +2 to every saving throw. 15% less damage taken; Reward for the first bounty claimed in Merrowgate at level 80 or above. | Anyone | First bounty in merrowgate at 80+ |
+| Sage's Circlet | Accessory | Equip in the accessory slot. +3 Arcana, +3 History, +3 Religion, +3 Investigation. Reward for the first bounty claimed in Cinder Fold at level 80 or above. | Anyone | First bounty in cinderfold at 80+ |
+| Stormglass Buckler | Off hand | Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 Constitution saves, +2 Wisdom saves. 15% less damage taken. | Wizard, Cleric, Bard | Briarwatch, Highpass |
+
+### Level 90: 14 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Highbell Warhammer (Highbell Regalia set) | Main hand | Strength, 1d10 bludgeoning, +5 to hit, +8 damage. 10% more damage dealt; Skill, Toll: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 13 | Briarwatch, Highpass |
+| Highbell Plate (Highbell Regalia set) | Armour | Base AC 25, no Dexterity bonus. -2 Stealth; +2 to every saving throw. 15% less damage taken. | Fighter · STR 13 | Briarwatch, Highpass |
+| Highbell Tower Shield (Highbell Regalia set) | Off hand | Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw. 15% less damage taken. | Fighter · STR 13 | Briarwatch, Highpass |
+| Nightbriar Blade (Nightbriar set) | Main hand | Finesse, 1d8 piercing, +5 to hit, +9 damage. 10% more damage dealt; Skill, Briar Snare: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Rogue · DEX 13 | Briarwatch, Highpass |
+| Nightbriar Leathers (Nightbriar set) | Armour | Base AC 18, full Dexterity bonus. +3 Stealth, +2 Acrobatics. 15% more damage dealt; 5% less damage taken. | Rogue | Briarwatch, Highpass |
+| Farwatch Greatbow (Farwatch set) | Main hand | Dexterity, 1d8 piercing, +5 to hit, +8 damage. Two-handed ranged weapon. 10% more damage dealt; Skill, Mark the Quarry: Make an enemy Vulnerable for one round: it takes 25% more damage. Bonus action, once per fight.. | Ranger · DEX 13 | Briarwatch, Highpass |
+| Farwatch Mantle (Farwatch set) | Armour | Base AC 18, full Dexterity bonus. +2 Survival, +2 Perception. 10% more damage dealt; 5% less damage taken. | Ranger | Briarwatch, Highpass |
+| Starward Staff (Starward set) | Main hand | Equip: +8 spell attack bonus and +7 spell save DC. 10% more damage dealt; Skill, Starfall: Set an enemy Burning for two rounds. Bonus action, once per fight.. | Wizard | Briarwatch, Highpass |
+| Starward Robe (Starward set) | Armour | Base AC 18, full Dexterity bonus. +3 Arcana; +2 Intelligence saves, +1 Wisdom saves. 10% less damage taken. | Wizard | Briarwatch, Highpass |
+| Dawnhearth Rod (Dawnhearth set) | Main hand | Equip: +7 spell attack bonus and +7 spell save DC. 10% more damage dealt; Skill, Dawnlight: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Cleric | Briarwatch, Highpass |
+| Dawnhearth Hauberk (Dawnhearth set) | Armour | Base AC 20, up to +2 from Dexterity. +3 Medicine; +1 Wisdom saves, +1 Constitution saves. 15% less damage taken. | Cleric | Briarwatch, Highpass |
+| Dawnhearth Aegis (Dawnhearth set) | Off hand | Equip in your off hand for +7 Armor Class. Cannot be used with a two-handed weapon. +2 Wisdom saves, +1 Constitution saves. 15% less damage taken. | Cleric | Briarwatch, Highpass |
+| Grand Chorus Baton (The Grand Chorus set) | Main hand | Equip: +7 spell attack bonus and +7 spell save DC. 15% more damage dealt; Skill, Discord: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight.. | Bard | Briarwatch, Highpass |
+| Grand Chorus Mantle (The Grand Chorus set) | Armour | Base AC 18, full Dexterity bonus. +3 Performance, +2 Persuasion. 10% more damage dealt; 5% less damage taken. | Bard | Briarwatch, Highpass |
+
+### Level 95: 6 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Highbell Seal (Highbell Regalia set) | Accessory | Equip in the accessory slot: +2 AC. +2 to every saving throw. | Fighter | Briarwatch, Highpass |
+| Nightbriar Ring (Nightbriar set) | Accessory | Equip in the accessory slot. +3 Stealth, +3 Acrobatics. 25% more damage dealt. | Rogue | Briarwatch, Highpass |
+| Farwatch Horn (Farwatch set) | Accessory | Equip in the accessory slot. +3 Survival, +3 Perception. 25% more damage dealt. | Ranger | Briarwatch, Highpass |
+| Starward Orrery (Starward set) | Accessory | Equip in the accessory slot. +3 Arcana, +3 History; +2 Intelligence saves. 15% more damage dealt. | Wizard | Briarwatch, Highpass |
+| Dawnhearth Reliquary (Dawnhearth set) | Accessory | Equip in the accessory slot: +1 AC. +3 Religion, +3 Medicine; +2 Wisdom saves, +2 Constitution saves. | Cleric | Briarwatch, Highpass |
+| Grand Chorus Chime (The Grand Chorus set) | Accessory | Equip in the accessory slot. +3 Performance, +3 Persuasion, +3 Insight. 15% more damage dealt. | Bard | Briarwatch, Highpass |
+
+### Level 100: 5 items
+
+| Item | Slot | What it does | Who | Where |
+|---|---|---|---|---|
+| Kingsfall Greataxe | Main hand | Strength, 2d6 slashing, +5 to hit, +9 damage. Two-handed. 10% more damage dealt; Skill, Felling Blow: Make an enemy Vulnerable for two rounds: it takes 25% more damage. Bonus action, once per fight.. | Fighter · STR 15 | Briarwatch, Highpass |
+| Songsteel Rapier | Main hand | Finesse, 1d8 piercing, +5 to hit, +9 damage. 15% more damage dealt; Skill, Ringing Parry: Weaken an enemy for two rounds: it deals 25% less damage. Bonus action, once per fight.. | Rogue, Bard · DEX 13 | Briarwatch, Highpass |
+| Hallowsteel Plate | Armour | Base AC 25, no Dexterity bonus. -2 Stealth; +1 to every saving throw. 15% less damage taken. | Fighter, Cleric · STR 13 | Briarwatch, Highpass |
+| Hundredfold Scale | Armour | Base AC 21, up to +2 from Dexterity. +1 Constitution saves, +1 Dexterity saves. 15% less damage taken. | Anyone | Briarwatch, Highpass |
+| Hundredth Bell | Accessory | Equip in the accessory slot: +1 AC. 20% more damage dealt; 10% less damage taken; Reward for the first bounty claimed in Briarwatch at level 100 or above. | Anyone | First bounty in briarwatch at 100+ |
+
+### The sets
+
+| Set | Class | Pieces | Bonuses |
+|---|---|---|---|
+| Bellwarden's Oath (Book Four) | fighter | Bellwarden Hammer (55), Bellwarden Plate (60), Bellwarden Shield (60), Bellwarden Seal (65) | 2: +1 AC<br>3: +1 to hit with weapons, +1 weapon damage<br>4: 5% more damage dealt, set skill Oathbell: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight |
+| Thornstep (Book Four) | rogue | Thornstep Rapier (55), Thornstep Leathers (60), Thornstep Band (65) | 2: 5% more damage dealt<br>3: +1 to hit with weapons, set skill Thornstep Dance: Become Empowered for two rounds: deal 25% more damage. Bonus action, once per fight |
+| The Long Watch (Book Four) | ranger | Long Watch Bow (55), Long Watch Coat (60), Long Watch Quiver (65) | 2: +1 to hit with weapons<br>3: 5% more damage dealt, set skill Watcher's Mark: Make an enemy Vulnerable for two rounds: it takes 25% more damage. Bonus action, once per fight |
+| The Lamplit Scholar (Book Four) | wizard | Lamplit Staff (55), Lamplit Robe (60), Lamplit Lens (65) | 2: +1 spell save DC<br>3: +1 spell attack, set skill Footnote: Slow an enemy for two rounds: 2 less armour. Bonus action, once per fight |
+| Hearthward (Book Four) | cleric | Hearthward Staff (55), Hearthward Mail (60), Hearthward Buckler (60), Hearthward Rosary (65) | 2: +1 AC<br>3: +1 spell save DC, +1 Wisdom saves, +1 Constitution saves<br>4: 5% more damage dealt, set skill Hearth and Home: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight |
+| The Chorus (Book Four) | bard | Chorus Baton (55), Chorus Coat (60), Chorus Bell (65) | 2: +2 Performance, +2 Persuasion<br>3: +1 spell save DC, set skill Swell: Become Empowered for two rounds: deal 25% more damage. Bonus action, once per fight |
+| Highbell Regalia (Final) | fighter | Highbell Warhammer (90), Highbell Plate (90), Highbell Tower Shield (90), Highbell Seal (95) | 2: +1 AC, +1 to every saving throw<br>3: +1 to hit with weapons, +2 weapon damage<br>4: 10% more damage dealt, set skill Highbell Toll: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight |
+| Nightbriar (Final) | rogue | Nightbriar Blade (90), Nightbriar Leathers (90), Nightbriar Ring (95) | 2: +1 to hit with weapons, 5% more damage dealt<br>3: +2 weapon damage, set skill Night Bloom: Become Empowered for two rounds: deal 25% more damage. Bonus action, once per fight |
+| Farwatch (Final) | ranger | Farwatch Greatbow (90), Farwatch Mantle (90), Farwatch Horn (95) | 2: +1 to hit with weapons, 5% more damage dealt<br>3: +2 weapon damage, set skill Farwatch Volley: Become Empowered for two rounds: deal 25% more damage. Bonus action, once per fight |
+| Starward (Final) | wizard | Starward Staff (90), Starward Robe (90), Starward Orrery (95) | 2: +1 spell save DC, 5% more damage dealt<br>3: +1 spell attack, +1 spell save DC, set skill Conjunction: Make an enemy Vulnerable for two rounds: it takes 25% more damage. Bonus action, once per fight |
+| Dawnhearth (Final) | cleric | Dawnhearth Rod (90), Dawnhearth Hauberk (90), Dawnhearth Aegis (90), Dawnhearth Reliquary (95) | 2: +1 AC, +1 Wisdom saves, +1 Constitution saves<br>3: +1 spell attack, +1 spell save DC<br>4: 10% more damage dealt, set skill First Light: Become Fortified for two rounds: take 25% less damage. Bonus action, once per fight |
+| The Grand Chorus (Final) | bard | Grand Chorus Baton (90), Grand Chorus Mantle (90), Grand Chorus Chime (95) | 2: +1 spell save DC, +2 Performance, +2 Insight<br>3: +1 spell attack, 5% more damage dealt, set skill Crescendo: Become Empowered for two rounds: deal 25% more damage. Bonus action, once per fight |

@@ -45,7 +45,8 @@ function derive(a){
   const armor=ITEMS[a.equipment.armor];const dex=abilityModifier(a.abilities.dex);
   let ac=armor?.armor?armor.armor.base+(armor.armor.dexCap===null?dex:Math.min(dex,armor.armor.dexCap)):10+dex;
   a.skillBonuses={};a.saveBonuses={};a.gearAttackBonus=0;a.gearDamageBonus=0;a.gearSpellAttack=0;a.gearSpellDc=0;
-  for(const slot of slots){const item=ITEMS[a.equipment[slot]];if(!item)continue;ac+=item.acBonus||0;a.gearAttackBonus+=item.attackBonus||0;a.gearDamageBonus+=item.damageBonus||0;a.gearSpellAttack+=item.spellAttackBonus||0;a.gearSpellDc+=item.spellDcBonus||0;for(const [key,v] of Object.entries(item.skillBonuses||{}))a.skillBonuses[key]=(a.skillBonuses[key]||0)+v;for(const [key,v]of Object.entries(item.saveBonuses||{}))a.saveBonuses[key]=(a.saveBonuses[key]||0)+v;}
+  // Worn items, then any equipment set bonuses (src/gear.js), add the same fields.
+  for(const item of Gear.sources(a)){ac+=item.acBonus||0;a.gearAttackBonus+=item.attackBonus||0;a.gearDamageBonus+=item.damageBonus||0;a.gearSpellAttack+=item.spellAttackBonus||0;a.gearSpellDc+=item.spellDcBonus||0;for(const [key,v] of Object.entries(item.skillBonuses||{}))a.skillBonuses[key]=(a.skillBonuses[key]||0)+v;for(const [key,v]of Object.entries(item.saveBonuses||{}))a.saveBonuses[key]=(a.saveBonuses[key]||0)+v;}
   if(a.kind==='player'){
     const s=P.stats(a);ac+=s.ac;a.gearAttackBonus+=s.attack;a.gearSpellAttack+=s.attack;
     for(const id of ['str','dex','con','int','wis','cha'])a.saveBonuses[id]=(a.saveBonuses[id]||0)+s.save;
@@ -55,7 +56,8 @@ function derive(a){
   if(a.personalStyle==='decisive'){a.gearAttackBonus+=1;a.gearSpellAttack+=1;a.gearSpellDc+=1;}
   // Gear can take off at most 30% of the damage a wearer takes, however many
   // pieces add to it (plate, shield and charm at level 40 would reach 45%).
-  const gs=Gear.stats(a);a.gearDealt=gs.dealt;a.gearTaken=Math.max(MAX_GEAR_TAKEN,gs.taken);
+  // Damage dealt from gear is capped at 50% in all (Book Four design, 22 November 2026).
+  const gs=Gear.stats(a);a.gearDealt=Math.min(MAX_GEAR_DEALT,gs.dealt);a.gearTaken=Math.max(MAX_GEAR_TAKEN,gs.taken);
   a.ac=Math.max(1,ac);return a;
 }
 function weaponProfile(a){
@@ -105,5 +107,5 @@ function initCompanion(state,member){
   for(const id of Object.values(loadout).filter(Boolean))addTo(state.player.inventory,id,1);
   derive(member);
 }
-const MAX_GEAR_TAKEN=-0.3;
-module.exports={MAX_GEAR_TAKEN,slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};
+const MAX_GEAR_TAKEN=-0.3,MAX_GEAR_DEALT=0.5;
+module.exports={MAX_GEAR_TAKEN,MAX_GEAR_DEALT,slots,inventory,addTo,consume,actors,actor,allocated,available,removeLoose,derive,weaponProfile,equip,unequip,comparison,normalizeEquipment,initCompanion};
