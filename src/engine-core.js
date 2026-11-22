@@ -172,4 +172,18 @@ function checkActor(actor) {
 // skills with the bonus they roll.
 const strengths = (actor) => { const a = checkActor(actor); return (a.skills || []).filter((id) => SKILLS[id]).map((id) => ({ id, name: SKILLS[id].name, bonus: actorSkillBonus(a, id), signature: COMPANIONS[actor.id]?.signature === id })).sort((x, y) => y.bonus - x.bonus || x.name.localeCompare(y.name)).slice(0, 3); };
 
-Object.assign(module.exports, { SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats, checkActor, strengths, EXPERTISE_LEVEL });
+// Whether a short rest would do anything now: heal the hero (with a Hit Die
+// to spend), refill a short-rest resource, heal or refresh a standing
+// companion, or clear bleeding, fear or deafness. A rest that would change
+// nothing is not offered.
+const REST_CLEARS = ["bleeding", "frightened", "deafened"];
+function restHelps(state) {
+  const p = state?.player;
+  if (!p) return false;
+  if (p.hitDice?.current > 0 && p.hp < p.maxHp) return true;
+  if (Object.values(p.resources || {}).some((r) => r && r.refresh === "short" && r.current < r.max)) return true;
+  if ((p.conditions || []).some((c) => REST_CLEARS.includes(c.id))) return true;
+  return (state.party || []).some((m) => (m.hp > 0 && m.hp < m.maxHp) || Object.entries(P.companionResources(m.id, m.level || 1)).some(([id, max]) => id === "secondWind" && (m.resources?.[id] ?? 0) < max));
+}
+
+Object.assign(module.exports, { restHelps, SCHEMA_VERSION, MAX_LOGS, MAX_HISTORY, TACTICS, XP_THRESHOLDS, nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, checkLevelUp, invalidResult, inventoryEntry, mergeInventory, buildClassResources, applyEquipmentDerivedStats, checkActor, strengths, EXPERTISE_LEVEL });

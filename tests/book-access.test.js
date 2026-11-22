@@ -61,7 +61,7 @@ test('the open-source game opens every book; a save cannot grant itself access',
 test('a free account finishing its last open book is told the story goes on for paid accounts', () => {
   const s = Book.grant(ready('aftermath'), 1);
   const { state, events } = home(finishChapter(s, 'aftermath'));
-  assert.ok(events.some((e) => /The story goes on in Book 2, The Council of Small Voices, for paid accounts/.test(e.text)), events.map((e) => e.text).join('\n'));
+  assert.ok(events.some((e) => /The story goes on in Book Two, The Council of Small Voices, for paid accounts/.test(e.text)), events.map((e) => e.text).join('\n'));
   assert.equal(state.story.flags[Book.FINISHED], true);
   assert.equal(Book.chapter(state), null);
   assert.equal(E.buildView(state).world.booksComplete, true);
@@ -72,7 +72,7 @@ test('a free account finishing its last open book is told the story goes on for 
   assert.equal(Book.playable(state, 'chairs'), false);
   // The open-source game (no grant) is told only that the books it has are done.
   const open = home(finishChapter(ready('aftermath'), 'aftermath'));
-  assert.ok(open.events.some((e) => /Book 1, The Bell Beneath Briarwatch, is complete\. Book 2, The Council of Small Voices, begins/.test(e.text)));
+  assert.ok(open.events.some((e) => /Book One, The Bell Beneath Briarwatch, is complete\. Book Two, The Council of Small Voices, begins/.test(e.text)));
   assert.ok(!open.events.some((e) => /paid accounts/.test(e.text)));
 });
 
@@ -92,8 +92,8 @@ test('a free account is told, before it starts an AI story, that doing so closes
   const { state, events } = home(finishChapter(Book.grant(ready('aftermath'), 1), 'aftermath'));
   const end = events.map((e) => e.text).find((t) => /for paid accounts/.test(t));
   // The paid book first, then the one trade-off, said plainly.
-  assert.ok(end.indexOf('Book 2, The Council of Small Voices, for paid accounts') < end.indexOf('AI storyteller'), end);
-  assert.match(end, /once this save starts one, it follows its own story and will not go back to Book 2/);
+  assert.ok(end.indexOf('Book Two, The Council of Small Voices, for paid accounts') < end.indexOf('AI storyteller'), end);
+  assert.match(end, /once this save starts one, it follows its own story and will not go back to Book Two/);
   assert.doesNotMatch(end, /written campaign ends here/);
   // The board says the same every visit, and says when the save has gone its own way.
   assert.equal(E.buildView(state).world.paidBook.closed, undefined);
@@ -106,7 +106,7 @@ test('a save part-way through a book it can no longer open waits, untouched', ()
   assert.equal(Book.locked(s), true);
   const c = Book.chapter(s);
   assert.equal(c.id, 'locked'); assert.equal(c.locked, true);
-  assert.match(c.brief, /Book 2, The Council of Small Voices, which needs a paid account here/);
+  assert.match(c.brief, /Book Two, The Council of Small Voices, which needs a paid account here/);
   const next = E.normalizeIncomingState(s);
   assert.equal(next.story.flags[Book.FINISHED], undefined, 'Never handed to the AI storyteller in its place.');
   assert.equal(E.resolveAction(next, { type: 'depart', questId: 'fenmere' }, high).result.ok, false);

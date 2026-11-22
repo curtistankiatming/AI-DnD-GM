@@ -403,6 +403,10 @@ function requirementStatus(state, requires = {}) {
   if (requires.cluesAny && !requires.cluesAny.some((clue) => clues.includes(clue))) {
     return { met: false, reason: "Requires a relevant clue from an earlier investigation." };
   }
+  // Defeats in the chapter under way (src/world.js recover counts them).
+  if (requires.failuresAtLeast && (Number(state.world?.progress?.[state.world?.activeQuest]?.failures) || 0) < Number(requires.failuresAtLeast)) {
+    return { met: false, reason: `Opens after ${requires.failuresAtLeast} defeats in this chapter.` };
+  }
   if (requires.item && !hasItem(state, requires.item)) {
     return { met: false, reason: `Requires ${ITEMS[requires.item]?.name || titleCase(requires.item)}.` };
   }
@@ -637,12 +641,16 @@ function applyOutcome(state, written = {}, rng, events) {
   // toTown: back to whichever town the party is in (nextNode names one only for checks).
   // Below the stair there is no town: a companion's scene between straight-on
   // chapters goes on into the next chapter instead (src/world.js goOn).
-  let next = outcome.toTown && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) : outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
+  // If no next chapter can be played any more (access lapsed), it is the town after all.
+  const home = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
+  let next = outcome.toTown && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) || home : home;
   // A straight-on chapter ("continues") goes from its decision to the next
   // chapter's opening, not to a town, when that chapter is there to play.
   if (outcome.goOn && state.world.completed[outcome.goOn]) next = W.goOn(state, outcome.goOn, events) || next;
   // The last safe ledge: rest, then go back down to the interrupted chapter.
   if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
+  // Back up the stair after repeated defeats: to town, the chapter kept in progress.
+  if (outcome.climbUp) { state.world.onExpedition = false; next = `town-${state.world.townId}`; events.push({ type: "rest", tone: "warning", text: "The party climbs back up to town. The chapter waits where you left it: depart again to go back down to the same encounter." }); }
   if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:part-end-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     const id = state.story.flags["books:part-end-due"];
@@ -786,7 +794,7 @@ function shortRest(state, rng, events) {
   if (state.combat?.active) return invalidResult(state, events, "You cannot take a short rest during combat.");
   if (!node.safeRest) return invalidResult(state, events, "This location is not safe enough for a short rest.");
   if (state.story.shortRestsUsed[node.id]) return invalidResult(state, events, "The party has already rested at this location.");
-  if (state.player.hitDice.current <= 0 && state.player.hp >= state.player.maxHp) return invalidResult(state, events, "No hit dice remain and the player is already at full health.");
+  if (!Core.restHelps(state)) return invalidResult(state, events, "The party is already rested: everyone is at full health and nothing a short rest restores is spent.");
   state.story.shortRestsUsed[node.id] = true;
   if (state.player.hitDice.current > 0 && state.player.hp < state.player.maxHp) {
     state.player.hitDice.current -= 1;

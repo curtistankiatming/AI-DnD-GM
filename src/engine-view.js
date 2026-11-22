@@ -11,7 +11,7 @@ const Courier = require("./courier-scene");
 const Road = require("./road-story");
 const Journal = require("./journal");
 const Away = require("./away");
-const { titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
+const { restHelps, titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
 const { dialogueText, liveLines, nodeLocation } = require("./expansion");
 const currentNode = (...args) => Engine.currentNode(...args);
@@ -50,8 +50,10 @@ function storyChoicesView(state) {
     return {
       id: choice.id,
       // A peaceful resolution tried without its lead is worded for what the hero actually has.
+      // Below the stair there is no town to be carried to: a defeat wakes the party on the last safe ledge.
+      ...(node.id === "defeat" && choice.id === "recover" && W.atLedge(state) ? { label: "Wake on the last safe ledge", description: "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back down to the interrupted fight." } : {
       label: choice.labelNoLead && choice.check?.lead && !state.story.clues.includes(choice.check.lead) ? choice.labelNoLead : choice.label,
-      description: choice.description,
+      description: choice.description }),
       locked: !requirement.met,
       lockedReason: choice.lockedText || requirement.reason,
       completed,
@@ -222,7 +224,7 @@ function buildView(state) {
       heroRolls: state.story.heroRolls === true,
       // Whether any companion could roll a check (standing, bond 0 or more).
       companionsCanRoll: state.party.some((m) => m.hp > 0 && m.bond >= 0),
-      canShortRest: Boolean(node.safeRest && !state.story.shortRestsUsed[node.id] && !state.combat?.active && (state.player.hitDice.current > 0 || state.player.hp < state.player.maxHp)),
+      canShortRest: Boolean(node.safeRest && !state.story.shortRestsUsed[node.id] && !state.combat?.active && restHelps(state)),
       endingSummary: endingSummary(state)
     },
     player: playerSheetView(state),

@@ -18,6 +18,20 @@ the pull requests that made them.
 - Until Book Four's towns exist, Briarwatch and Highpass sell the new tiers, for saves that have
   begun Book Three. List: [docs/ITEM-CATALOGUE.md](docs/ITEM-CATALOGUE.md#gear-for-levels-45-to-100-22-november-2026).
 
+## UX review through Book Three (22 November 2026)
+
+- The end of Book Three points at the 3rd job trial, and What's next has a
+  "Begin your trial" button. After the books, bounties can lift a hero to the
+  level the last book ends at (40 after Book Three), so the trial is reachable
+  without the AI game master.
+- The chapter that starts down the stair warns that no town follows until the
+  end of the book. Below the stair, Retreat reads "Fall back to the ledge".
+- "To be continued" after Part One names the part finished and the one being
+  written. Books are named in words ("Book Three") in player text.
+- A short rest is offered only when it would restore something. Each combat
+  order says what it makes the companions do.
+- Report: docs/reviews/claude-ux-book-three-2026-11-22.md.
+
 ## UI review through Book Three (22 November 2026)
 
 - Narrow phones: party names no longer shrink to one letter at Book Three HP; the message box

@@ -12,6 +12,12 @@ for (const level of [1,5,10]) for (const remaining of ['full','partial','empty']
     const max=P.companionResources('orin',level).secondWind;
     orin.resources.secondWind=remaining==='full'?max:remaining==='partial'?Math.max(0,max-1):0;
     maren.resources.healingWords=0; maren.resources.guidingBolt=0;
+    // With nothing a short rest restores spent, the rest is not offered, and asking for one changes nothing.
+    if(remaining==='full'&&s.player.hp>=s.player.maxHp&&s.party.every(m=>m.hp>=m.maxHp)&&!Object.values(s.player.resources).some(r=>r.refresh==='short'&&r.current<r.max)){
+      assert.equal(E.buildView(s).scene.canShortRest,false);
+      assert.equal(E.resolveAction(s,{type:'short-rest'},()=>0.5).result.ok,false);
+      s.player.hp=Math.max(1,s.player.maxHp-3);
+    }
     const out=E.resolveAction(s,{type:'short-rest'},()=>0.5);
     assert.equal(out.result.ok,true);
     assert.equal(out.state.party[0].resources.secondWind,max);
