@@ -103,7 +103,9 @@ function describe(item) {
   const out = [];
   const pct = (v) => Math.round(Math.abs(v) * 100);
   if (item.stats?.dealt) out.push(`${pct(item.stats.dealt)}% ${item.stats.dealt > 0 ? 'more' : 'less'} damage dealt`);
-  if (item.stats?.taken) out.push(`${pct(item.stats.taken)}% ${item.stats.taken > 0 ? 'more' : 'less'} damage taken`);
+  // Worn gear together takes off at most 30% (MAX_GEAR_TAKEN in src/equipment.js), so say so
+  // where it matters: plate, shield and charm can add up to more than that.
+  if (item.stats?.taken) out.push(item.stats.taken > 0 ? `${pct(item.stats.taken)}% more damage taken` : `${pct(item.stats.taken)}% less damage taken (all worn gear together takes off at most 30%)`);
   if (item.skill) out.push(`Skill, ${item.skill.name}: ${item.skill.text || Power.EFFECTS[item.skill.effect]?.text} Bonus action, once per fight.`);
   if (item.story) out.push(`Story: advantage on the first ${SKILLS[item.story.skill]?.name || item.story.skill} check after each long rest.`);
   const src = source(item);

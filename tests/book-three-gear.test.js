@@ -132,6 +132,37 @@ test('Orin, Maren and Nessa each have upgrades they can wear at each tier', () =
   assert.equal(out.result.ok, true, out.result.error);
 });
 
+// Where the story stops at each tier, so a player who never goes back still
+// finds the kit there. Part One never goes back to Highpass after level 22, and
+// Part Two leaves Highpass and Cinder Fold at 34: from 35 Briarwatch (chapter
+// 16) is the last shop before the stair. Vell can be evacuated, so it is not here.
+const ROUTE = { 20: ['highpass', 'saltwick'], 25: ['briarwatch'], 30: ['merrowgate', 'cinderfold', 'saltwick', 'ashford', 'highpass'], 35: ['briarwatch'], 40: ['briarwatch'] };
+function onRoute(item, t) {
+  const x = item.exclusive;
+  if (x?.quest) return Boolean(QUESTS[x.quest]);
+  if (x?.event) return ROUTE[t].includes(x.event.split(':')[1]);
+  return ROUTE[t].some((id) => { const town = TOWNS[id]; return town.stock.includes(item.id) || Object.entries(town.stockByLevel || {}).some(([at, ids]) => Number(at) <= band(t)[1] && ids.includes(item.id)); });
+}
+test('the towns the story stops in at each tier sell every class, branch and companion its kit, without going back', () => {
+  const missing = [];
+  const on = (actor, t) => upgrades(actor, t).filter((i) => onRoute(i, t));
+  for (const t of TIERS) {
+    for (const [classId, needs] of Object.entries(CLASS_NEEDS)) {
+      const list = on(hero(classId, band(t)[1]).player, t);
+      for (const [slot, roles] of Object.entries(needs)) roles.forEach((role, n) => { if (!list.some(role)) missing.push(`${classId} ${slot} ${n} at ${t}`); });
+    }
+    for (const [key, roles] of Object.entries(BRANCH_NEEDS)) {
+      const list = on(hero(key.split('.')[0], band(t)[1]).player, t);
+      roles.forEach((role, n) => { if (!list.some(role)) missing.push(`${key} need ${n} at ${t}`); });
+    }
+    for (const member of Object.values(COMPANIONS).filter((m) => m.gearClass)) {
+      const list = on(member, t);
+      COMPANION_NEEDS[member.id].forEach((role, n) => { if (!list.some(role)) missing.push(`${member.id} need ${n} at ${t}`); });
+    }
+  }
+  assert.deepEqual(missing, []);
+});
+
 test('every Book Three requirement is one a hero of that class can meet', () => {
   for (const item of B3) {
     const r = item.requires;
