@@ -1166,6 +1166,7 @@
         "lines": [
           { "oneOf": [
             { "narrate": "Late, in Iona's office under the gatehouse. One lamp, and the invoice, and the book of winters open beside it. Burdock sits on one side of the desk and Iona on the other, and they go through it line by line, his count of each winter against her cost of it. Where his number and hers disagree, they stop, and find out why.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+            { "narrate": "Late, in Iona's office under the gatehouse. One lamp, and the invoice, and the copy of Rue's old book that Sister Ilse made at Ashford, open beside it. Rue sits on one side of the desk and Iona on the other, and they go through it line by line, Rue's count of each winter against Iona's cost of it. Where the numbers disagree, they stop, and find out why.", "when": { "flag": "b4_book_burned" } },
             { "narrate": "Late, in Iona's office under the gatehouse. One lamp, and the invoice, and Rue's book open beside it. Rue sits on one side of the desk and Iona on the other, and they go through it line by line, Rue's count of each winter against Iona's cost of it. Where the numbers disagree, they stop, and find out why." }
           ] },
           { "say": "Iona", "text": "Lantry. The winter of the long white. I have six." },
@@ -1173,6 +1174,7 @@
             { "say": "Burdock", "text": "I have six.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
             { "say": "Rue", "text": "I have six." }
           ] },
+          { "say": "Iona", "text": "This one's torn. I'll put my number in pencil.", "when": { "flag": "method:b4-invoice", "is": "force" } },
           { "narrate": "They go on. At the bottom of the last page they each draw a line, and add, and turn their papers round, and read each other's." },
           { "say": "Iona", "text": "We agree." },
           { "oneOf": [
@@ -1204,16 +1206,22 @@
         "title": "The Bell-room",
         "objective": "Camp.",
         "lines": [
-          { "narrate": "The next night, late, you climb the tower with Tovin and Pim for the hour, because you have never once been up there for it in summer." },
+          { "narrate": "The next night, late, you climb the tower with Tovin and Pim for the hour." },
           { "narrate": "Tovin takes one rope and Pim the other. They ring the hour together, Pim a breath behind, the way he always has." },
           { "oneOf": [
             { "narrate": "The bell is bronze only, and the two notes go out over the fields.", "when": { "flag": "b3_bell_aster" } },
             { "narrate": "Inside the bell Aster Vey rings with them, a little late, as she always has." }
           ] },
-          { "narrate": "At the next hour they take the ropes and do not ring. They sit on the bench under the window with the ropes in their laps, and listen." },
-          { "narrate": "Out over the fields, at first, there is nothing to hear. Then, very faint, from the south and the east, a bell. Then another, further off. Every town keeps its own hours. You have never heard them all at once before." },
+          { "oneOf": [
+            { "narrate": "At the next hour they ring it, and then sit on the bench under the window with the ropes in their laps until the bronze has stopped, and listen.", "when": { "flag": "b4_voice_rings" } },
+            { "narrate": "At the next hour they take the ropes and do not ring. They sit on the bench under the window with the ropes in their laps, and listen." }
+          ] },
+          { "narrate": "Out over the fields, at first, there is nothing to hear. Then, very faint, from the south and the east, a bell. Then another, further off. Every town keeps its own hours, and from up here, with this bell quiet, you can hear them one by one, with the dark between them." },
           { "narrate": "Down in the far fields a lamp is lit in one of the Wold's tents, and somebody there begins to read names aloud, slowly, the way the Wold does at a door.", "when": { "flag": "b4_crossed" } },
-          { "say": "Pim", "text": "That's all of them. Ringing it north. I never heard them before. You don't, when you're ringing." },
+          { "oneOf": [
+            { "say": "Pim", "text": "That's all of them. Ringing it north. I never heard them before. You don't, when you're ringing.", "when": { "flag": "b3_bell_aster" } },
+            { "say": "Pim", "text": "That's all of them. Ringing it north. Last night I sat up here and listened to the lanes, and never once listened past them. You don't, when you're frightened." }
+          ] },
           { "say": "Tovin", "text": "No. You don't." }
         ],
         "choices": [

@@ -158,7 +158,7 @@ test('a decision changes exactly the approval and the reputation listed for it',
 });
 
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won', () => {
-  for (const [id, fought] of [['b4-knot', /grey with frost at the gate end, where the fight was/], ['b4-invoice', /eight of the men from the yard in the cells/], ['b4-quietnight', /torn up at the mill lane, where the fight was\. The bell was rung/], ['b4-gatehouse', /torn up from the cell stair to the gate, where the fight was/]]) {
+  for (const [id, fought] of [['b4-knot', /grey with frost at the gate end, where the fight was/], ['b4-invoice', /eight of the men from the yard in the cells/], ['b4-quietnight', /torn up at the mill lane, where the fight was\. In the small hours[^.]*somebody rang the bell, and nobody has said who/], ['b4-gatehouse', /torn up from the cell stair to the gate, where the fight was/]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -172,7 +172,7 @@ test('each crisis can be fought instead, and winning reaches the same ending tol
   }
   // The bronze bell's fight lights the fire instead.
   let s = winFight(choose(at('b4-quietnight', { phase: 'crisis', flags: { b3_bell_aster: true } }), 'confront'));
-  assert.match(opening(s), /The fire at the stream was lit in the end/);
+  assert.match(opening(s), /somebody lit the fire at the stream, and nobody has said who/);
 });
 
 test('with no companions, and with each one away, every chapter and camp is told whole, after each way Part Two ends, with no empty line, no token and no absent companion', () => {
@@ -239,7 +239,7 @@ test('chapter 21: who comes down follows chapter 20, the free wards\' winter fol
   const open = (flags, party) => opening(departed('b4-knot', { flags, party }));
   assert.match(open({}), /three thousand people, a rope at a time[^]*The sledges of the Long Tally come down behind the column/);
   assert.match(open(HALL), /The rest wait in the Hall for the council's answer/); assert.doesNotMatch(open(HALL), /sledges|Burdock/);
-  assert.match(open(ENVOYS), /The column has gone back out of the north door[^]*Burdock walks behind Sloe with the book of winters in his coat/);
+  assert.match(open(ENVOYS), /The column is going back out of the north door[^]*Burdock walks behind Sloe with the book of winters in his coat/);
   assert.match(open(HALL), /Hesk walks behind Sloe/); assert.doesNotMatch(open({}), /Hesk/);
   assert.match(open({}), /Nessa sits down in the wet snow of the road and lets Biscuit knock her over/);
   assert.doesNotMatch(open({}, ['orin', 'maren']), /Biscuit/);
@@ -250,7 +250,7 @@ test('chapter 21: who comes down follows chapter 20, the free wards\' winter fol
   assert.match(winter({ b3_promise_old: false, b3_promise_hesk: true, b3_three_told: true }), /The ones outside it had it hard/);
   assert.match(winter({ b3_promise_old: false, b3_stair_sealed: true }), /The nine alone/);
   assert.match(winter({ b4_parting_rung: true }), /every bell in the free wards rang once by itself/);
-  for (const flags of [{}, HALL, ENVOYS]) assert.match(opening(after('b4-knot', { flags })), /'Ailith Strake, of Cinder Fold, delegate, and twelve of the rope families\. Going up to the Hall, after the embassy\.'[^]*'Down\. Twelve, and a load\.'/);
+  for (const flags of [{}, HALL, ENVOYS]) assert.match(opening(after('b4-knot', { flags })), /'Ailith Strake, of Cinder Fold, delegate, and twelve of the rope families\. Going up to the Hall, after the embassy\.'[^]*'Down\. Thirteen, and a load\.'/);
   // The crisis: the sergeant leads the watch, or stands with the Wold after Rue sat at his fire.
   assert.match(opening(at('b4-knot', { phase: 'crisis' })), /^The watch sergeant: It came down after them/m);
   assert.match(opening(at('b4-knot', { phase: 'crisis', flags: ENVOYS })), /The sergeant who sat with Rue at the fire is in the gateway/);
@@ -316,7 +316,7 @@ test('the Telling tells chapters 21 to 23 in the Journal, by the answer\'s own l
 });
 
 test('companions walk out again in Part Three, with Part Three\'s own leave and back lines, and only Orin stays, after chapter 24, because chapter 25 is his', () => {
-  for (const [id, who, line] of [['b4-knot', 'orin', /Everything the Wold's people need has to be carried/], ['b4-invoice', 'nessa', /it's still waiting, at our own gate now/], ['b4-quietnight', 'maren', /Maren finds you after supper/]]) {
+  for (const [id, who, line] of [['b4-knot', 'orin', /Everything the Wold's people need has to be carried/], ['b4-invoice', 'nessa', /it's still waiting, on us now/], ['b4-quietnight', 'maren', /Maren finds you after supper/]]) {
     let s = after(id);
     s.world.approvalWindow = { [who]: -3 };
     s = walkThrough(choose(s, QUESTS[id].decisions[0].id));
@@ -468,4 +468,41 @@ test('chapters 21 to 24 each give their own Legendary reward on the tier 60 curv
   // Given once, when the chapter is done.
   const s = playPeaceful('b4-gatehouse', 'silent', { party: [] });
   assert.equal(s.player.inventory.filter((e) => e.itemId === 'gatehouse-grammar').reduce((n, e) => n + e.quantity, 0), 1);
+});
+
+test('the story reviews\' blockers for chapters 21 to 23 hold', () => {
+  // Aster hears the joined bells without naming a bell that may be empty or resting.
+  for (const flags of [{}, { b3_promise_old: true, wards_seat: true }, { b3_wren_cast: true }, { b3_sable_cast: true }]) {
+    const heard = told(choose(strong(departed('b4-quietnight', { flags })), 'investigate'));
+    assert.match(heard, /Hear that\? Every bell with somebody in it, all the way to Cinder Fold, ringing the same hour/);
+    assert.doesNotMatch(heard, /That's Highpass|the nine at Cinder Fold/);
+  }
+  // invoice-camp: with the old book burned, Rue reads Sister Ilse's copy.
+  assert.match(sceneText(decide('b4-invoice', 'share', { flags: { ...HALL, b4_book_burned: false, b4_book_returned: true } })), /Rue's book open beside it/);
+  assert.match(sceneText(decide('b4-invoice', 'share', { flags: { ...HALL, b4_book_burned: true } })), /the copy of Rue's old book that Sister Ilse made at Ashford/);
+  // The council knows who has the bell only when it was told, and Sloe never says she will ring it.
+  assert.match(opening(after('b4-invoice', { flags: { b4_accused_open: true } })), /The cut rope is on the same table/);
+  for (const f of ['b4_accused_quiet', 'b4_told_sloe']) {
+    const a = opening(after('b4-invoice', { flags: { [f]: true } }));
+    assert.match(a, /Nobody in the hall but you, and Sloe, knows that the hook in the Hall is empty/, f); assert.doesNotMatch(a, /everybody in the hall knows/, f);
+  }
+  for (const flags of [{ b4_demand_carried: true }, { b4_demand_carried: false, b4_share_promised: true }, { b4_demand_carried: false }]) {
+    const o = opening(departed('b4-invoice', { flags }));
+    assert.match(o, /the bell is rung the other way\. I have not said by whom/); assert.doesNotMatch(o, /I ring the bell/);
+  }
+  // The wait line quotes Sloe's own words, and only when Burdock reads.
+  assert.match(opening(departed('b4-invoice', { flags: { b4_tally_truth: false, b4_tally_wait: true } })), /'They asked us to wait\. We have waited nine hundred years\.'/);
+  assert.doesNotMatch(opening(departed('b4-invoice', { flags: { ...HALL, b4_tally_truth: false, b4_tally_wait: true } })), /The line for last winter/);
+  // Aster remembers Pim's quiet nights; Pim's camp line follows whether the bell has a voice.
+  assert.match(opening(after('b4-quietnight', { flags: { b4_bw_quiet: true } })), /Pim asked me the same thing last summer/);
+  assert.doesNotMatch(opening(after('b4-quietnight', { flags: { b4_bw_rings: true, b4_bw_quiet: false } })), /Pim asked me the same thing/);
+  assert.match(sceneText(decide('b4-quietnight', 'quiet')), /Last night I sat up here and listened to the lanes/);
+  assert.match(sceneText(decide('b4-quietnight', 'quiet', { flags: HALL })), /I never heard them before\. You don't, when you're ringing/);
+  assert.match(sceneText(decide('b4-quietnight', 'rings')), /At the next hour they ring it/);
+  // With the bell empty, the watch is the fire at the stream.
+  const night = (flags, rng) => told(act(strong(at('b4-quietnight', { phase: 'crisis', flags: { 'prepared:b4-quietnight': true, ...flags } })), { type: 'story-choice', choiceId: 'resolve' }, rng).state);
+  assert.match(night({ b3_bell_aster: true }, high), /Nobody lights the fire\. On the watch line[^]*nobody runs for the stream out of fear|nobody runs for the stream out of fear[^]*Nobody lights the fire/);
+  assert.doesNotMatch(night({ b3_bell_aster: true }, high), /Nobody rings|rings out of fear/);
+  assert.match(night({ b3_bell_aster: true }, low), /somebody runs for the stream with a light/);
+  assert.match(night({}, low), /somebody runs for the tower/);
 });

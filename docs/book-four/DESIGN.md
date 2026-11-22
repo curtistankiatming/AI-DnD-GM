@@ -1151,7 +1151,7 @@ as in Part One.
   at Highpass (as in decided question 28). Chapter 21 is taken from
   Highpass's board, and its opening is the descent of the south side the same
   morning, early spring, to the upper gate. No line says the party went down
-  to Highpass in between. The descent takes the day; the party arrives at
+  to Highpass in between. The descent takes the morning; the party reaches the upper gate at
   noon, as Rue did.
 - **Who comes down**, by the chapter 20 flag:
   - `b4_crossed`: the whole column, on its ropes, three thousand, with Sloe's
@@ -1196,7 +1196,7 @@ as in Part One.
   of Cinder Fold, delegate, and twelve of the rope families. Going up to the
   Hall, after the embassy." (She said at the vote, chapter 9, that she would
   go north if she was let.) Three days later a rope-man signed them down:
-  "Down. Twelve, and a load." The watch did not open a delegate's load. The
+  "Down. Thirteen, and a load." The watch did not open a delegate's load. The
   next line is "Road shut. Deep snow." This is chapter 21's clue, and the
   after lines show it in every branch, so no decision needs the clue to have
   been found. No Part Three line before chapter 24 says how Ailith learned
@@ -2623,7 +2623,8 @@ below.
     -1 (rep trade), both notes taught Maren +1 (rep Wold), kept silent Orin
     +1 (rep wardens). gatehouse-camp names each 2nd job's level 64 skill, by
     the same companions as decided question 26, without the fight. The
-    twelve are the twelve rope families of the gate book; Ailith did not come.
+    twelve are the gate book's twelve rope families (signed down in the
+    autumn as "Thirteen, and a load", with Ailith); she does not come.
     Iona's Other Invoice: the bill is set against her nine hundred years
     (needs chapter 22's vote), held to midwinter, paid by Iona herself, or
     paid in the watch's wood by the door-bearers; Burdock writes it into the
