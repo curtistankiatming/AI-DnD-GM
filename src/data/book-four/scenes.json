@@ -1174,7 +1174,7 @@
             { "say": "Burdock", "text": "I have six.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
             { "say": "Rue", "text": "I have six." }
           ] },
-          { "say": "Iona", "text": "Some of these pages were out in the yard when the hall came up off its benches. Where I can't read his number, I'll put mine in pencil.", "when": { "flag": "method:b4-invoice", "is": "force" } },
+          { "say": "Iona", "text": "Some of these pages were on the floor when the hall came up off its benches. Where I can't read the number, I'll put mine in pencil.", "when": { "flag": "method:b4-invoice", "is": "force" } },
           { "narrate": "They go on. At the bottom of the last page they each draw a line, and add, and turn their papers round, and read each other's." },
           { "say": "Iona", "text": "We agree." },
           { "oneOf": [
@@ -1393,7 +1393,7 @@
         "lines": [
           { "narrate": "The next night, in the lamp-room at the top of the signal house. The lamp is lit. The snow comes past the high window and goes white in the light and is gone." },
           { "oneOf": [
-            { "narrate": "Nessa sits on the sill with her back to the lamp and the key on its cord in her hand, and looks down the hill at the miners' hall, where Rue is, and does not go down.", "when": { "party": "nessa", "flag": "b4_nessa_signal" } },
+            { "narrate": "Nessa sits on the sill with her back to the lamp, and looks down the hill at the miners' hall, where Rue is, and does not go down.", "when": { "party": "nessa", "flag": "b4_nessa_signal" } },
             { "narrate": "Nessa is not here. She is in the miners' hall at the bottom of the town, beside Rue, under the empty practice rope, and the ringers have stopped asking her to move.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
             { "narrate": "Nessa sits on the sill with Rue's book in her lap, where Rue gave it to her to hold, and reads it from the first page, slowly, because she reads slowly, and does not skip anything.", "when": { "party": "nessa", "flag": "b4_nessa_stops_rue" } },
             { "narrate": "Hew sits on the sill with his hearth bell, keeping the lamp, and writes the night down in his book.", "when": { "flag": "b4_key_hew" } },

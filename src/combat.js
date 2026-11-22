@@ -275,6 +275,15 @@ function addCondition(actor, entry) {
   else actor.conditions.push({ ...entry });
 }
 
+// Adds a timed effect without shortening one already there: an actor whose
+// effect of that id lasts longer (or has no end) keeps it as it is.
+function extendCondition(actor, entry) {
+  const existing = condition(actor, entry.id);
+  if (existing && (existing.expiresRound == null || existing.expiresRound >= entry.expiresRound)) return false;
+  addCondition(actor, entry);
+  return true;
+}
+
 function removeCondition(actor, id) {
   actor.conditions = actor.conditions.filter((entry) => entry.id !== id);
 }
@@ -622,7 +631,8 @@ function resolveTacticalAction(state,actor,action,rng,events) {
       // A combination opens a chain on its target (src/power.js).
       Power.startChain(state.combat,target);
       const used=comp.actionUsed;resolveWeaponAttack(state,comp,target,rng,events,{advantage:true});comp.actionUsed=used;
-      if(cid==='orin'){for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});if(target.hp>0){addCondition(target,{id:'weakened',name:'Weakened by Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Weakened: 25% less damage until your next turn.`});}}
+      // No guard while Hold the Column has the party Fortified: the two never stack.
+      if(cid==='orin'){if(!state.combat.actors.some(a=>a.team==='party'&&a.conditions.some(c=>c.source==='hold-the-column')))for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',source:'shield-accord',sourceId:actor.id,expiresRound:state.combat.round+1});if(target.hp>0){addCondition(target,{id:'weakened',name:'Weakened by Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Weakened: 25% less damage until your next turn.`});}}
       else if(target.hp>0){addCondition(target,{id:'guiding',name:'Exposed by Crossfire'});addCondition(target,{id:'vulnerable',name:'Vulnerable to Crossfire',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Vulnerable: 25% more damage until your next turn.`});}
     }
     events.push({type:'party',tone:'good',text:`${actor.name} and ${comp.name} execute their personal-quest combination.`});return {ok:true,kind:'combat',outcomeText:'The party turns a shared experience into coordinated action.'};
@@ -1033,9 +1043,10 @@ function useArcMove(state,actor,rng,events){
   const round=state.combat.round,key=`arc:${actor.id}:${m.id}`;
   if(m.id==='hold-the-column'){
     // Shield Accord already guards the party this round: the two never stack.
-    if(actor.bonusUsed||!arcHurt(state,false)||state.combat.actors.some(a=>a.team==='party'&&a.conditions.some(c=>c.id==='guarded'&&c.name==='Shield Accord')))return false;
+    // Found by its source, since a merged guard takes the newer one's name.
+    if(actor.bonusUsed||!arcHurt(state,false)||state.combat.actors.some(a=>a.team==='party'&&a.conditions.some(c=>c.source==='shield-accord')))return false;
     state.combat.usedActions[key]=true;actor.bonusUsed=true;
-    for(const a of livingActors(state,'party'))addCondition(a,{id:'fortified',name:'Fortified (Hold the Column)',sourceId:actor.id,expiresRound:round+1});
+    for(const a of livingActors(state,'party'))extendCondition(a,{id:'fortified',name:'Fortified (Hold the Column)',source:'hold-the-column',sourceId:actor.id,expiresRound:round+1});
     events.push({type:'party',tone:'good',text:`${actor.name} uses Hold the Column: the party is Fortified until his next turn and takes 25% less damage.`});
     return false;
   }
@@ -1053,8 +1064,8 @@ function useArcMove(state,actor,rng,events){
     state.combat.usedActions[key]=true;
     if(actor.bonusUsed||!target)return false;
     actor.bonusUsed=true;
-    addCondition(target,{id:'vulnerable',name:'Vulnerable (Signal Fire)',sourceId:actor.id,expiresRound:round+2});
-    events.push({type:'condition',tone:'good',text:`${actor.name} uses Signal Fire: ${target.name} is Vulnerable for two rounds and takes 25% more damage.`});
+    extendCondition(target,{id:'vulnerable',name:'Vulnerable (Signal Fire)',source:'signal-fire',sourceId:actor.id,expiresRound:round+1});
+    events.push({type:'condition',tone:'good',text:`${actor.name} uses Signal Fire: ${target.name} is Vulnerable until her next turn and takes 25% more damage.`});
     return false;
   }
   return false;

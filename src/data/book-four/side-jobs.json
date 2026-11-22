@@ -776,7 +776,7 @@
     "until": "b4-hospice",
     "gold": 150,
     "giver": "Bistort of Greve, in the stubble below the old wall",
-    "brief": "A family from the Wold would like to stay at Ashford and farm the ground below the old wall. Ashford's town meeting has never been asked anything like it, and will say no to it, as it says no to most things.",
+    "brief": "A family from the Wold would like to stay at Ashford and farm the ground below the old wall. Ashford's town meeting has never been asked anything like it, and is not expected to say yes.",
     "start": "stubble",
     "nodes": {
       "stubble": {
@@ -840,7 +840,7 @@
             "id": "south",
             "label": "Tell Bistort to go south with the others, to a town that has voted to take her",
             "lines": [
-              { "narrate": "You tell Bistort that Ashford will not have her, whatever it is asked, and that the towns down the valley have voted to, and that she should go where she is wanted." },
+              { "narrate": "You tell Bistort that Ashford will not have her, whatever it is asked, and that the towns down the valley have said they will, and that she should go where she is wanted." },
               { "say": "Bistort of Greve", "text": "Yes. That is sense. I will write down this ground anyway, on the cart. Somebody should know it was here." },
               { "narrate": "She writes it on the tail-board of the family's cart, and they go south down the valley road after the column, with the old woman riding." }
             ],

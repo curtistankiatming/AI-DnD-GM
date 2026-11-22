@@ -235,6 +235,39 @@ test('every check result reads for whoever rolls it, and a companion who rolls i
   assert.doesNotMatch(outcomeForRoller(ford, { id: 'orin' }).text, /gives the column its order/);
   const steps = STORY_NODES['q-b4-hospice-crisis'].choices.find((c) => c.id === 'resolve').success;
   assert.match(outcomeForRoller(steps, { id: 'maren' }).text, /Maren stands up on the bottom step beside Sloe and says what she saw/);
+  // With Nessa away and her key gone north, the roller forces the lamp-room door.
+  const signal = STORY_NODES['q-b4-signal-crisis'].choices.find((c) => c.id === 'resolve').success;
+  assert.match(outcomeForRoller(signal, { id: 'player' }).text, /You put your shoulder to the lamp-room door at the last turn until the old lock gives, and find the wick/);
+  assert.match(outcomeForRoller(signal, { id: 'orin' }).text, /Orin puts his shoulder to the lamp-room door at the last turn until the old lock gives, and finds the wick/);
+});
+
+// The step 10 review's blockers at the ford: no walkers where none came, the prepared crossing above the stone, Sorrel, Orin as the soldier.
+test('chapter 25: the walkers cross only if they came, the prepared way crosses above the stone, and the soldier helps the families', () => {
+  const NONE = { b4_hall_camp: true, b4_walkers_led: false, b4_walkers_marked: false, b4_crossed: false };
+  for (const [flags, walkers] of [[{}, true], [NONE, false]]) for (const prepared of [true, false]) {
+    let s = strong(at('b4-ford', { flags })); s = act(s, { type: 'depart', questId: 'b4-ford' }).state;
+    s = choose(s, 'investigate'); s = choose(s, 'advance');
+    (walkers ? assert.match : assert.doesNotMatch)(told(s), /then the walkers/);
+    assert.match(told(s), /the carts first, then the families on their ropes/);
+    s = choose(s, 'careful');
+    if (!prepared) delete s.story.flags['prepared:b4-ford'];
+    s = choose(strong(s), 'resolve');
+    const t = told(s);
+    (walkers ? assert.match : assert.doesNotMatch)(t, /walkers/, `walkers ${walkers}`);
+    if (prepared) {
+      assert.match(t, /drives them again above the stone[^]*in the deep water above the stone[^]*comes no further than the line/);
+      assert.doesNotMatch(t, /The poles are where they were driven|round their knees/);
+    } else {
+      assert.match(t, /The poles are where they were driven[^]*round their knees and their waists/);
+      assert.doesNotMatch(t, /above the stone/);
+    }
+  }
+  assert.doesNotMatch(QUESTS['b4-ford'].objective.successText, /walkers/);
+  assert.match(talk('b4-ford', 'sorrel', { flags: { b4_rue_watch: true } }), /I learned the north road off Rue last year\. I kept the last fire lit all winter/);
+  const soldier = told(decide('b4-ford', 'soldier'));
+  assert.match(soldier, /Today, in the water, somebody had to give them the word/);
+  assert.match(soldier, /helps the families from the last cart carry its load up the meadow, because somebody has to\./);
+  assert.doesNotMatch(soldier, /their man is still sitting/);
 });
 
 test('chapter 25 reads Ashford\'s Book Three ending, Varn\'s, Davin\'s and who came south', () => {
@@ -275,11 +308,11 @@ test('chapter 27 reads the signal key, the Mother Bell, the sealed stair and Rue
   assert.match(opening(departed('b4-signal', { flags: HALL })), /Hew has kept the forge-signal every night/);
   assert.match(opening(departed('b4-signal', { flags: ENVOYS })), /Ottilie Brand's committee has kept the forge-signal/);
   assert.match(opening(departed('b4-signal', { flags: { b4_key_left: true, b4_key_carried: false } })), /Wren has kept the forge-signal/);
-  assert.match(opening(departed('b4-signal')), /I've only got a season to lose/);
+  assert.match(opening(departed('b4-signal')), /I have only a season to lose/);
   const clue = (flags) => told(choose(departed('b4-signal', { flags }), 'investigate'));
   assert.match(clue(HALL), /The council's seal is off the hatch[^]*under the lock whose only key is yours/);
   assert.doesNotMatch(clue({}), /council's seal|only key/);
-  assert.match(talk('b4-signal', 'rue', { flags: HALL }), /I gave my mother at Thrum[^]*I have no book\. You saw it burn/);
+  assert.match(talk('b4-signal', 'rue', { flags: HALL }), /I gave my mother at Thrum[^]*My first book burned\. You saw it\. Ilse's copy has the winters in it, and not me\. This one starts the summer of the fire/);
   assert.match(talk('b4-signal', 'rue'), /I kept my mother, at Thrum[^]*I have my book/);
   assert.match(talk('b4-signal', 'ailith', { flags: HALL }), /Highpass's bell is in the hall/);
   assert.match(talk('b4-signal', 'ailith'), /Sable taught you/);
@@ -334,7 +367,7 @@ test('chapters 25 to 27 give keepsakes only their companion can wear, on the tie
   assert.deepEqual(rewards.map((i) => i.skill?.effect || null), ['weakened', null, 'vulnerable']);
   assert.deepEqual(rewards.map((i) => i.story?.skill || null), ['intimidation', 'medicine', null]);
   const bow = ITEMS['signal-fire-longbow'], column = ITEMS['column-longbow'];
-  assert.ok(bow.attackBonus === column.attackBonus + 1 && bow.damageBonus === column.damageBonus + 1 && bow.weapon.damage === column.weapon.damage && bow.stats.dealt === column.stats.dealt, 'a point above the Column Longbow, eight levels on');
+  assert.ok(bow.attackBonus === column.attackBonus && bow.damageBonus === column.damageBonus + 1 && bow.weapon.damage === column.weapon.damage && bow.stats.dealt === column.stats.dealt, 'a point of damage above the Column Longbow, eight levels on');
   // Given once, and only the companion can put it on.
   let s = playPeaceful('b4-ford', 'captain');
   assert.equal(s.player.inventory.filter((e) => e.itemId === 'captains-commission').reduce((n, e) => n + e.quantity, 0), 1);
@@ -386,8 +419,8 @@ test('arc moves: each is learned on completing its companion\'s chapter, fires o
   assert.doesNotMatch(turn(s, 'orin'), /Hold the Column/);
   assert.doesNotMatch(turn(s, 'maren'), /Say Their Names/);
   const foe = s.combat.actors.find((a) => a.team === 'enemy');
-  assert.match(turn(s, 'nessa'), /Signal Fire: .* is Vulnerable for two rounds/);
-  assert.deepEqual(foe.conditions.find((c) => c.id === 'vulnerable').expiresRound, s.combat.round + 2);
+  assert.match(turn(s, 'nessa'), /Signal Fire: .* is Vulnerable until her next turn/);
+  assert.deepEqual(foe.conditions.find((c) => c.id === 'vulnerable').expiresRound, s.combat.round + 1);
   assert.doesNotMatch(turn(s, 'nessa'), /Signal Fire/, 'once a fight');
   s = arcFight({ hurt: true });
   assert.match(turn(s, 'orin'), /Hold the Column: the party is Fortified/);
@@ -408,9 +441,51 @@ test('arc moves: each is learned on completing its companion\'s chapter, fires o
 
 test('Hold the Column never stacks with Shield Accord: Orin does not use it on a round Shield Accord is up', () => {
   const s = arcFight({ hurt: true });
-  for (const a of s.combat.actors.filter((x) => x.team === 'party')) a.conditions.push({ id: 'guarded', name: 'Shield Accord', sourceId: 'player', expiresRound: s.combat.round + 1 });
+  for (const a of s.combat.actors.filter((x) => x.team === 'party')) a.conditions.push({ id: 'guarded', name: 'Guarded', source: 'shield-accord', sourceId: 'player', expiresRound: s.combat.round + 1 });
   assert.doesNotMatch(turn(s, 'orin'), /Hold the Column/);
   assert.equal(s.combat.usedActions[`arc:${member(s, 'orin').id}:hold-the-column`], undefined, 'still his to use later in the fight');
-  for (const a of s.combat.actors) a.conditions = a.conditions.filter((c) => c.name !== 'Shield Accord');
+  for (const a of s.combat.actors) a.conditions = a.conditions.filter((c) => c.source !== 'shield-accord');
   assert.match(turn(s, 'orin'), /Hold the Column/);
+});
+
+// The hero's Shield Accord combination, played on the hero's turn.
+const shieldAccord = (s) => {
+  const player = member(s, 'player'); s.combat.turnIndex = s.combat.actors.indexOf(player); player.bonusUsed = false; s.combat.comboUsed = false;
+  s.world.personal.orin = { ...(s.world.personal.orin || {}), rewarded: true }; player.resources.technique = { current: 3, max: 3 };
+  const foe = s.combat.actors.find((a) => a.team === 'enemy' && a.hp > 0);
+  const r = Combat.resolveCombatAction(s, { actionId: 'combo:orin', targetId: foe.id }, R.createSeededRng(5), []);
+  assert.equal(r.ok, true, r.error); return s;
+};
+test('Shield Accord adds no guard while Hold the Column is up, and is still found when a later guard renames it', () => {
+  let s = arcFight({ hurt: true });
+  assert.match(turn(s, 'orin'), /Hold the Column/);
+  shieldAccord(s);
+  for (const a of s.combat.actors.filter((x) => x.team === 'party')) assert.ok(!a.conditions.some((c) => c.source === 'shield-accord'), `${a.id}: no Shield Accord guard on Hold the Column`);
+  // Without Hold the Column, Shield Accord guards the party; a later guard of another name merges into it, and Orin still holds off.
+  s = arcFight({ hurt: true });
+  shieldAccord(s);
+  const party = s.combat.actors.filter((x) => x.team === 'party');
+  for (const a of party) assert.ok(a.conditions.some((c) => c.id === 'guarded' && c.source === 'shield-accord'), `${a.id}: guarded`);
+  for (const a of party) Object.assign(a.conditions.find((c) => c.id === 'guarded'), { name: 'Guarded by a later ward' });
+  assert.doesNotMatch(turn(s, 'orin'), /Hold the Column/);
+});
+
+test('Hold the Column and Signal Fire never shorten a longer Fortified or Vulnerable', () => {
+  let s = arcFight({ hurt: true });
+  const round = s.combat.round, [first, ...rest] = s.combat.actors.filter((x) => x.team === 'party');
+  first.conditions.push({ id: 'fortified', name: 'Fortified (Brace)', expiresRound: round + 3 });
+  assert.match(turn(s, 'orin'), /Hold the Column/);
+  assert.deepEqual(first.conditions.filter((c) => c.id === 'fortified').map((c) => [c.name, c.expiresRound]), [['Fortified (Brace)', round + 3]]);
+  for (const a of rest) assert.equal(a.conditions.find((c) => c.id === 'fortified').expiresRound, round + 1, a.id);
+  s = arcFight();
+  const foe = s.combat.actors.find((a) => a.team === 'enemy'); foe.aiRole = 'boss';
+  foe.conditions.push({ id: 'vulnerable', name: 'Vulnerable (Shatter)', expiresRound: s.combat.round + 2 });
+  assert.match(turn(s, 'nessa'), /Signal Fire/);
+  assert.deepEqual(foe.conditions.filter((c) => c.id === 'vulnerable').map((c) => c.expiresRound), [s.combat.round + 2]);
+  // A shorter one is lengthened to Signal Fire's.
+  s = arcFight();
+  const boss = s.combat.actors.find((a) => a.team === 'enemy'); boss.aiRole = 'boss';
+  boss.conditions.push({ id: 'vulnerable', name: 'Vulnerable (Shatter)', expiresRound: s.combat.round });
+  turn(s, 'nessa');
+  assert.equal(boss.conditions.find((c) => c.id === 'vulnerable').expiresRound, s.combat.round + 1);
 });

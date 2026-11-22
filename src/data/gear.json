@@ -5484,7 +5484,7 @@
     "id": "signal-fire-longbow",
     "name": "Signal-fire Longbow",
     "description": "Wren's bow, which has hung on a peg in the lamp-room of Cinder Fold's forge-signal for twenty years, strung every autumn and never shot. The grip is wrapped in the same cord as the signal key.",
-    "purpose": "Nessa only. Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon.",
+    "purpose": "Nessa only. Dexterity, 1d8 piercing, +3 to hit, +8 damage. Two-handed ranged weapon.",
     "weapon": {
       "damage": "1d8",
       "damageType": "piercing",
@@ -5494,7 +5494,7 @@
         "twoHanded"
       ]
     },
-    "attackBonus": 4,
+    "attackBonus": 3,
     "damageBonus": 8,
     "stats": {
       "dealt": 0.1

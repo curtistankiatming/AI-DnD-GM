@@ -1417,8 +1417,8 @@ refused, three hundred years ago, by giving up the lower town.
   (`requires: { flagsAll: ["b4_davin_comes"], companion: "orin" }`). Orin has to
   give him the order to hold the rear door (28), and does.
 
-Absent Orin: Sorrel offers the commission to the hero, and none of the three
-flags is set; later lines read the missing flag as `b4_orin_soldier`.
+Absent Orin: Sorrel offers the commission to the hero, and the hero's answer
+sets `b4_orin_soldier` (decided question 49).
 
 **Scene ford-camp.** Orin re-ties nothing. He checks everyone else's knots and
 leaves them as they are.
@@ -1453,8 +1453,8 @@ or `b4_names_written`).
   through the lid instead (29).
 - She says nothing, and lets Sloe speak for herself: `b4_maren_silent`.
 
-Absent Maren: Anwen speaks for Sloe and sets none of the three; later lines
-read that as `b4_maren_silent`.
+Absent Maren: Anwen speaks for Sloe, and the hero's answer sets
+`b4_maren_silent` (decided question 49).
 
 **Scene hospice-camp.** Maren and Anwen play cards with the walkers and let
 them win.
@@ -1490,8 +1490,8 @@ the signal house are one building, and that is why they come for it.
 - Nessa lets her go, and keeps the signal: `b4_nessa_signal`. Rue goes to the
   ringers alone.
 
-Absent Nessa: Rue goes to the ringers and none is set; later lines read that
-as `b4_nessa_signal`. No lighter moment from here to the end.
+Absent Nessa: Rue goes to the ringers, and the hero's answer sets
+`b4_nessa_signal` (decided question 49). No lighter moment from here to the end.
 
 ### 28. The Rope Families (b4-ropes, level 67, Cinder Fold casting hall, midwinter)
 
@@ -1978,14 +1978,19 @@ rounds at 40 to 69, the objective route 3 to 5. Bosses (chapters 10, 20, 29,
    - Orin, Hold the Column (bonus action): the party is Fortified for one
      round. Trigger: two or more allies under half HP. It overlaps his Shield
      Accord (the combination, which guards the whole party for a round): the
-     two do not stack, and he does not use Hold the Column on a round Shield
-     Accord is up.
+     two do not stack: he does not use Hold the Column on a round Shield
+     Accord is up, and Shield Accord adds no guard while Hold the Column is.
+     Both are found by their source, not their name.
    - Maren, Say Their Names (action): heals each party member 3d8 + her
      Wisdom modifier + `lateGrowth`. Trigger: two or more allies under half
      HP, or one down.
    - Nessa, Signal Fire (bonus action): the boss, or else the leader, or
-     else the foe with the most hit points, is Vulnerable for two rounds.
-     Trigger: her first turn of the fight (used then, or not that fight).
+     else the foe with the most hit points, is Vulnerable until her next
+     turn (one round). Trigger: her first turn of the fight (used then, or
+     not that fight).
+   Neither Hold the Column nor Signal Fire shortens an effect already there:
+   on a member or foe whose Fortified or Vulnerable lasts longer, the later
+   `expiresRound` is kept.
 5. **Level floors** (`levelFloor` on a chapter): see "Falling behind".
 
 **Playtest target.** Scripted campaigns (`tests/campaign-playtest.js` with
@@ -2714,10 +2719,14 @@ below.
     round, Intimidation story), the Hospice Physic-bag (63, Maren: Medicine
     and Insight +3, Wisdom saves +2, Constitution +1, 10% taken, Medicine
     story; not everything the Hearthward Rosary has, which keeps Religion)
-    and the Signal-fire Longbow (64, Nessa, Dex 13: 1d8, +4/+8, 10% dealt, a
-    point over the Column Longbow, Signal Shot: Vulnerable 1 round). Stay
+    and the Signal-fire Longbow (64, Nessa, Dex 13: 1d8, +3/+8, 10% dealt, a
+    point of damage over the Column Longbow, Signal Shot: Vulnerable 1 round). Stay
     lines: Maren for b4-hospice after 25; everyone for b4-signal after 26
-    and for b4-ropes after 27 (together).
+    and for b4-ropes after 27 (together). In chapters 28 to 30 and the
+    epilogue, a line that reads `b4_orin_soldier`, `b4_maren_silent` or
+    `b4_nessa_signal` describes what nobody chose: a line that has the
+    companion make that choice needs `party: "<companion>"`, with a separate
+    version for when they are away.
 50. **Chapters 28 to 30, as written** (build step 11), all at Cinder Fold
     on midwinter day and night. Chapter 28 (b4-ropes, enemy theme soldier):
     the Parting Bell is under the lid at the foot of the founders' stair,

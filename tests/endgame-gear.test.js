@@ -150,8 +150,10 @@ test('late gear climbs in small steps from level 40 and stays inside its caps at
 const avg = (d) => { const m = /^(\d+)d(\d+)$/.exec(d); return m ? m[1] * (+m[2] + 1) / 2 : 1; };
 function atLeast(a, b) {
   if (a.slot !== b.slot || a.category !== b.category || lv(a) > lv(b)) return false;
-  const ca = a.requires?.classes, cb = b.requires?.classes, ma = a.requires?.members, mb = b.requires?.members;
-  // A keepsake only its companion may wear is never available to anybody else.
+  const ma = a.requires?.members, mb = b.requires?.members, ca = a.requires?.classes;
+  // A keepsake only its companion may wear is never available to anybody else;
+  // one item that is is checked against it by its wearers' gear classes.
+  const cb = mb ? mb.map((m) => COMPANIONS[m].gearClass) : b.requires?.classes;
   if (ma && (!mb || !mb.every((m) => ma.includes(m)))) return false;
   if (ca && (!cb || !cb.every((c) => ca.includes(c)))) return false;
   for (const [k, v] of Object.entries(a.requires?.abilities || {})) if ((b.requires?.abilities?.[k] || 0) < v) return false;
@@ -176,6 +178,10 @@ test('no late item is matched or beaten by one already available at its level to
   const found = [];
   for (const b of LATE) for (const a of pool) if (a.id !== b.id && atLeast(a, b)) found.push(`${b.id} (level ${lv(b)}) is no better than ${a.id} (level ${lv(a)})`);
   assert.deepEqual(found, []);
+  // A companion's keepsake is held to sold gear of that companion's gear class.
+  const keepsakes = LATE.filter((i) => i.requires?.members);
+  assert.ok(keepsakes.length >= 3);
+  for (const k of keepsakes) assert.ok(atLeast({ ...k, requires: { ...k.requires, members: undefined, classes: [COMPANIONS[k.requires.members[0]].gearClass] } }, k), `${k.id}: compared with sold gear`);
 });
 
 test('every set is sound: real pieces in different slots, one class list, bonuses that grow to the full set', () => {
