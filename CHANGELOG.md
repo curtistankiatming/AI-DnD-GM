@@ -4,6 +4,20 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## UX review through Book Three (22 November 2026)
+
+- The end of Book Three points at the 3rd job trial, and What's next has a
+  "Begin your trial" button. After the books, bounties can lift a hero to the
+  level the last book ends at (40 after Book Three), so the trial is reachable
+  without the AI game master.
+- The chapter that starts down the stair warns that no town follows until the
+  end of the book. Below the stair, Retreat reads "Fall back to the ledge".
+- "To be continued" after Part One names the part finished and the one being
+  written. Books are named in words ("Book Three") in player text.
+- A short rest is offered only when it would restore something. Each combat
+  order says what it makes the companions do.
+- Report: docs/reviews/claude-ux-book-three-2026-11-22.md.
+
 ## UI review through Book Three (22 November 2026)
 
 - Narrow phones: party names no longer shrink to one letter at Book Three HP; the message box

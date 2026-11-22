@@ -1111,7 +1111,7 @@ function finishCombat(state,result,rng,events){
   }
   if(result==='defeat'||result==='retreat'){
     state.world.failedEncounter=encounter.id;
-    state.story.lastOutcome={kind:'combatDefeat',title:name,text:result==='retreat'?`The party withdraws from ${name}.`:`The party is overcome in ${name}; rescuers can bring them home.`};
+    state.story.lastOutcome={kind:'combatDefeat',title:name,text:result==='retreat'?`The party withdraws from ${name}.`:W.atLedge(state)?`The party is overcome in ${name}; the others can carry them back to the last safe ledge.`:`The party is overcome in ${name}; rescuers can bring them home.`};
     recordHistory(state,`${result==='retreat'?'Retreated from':'Lost'} ${name}.`,{kind:'combat',result});
     if(result==='retreat')W.recover(state,events,extensionApi());else enterNode(state,'defeat',events);
     return;
@@ -1248,14 +1248,18 @@ function combatActionView(state) {
   if(state.combat.objective){const plan=objectivePlan(state);actions.push({id:'objective',name:state.combat.objective.label,cost:'action',targetKind:'none',targets:[],description:plan.description+` Success ${Math.round(plan.successProbability*100)}%.`,disabled:actor.actionUsed,disabledReason:actor.actionUsed?'Action already used.':''});}
   for(const [kind,name,targetKind]of [['focus','Order: Focus fire','enemy'],['protect','Order: Protect ally','ally'],['cover','Order: Cover objective','none']]){
     if(kind==='cover'&&!state.combat.objective)continue;
-    actions.push({id:`order:${kind}`,name,cost:'free',targetKind,targets:actionTargetOptions(state,targetKind),description:'One free order per round. Persists until changed; companions keep independent turns.',disabled:state.combat.orderRound===state.combat.round,disabledReason:'An order was already issued this round.'});
+    // What each order makes the companions do, in the player's words. Orders are free and last until changed.
+    const what={focus:'Your companions all attack the enemy you pick, until you give a new order.',protect:'Your companions guard and heal the ally you pick first, until you give a new order.',cover:'Your companions help with the objective instead of attacking, so your next objective check has advantage.'}[kind];
+    actions.push({id:`order:${kind}`,name,cost:'free',targetKind,targets:actionTargetOptions(state,targetKind),description:`${what} Free: it does not use your action, and you can give one order a round. Without an order, each companion fights by their own tactic (set on the Party sheet).`,disabled:state.combat.orderRound===state.combat.round,disabledReason:'An order was already issued this round.'});
   }
   if(state.player.level>=7)for(const member of state.party.filter(m=>state.world.personal[m.id]?.rewarded)){
     const targetKind=member.id==='maren'?'ally':'enemy';const disabled=actor.bonusUsed||state.combat.comboUsed||actorResourceCurrent(actor,'technique')<1||combatActor(state,`companion:${member.id}`)?.hp<=0;
     actions.push({id:`combo:${member.id}`,name:`Combine: ${member.name.replace(/^Sister /,'').split(' ')[0]}`,cost:'bonus',targetKind,targets:actionTargetOptions(state,targetKind),description:member.id==='maren'?'Heal 2d6 + level and cure poison. One Technique; one combination per encounter.':member.id==='orin'?'Orin attacks immediately with advantage; the party gains +2 AC for one round. One Technique; one combination per encounter.':'Nessa attacks immediately with advantage and exposes the target. One Technique; one combination per encounter.',disabled,disabledReason:'Requires a conscious companion, a bonus action, one Technique, and an unused encounter combination.'});
   }
   if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use.',disabled:actor.actionUsed||actorResourceCurrent(actor,'advancement')<1});
-  actions.push({id:'retreat',name:'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
+  // Below the stair (Book Three) there is no town: a retreat falls back to the last safe ledge (src/world.js recover).
+  const ledge=!ENCOUNTERS[state.combat.encounterId].practice&&!ENCOUNTERS[state.combat.encounterId].bounty&&W.atLedge(state);
+  actions.push({id:'retreat',name:ledge?'Fall back to the ledge':'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':ledge?'Withdraw to the last safe ledge, rest there, then go back down to this fight. Costs 25% of current gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
   actions.push({ id: "end-turn", name: "End Turn", cost: "free", targetKind: "none", description: "Resolve all companion and enemy turns until your next initiative." });
 
   for(const action of actions){
