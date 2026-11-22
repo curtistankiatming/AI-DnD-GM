@@ -707,7 +707,7 @@ test('the winter watch: the second winter follows the great bell, with a line fo
   assert.match(start({ b3_bell_cast: true, b3_quotas_exposed: true }), /a hundred and eighty-six voices/);
   const old = start({});
   assert.match(old, /Aster Vey is in Briarwatch's tower/); assert.doesNotMatch(old, /tower is empty|in Briarwatch's fields|voices in Vell's bells|four hundred voices/);
-  for (const t of [old, cast]) { assert.match(t, /three hundred volunteers/); assert.match(t, /the morning after Commander Hesk was taken at the foot of the pass/); }
+  for (const t of [old, cast]) { assert.match(t, /three hundred volunteers/); assert.match(t, /a few days after Commander Hesk was taken at the foot of the pass/); }
   assert.match(start({ b3_wren_waits: true }), /Ned Thorne fell from the ropes/); assert.match(start({ b3_wren_waits: true }), /can no longer climb to the pit/);
   assert.doesNotMatch(old, /Ned Thorne/);
   assert.match(start({ b3_debts_bought: true }), /went to buy Merrowgate's harbour debts instead/); assert.doesNotMatch(old, /harbour debts/);
