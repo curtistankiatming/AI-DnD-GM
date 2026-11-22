@@ -1,7 +1,7 @@
 'use strict';
 // Gear for levels 45 to 100 (22 November 2026): sparse tiers at 45, 50, 55,
-// 60, 65, 70, 80, 90 and 100 rather than every type at every level, and six
-// equipment sets in two versions (Book Four, 55 to 65; final, 90 to 100) with
+// 60, 65, 70, 80, 90, 95 and 100 rather than every type at every level, and six
+// equipment sets in two versions (Book Four, 55 to 65; final, 90 to 95) with
 // set bonuses. Nothing here calls the paid API.
 const test = require('node:test'), assert = require('node:assert/strict');
 const E = require('../src/engine'), R = require('../src/rules'), W = require('../src/world'), Bounty = require('../src/bounty');
@@ -13,7 +13,7 @@ const GEAR = require('../src/data/gear.json');
 const SETS = require('../src/data/gear-sets.json').sets;
 
 const LATE = GEAR.filter((i) => (i.requires?.level || 0) > 40);
-const TIERS = [45, 50, 55, 60, 65, 70, 80, 90, 100];
+const TIERS = [45, 50, 55, 60, 65, 70, 80, 90, 95, 100];
 // An upgrade for each kind of kit at least every 20 levels.
 const WINDOWS = [[41, 60], [61, 80], [81, 100]];
 const lv = (i) => i.requires?.level || 0;

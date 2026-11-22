@@ -4705,7 +4705,7 @@
     "rarity": "Legendary",
     "value": 790,
     "description": "A locket that is always cold, and keeps its wearer's head clear.",
-    "purpose": "Equip in the accessory slot: +1 AC. +1 Strength saves, +1 Dexterity saves, +2 Constitution saves, +1 Intelligence saves, +1 Wisdom saves, +1 Charisma saves.",
+    "purpose": "Equip in the accessory slot: +1 AC. +1 to every saving throw (+2 Constitution).",
     "acBonus": 1,
     "stats": {
       "taken": -0.15
@@ -4954,6 +4954,9 @@
     },
     "requires": {
       "level": 50
+    },
+    "story": {
+      "skill": "perception"
     }
   },
   {
@@ -5892,7 +5895,7 @@
     "rarity": "Legendary",
     "value": 1140,
     "description": "A maul that once broke a ridge-road open in a single blow.",
-    "purpose": "Strength, 2d6 bludgeoning, +4 to hit, +7 damage. Two-handed.",
+    "purpose": "Strength, 2d6 bludgeoning, +4 to hit, +8 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "bludgeoning",
@@ -5902,7 +5905,7 @@
       ]
     },
     "attackBonus": 4,
-    "damageBonus": 7,
+    "damageBonus": 8,
     "stats": {
       "dealt": 0.1
     },
@@ -6208,18 +6211,18 @@
     "rarity": "Legendary",
     "value": 1300,
     "description": "A tower shield with a bell-mouth rim, made to stand in front of a whole party.",
-    "purpose": "Equip in your off hand for +7 Armor Class. Cannot be used with a two-handed weapon. +1 to every saving throw.",
-    "acBonus": 7,
+    "purpose": "Equip in your off hand for +6 Armor Class. Cannot be used with a two-handed weapon. +2 to every saving throw.",
+    "acBonus": 6,
     "stats": {
       "taken": -0.15
     },
     "saveBonuses": {
-      "str": 1,
-      "dex": 1,
-      "con": 1,
-      "int": 1,
-      "wis": 1,
-      "cha": 1
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
     },
     "requires": {
       "level": 90,
@@ -6589,13 +6592,10 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "The seal of the highest bell; the last oath is pressed in it.",
     "purpose": "Equip in the accessory slot: +2 AC. +2 to every saving throw.",
     "acBonus": 2,
-    "stats": {
-      "taken": -0.1
-    },
     "saveBonuses": {
       "str": 2,
       "dex": 2,
@@ -6605,7 +6605,7 @@
       "cha": 2
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "fighter",
         "cleric"
@@ -6619,7 +6619,7 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "A ring of black thorn that blooms when blood is spilled.",
     "purpose": "Equip in the accessory slot. +3 Stealth, +3 Acrobatics.",
     "stats": {
@@ -6630,7 +6630,7 @@
       "acrobatics": 3
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "fighter",
         "rogue",
@@ -6645,7 +6645,7 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "A horn heard on every watchtower from the coast to the peaks.",
     "purpose": "Equip in the accessory slot. +3 Survival, +3 Perception.",
     "stats": {
@@ -6656,7 +6656,7 @@
       "perception": 3
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "ranger",
         "rogue",
@@ -6671,7 +6671,7 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "A palm-sized orrery whose planets keep perfect time.",
     "purpose": "Equip in the accessory slot. +3 Arcana, +3 History; +2 Intelligence saves.",
     "stats": {
@@ -6685,7 +6685,7 @@
       "int": 2
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "wizard"
       ]
@@ -6698,26 +6698,25 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "A small reliquary holding one ember from the first hearth.",
-    "purpose": "Equip in the accessory slot. +3 Religion, +3 Medicine; +2 Wisdom saves.",
-    "stats": {
-      "taken": -0.15
-    },
+    "purpose": "Equip in the accessory slot: +1 AC. +3 Religion, +3 Medicine; +2 Wisdom saves, +2 Constitution saves.",
     "skillBonuses": {
       "religion": 3,
       "medicine": 3
     },
     "saveBonuses": {
-      "wis": 2
+      "wis": 2,
+      "con": 2
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "cleric"
       ]
     },
-    "set": "dawnhearth"
+    "set": "dawnhearth",
+    "acBonus": 1
   },
   {
     "id": "grand-chorus-chime",
@@ -6725,7 +6724,7 @@
     "category": "accessory",
     "slot": "accessory",
     "rarity": "Legendary",
-    "value": 1400,
+    "value": 1350,
     "description": "A silver chime whose note carries over any noise.",
     "purpose": "Equip in the accessory slot. +3 Performance, +3 Persuasion, +3 Insight.",
     "stats": {
@@ -6737,7 +6736,7 @@
       "insight": 3
     },
     "requires": {
-      "level": 100,
+      "level": 95,
       "classes": [
         "bard"
       ]
@@ -6752,7 +6751,7 @@
     "rarity": "Legendary",
     "value": 1340,
     "description": "A greataxe whose story nobody tells the same way twice.",
-    "purpose": "Strength, 2d6 slashing, +5 to hit, +8 damage. Two-handed.",
+    "purpose": "Strength, 2d6 slashing, +5 to hit, +9 damage. Two-handed.",
     "weapon": {
       "damage": "2d6",
       "damageType": "slashing",
@@ -6762,7 +6761,7 @@
       ]
     },
     "attackBonus": 5,
-    "damageBonus": 8,
+    "damageBonus": 9,
     "stats": {
       "dealt": 0.1
     },
