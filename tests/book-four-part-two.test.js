@@ -78,7 +78,7 @@ const COMPANION_NAMES = { orin: /\b(Orin|Stoneward)\b/, maren: /\bMaren\b|\bSist
 const EXPECT = {
   'b4-lantry': { gave: ['b4_gave_lantry', { maren: 1 }, { wold: 1 }], rang: ['b4_rang_lantry', {}, { wardens: 1 }], waited: ['b4_waited_lantry', { nessa: -1 }, { wilds: 1 }] },
   'b4-sheddon': { ordered: ['b4_orin_ordered', { orin: 1, nessa: -1 }, { wardens: 1 }], orinback: ['b4_orin_went_back', {}, { wold: 1 }],
-    heroback: ['b4_hero_went_back', { orin: -1 }, { wold: 1 }], onward: ['b4_hero_ordered', { nessa: -1 }, { wardens: 1 }, ['maren', 'nessa']] },
+    heroback: ['b4_hero_went_back', { orin: -1 }, { wold: 1 }], 'heroback-away': ['b4_hero_went_back', {}, { wold: 1 }, ['maren', 'nessa']], onward: ['b4_hero_ordered', { nessa: -1 }, { wardens: 1 }, ['maren', 'nessa']] },
   'b4-orme': { truth: ['b4_tally_truth', {}, { wold: 1 }], reasons: ['b4_tally_reasons', {}, { wold: 1 }], wait: ['b4_tally_wait', {}, { wardens: 1 }] }
 };
 
@@ -237,6 +237,37 @@ test('every flag Part Two sets is read: by its own camp, a later chapter or both
   }
 });
 
+test('chapter 12 with Davin left to Mags: the word was hers, not Orin\'s', () => {
+  const MAGS = { b4_davin_mags: true };
+  const home = { ...MAGS, b4_davin_comes: false, b4_davin_home: true }, north = { ...MAGS, b4_davin_comes: true };
+  const orinHome = talk('b4-sheddon', 'orin', { flags: home });
+  assert.match(orinHome, /Mags said no for him, at Saltwick\. [^\n]*still never given an order/);
+  assert.doesNotMatch(orinHome, /I've given one order in my life/);
+  const orinNorth = talk('b4-sheddon', 'orin', { flags: north });
+  assert.match(orinNorth, /Mags sent Davin with me\./);
+  assert.doesNotMatch(orinNorth, /I gave Davin my word/);
+  const davin = talk('b4-sheddon', 'davin', { flags: north });
+  assert.match(davin, /^Orin: You'll do what you're told\. Your gran sent you with me for that\./m);
+  assert.doesNotMatch(davin, /That was the word/);
+  assert.match(talk('b4-sheddon', 'davin'), /That was the word\./);
+  const back = told(decide('b4-sheddon', 'orinback', { flags: north }));
+  assert.match(back, /That's your order\. Your gran sent you with me for this\. Keep it\./);
+  assert.doesNotMatch(back, /it's the word/);
+  assert.match(told(decide('b4-sheddon', 'orinback')), /it's the word, and you keep it/);
+});
+
+test('chapter 13 knows who came up from the south: Hesk, the Company\'s wagons, the council\'s carts, the seal', () => {
+  const burdock = (flags) => talk('b4-orme', 'burdock', { flags });
+  assert.match(burdock({ b4_company_sails: true }), /Wagons came\. In the summer, forty/);
+  assert.match(burdock({ b4_company_council: true }), /Carts came, to Lantry, with grain/);
+  assert.match(burdock({}), /Nobody has ever come from the south to stay and be written\./);
+  const after = (flags) => told(decide('b4-orme', 'wait', { flags }));
+  assert.match(after({ b4_embassy_council: true }), /^Sloe: You carry their seal on a cord/m);
+  assert.doesNotMatch(after({ b4_embassy_council: false, b4_embassy_own: true }), /You carry their seal/);
+  const letter = opening(at('b4-orme', { phase: 'after', flags: { 'method:b4-orme': 'peace', b4_letters_answered: true } }));
+  assert.match(letter, /Burdock: Before I write anything, I read what is already written\. This is yours\. 'To whoever is on the other side of the bells/);
+});
+
 test('chapter 11 reads how Part One came down to Lantry: the bell, the gift at the door, the Company, and Davin', () => {
   const open = (flags, party) => opening(departed('b4-lantry', { flags, party }));
   assert.match(open({ b4_unannounced: false, b4_parting_rung: true }), /'the bell'[^]*at noon yesterday/);
@@ -276,7 +307,7 @@ test('chapter 11\'s answers: each companion gives a small thing, the pots send t
 test('chapter 12 is Orin\'s: the order is his to give, his answers need him there, and with him away the hero gives it', () => {
   const ids = (party) => E.buildView(at('b4-sheddon', { party, phase: 'after', flags: { 'method:b4-sheddon': 'peace' } })).scene.choices.filter((c) => !c.locked).map((c) => c.id);
   assert.deepEqual(ids(['orin', 'maren', 'nessa']), ['ordered', 'orinback', 'heroback']);
-  assert.deepEqual(ids(['maren', 'nessa']), ['heroback', 'onward']);
+  assert.deepEqual(ids(['maren', 'nessa']), ['heroback-away', 'onward']);
   // Orin's orders follow Part One: with Davin home, he has given one already.
   assert.match(talk('b4-sheddon', 'orin', { flags: { b4_davin_comes: false, b4_davin_home: true } }), /I've given one order in my life\. 'No\.'/);
   assert.match(talk('b4-sheddon', 'orin'), /I gave Davin my word at Saltwick/);
@@ -290,7 +321,9 @@ test('chapter 12 is Orin\'s: the order is his to give, his answers need him ther
   assert.doesNotMatch(told(decide('b4-sheddon', 'orinback', { flags: { b4_davin_comes: false, b4_davin_home: true } })), /Davin/);
   assert.match(told(decide('b4-sheddon', 'heroback')), /^Orin: You took it off me/m);
   assert.match(told(decide('b4-sheddon', 'heroback')), /the day of the vote at Highpass/);
-  assert.match(told(decide('b4-sheddon', 'heroback', { party: ['maren', 'nessa'] })), /Rue takes the front/);
+  assert.match(told(decide('b4-sheddon', 'heroback-away', { party: ['maren', 'nessa'] })), /Rue takes the front/);
+  assert.doesNotMatch(told(decide('b4-sheddon', 'heroback')), /Rue takes the front/);
+  assert.equal(bond(decide('b4-sheddon', 'heroback-away', { party: ['maren', 'nessa'] }), 'orin'), undefined);
   // The camp: Orin understands Varn's order, and does not forgive it.
   for (const [decision, line] of [['ordered', /Varn said the contract was the salt/], ['orinback', /lost the name of his/], ['heroback', /I was going to say 'on'/]]) {
     const camp = sceneText(decide('b4-sheddon', decision));

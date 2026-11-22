@@ -4928,14 +4928,18 @@
     "rarity": "Legendary",
     "value": 830,
     "description": "A Sheddon farm gate, cut down and faced with iron, that was carried at the column's rear all the way to Orme.",
-    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +3 Athletics, +2 Constitution and Wisdom saving throws.",
+    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +3 Athletics, +2 to every saving throw.",
     "acBonus": 5,
     "stats": {
       "taken": -0.15
     },
     "saveBonuses": {
+      "str": 2,
+      "dex": 2,
       "con": 2,
-      "wis": 2
+      "int": 2,
+      "wis": 2,
+      "cha": 2
     },
     "skillBonuses": {
       "athletics": 3
@@ -4968,7 +4972,7 @@
     "slot": "mainHand",
     "rarity": "Legendary",
     "value": 840,
-    "description": "A tally-keeper's measuring staff from the Long Hall, notched for nine hundred years of winters, each notch deeper than the last.",
+    "description": "A tally-keeper's measuring staff from the Long Hall, notched for nine hundred years of winters, the notches deepening as they go, all but the last.",
     "purpose": "Equip: +5 spell attack bonus and +5 spell save DC. +2 History.",
     "spellAttackBonus": 5,
     "spellDcBonus": 5,

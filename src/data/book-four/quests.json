@@ -2705,7 +2705,7 @@
           { "say": "Teasel", "text": "Top door. 'Mother's knee bad again. Owe Sedge one hen. The south door of the Hall has statues on it; do not go and look, you have looked.' Next door. 'Married to the top door. Do not forget again.'" },
           { "oneOf": [
             { "say": "Teasel", "text": "And every door: 'The bell.' I wrote that one myself, yesterday, forty times. My hand is sore. I don't know what it means yet. In a fortnight I'll have forgotten that I didn't know, and it will just say 'the bell', and we will all be frightened of it.", "when": { "flag": "b4_parting_rung" } },
-            { "say": "Teasel", "text": "'A giver came from the south.' That's the top door, new last night. In Rue's hand. I know Rue's hand. It's on my door from the spring: 'Rue of Thrum went south to ask. Feed her if she comes back.'", "when": { "flag": "b4_gave_door" } },
+            { "say": "Teasel", "text": "'A giver came from the south.' That's the top door, new this evening. In Rue's hand. I know Rue's hand. It's on my door from the spring: 'Rue of Thrum went south to ask. Feed her if she comes back.'", "when": { "flag": "b4_gave_door" } },
             { "say": "Teasel", "text": "You'll be on the doors by morning. Somebody will have to decide what you are first. That's usually me." }
           ] },
           { "say": "Teasel", "text": "We write it all, because we keep about a season. You'll find you keep less, here, the longer you stay. Everybody does. Read your doors." },
@@ -2743,7 +2743,7 @@
         "requires": { "companion": "orin" },
         "lines": [
           { "narrate": "Orin is standing at the well-house wall, reading the news, with his arms folded and a frown he does not seem to know he has." },
-          { "say": "orin", "text": "I can't remember breakfast. Yesterday's. At the north door. I know we had it, because I remember washing the pot. I can't remember what was in it." },
+          { "say": "orin", "text": "I can't remember breakfast. This morning's. At the north door. I know we had it, because I remember washing the pot. I can't remember what was in it." },
           { "say": "orin", "text": "It's this place. Teasel says you keep less, the longer you stay. Well. I've started. I thought you ought to know. If I start asking you the same thing twice, tell me, and don't be kind about it." },
           { "oneOf": [
             { "say": "orin", "text": "And tell Davin to write down anything I tell him to do. In case I forget I told him. That'd be the worst of it. Telling him to go back, and forgetting I said.", "when": { "flag": "b4_davin_comes" } },
@@ -2794,7 +2794,7 @@
         { "narrate": "{You walk|@ walks} every street in Lantry before dusk, and {read|reads} the bottoms of the doors, where the white has left a grey tide-mark at the height it came to last time. It comes in from the low end of the town, up the street towards the well. {You chalk|@ chalks} an arrow at every corner, pointing to the well, the shortest way." }
       ],
       "failure": [
-        { "narrate": "{You walk|@ walks} the streets before dusk, but every street in Lantry looks like every other, written over from top to bottom, and {you come|@ comes} back to the well with no more than the street {you started|@ started} from." }
+        { "narrate": "{You walk|@ walks} the streets before dusk, but every street in Lantry looks like every other, written over from top to bottom, and {you come|@ comes} back to the well with no more than the street {they} started from." }
       ]
     },
     "peaceful": {
@@ -2809,7 +2809,7 @@
         { "narrate": "Orin stands at the low end of the ring, where the street comes in, and nobody gets past him into the white.", "when": { "party": "orin", "notRoller": "orin" } },
         { "narrate": "Maren goes round the ring speaking to the children, quietly, so that none of them looks round at the street.", "when": { "party": "maren", "notRoller": "maren" } },
         { "narrate": "Nessa stands in the gap where the street comes up to the well, first in it, and stays there.", "when": { "party": "nessa", "notRoller": "nessa" } },
-        { "narrate": "The white comes up the street at dusk, as the arrows said it would, and stops at the edge of the ring, and waits. One by one, all night, Lantry gives." },
+        { "narrate": "The white comes up the street at dusk, from the low end of the town, and stops at the edge of the ring, and waits. One by one, all night, Lantry gives." },
         { "narrate": "At midnight the white is still in the street, at the edge of the ring, the height of a door." }
       ],
       "failure": [
@@ -2940,7 +2940,7 @@
       "tally": "Sheddon went under. Two hundred walked the Orme road in a day, roped, and came in at dark. A southern soldier led them."
     },
     "opening": [
-      { "narrate": "Sheddon lies on the valley floor a day east of Lantry: forty houses and their fields, and the low fields under the white." },
+      { "narrate": "Sheddon lies on the valley floor a night's walk east of Lantry down the valley: forty houses and their fields, and the low fields under the white." },
       { "oneOf": [
         { "narrate": "The white came down the valley from Lantry's way the night the pots were rung, as well as its own, and it took the low fields in a night. In the morning it was at the garden walls. Every door in Sheddon says the same thing in the same fresh chalk: 'Go to Orme.'", "when": { "flag": "b4_rang_lantry" } },
         { "narrate": "For a month the white has come up out of the low fields a little every night, and not gone back down. Every morning the doors say how far: 'the white is at the fourth field'; 'the third'; 'the wall'. This morning the doors say: 'Go to Orme.'" }
@@ -2978,8 +2978,10 @@
         "lines": [
           { "say": "orin", "text": "They want a captain. They looked at me and saw one. I don't know what they saw." },
           { "oneOf": [
-            { "say": "orin", "text": "I've given one order in my life. 'No.' To a boy on a ladder. It was the right one and I hated it. I'll give more today. I know I will.", "when": { "flag": "b4_davin_home" } },
-            { "say": "orin", "text": "I gave Davin my word at Saltwick. When I say go back, he goes back. I've never had to say it yet. Today, I might.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "Mags said no for him, at Saltwick. I was glad it was hers to say. So I've still never given an order. Today I'm going to have to.", "when": { "flag": "b4_davin_home", "anyFlag": ["b4_davin_mags"] } },
+            { "say": "orin", "text": "Mags sent Davin with me. She said I'd bring him back. That's not an order. It's worse. Today I might have to tell him to go back.", "when": { "flag": "b4_davin_comes", "anyFlag": ["b4_davin_mags"] } },
+            { "say": "orin", "text": "I've given one order in my life. 'No.' To a boy on a ladder. It was the right one and I hated it. I'll give more today. I know I will.", "when": { "flag": "b4_davin_home", "notFlag": "b4_davin_mags" } },
+            { "say": "orin", "text": "I gave Davin my word at Saltwick. When I say go back, he goes back. I've never had to say it yet. Today, I might.", "when": { "flag": "b4_davin_comes", "notFlag": "b4_davin_mags" } },
             { "say": "orin", "text": "I've never given an order. I said I never would. Today I'm going to have to." }
           ] },
           { "say": "orin", "text": "Varn said a captain's someone who can do the same again tomorrow and sleep after. I always thought that was the worst thing anyone ever said to me. I'm about to find out if it's true." }
@@ -2992,7 +2994,8 @@
         "lines": [
           { "narrate": "Davin is at the rope cart, cutting lengths and knotting them, one for every child, in Mags's knot, with the stopper on the far side." },
           { "say": "Davin", "text": "I heard about the old woman. At the farm. I could go. I'm quick. I've gone first on worse." },
-          { "say": "orin", "text": "You'll do what you're told. That was the word.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "You'll do what you're told. That was the word.", "when": { "party": "orin", "noneFlag": ["b4_davin_mags"] } },
+          { "say": "orin", "text": "You'll do what you're told. Your gran sent you with me for that.", "when": { "party": "orin", "flag": "b4_davin_mags" } },
           { "say": "Davin", "text": "I know. I'm only saying I could.", "when": { "party": "orin" } },
           { "say": "Davin", "text": "Nobody's told me not to. That's not the same as being told to, is it. I'll do the ropes.", "when": { "absent": "orin" } }
         ]
@@ -3049,7 +3052,7 @@
         { "narrate": "{You know|@ knows} what the posts said: past the ford at dusk, or not at all. {You do|@ does} not let the column stop for anything.", "when": { "flag": "prepared:b4-sheddon" } },
         { "narrate": "Every house knows its count, chalked on the shoulder of whoever is at its front, and calls it down the rope at every post.", "when": { "flag": "approach:b4-sheddon" } },
         { "narrate": "{You call|@ calls} the names down the rope at every post, as near as {they} can remember them.", "when": { "notFlag": "approach:b4-sheddon" } },
-        { "narrate": "Orin walks at the front, and sets the pace, and does not look back, because the people behind him are looking at him.", "when": { "party": "orin", "notRoller": "orin" } },
+        { "narrate": "Orin walks at the front, and sets the pace, and does not look back, because the people behind him are looking at him.", "when": { "party": "orin" } },
         { "narrate": "{You walk|@ walks} at the front, and {set|sets} the pace, and {do|does} not look back.", "when": { "absent": "orin" } },
         { "narrate": "Davin walks the rope from end to end all morning, re-tying the children's knots where they have pulled loose.", "when": { "flag": "b4_davin_comes" } },
         { "narrate": "When the white comes across the road in a long arm from the low fields, the column does not stop. It walks into it, roped, saying its names, and out of the other side, and every name that went in comes out." },
@@ -3061,7 +3064,7 @@
     },
     "direct": {
       "label": "Go down the valley to Sheddon",
-      "text": "You go down the valley from Lantry to Sheddon, a day east."
+      "text": "You go down the valley from Lantry to Sheddon, walking through the night."
     },
     "approach": [
       { "narrate": "The column moves at first light. Two hundred and some, roped, a child between every two grown people, with Sheddon's eldest in a cart in the middle and the rope cart at the back." },
@@ -3109,7 +3112,7 @@
         "description": "This decision is permanent. Orin orders the column on. Nobody goes back for Sedge's mother.",
         "told": {
           "ballad": "At the farm-track cairn Orin Stoneward said 'on', and two hundred went on, and one old woman stayed in the white.",
-          "tally": "Sheddon. At the farm-track cairn the southern soldier ordered the column on. Sedge's mother was not fetched. Written: he said it himself, and he said her name."
+          "tally": "Sheddon. At the farm-track cairn the southern soldier ordered the column on. Sedge's mother was not fetched. Written: he said it himself, and he asked who she was."
         },
         "text": [
           { "say": "orin", "text": "Column moves. Now. Nobody unties. Sedge, you're on the rope. You stay on it." },
@@ -3138,6 +3141,7 @@
         "text": [
           { "say": "orin", "text": "No. Not this time. Not again. You take the front. Names down the rope. Past the ford at dusk. Don't wait for me. That's an order too." },
           { "oneOf": [
+            { "say": "orin", "text": "Davin. Rear of the column. You hold it. Nobody falls off the back. That's your order. Your gran sent you with me for this. Keep it.", "when": { "flag": "b4_davin_comes", "anyFlag": ["b4_davin_mags"] } },
             { "say": "orin", "text": "Davin. Rear of the column. You hold it. Nobody falls off the back. That's your order, and it's the word, and you keep it.", "when": { "flag": "b4_davin_comes" } },
             { "say": "orin", "text": "Somebody take the rear. Somebody who'll not untie for anyone." }
           ] },
@@ -3154,6 +3158,7 @@
       {
         "id": "heroback",
         "label": "Go back for her yourself",
+        "requires": { "companion": "orin" },
         "description": "This decision is permanent. You go off the rope, down the farm track into the white, for Sedge's mother.",
         "told": {
           "ballad": "At the farm-track cairn the stranger from the south untied, and went into the white for an old woman, and came out with her, and with a day gone.",
@@ -3163,13 +3168,31 @@
           { "narrate": "You untie at the cairn before anyone can say anything." },
           { "say": "orin", "text": "You took it off me. I'd made my mind up. I was going to say it. You took it off me.", "when": { "party": "orin" } },
           { "say": "orin", "text": "Go on, then. I've got them. Past the ford at dusk.", "when": { "party": "orin" } },
-          { "narrate": "Rue takes the front of the column, with her book in her coat, and calls the names down the rope herself.", "when": { "absent": "orin" } },
           { "narrate": "You go down the farm track into the white, alone. It is an hour to the farm. The old woman is sitting at her kitchen table with her coat on, reading the inside of her door, and she is very glad to see you, and has no idea who you are." },
           { "narrate": "It is more than an hour back. You carry her the last of it. In the last of the light you come out onto the Orme road behind the column, past the ford, and walk into Orme after dark with Sedge's mother asleep on your back." },
           { "narrate": "At the gate Rue asks you, gently, what you did on the day of the vote at Highpass. You know there was a vote. You know how it went, because she has it written down, and reads it to you. You cannot remember the hall, or the day, or anything in it. A whole day of your own, given, on the farm track, without your asking which." }
         ],
         "rep": { "wold": 1 },
         "approval": { "orin": -1 },
+        "flag": "b4_hero_went_back"
+      },
+      {
+        "id": "heroback-away",
+        "label": "Go back for her yourself",
+        "requires": { "absent": "orin" },
+        "description": "This decision is permanent. You go off the rope, down the farm track into the white, for Sedge's mother.",
+        "told": {
+          "ballad": "At the farm-track cairn the stranger from the south untied, and went into the white for an old woman, and came out with her, and with a day gone.",
+          "tally": "Sheddon. At the farm-track cairn a southerner went off the rope for Sedge's mother and brought her in. Written: they gave a whole day to the white for her, and did not ask which."
+        },
+        "text": [
+          { "narrate": "You untie at the cairn before anyone can say anything." },
+          { "narrate": "Rue takes the front of the column, with her book in her coat, and calls the names down the rope herself." },
+          { "narrate": "You go down the farm track into the white, alone. It is an hour to the farm. The old woman is sitting at her kitchen table with her coat on, reading the inside of her door, and she is very glad to see you, and has no idea who you are." },
+          { "narrate": "It is more than an hour back. You carry her the last of it. In the last of the light you come out onto the Orme road behind the column, past the ford, and walk into Orme after dark with Sedge's mother asleep on your back." },
+          { "narrate": "At the gate Rue asks you, gently, what you did on the day of the vote at Highpass. You know there was a vote. You know how it went, because she has it written down, and reads it to you. You cannot remember the hall, or the day, or anything in it. A whole day of your own, given, on the farm track, without your asking which." }
+        ],
+        "rep": { "wold": 1 },
         "flag": "b4_hero_went_back"
       },
       {
@@ -3217,7 +3240,7 @@
       { "narrate": "Burdock of the Long Hall has kept the tally for forty years. He is seventy, small, and very clean, with ink to the second knuckle of every finger. He remembers none of it. He reads it every morning, from wherever he left off, and believes every word." },
       { "narrate": "Sloe of Orme, the Reckoner, has a table at the far end of the Hall, under the oldest wall, covered in slates, and she is doing a sum on them. She has been doing it, the clerks say, for a month. She does not look up when you come in. Then she does." },
       { "narrate": "By the lamp nearest her table a man sits on a bench with his back to the wall, in a southern coat gone grey with the road, with a lamp on the floor between his boots: the lamp they sent him down Vell's stair with. It is Hesk.", "when": { "flag": "b3_stair_sealed" } },
-      { "narrate": "Pinned to the wall above Sloe's table, at the end of the newest line of the tally, there is a sheet of paper in a southern hand, pebble-marked at one corner. It is your letter, from the floor of given things. You do not remember writing a word of it. Sloe has read it. It is the first thing in nine hundred years of tally that came from the south.", "when": { "flag": "b4_letters_answered" } }
+      { "narrate": "Pinned to the wall above Sloe's table, at the end of the newest line of the tally, there is a sheet of paper in a southern hand, pebble-marked at one corner. It is your letter, from the floor of given things. You do not remember writing a word of it. Sloe has read it. It is the first letter from the south in nine hundred years of tally.", "when": { "flag": "b4_letters_answered" } }
     ],
     "talks": [
       {
@@ -3227,6 +3250,8 @@
           { "say": "Burdock", "text": "From the south? No. Nobody has come from the south. It is not in the tally. I have read the tally. If they had come, it would say so." },
           { "oneOf": [
             { "say": "Burdock", "text": "One came. In the spring, with a lamp, out of the marked way, and is written. One. It does not say any more came after him.", "when": { "flag": "b3_stair_sealed" } },
+            { "say": "Burdock", "text": "Wagons came. In the summer, forty, with a map, and asked the way to the empty land, and went on down the valley road. Wagons that ask the way are not people who come to a door.", "when": { "flag": "b4_company_sails" } },
+            { "say": "Burdock", "text": "Carts came, to Lantry, with grain, and went back. Carts are not people. Nobody came to the door.", "when": { "flag": "b4_company_council" } },
             { "say": "Burdock", "text": "A letter came. From the floor. A letter is not a person. It says 'we are coming'. It does not say you came.", "when": { "flag": "b4_letters_answered" } }
           ] },
           { "narrate": "Rue opens her book and shows him a page. Burdock reads it, and then reads it again, and then puts on a second pair of spectacles over the first and reads it a third time." },
@@ -3239,7 +3264,7 @@
           { "narrate": "He takes down the newest book, and opens it, and writes you in, carefully, in the square hand, and blots it, and reads it back aloud. Then he looks up at you with complete and delighted belief, as if you had just walked in." },
           { "oneOf": [
             { "say": "Burdock", "text": "From the south! Sit down. You must be very tired. Nobody but the man with the lamp has ever come from the south. Well. You have. It is written.", "when": { "flag": "b3_stair_sealed" } },
-            { "say": "Burdock", "text": "From the south! Sit down. You must be very tired. Nobody has ever come from the south. Well. You have. It is written." }
+            { "say": "Burdock", "text": "From the south! Sit down. You must be very tired. Nobody has ever come from the south to stay and be written. Well. You have. It is written." }
           ] }
         ]
       },
@@ -3356,7 +3381,8 @@
       { "say": "Sloe", "text": "The bell-country owes the Wold nine hundred years. It has sent you. Until it answers, you stay here, in the Hall, written, and fed. You are surety for the answer." },
       { "say": "Sloe", "text": "Nobody will hurt you. Nobody here hurts anybody. But you will stay." },
       { "say": "orin", "text": "Stay where you are. They want us sitting down, not hurt. So do I.", "when": { "party": "orin" } },
-      { "narrate": "The tally-guard spread out along the oldest wall, between you and the doors, with their spears down and their slates up." }
+      { "narrate": "The tally-guard spread out along the oldest wall, between you and the doors, with their spears down and their slates up." },
+      { "narrate": "Behind them the clerks' door stands open on the night, and the white comes in off the snow along the floor of the Hall, ankle-deep, as cold as the street." }
     ],
     "objective": {
       "name": "The doors of the Long Hall",
@@ -3382,7 +3408,7 @@
       { "narrate": "Burdock has the newest book open on his desk, at a clean page, with his pen wet." },
       { "say": "Burdock", "text": "Now. The south. It has to be written. What is to be written about the south? I will write whatever you say. I always do. Whatever I write, they will believe, after a season. That is how it works." },
       { "narrate": "Sloe sits at her table with her hands flat on her slates, and waits." },
-      { "narrate": "Your letter is on the wall above her head: 'To whoever is on the other side of the bells. This is the south. We did not know you were there. We are sorry it took nine hundred years to ask. We are coming north, to ask properly.'", "when": { "flag": "b4_letters_answered" } }
+      { "say": "Burdock", "text": "Before I write anything, I read what is already written. This is yours. 'To whoever is on the other side of the bells. This is the south. We did not know you were there. We are sorry it took nine hundred years to ask. We are coming north, to ask properly.'", "when": { "flag": "b4_letters_answered" } }
     ],
     "decisions": [
       {
@@ -3432,6 +3458,7 @@
           { "narrate": "You tell Burdock that it is not yours to write. The council at Highpass has to answer for the free wards, in its own words, and until it does, nothing should go in the tally about the south that the south did not say itself." },
           { "narrate": "Burdock writes: 'The south: not yet.' And underlines it, and blots it." },
           { "narrate": "Sloe takes her own pen out of her sleeve, and reaches across his desk, and writes under it, in a smaller and squarer hand: 'They asked us to wait. We have waited nine hundred years.' Then she goes back to her table, and her slates, and does not look at you again tonight." },
+          { "say": "Sloe", "text": "You carry their seal on a cord round your neck. Then they have answered, and you will not say what.", "when": { "flag": "b4_embassy_council" } },
           { "say": "Hesk", "text": "That's the free wards. Every time. I told her you'd say that.", "when": { "flag": "b3_stair_sealed" } }
         ],
         "rep": { "wardens": 1 },

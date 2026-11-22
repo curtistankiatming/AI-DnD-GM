@@ -783,11 +783,14 @@ keeps them. Where a chapter below says otherwise, this list wins.
 
 **People as Part One left them.**
 - **Davin.** With `b4_davin_comes` he is north on Orin's word: "When I say
-  go back, you go back." His pack is tied in Mags's knot. With
-  `b4_davin_home`, Orin has already given one order, the "No" on the ladder
-  that he called "the first one I ever gave". So chapter 12 never says Orin
-  has never given an order. With `b4_davin_home`, the order on the Orme road
-  is his second.
+  go back, you go back", unless `b4_davin_mags`, when Mags sent him with Orin
+  and the word was hers ("Your gran sent you with me"). His pack is tied in
+  Mags's knot. With `b4_davin_home`, Orin has already given one order, the
+  "No" on the ladder that he called "the first one I ever gave", unless
+  `b4_davin_mags`, when Mags said no for him and Orin has still never given
+  one. So chapter 12 never says Orin has never given an order except on
+  Mags's path. With `b4_davin_home` and not `b4_davin_mags`, the order on
+  the Orme road is his second.
 - **Rue's book** has three states (`b4_book_*`). She reads it aloud before
   anything hard:
   - With `b4_book_burned` she has only the pages written since the fire at
@@ -1576,7 +1579,7 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | lantry-camp, 12 (Sheddon: the pots), 13 (Burdock's Lantry slate), 17 (who taught Dunnet), epilogue |
 | 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back, b4_hero_ordered (the answer with Orin away) | sheddon-camp, 13 (Sedge comes in with his mother or on his own), 18 (Sedge's mother; b4_hero_ordered reads as not saved), 25, epilogue |
 | The Painted Door (job, 11 to 13) | job:painted-door-read, job:painted-door-scraped, job:painted-door-left, job:painted-door-chalked | a later Lantry line (not yet written: Lantry's next visit, by chapter 17) |
-| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written) |
+| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 17 or 19 (what the column wears north; not yet written). TODO with chapter 17: set `until: "b4-potbells"` on the job |
 | 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | orme-camp (Burdock's page), 16 (peaceful), 22 |
 | 14 Greve | b4_names_kept, b4_names_written, b4_names_given | 16, 19, 26 (walkers), epilogue |
 | 15 Thrum | b4_rue_gave, b4_rue_kept (also set by lines) | 27, epilogue |
@@ -2317,7 +2320,10 @@ below.
     require him in the party. With Orin away the fourth answer, "on",
     is the hero's order (`b4_hero_ordered`): Sedge's mother is not saved, and
     chapter 18 reads it as `b4_orin_ordered`'s "not saved" version without
-    Orin's +1. With Orin away, `b4_hero_went_back` has Rue take the column.
+    Orin's +1. Going back yourself is two answers with one flag,
+    `b4_hero_went_back`: `heroback` needs Orin (he takes the column, Orin
+    -1), and `heroback-away` needs him away (Rue takes the column, no
+    approval change).
 32. **What the white took at Sheddon** (build step 6). Orin forgets the name
     of Varn's company, which canon never names, so nothing has to say it.
     The hero's lost day (`b4_hero_went_back`) is the day of the vote at
@@ -2344,7 +2350,8 @@ below.
     Door-reader's Scarf (warm, level 48: Insight and Performance +3,
     Intelligence and Wisdom saves +1, 5% dealt, Performance story), the
     Sheddon Column Shield (level 49, fighter or cleric, Str 13: +5 AC, 15%
-    taken, Constitution and Wisdom saves +2, Athletics +3, Hold the Rear:
+    taken, +2 to every saving throw, so it is never under the sold Gatewarden
+    Shield, Athletics +3, Hold the Rear:
     Weakened 2 rounds) and the Long Tally Staff (level 50, wizard, cleric or
     bard: +5 spell attack and DC, 10% dealt, History +2, Count the Winters:
     Vulnerable 1 round). The Part One lints (names, roller grammar, companion
