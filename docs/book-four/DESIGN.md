@@ -1720,6 +1720,8 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 23 (whose quiet night it is), 30 |
 | 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 24 (b4_voice_rests: Aster's word to Sable), 30 scene (bound voices), epilogue |
 | The Wold Family (job, 24 to 26) | job:wold-family-rule, job:wold-family-asked, job:wold-family-forge, job:wold-family-list | 30 or the epilogue (Briarwatch's doors; not yet written) |
+| The Lower Town (job, 25 to 26) | job:lower-town-let, job:lower-town-asked, job:lower-town-brede, job:lower-town-south | 30 or the epilogue (Ashford's board on the bridge; not yet written) |
+| Walkers' Names (job, 26) | job:walkers-names-told, job:walkers-names-sure, job:walkers-names-given, job:walkers-names-plain | 30 or the epilogue (the hospice; not yet written) |
 | 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | gatehouse-camp (the cell or the bell), 28, 29, 30 |
 | 25 Ford | b4_orin_captain, b4_orin_soldier, b4_orin_davin | 28 (the doors), epilogue |
 | 26 Hospice | b4_maren_vouched, b4_maren_doubts, b4_maren_silent | 28, 29, epilogue |
@@ -1732,7 +1734,9 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 `b4_key_*` reads as `b4_key_left`; `b4_rue_gave`/`kept` as kept;
 `b4_orin_*` (25) as `b4_orin_soldier`; `b4_maren_*` (26) as
 `b4_maren_silent`; `b4_nessa_*` (27) as `b4_nessa_signal`; `b4_davin_*` as
-`b4_davin_home`.
+`b4_davin_home`. As in chapter 7 (`b4_key_left`), the answer given with the companion away
+sets the default flag itself (decided question 49), so the default is a flag
+a later line can read.
 
 **Where the quieter flags are read** (each is also a default branch, so a
 chapter needs no line for it beyond the default):
@@ -1973,13 +1977,15 @@ rounds at 40 to 69, the objective route 3 to 5. Bosses (chapters 10, 20, 29,
    once a fight, used by the companion AI on its trigger:
    - Orin, Hold the Column (bonus action): the party is Fortified for one
      round. Trigger: two or more allies under half HP. It overlaps his Shield
-     Accord, which also gives Fortified: the two do not stack, and he does not
-     use Hold the Column on a round Shield Accord is up.
+     Accord (the combination, which guards the whole party for a round): the
+     two do not stack, and he does not use Hold the Column on a round Shield
+     Accord is up.
    - Maren, Say Their Names (action): heals each party member 3d8 + her
      Wisdom modifier + `lateGrowth`. Trigger: two or more allies under half
      HP, or one down.
-   - Nessa, Signal Fire (bonus action): the boss, or else the leader, is
-     Vulnerable for two rounds. Trigger: her first turn of the fight.
+   - Nessa, Signal Fire (bonus action): the boss, or else the leader, or
+     else the foe with the most hit points, is Vulnerable for two rounds.
+     Trigger: her first turn of the fight (used then, or not that fight).
 5. **Level floors** (`levelFloor` on a chapter): see "Falling behind".
 
 **Playtest target.** Scripted campaigns (`tests/campaign-playtest.js` with
@@ -2183,7 +2189,20 @@ Book Four frames it the way Book Three framed the 3rd job:
     still finds every tier. Shops drop entries they no longer sell. The shop stock for 45 to
     70 is on the story's route (docs/EQUIPMENT.md).
 - **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
-  the engine is Book Three's) and 14 (the companion arc moves).
+  the engine is Book Three's).
+- **Built in step 10:**
+  - 6, **`requires.members`** for the keepsakes (`src/gear.js`): only the
+    companions named may put the item on (a party member by its id, a combat
+    actor by its `refId`). `requirementText` leads with "Orin only", and
+    `unmet` says "Only Orin can use this." for anybody else, the hero
+    included.
+  - 14, **the companion arc moves** (`ARC_MOVES` in `src/combat.js`). In
+    `processCompanionTurn`, before Healing Word, Second Wind and gear
+    skills, a companion whose chapter is in `world.completed` uses their
+    move once a fight (`usedActions['arc:<actor>:<move>']`) on its trigger,
+    as Systems item 4 gives them; each is logged as a combat event. Say
+    Their Names takes Maren's action, so she does not attack that turn.
+    Tested in `tests/book-four-part-three-companions.test.js`.
 - **Fixed in step 9: roller tokens inside a `oneOf`.** `outcomeForRoller`
   (`src/expansion.js`) told only a check result's top-level lines for the
   roller, so a token or a `roller` / `notRoller` gate inside a `oneOf` group
@@ -2631,8 +2650,8 @@ below.
     book of winters with `b4_tally_carried` or `b4_tally_last`, Rue into hers
     otherwise. The Wold Family is Betony of Lantry's (new name), in the tents
     with `b4_crossed`, otherwise Betony and her son, door-bearers who stayed
-    after the quiet night; its `until` is `b4-gatehouse` until chapter 26 is
-    written. Rewards, on the tier 60 curve (no accessory or focus is sold at
+    after the quiet night; it is open to chapter 26 (`until: "b4-hospice"`,
+    set in build step 10, once chapter 26 was written). Rewards, on the tier 60 curve (no accessory or focus is sold at
     60, so each is measured against tier 55's and 65's): the Founders'
     Rope-knot (level 58: Athletics and Acrobatics +3, Strength and Dexterity
     saves +1, 10% taken, Stopper Knot: Fortified 1 round, Athletics story),
@@ -2646,3 +2665,53 @@ below.
     has (the Bellwarden Seal's AC and saves, the Lens's Arcana, the Quiver's
     15%, the Chorus Bell's Performance); none is warm, and none reaches the
     Long Hall Muffler's 20% dealt or the Orme Hearthstone's 15% taken.
+49. **Chapters 25 to 27, as written** (build step 10). Each chapter `needs`
+    its companion and has three answers for them (`requires.companion`) and a
+    fourth for when they are away (`requires.absent`), which sets the
+    default flag (`b4_orin_soldier`, `b4_maren_silent`, `b4_nessa_signal`;
+    this overrides "none is set" in the chapters above),
+    as chapter 7's answer with Nessa away sets `b4_key_left`, so the
+    chapter's flag is always set and the defaults above hold. Chapter 25 (b4-ford, Ashford, late
+    summer, enemy theme gloam) crosses about four hundred of the Wold's
+    people: the families who came down in the spring with `b4_crossed`, the
+    first families from the Hall with `b4_hall_camp`, from Orme otherwise,
+    and the walkers with `b4_walkers_led` or `b4_walkers_marked` (on their
+    way to Anwen's hospice; with `b4_hush_rang` they stayed in the Hush).
+    The town meeting's no: they may cross, not stop. Sorrel brings forty of
+    the council's watch and the commission; with Orin away she offers it to
+    the hero, who gives it back (the watch is hers). The clue is the
+    building rolls' line through the river (the stake's stone above the old
+    ford); the prepared way crosses above it, on ground never given.
+    Varn comes with `b3_orin_tried` or `b3_varn_freed`; Davin, seventeen,
+    with `b4_davin_comes`. Approvals: captain Maren +1 (rep wardens),
+    soldier Orin +1 (wilds), Davin his sergeant Maren -1 (wardens).
+    Chapter 26 (b4-hospice, Merrowgate, autumn, trade): the harbour council
+    hears Sloe on the harbour steps. Cass Ord's offer to Ailith is the
+    Hall's foundries: rung forward, every bell is louder for good, and the
+    Hall would cast and sell louder bells town by town; the crisis is the
+    Hall's men coming to take Sloe to Cinder Fold, so that the one who
+    wants the other note is not in the casting hall at midwinter. Without
+    walkers, the long room's white-touched are the harbour's own. Approvals:
+    vouched Maren +1 (wold), doubts Nessa -1 (wardens), silent Orin +1
+    (wilds); Anwen's answer moves the Wold. Chapter 27 (b4-signal, Cinder
+    Fold, a week before midwinter, soldier, `together: true`): the signal
+    has been kept by Wren (or the committee with `b3_wren_cast`) with
+    `b4_key_left`, by Hew with `b4_key_hew`, by nobody with
+    `b4_key_carried`. The rope families carried the Parting Bell down the
+    founders' hatch three nights before (the seal cut with
+    `b3_stair_sealed`); with `mother_silenced` the rope is in the signal
+    house's store-room under the hero's lock. Lighting the signal brings the
+    deep workings up to see the hatch. Approvals: with Rue Nessa +1 (wold),
+    stops her Maren +1 (wardens), keeps the signal Orin +1 (wilds); Rue
+    going alone moves the Wold. The Lower Town is Bistort of Greve's (new
+    name), Walkers' Names is Annis Corby's for Merrick Corby (new names);
+    Anwen Holt returns from Books One and Two. Keepsakes: the Captain's
+    Commission (62, Orin: Intimidation and Athletics +3, Strength,
+    Constitution and Wisdom saves +1, 10% taken, Captain's Word: Weakened 1
+    round, Intimidation story), the Hospice Physic-bag (63, Maren: Medicine
+    and Insight +3, Wisdom saves +2, Constitution +1, 10% taken, Medicine
+    story; not everything the Hearthward Rosary has, which keeps Religion)
+    and the Signal-fire Longbow (64, Nessa, Dex 13: 1d8, +4/+8, 10% dealt, a
+    point over the Column Longbow, Signal Shot: Vulnerable 1 round). Stay
+    lines: Maren for b4-hospice after 25; everyone for b4-signal after 26
+    and for b4-ropes after 27 (together).

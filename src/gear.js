@@ -3,7 +3,8 @@
 // plan): who may wear an item, its special stats, its combat skill and its
 // story ability. Every field is optional, so the older items work unchanged.
 //
-//   requires: { level, classes: ['fighter', ...], abilities: { str: 13 } }
+//   requires: { level, classes: ['fighter', ...], abilities: { str: 13 }, members: ['orin'] }
+//             members: only those companions may wear it (Book Four's keepsakes)
 //   stats:    { dealt: 0.1, taken: -0.1 }   share of damage dealt or taken
 //   skill:    { name, effect, target: 'enemy'|'self', rounds, text }
 //             a bonus action once per fight; effect is a src/power.js EFFECTS id
@@ -22,12 +23,16 @@ const slots = ['mainHand', 'offHand', 'armor', 'accessory'];
 const gearClass = (a) => (a?.id === 'player' || a?.kind === 'player') ? a.classId : (COMPANIONS[a?.id]?.gearClass || COMPANIONS[a?.refId]?.gearClass || null);
 const className = (id) => CLASSES[id]?.name || id;
 const abilityName = (id) => ABILITIES[id]?.name || id.toUpperCase();
+const memberName = (id) => (COMPANIONS[id]?.name || id).split(' ')[0];
+// The companion an actor is (a party member's id, or a combat actor's refId), or null for the hero.
+const memberId = (a) => (a?.id === 'player' || a?.kind === 'player') ? null : (COMPANIONS[a?.id] ? a.id : (COMPANIONS[a?.refId] ? a.refId : null));
 
 // "Level 8 · Fighter or Cleric · Strength 13", or '' when anyone may wear it.
 function requirementText(item) {
   const r = item?.requires;
   if (!r) return '';
   const parts = [];
+  if (r.members?.length) parts.push(`${orList(r.members.map(memberName))} only`);
   if (r.level > 1) parts.push(`Level ${r.level}`);
   if (r.classes?.length) parts.push(orList(r.classes.map(className)));
   for (const [id, n] of Object.entries(r.abilities || {})) parts.push(`${abilityName(id)} ${n}`);
@@ -45,6 +50,7 @@ function unmet(actor, item) {
   const you = actor.id === 'player' || actor.kind === 'player';
   const is = you ? 'you are' : `${actor.name} is`, has = you ? 'you have' : `${actor.name} has`;
   const out = [];
+  if (r.members?.length && !r.members.includes(memberId(actor))) out.push(`Only ${orList(r.members.map(memberName))} can use this.`);
   if (r.classes?.length && !r.classes.includes(gearClass(actor))) out.push(`Only a ${orList(r.classes.map(className))} can use this.`);
   const needs = [];
   if (r.level > 1 && (actor.level || 1) < r.level) needs.push(`level ${r.level} (${is} ${actor.level || 1})`);

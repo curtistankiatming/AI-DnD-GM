@@ -1307,5 +1307,111 @@
         ]
       }
     }
+  },
+  "ford-camp": {
+    "id": "ford-camp",
+    "after": "b4-ford",
+    "cast": [],
+    "act": "Camp",
+    "location": "The water-meadow below the ford, Ashford, the night after",
+    "start": "meadow",
+    "nodes": {
+      "meadow": {
+        "title": "The Water-meadow",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Late, in the water-meadow on the south bank. The fires are down to embers, and the column is asleep in its blankets along its ropes, the way the Wold sleeps on the road, every rope tied off to a stake for the night." },
+          { "oneOf": [
+            { "narrate": "Orin goes down the lines with a lamp, from the first stake to the last. He stops at every knot and looks at it, and puts his hand on it, and leaves it as it is. He does not re-tie a single one. Some of them are tied badly. He leaves those too.", "when": { "party": "orin" } },
+            { "narrate": "Davin goes down the lines with a lamp, from the first stake to the last, and stops at every knot, and leaves each one as it is. Nobody told him to.", "when": { "flag": "b4_davin_comes" } },
+            { "narrate": "Sorrel's sergeant goes down the lines with a lamp, from the first stake to the last, and stops at every knot, and leaves each one as it is." }
+          ] },
+          { "say": "orin", "text": "They tied them. They'll know them in the morning. If I tie them they'll be mine, and they'll not know them, and they'll not trust them. That's the whole of it. I learned it today.", "when": { "party": "orin" } },
+          { "oneOf": [
+            { "narrate": "Rue sits by the last fire with her book, and writes the ford down, and the bread, and the names of the three women who brought it.", "when": { "flag": "method:b4-ford", "is": "peace" } },
+            { "narrate": "Rue sits by the last fire with her book, and writes the ford down, and every name on every rope, and counts them twice." }
+          ] }
+        ],
+        "choices": [
+          {
+            "id": "sleep",
+            "label": "Sleep by the last fire",
+            "lines": [
+              { "narrate": "You sleep by the last fire with the river going by in the dark, low and ordinary." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "hospice-camp": {
+    "id": "hospice-camp",
+    "after": "b4-hospice",
+    "cast": [],
+    "act": "Camp",
+    "location": "The harbour hospice's long room, Merrowgate, the night after",
+    "start": "room",
+    "nodes": {
+      "room": {
+        "title": "The Long Room",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Late, in the long room. The lamps are down to one at each end, and Anwen has the card table out between the beds at the north end, the way she had it at the Sallows." },
+          { "oneOf": [
+            { "narrate": "Maren and Anwen play cards with the walkers. The walkers do not know the game, and nobody tells them the rules, and they win every hand. It takes about four hands to see that Maren and Anwen are cheating, both of them, in the same way, so that the walkers will win.", "when": { "party": "maren", "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+            { "narrate": "Maren and Anwen play cards with the old dockers from the north end. The dockers win every hand. It takes about four hands to see that Maren and Anwen are cheating, both of them, in the same way, so that the dockers will.", "when": { "party": "maren" } },
+            { "narrate": "Anwen plays cards with the walkers. They do not know the game, and they win every hand, and Anwen cheats, badly and on purpose, so that they will.", "when": { "absent": "maren", "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+            { "narrate": "Anwen plays cards with the old dockers from the north end, and cheats, badly and on purpose, so that they win every hand." }
+          ] },
+          { "say": "Anwen", "text": "You let them win. Don't you dare say I taught you that.", "when": { "party": "maren" } },
+          { "say": "maren", "text": "You taught me everything else.", "when": { "party": "maren" } },
+          { "narrate": "At the end of the row somebody says a name, out loud, to nobody in particular, and the table stops and waits, and then the game goes on." }
+        ],
+        "choices": [
+          {
+            "id": "watch",
+            "label": "Watch one more hand",
+            "lines": [
+              { "narrate": "You watch one more hand, and then another, until the last lamp is out." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "signal-camp": {
+    "id": "signal-camp",
+    "after": "b4-signal",
+    "cast": [],
+    "act": "Camp",
+    "location": "The lamp-room of the signal house, Cinder Fold, the night after",
+    "start": "lamp",
+    "nodes": {
+      "lamp": {
+        "title": "The Lamp-room",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "The next night, in the lamp-room at the top of the signal house. The lamp is lit. The snow comes past the high window and goes white in the light and is gone." },
+          { "oneOf": [
+            { "narrate": "Nessa sits on the sill with her back to the lamp and the key on its cord in her hand, and looks down the hill at the miners' hall, where Rue is, and does not go down.", "when": { "party": "nessa", "flag": "b4_nessa_signal" } },
+            { "narrate": "Nessa is not here. She is in the miners' hall at the bottom of the town, beside Rue, under the empty practice rope, and the ringers have stopped asking her to move.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Nessa sits on the sill with Rue's book in her lap, where Rue gave it to her to hold, and reads it from the first page, slowly, because she reads slowly, and does not skip anything.", "when": { "party": "nessa", "flag": "b4_nessa_stops_rue" } },
+            { "narrate": "Hew sits on the sill with his hearth bell, keeping the lamp, and writes the night down in his book.", "when": { "flag": "b4_key_hew" } },
+            { "narrate": "Nobody sits on the sill. Whoever is keeping the lamp tonight keeps it from the stair-head, and comes up at four." }
+          ] },
+          { "narrate": "Down in the town the miners are still standing round the founders' hatch, in shifts, with their lamps, as they have since last night. Nobody has told them to. Nobody has told them not to." },
+          { "narrate": "Six nights to midwinter." }
+        ],
+        "choices": [
+          {
+            "id": "keep",
+            "label": "Keep the lamp until four",
+            "lines": [
+              { "narrate": "You keep the lamp until four, and then the next keeper comes up the stair, counting, and you go down." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

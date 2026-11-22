@@ -89,7 +89,7 @@ const EXPECT = {
 };
 
 test('chapters 21 to 24 follow Part Two: from Highpass to Briarwatch and back, and on towards Ashford, not white, each paying exactly one level', () => {
-  assert.deepEqual(FX.WRITTEN.slice(20), IDS);
+  assert.deepEqual(FX.WRITTEN.slice(20, 24), IDS);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown, q.faction, q.enemyTheme]; }), [
     ['b4-knot', 4, 3, 60, 'b4-northdoor', 'highpass', 'highpass', 'wardens', 'gloam'],
     ['b4-invoice', 4, 3, 61, 'b4-knot', 'highpass', 'briarwatch', 'wardens', 'soldier'],
@@ -404,12 +404,12 @@ test('gatehouse-camp: a companion names the hero\'s level 64 skill for every 2nd
   assert.match(night('silent', { b3_sable_cast: true }), /says nothing all night/);
 });
 
-test('step 9\'s jobs: Iona\'s Other Invoice on Highpass\'s board during chapters 22 to 24, The Wold Family on Briarwatch\'s once chapter 23 is done, each paying once', () => {
+test('step 9\'s jobs: Iona\'s Other Invoice on Highpass\'s board during chapters 22 to 24, The Wold Family on Briarwatch\'s during chapters 24 to 26, each paying once', () => {
   const { SIDE_JOBS } = require('../src/expansion');
-  assert.deepEqual(['other-invoice', 'wold-family'].map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [['highpass', 'b4-knot', 'b4-gatehouse'], ['briarwatch', 'b4-quietnight', 'b4-gatehouse']]);
+  assert.deepEqual(['other-invoice', 'wold-family'].map((id) => [SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until]), [['highpass', 'b4-knot', 'b4-gatehouse'], ['briarwatch', 'b4-quietnight', 'b4-hospice']]);
   const offered = (id, chapter, done = false, flags) => { const s = at(chapter, { flags }); if (done) s.world.completed[chapter] = { xp: 0, gold: 0 }; s.world.townId = SIDE_JOBS[id].town; s.story.nodeId = `town-${SIDE_JOBS[id].town}`; return (E.buildView(s).world.sideJobs || []).some((j) => j.id === id); };
   assert.ok(!offered('other-invoice', 'b4-knot') && offered('other-invoice', 'b4-invoice') && offered('other-invoice', 'b4-gatehouse') && !offered('other-invoice', 'b4-gatehouse', true));
-  assert.ok(!offered('wold-family', 'b4-quietnight') && offered('wold-family', 'b4-gatehouse'));
+  assert.ok(!offered('wold-family', 'b4-quietnight') && offered('wold-family', 'b4-gatehouse') && offered('wold-family', 'b4-hospice') && !offered('wold-family', 'b4-hospice', true));
   const start = (id, chapter, flags = {}, party) => { const s = at(chapter, { flags, party }); s.world.townId = SIDE_JOBS[id].town; s.story.nodeId = `town-${s.world.townId}`; return act(s, { type: 'side-job', jobId: id }).state; };
   // The offset needs chapter 22's invoice read in the hall.
   const offset = (flags) => E.buildView(start('other-invoice', 'b4-invoice', flags)).scene.choices.find((c) => c.id === 'offset');

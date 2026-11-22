@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand during chapters 15 to 18 (from: b4-greve, until: b4-hush). Iona's Other Invoice is on Highpass's board during chapters 22 to 24 (from: b4-knot, until: b4-gatehouse); its offset answer needs chapter 22's vote (requires flagsAny b4_vote_*). The Wold Family is on Briarwatch's once chapter 23 is done (from: b4-quietnight); it is meant to stay open to chapter 26, and its until is b4-gatehouse only until chapter 26 (b4-hospice) is written, because a job's until must name a written chapter.",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand during chapters 15 to 18 (from: b4-greve, until: b4-hush). Iona's Other Invoice is on Highpass's board during chapters 22 to 24 (from: b4-knot, until: b4-gatehouse); its offset answer needs chapter 22's vote (requires flagsAny b4_vote_*). The Wold Family is on Briarwatch's from chapter 24 to 26 (from: b4-quietnight, until: b4-hospice). The Lower Town is on Ashford's board during chapters 25 and 26 (from: b4-gatehouse, until: b4-hospice), and Walkers' Names on Merrowgate's during chapter 26 (from: b4-ford, until: b4-hospice). A job's until must name a written chapter.",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -692,7 +692,7 @@
     "town": "briarwatch",
     "level": 63,
     "from": "b4-quietnight",
-    "until": "b4-gatehouse",
+    "until": "b4-hospice",
     "gold": 160,
     "giver": "Betony of Lantry, at Aveline's barn",
     "brief": "A family from the Wold wants to write on Briarwatch's doors, the way the Wold writes on its own. Reeve Aveline has a list for everything in the village, and no rule for this.",
@@ -752,6 +752,159 @@
               { "narrate": "Aveline writes it at the top of the list, under the date of the quiet night, in her own hand, and Betony has her read it back twice to be sure it says what it says." }
             ],
             "setFlags": { "job:wold-family-list": true }
+          }
+        ]
+      }
+    }
+  },
+  "lower-town": {
+    "id": "lower-town",
+    "name": "The Lower Town",
+    "town": "ashford",
+    "level": 64,
+    "from": "b4-gatehouse",
+    "until": "b4-hospice",
+    "gold": 150,
+    "giver": "Bistort of Greve, in the stubble below the old wall",
+    "brief": "A family from the Wold would like to stay at Ashford and farm the ground below the old wall. Ashford's town meeting has never been asked anything like it, and will say no to it, as it says no to most things.",
+    "start": "stubble",
+    "nodes": {
+      "stubble": {
+        "title": "The Lower Town",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "When the column crossed the ford, one family stayed behind on the north bank, in a tent in the stubble below the old wall: Bistort of Greve, her two sons, and her husband's mother, who walks with a stick.", "when": { "flag": "method:b4-ford" } },
+            { "narrate": "In the column's camp in the stubble below the old wall, one family has not packed: Bistort of Greve, her two sons, and her husband's mother, who walks with a stick." }
+          ] },
+          { "oneOf": [
+            { "narrate": "They have been walking the ground below the old wall every day: the last plots by the river where the lower town was built again, and the houses were not, because the families who had them stayed up in the upper town after the winter.", "when": { "flag": "b3_ashford_defended", "anyFlag": ["b3_promise_old"] } },
+            { "narrate": "They have been walking the lower town every day: its empty streets, grey and gone to grass, and its fields, which nobody has worked since the winter before last.", "when": { "flag": "b3_ashford_defended" } },
+            { "narrate": "They have been walking the water-meadows below the fulling mill every day, which Ashford has never farmed, because they flood." }
+          ] },
+          { "oneOf": [
+            { "say": "Bistort of Greve", "text": "In Greve we had a strip under the shelf where the white lay four nights in five. We grew oats on it. Good oats. This ground has had the white on it once in three hundred years. It is the best ground I have ever stood on, and nobody is using it.", "when": { "anyFlag": ["b3_ashford_defended"] } },
+            { "say": "Bistort of Greve", "text": "In Greve we had a strip under the shelf where the white lay four nights in five. We grew oats on it. These meadows flood one spring in three. That is nothing. Nobody is using them." }
+          ] },
+          { "say": "Bistort of Greve", "text": "We would like to stay, and farm it, and write it on a door that it is ours to farm. Not ours. Ours to farm. In the Wold that is two different lines." },
+          { "say": "Hollis Brede", "text": "The meeting will say no. The meeting says no to strangers, and to the council, and to anybody from Highpass, and to most things it hasn't thought of first. I'd like it to have to think about this. I'd like that very much, and I'd not like to be the one who asks." }
+        ],
+        "choices": [
+          {
+            "id": "meeting",
+            "label": "Put Bistort's case to Ashford's town meeting",
+            "check": { "skill": "persuasion", "alt": ["history", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You stand|@ stands} up at the town meeting in the market hall in the evening, with Bistort beside {them}, and {tell|tells} it the one thing nobody in Ashford has said aloud in three hundred years: that this ground was given once, by Ashford, to keep the wall, and that somebody else has been living under what Ashford gave ever since." },
+                { "narrate": "The meeting argues until the lamps are low. Then it votes, by hands, and by a few, yes: one year, for a rent of a tenth of the crop, to be looked at again at the next harvest." },
+                { "narrate": "In the morning somebody paints a second line on the board on the bridge, under the town's no, in smaller letters: 'Let to Bistort of Greve, one year.'" },
+                { "say": "Hollis Brede", "text": "One year. We'll argue about it every month of it. That's how Ashford says yes." }
+              ],
+              "setFlags": { "job:lower-town-let": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You stand|@ stands} up at the town meeting with Bistort beside {them}, but the meeting has heard the council's people before, and the hall is against it before {you have|@ has} finished, and it votes no, by a long way, and goes home." },
+                { "say": "Bistort of Greve", "text": "It is a no. In the Wold we would write down that we were asked. Will they write that?" },
+                { "say": "Hollis Brede", "text": "I'll write it. In the minutes. 'Asked.' It's not nothing, in this town." }
+              ],
+              "setFlags": { "job:lower-town-asked": true }
+            }
+          },
+          {
+            "id": "brede",
+            "label": "Ask Hollis Brede to let them her own ground",
+            "lines": [
+              { "narrate": "You ask Hollis Brede for her own ground, not the town's: the strip below the wall that has been her family's since before the wall was built, which no meeting can vote on." },
+              { "say": "Hollis Brede", "text": "That's not Ashford saying yes. That's me." },
+              { "narrate": "You tell her that is why you asked her." },
+              { "oneOf": [
+                { "say": "Hollis Brede", "text": "Hm. One year. She can have the strip, and the shed on it. If the meeting asks, I'll tell it what the council told us about our children: somebody had to decide, and it was me.", "when": { "flag": "b3_ashford_children" } },
+                { "say": "Hollis Brede", "text": "Hm. One year. She can have the strip, and the shed on it, and the meeting can say what it likes about it." }
+              ] },
+              { "narrate": "Bistort writes it on the shed door that evening, in chalk, small: 'Bistort of Greve, to farm. Hollis Brede's.'" }
+            ],
+            "setFlags": { "job:lower-town-brede": true }
+          },
+          {
+            "id": "south",
+            "label": "Tell Bistort to go south with the others, to a town that has voted to take her",
+            "lines": [
+              { "narrate": "You tell Bistort that Ashford will not have her, whatever it is asked, and that the towns down the valley have voted to, and that she should go where she is wanted." },
+              { "say": "Bistort of Greve", "text": "Yes. That is sense. I will write down this ground anyway, on the cart. Somebody should know it was here." },
+              { "narrate": "She writes it on the tail-board of the family's cart, and they go south down the valley road after the column, with the old woman riding." }
+            ],
+            "setFlags": { "job:lower-town-south": true }
+          }
+        ]
+      }
+    }
+  },
+  "walkers-names": {
+    "id": "walkers-names",
+    "name": "Walkers' Names",
+    "town": "merrowgate",
+    "level": 65,
+    "from": "b4-ford",
+    "until": "b4-hospice",
+    "gold": 160,
+    "giver": "Annis Corby, at the harbour hospice door",
+    "brief": "A widow from the harbour comes to the hospice every day to sit with a man in the long room who does not know his own name. She is sure he is her husband, who walked into the white at Fenmere. He is not.",
+    "start": "bed",
+    "nodes": {
+      "bed": {
+        "title": "Walkers' Names",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "At the end of the walkers' row in the hospice's long room, a man sits up in his bed and looks at the door, as all of them do. Beside him on a stool, every day from noon until the evening reading, sits Annis Corby, a net-mender's widow from the harbour, holding his hand.", "when": { "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+            { "narrate": "At the end of the long room a man sits up in his bed and looks at the door. The fishermen brought him in off the outer quay in the spring, with nothing left in him, not even a name. Beside him on a stool, every day from noon until the evening reading, sits Annis Corby, a net-mender's widow from the harbour, holding his hand." }
+          ] },
+          { "say": "Annis Corby", "text": "Merrick took a cart of nets up to Fenmere the winter its lower bank went under, and walked out into the white after a child who'd wandered, and didn't come back. They said what goes into it doesn't come back. They were wrong. Look at him. He's come back." },
+          { "say": "Anwen", "text": "He's not. He's forty years younger than Merrick would be, and his hands have never mended a net. She knows. She knows, and she comes every day, and he holds on to her hand like it's the only thing in the room. I don't know what to do. I don't often say that." },
+          { "say": "maren", "text": "She's reading him Merrick's name. Every day. And he's started saying it back.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "sit",
+            "label": "Sit with them both, and let her find out for herself",
+            "check": { "skill": "insight", "alt": ["medicine", "persuasion"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} on the other side of the bed through the afternoon, and {ask|asks} her about Merrick, all of it, the herring and the nets and the way he whistled, and {let|lets} her tell the man in the bed while {you listen|@ listens}." },
+                { "narrate": "By the evening reading she has stopped. She looks at the man's hands for a long time. Then she says, quietly, that Merrick had a scar across the back of the left one, from a gutting knife, and this man has none." },
+                { "say": "Annis Corby", "text": "I knew. I knew the first day. I'll keep coming. Somebody should sit with him. I'll read him Merrick's name with the others, and his own when he finds it." },
+                { "narrate": "She does. Anwen puts a stool by the bed for her, with her name chalked on it." }
+              ],
+              "setFlags": { "job:walkers-names-told": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} with them through the afternoon, but every time {you ask|@ asks} about Merrick she answers to the man in the bed instead, and by the evening reading she is surer than she was at noon, and {you leave|@ leaves} her holding his hand." },
+                { "say": "Anwen", "text": "Leave her. It's not hurting him. It may be hurting her. I'll watch." }
+              ],
+              "setFlags": { "job:walkers-names-sure": true }
+            }
+          },
+          {
+            "id": "given",
+            "label": "Let her give him Merrick's name, since he has none",
+            "lines": [
+              { "narrate": "You tell Anwen that he has no name, and that she has one to give him, and that he has started saying it back." },
+              { "say": "Anwen", "text": "That's a gift. It's not a lie. It's very close to one. All right. Let it be a gift." },
+              { "narrate": "On the slate at the foot of his bed Anwen writes 'Merrick', and under it, small, so that anybody who reads it will know, 'given by Annis Corby'. The man in the bed reads it, slowly, and says it, and looks at Annis, and holds her hand." }
+            ],
+            "setFlags": { "job:walkers-names-given": true }
+          },
+          {
+            "id": "plain",
+            "label": "Tell her plainly he is not her husband",
+            "lines": [
+              { "narrate": "You tell her plainly. He is not Merrick. He is too young, and his hands are wrong, and what went into the white at Fenmere has not come back." },
+              { "say": "Annis Corby", "text": "I know. I know he's not. You didn't have to say it out loud." },
+              { "narrate": "She lets go of his hand, and goes home. The man in the bed looks at the door for the rest of the evening, the way he did before she came." },
+              { "say": "maren", "text": "That was true. I'm not sure it was the right true thing.", "when": { "party": "maren" } }
+            ],
+            "setFlags": { "job:walkers-names-plain": true }
           }
         ]
       }

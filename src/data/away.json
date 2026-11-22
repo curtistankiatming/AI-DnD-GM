@@ -40,6 +40,8 @@
         {"say": "orin", "text": "But it's Saltwick next, and Davin's packed. Mags wrote. If the boy's going to ask to come north on my word, he asks me to my face, and I answer him to his. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "b4-davin"}},
         {"say": "orin", "text": "But it's the peaks next. Nobody walks off a mountain, and I'm not having you on a rope with nobody behind you. After, on the other side, we talk.", "when": {"flag": "away:stay-orin", "is": "b4-peaks"}},
         {"say": "orin", "text": "But it's Ashford next, and the ford. Whoever's crossing it, somebody has to be in the water first, and Sorrel's sent word she wants me there. After that, we talk.", "when": {"flag": "away:stay-orin", "is": "b4-ford"}},
+        {"say": "orin", "text": "But it's Cinder Fold next, and a week to midwinter. Nobody walks off now, this close. Not me. After, if there's an after, we talk.", "when": {"flag": "away:stay-orin", "is": "b4-signal"}},
+        {"say": "orin", "text": "But it's the casting hall next, and somebody has to be on the doors. I don't walk away from doors. After, if there's an after, we talk.", "when": {"flag": "away:stay-orin", "is": "b4-ropes"}},
         {"oneOf": [{"narrate": "He puts the pack down. He does not untie it.", "when": {"flag": "away:stay-orin", "is": "b3-promise"}}, {"narrate": "He puts the pack down. He does not untie it.", "when": {"flag": "away:stay-orin", "is": "b3-firstbell"}}, {"narrate": "He unties the march knot and ties an ordinary one. It seems to cost him something."}]}
       ],
       "choices": [
@@ -113,7 +115,10 @@
         {"say": "maren", "text": "But it takes things down here, and I want somebody near you who'll notice what it takes. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-promise"}},
         {"say": "maren", "text": "But somebody has to hear Hesk, at the end, and hear whether he means it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b3-firstbell"}},
         {"oneOf": [{"say": "maren", "text": "But it's Highpass next, and Rue's asked me to sit with her when she reads her book to the council. She's never asked anybody to sit with her. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-book", "anyFlag": ["b4_rue_party"]}}, {"say": "maren", "text": "But Rue's written. She wants me at Highpass. She didn't say why, and she always says why. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-book"}}]},
-        {"say": "maren", "text": "But it's the crossing. There's no shrine on a mountain, and I want to hear the first thing the Wold says to us. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-peaks"}}
+        {"say": "maren", "text": "But it's the crossing. There's no shrine on a mountain, and I want to hear the first thing the Wold says to us. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-peaks"}},
+        {"say": "maren", "text": "But it's Merrowgate next, and Anwen's hospice, and Sloe's asked for me on the harbour steps. Whatever I say to her, I'll say it myself. After that, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-hospice"}},
+        {"say": "maren", "text": "But it's Cinder Fold next, and midwinter after it. Whatever's rung there, I want to have been in the room. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-signal"}},
+        {"say": "maren", "text": "But it's the casting hall, and the rope families, and whoever Ailith asks to ring. Somebody has to hear what they say, and whether they mean it. After, we'll talk.", "when": {"flag": "away:stay-maren", "is": "b4-ropes"}}
       ],
       "choices": [
         {"id": "after", "label": "“After, then.”", "lines": [
@@ -181,6 +186,8 @@
         {"say": "nessa", "text": "But it's Cinder Fold next. Wren's there, and the key, and Hew. I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b4-key", "noneFlag": ["b3_wren_cast"]}},
         {"say": "nessa", "text": "But it's Cinder Fold next. The tenth bell's there, and the key, and Hew. I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b4-key", "anyFlag": ["b3_wren_cast"]}},
         {"say": "nessa", "text": "But it's the peaks. Over the top and down into the Wold, where nobody's been for nine hundred years. Somebody's got to go first. That's me.", "when": {"flag": "away:stay-nessa", "is": "b4-peaks"}},
+        {"say": "nessa", "text": "But it's Cinder Fold next. The signal's there, and Rue's going there. I'm not going anywhere except there.", "when": {"flag": "away:stay-nessa", "is": "b4-signal"}},
+        {"say": "nessa", "text": "But it's the casting hall, and midwinter, and Rue. I'm not going anywhere. Not now.", "when": {"flag": "away:stay-nessa", "is": "b4-ropes"}},
         {"narrate": "She folds the letter and puts it in her pocket. The one for later."}
       ],
       "choices": [

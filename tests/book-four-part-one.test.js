@@ -653,17 +653,17 @@ test('no new person in Book Four takes a name the earlier books or the story bib
   // Every speaker is a companion, someone returning from Books One to Three, or one of the design's new people.
   const RETURNING = new Set(['Sorrel', 'Sable', 'Hesk', 'Brannagh', 'Sister Ilse', 'Hollis Brede', 'Dera', 'Tovin', 'Pim', 'Aveline', 'Reeve Aveline', 'Aster Vey',
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
-    'Fennick', 'Corvane']);
-  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony']);
-  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard']);
+    'Fennick', 'Corvane', 'Anwen']);
+  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony', 'Bistort of Greve', 'Annis Corby']);
+  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard', "The Hall's sergeant"]);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
   const older = JSON.stringify(OLDER);
-  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
+  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony', 'Bistort', 'Annis']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
   // Chapter 7's family from Wem and the Ninth Rope's ringers are nobody's in Books One to Three, or the story bible's.
   const bible = fs.readFileSync(path.join(__dirname, '../docs/STORY-BIBLE.md'), 'utf8');
-  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe', 'Madder', 'Comfrey', 'Furze', 'Lovage', 'Piers', 'Ashdown', 'Betony']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
+  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe', 'Madder', 'Comfrey', 'Furze', 'Lovage', 'Piers', 'Ashdown', 'Betony', 'Bistort', 'Annis', 'Corby', 'Merrick']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
   // A name one letter from a returning one is not new (the Book Three review: Tobin and Tovin).
   assert.doesNotMatch(text, /\bTobin\b/);
 });

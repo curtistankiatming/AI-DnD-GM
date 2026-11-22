@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 24 (build step 9): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, chapter 23 departs from Briarwatch and returns to Highpass, and chapter 24 departs from Highpass with nextTown ashford. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves, and after chapter 24 Orin stays, because chapter 25 needs him (src/data/away.json has the Part Three lines, gated b4_parttwo_done, and his b4-ford stay line). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
+  "_note": "Book Four, The Long Tally (docs/book-four/DESIGN.md), levels 40 to 70, in three parts of ten chapters. Written in its own files and merged after Book Three by src/expansion.js, so these chapters follow Book Three's in story order. Each chapter has book 4 and part 1, 2 or 3, and pays exactly one level (P.levelBand) and 20 x level + 40 gold. Chapter 1 (b4-walker) has unlock b3-firstbell and requiresJob 3; levelFloor tops a hero who is behind up to a level after the chapter's XP. A line may be {oneOf: [...]}: the first line in it that applies is told. Check results use the roller tokens ({You}, {you|@}, docs/STORY-BIBLE.md). Every line that names, quotes or answers Orin, Maren or Nessa is gated on when.party, with a version for when they are away. \"told\" ({ballad, tally}) is how Linus's song and the Long Tally tell the chapter (the Telling, build step 6), one line for all of its decisions. Part One is written: chapters 1 to 10 (build steps 3 to 5). Chapter 10 (b4-peaks) has no nextTown, so it ends at Highpass, where the hero waits at the end of the written story until Part Two is out; its levelFloor is 50. Part Two is written: chapters 11 to 20 (build steps 6 to 8). Chapters 13 to 19 all depart from Orme and return there (town and nextTown \"orme\"), and chapter 20 departs from Orme too. Chapter 19 (b4-column) has continues, so its decision and camp (column-camp) go straight on into chapter 20 (src/engine.js applyOutcome keeps goingOn through a camp scene); its flagScale makes the tail fight harder after b4_walkers_led and b4_hush_rang. Chapter 20 (b4-northdoor) has nextTown highpass and levelFloor 60, and its scene b4-parttwo-end sets b4_parttwo_done. Part Three is written to chapter 24 (build step 9): chapters 21 and 22 depart from Highpass, chapter 22 has nextTown briarwatch, chapter 23 departs from Briarwatch and returns to Highpass, and chapter 24 departs from Highpass with nextTown ashford. No Part Three chapter is \"white\", and none needs a companion before chapter 25, so a walkout after chapters 21 to 23 always leaves, and after chapter 24 Orin stays, because chapter 25 needs him (src/data/away.json has the Part Three lines, gated b4_parttwo_done, and his b4-ford stay line). Build step 10 wrote chapters 25 to 27, the companions' own: chapter 25 (b4-ford) departs from Ashford for Merrowgate and needs Orin, chapter 26 (b4-hospice) departs from Merrowgate for Cinder Fold and needs Maren, and chapter 27 (b4-signal) is Cinder Fold's and needs Nessa, with together: true, so nobody walks out after chapter 26 or later. Each has three answers that require its companion and a fourth, for when they are away, that sets the default flag (b4_orin_soldier, b4_maren_silent, b4_nessa_signal). Completing each teaches that companion an arc move (src/combat.js ARC_MOVES). Chapter 15 (b4-thrum) has an answer for Nessa only that sets b4_rue_asked_nessa and, by flagsIf, b4_rue_kept or b4_rue_gave from b3_nessa_gives. Chapter 16 (b4-reckoning) promises a share under the council's seal or on the hero's own word, by b4_embassy_council: two answers, one flag. Its peaceful way uses easierWith and harderWith with anyFlag. Every Part Two chapter is \"white\": true. Chapter 11 (b4-lantry) is taken from Highpass's board and played in Lantry, its nextTown, which it opens; chapter 12 leaves from Lantry for Orme, and chapter 13 is Orme's. A decision moves the Wold's reputation with rep.wold, and may carry its own \"told\", which wins over the chapter's.",
   "b4-walker": {
     "id": "b4-walker",
     "book": 4,
@@ -6323,6 +6323,945 @@
         "rep": { "wardens": 1 },
         "approval": { "orin": 1 },
         "flag": "b4_sable_silent"
+      }
+    ]
+  },
+  "b4-ford": {
+    "id": "b4-ford",
+    "book": 4,
+    "part": 3,
+    "name": "The Ford",
+    "level": 64,
+    "town": "ashford",
+    "nextTown": "merrowgate",
+    "unlock": "b4-gatehouse",
+    "needs": ["orin"],
+    "xp": 17750,
+    "gold": 1320,
+    "region": "Ashford Crossing: the old wall, the lower town, and the ford below the fulling mill",
+    "threat": "The Wold's families have to cross Ashford's river by the old ford before the autumn, and Ashford's town meeting has said no to everything asked of it, as it does.",
+    "faction": "wardens",
+    "brief": "A column of the Wold's people has to cross the river at Ashford, by the old ford, to reach the towns that will winter them. Ashford will not help. Sorrel has brought the council's watch down to see them over, and she wants somebody to command it who has been in a column before.",
+    "told": {
+      "ballad": "At Ashford's ford the soldier who never gave an order was asked to be a captain, with the river rising white behind him.",
+      "tally": "Ashford. The south brought the Wold over its river at the old ford, in the white. Written: they were asked who would go in first."
+    },
+    "opening": [
+      { "narrate": "Late summer at Ashford. The barley is in, the ash trees along the river are going yellow at the top, and the board on the bridge with the town's no on it has been painted again, in the same words." },
+      { "oneOf": [
+        { "narrate": "Below the old wall, in the lower town, the scaffolding is mostly down. The streets are built again where they were, by the river, under the trees, and the new houses have the smell of lime about them still.", "when": { "flag": "b3_ashford_defended", "anyFlag": ["b3_promise_old"] } },
+        { "narrate": "Below the old wall the lower town lies grey and empty, the way the winter before last left it. Grass has come up in its streets. Nobody has built there.", "when": { "flag": "b3_ashford_defended" } },
+        { "narrate": "The lower town stands, every roof of it, and the fulling mill turns. In the gateway of the old wall Amos Wick rings the hours a little late, and people still touch the bronze as they go by.", "when": { "flag": "b3_ashford_cast" } },
+        { "narrate": "The lower town stands, and the fulling mill turns, and in the market square a board lists the two hundred and forty children the council took up the road to Highpass two winters ago, and the day each one came home.", "when": { "flag": "b3_ashford_children" } }
+      ] },
+      { "oneOf": [
+        { "narrate": "On the north bank, in the stubble below the old wall, the Wold's families have camped for three nights: the ones who came down from Highpass in the spring and have been a few to each town all summer, gathered up again now to go south together before the autumn, to the towns that will winter them.", "when": { "flag": "b4_crossed" } },
+        { "narrate": "On the north bank, in the stubble below the old wall, the first of the Wold's families from the Hall have camped for three nights. They came down the north road after the council's answer, and are going south to the towns that will winter them.", "when": { "flag": "b4_hall_camp" } },
+        { "narrate": "On the north bank, in the stubble below the old wall, the first of the Wold's families from Orme have camped for three nights. They came over the peaks after the council's answer, and are going south to the towns that will winter them." }
+      ] },
+      { "oneOf": [
+        { "narrate": "With them, roped in a line with somebody at each end, are the walkers from the Hush, who walk as slowly as they did on the cairn road. Anwen Holt has written from Merrowgate that the harbour hospice has beds for every one of them.", "when": { "flag": "b4_walkers_led" } },
+        { "narrate": "With them, roped in a line with somebody at each end, are the walkers from the Hush who followed the marks. Anwen Holt has written from Merrowgate that the harbour hospice has beds for every one of them.", "when": { "flag": "b4_walkers_marked" } }
+      ] },
+      { "narrate": "There are a little over four hundred of them, with carts. The bridge takes one cart at a time and Ashford has shut it to them. The ford below the fulling mill takes a column, in late summer, when the river is low." },
+      { "narrate": "Ashford's town meeting sat last night, and voted, as it votes: no camp on Ashford's fields, no carts over the bridge, no help at the ford. They may cross. They may not stop." },
+      { "narrate": "Captain Sorrel is in the stubble with forty of the council's watch, who came down the north road with her a week ago. She has a paper in her coat with the council's seal on it, and she has been waiting for you." },
+      { "oneOf": [
+        { "say": "Sorrel", "text": "It's a commission. Captain of the council's watch, for the crossing and after it, as far as midwinter. I've a gate to keep at Highpass. I'd like it to be Orin. He's been in a column. I've only ever kept one out.", "when": { "party": "orin" } },
+        { "say": "Sorrel", "text": "It's a commission. Captain of the council's watch, for the crossing and after it, as far as midwinter. I wanted the soldier who carried the back of your column over the peaks. He's not with you, and I've a gate to keep at Highpass. So I'm asking you.", "when": { "absent": "orin" } }
+      ] },
+      { "narrate": "Orin reads the paper twice, standing up, the way he reads orders, and gives it back to her without saying anything.", "when": { "party": "orin" } }
+    ],
+    "talks": [
+      {
+        "id": "orin",
+        "label": "Ask Orin what he means to do with the commission",
+        "requires": { "companion": "orin" },
+        "lines": [
+          { "narrate": "Orin is down at the water's edge below the camp, looking at the ford, the way he looked at the switchbacks on the peaks: where the footing goes, and where it does not.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Varn had a commission. Paper like that, with a seal on it. He kept it in his coat and took it out at night and read it, when he thought nobody was looking. I was always looking. I was the one at the back with the lantern." },
+          { "oneOf": [
+            { "say": "orin", "text": "I gave an order at Sheddon. 'On.' Two hundred went on, and an old woman stayed in the white, and I asked her name after. That was one order. This is all of them. Every day till midwinter.", "when": { "flag": "b4_orin_ordered" } },
+            { "say": "orin", "text": "At Sheddon I didn't give the order. I went back, and gave you the front, and lost the name of Varn's company to the white. I went back because I couldn't say 'on'. A captain says 'on'.", "when": { "flag": "b4_orin_went_back" } },
+            { "say": "orin", "text": "At Sheddon you took the order off me. I'd have said it. I think I'd have said it. I'll never know now, and Sorrel's asking me to find out every day till midwinter.", "when": { "anyFlag": ["b4_hero_went_back", "b4_hero_ordered"] } },
+            { "say": "orin", "text": "I've never given an order. Not one. I've only ever done what I was told, or not." }
+          ] },
+          { "say": "orin", "text": "I'm good at carrying things. I'm good at being the one at the back. Somebody has to be good at that too. I don't know if I'm the man for the front. I know I'm the one she asked." }
+        ]
+      },
+      {
+        "id": "brede",
+        "label": "Go up to the old wall and see Hollis Brede",
+        "lines": [
+          { "narrate": "Hollis Brede is on the old wall above the north gate, where she stood the night the white came up the valley, with her arms folded on the parapet, watching the camp in the stubble." },
+          { "oneOf": [
+            { "say": "Hollis Brede", "text": "We said no, and we held, and we've built it all again under the trees. I'll not have that put in front of the white a second time for anybody. They may cross. They may not stop. That's the meeting's word, and it's mine.", "when": { "flag": "b3_ashford_defended", "anyFlag": ["b3_promise_old"] } },
+            { "say": "Hollis Brede", "text": "We said no, and we held. The lower town's still down there under the grey. Ashford paid for its no. I'll not be told now that it has to pay for somebody else's yes. They may cross. They may not stop. That's the meeting's word, and it's mine.", "when": { "flag": "b3_ashford_defended" } },
+            { "say": "Hollis Brede", "text": "The meeting voted it without me. I stood up to speak and sat down again. Amos is in the gateway, ringing. We said no to a price for a person once, and then a person paid it, and the white went down the valley. I don't tell anybody what this town may do any more. I just watch it.", "when": { "flag": "b3_ashford_cast" } },
+            { "say": "Hollis Brede", "text": "The council took our children over our own vote. Now it wants our ford. It can have the ford. The meeting says they may cross and not stop, and I said it louder than anybody, and I'm not sorry. The council can learn what a no sounds like from the other side.", "when": { "flag": "b3_ashford_children" } }
+          ] },
+          { "say": "Hollis Brede", "text": "Ashford's not cruel. Ashford's careful. There's a difference, and nobody up at Highpass has ever once troubled to learn it." },
+          { "say": "Hollis Brede", "text": "If the river comes up white while they're in it, they'll be on their own. You know that. I'd like you to know I know it." }
+        ]
+      },
+      {
+        "id": "davin",
+        "label": "Find Davin among the watch",
+        "requires": { "flagsAll": ["b4_davin_comes"] },
+        "lines": [
+          { "narrate": "Davin is in the grey coat of Sorrel's watch. It is too big for him across the shoulders and too short in the arms. He was seventeen at midsummer." },
+          { "say": "Davin", "text": "I've done the whole summer on Sorrel's gate. Drill, and the stair, and the wall at night. I'm not bad. I was bad. I'm not now." },
+          { "oneOf": [
+            { "say": "Davin", "text": "If Orin takes it, I want to be in his company. Not Sorrel's. His. Don't tell him I said. I'll ask him myself. I've been going to all week.", "when": { "party": "orin" } },
+            { "say": "Davin", "text": "I'd hoped it'd be his company. You know who I mean. The watch are all right. They're not him.", "when": { "absent": "orin" } }
+          ] },
+          { "oneOf": [
+            { "say": "Davin", "text": "Gran sent me with him. She said he'd bring me back. She never said what I'd be when he did.", "when": { "flag": "b4_davin_mags" } },
+            { "say": "Davin", "text": "He said I'd do what I was told. That was the word. I've done it every day since. I'd like it to be him telling me." }
+          ] }
+        ]
+      },
+      {
+        "id": "varn",
+        "label": "Speak to the old soldier at the end of the watch line",
+        "requires": { "flagsAny": ["b3_orin_tried", "b3_varn_freed"] },
+        "lines": [
+          { "oneOf": [
+            { "narrate": "At the end of the watch line, in an old coat with no badge on it, Odell Varn is sitting on his pack. He went back to Hesk's company with a message two years ago, and turned forty of Hesk's people back on the stair, and nobody in the free wards had seen him since. He looks older than sixty now.", "when": { "flag": "b3_varn_freed" } },
+            { "narrate": "At the end of the watch line, in an old coat with no badge on it, Odell Varn is cleaning a lamp-hook he has no use for, out of habit. He walked Saltwick's lamps for a season, as the roof council judged, and he has come down to Ashford on foot from the coast." }
+          ] },
+          { "say": "Varn", "text": "I heard Sorrel had a paper. Word goes up and down the road. I've come to serve under him, if he'll have me. As a soldier. At the back, with a lantern. I know the place." },
+          { "say": "Varn", "text": "I gave the order at Saltwick and lived with it. I've been the one in front. I'd like to see what it's like to be told, by somebody who knows what it costs to tell." },
+          { "say": "Varn", "text": "Where's your soldier? The one who carried the back. I was told he'd be with you. I came all this way to stand behind him.", "when": { "absent": "orin" } },
+          { "say": "orin", "text": "You'd take an order from me.", "when": { "party": "orin" } },
+          { "say": "Varn", "text": "I'd take one from him. I don't know that he'd give one to me. That's for him.", "when": { "party": "orin" } }
+        ]
+      },
+      {
+        "id": "sorrel",
+        "label": "Ask Sorrel why she wants a captain for a ford",
+        "lines": [
+          { "say": "Sorrel", "text": "Four hundred people and their carts, over a river, in a day, with a town on the bank that won't lift a hand. That's not a ford. That's a column. A column wants somebody at the front who'll say go, and mean it, and somebody at the back who'll see nobody falls off." },
+          { "oneOf": [
+            { "say": "Sorrel", "text": "I learned the north road off Rue, two winters ago. I kept the last fire lit all winter and left the bar off the gate for the Wold. I'm good at gates. I'm no good at rivers. I'd like somebody who is.", "when": { "flag": "b4_rue_watch" } },
+            { "say": "Sorrel", "text": "I've kept a gate twenty years. I keep people out. This is the other thing. I'd like somebody who's done it." }
+          ] },
+          { "say": "Sorrel", "text": "And after the ford, midwinter. Cinder Fold. Whoever has this paper has the council's watch on the casting hall's doors, when the bell's rung. I'd sooner that was somebody who's been on a rope." }
+        ]
+      },
+      {
+        "id": "ilse",
+        "label": "Go to Sister Ilse in the archive",
+        "lines": [
+          { "narrate": "Sister Ilse has the building rolls of the old wall out on the archive table again: six skins of parchment stitched together, three hundred years old, weighted at the corners with river stones." },
+          { "say": "Sister Ilse", "text": "You read these the winter before last, by the wall's line. Read them again by the river's. Nobody ever does. The town only ever wanted to know where the wall went." },
+          { "say": "Sister Ilse", "text": "I've a question for you, since you're here. When the founders' people refused, three hundred years ago, and gave up the lower town to keep the wall, I wonder who had to walk through it on their way to somewhere else. Nobody writes that down. I would like to." }
+        ]
+      }
+    ],
+    "clue": "Ashford's old wall was built the last time Ashford refused, three hundred years ago, by giving up the lower town. The old ford is below the line of what was given, and the white comes up the river to that line and no further.",
+    "investigate": {
+      "label": "Read the building rolls again with Sister Ilse, by the river this time",
+      "skill": "history",
+      "alt": ["survival"],
+      "success": [
+        { "narrate": "{You go|@ goes} through the six skins of the building rolls with Ilse again, and this time {follow|follows} the line of the old wall down past the last house of the lower town to where the roll stops: at the river, at a stake marked on the bank, a little above the old ford." },
+        { "narrate": "Then {you walk|@ walks} it, with the roll in {their} hand, and {find|finds} the stake's stone at the water's edge, under the ash roots, with the founders' mark on it worn almost smooth." },
+        { "narrate": "The old ford is below the stone. Three hundred years ago Ashford gave everything below that line, the river with it, and the white has come up to the line ever since, and no further. Above the stone the river is deeper and slower, but it was never given." },
+        { "say": "Sister Ilse", "text": "So they drew the line through the water too. Of course they did. Nobody has ever needed to know that but somebody crossing." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} through the building rolls with Ilse again, but the line of the wall goes down through the lower town and then into a hand {you cannot|@ cannot} read, and {you come|@ comes} back to the ford with no more than {they} knew at noon." }
+      ]
+    },
+    "route": {
+      "label": "Walk the ford with the watch, and stake the crossing",
+      "skill": "survival",
+      "alt": ["athletics", "perception"],
+      "success": [
+        { "narrate": "{You wade|@ wades} the ford at low water with a staff and a coil of rope, and {stake|stakes} it from bank to bank: a line of poles where the gravel is firm, a rope between them at waist height, and a lamp on every fourth pole for the carts to steer by." }
+      ],
+      "failure": [
+        { "narrate": "{You wade|@ wades} the ford with a staff, but the gravel shifts under every step, and the poles {you drive|@ drives} in at noon are leaning by dusk, and two have gone downstream." }
+      ]
+    },
+    "direct": {
+      "label": "Take the column straight down to the ford",
+      "text": "You take the column straight down to the ford at first light, carts and all, with Sorrel's watch along the banks."
+    },
+    "approach": [
+      { "narrate": "At first light the column comes down out of the stubble to the north bank of the ford: the carts first, then the families on their ropes, then the walkers, with Sorrel's watch strung out along both banks." },
+      { "narrate": "On the old wall above, all along the parapet, Ashford has come out to watch. Nobody calls out. Nobody comes down." },
+      { "oneOf": [
+        { "narrate": "Orin has not said whether he will take the commission. He is on the north bank at the head of the column, because somebody had to stand there.", "when": { "party": "orin" } },
+        { "narrate": "You are on the north bank at the head of the column, because somebody had to stand there. Sorrel still has her paper.", "when": { "absent": "orin" } }
+      ] }
+    ],
+    "crisis": [
+      { "narrate": "The first carts are half over when the river changes. It goes quiet first, the way water does before a weir. Then it comes up white from downstream, against the current, over the gravel, the way the white came up Ashford's valley two winters ago." },
+      { "narrate": "There are shapes in it: the ford as it was before the wall, with a cart in it that is not there now, and people in old coats wading it with loads on their backs, three hundred years late for wherever they were going." },
+      { "narrate": "Half the column is in the water. The carts stop. Somebody's child starts to cry, and the families behind on the bank begin to push forward onto the ford, because the white is behind them too, and that is the way they have always gone from it." },
+      { "say": "Sorrel", "text": "Somebody give them a word. Now. Any word." },
+      { "say": "orin", "text": "It's in the water. It's in the water with them. Don't let them turn round on the ford. If they turn round in that we lose half of them.", "when": { "party": "orin" } }
+    ],
+    "peaceful": {
+      "label": "Take the front and get the whole column over",
+      "skill": "athletics",
+      "alt": ["persuasion"],
+      "success": [
+        { "narrate": "{You know|@ knows} where the line is: the stake's stone under the ash roots, above the ford. Everything above it was never given. {You turn|@ turns} the front of the column upstream, across the current, to the deep water above the stone, where the white cannot follow.", "when": { "flag": "prepared:b4-ford" } },
+        { "narrate": "The poles are where they were driven, with the rope between them and the lamps lit, and every cart on the ford has something to hold.", "when": { "flag": "approach:b4-ford" } },
+        { "narrate": "{You get|@ gets} the watch into the water in a line, shoulder to shoulder downstream of the carts, to be the rope the ford does not have.", "when": { "notFlag": "approach:b4-ford" } },
+        { "oneOf": [
+          { "narrate": "Orin goes into the river first, to his chest, and stands at the head of the ford in the white, and gives the column its order: 'Eyes on me. Not on that. Walk.' And it walks.", "when": { "party": "orin", "notRoller": "orin" } },
+          { "narrate": "{You go|@ goes} into the river first, to {their} chest, and {stand|stands} at the head of the ford in the white, and {give|gives} the column one word at a time: eyes front, walk, the next pole, walk." }
+        ] },
+        { "narrate": "Nobody turns round. The carts go over one behind another, slowly, and the families on their ropes after them, and the walkers last, with somebody at each end, as slow as they have ever been, and the white comes up round their knees and their waists and finds nothing on the ford that will look at it." },
+        { "say": "Davin", "text": "Rear's over. All of it. Nobody fell off the back.", "when": { "flag": "b4_davin_comes" } },
+        { "narrate": "At dusk the white goes back down the river, the way the tide goes out, and the old ford is gravel and low water again, and the column is on the south bank, counting its ropes." },
+        { "narrate": "On the old wall, nobody calls out. But at dark a woman comes over the bridge with a basket of bread, and nobody on the wall stops her, and in a while two more come after her." }
+      ],
+      "failure": [
+        { "narrate": "{You try|@ tries} to take the front, but the families behind are already pushing out onto the ford, away from the white on the bank, and before {you have|@ has} said three words the carts are slewing sideways in the current, and the shapes in the white are among them." }
+      ]
+    },
+    "objective": {
+      "name": "The ford",
+      "label": "Get the column over the ford before the white closes it",
+      "description": "Four successful actions get the carts and the families on their ropes over the ford to the south bank while the watch keeps the white off them.",
+      "skill": "athletics",
+      "alt": ["persuasion", "survival", "intimidation"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The column gets over in the end, at dusk, but two carts went over in the white and were lost, and the families who had their goods on them have nothing now but their ropes, and a man from Lantry who went in after one of them came out not knowing whose cart it was.",
+      "successText": "The last of the walkers comes up out of the river onto the south bank with somebody at each end of the rope, and the column is over."
+    },
+    "foe": "b4-ford-white",
+    "foeName": "The White at the Ford",
+    "enemyTheme": "gloam",
+    "attackName": "Undertow of the Given",
+    "retainerName": "Wader from the Old Ford",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Night on the south bank. The column is camped in the water-meadow below the ford, past Ashford's last field, with its fires lit, every rope counted, and nobody is hurt. Over the river the old wall is dark except for one lamp over the north gate, which somebody has left lit.", "when": { "flag": "method:b4-ford", "is": "peace" } },
+        { "narrate": "Night on the south bank. The column is camped in the water-meadow below the ford, past Ashford's last field, with its fires lit, and Sorrel's watch are binding each other's cuts by them. The ford behind is churned to mud where the fight was. Over the river the old wall is dark except for one lamp over the north gate." }
+      ] },
+      { "oneOf": [
+        { "say": "Hollis Brede", "text": "I came over the bridge to see you settled. That's all. The meeting didn't say I couldn't come and look.", "when": { "flag": "b3_ashford_defended" } },
+        { "say": "Hollis Brede", "text": "Amos rang the hour while you were in the water, late, the way he does. Half the wall said he was ringing for them. I don't know. I never asked him.", "when": { "flag": "b3_ashford_cast" } },
+        { "say": "Hollis Brede", "text": "I watched every one of them come up out of that water. Two hundred and forty, it was, the night you took ours. I counted those too.", "when": { "flag": "b3_ashford_children" } }
+      ] },
+      { "oneOf": [
+        { "say": "Sorrel", "text": "Well. That was a column. My paper's still in my coat. I'd like to know tonight whose it is, before I go back up to my gate.", "when": { "party": "orin" } },
+        { "say": "Sorrel", "text": "Well. That was a column. My paper's still in my coat. I'd like to know tonight whose it is, before I go back up to my gate.", "when": { "absent": "orin" } }
+      ] }
+    ],
+    "decisions": [
+      {
+        "id": "captain",
+        "label": "Orin takes the commission",
+        "requires": { "companion": "orin" },
+        "description": "This decision is permanent. Orin is captain of the council's watch until midwinter. At Cinder Fold, his company will hold the casting hall's doors.",
+        "told": {
+          "ballad": "At the ford Orin Stoneward took the paper with the seal on it, and was a captain, and found it weighed what Varn had said.",
+          "tally": "Ashford. The southern soldier took the council's commission. Written: the one at the back is at the front now."
+        },
+        "text": [
+          { "narrate": "Orin holds out a hand for the paper, and Sorrel gives it over.", "when": { "party": "orin" } },
+          { "narrate": "He reads it again by the fire, and folds it once, and puts it in his coat." },
+          { "oneOf": [
+            { "say": "orin", "text": "All right. Till midwinter. I'll want the forty. I'll want them to know my name, and I'll want to know theirs, all of them, written down. And I'll want Varn at the back with a lantern, if he's still here.", "when": { "anyFlag": ["b3_orin_tried", "b3_varn_freed"] } },
+            { "say": "orin", "text": "All right. Till midwinter. I'll want the forty. I'll want them to know my name, and I'll want to know theirs, all of them, written down." }
+          ] },
+          { "say": "Sorrel", "text": "Captain Stoneward. Hm. It'll do.", "when": { "party": "orin" } },
+          { "narrate": "He spends the rest of the night going down the watch's fires, one by one, learning forty names, and saying each one back." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_orin_captain"
+      },
+      {
+        "id": "soldier",
+        "label": "Orin gives the paper back, and stays the man who carries things",
+        "requires": { "companion": "orin" },
+        "description": "This decision is permanent. Orin refuses the commission. Sorrel's watch will hold the casting hall's doors at midwinter, with Sorrel's sergeant in command.",
+        "told": {
+          "ballad": "At the ford Orin Stoneward gave back the paper with the seal on it, and picked up the heaviest load on the bank instead.",
+          "tally": "Ashford. The southern soldier gave back the commission. Written: he said somebody has to be good at the other thing."
+        },
+        "text": [
+          { "narrate": "When the paper is held out to him across the fire, Orin shakes his head.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "I gave them the word today because somebody had to. I'm glad it was me. I don't want to do it every day. I'm good at this. Carrying. The back. Let somebody else be good at that." },
+          { "say": "Sorrel", "text": "That's the most sense anybody's talked to me all week. My sergeant'll have it. He'll hate it.", "when": { "party": "orin" } },
+          { "narrate": "Orin goes and helps the families from the last cart carry its load up the meadow, because their man is still sitting by the river with a blanket round him, and somebody has to.", "when": { "party": "orin" } }
+        ],
+        "rep": { "wilds": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_orin_soldier"
+      },
+      {
+        "id": "davin",
+        "label": "Orin takes it, and makes Davin his sergeant",
+        "requires": { "flagsAll": ["b4_davin_comes"], "companion": "orin" },
+        "description": "This decision is permanent. Orin is captain of the council's watch until midwinter, with Davin as his sergeant. At Cinder Fold, Davin will hold the casting hall's rear door, on Orin's order.",
+        "told": {
+          "ballad": "At the ford Orin Stoneward took the paper, and made a lamplighter's boy of seventeen his sergeant, and found out what it is to give the order you would rather not.",
+          "tally": "Ashford. The southern soldier took the commission, and gave a boy the rear. Written: he will have to tell him to stay there."
+        },
+        "text": [
+          { "narrate": "Orin holds out a hand for the paper, and reads it again by the fire, and then looks across the fire at Davin, who is pretending not to listen.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Davin. Sergeant. The rear's yours. Every day till midwinter, and on the night. Nobody falls off the back. That's your order." },
+          { "say": "Davin", "text": "Yes. Yes, Captain.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "Don't. Not yet. I'll get used to it, and then I'll be no good." },
+          { "narrate": "Later, when Davin has gone off to tell everybody, Orin sits by the fire with the paper on his knee for a long time.", "when": { "party": "orin" } },
+          { "say": "orin", "text": "I've just given a boy of seventeen the worst door in the hall, and I'll have to tell him to stay at it whatever comes through. That's what it is, being in front. Varn said nobody tells you. Nobody had to tell me. I knew the moment I said it." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "maren": -1 },
+        "flag": "b4_orin_davin"
+      },
+      {
+        "id": "watch",
+        "label": "Tell Sorrel to keep her paper: the watch is hers",
+        "requires": { "absent": "orin" },
+        "description": "This decision is permanent. You do not take the commission. Sorrel's watch will hold the casting hall's doors at midwinter, with Sorrel's sergeant in command.",
+        "told": {
+          "ballad": "At the ford the stranger from the south gave the column its word in the white, and gave the captain her paper back.",
+          "tally": "Ashford. A southerner brought the Wold over the river, and would not be made captain for it."
+        },
+        "text": [
+          { "narrate": "You tell Sorrel to keep her paper. You gave the column its word today because somebody had to. The one she wanted for it is not here, and the watch is hers." },
+          { "say": "Sorrel", "text": "My sergeant'll have it, then. He'll hate it." },
+          { "say": "Davin", "text": "When he comes back, tell him I held the rear. Nobody told me to. I just did.", "when": { "flag": "b4_davin_comes", "absent": "orin" } }
+        ],
+        "rep": { "wardens": 1 },
+        "flag": "b4_orin_soldier"
+      }
+    ]
+  },
+  "b4-hospice": {
+    "id": "b4-hospice",
+    "book": 4,
+    "part": 3,
+    "name": "The Hospice",
+    "level": 65,
+    "town": "merrowgate",
+    "nextTown": "cinderfold",
+    "unlock": "b4-ford",
+    "needs": ["maren"],
+    "xp": 18000,
+    "gold": 1340,
+    "region": "Merrowgate: the harbour hospice's long room, the tide steps, and the harbour steps under the Lantern Hall",
+    "threat": "Sloe has come to Merrowgate to ask the harbour council to stand with the Wold at midwinter, and the Lantern Hall has made Ailith Strake an offer that needs Sloe not to be heard.",
+    "faction": "trade",
+    "brief": "Sloe of Orme has come down to Merrowgate to speak to the harbour council before midwinter. Nobody in the south can hear what she is asking them to believe. Maren has been where she comes from, and Sloe would like her to say so.",
+    "told": {
+      "ballad": "In Merrowgate's harbour a sister of the shrines was asked to stand up for a stranger, in front of a town that could not hear what the stranger heard.",
+      "tally": "Merrowgate. The south's healer was asked to speak for the Reckoner. Written: what she said, and to whom."
+    },
+    "opening": [
+      { "narrate": "Autumn at Merrowgate. The fishing fleet is in, the quays smell of tar and herring, and the wind off the harbour has the first of the cold in it." },
+      { "oneOf": [
+        { "narrate": "In the harbour hospice's long room every bed is full. At the north end, in a row of their own, are the walkers from the Hush, who came down from Ashford on their rope with somebody at each end. They sit up in their beds and look at the door, as they looked at the white, and wait.", "when": { "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+        { "narrate": "In the harbour hospice's long room every bed is full. At the north end are the harbour's white-touched: fishermen and dockers the white has taken too much from, over the years, who sit up in their beds and look at the door, and wait." }
+      ] },
+      { "narrate": "Anwen Holt keeps the hospice: small and quick, greyer than she was, with her sleeves rolled up and a pack of cards in her apron pocket." },
+      { "narrate": "Sloe has been in Merrowgate a week. She has asked the harbour council to hear her before midwinter, and the council has said it will, tomorrow, on the harbour steps, in the open, because that is where Merrowgate hears anybody." },
+      { "oneOf": [
+        { "narrate": "Up at the top of the harbour the Lantern Hall's windows are lit late every night. Cass Ord has not forgiven the council for breaking her charter, and she has written to Ailith Strake at Cinder Fold.", "when": { "flag": "b4_company_broken" } },
+        { "narrate": "Up at the top of the harbour the Lantern Hall's windows are lit late every night. The council has still not paid the Hall's bill for the relief convoy, and Cass Ord has written to Ailith Strake at Cinder Fold.", "when": { "flag": "b4_company_council" } },
+        { "narrate": "Up at the top of the harbour the Lantern Hall's windows are lit late every night. The Company's wagons are still in the Wold, and Cass Ord has written to Ailith Strake at Cinder Fold." }
+      ] },
+      { "narrate": "Everybody on the quays knows what the letter says, because the Hall's clerks drink at the Tide Steps. The Hall has offered Ailith its foundries and its ledgers: rung forward at midwinter, every bell in the free wards rings louder for good, and the Hall will cast and sell a louder bell to every town that wants one, and pay the rope families a share of each." },
+      { "say": "Anwen", "text": "Sloe came asking this morning for your healer, the one who's been north. To stand up with her tomorrow on the steps, and tell them she's been there and seen it. I told her she's not here. She asked me what I'd seen instead. I said I'd think about it.", "when": { "absent": "maren" } },
+      { "say": "maren", "text": "Sloe asked me this morning to stand up with her tomorrow. To tell them I've been there, and seen it, and that she's telling the truth. She believes every word she says. I know she does. I just don't know what I'd be vouching for.", "when": { "party": "maren" } }
+    ],
+    "talks": [
+      {
+        "id": "maren",
+        "label": "Sit with Maren on the tide steps",
+        "requires": { "companion": "maren" },
+        "lines": [
+          { "narrate": "Maren is on the tide steps below the hospice with her list of names on her knee, the old list from the year of the keepers, and a newer one under it.", "when": { "party": "maren" } },
+          { "say": "maren", "text": "She wants me to say the free wards send the white north. I know the tally says so. I've read it. I've seen Orme's doors and Greve's room and the Hush. I believe her." },
+          { "say": "maren", "text": "But tomorrow she'll stand on those steps and tell Merrowgate its bells have been burying people for nine hundred years, and there's nothing they can hear. No noise. No proof. A woman from a country they've never seen, with a slate. And they'll look at me, because they know me, and decide." },
+          { "oneOf": [
+            { "say": "maren", "text": "At Greve I let the names stay. Yarrow's house stopped taking griefs, and the grieving kept theirs. I chose that for them. I'm tired of choosing what other people can carry.", "when": { "flag": "b4_names_kept" } },
+            { "say": "maren", "text": "At Greve I sent every name to Orme, to be written. I believed in writing it down. I still do. It's what Anwen taught me.", "when": { "flag": "b4_names_written" } },
+            { "say": "maren", "text": "At Greve I let Yarrow's house go on as it always had. I didn't think I had the right to stop it. I'm not sure I've got the right to start anything here, either." }
+          ] },
+          { "say": "maren", "text": "If I vouch for her, I'm saying I'm sure. I'm not sure of anything except that she is." }
+        ]
+      },
+      {
+        "id": "anwen",
+        "label": "Help Anwen with the long room",
+        "lines": [
+          { "narrate": "Anwen is going down the beds with a tray, and you take the other end of it." },
+          { "oneOf": [
+            { "say": "Anwen", "text": "They came in a row, on a rope, and they've stayed in a row. I've stopped trying to move them about. They like to be able to see each other.", "when": { "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+            { "say": "Anwen", "text": "These are the harbour's. Every winter the white takes a little more off the men who work the outer quays, and some of them end up here with nothing left to take." }
+          ] },
+          { "say": "Anwen", "text": "I read them names. Every evening, the whole room, the way I did at the Sallows. Not their names. I don't know their names. Anybody's. The fishermen's, the nurses', mine." },
+          { "oneOf": [
+            { "say": "Anwen", "text": "Maren does it too, when she's here. She reads them the list she keeps. She doesn't know I've noticed that she reads her own name on it last, and quickly.", "when": { "party": "maren" } },
+            { "say": "Anwen", "text": "Your healer used to do it with me, at the Sallows. She'd read her list and leave her own name till last. Tell her I said so, when she's back.", "when": { "absent": "maren" } }
+          ] },
+          { "say": "Anwen", "text": "Sloe came here first, before she went to the council. She sat with them all one evening and didn't say a word. Then she asked me if we'd always done this, in the south, or if somebody had to teach us. I said somebody taught me." }
+        ]
+      },
+      {
+        "id": "sloe",
+        "label": "Find Sloe on the harbour steps",
+        "lines": [
+          { "narrate": "Sloe is sitting on the harbour steps where the council will hear her tomorrow, with her slate on her knee, looking at the boats." },
+          { "say": "Sloe", "text": "Here they hear people outside, on steps, where anybody may stand and listen. In Orme we hear people inside, in the Long Hall, under the oldest wall. I like this better. I would not tell Burdock so." },
+          { "say": "Sloe", "text": "I have a sum and a tally and nine hundred years. They have their bells, which they love, and which have kept their children. I am going to stand here tomorrow and tell them what their bells do, and they will not hear anything when I say it, because there is nothing to hear. It is very quiet, being buried." },
+          { "oneOf": [
+            { "say": "Sloe", "text": "Your sister of the shrines has been on our side of the peaks. She has read our doors. I have asked her to say so. If she says so, they will hear it. They do not know me. They know her.", "when": { "party": "maren" } },
+            { "say": "Sloe", "text": "I asked for your sister of the shrines. She is not here. I will ask the old woman with the cards instead. She has never been north. She has only been kind to the long room, for years. In Orme that would be enough.", "when": { "absent": "maren" } }
+          ] },
+          { "say": "Sloe", "text": "And the Hall would like me not to speak at all. I know this. I can do the sum." }
+        ]
+      },
+      {
+        "id": "cass",
+        "label": "Go up to the Lantern Hall and see Cass Ord",
+        "lines": [
+          { "narrate": "Cass Ord's office is at the top of the Hall, with the window over the whole harbour, where it always is. Ailith's answer is on her desk, under the inkwell, unopened." },
+          { "oneOf": [
+            { "say": "Cass Ord", "text": "Your council broke my charter. Twelve hundred families who'd signed had to unsign. I kept a page for what was wrong with it, and now I keep a page for what it cost. Both pages are long.", "when": { "flag": "b4_company_broken" } },
+            { "say": "Cass Ord", "text": "Your council sent my wagons north with its seal on and grain in them, and hasn't paid for one of them yet. Iona has my bill. I'm told she's costing it.", "when": { "flag": "b4_company_council" } },
+            { "say": "Cass Ord", "text": "My wagons are in the Wold. Forty of them, and the families, and the lamps. They write that the doors up there have everything on them but a price. They're learning. So am I." }
+          ] },
+          { "say": "Cass Ord", "text": "I'm not lying to you. I never have. Rung forward, every bell in the free wards is louder for good. Louder bells sell. Somebody's going to cast them. I'd rather it was the Hall, and that the rope families had a share, and that it was all written down where anybody can read it." },
+          { "say": "Cass Ord", "text": "And the woman on the steps would rather it wasn't rung forward at all. I know. I've a page for her too." }
+        ]
+      },
+      {
+        "id": "haddows",
+        "label": "Go down to the north quay and find Bett Haddow",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Bett Haddow is on the north quay, a year taller, with tar on her hands. She went north on the coaster as ship's girl for one voyage, as her paper said, and came home, and has been asking about the next one ever since.", "when": { "flag": "job:bett-berth-signed" } },
+            { "narrate": "Bett Haddow is on the north quay with the mate's paper in her pocket, folded small. Last year was 'next year'. This year is next year.", "when": { "flag": "job:bett-berth-next" } },
+            { "narrate": "Bett Haddow is up in the harbour's rope-loft over the harbour master's office, splicing, with her own marlinspike. The lines she makes go north on every ship that does.", "when": { "flag": "job:bett-berth-loft" } },
+            { "narrate": "Bett Haddow is on the north quay, watching the ships, the way she always did.", "when": { "flag": "job:bett-berth-home" } },
+            { "narrate": "Bett Haddow is on the north quay, a year taller, coiling rope for anybody who will let her." }
+          ] },
+          { "oneOf": [
+            { "narrate": "Her father is not with her. Coll went north with the Company's wagons, and has not come home. He writes at the end of every summer, from the empty land past Lantry, which is not empty.", "when": { "flag": "b4_company_sails" } },
+            { "narrate": "Coll Haddow is home from the convoy, loading on his own quay again, at the far end where he can see her.", "when": { "flag": "b4_company_council" } },
+            { "narrate": "Coll Haddow is on a bollard at the far end of the quay with his arms folded, where he can see her." }
+          ] },
+          { "say": "Bett", "text": "Is it true? What the woman with the slate says? That the bells push it all up there, on top of them?" },
+          { "narrate": "You tell her it is." },
+          { "say": "Bett", "text": "Then why does everybody keep asking her to prove it? You don't ask somebody who's cold to prove it. You give them a coat." },
+          { "say": "nessa", "text": "Somebody give her a seat on that council.", "when": { "party": "nessa" } }
+        ]
+      },
+      {
+        "id": "elske",
+        "label": "Find out what Elske Marrow makes of it",
+        "requires": { "flagsAny": ["elske_seat", "elske_free", "elske_judged"] },
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Elske Marrow is in Merrowgate's chamber, with the Hall's letter to Ailith copied out in front of her, and a great many notes in its margins.", "when": { "flag": "elske_seat" } },
+            { "narrate": "Elske Marrow is at the Sallows hospice, which the council sentenced her to keep open for five years, with the slate by the door wiped clean and a new column started.", "when": { "flag": "elske_judged" } },
+            { "narrate": "Elske Marrow is in the long room at the harbour hospice, where she works now, with Anwen's cards on the table." }
+          ] },
+          { "oneOf": [
+            { "say": "Elske", "text": "I rang the Mother Bell myself, the night of the great note. I'd do it again. I thought I was sending it nowhere. Nobody ever asked where nowhere was.", "when": { "flag": "mother_recalled" } },
+            { "say": "Elske", "text": "I rang the Mother Bell, the night of the great note. I thought I was sending it nowhere. It's in their tally, that night, and I'm in it, without my name. I'd like my name put to it." }
+          ] },
+          { "oneOf": [
+            { "say": "Elske", "text": "I'll be on the bench tomorrow, in my chair, and I'll vote. I don't know yet which way. That's the first time in my life I've said so.", "when": { "flag": "elske_seat" } },
+            { "say": "Elske", "text": "I've no vote. I'll be on the steps anyway. Someone who rang that bell ought to have to stand there and listen." }
+          ] }
+        ]
+      }
+    ],
+    "clue": "The ones in the long room who have lost the most are saying names back. Not their own, which are gone, but new ones, learned from hearing names read aloud every evening, the way a child learns words: a name said aloud in a room is a person in the room, and the white cannot take it while it is being said.",
+    "investigate": {
+      "label": "Sit in the long room at the evening reading, and listen to the beds",
+      "skill": "insight",
+      "alt": ["medicine"],
+      "success": [
+        { "narrate": "{You sit|@ sits} at the north end of the long room through the evening reading, and {watch|watches} the beds while the names are read." },
+        { "oneOf": [
+          { "narrate": "At the end of the row a walker moves her lips with the names. Then, when the reading stops, she says one back, out loud, in a cracked voice that has not been used since the Hush: 'Anwen.' And then, after a while, the next one down the list.", "when": { "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+          { "narrate": "At the end of the row an old docker moves his lips with the names. Then, when the reading stops, he says one back, out loud: 'Anwen.' And then, after a while, the next one down the list." }
+        ] },
+        { "oneOf": [
+          { "narrate": "They are the names from Greve, the ones sent to Orme to be written: Maren has been reading the walkers the Long Tally's newest page, every evening, and they have begun to say it back.", "when": { "flag": "b4_names_written", "party": "maren" } },
+          { "narrate": "They are the names from Greve, of people whose families kept them. Maren has been reading the walkers the names the grieving would not give, every evening, and they have begun to say them back.", "when": { "flag": "b4_names_kept", "party": "maren" } },
+          { "narrate": "They are anybody's names: the nurses', the fishermen's, Anwen's own. Nobody taught them. They have learned them the way a child learns words, from hearing them said." }
+        ] },
+        { "say": "Anwen", "text": "That's new. That's this week. I wasn't going to tell anybody until I was sure. I'm sure." }
+      ],
+      "failure": [
+        { "narrate": "{You sit|@ sits} at the north end of the long room through the evening reading, but the beds are quiet, and by the end of the lamp all {you have|@ has} is that some of them move their lips, and {you cannot|@ cannot} tell if it means anything." }
+      ]
+    },
+    "route": {
+      "label": "Walk the harbour steps and the lanes behind them before the hearing",
+      "skill": "perception",
+      "alt": ["investigation", "stealth"],
+      "success": [
+        { "narrate": "{You walk|@ walks} the harbour steps and the lanes behind them at dawn, and {count|counts} the ways down from the Lantern Hall: the front stair, the clerks' lane, and the old rope-walk. {You put|@ puts} a word in with the dockers on the rope-walk, and with the fish-wives on the clerks' lane, to stand where they would stand anyway, and watch." }
+      ],
+      "failure": [
+        { "narrate": "{You walk|@ walks} the harbour steps at dawn, but the lanes behind them run every way between the warehouses, and {you come|@ comes} back with more ways down from the Hall than {you can|@ can} count." }
+      ]
+    },
+    "direct": {
+      "label": "Go down to the harbour steps with Sloe for the hearing",
+      "text": "You go down to the harbour steps with Sloe in the morning, for the hearing, and stand where she stands."
+    },
+    "approach": [
+      { "narrate": "The harbour council sits on the steps at noon, on the benches that are carried out of the harbour master's office for it, with the town standing below on the quay and up the lanes, as many as can fit." },
+      { "oneOf": [
+        { "narrate": "Elske Marrow is in Merrowgate's chair, at the end of the front bench.", "when": { "flag": "elske_seat" } },
+        { "narrate": "Elske Marrow stands at the back, with Anwen, and no chair.", "when": { "anyFlag": ["elske_free", "elske_judged"] } }
+      ] },
+      { "narrate": "Sloe stands on the bottom step, facing up, with her slate, and the council looks down at her, and the town looks at both." },
+      { "say": "Sloe", "text": "I am Sloe of Orme. I keep the sum for the Wold. Every winter your bells ring back the white, and every winter it comes to us. I have nine hundred years of it written down. I have come to ask you to let it stop, for one winter, at midwinter, at Cinder Fold, and to share it." },
+      { "narrate": "Nobody says anything. There is nothing to hear. The gulls go over." }
+    ],
+    "crisis": [
+      { "narrate": "The Hall's men come down the front stair from the Lantern Hall in a body, twenty of them in the Hall's blue, with staves, and a sergeant in front with a paper." },
+      { "say": "The Hall's sergeant", "text": "Sloe of Orme. The Hall has a complaint against you: that you are going about the free wards stirring up feeling against the casting trade. You're to come up to the Hall and answer it. There's a cart for Cinder Fold at the top of the stair. The rope families have asked to hear you too." },
+      { "narrate": "A cart for Cinder Fold. Everyone on the steps knows whose letter is on Cass Ord's desk." },
+      { "narrate": "The council half stands. The town below goes quiet the way a quay goes quiet before a fight. Sloe does not move off the bottom step." },
+      { "say": "Sloe", "text": "In the Wold, when somebody comes to the door to be heard, nobody takes them away until they have been. I will go up to your Hall afterwards." },
+      { "say": "maren", "text": "They'll have her in that cart before anyone on that bench decides anything. Somebody has to speak before they do.", "when": { "party": "maren" } }
+    ],
+    "peaceful": {
+      "label": "Stand up on the steps beside Sloe, and speak for her",
+      "skill": "insight",
+      "alt": ["persuasion"],
+      "success": [
+        { "narrate": "{You know|@ knows} what the long room is doing: the ones who have lost the most have begun to say names back. {You send|@ sends} for them, and Anwen brings them down the tide steps, slowly, and stands them at the foot of the harbour steps beside Sloe, where everybody can see them.", "when": { "flag": "prepared:b4-hospice" } },
+        { "narrate": "On the rope-walk and the clerks' lane the dockers and the fish-wives are standing where they always stand, and every one of the Hall's men can see them.", "when": { "flag": "approach:b4-hospice" } },
+        { "narrate": "{You step|@ steps} down between the Hall's sergeant and the bottom step, with nothing in {their} hands, so that he has to go round.", "when": { "notFlag": "approach:b4-hospice" } },
+        { "oneOf": [
+          { "narrate": "Maren stands up on the bottom step beside Sloe, in her grey, in front of the whole harbour, which has known her since the winter of the Sallows. She does not say the white goes north. She says what she saw: Orme's doors, written top to bottom. Greve's room. The Hush. Somebody in the long room who said a name back to her this week. She says them one at a time, slowly, the way Anwen reads.", "when": { "party": "maren", "notRoller": "maren" } },
+          { "narrate": "{You stand|@ stands} up on the bottom step beside Sloe and {say|says} what {they} saw on the other side of the peaks: Orme's doors, written top to bottom. Greve's room. The Hush. {You do|@ does} not say the white goes north. {You say|@ says} what {they} saw, one thing at a time, slowly, the way Anwen reads." }
+        ] },
+        { "narrate": "Nobody on the quay hears anything. They do not have to. They are watching somebody they know stand next to somebody they do not, and say so." },
+        { "say": "The Hall's sergeant", "text": "I've a paper." },
+        { "say": "Anwen", "text": "You've a paper, and your mother had your name off the end of my reading for three winters in the Sallows, and you can put your paper in your coat and go home to her." },
+        { "narrate": "He looks at the council, and at the town on the quay, and at the twenty in blue behind him, who are looking at their boots. Then he puts the paper in his coat. The Hall's men go back up the front stair, slowly, and nobody on the quay gets out of their way." },
+        { "narrate": "The council sits down again. Sloe finishes what she came to say. It takes the afternoon." }
+      ],
+      "failure": [
+        { "narrate": "{You stand|@ stands} up to speak for Sloe, but the Hall's sergeant has his orders, and before {you have|@ has} said three words his men are down the steps with their staves out, and the quay below surges up to meet them." }
+      ]
+    },
+    "objective": {
+      "name": "The harbour steps",
+      "label": "Keep the Hall's men off the bottom step until the council has heard her",
+      "description": "Four successful actions keep the Hall's men off Sloe and the bottom step until the harbour council has heard her out.",
+      "skill": "athletics",
+      "alt": ["persuasion", "intimidation", "insight"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The Hall's men are driven back up the front stair in the end, but not before they had Sloe halfway up it, and her slate is broken on the steps, and the council has adjourned to the harbour master's office with its doors shut, and hears her there, without the town.",
+      "successText": "The last of the Hall's men goes back up the front stair, and Sloe is still on the bottom step, and the council sits down to hear her."
+    },
+    "foe": "b4-hospice-hall",
+    "foeName": "The Hall's Blue",
+    "enemyTheme": "soldier",
+    "attackName": "Hall-guard Stave",
+    "retainerName": "Guard of the Lantern Hall",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Evening on the harbour steps. The benches have gone back into the harbour master's office, and the quay is emptying, and nobody is hurt. Sloe is still sitting on the bottom step with her slate, where she has been all day.", "when": { "flag": "method:b4-hospice", "is": "peace" } },
+        { "narrate": "Evening on the harbour steps. The benches have gone back into the harbour master's office, and there is blood on the bottom step, and the hospice has six of the Hall's men in its long room and four dockers. Sloe is sitting on the step with her slate in two pieces in her lap." }
+      ] },
+      { "narrate": "The harbour council has heard her, and has said it will give its answer to the council at Highpass before midwinter, with the rest of the free wards. That is all Merrowgate ever says on the day." },
+      { "say": "Sloe", "text": "They listened. Nobody heard anything, and they listened anyway. In Orme that is called a beginning." },
+      { "say": "Sloe", "text": "Now I would like to know who in the south will say they believe me. Not that I believe it. They can see that. That they do. Before midwinter, I should like to know who." }
+    ],
+    "decisions": [
+      {
+        "id": "vouched",
+        "label": "Maren vouches for Sloe",
+        "requires": { "companion": "maren" },
+        "description": "This decision is permanent. Maren gives her word for Sloe, to the council and to the free wards. At midwinter, Sloe will be given the casting hall's north door to keep.",
+        "told": {
+          "ballad": "On the harbour steps Sister Maren Vale gave her word for the Reckoner of the Wold, and was not sure, and gave it anyway.",
+          "tally": "Merrowgate. The southern healer gave her word for the Reckoner. Written: she said she was not sure, and gave it."
+        },
+        "text": [
+          { "say": "maren", "text": "I'll write it. To the council, and to Highpass, and to Cinder Fold. That I've been there, and seen it, and that I believe her. That I'm not sure of the sum and I'm sure of her. I'll sign it Maren Vale. Not Sister. Just my name." },
+          { "say": "Sloe", "text": "Then at midwinter I will have something nobody in the Wold has ever had. A southerner's name on my side of the door.", "when": { "party": "maren" } },
+          { "narrate": "She writes it that night at Anwen's table, three times, one for each, and reads each one aloud before she seals it." }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_maren_vouched"
+      },
+      {
+        "id": "doubts",
+        "label": "Maren will not vouch: she is not sure",
+        "requires": { "companion": "maren" },
+        "description": "This decision is permanent. Maren will not give her word for Sloe. The free wards will watch Sloe until midwinter, and Sloe will find her own way into the casting hall.",
+        "told": {
+          "ballad": "On the harbour steps Sister Maren Vale would not give her word for what she could not be sure of, and said so to the Reckoner's face.",
+          "tally": "Merrowgate. The southern healer would not give her word for the Reckoner. Written: she said she was sorry. It is not the same."
+        },
+        "text": [
+          { "say": "maren", "text": "I can't. I believe you. I've seen it. But if I put my name to it they'll stop asking, and somebody has to keep asking. I'm sorry. I am." },
+          { "say": "Sloe", "text": "You are honest. I would rather you were honest than on my side. I did not know until now that those were different.", "when": { "party": "maren" } },
+          { "narrate": "The council's clerk writes that night to Highpass that the Wold's Reckoner should be watched until midwinter, for her own safety. Sloe reads the letter over his shoulder, and says nothing about it." }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "nessa": -1 },
+        "flag": "b4_maren_doubts"
+      },
+      {
+        "id": "silent",
+        "label": "Maren says nothing, and lets Sloe speak for herself",
+        "requires": { "companion": "maren" },
+        "description": "This decision is permanent. Maren neither vouches for Sloe nor refuses her. Sloe will speak for herself, at midwinter, as she did on the steps.",
+        "told": {
+          "ballad": "On the harbour steps Sister Maren Vale said nothing, and let the Reckoner of the Wold be heard in her own voice.",
+          "tally": "Merrowgate. The southern healer did not speak for the Reckoner. Written: she let her speak."
+        },
+        "text": [
+          { "say": "maren", "text": "I'm not going to speak for you. Not for you, and not against you. You spoke today. They heard you, not me. I'd only get in the way of that." },
+          { "say": "Sloe", "text": "In the Wold we would say that is what a door is for. I will try to think so too.", "when": { "party": "maren" } },
+          { "narrate": "Maren goes back up to the long room, and sits at the end of the walkers' row, and reads the names, and leaves her own till last.", "when": { "party": "maren" } }
+        ],
+        "rep": { "wilds": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_maren_silent"
+      },
+      {
+        "id": "anwen",
+        "label": "Let Anwen speak for Sloe",
+        "requires": { "absent": "maren" },
+        "description": "This decision is permanent. Anwen Holt gives the harbour her own word for Sloe. Sloe will speak for herself at midwinter.",
+        "told": {
+          "ballad": "On the harbour steps the old keeper with the cards stood up for the Reckoner of the Wold, and the harbour knew her.",
+          "tally": "Merrowgate. The keeper of the harbour hospice spoke for the Reckoner. Written: she reads names aloud every night, anybody's."
+        },
+        "text": [
+          { "say": "Anwen", "text": "I've never been north. I've had the long room for years, and this week it's saying names back. That's what I'll tell the council. That's all I know. I'll sign it." },
+          { "say": "Sloe", "text": "That is more than most people know about anybody." },
+          { "narrate": "Anwen writes it at her table that night, on the back of a nurse's rota, and signs it, and puts the pack of cards on top of it so that it will not blow away." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_maren_silent"
+      }
+    ]
+  },
+  "b4-signal": {
+    "id": "b4-signal",
+    "book": 4,
+    "part": 3,
+    "name": "The Signal",
+    "level": 66,
+    "town": "cinderfold",
+    "nextTown": "cinderfold",
+    "unlock": "b4-hospice",
+    "needs": ["nessa"],
+    "together": true,
+    "xp": 18250,
+    "gold": 1360,
+    "region": "Cinder Fold: the forge-signal tower and the signal house, the town below it, and the casting hall's doors",
+    "threat": "The rope families have the casting hall and the founders' hatch, a week before midwinter, and they mean to keep the forge-signal dark so that nobody in the deep workings comes up to see what is rung.",
+    "faction": "wardens",
+    "brief": "A week before midwinter, Cinder Fold's forge-signal is the only light that can call the miners up out of the deep workings. The rope families would like it dark. And Rue has gone down to Sloe's ringers to ask for the rope herself.",
+    "told": {
+      "ballad": "At Cinder Fold, a week before midwinter, the girl who always went first went up the signal stair, with her friend gone down to the ringers below.",
+      "tally": "Cinder Fold. The south lit its signal against its own rope families. Rue of Thrum went to the ringers. Written: who went with her."
+    },
+    "opening": [
+      { "narrate": "The edge of midwinter at Cinder Fold. Snow lies on the passes all round, and on the roofs, and melts off the streets as fast as it falls, because the ground here is warm, as it always is. The casting hall at the top of the town has its great doors shut." },
+      { "oneOf": [
+        { "narrate": "Wren has kept the forge-signal every night since the summer before last, from her chair at the top of the signal house stair. From up there she has watched the rope families carry things into the casting hall at night for a month, with no lamps, and has written down every load.", "when": { "flag": "b4_key_left", "noneFlag": ["b3_wren_cast"] } },
+        { "narrate": "Ottilie Brand's committee has kept the forge-signal every night since the summer before last, on its rota. From the lamp-room the committee's people have watched the rope families carry things into the casting hall at night for a month, with no lamps, and Ottilie has had every load written in the minutes. The tenth bell on the lid rings a little ahead of the others, as it always does.", "when": { "flag": "b4_key_left" } },
+        { "narrate": "Hew has kept the forge-signal every night since the key was put round his neck, the summer before last, at midnight and again at four, and checked it twice each time. He has news, and nobody to tell it to.", "when": { "flag": "b4_key_hew" } },
+        { "narrate": "The forge-signal has gone unkept since the summer the key went north on its cord. The lamp-room at the top of the town is dark, and nobody was watching the casting hall at night, and the rope families have it now. Its doors have been shut for a month, and rope-men stand at them.", "when": { "flag": "b4_key_carried" } }
+      ] },
+      { "oneOf": [
+        { "narrate": "Nessa still has the key on its cord round her neck. She has not taken it off since the summer she went north.", "when": { "party": "nessa", "flag": "b4_key_carried" } },
+        { "narrate": "Nessa looks up at the lamp-room from the bottom of the town before she has put her pack down, to see that it is lit. It is. She looks twice.", "when": { "party": "nessa", "noneFlag": ["b4_key_carried"] } },
+        { "narrate": "Nobody has the key in Cinder Fold. It went north on its cord, and has not come back.", "when": { "absent": "nessa", "flag": "b4_key_carried" } }
+      ] },
+      { "narrate": "Sloe's twenty ringers have come to Cinder Fold for midwinter, and the miners have lodged them in their own hall at the bottom of the town. They practise at a rope hung from the hall's roof-beam with nothing on the end of it, by ear, because that is how the Wold's ringers learn." },
+      { "narrate": "Rue is with them. She went down to the miners' hall two nights ago with her book under her arm, and has not come back up." },
+      { "say": "Rue", "text": "Sloe means to ring it. Whoever rings it gives the bell everything they have. Sloe has the sum by heart, and nine hundred years of it, and the Wold needs her after. I've only got a season to lose. So I'm asking for the rope myself. I wanted you to hear it from me." },
+      { "oneOf": [
+        { "say": "nessa", "text": "She can't. She can't. Somebody tell her she can't.", "when": { "party": "nessa" } },
+        { "narrate": "Nobody answers her.", "when": { "absent": "nessa" } }
+      ] }
+    ],
+    "talks": [
+      {
+        "id": "nessa",
+        "label": "Go after Nessa",
+        "requires": { "companion": "nessa" },
+        "lines": [
+          { "narrate": "Nessa is on the signal house stair, halfway up, sitting on a step with her knees drawn up, where the stair turns and you can see the whole of the town and the casting hall's shut doors.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "I went first. All my life. Up this stair, and over the peaks, and into the Hush. That's what I'm for. I said so. I said it to everybody." },
+          { "say": "nessa", "text": "And she's going first. Rue. Into the one thing I can't go into for her, because if I ring it, I'm gone, and if she rings it, she's gone, and she's got less to lose than me, and she knows it, and she's right." },
+          { "oneOf": [
+            { "say": "nessa", "text": "At Thrum she asked me what to do about her mother, because I was the one somebody went back for. I told her. She did it. I don't get to tell her this time. Do I.", "when": { "flag": "b4_rue_asked_nessa" } },
+            { "say": "nessa", "text": "She's been writing herself onto other people's doors since the day she walked out of the north. A line at a time, so she'd still be there in the morning. And now she wants to give the whole lot to a bell." }
+          ] },
+          { "say": "nessa", "text": "I don't know whether to stand next to her or stand in front of her. I've always known. Every time. I don't know now." }
+        ]
+      },
+      {
+        "id": "rue",
+        "label": "Go down to the miners' hall and find Rue",
+        "lines": [
+          { "narrate": "Rue is in the miners' hall at the bottom of the town, sitting on a bench under the empty rope with her book open on her knee, watching the ringers practise." },
+          { "oneOf": [
+            { "say": "Rue", "text": "I gave my mother at Thrum. I have her written. I read her every morning, like somebody I have heard of, and I like her. There is nothing in me now that would miss her. That is why it should be me.", "when": { "flag": "b4_rue_gave" } },
+            { "say": "Rue", "text": "I kept my mother, at Thrum. All of it, and the hurt with it. If I ring, that goes too. It is the only thing I would lose that I would mind. I have it written. Somebody can read it to me after, and I will like her, the way you like somebody you have heard of." }
+          ] },
+          { "oneOf": [
+            { "say": "Rue", "text": "I have no book. You saw it burn. I have my arm, and a season, and what I have lived since I came south. It is not much. It is mine. I would give it.", "when": { "flag": "b4_book_burned" } },
+            { "say": "Rue", "text": "I have my book. Everything is in it, back to the first page. I would not lose any of it. I would only lose having read it. Somebody else can read it to me." }
+          ] },
+          { "say": "Rue", "text": "Sloe said no. She said it three times. She is going to have to say it at midwinter, in front of everybody, at the rope. I am going to ask her there. In the Wold that is how it is done." },
+          { "oneOf": [
+            { "say": "nessa", "text": "Rue.", "when": { "party": "nessa" } },
+            { "narrate": "She looks at the door as if somebody else might come through it, and turns a page.", "when": { "absent": "nessa" } }
+          ] },
+          { "say": "Rue", "text": "I know. I have written down that you will say that.", "when": { "party": "nessa" } }
+        ]
+      },
+      {
+        "id": "keeper",
+        "label": "Go up to the signal house, and ask what has been seen from it",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "Hew is in the lamp-room at the top of the signal house, with the key round his neck on its cord and his hearth bell on the sill, writing in a book with every night in it, in a hand that has got better since the summer before last.", "when": { "flag": "b4_key_hew" } },
+            { "narrate": "Ottilie Brand is in the lamp-room at the top of the signal house, with the committee's minutes book open on the sill and the key on its nail beside the rota.", "when": { "flag": "b4_key_left", "anyFlag": ["b3_wren_cast"] } },
+            { "narrate": "Wren is in her chair at the top of the signal house stair, with a blanket over her knees and her stick across them, and a slate with a month of chalk marks on it.", "when": { "flag": "b4_key_left" } },
+            { "narrate": "Ottilie Brand meets you at the foot of the signal house, in the dark. The lamp-room door at the top of the stair has been shut since the summer, and the committee has no key to it." }
+          ] },
+          { "oneOf": [
+            { "say": "Hew", "text": "Thirty-one nights they've carried. I counted. Three nights ago they carried something heavy, on eight men, wrapped up, down the founders' stair under the lid. Not up. Down. I've never seen anything go down there.", "when": { "flag": "b4_key_hew" } },
+            { "say": "Ottilie Brand", "text": "Thirty nights of loads. The minutes have every one. Three nights ago they carried something heavy on eight men down under the lid, by the founders' stair, where nothing goes. The committee voted to ask Ailith what it was. She said bells are her families' business.", "when": { "flag": "b4_key_left", "anyFlag": ["b3_wren_cast"] } },
+            { "say": "Wren", "text": "Thirty nights. I counted them, every load, the way I always count. Three nights ago, eight men carrying something heavy down under the lid, by the founders' stair. Nobody goes down there. I went down there once." },
+            { "say": "Ottilie Brand", "text": "Nobody was up there to see. I'm the committee. I should have had somebody up there, key or no key. I didn't. Now they've the hall, and the hatch, and we've no light to call the miners up with." }
+          ] },
+          { "oneOf": [
+            { "narrate": "Nobody has told Hew to keep the signal lit this week. He is going to anyway.", "when": { "flag": "b4_key_hew" } },
+            { "say": "Wren", "text": "If the signal's lit at midnight, the deep workings come up. Every shift. That's what it's for. Ailith knows it. She'd like them down there till it's done.", "when": { "flag": "b4_key_left", "noneFlag": ["b3_wren_cast"] } },
+            { "narrate": "If the signal is lit at midnight, the deep workings come up, every shift. That is what it is for. Ailith knows it." }
+          ] }
+        ]
+      },
+      {
+        "id": "ailith",
+        "label": "Go up to the casting hall's doors and speak to Ailith Strake",
+        "lines": [
+          { "narrate": "Ailith Strake comes out to you on the casting hall's step, and shuts the door behind her, so that you do not see in." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "A week. Then the rope families ring for the free wards, with the Parting Bell. Forward. Every bell louder, for good. The Mother Bell's rope is in your signal house under your lock, and I'll ask you for the key at midwinter, in front of everybody. Nobody in the free wards will ever have to go into the bronze again, or give at a floor, or be asked for anything. That is what I'm ringing for.", "when": { "flag": "mother_silenced" } },
+            { "say": "Ailith Strake", "text": "A week. Then the rope families ring for the free wards, as we have every midwinter since Elske's note. This time with the Parting Bell. Forward. Every bell louder, for good. Nobody in the free wards will ever have to go into the bronze again, or give at a floor, or be asked for anything. That is what I'm ringing for." }
+          ] },
+          { "say": "Ailith Strake", "text": "Cass Ord wrote and offered me her foundries. I wrote back that the rope families don't sell bells. She won't have opened it. She'll know what it says." },
+          { "oneOf": [
+            { "say": "Ailith Strake", "text": "Highpass's bell is in the hall, on a frame by the first forge, where my twelve set it down. Sable. He hums when I'm wrong. When I ask him for the note, he'll give it. He said so.", "when": { "flag": "b4_sable_ailith", "anyFlag": ["b3_sable_cast"] } },
+            { "say": "Ailith Strake", "text": "Sable's here. He came of his own will. He stands by me in the hall and says nothing, and I hear him think. When I ask him for the note, he'll give it. He said so.", "when": { "flag": "b4_sable_ailith" } },
+            { "say": "Ailith Strake", "text": "You have both notes. Sable taught you. I know he did; he wrote and told me. At midwinter I'll ask you for one of them, at the rope, in front of everybody. That's fair. I'd like you to think about which.", "when": { "flag": "b4_sable_taught" } },
+            { "say": "Ailith Strake", "text": "I've worked the forward note out for myself, since nobody would give it me. I'm the best ringer alive. I've guessed well. I've had a year." }
+          ] },
+          { "say": "Ailith Strake", "text": "Whoever rings it gives the bell everything. I know. I'm ringing it myself. I'll not ask anybody else to." }
+        ]
+      }
+    ],
+    "clue": "The rope families have opened the founders' hatch under the lid and carried the Parting Bell down through it. They mean to ring it from under the nine, at midwinter, with the Mother Bell rung over the first forge above.",
+    "investigate": {
+      "label": "Go round the casting hall in the snow, and find out where they have taken the bell",
+      "skill": "survival",
+      "alt": ["investigation"],
+      "success": [
+        { "narrate": "{You go|@ goes} round the outside of the casting hall in the snow after dark, the long way, by the slag heaps, and {find|finds} the founders' stair-house behind it, where the stair comes up from under the lid." },
+        { "oneOf": [
+          { "narrate": "The council's seal is off the hatch. It was lead, pressed with the council's bell, and somebody has cut it through with a chisel and pulled the two halves off and left them in the snow. The hatch stands open. Breaking that seal is a crime the committee can name.", "when": { "flag": "b3_stair_sealed" } },
+          { "narrate": "The hatch stands open, and the frost on its lip has been broken by ropes, many times, going down." }
+        ] },
+        { "narrate": "In the snow round the hatch are the marks of eight men carrying, and the drag of something heavy on rollers. It went down. Whatever the rope families mean to ring at midwinter, they mean to ring it from under the nine." },
+        { "oneOf": [
+          { "narrate": "And in the snow by the signal house door, leading up from the hatch and back, are new boot-marks, two nights old, of somebody who tried the lock. The Mother Bell's rope is coiled in there, under the lock whose only key is yours. They cannot ring without it.", "when": { "flag": "mother_silenced" } },
+          { "narrate": "From the hatch {you can|@ can} see the lamp-room at the top of the signal house. From the lamp-room, anybody up there at midnight can see the hatch." }
+        ] }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} round the outside of the casting hall in the snow, but the rope families have men on every corner of it, and {you are|@ is} turned back at the slag heaps before {you have|@ has} seen anything but the backs of the stair-house." }
+      ]
+    },
+    "route": {
+      "label": "Climb the signal house in the dark and learn every turn of the stair",
+      "skill": "athletics",
+      "alt": ["stealth", "perception"],
+      "success": [
+        { "narrate": "{You climb|@ climbs} the signal house stair in the dark, twice, without a lamp, and {count|counts} it: a hundred and twelve steps, a turn every sixteen, and at the seventh turn a door to the signal house's store-room, with a bar on the inside." }
+      ],
+      "failure": [
+        { "narrate": "{You climb|@ climbs} the signal house stair in the dark, but it turns and turns again, and somewhere after the fifth turn {you lose|@ loses} count, and {come|comes} down not sure how many there are." }
+      ]
+    },
+    "direct": {
+      "label": "Go straight up to the signal house at midnight",
+      "text": "You go straight up through the town to the signal house at midnight, with the snow coming down and melting on the street."
+    },
+    "approach": [
+      { "narrate": "Midnight. The snow is coming down thick over the casting hall and the town, and melting on the streets. At the top of the town the signal house stands up into it, with its lamp-room dark or lit, and its stair going up inside like a screw." },
+      { "oneOf": [
+        { "narrate": "Nessa goes up the stair first. She always has.", "when": { "party": "nessa", "noneFlag": ["b4_key_hew"] } },
+        { "narrate": "Hew goes up the stair first, with the key round his neck, and Nessa goes up behind him.", "when": { "party": "nessa", "flag": "b4_key_hew" } },
+        { "narrate": "Hew goes up the stair first, with the key round his neck, and you go up behind him.", "when": { "absent": "nessa", "flag": "b4_key_hew" } },
+        { "narrate": "You go up the stair first." }
+      ] }
+    ],
+    "crisis": [
+      { "narrate": "At the fourth turn of the stair, below you, the door at the bottom opens, and rope-men come in out of the snow, a dozen of them, with ropes over their shoulders and no lamps." },
+      { "say": "A rope-man", "text": "Ailith says leave the lamp dark this week. Nobody's to be hurt. Come down, and nobody will be." },
+      { "oneOf": [
+        { "say": "A rope-man", "text": "And she'll have the key to the store-room. The rope's in there. She needs the rope.", "when": { "flag": "mother_silenced" } },
+        { "say": "A rope-man", "text": "The deep workings stay down till it's rung. Ailith's word. It's for them too." }
+      ] },
+      { "narrate": "They start up the stair. It is narrow enough for one at a time. Above, the lamp-room is a hundred steps off, in the dark." },
+      { "oneOf": [
+        { "say": "nessa", "text": "Hew. Go up. Light it. I've got the stair.", "when": { "party": "nessa", "flag": "b4_key_hew" } },
+        { "say": "nessa", "text": "I'll light it. Hold the turn. Don't let them past the turn.", "when": { "party": "nessa" } }
+      ] }
+    ],
+    "peaceful": {
+      "label": "Get the signal lit before the rope-men reach the lamp-room",
+      "skill": "athletics",
+      "alt": ["stealth"],
+      "success": [
+        { "narrate": "{You know|@ knows} where the bell went: down the founders' hatch, under the nine. If the miners come up tonight they will see the hatch, and the whole of Cinder Fold will know by morning what is being rung, and where. That is why the lamp must be lit tonight, and not tomorrow.", "when": { "flag": "prepared:b4-signal" } },
+        { "narrate": "{You know|@ knows} the stair: a hundred and twelve steps, a turn every sixteen, and the store-room door at the seventh turn with its bar on the inside.", "when": { "flag": "approach:b4-signal" } },
+        { "narrate": "{You go|@ goes} up the stair two steps at a time in the dark, counting, and {lose|loses} count, and {go|goes} on anyway.", "when": { "notFlag": "approach:b4-signal" } },
+        { "oneOf": [
+          { "narrate": "Hew goes up to the lamp-room with the key, a step at a time, counting out loud, the way he has every night, and Nessa stands on the stair at the turn below him with her back to the wall and her hand out, and the first of the rope-men stops a step below her hand.", "when": { "party": "nessa", "flag": "b4_key_hew" } },
+          { "narrate": "Nessa goes up the stair to the lamp-room without a lamp, two steps at a time, the way Wren taught her, and does not count, because she has never needed to.", "when": { "party": "nessa", "notRoller": "nessa" } },
+          { "narrate": "Hew goes up to the lamp-room with the key, counting out loud, and {you stand|@ stands} on the stair at the turn below him, with {their} back to the wall, and the first of the rope-men stops a step below.", "when": { "flag": "b4_key_hew" } },
+          { "narrate": "{You go|@ goes} up the last turn to the lamp-room and {find|finds} the wick and the flint by touch, where every keeper has kept them for twenty years." }
+        ] },
+        { "narrate": "The lamp is lit. It goes up out of the lamp-room's high window over the snow, white and steady, and over the whole of Cinder Fold, and down the shafts, the way it has every midnight but this year's." },
+        { "say": "A rope-man", "text": "That's done, then." },
+        { "narrate": "He says it to nobody, and stands on the stair a while with the others behind him. Then they go back down, slowly, one at a time, and out into the snow." },
+        { "narrate": "Within the hour the deep workings come up. Shift after shift, with their lamps, out of every shaft-head in the town, into the snow, to see what the signal wants. Then they see the hatch." }
+      ],
+      "failure": [
+        { "narrate": "{You go|@ goes} for the lamp-room, but the stair is narrow and dark and the rope-men are on it below, faster than anybody could be on a stair they do not know, and before {you are|@ is} at the sixth turn there are hands on the rope at {their} back." }
+      ]
+    },
+    "objective": {
+      "name": "The lamp-room",
+      "label": "Hold the stair until the signal is lit",
+      "description": "Four successful actions hold the signal house stair against the rope-men until the lamp in the lamp-room is lit.",
+      "skill": "athletics",
+      "alt": ["stealth", "intimidation", "survival"],
+      "target": 4,
+      "deadline": 7,
+      "failText": "The lamp is lit in the end, an hour late, and the deep workings come up to it, but on the stair two of the rope-men went over the rail at the turn, and one of them is not getting up, and the miners carry him down to the hall past the ringers.",
+      "successText": "The lamp goes up in the lamp-room, white and steady over the snow, and the rope-men on the stair below it stop."
+    },
+    "foe": "b4-signal-rope",
+    "foeName": "Rope-men on the Signal Stair",
+    "enemyTheme": "soldier",
+    "attackName": "Bell-rope Snare",
+    "retainerName": "Rope-man of the Hall",
+    "after": [
+      { "oneOf": [
+        { "narrate": "Before dawn. The signal is lit over Cinder Fold. The miners stand round the founders' hatch in the snow with their lamps, a thousand of them, saying nothing, and the rope families stand at the casting hall's doors, and nobody is hurt.", "when": { "flag": "method:b4-signal", "is": "peace" } },
+        { "narrate": "Before dawn. The signal is lit over Cinder Fold. The miners stand round the founders' hatch in the snow with their lamps, a thousand of them, saying nothing, and the rope families stand at the casting hall's doors with their hurt, and the stair is dark with blood at the fourth turn." }
+      ] },
+      { "oneOf": [
+        { "narrate": "The store-room is shut, and barred, and the Mother Bell's rope is still in it under your lock. Without it nobody rings the Mother Bell at midwinter.", "when": { "flag": "mother_silenced" } },
+        { "narrate": "The Mother Bell's rope is up in the casting hall, as it has been since the night of the great note. The rope families hold it." }
+      ] },
+      { "narrate": "Down in the miners' hall the ringers have heard the lamp go up. Rue has come out onto the step of the hall with her book, and stands in the snow looking up at the signal, and waits to see who will come down the hill to her." },
+      { "say": "Rue", "text": "The miners know now. Everybody does. Good. It should be rung in front of everybody. Now I would like to know who is coming with me, and who is stopping me, and who is staying up there with the lamp." }
+    ],
+    "decisions": [
+      {
+        "id": "with",
+        "label": "Nessa goes down to Rue, and stays with her among the ringers",
+        "requires": { "companion": "nessa" },
+        "description": "This decision is permanent. Nessa goes to Sloe's ringers with Rue. At midwinter she will be at Rue's side at the rope, whatever is rung.",
+        "told": {
+          "ballad": "At Cinder Fold Nessa Reed came down off the signal stair and stood beside her friend among the ringers, and did not go first.",
+          "tally": "Cinder Fold. The southern girl went to the ringers with Rue of Thrum. Written: she will stand next to her."
+        },
+        "text": [
+          { "narrate": "Nessa comes down the hill in the snow, and stops on the step of the miners' hall in front of Rue, and does not say anything for a long time.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "I'm not going to stop you. I'm not going to go first. I'm going to stand next to you. All the way to the rope. If you ring it, I'll be there when you've done. I'll tell you who you are. I'll tell you every day." },
+          { "say": "Rue", "text": "Write it down for me. Now. So it is written.", "when": { "party": "nessa" } },
+          { "narrate": "Nessa writes it in Rue's book, in capitals, under the last line: 'I WILL TELL YOU WHO YOU ARE. NESSA.'", "when": { "party": "nessa" } }
+        ],
+        "rep": { "wold": 1 },
+        "approval": { "nessa": 1 },
+        "flag": "b4_nessa_with_rue"
+      },
+      {
+        "id": "stops",
+        "label": "Nessa tells Rue no, and stops her",
+        "requires": { "companion": "nessa" },
+        "description": "This decision is permanent. Nessa tells Rue no. Rue will not ring the Parting Bell at midwinter.",
+        "told": {
+          "ballad": "At Cinder Fold Nessa Reed told her friend no, for the first time, and her friend listened.",
+          "tally": "Cinder Fold. The southern girl told Rue of Thrum no. Written: Rue did as she was asked. She wrote it down that she did not like it."
+        },
+        "text": [
+          { "narrate": "Nessa comes down the hill in the snow, fast, and takes Rue's book out of her hands on the step of the miners' hall, and holds it.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "No. Not you. I don't care whose sum it is. I don't care that it's a season. It's your season. I was in it. I'm not having it rung out of you so everybody else can sleep. No." },
+          { "say": "Rue", "text": "Nobody has ever told me no for my own sake. In the Wold nobody would.", "when": { "party": "nessa" } },
+          { "say": "Rue", "text": "Then I will not ask for the rope. Give me the book. I want to write down that you said it.", "when": { "party": "nessa" } },
+          { "narrate": "She writes it, small, under the last line, and then shows Nessa, and Nessa reads it, and does not say anything.", "when": { "party": "nessa" } }
+        ],
+        "rep": { "wardens": 1 },
+        "approval": { "maren": 1 },
+        "flag": "b4_nessa_stops_rue"
+      },
+      {
+        "id": "signal",
+        "label": "Nessa lets Rue go, and keeps the signal",
+        "requires": { "companion": "nessa" },
+        "description": "This decision is permanent. Nessa stays in the lamp-room and keeps the signal lit. Rue goes to the ringers alone.",
+        "told": {
+          "ballad": "At Cinder Fold Nessa Reed kept the signal lit over the town, and let her friend go down the hill alone.",
+          "tally": "Cinder Fold. The southern girl kept the forge-signal and let Rue of Thrum go. Written: somebody has to keep the lamp."
+        },
+        "text": [
+          { "narrate": "Nessa does not come down. She stands at the lamp-room's high window with the signal at her back and looks down at Rue on the step of the miners' hall, and Rue looks up.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "Somebody's got to keep it lit. Till midwinter. Till it's done. So that whatever's rung, everybody sees. That's mine. That was always mine. She's got to go and do hers." },
+          { "narrate": "Rue lifts her book once, the way you lift a hand, and goes back into the miners' hall, and shuts the door." },
+          { "say": "nessa", "text": "She'll write it down that I didn't come. I'd like her to." }
+        ],
+        "rep": { "wilds": 1 },
+        "approval": { "orin": 1 },
+        "flag": "b4_nessa_signal"
+      },
+      {
+        "id": "alone",
+        "label": "Let Rue go down to the ringers",
+        "requires": { "absent": "nessa" },
+        "description": "This decision is permanent. Rue goes to Sloe's ringers alone, to ask for the rope at midwinter.",
+        "told": {
+          "ballad": "At Cinder Fold the girl with the book went down to the ringers alone, under the signal.",
+          "tally": "Cinder Fold. Rue of Thrum went to the ringers alone. Written: nobody stopped her, and nobody went with her."
+        },
+        "text": [
+          { "narrate": "You do not go down the hill. It is not yours to stop her, and the one who might have is not here." },
+          { "narrate": "Rue lifts her book once, the way you lift a hand, and goes back into the miners' hall, and shuts the door." }
+        ],
+        "rep": { "wold": 1 },
+        "flag": "b4_nessa_signal"
       }
     ]
   }

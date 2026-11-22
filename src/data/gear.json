@@ -5403,6 +5403,123 @@
     }
   },
   {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 960,
+    "id": "captains-commission",
+    "name": "Captain's Commission",
+    "description": "Sorrel's paper, with the council's seal on it, that made somebody captain of the council's watch from the ford at Ashford to midwinter. It has been folded once and read many times, whoever kept it.",
+    "purpose": "Orin only. Equip in the accessory slot: +3 Intimidation and Athletics, +1 Strength, Constitution and Wisdom saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "intimidation": 3,
+      "athletics": 3
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1,
+      "wis": 1
+    },
+    "skill": {
+      "name": "Captain's Word",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Give an enemy the order to stand down, the way the column was given its word at the ford: it is Weakened until your next turn and deals 25% less damage."
+    },
+    "requires": {
+      "level": 62,
+      "members": [
+        "orin"
+      ]
+    },
+    "story": {
+      "skill": "intimidation"
+    },
+    "exclusive": {
+      "quest": "b4-ford"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 970,
+    "id": "hospice-physic-bag",
+    "name": "Hospice Physic-bag",
+    "description": "Anwen Holt's old bag from the Sallows, worn through at the corners and mended with sailcloth, with a pack of cards in the side pocket that she says she has never once cheated with.",
+    "purpose": "Maren only. Equip in the accessory slot: +3 Medicine and Insight, +2 Wisdom saving throws, +1 Constitution saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "medicine": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "con": 1
+    },
+    "requires": {
+      "level": 63,
+      "members": [
+        "maren"
+      ]
+    },
+    "story": {
+      "skill": "medicine"
+    },
+    "exclusive": {
+      "quest": "b4-hospice"
+    }
+  },
+  {
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 980,
+    "id": "signal-fire-longbow",
+    "name": "Signal-fire Longbow",
+    "description": "Wren's bow, which has hung on a peg in the lamp-room of Cinder Fold's forge-signal for twenty years, strung every autumn and never shot. The grip is wrapped in the same cord as the signal key.",
+    "purpose": "Nessa only. Dexterity, 1d8 piercing, +4 to hit, +8 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 4,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Signal Shot",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Loose a shot that lights its mark like the signal over the town: the enemy is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "requires": {
+      "level": 64,
+      "members": [
+        "nessa"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-signal"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",
