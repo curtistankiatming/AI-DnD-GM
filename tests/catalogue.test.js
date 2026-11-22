@@ -238,3 +238,15 @@ test('refining an equipped item charges twice its price and keeps it worn', () =
   const again = E.resolveAction(out.state, { type: 'upgrade', itemId: 'commandery-halberd-fine', actorId: 'player' });
   assert.equal(again.state.player.gold, 760, 'only one upgrade');
 });
+
+// UI review through Book Three (22 November 2026): the smith's list marks
+// Masterwork refines so the town page can show them before basic Fine upgrades.
+test('the smith list marks Masterwork refines apart from Fine upgrades', () => {
+  const s = makeSandbox({ classId: 'fighter', level: 10 });
+  G.addTo(s.player.inventory, 'commandery-halberd', 1); // in the pack; level only limits wearing it
+  const ups = E.buildView(s).world.upgrades;
+  const mw = ups.find((u) => u.itemId === 'commandery-halberd');
+  assert.ok(mw, 'the halberd can be refined in town');
+  assert.equal(mw.masterwork, true);
+  assert.ok(ups.some((u) => !u.masterwork), 'starting gear still has Fine upgrades');
+});

@@ -6,6 +6,7 @@
   const scroll = document.getElementById('adventureScroll');
   if (!scroll || typeof renderGame !== 'function') return;
   const offline = Boolean(window.BriarwatchOffline);
+  const bookName = n => `Book ${['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'][n] || n}`;
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   const board = el('section', 'whats-next'); board.id = 'whatsNext'; board.hidden = true; board.setAttribute('aria-labelledby', 'whatsNextTitle');
   (document.getElementById('adventureApproaches') || scroll.lastElementChild).after(board);
@@ -52,7 +53,7 @@
     if (!d?.canCommission) { card.append(el('p', 'muted', d?.reason || 'A new adventure is not available right now.')); return card; }
     card.append(el('p', '', side ? 'The written story comes first. Claude writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
     // A free hosted account: the first adventure of its own closes the paid book to this save (src/book.js).
-    if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `Before you ask: once this save starts an adventure of its own, it follows that story and will not go back to Book ${w.paidBook.n}, ${w.paidBook.title}, even after an upgrade.`));
+    if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `Before you ask: once this save starts an adventure of its own, it follows that story and will not go back to ${bookName(w.paidBook.n)}, ${w.paidBook.title}, even after an upgrade.`));
     const label = el('label', 'whats-next-field', 'Your wish (optional)'), input = el('input');
     input.id = 'wishInput'; input.type = 'text'; input.maxLength = 200; input.placeholder = 'something in the marshes, or a rival from my past'; input.value = wish; input.disabled = busy;
     input.addEventListener('input', () => { wish = input.value; });
@@ -80,11 +81,24 @@
     if (!w.bellComplete) list.append(el('p', '', 'Follow the story choices above to finish the bell investigation. More roads open after that.'));
     // After the last written chapter this save can play: say so every time, not only once in the story.
     if (w.booksComplete && !w.activeQuest) list.append(el('p', 'whats-next-end', w.paidBook
-      ? (w.paidBook.closed ? `The written books open here are complete, and this save carries on with its own AI story.` : `The written books open here are complete. Book ${w.paidBook.n}, ${w.paidBook.title}, goes on for paid accounts; upgrade, and this save carries straight on into it.`)
+      ? (w.paidBook.closed ? `The written books open here are complete, and this save carries on with its own AI story.` : `The written books open here are complete. ${bookName(w.paidBook.n)}, ${w.paidBook.title}, goes on for paid accounts; upgrade, and this save carries straight on into it.`)
       : 'The written story is complete. New adventures come from the AI game master; the bounty board stays open.'));
+    // A job trial waiting to be asked for (the 3rd job at level 40, the 4th at 70) is offered here as well as
+    // on Prepare, so the end of Book Three points at it. One that is too far off says what it needs.
+    const t = w.director?.trial;
+    if (t && !t.questId && w.bellComplete) {
+      const row = el('div', 'whats-next-quest'), text = el('div'); row.id = 'whatsNextTrial';
+      text.append(el('strong', '', `${t.label}: become a ${t.title}`), el('span', 'muted', ` · Level ${t.level} · ${t.tier}`), el('p', 'muted', t.canRequest ? `Pass it to take your ${t.job} job. With the AI game master on, the trial is written for your story; otherwise the written trial is used.` : t.reason));
+      const b = el('button', 'btn btn-primary btn-small', 'Begin your trial'); b.type = 'button'; b.disabled = busy || !t.canRequest; b.dataset.disabled = String(!t.canRequest);
+      b.addEventListener('click', () => { if (!busy && t.canRequest) void window.BriarwatchChat?.trial(); });
+      row.append(text, b); list.append(row);
+    } else if (w.booksComplete && !w.activeQuest && !w.paidBook && view.progression?.job?.branch && !view.progression?.job?.thirdJob && (view.player?.level || 0) < 40 && (w.bounty?.afterBooks || 0) >= 40) {
+      list.append(el('p', 'muted', `Your 3rd job trial opens at level 40. Bounties can take you there.`));
+    }
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', q.name), el('span', 'muted', ` · Level ${q.level}${q.generated ? ' · written for you' : ''}`), el('p', 'muted', q.brief));
+      if (q.straightOn && !q.inProgress) text.append(el('p', 'whats-next-under', 'Straight on down the stair: no town, shop or side job until the end of the book. The party rests between chapters, but buy potions and gear before you set out.'));
       // An AI-written adventure's difficulty is picked before setting out, here as on Prepare.
       if (q.trial) text.append(el('p', 'muted', `Difficulty: ${q.trialTier} (fixed for a trial)`));
       else if (q.tiers?.length) {
