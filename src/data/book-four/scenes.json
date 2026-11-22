@@ -356,5 +356,201 @@
         ]
       }
     }
+  },
+  "letters-camp": {
+    "id": "letters-camp",
+    "after": "b4-letters",
+    "cast": [],
+    "act": "Camp",
+    "location": "The vault under the drill-yard, Vell, the night after",
+    "start": "stair",
+    "nodes": {
+      "stair": {
+        "title": "At the Top of the Stair",
+        "objective": "Camp.",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "That night the satchel sits on the vault table under Fennick's lamp, tied with red tape, and nobody touches it.", "when": { "flag": "b4_letters_read" } },
+            { "narrate": "That night the vault is quiet. Fennick and his clerks are still at the bottom of the stair, copying, and will be for a week.", "when": { "flag": "b4_letters_copied" } },
+            { "narrate": "That night you sit at the vault table and try to remember what you wrote, and cannot.", "when": { "flag": "b4_letters_answered" } }
+          ] },
+          { "narrate": "You are not as tired as you should be. Nobody says so at first." },
+          { "say": "orin", "text": "A day of stair, up, in armour, and you came out at the top like you'd walked across a yard. I've done stairs in armour. I sat down at the top of every one. The old guard-books call that Iron Hide, when the body stops minding.", "when": { "spec": "guardian" } },
+          { "narrate": "A day of stair, up, in armour, and you come out at the top as if you had walked across a yard. The old guard-books call that Iron Hide: the body has stopped minding.", "when": { "spec": "guardian", "absent": "orin" } },
+          { "say": "nessa", "text": "You trimmed the lamp wick with your knife on the stair. One cut, in the dark, and you never looked. That's a Blademaster's hand. Keen Edge. The edge goes where you want it before you've thought it.", "when": { "spec": "duelist" } },
+          { "narrate": "On the stair you trim the lamp wick with your knife, one cut, in the dark, without looking. A Blademaster's hand: Keen Edge, the edge going where you want it before you have thought it.", "when": { "spec": "duelist", "absent": "nessa" } },
+          { "say": "orin", "text": "On the floor, Fennick's clerks did what you said without looking round to see who'd said it. That's the thing. Not the voice. When people stop checking. Veteran Captain, the old companies called it. Banner Captains have it.", "when": { "spec": "warlord" } },
+          { "narrate": "On the floor, Fennick's clerks did what you told them without looking round to see who had said it. The old companies called that Veteran Captain: people stop checking.", "when": { "spec": "warlord", "absent": "orin" } },
+          { "say": "nessa", "text": "I lost you on the stair today. Twice. I was right behind you with a lamp. Blade in the Dark, the Nightblades call that. I'm the one who goes first. I don't like not knowing where you are.", "when": { "spec": "shadow" } },
+          { "narrate": "On the stair the lamp behind you loses you twice, and finds you again ahead of it. Blade in the Dark, the Nightblades call that.", "when": { "spec": "shadow", "absent": "nessa" } },
+          { "say": "nessa", "text": "You mended Fennick's lamp on the way up with a hairpin and a bit of his red tape, and it burns better than it did new. Master Tinker. That's Trapwright work. I'm keeping the hairpin.", "when": { "spec": "saboteur" } },
+          { "narrate": "On the way up you mend Fennick's lamp with a hairpin and a length of his red tape, and it burns better than it did new. Master Tinker: Trapwright work.", "when": { "spec": "saboteur", "absent": "nessa" } },
+          { "say": "maren", "text": "Two of Fennick's clerks told you, separately, what the other one was afraid of, and neither of them meant to. You have people now. Everywhere you go. Informants, the Spymasters say. I'd like to know which of them is me.", "when": { "spec": "grifter" } },
+          { "narrate": "Two of Fennick's clerks tell you, separately, what the other one is afraid of, and neither of them means to. A Spymaster has people everywhere: Informants.", "when": { "spec": "grifter", "absent": "maren" } },
+          { "say": "nessa", "text": "Your lamp went out on the stair and you lit it again off your own fingers. You didn't even think about it. The hair on my arms stood up. Overchannel, the Stormcallers call it. Warn me next time.", "when": { "spec": "evoker" } },
+          { "narrate": "Your lamp goes out on the stair and you light it again off your own fingers without thinking. Overchannel, the Stormcallers call it.", "when": { "spec": "evoker", "absent": "nessa" } },
+          { "say": "maren", "text": "You caught Fennick's box before it fell. Before. I saw your hand move, and then I saw the box start to go. Temporal Poise, the Timeweavers call that. I'm not going to think about it too hard.", "when": { "spec": "chronist" } },
+          { "narrate": "You catch Fennick's box on the stair before it starts to fall. Temporal Poise, the Timeweavers call that: the hand moves first.", "when": { "spec": "chronist", "absent": "maren" } },
+          { "say": "orin", "text": "Whatever you call up, it's stronger now. I felt it on the stair, behind you, like a wall at my back. Pact Strength, isn't it? The Summoners' word. I'd like it to stay on our side.", "when": { "spec": "binder" } },
+          { "narrate": "Whatever you call up is stronger now. On the stair you can feel it behind you like a wall. Pact Strength, the Summoners call it.", "when": { "spec": "binder", "absent": "orin" } },
+          { "say": "maren", "text": "You put your hand on that clerk's head, the one who forgot his sister's name, and he stopped shaking. Blessed Hands. The Menders of Hosts have it. I've sat with a lot of people who were shaking. I've never once done that.", "when": { "spec": "lifewarden" } },
+          { "narrate": "You put your hand on the head of the clerk who forgot his sister's name, and he stops shaking. Blessed Hands, the Menders of Hosts call it.", "when": { "spec": "lifewarden", "absent": "maren" } },
+          { "say": "maren", "text": "When the white came up off the floor you looked at it the way I look at somebody who's lying to me. Inquisitor's Zeal. I don't know if I find that comforting.", "when": { "spec": "exorcist" } },
+          { "narrate": "When the white came up off the floor you looked at it the way you look at a liar. Inquisitor's Zeal, the old orders call it.", "when": { "spec": "exorcist", "absent": "maren" } },
+          { "say": "orin", "text": "There's a warmth off your mail. I noticed it on the stair, standing next to you in the cold. Consecrated Plate, the Templars call it. I'd stand next to you on a cold night again.", "when": { "spec": "battlepriest" } },
+          { "narrate": "There is a warmth off your mail that the stair could not take out of it. Consecrated Plate, the Templars call it.", "when": { "spec": "battlepriest", "absent": "orin" } },
+          { "say": "nessa", "text": "Every rat on that stair got out of your way. Not running. Getting out of your way, like you were the big one. Alpha Bond, isn't it? I've never seen a rat step aside before.", "when": { "spec": "beastwarden" } },
+          { "narrate": "Every rat on the stair gets out of your way: not running, stepping aside, as if you were the big one. Alpha Bond, the Beastbond call it.", "when": { "spec": "beastwarden", "absent": "nessa" } },
+          { "say": "nessa", "text": "You saw the bottom of the stair from a hundred steps up. I watched you do it. I've got the best eyes in Cinder Fold, and I couldn't. Longshot. Fine. You can go first. For looking.", "when": { "spec": "deadeye" } },
+          { "narrate": "From a hundred steps up you can see the bottom of the stair, when nobody else can see past the lamp. Longshot.", "when": { "spec": "deadeye", "absent": "nessa" } },
+          { "say": "orin", "text": "A day of stair down and a day up, and you're not even tired. Seasoned Traveller, the Wayfinders call that. You'll want it, north.", "when": { "spec": "pathfinder" } },
+          { "narrate": "A day of stair down and a day up, and you are not even tired. Seasoned Traveller, the Wayfinders call it.", "when": { "spec": "pathfinder", "absent": "orin" } },
+          { "say": "maren", "text": "You've been talking to Fennick about the founders' spelling all evening, and he's been taking notes. From you. Vast Learning, the Loremasters call it. I've never seen that clerk take notes from anybody.", "when": { "spec": "lorekeeper" } },
+          { "narrate": "All evening Fennick asks you about the founders' spelling, and takes notes. Vast Learning, the Loremasters call it.", "when": { "spec": "lorekeeper", "absent": "maren" } },
+          { "say": "orin", "text": "You were humming on the stair. A whole day of it, up. And every one of us kept your time and never felt the steps. Rousing Voice. The Warchanters have it. Hum it again tomorrow.", "when": { "spec": "battlecantor" } },
+          { "narrate": "You hum on the stair, a whole day of it, up, and nobody behind you feels the steps. Rousing Voice, the Warchanters call it.", "when": { "spec": "battlecantor", "absent": "orin" } },
+          { "say": "maren", "text": "Fennick, the clerks, whoever's on the door. They all tell you things they wouldn't tell each other, and nobody minds. Diplomatic Immunity, they call that in Merrowgate, and they mean it as a joke. It isn't one.", "when": { "spec": "envoy" } },
+          { "narrate": "Fennick, the clerks, whoever is on the door: they all tell you things they would not tell each other, and nobody minds. Diplomatic Immunity, the Diplomats call it.", "when": { "spec": "envoy", "absent": "maren" } },
+          { "narrate": "Somewhere on the stair today you stopped counting the steps. You are not sure when.", "when": { "spec": "none" } }
+        ],
+        "choices": [
+          {
+            "id": "wall",
+            "label": "Go up and listen to the bells",
+            "lines": [
+              { "oneOf": [
+                { "narrate": "You go up onto the wall and listen to the fifty gate-bells ring the hour over an empty city.", "when": { "flag": "b3_bell_evacuate" } },
+                { "narrate": "You go up onto the wall. The gate-bells ring the hour. The great bell in the heart of the city does not.", "when": { "flag": "b3_bell_aster", "anyFlag": ["b3_promise_old"] } },
+                { "narrate": "You go up onto the wall and listen to Vell's bells ring the hour." }
+              ] }
+            ]
+          },
+          {
+            "id": "sleep",
+            "label": "Sleep by the vault stove",
+            "lines": [
+              { "narrate": "You sleep by the stove in the vault, with the iron door below you, and dream of a floor that goes on further than any lamp." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "embassy-camp": {
+    "id": "embassy-camp",
+    "after": "b4-embassy",
+    "cast": [],
+    "act": "Camp",
+    "location": "Brannagh's lodging, Highpass, the night after the vote",
+    "start": "kitchen",
+    "nodes": {
+      "kitchen": {
+        "title": "Brannagh's Kitchen",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "Brannagh has the Fenmere delegates round her kitchen table the night after the vote, and you with them, and a pot of barley on the fire." },
+          { "oneOf": [
+            { "say": "Brannagh", "text": "Well. You're ours now. Seal and all. Don't lose it; Iona will charge you.", "when": { "flag": "b4_embassy_council" } },
+            { "say": "Brannagh", "text": "Well. You're your own. I'd not have voted for it. I'd not have voted against it either.", "when": { "flag": "b4_embassy_own" } },
+            { "say": "Brannagh", "text": "Well. Ten thousand beds. Fenmere's got about forty. I'll find more.", "when": { "flag": "b4_embassy_refuge" } }
+          ] },
+          { "narrate": "She ladles barley into bowls for a while without saying anything." },
+          { "say": "Brannagh", "text": "Are there goats? Up there. In the north." },
+          { "narrate": "Nobody knows." },
+          { "say": "Rue", "text": "I do not know. I have not written it down. If there are, they will have their names on them.", "when": { "anyFlag": ["b4_rue_council", "b4_rue_party"] } },
+          { "say": "nessa", "text": "There's always goats. Everywhere's got goats." },
+          { "say": "Brannagh", "text": "Then I'll get on with them.", "when": { "party": "nessa" } },
+          { "say": "Brannagh", "text": "I only ask. You can tell a lot about people from whether they keep goats. Fenmere's kept goats since before the bells. If they keep them up there, I'll know what to say first." },
+          { "narrate": "Out of the window, the peaks above the pass are white to the saddle. The Hall of Legends is up there in the dark, under the first of the snow." }
+        ],
+        "choices": [
+          {
+            "id": "eat",
+            "label": "Eat the barley",
+            "lines": [
+              { "narrate": "You eat the barley. Brannagh fills your bowl again before it is empty, and the Fenmere delegates argue about the vote until the fire is low." }
+            ]
+          },
+          {
+            "id": "window",
+            "label": "Watch the peaks from the window",
+            "lines": [
+              { "narrate": "You watch the peaks until the cloud comes down over the saddle. In a few days you will be up there." }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b4-partone-end": {
+    "id": "b4-partone-end",
+    "after": "b4-peaks",
+    "cast": [],
+    "act": "The end of Part One",
+    "location": "The north door of the Hall of Legends",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "The North Door",
+        "objective": "Say what you are bringing.",
+        "lines": [
+          { "narrate": "Evening at the north door. You make camp in the lee of the Wold's nine, out of the wind, with the Wold under its cloud below you and the free wards behind you under the snow, and nobody wants to sleep." },
+          { "narrate": "Rue asks, the way the Wold asks at a door, what you are bringing. Not what is in your pack. What you are bringing." },
+          { "oneOf": [
+            { "say": "orin", "text": "Davin. And the knot on his pack, which is Mags's. And a soldier who'd like to be asked in, this time.", "when": { "flag": "b4_davin_comes" } },
+            { "say": "orin", "text": "A soldier who'd like to be asked in, this time. That's all. It's enough to be going on with." }
+          ] },
+          { "say": "maren", "text": "Ears. I'll hear whether they mean it, and whether we do." },
+          { "oneOf": [
+            { "say": "nessa", "text": "The key. A light, if they want one.", "when": { "flag": "b4_key_carried" } },
+            { "say": "nessa", "text": "Me. First through every door. That's what I'm for." }
+          ] },
+          { "narrate": "Rue writes in her book, on a new page, a line at a time." },
+          { "say": "Davin", "text": "Lamps. I brought six. Nobody asked me to.", "when": { "flag": "b4_davin_comes" } },
+          { "say": "Rue", "text": "And you?" }
+        ],
+        "choices": [
+          {
+            "id": "answer",
+            "label": "Tell her what you are bringing",
+            "next": "linus",
+            "lines": [
+              { "oneOf": [
+                { "narrate": "You tell her: the free wards' word, under its seal, and whatever it will cost Iona.", "when": { "flag": "b4_embassy_council" } },
+                { "narrate": "You tell her: a door open in the south for anyone who wants it, and ten thousand beds that nobody has found yet.", "when": { "flag": "b4_embassy_refuge" } },
+                { "narrate": "You tell her: yourself, and your own word, and nothing in writing." }
+              ] },
+              { "say": "Rue", "text": "I have written it down." }
+            ]
+          }
+        ]
+      },
+      "linus": {
+        "title": "The First True Verse",
+        "objective": "Camp.",
+        "lines": [
+          { "narrate": "In the morning Linus comes through the Hall from the south door with his guide, to go back down. Before he goes he stands at the north door with his writing case open and reads you the first verse, so that somebody who was there has heard it." },
+          { "oneOf": [
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that rang once, and every bell in the south answered it. And these went down to knock.'", "when": { "flag": "b4_parting_rung" } },
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket. And one of these knelt at the north door and gave, and went down to knock.'", "when": { "flag": "b4_gave_door" } },
+            { "narrate": "'Nine on the south face with bells in their hands, and nine on the north with none, and a bell in the middle, small as a bucket, that nobody rang. And these went quietly down to knock.'", "when": { "flag": "b4_unannounced" } }
+          ] },
+          { "say": "Linus Pardew", "text": "That's true. All of it. Dera can't cross out a word. First time in twenty years." },
+          { "say": "Linus Pardew", "text": "I'll sing it in Briarwatch at the harvest. Come back and tell me the next one." },
+          { "narrate": "He goes back through the Hall and down the south side into the snow, with the guide carrying his case, and turns round twice to wave." },
+          { "narrate": "Below the north door the road goes down into the cloud." }
+        ],
+        "choices": [
+          {
+            "id": "down",
+            "label": "Look down at the road into the Wold",
+            "setFlags": { "b4_partone_done": true },
+            "lines": [
+              { "narrate": "You look down at the road for a long time. Tomorrow, the Wold." }
+            ]
+          }
+        ]
+      }
+    }
   }
 }

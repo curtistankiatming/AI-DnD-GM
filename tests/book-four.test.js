@@ -262,14 +262,14 @@ test('no walkout after chapters 9, 10 or 26: the companion stays and says so', (
     let s = ready(id); s.world.townId = QUESTS[id].town; s.story.nodeId = `town-${QUESTS[id].town}`;
     s = act(s, { type: 'depart', questId: id }).state;
     s = atEnd(s, id); s.world.approvalWindow = { [who]: -3 };
-    s = act(s, { type: 'story-choice', choiceId: 'one' }).state;
+    s = act(s, { type: 'story-choice', choiceId: QUESTS[id].decisions[0].id }).state;
     s = throughScenes(s);
     assert.equal(s.story.nodeId, `away-${who}-stay`, `${id}: ${why}`);
   }
   // After chapter 10 the next chapter is in the Wold: no walkout and no stay scene.
   let s = ready('b4-peaks'); s = act(s, { type: 'depart', questId: 'b4-peaks' }).state;
   s = atEnd(s, 'b4-peaks'); s.world.approvalWindow = { maren: -3 };
-  s = throughScenes(act(s, { type: 'story-choice', choiceId: 'one' }).state);
+  s = throughScenes(act(s, { type: 'story-choice', choiceId: QUESTS['b4-peaks'].decisions[0].id }).state);
   assert.ok(s.story.nodeId.startsWith('town-'), s.story.nodeId);
   assert.ok(s.party.some((m) => m.id === 'maren'));
 });

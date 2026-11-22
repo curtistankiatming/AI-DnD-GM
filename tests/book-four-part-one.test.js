@@ -4,9 +4,9 @@
 // yet (tests/fixtures/book-four.js). node --test runs each file in its own
 // process, so these settings reach no other file.
 //
-// Build step 3 of docs/book-four/DESIGN.md: Part One, chapters 1 to 3 (the
-// walker on the north road, the two accounts, the song about you), their
-// camp scenes, and the side jobs Rue's Doors and The Third Verse.
+// Build steps 3 to 5 of docs/book-four/DESIGN.md: Part One, chapters 1 to 10,
+// their camp scenes and the end-of-part scene, the side jobs Rue's Doors, The
+// Third Verse, Bett's Berth and The Ninth Rope, and the chapter rewards.
 const FX = require('./fixtures/book-four').install({ BRIARWATCH_PREVIEW_BOOKS: '1', BRIARWATCH_PREVIEW_PARTS: '4:1' });
 const test = require('node:test'), assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path');
@@ -49,8 +49,10 @@ test('the scripted player takes the 3rd job trial, plays Part One, and waits at 
 });
 
 // ---------------------------------------------------------------------------
-// Chapters 1 to 7, as written.
-const IDS = ['b4-walker', 'b4-records', 'b4-ballad', 'b4-company', 'b4-davin', 'b4-book', 'b4-key'];
+// Chapters 1 to 10, as written.
+const IDS = ['b4-walker', 'b4-records', 'b4-ballad', 'b4-company', 'b4-davin', 'b4-book', 'b4-key', 'b4-letters', 'b4-embassy', 'b4-peaks'];
+// Where a chapter's decision leaves the party: chapter 10 has no nextTown, so it ends in its own town.
+const home = (id) => QUESTS[id].nextTown || QUESTS[id].town;
 const RAWQ = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
 const RAWS = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/scenes.json'), 'utf8'));
 const RAWJ = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/book-four/side-jobs.json'), 'utf8'));
@@ -113,10 +115,13 @@ const EXPECT = {
   'b4-davin': { comes: ['b4_davin_comes', { nessa: 1 }], home: ['b4_davin_home', { orin: 1 }], mags: ['b4_davin_mags', { maren: 1 }, ['b4_davin_home']] },
   'b4-book': { returned: ['b4_book_returned', {}], rewritten: ['b4_book_rewritten', { maren: 1 }], burned: ['b4_book_burned', { maren: -1 }] },
   // With Nessa there the key is hers to answer for; the fourth answer is for when she is away.
-  'b4-key': { left: ['b4_key_left', {}], carried: ['b4_key_carried', {}], hew: ['b4_key_hew', {}] }
+  'b4-key': { left: ['b4_key_left', {}], carried: ['b4_key_carried', {}], hew: ['b4_key_hew', {}] },
+  'b4-letters': { read: ['b4_letters_read', {}], copied: ['b4_letters_copied', {}], answered: ['b4_letters_answered', {}] },
+  'b4-embassy': { council: ['b4_embassy_council', {}], own: ['b4_embassy_own', {}], refuge: ['b4_embassy_refuge', {}] },
+  'b4-peaks': { rung: ['b4_parting_rung', {}], unannounced: ['b4_unannounced', {}], gave: ['b4_gave_door', {}] }
 };
 
-test('chapters 1 to 7 are written in Book Four\'s own file, in story order, each paying exactly one level and 20 x level + 40 gold', () => {
+test('chapters 1 to 10 are written in Book Four\'s own file, in story order, each paying exactly one level and 20 x level + 40 gold', () => {
   assert.deepEqual(FX.WRITTEN, IDS);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown]; }), [
     ['b4-walker', 4, 1, 40, 'b3-firstbell', 'highpass', 'ashford'],
@@ -125,7 +130,10 @@ test('chapters 1 to 7 are written in Book Four\'s own file, in story order, each
     ['b4-company', 4, 1, 43, 'b4-ballad', 'merrowgate', 'saltwick'],
     ['b4-davin', 4, 1, 44, 'b4-company', 'saltwick', 'highpass'],
     ['b4-book', 4, 1, 45, 'b4-davin', 'highpass', 'cinderfold'],
-    ['b4-key', 4, 1, 46, 'b4-book', 'cinderfold', 'vell']
+    ['b4-key', 4, 1, 46, 'b4-book', 'cinderfold', 'vell'],
+    ['b4-letters', 4, 1, 47, 'b4-key', 'vell', 'highpass'],
+    ['b4-embassy', 4, 1, 48, 'b4-letters', 'highpass', 'highpass'],
+    ['b4-peaks', 4, 1, 49, 'b4-embassy', 'highpass', undefined]
   ]);
   for (const id of IDS) {
     const q = QUESTS[id];
@@ -145,16 +153,18 @@ test('chapters 1 to 7 are written in Book Four\'s own file, in story order, each
   // Chapter 1 opens when Book Three's last chapter is done, and needs the 3rd job; no floor.
   assert.equal(QUESTS['b4-walker'].requiresJob, 3); assert.equal(QUESTS['b4-walker'].levelFloor, undefined);
   for (const id of IDS.slice(1)) assert.equal(QUESTS[id].requiresJob, undefined, id);
-  // Chapters 5, 6 and 7 are Orin's, Maren's and Nessa's own: nobody walks out before theirs.
-  assert.deepEqual(IDS.map((id) => QUESTS[id].needs), [undefined, undefined, undefined, undefined, ['orin'], ['maren'], ['nessa']]);
-  for (const id of IDS.slice(0, 4)) assert.equal(QUESTS[id].levelFloor, undefined, id);
+  // Chapters 5, 6 and 7 are Orin's, Maren's and Nessa's own, and all three go to the Hall: nobody walks out before theirs.
+  assert.deepEqual(IDS.map((id) => QUESTS[id].needs), [undefined, undefined, undefined, undefined, ['orin'], ['maren'], ['nessa'], undefined, undefined, ['orin', 'maren', 'nessa']]);
+  // Only the end of the part tops a hero up: to 50, after chapter 10's own XP.
+  assert.deepEqual(IDS.map((id) => QUESTS[id].levelFloor), [...Array(9).fill(undefined), 50]);
   // Book Four stays hidden from players.
   assert.equal(Book.SHELF.find((b) => b.n === 4).out, 0);
 });
 
 test('each chapter has one camp scene: an empty cast, nodes chained by next, and the camp beat last', () => {
   assert.deepEqual(entries(RAWS).map(([k, v]) => [k, v.after]), [['walker-camp', 'b4-walker'], ['records-camp', 'b4-records'], ['ballad-camp', 'b4-ballad'],
-    ['company-camp', 'b4-company'], ['davin-camp', 'b4-davin'], ['book-camp', 'b4-book'], ['key-camp', 'b4-key']]);
+    ['company-camp', 'b4-company'], ['davin-camp', 'b4-davin'], ['book-camp', 'b4-book'], ['key-camp', 'b4-key'],
+    ['letters-camp', 'b4-letters'], ['embassy-camp', 'b4-embassy'], ['b4-partone-end', 'b4-peaks']]);
   for (const id of IDS) {
     const scenes = Object.values(SCENES).filter((x) => x?.after === id);
     assert.equal(scenes.length, 1, `${id} has at most one scene`);
@@ -172,9 +182,12 @@ test('each chapter has one camp scene: an empty cast, nodes chained by next, and
     assert.deepEqual(seen.sort(), Object.keys(scene.nodes).sort(), `${scene.id}: every node is on the chain`);
     const last = scene.nodes[seen.at(-1)];
     assert.equal(last.objective, 'Camp.', `${scene.id}: the camp beat is the last node`);
-    for (const c of Object.values(scene.nodes).flatMap((n) => n.choices)) assert.ok(!c.approval && !c.setFlags, `${scene.id}/${c.id}: a camp choice changes nothing`);
+    // The end of the part sets b4_partone_done on its last choice, as Book Three's did; nothing else changes anything.
+    for (const c of Object.values(scene.nodes).flatMap((n) => n.choices)) assert.ok(!c.approval && (!c.setFlags || (scene.id === 'b4-partone-end' && JSON.stringify(c.setFlags) === '{"b4_partone_done":true}')), `${scene.id}/${c.id}: a camp choice changes nothing`);
   }
+  assert.deepEqual(last(SCENES['b4-partone-end']).choices.map((c) => c.setFlags), [{ b4_partone_done: true }]);
 });
+const last = (scene) => { let key = scene.start; while (scene.nodes[key].choices[0].next) key = scene.nodes[key].choices[0].next; return scene.nodes[key]; };
 
 test('every chapter plays to its end peacefully, by every decision, sets only its flag, levels the hero by one, and its scene leads to the next town', () => {
   for (const id of IDS) for (const [decision, [flag, , also = []]] of Object.entries(EXPECT[id])) {
@@ -187,7 +200,7 @@ test('every chapter plays to its end peacefully, by every decision, sets only it
     assert.equal(s.player.xp, P.XP_NEXT[QUESTS[id].level - 1] + QUESTS[id].xp, `${id}: exactly the chapter's XP`);
     const scene = sceneOf(id);
     assert.equal(s.story.nodeId, `scene-${scene.id}-${scene.start}`, `${id}: its scene follows`);
-    assert.equal(toTown(s).story.nodeId, `town-${QUESTS[id].nextTown}`, `${id}/${decision}`);
+    assert.equal(toTown(s).story.nodeId, `town-${home(id)}`, `${id}/${decision}`);
   }
 });
 
@@ -204,7 +217,8 @@ test('a decision changes exactly the approval the design gives it: the quiet nig
 
 test('each crisis can be fought instead, and winning reaches the same ending told the way it was won', () => {
   for (const [id, fought] of [['b4-walker', /three houses in it stand empty/], ['b4-records', /heads bound up/], ['b4-ballad', /grey at the Briarwood end, where the fight was/],
-    ['b4-company', /a lantern-pole through a wheel/], ['b4-davin', /being told their own names/], ['b4-book', /black to the arch/], ['b4-key', /being told which bells are theirs/]]) {
+    ['b4-company', /a lantern-pole through a wheel/], ['b4-davin', /being told their own names/], ['b4-book', /black to the arch/], ['b4-key', /being told which bells are theirs/],
+    ['b4-letters', /reads them their own entries/], ['b4-embassy', /which are getting full/], ['b4-peaks', /writing everyone's name on their sleeves/]]) {
     const failed = act(at(id, { phase: 'crisis' }), { type: 'story-choice', choiceId: 'resolve' }, low).state;
     assert.ok(failed.combat?.active, `${id}: a failed peaceful way starts the fight`);
     let s = choose(at(id, { phase: 'crisis' }), 'confront');
@@ -270,7 +284,7 @@ test('with no companions, and with each one away, every chapter, scene and job i
       let r = choose(a, d.id);
       clean(told(r), party, `${id}/${d.id} [${party}]`);
       for (let i = 0; i < 4 && r.story.nodeId.startsWith('scene-'); i++) { clean(opening(r), party, `${r.story.nodeId} [${party}]`); const c = E.buildView(r).scene.choices.find((x) => !x.locked); r = choose(r, c.id); }
-      assert.equal(r.story.nodeId, `town-${QUESTS[id].nextTown}`);
+      assert.equal(r.story.nodeId, `town-${home(id)}`);
     }
   }
 });
@@ -320,7 +334,8 @@ const readsIn = (content) => { const f = new Set(); for (const l of everyLine(co
 test('every Book Four flag set is read: each chapter\'s answers change the lines of the chapters, scenes and jobs after it', () => {
   const set = new Set(IDS.flatMap((id) => [...flagsSetIn({ x: RAWQ[id] })]));
   assert.deepEqual([...set].sort(), ['b4_book_burned', 'b4_book_returned', 'b4_book_rewritten', 'b4_bw_pim', 'b4_bw_quiet', 'b4_bw_rings', 'b4_company_broken', 'b4_company_council', 'b4_company_sails',
-    'b4_davin_comes', 'b4_davin_home', 'b4_davin_mags', 'b4_key_carried', 'b4_key_hew', 'b4_key_left', 'b4_rue_council', 'b4_rue_party', 'b4_rue_watch', 'b4_truth_ailith', 'b4_truth_council', 'b4_truth_published']);
+    'b4_davin_comes', 'b4_davin_home', 'b4_davin_mags', 'b4_embassy_council', 'b4_embassy_own', 'b4_embassy_refuge', 'b4_gave_door', 'b4_key_carried', 'b4_key_hew', 'b4_key_left',
+    'b4_letters_answered', 'b4_letters_copied', 'b4_letters_read', 'b4_parting_rung', 'b4_rue_council', 'b4_rue_party', 'b4_rue_watch', 'b4_truth_ailith', 'b4_truth_council', 'b4_truth_published', 'b4_unannounced']);
   // Nothing else sets a flag any other way (a companion's answer, a scene choice): only Mags's answer for Davin.
   const lineSets = [];
   for (const [owner, c] of CONTENT) for (const l of everyLine(c)) if (l.setFlag !== undefined) lineSets.push([owner, l.say, l.setFlag]);
@@ -491,7 +506,9 @@ test('the review\'s fixes hold: Sorrel is she, Sable judges what he can, and eac
   for (const id of IDS) assert.doesNotMatch(QUESTS[id].told.ballad, /read in the square|pots and pans|stood in the gate/, id);
   // Narrator wit and the goat are cut.
   assert.doesNotMatch(all, /number of cups|read to for two days|neither of them notices|being bored|I don't usually find it|blisters|goat is tied|goat follows/);
-  assert.equal((all.match(/goat/g) || []).length, 1, 'only Brannagh\'s own goat');
+  // Goats are Brannagh's: her old lodger in chapter 1, and her question after the vote (and Nessa's answer to it).
+  const goats = CONTENT.flatMap(([owner, c]) => everyLine(c).filter((l) => /goat/.test(l.text || l.narrate)).map((l) => [owner, l.say]));
+  assert.deepEqual(goats, [['b4-walker', 'Brannagh'], ['embassy-camp', 'Brannagh'], ['embassy-camp', 'nessa'], ['embassy-camp', 'Brannagh']]);
   // The camp after chapter 1: Hesk's appeal was heard that day.
   assert.match(opening(choose(decide('b4-walker', 'party'), 'ask')), /the speech he gave at his appeal today/);
   assert.match(opening(choose(decide('b4-walker', 'party', { party: [] }), 'ask')), /and the line about you\./);
@@ -576,15 +593,14 @@ const during = (job) => Object.values(QUESTS).find((q) => q.unlock === job.from)
 test('the four jobs are on their towns\' boards in their windows, and only then', () => {
   assert.deepEqual(JOB_IDS.map((id) => [id, SIDE_JOBS[id].town, SIDE_JOBS[id].from, SIDE_JOBS[id].until, SIDE_JOBS[id].level]), [
     ['rue-doors', 'highpass', 'b4-walker', 'b4-ballad', 41], ['third-verse', 'briarwatch', 'b4-ballad', 'b4-book', 43],
-    ['bett-berth', 'merrowgate', 'b4-ballad', 'b4-key', 44], ['ninth-rope', 'cinderfold', 'b4-book', undefined, 46]]);
+    ['bett-berth', 'merrowgate', 'b4-ballad', 'b4-key', 44], ['ninth-rope', 'cinderfold', 'b4-book', 'b4-embassy', 46]]);
   const offered = (id, chapter) => E.buildView(at(chapter, { town: SIDE_JOBS[id].town })).world.sideJobs.some((j) => j.id === id);
   assert.ok(!offered('rue-doors', 'b4-walker') && offered('rue-doors', 'b4-records') && offered('rue-doors', 'b4-ballad') && !offered('rue-doors', 'b4-company'));
   // The Third Verse is open during chapters 4 to 6, Bett's Berth during 4 to 7.
   assert.ok(!offered('third-verse', 'b4-ballad') && offered('third-verse', 'b4-company') && offered('third-verse', 'b4-book') && !offered('third-verse', 'b4-key'));
   assert.ok(!offered('bett-berth', 'b4-ballad') && offered('bett-berth', 'b4-company') && offered('bett-berth', 'b4-key') && !offered('bett-berth', 'b4-letters'));
-  // The Ninth Rope opens for chapter 7, and closes after chapter 9 (until: b4-embassy) once chapter 9 is written; a job may only name a written chapter.
-  assert.ok(!FX.WRITTEN.includes('b4-embassy'));
-  assert.ok(!offered('ninth-rope', 'b4-book') && offered('ninth-rope', 'b4-key') && offered('ninth-rope', 'b4-letters'));
+  // The Ninth Rope is open during chapters 7 to 9, and closes once chapter 9 is done.
+  assert.ok(!offered('ninth-rope', 'b4-book') && offered('ninth-rope', 'b4-key') && offered('ninth-rope', 'b4-letters') && offered('ninth-rope', 'b4-embassy') && !offered('ninth-rope', 'b4-peaks'));
   for (const id of JOB_IDS) assert.ok(SIDE_JOBS[id].gold >= 120 && SIDE_JOBS[id].gold <= 180, id);
 });
 
@@ -633,9 +649,10 @@ test('no new person in Book Four takes a name the earlier books or the story bib
     assert.doesNotMatch(text, new RegExp(`\\b${name}\\b`), name);
   // Every speaker is a companion, someone returning from Books One to Three, or one of the design's new people.
   const RETURNING = new Set(['Sorrel', 'Sable', 'Hesk', 'Brannagh', 'Sister Ilse', 'Hollis Brede', 'Dera', 'Tovin', 'Pim', 'Aveline', 'Reeve Aveline', 'Aster Vey',
-    'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin']);
+    'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
+    'Fennick', 'Corvane']);
   const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott']);
-  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter']);
+  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man']);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
@@ -806,4 +823,161 @@ test('the chapter\'s own companion is in one place when they roll the peaceful w
   assert.match(away, /the tenth bell rings once/); assert.doesNotMatch(away, /Wren keeps the key|on her stick/);
   // The chapter 5 answers do not name Orin on their labels.
   for (const d of QUESTS['b4-davin'].decisions.filter((x) => x.id !== 'mags')) assert.doesNotMatch(`${d.label} ${d.description}`, /Orin/, d.id);
+});
+
+// ---------------------------------------------------------------------------
+// Chapters 8 to 10, the end of Part One, and the chapter rewards.
+
+test('chapter 8 reads how Book Three left Vell, its door and Corvane; Aster speaks only from her bell, and at rest only through Fennick', () => {
+  const start = (flags) => opening(departed('b4-letters', { flags }));
+  // Nobody is left in an emptied Vell to recruit from, so Nessa is left out there.
+  assert.match(opening(departed('b4-letters', { flags: { b3_bell_evacuate: true }, party: ['orin', 'maren'] })), /Vell is empty[^]*finishing the census/);
+  assert.match(start({ b3_bell_aster: true }), /Vell's heart went dark in the spring/);
+  assert.match(start({ b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true }), /Aster Vey holds it from the great bell/);
+  assert.match(start({ b3_bell_cast: true }), /this is the last summer they will hold the city/);
+  assert.match(start({ b3_bell_cast: true, b3_promise_old: false, b3_stair_sealed: true }), /held by the voices in its bells, hundreds of them/);
+  assert.match(start({}), /the casting wall has been washed/);
+  // The way down: the seal opened for a day on the warrant, the open door, or the chained one.
+  assert.match(start({ b3_promise_old: false, b3_stair_sealed: true, b3_door_kept: true }), /council's warrant[^]*for one day/);
+  assert.doesNotMatch(start({ b3_promise_old: false, b3_stair_sealed: true }), /Corvane's authority|on Corvane's/);
+  assert.match(start({ b3_door_kept: true }), /Oswin Pike's lamps in a ring on the rim/);
+  assert.match(start({ b3_door_closed: true }), /runs the chain back out/);
+  // Corvane where Book Three put him; he talks only where he is at Vell.
+  assert.match(start({ b3_corvane_judged: true }), /in a cell at Highpass/);
+  assert.match(opening(departed('b4-letters', { flags: { b3_corvane_keeper: true, b3_bell_evacuate: true }, party: [] })), /the wall walk of an empty city/);
+  assert.match(start({ b3_corvane_vell: true }), /people step round him/);
+  assert.ok(!talkIds('b4-letters', { flags: { b3_corvane_judged: true } }).includes('corvane'));
+  assert.match(talk('b4-letters', 'corvane', { flags: { b3_corvane_keeper: true } }), /^Corvane: I kept a ledger of the lost/m);
+  // Aster: in Vell's great bell she speaks; at rest Fennick reads her last words; otherwise no talk.
+  assert.ok(!talkIds('b4-letters').includes('aster'));
+  const resting = talk('b4-letters', 'aster', { flags: { b3_bell_aster: true } });
+  assert.match(resting, /The great bell is dark[^]*Tell Tovin to ring it by hand/); assert.doesNotMatch(resting, /^Aster Vey:/m);
+  assert.match(talk('b4-letters', 'aster', { flags: { b3_bell_aster: true, b3_promise_old: false, b3_promise_hesk: true } }), /^Aster Vey: Letters\. Of course it's letters/m);
+  // Rue reads the letter only when she walks with you; Fennick otherwise.
+  assert.match(talk('b4-letters', 'letter', { flags: { b4_rue_party: true } }), /^Rue: 'To whoever is on the other side of the bells\. This is Thrum/m);
+  assert.match(talk('b4-letters', 'letter'), /Fennick reads it aloud[^]*This is Thrum/);
+  assert.doesNotMatch(talk('b4-letters', 'letter'), /^Rue:/m);
+  // On the floor: the giving, Hesk's ring, or one set of boots going north (Hesk went down alone).
+  for (const [flags, line] of [[{}, /witness's table/], [{ b3_promise_old: false, b3_promise_hesk: true }, /the ring of bells that was Hesk's company/], [{ b3_promise_old: false, b3_stair_sealed: true }, /one set of boot-prints, months old, going north/]])
+    assert.match(opening(at('b4-letters', { phase: 'approach', flags })), line);
+  assert.match(talk('b4-letters', 'fennick', { flags: { b3_promise_old: false, b3_stair_sealed: true } }), /Went down, one/);
+  assert.match(told(choose(strong(departed('b4-letters')), 'investigate')), /The oldest are on vellum[^]*ask only for someone to write back/);
+});
+
+test('chapter 8\'s answers: the satchel costs each carrier a memory, the copies keep the clerks below, the letter back is given; the camp names the 3rd job\'s skill', () => {
+  const read = told(decide('b4-letters', 'read'));
+  for (const line of [/Orin carries it/, /Maren carries it/, /Nessa carries it/, /You carry it for the last hour/]) assert.match(read, line);
+  const alone = told(decide('b4-letters', 'read', { party: [] }));
+  assert.match(alone, /You carry it for the last hour/); assert.doesNotMatch(alone, /Orin|Maren|Nessa/);
+  assert.match(told(decide('b4-letters', 'copied')), /numbering the pages/);
+  assert.match(told(decide('b4-letters', 'answered')), /You cannot remember a word of what you said/);
+  for (const [decision, line] of [['read', /tied with red tape, and nobody touches it/], ['copied', /still at the bottom of the stair, copying/], ['answered', /try to remember what you wrote/]]) assert.match(opening(decide('b4-letters', decision)), line, decision);
+  // Every 2nd job branch has its 3rd job's level 48 skill named, by the companion who would see it, or told when they are away.
+  const SKILLS = { guardian: 'Iron Hide', duelist: 'Keen Edge', warlord: 'Veteran Captain', shadow: 'Blade in the Dark', saboteur: 'Master Tinker', grifter: 'Informants',
+    evoker: 'Overchannel', chronist: 'Temporal Poise', binder: 'Pact Strength', lifewarden: 'Blessed Hands', exorcist: "Inquisitor's Zeal", battlepriest: 'Consecrated Plate',
+    beastwarden: 'Alpha Bond', deadeye: 'Longshot', pathfinder: 'Seasoned Traveller', lorekeeper: 'Vast Learning', battlecantor: 'Rousing Voice', envoy: 'Diplomatic Immunity' };
+  const jobs = require('../src/data/jobs.json').classes;
+  for (const [classId, c] of Object.entries(jobs)) for (const branch of c.branches) assert.equal(branch.thirdSkills.find((x) => x.level === 48)?.name, SKILLS[branch.id], `${classId}/${branch.id}`);
+  const camp = (spec, party) => { const s = at('b4-letters', { phase: 'after', party, flags: { 'method:b4-letters': 'peace' } }); s.player.progression.specialization = spec; return opening(choose(s, 'read')); };
+  for (const [spec, name] of Object.entries(SKILLS)) {
+    const line = RAWS['letters-camp'].nodes.stair.lines.find((l) => l.say && l.when?.spec === spec);
+    assert.match(camp(spec), new RegExp(`^${{ orin: 'Orin', maren: 'Maren', nessa: 'Nessa' }[line.say]}: .*${name}`, 'm'), spec);
+    const away = camp(spec, ['orin', 'maren', 'nessa'].filter((x) => x !== line.say));
+    assert.match(away, new RegExp(name), `${spec} with ${line.say} away`); assert.doesNotMatch(away, COMPANION_NAMES[line.say], spec);
+    assert.equal((camp(spec).match(new RegExp(name, 'g')) || []).length, 1, `${spec}: told once`);
+  }
+  assert.match(camp('none'), /you stopped counting the steps/);
+});
+
+test('chapter 9 reads who chairs, Hesk by the ending, the delegates\' votes by every earlier answer, and whose men are on the road', () => {
+  assert.match(opening(departed('b4-embassy', { flags: { elske_seat: true } })), /Elske has the chair this session/);
+  assert.match(opening(departed('b4-embassy')), /Brannagh of Fenmere has the chair again/);
+  for (const [flag, line] of [['elske_seat', /^Elske: I rang the Mother Bell/m], ['elske_judged', /from the Sallows hospice in Merrowgate/], ['elske_free', /written from home, in Merrowgate/]]) assert.match(talk('b4-embassy', 'elske', { flags: { [flag]: true } }), line, flag);
+  assert.ok(!talkIds('b4-embassy').includes('elske'), 'an old save has no Elske lines');
+  assert.match(talk('b4-embassy', 'hesk'), /in his cell under the gatehouse/);
+  assert.match(talk('b4-embassy', 'hesk', { flags: { b3_promise_old: false, b3_promise_hesk: true } }), /The willing were a luxury\. Strangers are a luxury\./);
+  assert.ok(!talkIds('b4-embassy', { flags: { b3_promise_old: false, b3_stair_sealed: true } }).includes('hesk'), 'Hesk went down the stair');
+  assert.match(talk('b4-embassy', 'ailith'), /My grandchildren didn't do this\./);
+  assert.ok(!talkIds('b4-embassy').includes('rue')); assert.match(talk('b4-embassy', 'rue', { flags: { b4_rue_council: true } }), /I am keeping it for you/);
+  const clue = (flags) => told(choose(strong(departed('b4-embassy', { flags })), 'investigate'));
+  for (const [flags, line] of [[{ b4_truth_published: true }, /off a door, all at once/], [{ b4_truth_council: true }, /had the founders' page from the council first/], [{ b4_truth_ailith: true }, /in Ailith's own voice/],
+    [{ b4_letters_read: true }, /tell us what we did/], [{ b4_letters_copied: true }, /Fennick's copies are still being made/], [{ b4_letters_answered: true }, /the first letter south to north/],
+    [{ b4_bw_quiet: true }, /one night a month costs/], [{ b4_bw_pim: true }, /Pim's rule/], [{ b4_bw_rings: true }, /keeps its watch every night/],
+    [{ b4_company_broken: true }, /until the council broke its charter/], [{ b4_company_sails: true }, /went north in the summer with its charter/], [{ b4_company_council: true }, /the council's name painted on/]])
+    assert.match(clue(flags), line, JSON.stringify(flags));
+  // Cass Ord's men with the charter broken or sailed; rope-men otherwise.
+  for (const flag of ['b4_company_broken', 'b4_company_sails']) assert.match(opening(at('b4-embassy', { phase: 'crisis', flags: { [flag]: true } })), /Cass Ord's men[^]*^The Company's factor:/m, flag);
+  assert.match(opening(at('b4-embassy', { phase: 'crisis', flags: { b4_company_council: true } })), /They are rope-men[^]*^A rope-man:/m);
+  // The vote passes in every answer; by how much follows the letters and the page.
+  assert.match(told(decide('b4-embassy', 'council', { flags: { b4_letters_read: true } })), /by a wide margin/);
+  assert.match(told(decide('b4-embassy', 'council')), /by four votes/);
+  assert.match(told(decide('b4-embassy', 'refuge')), /by one vote, cast by the chair/);
+  assert.match(told(decide('b4-embassy', 'own', { flags: { elske_seat: true } })), /^Elske: Then your word's your own/m);
+  // Brannagh's goats, after the vote.
+  for (const [decision, line] of [['council', /Seal and all/], ['own', /You're your own/], ['refuge', /Ten thousand beds/]]) assert.match(opening(decide('b4-embassy', decision)), line, decision);
+  assert.match(opening(decide('b4-embassy', 'own')), /^Brannagh: Are there goats\?[^]*Nobody knows\.[^]*^Nessa: There's always goats[^]*^Brannagh: Then I'll get on with them\./m);
+  assert.doesNotMatch(opening(decide('b4-embassy', 'own', { party: ['orin', 'maren'] })), /get on with them|Nessa/);
+});
+
+test('chapter 10 goes to the Hall with all three, tops the hero up to 50, and ends Part One at the north door', () => {
+  assert.match(opening(departed('b4-peaks')), /nine statues stand in a row[^]*small, no bigger than a bucket, and black with age/);
+  assert.match(opening(departed('b4-peaks', { flags: { b4_davin_comes: true } })), /Davin walks behind Orin/);
+  assert.doesNotMatch(opening(departed('b4-peaks', { flags: { b4_davin_comes: true }, party: ['maren', 'nessa'] })), /Orin/);
+  assert.doesNotMatch(opening(departed('b4-peaks', { flags: { b4_davin_home: true } })), /Davin/);
+  assert.match(talk('b4-peaks', 'rue'), /The year the bells went south, the white doubled/);
+  assert.match(talk('b4-peaks', 'rue', { flags: { b4_book_burned: true } }), /before it burned/);
+  assert.match(talk('b4-peaks', 'linus'), /I'm not going north/);
+  assert.ok(!talkIds('b4-peaks', { flags: { b4_davin_home: true } }).includes('davin'));
+  assert.match(talk('b4-peaks', 'davin', { flags: { b4_davin_comes: true } }), /^Orin: Most things that matter[^]*^Davin: Like a lamp/m);
+  assert.match(told(choose(strong(departed('b4-peaks')), 'investigate')), /Rung once, to part\. Ring it again and all will answer\./);
+  // Nessa goes first on the rope, unless she is away; the roller is second.
+  const across = (who, party) => outcomeForRoller(STORY_NODES['q-b4-peaks-crisis'].choices.find((c) => c.id === 'resolve').success, { id: who }).text;
+  assert.match(across('player'), /Nessa goes first, as she said she would[^]*and you go second/);
+  assert.match(across('orin'), /and Orin goes second/);
+  assert.match(across('nessa'), /Nessa goes first, with the end of the rope round her waist, reading the line/);
+  // The answers are read by Linus's first true verse.
+  for (const [decision, line] of [['rung', /that rang once, and every bell in the south answered it/], ['unannounced', /that nobody rang\. And these went quietly down/], ['gave', /knelt at the north door and gave/]]) {
+    let s = decide('b4-peaks', decision);
+    assert.equal(s.story.nodeId, 'scene-b4-partone-end-door', decision);
+    s = choose(s, 'answer');
+    assert.match(opening(s), line, decision);
+    s = choose(s, 'down');
+    assert.equal(s.story.flags.b4_partone_done, true); assert.equal(s.story.nodeId, 'town-highpass', decision);
+    assert.equal(Book.chapter(s).id, 'to-be-continued');
+  }
+  assert.match(told(decide('b4-peaks', 'rung')), /That is Lantry, under that/);
+  assert.match(told(decide('b4-peaks', 'gave')), /a giver came from the south/);
+  // At the north door each companion says what they are bringing, and nobody away is named.
+  const door = (opts) => opening(decide('b4-peaks', 'rung', opts));
+  assert.match(door({ flags: { b4_key_carried: true, b4_davin_comes: true } }), /^Orin: Davin\.[^]*^Maren: Ears\.[^]*^Nessa: The key\.[^]*^Davin: Lamps\./m);
+  assert.doesNotMatch(door({ party: [] }), /Orin|Maren|Nessa/);
+  // A hero behind is carried to 50 by chapter 10, after its own XP.
+  const s = playPeaceful('b4-peaks', 'unannounced');
+  assert.equal(s.player.level, 50);
+});
+
+test('each Book Four chapter in Part One gives its own Legendary reward, worn from two levels below the chapter and never sold', () => {
+  const GEAR = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/gear.json'), 'utf8'));
+  const Gear = require('../src/gear');
+  const { ITEMS } = require('../src/content'), { TOWNS } = require('../src/expansion');
+  const rewards = GEAR.filter((i) => QUESTS[i.exclusive?.quest]?.book === 4);
+  assert.deepEqual(rewards.map((i) => i.exclusive.quest), IDS, 'one for each chapter, in order');
+  assert.deepEqual(rewards.map((i) => i.name), ["Walker's Tally-cord", "Founders' Account Case", 'The True Verse', 'North Company Cutlass', 'Lamp-store Hook', "Rue's Second Book", 'Brass Key-cord', 'Floor-letter Satchel', 'Embassy Seal', 'Parting-hall Plate']);
+  const sold = new Set(Object.values(TOWNS).flatMap((t) => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()]));
+  for (const item of rewards) {
+    const q = QUESTS[item.exclusive.quest];
+    assert.equal(item.requires.level, q.level - 2, item.id);
+    assert.equal(item.rarity, 'Legendary', item.id);
+    assert.ok(item.value >= Gear.minValue(item) && item.description && item.purpose, item.id);
+    assert.ok(Object.values(item.requires.abilities || {}).every((n) => n <= 15), item.id);
+    assert.ok(!sold.has(item.id), `${item.id} is never sold`);
+    assert.match(Gear.purpose(ITEMS[item.id]), new RegExp(`Reward for finishing ${q.name}`), item.id);
+  }
+  // Finishing a chapter gives its reward, once.
+  for (const id of ['b4-walker', 'b4-letters', 'b4-peaks']) {
+    const s = playPeaceful(id, Object.keys(EXPECT[id])[0]);
+    const item = rewards.find((i) => i.exclusive.quest === id);
+    assert.equal(s.player.inventory.filter((e) => e.itemId === item.id).length, 1, `${id} gives ${item.id}`);
+    assert.equal(Gear.award(s, `quest:${id}`, []), null, `${id}: once`);
+  }
 });

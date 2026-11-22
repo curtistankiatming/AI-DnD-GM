@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's from chapter 7, and closes after chapter 9 (until: b4-embassy), which is added when chapter 9 is written (build step 5), since a job may only name a written chapter.",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy).",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -270,6 +270,7 @@
     "town": "cinderfold",
     "level": 46,
     "from": "b4-book",
+    "until": "b4-embassy",
     "gold": 170,
     "giver": "Ottilie Brand, for the committee",
     "brief": "The rope families will not give a miner's son a place on the nine's ropes. He is the best ringer in Cinder Fold.",

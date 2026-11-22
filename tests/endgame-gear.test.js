@@ -19,6 +19,12 @@ const SETS = require('../src/data/gear-sets.json').sets;
 
 const LATE = GEAR.filter((i) => (i.requires?.level || 0) > 40);
 const TIERS = [45, 50, 55, 60, 65, 70, 80, 90, 95, 100];
+// Book Four's chapter rewards are worn from two levels below their chapter
+// (docs/book-four/DESIGN.md, "Gear: chapter rewards"), so they sit between the
+// tiers; the rest of the late gear is at a tier. Read from the file: the
+// chapters may not be merged with Book Four held back.
+const B4 = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
+const chapterReward = (item) => Boolean(B4[item.exclusive?.quest]) && item.requires.level === B4[item.exclusive.quest].level - 2;
 // An upgrade for each kind of kit at least every 20 levels.
 const WINDOWS = [[41, 60], [61, 80], [81, 100]];
 const lv = (i) => i.requires?.level || 0;
@@ -63,7 +69,7 @@ const wearable = (actor, lo, hi) => LATE.filter((i) => lv(i) >= lo && lv(i) <= h
 test('every late requirement is one a hero of that class can meet, and every piece is Legendary and priced for its level', () => {
   for (const item of LATE) {
     const r = item.requires;
-    assert.ok(TIERS.includes(r.level), `${item.id}: level ${r.level} is a tier`);
+    assert.ok(TIERS.includes(r.level) || chapterReward(item), `${item.id}: level ${r.level} is a tier, or two below its Book Four chapter`);
     for (const c of r.classes || []) assert.ok(CLASSES[c], `${item.id}: ${c}`);
     for (const [id, n] of Object.entries(r.abilities || {})) assert.ok(ABILITIES[id] && n >= 10 && n <= 15, `${item.id}: ${id} ${n}`);
     assert.ok(Object.keys(CLASSES).some((c) => Gear.unmet(hero(c, r.level).player, item) === null), `${item.id}: some class can wear it`);

@@ -1521,7 +1521,9 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 
 **Where the quieter flags are read** (each is also a default branch, so a
 chapter needs no line for it beyond the default):
-- `b4_unannounced`: chapter 11's default opening (Lantry has heard nothing).
+- `b4_unannounced`: chapter 11's default opening (Lantry has heard nothing),
+  and Linus's first true verse in `b4-partone-end` ("these went quietly down
+  to knock").
 - `b4_embassy_own`: 16 (the promise is yours, Orin -1 if broken) and 22 (the
   council owes the Wold nothing in writing); the default of `b4_embassy_*`.
 - `b4_letters_copied`: 22, where Fennick's copies are read to the council.
@@ -2118,3 +2120,57 @@ below.
     is Book Two's. The stay lines are keyed on `away:stay-<id>`: Orin for
     `b4-davin`, Maren for `b4-book`, Nessa for `b4-key` (with or without
     `b3_wren_cast`), and all three for `b4-peaks`.
+24. **Vell's way down in chapter 8** (build step 5). With `b3_stair_sealed`
+    the seal is opened for one day on "the council's warrant", under the
+    seal's own rules, with Fennick counting everyone through and back, rather
+    than on Corvane's and Fennick's authority by name, as decided for
+    chapter 7 (19). With `b3_door_closed` the iron door is opened by Oswin
+    Pike, who barred and chained it from the Vell side in Book Three, rather
+    than with Fennick's key. With `b3_stair_sealed` the floor shows one set of
+    boot-prints going north on the north branch, months old, and Fennick's
+    last entry is "went down, one"; nothing says where Hesk went.
+25. **Aster at rest in chapter 8** (build step 5). With `b3_bell_aster` and
+    `b3_promise_old` her talk names the dark bell once, and Fennick reads the
+    last thing she said from the bell before she rested, which he wrote down;
+    she has no lines of her own, as the lore section says.
+26. **The 3rd job skill in letters-camp** (build step 5). Each 2nd job branch
+    has one line naming its 3rd job's level 48 skill (`src/data/jobs.json`),
+    said by one companion (Orin for guardian, warlord, binder, battlepriest,
+    pathfinder and battlecantor; Maren for grifter, chronist, lifewarden,
+    exorcist, lorekeeper and envoy; Nessa for the rest), with a narrated line
+    when that companion is away, and a line for `spec: "none"`. None of them
+    mentions the fight, so they hold for the peaceful way.
+27. **Chapter 9's people** (build step 5). The late delegates are unnamed
+    (Ashford's second delegate and Merrowgate's dockers' delegate). Without
+    `b4_company_broken` or `b4_company_sails` the waylayers' speaker is "A
+    rope-man", not the rope-men's foreman, who opened the hatch in chapter 7.
+    With `elske_seat` the chair "came round to Merrowgate at midsummer".
+    Nessa answers Brannagh's goats ("There's always goats"), so the goat test
+    checks who says each goat line rather than counting one.
+28. **The end of Part One** (build step 5). `b4-partone-end` ends at the
+    north door the night before the descent, and its last choice sets
+    `b4_partone_done` (the one scene choice in Part One that sets a flag, as
+    Book Three's end of Part One does). Chapter 10 has no `nextTown`, so the
+    engine leaves the party at Highpass, where it waits at "to be continued";
+    chapter 11 starts from Highpass's board, as the town table says.
+29. **The chapter rewards for chapters 1 to 10** (build step 5) are in
+    `src/data/gear.json`, after Book Three's, each `exclusive.quest`,
+    Legendary, priced at the Legendary floor plus 40, and worn from two levels
+    below the chapter. Their numbers are the tier below them (40, or 45 from
+    chapter 8), each with its own skill, story ability or skill mix, so none
+    is matched by a sold item or beats tier 50's: the tally-cord
+    (Investigation and Survival +3, Wisdom saves +1, 5% dealt, Investigation
+    story), the account case (History and Arcana +3, Intelligence and Wisdom
+    saves +1, 5% taken, History story), the True Verse (Performance +3,
+    Persuasion +2, Charisma saves +2, Read Aloud: Empowered 2 rounds), the
+    cutlass (finesse 1d8, +3/+5, 10% dealt, rogue, bard or ranger, Hamstring:
+    Slowed 2 rounds), the hook (Strength 1d8, +3/+5, 5% dealt, fighter or
+    cleric, Pull Clear: Slowed 2 rounds), Rue's second book (Insight and
+    History +3, Wisdom saves +1, 5% dealt, Insight story), the key-cord
+    (Perception and Athletics +3, Constitution and Wisdom saves +1, 10% taken,
+    Perception story), the satchel (History, Religion and Investigation +3, 5%
+    dealt, Religion story), the Embassy Seal (Persuasion, Insight and History
+    +3, Wisdom and Charisma saves +1, 10% dealt, Persuasion story) and the
+    Parting-hall Plate (heavy, base AC 23, 15% taken, Constitution and Wisdom
+    saves +1, Brace: Fortified 2 rounds). The late-gear test's tier rule
+    allows a Book Four chapter reward at its chapter's level minus 2.
