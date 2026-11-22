@@ -10,9 +10,13 @@ const { localResponse } = require('./local-http');
 const { createClaudeProvider } = require('./claude-ai');
 const MAX_REPLY_CHARS = 131072;
 
-function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'), fetchImpl = localResponse, claude = null } = {}) {
+// owner/concurrency: the open-source game has one player and runs one request
+// at a time. A hosted game (src/hosted.js) gives each account its own slot and
+// allows up to `concurrency` accounts at once, so one player never blocks the rest.
+const SOLO = 'local';
+function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'), fetchImpl = localResponse, claude = null, concurrency = 1 } = {}) {
   const claudeProvider = claude || createClaudeProvider();
-  let active = null;
+  const active = new Map();
 
   async function config() {
     try { return Profiles.normalize(JSON.parse(await fs.readFile(configPath, 'utf8'))); }
@@ -24,7 +28,7 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
   }
 
   async function save(raw) {
-    if (active) throw new Error('Wait for or cancel the active AI request before changing models.');
+    if (active.size) throw new Error('Wait for or cancel the active AI request before changing models.');
     const c = Profiles.normalize(raw);
     await fs.mkdir(path.dirname(configPath), { recursive: true });
     const temp = configPath + '.tmp';
@@ -33,19 +37,24 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
     return c;
   }
 
-  function cancel() { if (!active) return false; active.cancelled = true; active.controller.abort(); return true; }
+  // Without an owner, cancels every request (the single local player's).
+  function cancel(owner = null) {
+    const tickets = owner === null ? [...active.values()] : [active.get(owner)].filter(Boolean);
+    for (const t of tickets) { t.cancelled = true; t.controller.abort(); }
+    return tickets.length > 0;
+  }
 
-  // Runs one request at a time; a slow model never stacks work.
-  async function exclusive(timeout, run) {
-    if (active) throw new Error('The AI is busy. Wait for its current reply instead of starting another request.');
+  // Runs one request at a time per owner; a slow model never stacks work.
+  async function exclusive(timeout, run, owner = SOLO) {
+    if (active.has(owner) || active.size >= concurrency) throw new Error(active.has(owner) ? 'The AI is busy. Wait for its current reply instead of starting another request.' : 'The AI game master is busy with other players. Try again in a moment.');
     const ticket = { controller: new AbortController(), cancelled: false };
-    active = ticket;
+    active.set(owner, ticket);
     const timer = setTimeout(() => ticket.controller.abort(), timeout);
     try { return await run(ticket.controller.signal); }
     catch (e) {
       if (ticket.controller.signal.aborted) throw new Error(ticket.cancelled ? 'AI request cancelled. Nothing was applied.' : 'The AI reached its configured wait limit. Nothing was applied.');
       throw e;
-    } finally { clearTimeout(timer); if (active === ticket) active = null; }
+    } finally { clearTimeout(timer); if (active.get(owner) === ticket) active.delete(owner); }
   }
 
   async function localJson(c, suffix, body, signal) {
@@ -90,14 +99,17 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
     return { text: text.trim(), model: c.model, elapsedMs: Date.now() - started };
   }
 
+  // maxReplyTokens / maxContextChars only ever lower the saved settings (hosted ceilings).
   async function complete(request) {
-    const c = await config();
-    if (!c.enabled) throw new Error('AI is off. Enable a provider in AI settings to use it.');
+    const saved = await config();
+    if (!saved.enabled) throw new Error('AI is off. Enable a provider in AI settings to use it.');
+    const lower = (value, cap) => Number.isInteger(cap) && cap > 0 && (value === -1 || value > cap) ? cap : value;
+    const c = { ...saved, replyTokens: lower(saved.replyTokens, request.maxReplyTokens), contextChars: lower(saved.contextChars, request.maxContextChars) };
     const { system, prompt } = request;
     if (typeof system !== 'string' || typeof prompt !== 'string' || system.length + prompt.length > c.contextChars) throw new Error('The turn exceeds the selected context budget. No facts were silently truncated; choose a larger budget or shorten the instructions.');
     return exclusive(c.timeoutMs, signal => c.provider === 'claude'
       ? claudeProvider.complete(c, request, signal)
-      : completeLocal(c, request, signal));
+      : completeLocal(c, request, signal), typeof request.owner === 'string' && request.owner ? request.owner : SOLO);
   }
 
   // A tiny request that proves the provider answers. It never touches a game.
@@ -116,7 +128,7 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
     catch { return false; }
   }
 
-  function status() { return { busy: Boolean(active), claudeKeyConfigured: claudeProvider.configured() }; }
+  function status(owner = null) { return { busy: owner === null ? active.size > 0 : active.has(owner), claudeKeyConfigured: claudeProvider.configured() }; }
 
   return { config, save, models, complete, test, cancel, narrationEnabled, status, manifest: Profiles.manifest };
 }
