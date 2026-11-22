@@ -297,7 +297,8 @@ function installQuest(q){
 for(const q of Object.values(QUESTS))installQuest(q);
 // Conversation scenes (src/data/scenes.json): companions talk with each other
 // after an expedition. Each beat is a story node whose lines are kept as
-// structured dialogue; choices change approval only. A scene whose cast is
+// structured dialogue; choices change approval and flags (setFlags, and
+// flagsIf for flags that depend on the moment, like a companion's bond). A scene whose cast is
 // not all in the party is skipped (engine enterNode follows skipTo).
 // A scene may also follow another scene ("after" names that scene): it plays
 // straight after it, as the second choice of a chapter runs before its camp.
@@ -314,7 +315,7 @@ function installScene(scene){
     // trialFraming lines, the same ones the trial opens with (trialFraming below).
     const dialogue=[...base.lines,...(base.framesTrial&&scene.trialFraming?scene.trialFraming.lines:[])].map(storyLine);
     STORY_NODES[nodeId(key)]={id:nodeId(key),act:base.act||scene.act,title:base.title,location:base.location||scene.location,objective:base.objective,opening:dialogueText(dialogue),dialogue,safeRest:false,sideStory:true,scene:scene.id,cast:scene.cast,skipTo:home,
-      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{...(c.requires?{requires:c.requires}:{}),result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),nextNode:c.next?nodeId(c.next):home}}))};
+      choices:(raw.choices||[]).map(c=>choice(c.id,c.label,{...(c.requires?{requires:c.requires}:{}),result:{...(c.lines?{dialogue:c.lines.map(storyLine)}:{}),...(c.approval?{approval:c.approval}:{}),...(c.setFlags?{setFlags:c.setFlags}:{}),...(c.flagsIf?{flagsIf:c.flagsIf}:{}),nextNode:c.next?nodeId(c.next):home}}))};
   }
   if(QUESTS[scene.after])for(const c of STORY_NODES[`q-${q.id}-after`].choices)c.result.nextNode=nodeId(scene.start);
 }
@@ -393,4 +394,8 @@ expose.success.setFlags.spiritFreed=true;
 // A practice battle gives the actual new specialization a safe place to operate.
 ENEMIES['training-echo']={id:'training-echo',name:'Guild Training Echo',maxHp:160,ac:15,level:10,abilities:{str:14,dex:12,con:14,int:12,wis:12,cha:12},attack:{name:'Blunted Echo',bonus:5,damage:'1d6+2',damageType:'bludgeoning'},aiRole:'soldier',xp:0};
 ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['training-echo'],storyScale:1,standardScale:1,grittyScale:1,xp:0,loot:[],intro:'A supervised practice echo rises. No gold, XP or loot is awarded. Your health, resources and supplies are restored exactly after practice.',victoryNode:'town-highpass',defeatNode:'town-highpass',practice:true};
-module.exports={trialFraming,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};
+// Where the hero and each companion stand after the written story's choices
+// (src/data/standing.json): told to the AI game master and shown in the Journal.
+const STANDING=require('./data/standing.json').entries;
+function standing(state,who){return STANDING.filter(e=>e.who===who&&lineApplies(state,{when:e.when})).map(e=>e.text);}
+module.exports={trialFraming,standing,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};

@@ -141,6 +141,14 @@
             }
           },
           {
+            "narrate": "Nessa takes a letter out of her pocket. Not the no, which Wren keeps pinned by the door, and not the yes, which went into Dera's fire: a third one, folded small, that she has carried since the spring. She puts it on the table. Wren does not open it. She puts her hand flat on it and keeps it there.",
+            "when": {
+              "flag": "nessa_keeper",
+              "is": "declined",
+              "party": "nessa"
+            }
+          },
+          {
             "narrate": "Nessa takes a letter out of her pocket, the one folded small that she has carried since the spring, and puts it on the table. Wren does not open it. She puts her hand flat on it and keeps it there.",
             "when": {
               "party": "nessa",
@@ -1771,6 +1779,13 @@
                   "anyFlag": [
                     "b3_wren_waits"
                   ]
+                }
+              },
+              {
+                "narrate": "Nessa does not go back over the pass to keep the forge-signal. She said no in the spring and she has not taken it back. She writes to Cinder Fold every month instead, and the answers come back short and rude, and she reads every one of them twice.",
+                "when": {
+                  "flag": "nessa_keeper",
+                  "is": "declined"
                 }
               }
             ],

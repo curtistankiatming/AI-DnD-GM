@@ -13,7 +13,7 @@ const Journal = require("./journal");
 const Away = require("./away");
 const { restHelps, titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
-const { dialogueText, liveLines, nodeLocation } = require("./expansion");
+const { dialogueText, liveLines, nodeLocation, standing } = require("./expansion");
 const currentNode = (...args) => Engine.currentNode(...args);
 const requirementStatus = (...args) => Engine.requirementStatus(...args);
 const completedChoice = (...args) => Engine.completedChoice(...args);
@@ -154,6 +154,8 @@ function partyView(state) {
       temporaryHp:actor?.temporaryHp??member.temporaryHp??0,
       summary: member.summary,
       personality: member.personality,
+      // What the books' choices made of them (src/data/standing.json).
+      standing: standing(state, member.id),
       strengths: strengths(member),
       hp: actor?.hp ?? member.hp,
       maxHp: actor?.maxHp ?? member.maxHp,

@@ -1,0 +1,17 @@
+{
+  "_note": "Where the hero and each companion stand after the written story's choices (scene flags the chapter decisions do not cover). Each entry is told to the AI game master (src/director.js prompt: hero.standing, party[].standing) and shown in the Journal when its `when` holds, checked like a written line's when (src/expansion.js lineApplies). Facts only: what was chosen, never what to do with it.",
+  "entries": [
+    { "who": "hero", "when": { "flag": "second_oath", "is": "council" }, "text": "The hero's Second Oath answers to the council of the free wards, which can recall them by two-thirds." },
+    { "who": "hero", "when": { "flag": "second_oath", "is": "town" }, "text": "The hero's Second Oath answers to Briarwatch, the town that took them in." },
+    { "who": "hero", "when": { "flag": "second_oath", "is": "companions" }, "text": "The hero's Second Oath answers to the people they walk with: their companions." },
+    { "who": "hero", "when": { "flag": "second_oath", "is": "none" }, "text": "The hero's Second Oath answers to no one: to what is right, as best they can see it." },
+
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "noneFlag": ["b3_wren_cast", "b3_wren_waits", "b3_wren_refused"] }, "text": "Nessa wrote Wren a long yes: she will take Cinder Fold's forge-signal after her, but not yet." },
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_cast"] }, "text": "Nessa is keeper of Cinder Fold's forge-signal. Wren gave her the key at the pit before she was cast into the tenth bell." },
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_waits"] }, "text": "Nessa turned her long yes into a real one: she went back over the pass in the spring to take the forge-signal from Wren." },
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_refused"] }, "text": "Nessa's yes to Wren's post is held for her. Wren keeps the forge-signal from a chair, alive and still angry about it." },
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "declined" }, "text": "Nessa turned down Wren's forge-signal post in a letter she sealed herself, and chose the road with the hero. Wren kept the no and will not ask again." },
+    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b3_wren_cast"] }, "text": "Wren was cast into Cinder Fold's tenth bell. The miners' committee holds the signal key Nessa said no to." },
+    { "who": "nessa", "when": { "flag": "second_oath", "notFlag": "nessa_keeper" }, "text": "Nessa never answered Wren's offer of the forge-signal. The letter is still in her pocket." }
+  ]
+}

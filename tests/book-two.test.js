@@ -210,7 +210,10 @@ test('the last chapter ends the books, then the epilogue records the Second Oath
   assert.equal(s.story.flags.second_oath, 'council');
   assert.equal(s.story.nodeId, 'scene-oath-epilogue-forge');
   s = act(s, { type: 'story-choice', choiceId: 'nessa-post' }).state;
+  assert.equal(s.story.nodeId, 'scene-oath-epilogue-letters');
+  s = act(s, { type: 'story-choice', choiceId: 'yes' }).state;
   assert.equal(s.story.flags.nessa_keeper, 'later');
+  s = act(s, { type: 'story-choice', choiceId: 'supper' }).state;
   const home = act(s, { type: 'story-choice', choiceId: 'home' });
   assert.ok(home.events.some((e) => e.text === Book.ENDING), 'Told once the hero is home.');
   s = home.state;
@@ -501,4 +504,67 @@ test('in the epilogue, the question about Wren\'s post is not offered without Ne
   assert.deepEqual(E.buildView(s).scene.choices.map((c) => c.id), ['fire']);
   assert.equal(E.resolveAction(s, { type: 'story-choice', choiceId: 'nessa-post' }, () => 0.5).result.ok, false);
   assert.equal(s.story.flags.nessa_keeper, undefined);
+});
+
+// Curtis, 22 November 2026: "Players choices should matter and impact story."
+// Nessa's answer about Wren's post follows what the hero tells her, how far she
+// trusts the hero, and what she settled with Wren at Cinder Fold.
+function epilogueLetters({ bond = 3, flags = {} } = {}) {
+  let s = ready('oath', { flags });
+  s.story.nodeId = 'q-oath-after'; s.world.activeQuest = 'oath'; s.world.onExpedition = true;
+  s = act(s, { type: 'story-choice', choiceId: 'seat' }).state;
+  s = act(s, { type: 'story-choice', choiceId: 'council' }).state;
+  s.party.find((m) => m.id === 'nessa').bond = bond;
+  s = act(s, { type: 'story-choice', choiceId: 'nessa-post' }).state;
+  assert.equal(s.story.nodeId, 'scene-oath-epilogue-letters');
+  return s;
+}
+const answer = (s, id) => { const r = act(s, { type: 'story-choice', choiceId: id }); return { s: r.state, text: E.buildView(r.state).scene.opening }; };
+
+test('Nessa shows both letters and asks the hero what they would send', () => {
+  const s = epilogueLetters();
+  const view = E.buildView(s).scene;
+  assert.deepEqual(view.choices.map((c) => c.id), ['yes', 'stay', 'hers']);
+  assert.match(view.opening, /That one's a yes/); assert.match(view.opening, /That one's a no/);
+  assert.match(view.opening, /Wren asked me\. The last morning/, 'Without the kitchen talk she says what the post is.');
+  assert.doesNotMatch(E.buildView(epilogueLetters({ flags: { 'b2:wren_offer': true } })).scene.opening, /Wren asked me\. The last morning/);
+  assert.match(E.buildView(epilogueLetters({ flags: { 'b2:beacon': 'nessa' } })).scene.opening, /bit fast/);
+  assert.match(E.buildView(epilogueLetters({ flags: { 'b2:beacon': 'wren' } })).scene.opening, /watched her light the beacon/);
+});
+
+test('"Send the yes" always sends the long yes', () => {
+  for (const bond of [-2, 0, 5]) {
+    const { s, text } = answer(epilogueLetters({ bond }), 'yes');
+    assert.equal(s.story.flags.nessa_keeper, 'later'); assert.match(text, /hands the yes over/); assert.doesNotMatch(text, /hands the no/);
+  }
+});
+
+test('"Stay with us" sends the no only when Nessa trusts the hero', () => {
+  const trusted = answer(epilogueLetters({ bond: 3 }), 'stay');
+  assert.equal(trusted.s.story.flags.nessa_keeper, 'declined');
+  assert.match(trusted.text, /it's not only me/); assert.match(trusted.text, /hands the no over/); assert.match(trusted.text, /proud of you, and then furious/);
+  const wary = answer(epilogueLetters({ bond: 2 }), 'stay');
+  assert.equal(wary.s.story.flags.nessa_keeper, 'later');
+  assert.match(wary.text, /You don't get to pick for me/); assert.match(wary.text, /hands the yes over/); assert.doesNotMatch(wary.text, /hands the no/);
+});
+
+test('"Send the one you mean" lets Nessa decide from what she settled with Wren', () => {
+  const settled = answer(epilogueLetters({ bond: 0, flags: { 'b2:wren_offer': true, wren_map_nessa: true } }), 'hers');
+  assert.equal(settled.s.story.flags.nessa_keeper, 'declined');
+  assert.match(settled.text, /I don't owe her a yes/); assert.match(settled.text, /hands the no over/);
+  const owing = answer(epilogueLetters({ bond: 5, flags: { 'b2:wren_offer': true, wren_map_hero: true } }), 'hers');
+  assert.equal(owing.s.story.flags.nessa_keeper, 'later');
+  assert.match(owing.text, /Some of it's still the drain/);
+  const untold = answer(epilogueLetters({ bond: 5, flags: { wren_map_nessa: true } }), 'hers');
+  assert.equal(untold.s.story.flags.nessa_keeper, 'later', 'Without hearing "this isn\'t a bill" she still thinks she owes Wren.');
+  assert.match(untold.text, /Some of it's still owing her/); assert.doesNotMatch(untold.text, /drain|bill/);
+});
+
+test('the epilogue answer reads right without Maren, and the hand-over still waits for home', () => {
+  let s = epilogueLetters({ bond: 4 });
+  s.party = s.party.filter((m) => m.id !== 'maren');
+  const r = answer(s, 'stay');
+  assert.doesNotMatch(r.text, /Maren|furious first/);
+  const end = act(r.s, { type: 'story-choice', choiceId: 'supper' }).state;
+  assert.equal(end.story.nodeId, 'scene-oath-epilogue-end');
 });

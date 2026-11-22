@@ -23,6 +23,10 @@
   beat set by the engine; Claude may name an arc only before its first chapter
   is finished). `Chronicle.record` advances and closes arcs. Arcs never change
   rewards.
+- Scene choices that later books read (the Second Oath, Nessa's answer) are
+  told to the AI and the Journal through `src/data/standing.json` (facts with a
+  `when`, read by `standing` in `src/expansion.js`). Add an entry there when a
+  written choice should follow the hero past the books.
 - Claude-authored content (improvised actions in `src/improvise.js`, generated
   adventures in `src/director.js`) supplies story and choices only. Every number
   (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved
