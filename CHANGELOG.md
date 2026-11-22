@@ -4,6 +4,22 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Nessa's answer is the player's to shape (22 November 2026)
+
+- In Book Two's epilogue Nessa shows the hero two letters to Wren, a yes and
+  a no, and asks which they would send. "Send the yes" sends the long yes;
+  "Stay with us" sends the no only if she trusts the hero; "Send the one you
+  mean" lets her decide from what she settled with Wren at Cinder Fold. She
+  never leaves the party.
+- A sent no carries on: Wren's Bell in Book Three, the letter night and Book
+  Three's epilogue each tell it their own way, and the Book Four design reads
+  it.
+- The hero's Second Oath and Nessa's answer are now told to the AI game master
+  and shown in the Journal (`src/data/standing.json`).
+- The peak-stairs beacon choice at Cinder Fold is remembered in the epilogue.
+- Report, including the choices that still change nothing later:
+  docs/reviews/claude-choices-2026-11-22.md.
+
 ## Gear to level 100 and equipment sets (22 November 2026)
 
 - 79 new pieces of equipment for levels 45 to 100 in ten tiers (45, 50, 55, 60, 65, 70, 80, 90,

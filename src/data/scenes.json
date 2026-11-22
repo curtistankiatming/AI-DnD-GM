@@ -502,6 +502,7 @@
               { "say": "nessa", "text": "It's meant to be fast." },
               { "say": "Wren", "text": "I know. I've just never seen it from this side." }
             ],
+            "setFlags": { "b2:beacon": "nessa" },
             "approval": { "nessa": 1 }
           },
           {
@@ -512,6 +513,7 @@
               { "say": "nessa", "text": "You're slow." },
               { "say": "Wren", "text": "I'm thorough. You'll get there." }
             ],
+            "setFlags": { "b2:beacon": "wren" },
             "approval": { "nessa": 1 }
           }
         ]
@@ -642,16 +644,77 @@
             "id": "nessa-post",
             "label": "Ask Nessa what she has decided about Wren's post",
             "requires": { "companion": "nessa" },
-            "lines": [
-              { "narrate": "Nessa has been carrying a letter since Cinder Fold. She takes it out now, and for once she does not put it back in the pocket for later." },
-              { "say": "nessa", "text": "It's to Wren. It says yes. Well. It says 'yes, but not yet, I've got a council to keep an eye on, and you're not dead, so you can manage another winter.' It's a long yes." },
-              { "say": "nessa", "text": "I'm going to send it. Actually send it. Will you walk to the carters with me?" },
-              { "narrate": "You walk to the carters with her. She hands it over herself, and watches the cart all the way out of sight, and then turns round and asks what's for supper." }
-            ],
-            "setFlags": { "nessa_keeper": "later" },
-            "next": "end"
+            "next": "letters"
           },
           { "id": "fire", "label": "Sit by Dera's fire a while", "next": "end" }
+        ]
+      },
+      "letters": {
+        "title": "Two Letters",
+        "objective": "Tell Nessa what you would send.",
+        "lines": [
+          { "narrate": "Nessa has been carrying a letter since Cinder Fold. She takes it out now, and a second one with it, and puts them on Dera's bench side by side, and looks at them as if one of them might bite." },
+          { "say": "nessa", "text": "Wren asked me. The last morning at Cinder Fold, while you were packing. Her post, the forge-signal. She said don't answer till this is over. So. It's over.", "when": { "notFlag": "b2:wren_offer" } },
+          { "say": "nessa", "text": "I lit the beacon, on the peak. She said 'bit fast'. I keep hearing it. I can't tell if it was a complaint.", "when": { "flag": "b2:beacon", "is": "nessa" } },
+          { "say": "nessa", "text": "I watched her light the beacon, on the peak. Every step of it. In case I had to. I think that's why she let me watch.", "when": { "flag": "b2:beacon", "is": "wren" } },
+          { "say": "nessa", "text": "That one's a yes. Well. It says 'yes, but not yet, I've got a council to keep an eye on, and you're not dead, so you can manage another winter.' It's a long yes." },
+          { "say": "nessa", "text": "That one's a no. It's shorter. It took longer." },
+          { "say": "nessa", "text": "I'm sending one of them today. Actually sending it. Don't tell me which. No. Tell me. What would you send?" }
+        ],
+        "choices": [
+          {
+            "id": "yes",
+            "label": "“Send the yes. She chose you, and she was right to.”",
+            "requires": { "companion": "nessa" },
+            "setFlags": { "nessa_keeper": "later", "b2:nessa_yes": true },
+            "next": "sent"
+          },
+          {
+            "id": "stay",
+            "label": "“Send the no. Stay on the road with us.”",
+            "requires": { "companion": "nessa" },
+            "setFlags": { "nessa_keeper": "later", "b2:nessa_stay": true },
+            "flagsIf": [{ "when": { "bondAtLeast": { "nessa": 3 } }, "setFlags": { "nessa_keeper": "declined" } }],
+            "next": "sent"
+          },
+          {
+            "id": "hers",
+            "label": "“It isn't mine to say. Send the one you mean.”",
+            "requires": { "companion": "nessa" },
+            "setFlags": { "nessa_keeper": "later", "b2:nessa_hers": true },
+            "flagsIf": [{ "when": { "flag": "wren_map_nessa", "anyFlag": ["b2:wren_offer"] }, "setFlags": { "nessa_keeper": "declined" } }],
+            "approval": { "nessa": 1 },
+            "next": "sent"
+          }
+        ]
+      },
+      "sent": {
+        "title": "The Carters' Yard",
+        "objective": "Walk to the carters with Nessa.",
+        "lines": [
+          { "say": "nessa", "text": "That's what I'd have said. That's what I did say, at Cinder Fold, at three in the morning. I just wanted to hear it from somebody who isn't me.", "when": { "flag": "b2:nessa_yes" } },
+          { "say": "nessa", "text": "No. You don't get to pick for me. Wren doesn't, and you don't. Nobody does. That's the whole— that's the point.", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b2:nessa_stay"] } },
+          { "narrate": "She picks up the yes and puts the no back in her pocket, and does not look at you while she does it.", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b2:nessa_stay"] } },
+          { "narrate": "Nessa looks at you for a long moment, the way she looks at a rope before she puts her weight on it.", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b2:nessa_stay"] } },
+          { "say": "nessa", "text": "Yeah. All right. Yeah. I wanted somebody else to say it, so it wasn't only me being selfish. It's still me. But it's not only me.", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b2:nessa_stay"] } },
+          { "say": "nessa", "text": "The one I mean. Right. Easy. Thanks for that.", "when": { "flag": "b2:nessa_hers" } },
+          { "narrate": "She picks up the yes.", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b2:nessa_hers"] } },
+          {
+            "oneOf": [
+              { "say": "nessa", "text": "Some of it's still the drain. I know it is. She says it isn't a bill. Maybe it isn't. I'll find out on her stairs.", "when": { "flag": "b2:wren_offer" } },
+              { "say": "nessa", "text": "Some of it's still owing her. I know it is. I'd sooner find out on her stairs than spend twenty more years wondering." }
+            ],
+            "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b2:nessa_hers"] }
+          },
+          { "narrate": "She picks up the no.", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b2:nessa_hers"] } },
+          { "say": "nessa", "text": "She said it isn't a bill. And she looked at my map and said better. So I don't owe her a yes, and I don't need one to show her anything. And if I don't need it, I don't want it. Not yet. Maybe not ever. I want to see what's past the next bell.", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b2:nessa_hers"] } },
+          { "narrate": "You walk to the carters with her. She hands the yes over herself, and watches the cart all the way out of sight, and then turns round and asks what's for supper.", "when": { "flag": "nessa_keeper", "is": "later" } },
+          { "narrate": "You walk to the carters with her. She hands the no over herself. It is the first letter you have ever seen her seal. She watches the cart all the way out of sight, and then goes back to the forge and feeds the yes to Dera's fire, a corner at a time, and asks what's for supper.", "when": { "flag": "nessa_keeper", "is": "declined" } },
+          { "say": "maren", "text": "Wren will read that and be proud of you, and then furious. In that order, I hope.", "when": { "flag": "nessa_keeper", "is": "declined" } },
+          { "say": "nessa", "text": "She'll be furious first. She always reads the end first.", "when": { "flag": "nessa_keeper", "is": "declined", "party": "maren" } }
+        ],
+        "choices": [
+          { "id": "supper", "label": "Go and find supper", "next": "end" }
         ]
       },
       "end": {
