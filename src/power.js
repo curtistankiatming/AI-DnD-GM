@@ -36,6 +36,7 @@ const EFFECTS = Object.freeze({
 const has = (actor, id) => Boolean(actor?.conditions?.some(c => c.id === id));
 
 // Multiplier on damage from `attacker` to `target` from their conditions.
+const XP_GEAR_TAKEN_SHARE = () => require('./xp').GRITTY_GEAR_TAKEN_SHARE;
 function damageFactor(attacker, target) {
   let f = 1;
   for (const [id, e] of Object.entries(EFFECTS)) {
@@ -44,7 +45,8 @@ function damageFactor(attacker, target) {
   }
   // Worn items' special stats (src/gear.js).
   f += Number(attacker?.gearDealt) || 0;
-  f += Number(target?.gearTaken) || 0;
+  // On Gritty past level 40 a hardened enemy's blows go through most of worn gear's damage cut (src/xp.js).
+  f += (Number(target?.gearTaken) || 0) * (attacker?.hardened ? XP_GEAR_TAKEN_SHARE() : 1);
   // Under-level penalty (src/xp.js): the condition carries its own share.
   for (const c of attacker?.conditions || []) if (c.id === 'outclassing') f += Number(c.dealt) || 0;
   return Math.max(0.25, f);

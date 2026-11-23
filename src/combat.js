@@ -189,7 +189,8 @@ function startCombat(state, encounterId, rng, events) {
     const approached=Boolean(state.story.flags[`approach:${q.id}`]);
     state.combat.objective={...deepClone(encounter.objective),progress:0,dc:12+Math.floor(XP.challenge(q).accuracy/2)-(prepared?2:0)-(approached?1:0),questId:q.id};
     if(q.id==='beacon')state.combat.objective.dc-=Math.min(3,['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length);
-    if(approached)for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
+    // On Gritty past level 40 the enemies are never caught off guard (src/xp.js grittyLate); the approach still lowers the DC.
+    if(approached&&!(state.difficulty==='gritty'&&XP.lateLevels(q.level)))for(const a of enemies)addCondition(a,{id:'surprised',name:'Caught off guard',rounds:1});
   }
   // More than 5 levels under the adventure: enemies hit harder and more often,
   // and the fight's objective is harder, as story checks are (src/xp.js).
@@ -201,6 +202,7 @@ function startCombat(state, encounterId, rng, events) {
     for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
     events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
   }
+  grittyLate(state,encounter,enemies,events);
   whiteCold(state,encounter,allies,events);
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
   if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
@@ -219,6 +221,19 @@ function startCombat(state, encounterId, rng, events) {
   events.push({ type: "roll", tone: "neutral", text: `Initiative: ${initiativeText}` });
   advanceAutomaticTurns(state, rng, events);
   return true;
+}
+
+// Gritty past level 40 (src/xp.js grittyLate): the enemies of a fight above
+// level 40 (its chapter's or adventure's level; a bounty's is the hero's) have
+// a little more health and are hardened: they find the gaps in heavy armour and
+// worn gear turns less of their damage (src/power.js). Only on Gritty.
+function grittyLate(state,encounter,enemies,events){
+  if(state.difficulty!=='gritty'||encounter.practice)return;
+  const level=encounter.questId?Number(Director.quest(state,encounter.questId)?.level)||state.player.level:state.player.level;
+  if(!XP.lateLevels(level))return;
+  const g=XP.grittyLate(level);
+  for(const e of enemies){e.maxHp=Math.max(1,Math.round(e.maxHp*g.hp));e.hp=e.maxHp;e.hardened=true;}
+  events.push({type:'combat',tone:'warning',text:'Gritty: these enemies are hardened. They find the gaps in heavy armour, and worn gear turns less of their damage.'});
 }
 
 // The white (Book Four's Part Two, docs/book-four/DESIGN.md): a chapter with
@@ -432,9 +447,10 @@ function rollAttack(state, attacker, target, profile, rng, events, options = {})
     mode.disadvantage = false;
   }
   const d20 = rollD20(rng, mode);
-  const bonus = Number(profile.attackBonus ?? profile.bonus ?? 0);
-  let total = d20.natural + bonus;
   const ac = effectiveAc(target);
+  // Gritty past level 40 (src/xp.js grittyArmour): a hardened enemy finds the gaps in heavy armour.
+  const bonus = Number(profile.attackBonus ?? profile.bonus ?? 0) + (attacker.hardened && target.team === "party" ? XP.grittyArmour(ac) : 0);
+  let total = d20.natural + bonus;
   if(hasCondition(attacker,"inspired") && d20.natural!==1 && total<ac){const extra=rollFormula(rng,"1d6").total;total+=extra;removeCondition(attacker,"inspired");events.push({type:"feature",tone:"good",text:`${attacker.name} adds ${extra} from Inspiration.`});}
   const critical = d20.natural === 20;
   const hit = critical || (d20.natural !== 1 && total >= ac);
