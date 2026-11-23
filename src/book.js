@@ -161,11 +161,14 @@ const unwritten = state => !done(state, 'bell') || chapters(state).some(q => !do
 // the hosted game): it waits, untouched, until access returns. It is never
 // marked finished and never handed to the AI storyteller in its place. An
 // expedition already under way when access lapsed may be played to its end.
-function locked(state) {
-  const b = lockedBook(state);
+// The book it waits in is the latest closed book it has begun: a save part-way
+// through Book Four, or past every book, is held in Book Four, not Book Three.
+function heldBook(state) {
   const begun = q => done(state, q.id) || state?.world?.activeQuest === q.id;
-  return Boolean(b && ALL.some(q => bookNo(q) === b.n && partOpen(q) && begun(q)));
+  return SHELF.filter(b => released(b) && !allows(state, b.n)).reverse()
+    .find(b => ALL.some(q => bookNo(q) === b.n && partOpen(q) && begun(q))) || null;
 }
+const locked = state => Boolean(heldBook(state));
 function finished(state) {
   if (locked(state)) return false;
   const f = flags(state);
@@ -248,8 +251,10 @@ function bookEnd(id, state = null) {
 // expedition in order. Null once the books are finished.
 function chapter(state) {
   if (locked(state)) {
-    const b = lockedBook(state), q = ALL.find(x => bookNo(x) === b.n && partOpen(x) && !done(state, x.id));
-    return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save is part-way through ${bookName(b.n)}, ${b.title}, which needs a paid account here. It is kept exactly as it is and carries on when the book is open again.`, book: b.title, n: b.n, locked: true };
+    const b = heldBook(state), q = ALL.find(x => bookNo(x) === b.n && partOpen(x) && !done(state, x.id));
+    // A save that finished the book (and any after it) is past it, not part-way through.
+    const where = q ? `is part-way through ${bookName(b.n)}, ${b.title}, which needs` : `has gone on past ${bookName(b.n)}, ${b.title}, and from Book ${word(FREE_BOOKS + 1)} on the story needs`;
+    return { id: 'locked', name: `${b.title}: needs a paid account`, level: Number(q?.level) || Number(state?.player?.level) || 1, brief: `This save ${where} a paid account here. It is kept exactly as it is and carries on when the account is paid again.`, book: b.title, n: b.n, locked: true };
   }
   if (finished(state)) return null;
   if (!done(state, 'bell')) return BELL;

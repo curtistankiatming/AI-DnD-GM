@@ -14,7 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
-const { dialogueText, liveLines, playLines, lineApplies, nodeLocation, outcomeForRoller } = require("./expansion");
+const { QUESTS, dialogueText, liveLines, playLines, lineApplies, nodeLocation, outcomeForRoller } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
 const Gear = require("./gear");
@@ -658,7 +658,7 @@ function applyOutcome(state, written = {}, rng, events) {
   // The last safe ledge: rest, then go back down to the interrupted chapter.
   if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
   // Back up the stair after repeated defeats: to town, the chapter kept in progress.
-  if (outcome.climbUp) { state.world.onExpedition = false; next = `town-${state.world.townId}`; events.push({ type: "rest", tone: "warning", text: "The party climbs back up to town. The chapter waits where you left it: depart again to go back down to the same encounter." }); }
+  if (outcome.climbUp) { const ledge = QUESTS[currentNode(state)?.ledge]; state.world.onExpedition = false; next = `town-${state.world.townId}`; events.push({ type: "rest", tone: "warning", text: ledge?.climbText || "The party climbs back up to town. The chapter waits where you left it: depart again to go back down to the same encounter." }); }
   if (next) enterNode(state, next, events, outcome.dialogue);
   if (state.story.flags["books:part-end-due"] && STORY_NODES[state.story.nodeId]?.townId) {
     const id = state.story.flags["books:part-end-due"];
