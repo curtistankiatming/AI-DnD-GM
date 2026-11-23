@@ -155,6 +155,7 @@
               { "say": "orin", "text": "She'd want to know about the goat." },
               { "narrate": "Nessa looks at him as if he has said something unexpectedly wise, and then folds the letter and puts it in her pocket, the one for later. Not the other one." }
             ],
+            "setFlags": { "b2:nessa_first_letter": true },
             "approval": { "nessa": 1 },
             "next": "end"
           },
@@ -290,6 +291,7 @@
               { "say": "Hal", "text": "Stoneward. You came. Late, and with your friend's own fee in the first cart, I hear. But you came.", "when": { "flag": "b2_cost_party" } },
               { "narrate": "Hal goes off to check on the sentries, who don't need checking on. Orin stays by the fire and, for the first time since Briarwatch, looks like a man who is sitting down rather than waiting to stand up." }
             ],
+            "setFlags": { "b2:orin_hal": "said" },
             "approval": { "orin": 1 }
           },
           {
@@ -298,6 +300,7 @@
             "lines": [
               { "narrate": "You get up and go. Behind you, after a while, you hear them start talking: about the Ashford span, about people you never met, about a quartermaster in the Second Company who used to steal everyone's boots. Then, eventually, laughing." }
             ],
+            "setFlags": { "b2:orin_hal": "left" },
             "approval": { "orin": 1 }
           }
         ]
@@ -384,6 +387,7 @@
               { "say": "Anwen", "text": "Vale, your friend has no manners." },
               { "say": "maren", "text": "None. It's one of the things I like about them." }
             ],
+            "setFlags": { "b2:cards": "called" },
             "approval": { "maren": 1 },
             "next": "list"
           },
@@ -393,6 +397,7 @@
             "lines": [
               { "narrate": "You lose every button you have. It is the best evening anyone in the long room has had in a year." }
             ],
+            "setFlags": { "b2:cards": "lost" },
             "approval": { "maren": 1 },
             "next": "list"
           }
@@ -634,9 +639,30 @@
           { "say": "orin", "text": "A council." },
           { "say": "Dera", "text": "That'll do it." },
           { "narrate": "Tovin rings the hours. Pim rings them with him, exactly on time, every time, and has been told to breathe so often that he now does it without being asked. Aveline sleeps, people say, for a week." },
+          { "oneOf": [
+            { "narrate": "The night rota is still pinned to the tower door, twenty-two names long and growing. Somebody is awake on the hill every night now. Pim sleeps in a bed, lying down, most of the time.", "when": { "flag": "job:nightbell-rota" } },
+            { "narrate": "On Saturdays Pim and Tovin still sit up on the hill with the practice bell. Pim has stopped asking for the other six nights. He has started a list of names for when he does.", "when": { "flag": "job:nightbell-saturday" } },
+            { "narrate": "Pim has kept the sheet you gave back to him, every hour ticked, in the back of his book on bell-keeping. He has shown it to everyone. Tovin has stopped pretending not to know about the hill.", "when": { "flag": "job:nightbell-rung" } },
+            { "narrate": "Pim nods to you in the square now, when you pass. He does not stop to talk. Tovin goes up the hill some nights, on his own, and rings the practice bell, and does not say who for.", "when": { "flag": "job:nightbell-told" } }
+          ] },
+          { "oneOf": [
+            { "narrate": "The new well on the Ashford road has a tally slate hanging from its post. Gilliam's grandson still keeps it. Nobody has thrown anything all winter.", "when": { "flag": "job:well-shared" } },
+            { "narrate": "The new well on the Ashford road was paid for the way Aveline said. Gilliam and Bryony Lark draw water at different hours, and nod, and have stopped saying anything worse than that.", "when": { "flag": "job:well-ordered" } },
+            { "narrate": "Six people from both sides of the Ashford road still meet at the well-head on the night it was dug, with a lantern, to check the rope. Nobody remembers who suggested it.", "when": { "flag": "job:well-dug" } },
+            { "narrate": "The Ashford road well has a small brass plate on it with your name. Gilliam polishes it. When it froze again in the new year, they sent to ask what you thought.", "when": { "flag": "job:well-paid" } }
+          ] },
           { "narrate": "Brannagh has her fence. The goat ignores it entirely." },
           { "narrate": "Maren's list is gone; she let it go in Merrowgate harbour. She has started a new one. It is the names of the people in the Sallows long room, and beside each one is something true about them. The last name on it is Elske Marrow's. Beside it Maren has written: comes every week, and reads to them.", "when": { "flag": "keeper-list-done", "party": "maren" } },
           { "narrate": "Maren still has her list, with one empty space on it. She has stopped looking at it every night. She is waiting, she says, for the right word to turn up. Below the space, in newer ink, there is one more name: Elske Marrow. Beside it she has written nothing yet, either. When you ask, she says Elske isn't finished.", "when": { "notFlag": "keeper-list-done", "party": "maren" } },
+          { "narrate": "Anwen writes to Maren from the Sallows every month. Every letter ends the same way: tell your friend with no manners that we have stopped cheating. They have not.", "when": { "flag": "b2:cards", "is": "called", "party": "maren" } },
+          { "narrate": "Anwen writes to Maren from the Sallows every month, and every letter has a button folded into it, addressed to you. You have quite a few now. You are starting to suspect they were yours.", "when": { "flag": "b2:cards", "is": "lost", "party": "maren" } },
+          { "oneOf": [
+            { "narrate": "A letter comes from Mother Bell for you, from Quartermaster Iona. Willem Asker has been taken on as the council's coach driver. He gets a receipt for everything. She thought you would want to know.", "when": { "flag": "job:coach-iona" } },
+            { "narrate": "A letter comes from Mother Bell, from Quartermaster Iona. The council heard Willem Asker's claim in the spring and paid it in full. She paid back the two gold for the horse's shoes to herself, and wrote that down too.", "when": { "flag": "job:coach-listed" } },
+            { "narrate": "When the council at Mother Bell opened Pell Haverick's coach, Iona's ledger has a line in red for the left-hand box: opened, forty-six gold counted out to the driver, witnessed. The council asked. You told them. It is the only line in the book that nobody argued about.", "when": { "flag": "job:coach-box", "party": "orin" } },
+            { "narrate": "When the council at Mother Bell opened Pell Haverick's coach, Iona's ledger has a line in red for the left-hand box: opened, count unknown. She has written to ask what you took out, politely, twice.", "when": { "flag": "job:coach-box", "absent": "orin" } }
+          ] },
+          { "narrate": "In Merrowgate harbour there is a small blue smack with LENORA on the bow in yellow, slightly downhill. The pilots' boys take her out on fine days so she does not forget the water.", "when": { "flag": "job:boat-named" } },
           { "narrate": "Orin has the quartermaster's invoice in his pack. Sometimes, when he thinks nobody is looking, he reads it.", "when": { "party": "orin" } }
         ],
         "choices": [
@@ -657,6 +683,7 @@
           { "say": "nessa", "text": "Wren asked me. The last morning at Cinder Fold, while you were packing. Her post, the forge-signal. She said don't answer till this is over. So. It's over.", "when": { "notFlag": "b2:wren_offer" } },
           { "say": "nessa", "text": "I lit the beacon, on the peak. She said 'bit fast'. I keep hearing it. I can't tell if it was a complaint.", "when": { "flag": "b2:beacon", "is": "nessa" } },
           { "say": "nessa", "text": "I watched her light the beacon, on the peak. Every step of it. In case I had to. I think that's why she let me watch.", "when": { "flag": "b2:beacon", "is": "wren" } },
+          { "say": "nessa", "text": "And there's this one. The one from the wall at Highpass, with the goat in it. You said send it. I didn't. It's been in my pocket since. Whichever I send today, it's going in the same envelope. She'd want to know about the goat.", "when": { "flag": "b2:nessa_first_letter" } },
           { "say": "nessa", "text": "That one's a yes. Well. It says 'yes, but not yet, I've got a council to keep an eye on, and you're not dead, so you can manage another winter.' It's a long yes." },
           { "say": "nessa", "text": "That one's a no. It's shorter. It took longer." },
           { "say": "nessa", "text": "I'm sending one of them today. Actually sending it. Don't tell me which. No. Tell me. What would you send?" }
@@ -768,6 +795,7 @@
               { "say": "nessa", "text": "He'd better, though. Eventually." },
               { "say": "maren", "text": "He will. He always does, in the end. It's the end that takes the time." }
             ],
+            "setFlags": { "b3_orin_asked": "wait" },
             "approval": { "orin": 1 }
           },
           {
@@ -779,6 +807,7 @@
               { "say": "maren", "text": "Nessa." },
               { "narrate": "Orin gets up and goes out into the yard to check on Roke's horse, which does not need checking." }
             ],
+            "setFlags": { "b3_orin_asked": "ask" },
             "approval": { "orin": -1, "nessa": 1 }
           },
           {
@@ -951,6 +980,8 @@
         "objective": "Sit with Orin.",
         "lines": [
           { "narrate": "You sit down on the other side of the lamp. He moves it, an inch, so that it is between you exactly." },
+          { "say": "orin", "text": "You said not tonight, at Dera's forge. When I was ready. I don't know that I'm ready. But you waited, and it's the first thing anyone's ever waited for from me, so you can have it.", "when": { "flag": "b3_orin_asked", "is": "wait" } },
+          { "say": "orin", "text": "You asked me, at Dera's forge. I went out to look at a horse that didn't need looking at. I'm sorry. You were right to ask. I just couldn't answer with the letter on the anvil.", "when": { "flag": "b3_orin_asked", "is": "ask" } },
           { "say": "orin", "text": "She said she'll think about it." },
           { "say": "orin", "text": "I've had eight years to think what she'd say. I had it all. She'd spit, or she'd forgive me, or she'd push me off the ladder. I'd got ready for all three. I hadn't got ready for her to think about it." },
           { "say": "orin", "text": "It's fair. It's the fairest thing anyone's ever done to me.", "when": { "bondBelow": { "orin": 4 } } },
@@ -1188,6 +1219,7 @@
               { "narrate": "She takes a stub of pencil out of her sleeve, and writes it on the inside of the button tin's lid, small: Ysolde Carr, Sixth District. Then she closes the lid." },
               { "say": "maren", "text": "Not an ending. A name. I'll try to tell the difference." }
             ],
+            "setFlags": { "b3_maren_one_name": true },
             "approval": { "maren": 1 }
           },
           {
@@ -1307,6 +1339,7 @@
               { "say": "nessa", "text": "This time. Yes. All right. I always say that. This time I mean it." },
               { "narrate": "She writes it on her knee by the well, by the last of the light, and seals it with candle-wax from the forge, and gives it to the Vell courier herself before she can change her mind." }
             ],
+            "setFlags": { "b3_nessa_wrote_ysolde": true },
             "approval": { "nessa": 1 }
           },
           {
@@ -1353,21 +1386,24 @@
             "requires": { "flagsAny": ["prepared:b3-vault", "partial:b3-vault"] },
             "lines": [
               { "narrate": "You say it. People taken for standing in a room. Nobody answers. The sun comes up over the river wall, and Oswin Pike comes across the yard with the tin box under his good arm, and sits down on the rim of the door with you, and does not open it." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "register" }
           },
           {
             "id": "corvane",
             "label": "“Corvane, in front of the last bell, with nothing to say.”",
             "lines": [
               { "narrate": "You say it. Across the drill-yard, Corvane is on the wall walk above the casting wall, with his ledger, where he reads the lost at dusk. He is not reading. He is standing there with it closed, looking at the river." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "corvane" }
           },
           {
             "id": "quiet",
             "label": "Say nothing, and listen to the morning",
             "lines": [
               { "narrate": "You do not say anything. Nobody asks you to. The drill-yard fills slowly with ordinary sounds: a cart, a dog, a woman calling a child in for breakfast. Somebody in the volunteers' barracks is singing the evening hymn at the wrong end of the day, flat, very quietly." }
-            ]
+            ],
+            "setFlags": { "b3_vault_word": "quiet" }
           }
         ]
       }

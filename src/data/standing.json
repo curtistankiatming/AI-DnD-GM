@@ -1,17 +1,266 @@
 {
   "_note": "Where the hero and each companion stand after the written story's choices (scene flags the chapter decisions do not cover). Each entry is told to the AI game master (src/director.js prompt: hero.standing, party[].standing) and shown in the Journal when its `when` holds, checked like a written line's when (src/expansion.js lineApplies). Facts only: what was chosen, never what to do with it.",
   "entries": [
-    { "who": "hero", "when": { "flag": "second_oath", "is": "council" }, "text": "The hero's Second Oath answers to the council of the free wards, which can recall them by two-thirds." },
-    { "who": "hero", "when": { "flag": "second_oath", "is": "town" }, "text": "The hero's Second Oath answers to Briarwatch, the town that took them in." },
-    { "who": "hero", "when": { "flag": "second_oath", "is": "companions" }, "text": "The hero's Second Oath answers to the people they walk with: their companions." },
-    { "who": "hero", "when": { "flag": "second_oath", "is": "none" }, "text": "The hero's Second Oath answers to no one: to what is right, as best they can see it." },
-
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "noneFlag": ["b3_wren_cast", "b3_wren_waits", "b3_wren_refused"] }, "text": "Nessa wrote Wren a long yes: she will take Cinder Fold's forge-signal after her, but not yet." },
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_cast"] }, "text": "Nessa is keeper of Cinder Fold's forge-signal. Wren gave her the key at the pit before she was cast into the tenth bell." },
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_waits"] }, "text": "Nessa turned her long yes into a real one: she went back over the pass in the spring to take the forge-signal from Wren." },
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "later", "anyFlag": ["b3_wren_refused"] }, "text": "Nessa's yes to Wren's post is held for her. Wren keeps the forge-signal from a chair, alive and still angry about it." },
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "declined" }, "text": "Nessa turned down Wren's forge-signal post in a letter she sealed herself, and chose the road with the hero. Wren kept the no and will not ask again." },
-    { "who": "nessa", "when": { "flag": "nessa_keeper", "is": "declined", "anyFlag": ["b3_wren_cast"] }, "text": "Wren was cast into Cinder Fold's tenth bell. The miners' committee holds the signal key Nessa said no to." },
-    { "who": "nessa", "when": { "flag": "second_oath", "notFlag": "nessa_keeper" }, "text": "Nessa never answered Wren's offer of the forge-signal. The letter is still in her pocket." }
+    {
+      "who": "hero",
+      "when": {
+        "flag": "second_oath",
+        "is": "council"
+      },
+      "text": "The hero's Second Oath answers to the council of the free wards, which can recall them by two-thirds."
+    },
+    {
+      "who": "hero",
+      "when": {
+        "flag": "second_oath",
+        "is": "town"
+      },
+      "text": "The hero's Second Oath answers to Briarwatch, the town that took them in."
+    },
+    {
+      "who": "hero",
+      "when": {
+        "flag": "second_oath",
+        "is": "companions"
+      },
+      "text": "The hero's Second Oath answers to the people they walk with: their companions."
+    },
+    {
+      "who": "hero",
+      "when": {
+        "flag": "second_oath",
+        "is": "none"
+      },
+      "text": "The hero's Second Oath answers to no one: to what is right, as best they can see it."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "later",
+        "noneFlag": [
+          "b3_wren_cast",
+          "b3_wren_waits",
+          "b3_wren_refused"
+        ]
+      },
+      "text": "Nessa wrote Wren a long yes: she will take Cinder Fold's forge-signal after her, but not yet."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "later",
+        "anyFlag": [
+          "b3_wren_cast"
+        ]
+      },
+      "text": "Nessa is keeper of Cinder Fold's forge-signal. Wren gave her the key at the pit before she was cast into the tenth bell."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "later",
+        "anyFlag": [
+          "b3_wren_waits"
+        ]
+      },
+      "text": "Nessa turned her long yes into a real one: she went back over the pass in the spring to take the forge-signal from Wren."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "later",
+        "anyFlag": [
+          "b3_wren_refused"
+        ]
+      },
+      "text": "Nessa's yes to Wren's post is held for her. Wren keeps the forge-signal from a chair, alive and still angry about it."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "declined"
+      },
+      "text": "Nessa turned down Wren's forge-signal post in a letter she sealed herself, and chose the road with the hero. Wren kept the no and will not ask again."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "nessa_keeper",
+        "is": "declined",
+        "anyFlag": [
+          "b3_wren_cast"
+        ]
+      },
+      "text": "Wren was cast into Cinder Fold's tenth bell. The miners' committee holds the signal key Nessa said no to."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "second_oath",
+        "notFlag": "nessa_keeper"
+      },
+      "text": "Nessa never answered Wren's offer of the forge-signal. The letter is still in her pocket."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "anyFlag": [
+          "south_hal_council"
+        ]
+      },
+      "text": "Hal's company, the forty Orin once failed to come back for on the south road, took the council's service."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "anyFlag": [
+          "south_hal_guild"
+        ]
+      },
+      "text": "Hal's company, the forty Orin once failed to come back for on the south road, stayed with the guild."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "anyFlag": [
+          "south_hal_council",
+          "south_hal_guild"
+        ],
+        "notFlag": "mother_recalled",
+        "flag": "second_oath"
+      },
+      "text": "At the Mother Bell, Hal held the iron doors so Orin didn't have to. Somebody else held the door."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "mother_recalled"
+      },
+      "text": "At the Mother Bell, Orin held the iron doors the first night, and the second time he did not have to."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_orin_tried",
+        "anyFlag": [
+          "b3_mags_forgives"
+        ]
+      },
+      "text": "At Vell the hero argued that Orin be tried with his old captain Varn for leaving Saltwick. Mags Peller forgave him, and he went to keep Saltwick's lamps for a spring."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_orin_tried",
+        "anyFlag": [
+          "b3_mags_not_hers"
+        ]
+      },
+      "text": "At Vell the hero argued that Orin be tried with his old captain Varn for leaving Saltwick. Mags Peller would not forgive him: it was the fourteen's to forgive, not hers."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_orin_tried",
+        "noneFlag": [
+          "b3_mags_forgives",
+          "b3_mags_not_hers"
+        ]
+      },
+      "text": "At Vell the hero argued that Orin be tried with his old captain Varn for leaving Saltwick, and given the same."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_varn_judged"
+      },
+      "text": "At Vell the hero argued that Captain Varn alone be tried for Saltwick, not Orin, who only followed the order."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_varn_freed"
+      },
+      "text": "At Vell nobody was judged for Saltwick: Varn was sent back to Hesk with a message."
+    },
+    {
+      "who": "orin",
+      "when": {
+        "flag": "b3_orin_gives"
+      },
+      "text": "In the deep, Orin gave up the Saltwick night. He no longer remembers it, and knows that he did."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "keeper-list-done",
+        "noneFlag": [
+          "b3_done"
+        ]
+      },
+      "text": "Maren let her list of lost shrine keepers go in Merrowgate harbour. Her new list is the people of the Sallows long room, each with something true beside them."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "second_oath",
+        "notFlag": "keeper-list-done",
+        "noneFlag": [
+          "b3_done"
+        ]
+      },
+      "text": "Maren still keeps her list of lost shrine keepers, with one empty space and Elske Marrow's name below it, nothing written beside it yet."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b3_seal_taken"
+      },
+      "text": "Maren is the free wards' seal: every week at Highpass she sits across from people who have come to give, and hears them."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b3_maren_gives"
+      },
+      "text": "In the deep, Maren gave up the day her gift woke. She has forgotten it, and knows she has."
+    },
+    {
+      "who": "maren",
+      "when": {
+        "flag": "b3_done",
+        "noneFlag": [
+          "b3_seal_taken",
+          "b3_maren_gives"
+        ]
+      },
+      "text": "Maren keeps no list now. She goes to the shrine on the Briarwood side in the mornings, and sits, and comes back."
+    },
+    {
+      "who": "nessa",
+      "when": {
+        "flag": "b3_nessa_gives"
+      },
+      "text": "In the deep, Nessa gave up one thing she remembered about Wren, and does not know which."
+    },
+    {
+      "who": "hero",
+      "when": {
+        "flag": "hollin_told"
+      },
+      "text": "The hero told Elske Marrow what they saw in Hollin's Reach, and that its bell had stopped."
+    },
+    {
+      "who": "hero",
+      "when": {
+        "flag": "hollin_kept"
+      },
+      "text": "The hero never told Elske Marrow what they saw in Hollin's Reach. It was hers to tell."
+    }
   ]
 }

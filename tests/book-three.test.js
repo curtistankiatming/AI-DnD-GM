@@ -905,9 +905,10 @@ test('PR #67: the end of Part One cannot be left half-played, and "to be continu
   assert.equal(E.resolveAction(s, { type: 'return-town' }, high).result.ok, false);
   const forge = pick(s, 'keeper');
   assert.equal(E.resolveAction(forge, { type: 'return-town' }, high).result.ok, false, 'Not from a later node of the scene either.');
-  // A camp scene that only changes approval can still be left.
-  const camp = pick(decideAt('b3-home', 'help'), 'go');
-  assert.equal(camp.story.nodeId, `scene-home-camp-${SCENES['home-camp'].start}`);
+  // A camp scene that only changes approval can still be left. (The home camp
+  // now remembers Nessa's letter to Ysolde, so it decides something.)
+  const camp = decideAt('b3-pass', 'all');
+  assert.equal(camp.story.nodeId, `scene-pass-camp-${SCENES['pass-camp'].start}`);
   assert.equal(E.resolveAction(camp, { type: 'return-town' }, high).result.ok, true);
 });
 
