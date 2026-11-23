@@ -210,6 +210,10 @@
             { "narrate": "The North Company's ship is at the north quay, loading for the Wold. There is a board on her gangway: HANDS WANTED. Bett Haddow is standing under it with her pack on." }
           ] },
           { "say": "Bett", "text": "Ship's girl. They take ship's boys at ten, and I'm eleven. I can splice, and I can climb, and I can tie every knot on this quay, and I can read, which most of them can't. I've asked the mate. He says I can sign if my father signs as well." },
+          { "oneOf": [
+            { "say": "Bett", "text": "I told you about my uncle, on your step. The whaling one. He went at twelve and was gone four years. I'm not asking for four years. One voyage.", "when": { "flag": "b3_bett", "is": "stay" } },
+            { "narrate": "She has a mackerel for you in a cloth, the way the basket used to come, and puts it in your hands before she says anything else.", "when": { "flag": "b3_bett", "is": "take" } }
+          ] },
           { "narrate": "Her father is not here to sign. Coll went north on wagon four at the end of the week, and left a letter with Bett's aunt in the Tanneries, which Bett has read, and has in her pocket, and reads out to you without being asked: Bett is to stop with you till I send. She is not to go on any ship. She will ask. Tell her no from me.", "when": { "flag": "b4_company_sails" } },
           { "narrate": "Coll Haddow is sitting on a bollard at the foot of the gangway with his arms folded, which is where he has been since the board went up.", "when": { "notFlag": "b4_company_sails" } },
           { "say": "Coll Haddow", "text": "I'm going north myself with the convoy, when the peaks open. One Haddow up there is enough. She stops with her aunt.", "when": { "flag": "b4_company_council" } },

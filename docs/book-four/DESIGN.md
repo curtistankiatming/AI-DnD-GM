@@ -635,8 +635,9 @@ written for it), Wren keeps the key and no flag is set; later lines read that
 as `b4_key_left`.
 
 **Scene key-camp.** Biscuit refuses the hatch and is carried, and Nessa tells
-him he is a coward in a voice that means the opposite. He stays at Cinder Fold
-with Hew when the party goes north.
+him he is a coward in a voice that means the opposite. Hew minds him while the
+party is in Cinder Fold; when it goes north he stops at Highpass, by the
+guardroom brazier (see Part Two's revisions; character review, 22 November).
 
 ### 8. The Letters on the Floor (b4-letters, level 47, Vell or its ruins, late summer)
 
@@ -775,7 +776,8 @@ keeps them. Where a chapter below says otherwise, this list wins.
   (`b4-partone-end`). He sings the first true verse at Briarwatch at
   midwinter and is not in the Wold. The Telling's ballad lines are still his
   song.
-- Biscuit did not cross. Part One never says so, so it is decided here.
+- Biscuit did not cross. Part One's key-camp says so (it first said he stayed
+  at Cinder Fold with Hew; the character review moved him to Highpass to match).
   Nessa left him at Highpass with the watch, by the guardroom brazier,
   because he is grey at the muzzle and the saddle was in snow. Her letter in
   `lantry-camp` is addressed there. In `orme-camp`, Burdock asks how to spell

@@ -332,12 +332,12 @@
           ] },
           { "say": "nessa", "text": "Traitor." },
           { "narrate": "She watches the two of them for a while.", "when": { "party": "nessa" } },
-          { "say": "nessa", "text": "He's old. The peaks'll be cold, and the Wold's colder, Rue says, and he won't go near a hole, and I bet it's all holes up there. When we go north, he stays here. With Hew. If Hew'll have him." },
-          { "say": "Hew", "text": "I'll have him.", "when": { "party": "nessa" } },
+          { "say": "nessa", "text": "He's old. The peaks'll be cold, and the Wold's colder, Rue says, and he won't go near a hole, and I bet it's all holes up there. When we go north, he's not coming. He'll stop at Highpass, by the guardroom brazier, where it's warm and there's no holes. The watch'll spoil him." },
+          { "say": "Hew", "text": "Can I have him till you go?", "when": { "party": "nessa" } },
           { "oneOf": [
-            { "say": "nessa", "text": "He'll go up the stair with you every night. He'll want to. Let him.", "when": { "flag": "b4_key_hew" } },
-            { "say": "nessa", "text": "He can sit under the lamp-room for me, since there's nobody up it. Somebody should mind it, even dark.", "when": { "flag": "b4_key_carried" } },
-            { "say": "nessa", "text": "You'll both go up the stair with whoever's keeping the key, every night. Count the steps for me.", "when": { "flag": "b4_key_left" } }
+            { "say": "nessa", "text": "Take him up the stair with you while we're here. He'll want to. Let him.", "when": { "flag": "b4_key_hew" } },
+            { "say": "nessa", "text": "Sit under the lamp-room with him tonight, since there's nobody up it. Somebody should mind it, even dark.", "when": { "flag": "b4_key_carried" } },
+            { "say": "nessa", "text": "Take him up the stair with whoever's keeping the key tonight. Count the steps for me.", "when": { "flag": "b4_key_left" } }
           ] },
           { "narrate": "The family from Wem are asleep in miners' blankets by the forge fire. Hew sits up with them on the hall step with his hearth bell in his lap, and keeps very still so as not to wake the child.", "when": { "absent": "nessa" } },
           { "say": "Hew", "text": "I'll go up the stair with them again tomorrow. Somebody has to learn it. I'm learning it.", "when": { "absent": "nessa" } }
@@ -1365,6 +1365,10 @@
           ] },
           { "say": "Anwen", "text": "You let them win. Don't you dare say I taught you that.", "when": { "party": "maren" } },
           { "say": "maren", "text": "You taught me everything else.", "when": { "party": "maren" } },
+          { "oneOf": [
+            { "say": "Anwen", "text": "And your friend with no manners can keep their mouth shut this time. Somebody at this table has to be winning.", "when": { "flag": "b2:cards", "is": "called", "party": "maren" } },
+            { "narrate": "Anwen slides a button across the table to you without looking up from her hand. You are fairly sure it was yours, once, in the Sallows.", "when": { "flag": "b2:cards", "is": "lost" } }
+          ] },
           { "narrate": "At the end of the row somebody says a name, out loud, to nobody in particular, and the table stops and waits, and then the game goes on." }
         ],
         "choices": [

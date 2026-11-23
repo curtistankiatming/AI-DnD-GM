@@ -4,6 +4,22 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Book Four characters (22 November 2026)
+
+- Biscuit now stops at Highpass when the party goes north from Cinder Fold, as
+  Parts Two and Three already said. Chapter 7's camp had him staying with Hew.
+- The carter's wife in chapter 6 is now Lettice. "Ada" was already Ada Rusk
+  from Book One.
+- Five earlier camp choices come back in Book Four: the cards with Anwen
+  (Merrowgate hospice), Bett's basket (Bett's Berth), Hollis Brede's name
+  (Ashford, chapter 25), Pim's late quarter bell (Briarwatch, chapter 23) and
+  the one name in Maren's tin (Greve, chapter 14).
+- The AI game master now hears how each companion's Book Four arc went: Nessa's
+  key and her choice about Rue, Orin at Sheddon and Sorrel's commission, and
+  Maren at Merrowgate. Nessa's old key facts are dropped once Book Four settles
+  the key.
+- Report: docs/reviews/claude-characters-book-four-2026-11-22.md.
+
 ## More choices now carry forward (22 November 2026)
 
 - Nine side jobs that recorded how they ended but never said so again are now
