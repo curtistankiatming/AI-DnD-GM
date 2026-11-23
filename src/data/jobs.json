@@ -1246,7 +1246,8 @@
          "onFail": {
           "id": "mocked",
           "name": "Deceived: next attack disadvantaged"
-         }
+         },
+         "area": true
         },
         {
          "do": "condition",
@@ -4095,7 +4096,8 @@
          "onFail": {
           "id": "stunned",
           "name": "Considering terms: loses next action"
-         }
+         },
+         "area": true
         },
         {
          "do": "objective",
@@ -4162,7 +4164,8 @@
          "onFail": {
           "id": "stunned",
           "name": "Bound by decree: loses next action"
-         }
+         },
+         "area": true
         },
         {
          "do": "objective",

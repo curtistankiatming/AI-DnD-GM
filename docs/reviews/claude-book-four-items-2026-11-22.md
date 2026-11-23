@@ -11,8 +11,10 @@ how all of it sits on the gear-to-100 curve from PR #86. Reviewed on PR #92
 The gear is in good shape. Every 45 to 70 tier is on sale where the story is
 at the level the hero gets there, the warm gear makes the white a choice that
 costs nothing, the thirty rewards keep their rules, and gold stays a choice.
-Three things were off and are fixed here: the shop on a phone (the known
-follow-up), heavy armour at tiers 45 and 50, and one reward.
+Two things were off and are fixed here: heavy armour at tiers 45 and 50,
+and one reward. The shop on a phone (the known follow-up: Highpass sells 77
+cards in Part Three) was also found here, and is fixed by the UI review
+through Book Four (#97, grouped shops), so this PR leaves it to that.
 
 ## What was checked
 
@@ -47,18 +49,7 @@ follow-up), heavy armour at tiers 45 and 50, and one reward.
 
 ## Fixed in this PR
 
-1. **The shop on a phone (major, the known follow-up).** From level 40 a town
-   sells 50 to 77 cards (Highpass in Part Three: 66 pieces of gear and 11
-   supplies) inside a 500 px box, potions first, so the gear for your level
-   was dozens of cards down. The shop now has shelves (`shelve` in
-   `src/world.js`): gear for the hero's level that someone in the party can
-   wear comes first, newest first; then supplies; then older tiers and gear
-   nobody in the party can wear, folded ("Older gear, and gear your party
-   can't wear · N"). Nothing is hidden, and the fold stays open after a
-   purchase. At Highpass in Part Three a fighter's party now sees 5 gear
-   cards and 11 supplies before the fold; a new hero's first shop is
-   unchanged. Merchants use the same shelves.
-2. **Heavy armour from 40 to 50 (medium).** Wardsmith's Plate (40) has base AC
+1. **Heavy armour from 40 to 50 (medium).** Wardsmith's Plate (40) has base AC
    22, +1 to every save and Brace. The next plate a fighter or cleric could
    buy, Frostforged Plate (45), had base AC 23 and nothing else, and the warm
    White-wool Plate (50) only +1 Strength and Constitution saves: each traded
@@ -68,12 +59,12 @@ follow-up), heavy armour at tiers 45 and 50, and one reward.
    every save with +2 Strength and Constitution. Wardsmith's still has Brace,
    so 45 is AC against a skill; the Bellwarden Plate (60) and the rewards
    are unchanged and still not matched (the dominance test passes).
-3. **Thrum Lane Cloak (minor).** Chapter 15's warm light armour dealt 5% more
+2. **Thrum Lane Cloak (minor).** Chapter 15's warm light armour dealt 5% more
    damage where the warm White-wool Jerkin sold beside it deals 10%, so a
    rogue, ranger or bard lost damage for wearing the reward. It now deals
    10%, a tier 50 number, keeping its Wisdom save, skills and Insight story.
 
-A new test file (`tests/book-four-items-review.test.js`) covers all three.
+A new test file (`tests/book-four-items-review.test.js`) covers both.
 
 ## Left as is (minor)
 

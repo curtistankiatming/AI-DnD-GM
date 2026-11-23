@@ -26,9 +26,13 @@
   const actions=view.combat?.actions||[];
   let a=actions.find(x=>x.id===armed&&targeted(x));
   // Nothing picked yet: your weapon is ready, so an enemy can be attacked with one tap.
-  if(!a){a=actions.find(x=>x.id==='weapon-attack'&&targeted(x))||null;armed=a?a.id:null;}
+  // A wizard holds a focus, not a weapon, so their weapon attack is an Unarmed Strike for 1 damage: their
+  // free attack cantrip is the one-tap attack instead.
+  if(!a){const weapon=actions.find(x=>x.id==='weapon-attack'&&targeted(x));const cantrip=weapon?.name==='Unarmed Strike'?actions.find(x=>CANTRIPS.has(x.id)&&targeted(x)&&!x.disabled):null;
+   a=cantrip||weapon||null;armed=a?a.id:null;}
   return a;
  }
+ const CANTRIPS=new Set(['fire-bolt','sacred-flame','vicious-mockery']);
  const GOOD=new Set(['empowered','fortified','guarded','hidden','inspired','intercept','taunting','covered','blessed','sanctuary','protected','dodging','braced','encouraged','warded','shielded','packready','shadowstrike','outclassing','poisonward','disengaged']);
  const BAD=new Set(['burning','weakened','vulnerable','slowed','guiding','mocked','stunned','surprised','poisoned','prone','restrained','frightened','bleeding','deafened','blinded','marked','exposed','snared','cursed','sleeping']);
  // Coloured by what it means for your side: a buff on an enemy is a threat (red), a debuff on an enemy helps you (green).
@@ -48,7 +52,7 @@
   c.append(top,bar,foot);
   // Short names on the card; the full wording with its expiry is the tooltip.
   // Buffs read green, debuffs red, anything else neutral, so a glance tells good from bad.
-  const notes=(actor.conditions||[]).map(x=>{const chip=el('span','effect-chip',String(x.name||conditionLabel(x)).replace(/ (from|by) [A-Z].*$/,'')+roundsLeft(x));chip.dataset.tone=effectTone(x,actor);chip.title=conditionLabel(x);return chip;});
+  const notes=(actor.conditions||[]).map(x=>{const chip=el('span','effect-chip',String(x.name||conditionLabel(x)).replace(/^Slowed by the white.*$/,'Slowed (cold)').replace(/ (from|by) [A-Z].*$/,'')+roundsLeft(x));chip.dataset.tone=effectTone(x,actor);chip.title=conditionLabel(x);return chip;});
   if(actor.unconscious&&!down){const u=el('span','effect-chip','Unconscious');u.dataset.tone='bad';notes.push(u);}
   if(actor.temporaryHp>0){const t=el('span','effect-chip',`+${actor.temporaryHp} temporary HP`);t.dataset.tone='good';notes.push(t);}
   if(notes.length){const n=el('span','fighter-notes');n.append(...notes);c.append(n);}

@@ -83,6 +83,7 @@
     actions.append(go,button('No, cancel',()=>send('',{cancel:true})));
     pending.append(actions,createElement('p','muted','No roll or resource change has happened yet.'));
   }
+  const openEarlier=new Set();
   function render(){
     if(!state||!view)return;
     const c=view.chat||{};saved.textContent=c.instructions||'No campaign preferences saved yet.';
@@ -95,19 +96,27 @@
       const block=createElement('section','journal-section');block.dataset.journalGroup=group;
       block.append(createElement('h4','',title));
       if(!entries.length)block.append(createElement('p','muted','Nothing yet.'));
-      for(const entry of entries){
+      // The Telling and the completed list grow by one each chapter (thirty and seventy by level 70): the latest
+      // stay in view and the earlier ones fold under one line, kept open across redraws once opened.
+      const keep=group==='telling'?3:group==='completed'?5:0,folded=keep&&entries.length>keep+2?entries.length-keep:0;
+      let earlier=null;
+      if(folded){earlier=createElement('details','journal-earlier');earlier.dataset.journalEarlier=group;earlier.open=openEarlier.has(group);
+        earlier.append(createElement('summary','',`${group==='telling'?'Earlier tellings':'Earlier adventures'} · ${folded}`));
+        earlier.addEventListener('toggle',()=>{if(earlier.open)openEarlier.add(group);else openEarlier.delete(group);});block.append(earlier);}
+      for(const [index,entry] of entries.entries()){
+        const into=index<folded?earlier:block;
         const row=createElement('div','journal-record');row.dataset.journalId=entry.id;
         if(group==='telling'){
           // The Telling: Linus's song and the Long Tally side by side (stacked on a narrow screen).
           row.append(createElement('strong','',entry.title||entry.id));
           const cols=createElement('div','telling-columns');
           for(const [key,label]of [['ballad','The song'],['tally','The Long Tally']])if(entry[key]){const col=createElement('div','telling-column');col.append(createElement('small','muted',label),createElement('p','',entry[key]));cols.append(col);}
-          row.append(cols);block.append(row);continue;
+          row.append(cols);into.append(row);continue;
         }
         row.append(createElement('strong','',`${entry.title||entry.id} [${entry.status}${entry.value!==undefined?', '+entry.value:''}]`),createElement('p','',entry.text));
         if(entry.source)row.append(createElement('small','muted',entry.source));
         if(group==='notes')row.append(button('Remove '+entry.id,()=>send('/forget-note '+entry.id)));
-        block.append(row);
+        into.append(row);
       }
       journalRecords.append(block);
     }
