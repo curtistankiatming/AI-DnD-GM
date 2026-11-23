@@ -275,6 +275,15 @@ function addCondition(actor, entry) {
   else actor.conditions.push({ ...entry });
 }
 
+// Adds a timed effect without shortening one already there: an actor whose
+// effect of that id lasts longer (or has no end) keeps it as it is.
+function extendCondition(actor, entry) {
+  const existing = condition(actor, entry.id);
+  if (existing && (existing.expiresRound == null || existing.expiresRound >= entry.expiresRound)) return false;
+  addCondition(actor, entry);
+  return true;
+}
+
 function removeCondition(actor, id) {
   actor.conditions = actor.conditions.filter((entry) => entry.id !== id);
 }
@@ -622,7 +631,8 @@ function resolveTacticalAction(state,actor,action,rng,events) {
       // A combination opens a chain on its target (src/power.js).
       Power.startChain(state.combat,target);
       const used=comp.actionUsed;resolveWeaponAttack(state,comp,target,rng,events,{advantage:true});comp.actionUsed=used;
-      if(cid==='orin'){for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});if(target.hp>0){addCondition(target,{id:'weakened',name:'Weakened by Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Weakened: 25% less damage until your next turn.`});}}
+      // No guard while Hold the Column has the party Fortified: the two never stack.
+      if(cid==='orin'){if(!state.combat.actors.some(a=>a.team==='party'&&a.conditions.some(c=>c.source==='hold-the-column')))for(const a of livingActors(state,'party'))addCondition(a,{id:'guarded',name:'Shield Accord',source:'shield-accord',sourceId:actor.id,expiresRound:state.combat.round+1});if(target.hp>0){addCondition(target,{id:'weakened',name:'Weakened by Shield Accord',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Weakened: 25% less damage until your next turn.`});}}
       else if(target.hp>0){addCondition(target,{id:'guiding',name:'Exposed by Crossfire'});addCondition(target,{id:'vulnerable',name:'Vulnerable to Crossfire',sourceId:actor.id,expiresRound:state.combat.round+1});events.push({type:'condition',tone:'good',text:`${target.name} is Vulnerable: 25% more damage until your next turn.`});}
     }
     events.push({type:'party',tone:'good',text:`${actor.name} and ${comp.name} execute their personal-quest combination.`});return {ok:true,kind:'combat',outcomeText:'The party turns a shared experience into coordinated action.'};
@@ -1016,9 +1026,55 @@ function companionAttackTarget(state, actor) {
   return [...enemies].sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0];
 }
 
+// Book Four's companion arc moves (docs/book-four/DESIGN.md, Systems item 4):
+// each is learned on completing that companion's Part Three chapter, is used
+// once a fight by the companion AI on its trigger, and comes before the
+// companion's other bonus actions.
+const ARC_MOVES={
+  orin:{id:'hold-the-column',name:'Hold the Column',chapter:'b4-ford'},
+  maren:{id:'say-their-names',name:'Say Their Names',chapter:'b4-hospice'},
+  nessa:{id:'signal-fire',name:'Signal Fire',chapter:'b4-signal'}
+};
+function arcMove(state,actor){const m=ARC_MOVES[actor.refId];return m&&state.world?.completed?.[m.chapter]&&!state.combat.usedActions[`arc:${actor.id}:${m.id}`]?m:null;}
+// Two or more of the party under half their hit points, or (for Maren) one down.
+function arcHurt(state,orDown){const party=state.combat.actors.filter(a=>a.team==='party');return party.filter(a=>a.hp>0&&a.hp<a.maxHp/2).length+party.filter(a=>a.hp<=0).length*(orDown?2:1)>=2;}
+function useArcMove(state,actor,rng,events){
+  const m=arcMove(state,actor);if(!m)return false;
+  const round=state.combat.round,key=`arc:${actor.id}:${m.id}`;
+  if(m.id==='hold-the-column'){
+    // Shield Accord already guards the party this round: the two never stack.
+    // Found by its source, since a merged guard takes the newer one's name.
+    if(actor.bonusUsed||!arcHurt(state,false)||state.combat.actors.some(a=>a.team==='party'&&a.conditions.some(c=>c.source==='shield-accord')))return false;
+    state.combat.usedActions[key]=true;actor.bonusUsed=true;
+    for(const a of livingActors(state,'party'))extendCondition(a,{id:'fortified',name:'Fortified (Hold the Column)',source:'hold-the-column',sourceId:actor.id,expiresRound:round+1});
+    events.push({type:'party',tone:'good',text:`${actor.name} uses Hold the Column: the party is Fortified until his next turn and takes 25% less damage.`});
+    return false;
+  }
+  if(m.id==='say-their-names'){
+    if(actor.actionUsed||!arcHurt(state,true))return false;
+    state.combat.usedActions[key]=true;actor.actionUsed=true;
+    events.push({type:'party',tone:'good',text:`${actor.name} uses Say Their Names: she says each of the party's names aloud, and heals every one of them.`});
+    const bonus=abilityModifier(actor.abilities.wis)+P.lateGrowth(actor.level);
+    for(const a of state.combat.actors.filter(x=>x.team==='party'))combatHeal(state,a,rollFormula(rng,'3d8').total+bonus,events,`${actor.name}'s Say Their Names`);
+    return true;
+  }
+  if(m.id==='signal-fire'){
+    const foes=livingActors(state,'enemy'),target=foes.find(e=>e.aiRole==='boss')||foes.find(e=>e.aiRole==='leader')||[...foes].sort((a,b)=>b.hp-a.hp)[0];
+    // Her first turn of the fight: used now, or never.
+    state.combat.usedActions[key]=true;
+    if(actor.bonusUsed||!target)return false;
+    actor.bonusUsed=true;
+    extendCondition(target,{id:'vulnerable',name:'Vulnerable (Signal Fire)',source:'signal-fire',sourceId:actor.id,expiresRound:round+1});
+    events.push({type:'condition',tone:'good',text:`${actor.name} uses Signal Fire: ${target.name} is Vulnerable until her next turn and takes 25% more damage.`});
+    return false;
+  }
+  return false;
+}
+
 function processCompanionTurn(state, actor, rng, events) {
   if(actor.hp<=0||hasCondition(actor,'sleeping'))return;
   if(hasCondition(actor,'stunned')||hasCondition(actor,'surprised')){actor.actionUsed=true;events.push({type:'condition',tone:'neutral',text:`${actor.name} loses this action to a control effect.`});return;}
+  if(useArcMove(state,actor,rng,events))return;
   const ordered=state.combat.order?.kind==='protect'?combatActor(state,state.combat.order.targetId):null;
   const lowest=companionLowTarget(state),threshold=actor.tactic==='aggressive'?0.22:actor.tactic==='protective'||actor.tactic==='support'?0.72:0.48;
   if(actor.aiRole==='healer'&&!actor.bonusUsed&&lowest&&actor.resources.healingWords>0&&(lowest.hp<=0||lowest.hp/lowest.maxHp<threshold)){
@@ -1345,4 +1401,4 @@ function combatView(state) {
   };
 }
 
-Object.assign(module.exports, { whiteCold, currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan, flagScale });
+Object.assign(module.exports, { ARC_MOVES, processCompanionTurn, whiteCold, currentCombatActor, combatView, startCombat, normalizeCombat, condition, savingThrow, resolveCombatAction, objectivePlan, flagScale });

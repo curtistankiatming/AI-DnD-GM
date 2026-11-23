@@ -8,7 +8,7 @@ const Book=require('../src/book');
 function run(classId='fighter',difficulty='standard',seed=42,style='prepared',capture=false,start=null){
  const rng=createSeededRng(seed),memory={};let state=start||createNewGame({name:'Rowan',classId,difficulty});
  const result={classId,difficulty,seed,style,steps:0,defeats:0,combats:0,objectiveWins:0,setbacks:0,level:1,xp:0,complete:false,waiting:false,errors:[],levels:[],actions:[]};
- for(let i=0;i<3000;i++){
+ for(let i=0;i<8000;i++){
    const view=buildView(state),action=chooseAction(view,memory,style);
    // The end of the last book, and of the job trial it leads to: the policy
    // stops. Say whether a job trial was offered (and taken) on the way.

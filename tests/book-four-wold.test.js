@@ -45,7 +45,8 @@ const fight = (s, id) => { s.world.activeQuest = id; s.world.onExpedition = true
 const member = (s, id) => s.combat.actors.find((a) => a.id === id || a.refId === id);
 const slowed = (a) => a.conditions.some((c) => c.id === 'slowed' && c.white);
 
-const WARM = GEAR.filter((i) => i.warm);
+// The Wold's warm gear on sale; chapter 11's reward (the Door-reader's Scarf) is warm too, but never sold.
+const WARM = GEAR.filter((i) => i.warm && !i.exclusive);
 const lv = (i) => i.requires?.level || 0;
 
 test('Lantry and Orme are Book Four\'s towns of the Wold, with shops, boards and pages, reached from Highpass', () => {
@@ -78,7 +79,7 @@ test('chapter 11 is taken from Highpass\'s board, and finishing it opens Lantry:
   assert.equal(view.world.town.name, 'Lantry');
   assert.ok(view.world.shop.some((x) => x.id === 'door-chalk-mittens'), 'Lantry sells warm gear from level 51');
   assert.ok(view.world.quests.some((q) => q.id === 'b4-sheddon' && q.canDepart), 'Chapter 12 leaves from Lantry');
-  assert.equal(view.world.reputation.wold, 0, 'The Wold\'s reputation is shown once the party is there');
+  assert.equal(view.world.reputation.wold, QUESTS['b4-lantry'].decisions[0].rep?.wold || 0, 'The Wold\'s reputation is shown once the party is there');
   // Travel back over the north road and down again, between chapters.
   s = act(s, { type: 'travel-town', townId: 'highpass' }).state;
   s = act(s, { type: 'travel-town', townId: 'lantry' }).state;
@@ -228,6 +229,7 @@ test('every 45 to 70 tier is on sale on the story\'s route at the level the hero
 test('the Wold\'s reputation: chapter decisions move it, it sets Lantry\'s and Orme\'s prices, and the Journal shows it', () => {
   let s = finish(ready('b4-lantry'), 'b4-lantry');
   s.story.nodeId = 'town-lantry';
+  s.world.reputation.wold = 0;
   const full = W.price(s, 'door-chalk-mittens');
   assert.equal(full, ITEMS['door-chalk-mittens'].value);
   let wold = J.sync(s).relationships.find((r) => r.id === 'faction:wold');
@@ -286,7 +288,8 @@ test('after the books the AI storyteller is given the hero\'s legend by its keep
   const legend = JSON.parse(D.prompt(s)).legend;
   assert.equal(legend.keeper, 'ballad');
   assert.ok(legend.lines.length > 0 && legend.lines.length <= 12);
-  assert.ok(legend.lines.some((x) => x.told === QUESTS['b4-peaks'].told.ballad));
+  // The last twelve chapters told: the latest written one is among them.
+  assert.ok(legend.lines.some((x) => x.told === QUESTS[FX.WRITTEN.at(-1)].told.ballad));
   s.story.flags.fourth_telling = 'none';
   assert.deepEqual(JSON.parse(D.prompt(s)).legend, { keeper: 'none', text: Telling.UNTOLD, lines: [] });
 });

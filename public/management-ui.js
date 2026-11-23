@@ -39,6 +39,8 @@
   for(const set of actor?.sets||[]){const card=el('div','equipment-slot equipment-set');card.append(el('span','muted','Set'),el('strong','',`${set.name}, ${set.worn} of ${set.pieces} worn`));
    for(const b of set.active)card.append(el('p','item-set-bonus is-active',`${b.pieces} pieces: ${b.text}.`));
    if(set.next)card.append(el('p','item-set-bonus',`Next, at ${set.next.pieces} pieces: ${set.next.text}.`));dom.equipmentSlots.append(card);}
+  // What this member's worn gear adds up to, with the caps on damage dealt and taken.
+  if(actor?.gearTotals){const card=el('div','equipment-slot equipment-totals');card.append(el('span','muted','Totals'),el('p','',actor.gearTotals.text));dom.equipmentSlots.append(card);}
  };
  const baseInventory=renderInventory;
  renderInventory=function(){baseInventory();const sorted=[...view.inventory].sort((a,b)=>a.category.localeCompare(b.category)||a.name.localeCompare(b.name));[...dom.inventoryCards.children].forEach((card,i)=>{const item=sorted[i];if(!item)return;card.dataset.inventoryId=item.id;card.append(el('p','item-usage',M.usage(item)));const owners=M.owners(view,item.id);card.append(el('p','item-owners',owners.length?'Owned by: '+owners.map(a=>`${a.name} (${a.label})`).join('; '):'No equipped owner.'));

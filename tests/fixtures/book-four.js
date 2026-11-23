@@ -53,13 +53,17 @@ const written = (file) => JSON.parse(require('node:fs').readFileSync(path.resolv
 // The chapters already written in src/data/book-four/quests.json.
 const WRITTEN = Object.keys(written('quests')).filter((id) => !id.startsWith('_'));
 const QUESTS = () => { const real = written('quests'); return Object.fromEntries(IDS.map((id, i) => [id, real[id] || chapter(id, i)])); };
-// The epilogue's framing of the 4th job (engine change 5), in one fixture scene.
-const FRAMING = 'Fixture: Dera says go and make the next verse true.';
+// The epilogue's framing of the 4th job (engine change 5): the written
+// epilogue's (build step 11), or one fixture scene while it is not written.
+// FRAMING is Dera's line for a save with b4_done and nothing else decided.
+const parting = () => Object.values(written('scenes')).find((s) => s?.after === 'b4-parting' && s.trialFraming?.trial === 'fourth');
+const lastLine = (l) => (l.oneOf ? lastLine(l.oneOf.at(-1)) : l);
+const FRAMING = parting() ? lastLine(parting().trialFraming.lines[0]).text : 'Fixture: Dera says go and make the next verse true.';
 const SCENES = () => ({
   ...Object.fromEntries(Object.entries(written('scenes')).filter(([id]) => !id.startsWith('_'))),
-  'b4-fixture-parting': { id: 'b4-fixture-parting', after: 'b4-parting', cast: [], act: 'Fixture', location: 'Fixture hall', start: 'end',
+  ...(parting() ? {} : { 'b4-fixture-parting': { id: 'b4-fixture-parting', after: 'b4-parting', cast: [], act: 'Fixture', location: 'Fixture hall', start: 'end',
     trialFraming: { flag: 'b4_done', trial: 'fourth', lines: [{ say: 'Dera', text: FRAMING }] },
-    nodes: { end: { title: 'Fixture end', objective: 'Go on.', lines: [{ narrate: 'Fixture epilogue.' }], framesTrial: true, choices: [{ id: 'go', label: 'Go on', setFlags: { b4_done: true } }] } } }
+    nodes: { end: { title: 'Fixture end', objective: 'Go on.', lines: [{ narrate: 'Fixture epilogue.' }], framesTrial: true, choices: [{ id: 'go', label: 'Go on', setFlags: { b4_done: true } }] } } } })
 });
 
 function cache(file, exports) {

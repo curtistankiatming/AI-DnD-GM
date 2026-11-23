@@ -783,11 +783,14 @@ keeps them. Where a chapter below says otherwise, this list wins.
 
 **People as Part One left them.**
 - **Davin.** With `b4_davin_comes` he is north on Orin's word: "When I say
-  go back, you go back." His pack is tied in Mags's knot. With
-  `b4_davin_home`, Orin has already given one order, the "No" on the ladder
-  that he called "the first one I ever gave". So chapter 12 never says Orin
-  has never given an order. With `b4_davin_home`, the order on the Orme road
-  is his second.
+  go back, you go back", unless `b4_davin_mags`, when Mags sent him with Orin
+  and the word was hers ("Your gran sent you with me"). His pack is tied in
+  Mags's knot. With `b4_davin_home`, Orin has already given one order, the
+  "No" on the ladder that he called "the first one I ever gave", unless
+  `b4_davin_mags`, when Mags said no for him and Orin has still never given
+  one. So chapter 12 never says Orin has never given an order except on
+  Mags's path. With `b4_davin_home` and not `b4_davin_mags`, the order on
+  the Orme road is his second.
 - **Rue's book** has three states (`b4_book_*`). She reads it aloud before
   anything hard:
   - With `b4_book_burned` she has only the pages written since the fire at
@@ -956,7 +959,7 @@ like each other.
 
 ### 15. Rue's Mother (b4-thrum, level 54, Thrum). Nessa's story
 
-**Opening.** Rue comes home after a year. Her mother, Heath, gave her grief
+**Opening.** Rue comes home after a spring, a summer and an autumn away. Her mother, Heath, gave her grief
 for a lost daughter to the white, and does not know her. Rue's page on the
 door was scrubbed off. What Rue has to show her depends on her book: the old
 book (`b4_book_returned`, and the default), the new first page with Maren in
@@ -977,8 +980,8 @@ mother's door.
 **Decision (what you tell Rue).**
 - Give her memory of her mother, so it stops hurting: `b4_rue_gave`.
 - Keep it, and start again with her mother as a stranger: `b4_rue_kept`. Rue
-  writes a new page on the door with Nessa's help: the first of Nessa's
-  letters that anyone reads.
+  writes a new page on the door with Nessa's help: the first thing Nessa
+  has ever written on a door.
 - Let Nessa answer, from her own past (lines with `setFlag`): with
   `b3_nessa_gives`, "Keep it. I gave one of mine and I'd want it back" (sets
   `b4_rue_kept`); otherwise "It's yours. I kept all of mine, and some nights
@@ -1135,6 +1138,131 @@ the hero sees a rope-families' knot from Cinder Fold. Sets `b4_parttwo_done`.
 
 ## Part Three: The Parting Bell (levels 60 to 69)
 
+### Revisions for Part Three (override the chapters below)
+
+Part Two's writing (build steps 6 to 8) settled these things, and Part Three
+keeps them. Where a chapter below says otherwise, this list wins. No Part
+Three chapter has `white: true`: the white in the free wards is the old one,
+as in Part One.
+
+**Where Part Two leaves the party.**
+- `b4-parttwo-end` ends in the middle of the Hall at the end of the winter,
+  with the hero going out of the south door, and the engine leaves the hero
+  at Highpass (as in decided question 28). Chapter 21 is taken from
+  Highpass's board, and its opening is the descent of the south side the same
+  morning, early spring, to the upper gate. No line says the party went down
+  to Highpass in between. The descent takes the morning; the party reaches the upper gate at
+  noon, as Rue did.
+- **Who comes down**, by the chapter 20 flag:
+  - `b4_crossed`: the whole column, on its ropes, three thousand, with Sloe's
+    twenty ringers among them.
+  - `b4_hall_camp`: the Wold waits in the Hall, and its ringers with it. Sloe,
+    Rue and the door-bearers (two from each tally town) come down as the
+    Wold's voice. Sloe means to go back up with the council's answer.
+  - `b4_envoys_only`: the envoys, as chapter 20 named them. The column and
+    the ringers have gone back down to Orme.
+  So Sloe, Rue and door-bearers are at Highpass in every branch, and lines
+  that need "the Wold's people at Highpass" use the door-bearers.
+- **The tally.** With `b4_crossed` and `b4_tally_carried`, the sledges come
+  down behind the column, and Burdock beside the first. With `b4_hall_camp`
+  and `b4_tally_carried`, the sledges stay in the Hall, and Burdock brings
+  the book of winters down in his coat. With `b4_envoys_only` and
+  `b4_tally_carried`, or with `b4_tally_last`, it is the book of winters in
+  Burdock's coat (chapter 20). With `b4_tally_left`, Burdock is in Orme, and
+  Rue reads from her own book wherever a chapter says Burdock reads. Only
+  `b4_crossed` with `b4_tally_carried` has sledges at Highpass, so chapter
+  22's crisis is about the sledges there, and about the book and its reader
+  everywhere else.
+- **Hesk** with `b3_stair_sealed` comes down with Sloe, with his lamp, as
+  her adviser. The council has not decided what he is, and says so.
+- **Davin** with `b4_davin_comes` comes down with Orin. He has lines in
+  chapters 21 to 24 only; chapter 25 decides his road. Nobody gives his age
+  before chapter 25, where he is seventeen.
+- **Biscuit** is at the Highpass guardroom by the brazier, where Nessa left
+  him (decided in Part Two's revisions). Every line with him is
+  `party: "nessa"`.
+
+**The knot and the bell.**
+- The knot on the hook is a round turn, two half-hitches and a small hard
+  stopper, worked the way the rope families of Cinder Fold work a bell-rope
+  (chapter 20). Orin's lines that say his hands know it need `b3_orin_gives`
+  or `b3_orin_keeps` (the stair took his knot, Book Three). Any other Orin
+  knows it as his own knot worked the rope families' way, and says he never
+  tied one that tight. Without Orin, the hero knows it as Cinder Fold's.
+  Nobody in Part Three says who taught Orin; chapter 28 may.
+- **The gate book.** Highpass's watch keeps a book at the upper gate of
+  everyone who goes up or down the north road. Two days after the party went
+  up at first snow, Ailith Strake signed it in her own hand: "Ailith Strake,
+  of Cinder Fold, delegate, and twelve of the rope families. Going up to the
+  Hall, after the embassy." (She said at the vote, chapter 9, that she would
+  go north if she was let.) Three days later a rope-man signed them down:
+  "Down. Thirteen, and a load." The watch did not open a delegate's load. The
+  next line is "Road shut. Deep snow." This is chapter 21's clue, and the
+  after lines show it in every branch, so no decision needs the clue to have
+  been found. No Part Three line before chapter 24 says how Ailith learned
+  what the bell does.
+- **The Wold has no bells** (decided question 30) except Dunnet's pot-bell
+  with `b4_potbell_kept`. "The vote" is Burdock's hand-bell from the south,
+  and nobody calls it a bell. Chapter 23's white from the north comes only
+  with `b4_potbell_kept`: Dunnet rings every night in the Wold, and in summer
+  a white lies on the snow-line above Highpass that was never there before.
+
+**The free wards' winter** (the one the party missed), as the council tells
+it, by the Book Three ending:
+- `b3_promise_old`: the givings held. It was a hard winter in the free
+  wards, the first with the bound voices resting, and every town that gave
+  came through.
+- `b3_promise_hesk`: Hesk's ring held the towns in it, and the free wards had
+  their mildest winter in memory. With `b3_three_told`, the ring was partial,
+  and the towns outside it had a hard one.
+- `b3_stair_sealed`: the nine alone, and the worst winter the free wards
+  remember.
+- With `b4_parting_rung`, the council also says that at noon on the first
+  day of snow every bell in the free wards rang once by itself, and nobody
+  has explained it.
+
+**People and places.**
+- Sorrel with `b4_rue_watch` learned the north road from Rue, kept the last
+  watch-fire lit all winter, and left the bar off the upper gate on the
+  nights the road was open, for the Wold. Without it she keeps the gate as
+  she always has, and opens it in the end, as she did for Rue.
+- Highpass's council sits for its spring session (the chair as in Part One:
+  Elske with `elske_seat`, otherwise Brannagh). Cinder Fold's chair is empty:
+  Cinder Fold wrote that the thaw kept its delegates at home.
+- Linus sang the first true verse at Briarwatch at midwinter (Part Two's
+  revisions). In chapter 23 he has the next one, about the Wold.
+- Seasons: chapters 21 and 22 are early spring, chapter 23 is midsummer, the
+  summer after the song (chapter 3). Pim is not given an age.
+- Chapter 21's white comes down the north road after the Wold, whoever came,
+  and reaches the lower watch at dusk. The watch tries to put the Wold back
+  out of the upper gate, as it tried with Rue in chapter 1. With
+  `b4_rue_watch`, the sergeant who sat with Rue at the fire stands with the
+  Wold instead; otherwise he leads the watch again.
+- **The quiet night** in chapter 23 happens in every branch, and the
+  opening says whose it is, by chapter 22's flag: with `b4_vote_share` it is
+  the council's first shared night, kept on midsummer night in every town
+  that voted for it; with `b4_rota_towns` Briarwatch asked to go first; with
+  `b4_vote_refuge` the council voted to take the Wold in and not to share,
+  and Briarwatch keeps the night anyway. With `b3_bell_aster`, Briarwatch's
+  watch is the fire at the stream, and a quiet night is the fire not lit.
+  `b4_bw_*` says whether Briarwatch has had quiet nights before.
+
+**Walkouts** are back after chapters 21 to 24 (src/away.js). No chapter
+from 22 to 24 needs anyone, so nobody stays after 21, 22 or 23. After
+chapter 24 the next chapter is Orin's (25), so Orin stays, with a `b4-ford`
+stay line written with chapter 24; the stay lines for chapters 26 and 27
+come with build step 10. `away.json` gains Part Three
+versions of the leave and back lines, gated `b4_parttwo_done` and placed
+before the `b3_done` versions, which are Part One's. No Part Three away line
+has a goat in it.
+
+**Reputation and approval.** Chapter 21: accusing in the open moves the
+wardens, keeping quiet the wilds, telling Sloe the Wold. Chapter 22: sharing
+and refuge move the Wold, the rota the wardens. Chapter 23: ringing moves the
+wardens, quiet nights the Wold, rest the wilds. Chapter 24: going with
+Ailith moves trade, the notes taught the Wold, silence the wardens.
+Approvals are listed in decided questions 47 and 48.
+
 ### 21. The Knot on the Hook (b4-knot, level 60, Highpass, spring)
 
 **Opening.** Down the north road to Highpass, with the Wold behind you
@@ -1289,8 +1417,8 @@ refused, three hundred years ago, by giving up the lower town.
   (`requires: { flagsAll: ["b4_davin_comes"], companion: "orin" }`). Orin has to
   give him the order to hold the rear door (28), and does.
 
-Absent Orin: Sorrel offers the commission to the hero, and none of the three
-flags is set; later lines read the missing flag as `b4_orin_soldier`.
+Absent Orin: Sorrel offers the commission to the hero, and the hero's answer
+sets `b4_orin_soldier` (decided question 49).
 
 **Scene ford-camp.** Orin re-ties nothing. He checks everyone else's knots and
 leaves them as they are.
@@ -1325,8 +1453,8 @@ or `b4_names_written`).
   through the lid instead (29).
 - She says nothing, and lets Sloe speak for herself: `b4_maren_silent`.
 
-Absent Maren: Anwen speaks for Sloe and sets none of the three; later lines
-read that as `b4_maren_silent`.
+Absent Maren: Anwen speaks for Sloe, and the hero's answer sets
+`b4_maren_silent` (decided question 49).
 
 **Scene hospice-camp.** Maren and Anwen play cards with the walkers and let
 them win.
@@ -1362,8 +1490,8 @@ the signal house are one building, and that is why they come for it.
 - Nessa lets her go, and keeps the signal: `b4_nessa_signal`. Rue goes to the
   ringers alone.
 
-Absent Nessa: Rue goes to the ringers and none is set; later lines read that
-as `b4_nessa_signal`. No lighter moment from here to the end.
+Absent Nessa: Rue goes to the ringers, and the hero's answer sets
+`b4_nessa_signal` (decided question 49). No lighter moment from here to the end.
 
 ### 28. The Rope Families (b4-ropes, level 67, Cinder Fold casting hall, midwinter)
 
@@ -1573,20 +1701,28 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 | 8 Letters | b4_letters_read, b4_letters_copied, b4_letters_answered; line: b4_letters_maren | 9, 13 (the letter in the tally), 22; the Part One end (Maren) |
 | 9 Embassy | b4_embassy_council, b4_embassy_own, b4_embassy_refuge | 16 (whose promise), 22, 30 (south) |
 | 10 Peaks | b4_parting_rung, b4_unannounced, b4_gave_door; scene: b4_partone_done | 11 (Lantry), 16 (Sloe), 11 unlock |
-| 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | 12 (Sheddon), 17 (who taught Dunnet), epilogue |
-| 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back | 18 (Sedge's mother), 25, epilogue |
-| 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | 16 (peaceful), 22 |
-| 14 Greve | b4_names_kept, b4_names_written, b4_names_given | 16, 19, 26 (walkers), epilogue |
-| 15 Thrum | b4_rue_gave, b4_rue_kept (also set by lines) | 27, epilogue |
-| 16 Reckoning | b4_demand_carried, b4_share_promised, b4_sloe_comes | 19 (where Sloe is), 22, 26 |
-| 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | 23 (white comes south), 30 (peaceful), epilogue |
-| 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | 19 (tail fight), 25, 26, epilogue |
-| 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | 22 (who reads), 30 (south), epilogue |
-| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | 21, 23, 25, 30, 21 unlock |
-| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22, 28, 29 |
-| 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 30 |
-| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 30 scene (bound voices), epilogue |
-| 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | 28, 29, 30 |
+| 11 Lantry | b4_gave_lantry, b4_rang_lantry, b4_waited_lantry | lantry-camp, 12 (Sheddon: the pots), 13 (Burdock's Lantry slate), 17 (who taught Dunnet), epilogue |
+| 12 Sheddon | b4_orin_ordered, b4_orin_went_back, b4_hero_went_back, b4_hero_ordered (the answer with Orin away) | sheddon-camp, 13 (Sedge comes in with his mother or on his own), 18 (Sedge's mother; b4_hero_ordered reads as not saved), 25, epilogue |
+| The Painted Door (job, 11 to 13) | job:painted-door-read, job:painted-door-scraped, job:painted-door-left, job:painted-door-chalked | a later Lantry line (not yet written: Lantry's next visit, by chapter 17) |
+| White-wool (job, 11 to 17) | job:white-wool-down, job:white-wool-half, job:white-wool-given, job:white-wool-blankets | 19 (what Lantry wears in the column). Open to chapter 17 (`until: "b4-potbells"`) |
+| 13 Orme | b4_tally_truth, b4_tally_reasons, b4_tally_wait | orme-camp (Burdock's page), 16 (peaceful), 22 |
+| 14 Greve | b4_names_kept, b4_names_written, b4_names_given | greve-camp, 16 (Sloe and Burdock; b4_names_kept makes the vote harder), 19, 26 (walkers), epilogue |
+| Burdock's Mistake (job, 13 to 16) | job:burdock-mistake-found, job:burdock-mistake-unsure, job:burdock-mistake-beside, job:burdock-mistake-left | 19 (Burdock on the tally's new line), 22 |
+| The Southern Hand (job, 14 to 18) | job:southern-hand-found, job:southern-hand-lost, job:southern-hand-tally, job:southern-hand-answered | 22 (the free wards' tally; not yet written). Open to chapter 18 (`until: "b4-hush"`) |
+| 15 Thrum | b4_rue_gave, b4_rue_kept (also set by Nessa's answer's flagsIf), b4_rue_asked_nessa | thrum-nessa, 16 (Rue on Sloe), 27, epilogue |
+| 16 Reckoning | b4_demand_carried, b4_share_promised (two answers: under the council's seal, or on the hero's own word), b4_sloe_comes | reckoning-camp, 17 (Rue on Sloe), 19 (where Sloe is), 22, 26 |
+| 17 Pot-bells | b4_potbell_broken, b4_potbell_kept, b4_potbell_rota | potbells-camp, 19, 23 (white comes south), 30 (peaceful), epilogue |
+| 18 Hush | b4_walkers_led, b4_walkers_marked, b4_hush_rang | hush-camp, 19 (opening; tail fight and climb), 25, 26, epilogue |
+| 19 Column | b4_tally_carried, b4_tally_left, b4_tally_last | column-camp, 20 (Burdock), 22 (who reads), 30 (south), epilogue |
+| 20 North door | b4_crossed, b4_hall_camp, b4_envoys_only; scene: b4_parttwo_done | b4-parttwo-end, 21, 23, 25, 21 unlock |
+| 21 Knot | b4_accused_open, b4_accused_quiet, b4_told_sloe | 22 (the empty chair, the vote, where the towns stand), 24 (who knows whose cart it is), 28, 29 |
+| Iona's Other Invoice (job, 22 to 24) | job:other-invoice-offset, job:other-invoice-held, job:other-invoice-paid, job:other-invoice-worked | 24 (opening: how the bill hangs on Iona's nail, or the watch's wood) |
+| 22 Invoice | b4_vote_share, b4_rota_towns, b4_vote_refuge | 23 (whose quiet night it is), 30 |
+| 23 Quiet night | b4_voice_rings, b4_voice_quiet, b4_voice_rests | 24 (b4_voice_rests: Aster's word to Sable), 30 scene (bound voices), epilogue |
+| The Wold Family (job, 24 to 26) | job:wold-family-rule, job:wold-family-asked, job:wold-family-forge, job:wold-family-list | 30 or the epilogue (Briarwatch's doors; not yet written) |
+| The Lower Town (job, 25 to 26) | job:lower-town-let, job:lower-town-asked, job:lower-town-brede, job:lower-town-south | 30 or the epilogue (Ashford's board on the bridge; not yet written) |
+| Walkers' Names (job, 26) | job:walkers-names-told, job:walkers-names-sure, job:walkers-names-given, job:walkers-names-plain | 30 or the epilogue (the hospice; not yet written) |
+| 24 Gatehouse | b4_sable_ailith, b4_sable_taught, b4_sable_silent | gatehouse-camp (the cell or the bell), 28, 29, 30 |
 | 25 Ford | b4_orin_captain, b4_orin_soldier, b4_orin_davin | 28 (the doors), epilogue |
 | 26 Hospice | b4_maren_vouched, b4_maren_doubts, b4_maren_silent | 28, 29, epilogue |
 | 27 Signal | b4_nessa_with_rue, b4_nessa_stops_rue, b4_nessa_signal | 30 (who rings), epilogue |
@@ -1598,7 +1734,9 @@ All new flags start `b4_`, except `fourth_telling`, which is a value flag like
 `b4_key_*` reads as `b4_key_left`; `b4_rue_gave`/`kept` as kept;
 `b4_orin_*` (25) as `b4_orin_soldier`; `b4_maren_*` (26) as
 `b4_maren_silent`; `b4_nessa_*` (27) as `b4_nessa_signal`; `b4_davin_*` as
-`b4_davin_home`.
+`b4_davin_home`. As in chapter 7 (`b4_key_left`), the answer given with the companion away
+sets the default flag itself (decided question 49), so the default is a flag
+a later line can read.
 
 **Where the quieter flags are read** (each is also a default branch, so a
 chapter needs no line for it beyond the default):
@@ -1710,8 +1848,8 @@ Rules every reward keeps:
 | 25 | b4-ford | Captain's Commission | Accessory, Orin only | Level 62 | Sorrel's commission, whatever Orin did with it. Saves, and an Intimidation story ability; its item skill Weakens one enemy (not Fortified, which is his arc move). |
 | 26 | b4-hospice | Hospice Physic-bag | Accessory, Maren only | Level 63 | Anwen's old bag, given to Maren. Wisdom saves and Medicine. |
 | 27 | b4-signal | Signal-fire Longbow | Main hand, bow, Nessa only | Level 64 · Dex 13 | Wren's bow from the forge-signal tower. Signal Shot (Vulnerable). |
-| 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
-| 29 | b4-lid | Settling-iron Plate | Armour, heavy | Level 66 · Str 15 | Plate cut from the lid's iron after it settled. Brace. |
+| 28 | b4-ropes | Rope-family Maul | Main hand, two-handed | Level 65 · Fighter · Str 15 | The maul the rope families drive the hall's wedges with. Shatter. |
+| 29 | b4-lid | Settling-iron Plate | Armour, heavy | Level 66 · Str 13 | Plate cut from the lid's iron after it settled. Brace. |
 | 30 | b4-parting | Midwinter Tuning Fork | Main hand, focus | Level 67 · Wizard, Cleric or Bard | The fork the ringers tuned the nine with on midwinter night. First Note. |
 
 ### Where Book Four goes, by level
@@ -1839,13 +1977,20 @@ rounds at 40 to 69, the objective route 3 to 5. Bosses (chapters 10, 20, 29,
    once a fight, used by the companion AI on its trigger:
    - Orin, Hold the Column (bonus action): the party is Fortified for one
      round. Trigger: two or more allies under half HP. It overlaps his Shield
-     Accord, which also gives Fortified: the two do not stack, and he does not
-     use Hold the Column on a round Shield Accord is up.
+     Accord (the combination, which guards the whole party for a round): the
+     two do not stack: he does not use Hold the Column on a round Shield
+     Accord is up, and Shield Accord adds no guard while Hold the Column is.
+     Both are found by their source, not their name.
    - Maren, Say Their Names (action): heals each party member 3d8 + her
      Wisdom modifier + `lateGrowth`. Trigger: two or more allies under half
      HP, or one down.
-   - Nessa, Signal Fire (bonus action): the boss, or else the leader, is
-     Vulnerable for two rounds. Trigger: her first turn of the fight.
+   - Nessa, Signal Fire (bonus action): the boss, or else the leader, or
+     else the foe with the most hit points, is Vulnerable until her next
+     turn (one round). Trigger: her first turn of the fight (used then, or
+     not that fight).
+   Neither Hold the Column nor Signal Fire shortens an effect already there:
+   on a member or foe whose Fortified or Vulnerable lasts longer, the later
+   `expiresRound` is kept.
 5. **Level floors** (`levelFloor` on a chapter): see "Falling behind".
 
 **Playtest target.** Scripted campaigns (`tests/campaign-playtest.js` with
@@ -2048,8 +2193,48 @@ Book Four frames it the way Book Three framed the 3rd job:
     level stock too, except warm gear, so a hero beyond the written story
     still finds every tier. Shops drop entries they no longer sell. The shop stock for 45 to
     70 is on the story's route (docs/EQUIPMENT.md).
-- **Still to build:** 11 (`continues` on chapters 19, 28 and 29: data only,
-  the engine is Book Three's) and 14 (the companion arc moves).
+- **Built in steps 8 and 11:** 11 (`continues` on chapters 19, 28 and 29:
+  data only, the engine is Book Three's). Chapter 19's camp keeps
+  `goingOn` (decided question 45); chapters 28 and 29 have no camp, so
+  their decisions go straight into the next chapter's opening, after any
+  stay line. Nothing is left to build.
+- **Built in step 10:**
+  - 6, **`requires.members`** for the keepsakes (`src/gear.js`): only the
+    companions named may put the item on (a party member by its id, a combat
+    actor by its `refId`). `requirementText` leads with "Orin only", and
+    `unmet` says "Only Orin can use this." for anybody else, the hero
+    included.
+  - 14, **the companion arc moves** (`ARC_MOVES` in `src/combat.js`). In
+    `processCompanionTurn`, before Healing Word, Second Wind and gear
+    skills, a companion whose chapter is in `world.completed` uses their
+    move once a fight (`usedActions['arc:<actor>:<move>']`) on its trigger,
+    as Systems item 4 gives them; each is logged as a combat event. Say
+    Their Names takes Maren's action, so she does not attack that turn.
+    Tested in `tests/book-four-part-three-companions.test.js`.
+- **Built in step 12 (release pass):**
+  - **The recap card** (`src/recap.js`): while Book Four's first chapter
+    is next and not begun, and `b3_done` is set, `world.bookRecap` is
+    `{ title, lines }`: Book Three's ending, the gift (with
+    `b3_promise_old`), Aster, Hesk, and the epilogue line of each companion
+    still in the party, from the flags. What's next shows it as the first
+    card. Plain text, offline.
+  - **Item cards and the sheet.** A dealt line on an item card says "(all
+    worn gear together deals at most 50% more)", as the taken line names
+    the 30% cap. The equipment tab ends with a Totals card for the member
+    shown (`gearTotals` on the player and party views, from
+    `G.gearTotals`): what worn gear adds up to, and the capped figure with
+    the uncapped one when gear goes over.
+  - **Phone width.** The recap card and What's next shrink with the
+    screen and wrap long words; the Telling's columns stack below two 14rem
+    columns. Checked from the CSS (tests/book-four-release.test.js); there
+    is no browser in the build container.
+- **Fixed in step 9: roller tokens inside a `oneOf`.** `outcomeForRoller`
+  (`src/expansion.js`) told only a check result's top-level lines for the
+  roller, so a token or a `roller` / `notRoller` gate inside a `oneOf` group
+  was left as written. It now tells each group's alternatives the same way,
+  at any depth: tokens are replaced, alternatives whose roller gate does not
+  fit are dropped, and the rest of their `when` is kept for the group to pick
+  by. Tested in `tests/book-four-part-three.test.js`.
 
 **Departures in step 6.** Tier 50 stays on sale in Highpass as well as Lantry
 and Orme, because the hero reaches level 50 at Highpass (chapter 10) and plays
@@ -2305,3 +2490,302 @@ below.
     Parting-hall Plate (heavy, base AC 23, 15% taken, Constitution and Wisdom
     saves +1, Brace: Fortified 2 rounds). The late-gear test's tier rule
     allows a Book Four chapter reward at its chapter's level minus 2.
+30. **Lantry has pots, not bells** (build step 6). The Wold has no bells, so
+    `b4_rang_lantry` rings Lantry's cooking pots in the street. It drives the
+    white off Lantry and down the road to Sheddon, and chapter 12 opens on
+    "the night the pots were rung". With `b4_parting_rung` Lantry's bad night
+    is the night before the party arrives (Revisions). Lantry's waiting
+    answer (`b4_waited_lantry`) names the smith the white took.
+31. **Sheddon with Orin away** (build step 6). Chapter 12's two Orin answers
+    require him in the party. With Orin away the fourth answer, "on",
+    is the hero's order (`b4_hero_ordered`): Sedge's mother is not saved, and
+    chapter 18 reads it as `b4_orin_ordered`'s "not saved" version without
+    Orin's +1. Going back yourself is two answers with one flag,
+    `b4_hero_went_back`: `heroback` needs Orin (he takes the column, Orin
+    -1), and `heroback-away` needs him away (Rue takes the column, no
+    approval change).
+32. **What the white took at Sheddon** (build step 6). Orin forgets the name
+    of Varn's company, which canon never names, so nothing has to say it.
+    The hero's lost day (`b4_hero_went_back`) is the day of the vote at
+    Highpass. Sedge's mother has no name: she gave it at the well, and the
+    text never asks for it.
+33. **Part Two's speakers** (build step 6). New talks beyond the design:
+    Teasel and the Lantry children (11), Sheddon's eldest and Sedge (12),
+    Burdock and Sloe (13), with Hesk only with `b3_stair_sealed`. "Sheddon's
+    eldest" and "The weavers' eldest" are unnamed on purpose. Each Part Two
+    decision carries its own `told`, so the ballad and the tally say which
+    answer was given.
+34. **The Wold's reputation in chapters 11 to 13** (build step 6). Giving,
+    going back and telling the tally the truth or the reasons move
+    `rep.wold` by 1. Ringing the pots, ordering the column on and asking the
+    tally to wait move the wardens' instead, and waiting at Lantry the
+    wilds'.
+35. **White-wool's close** (build steps 6 and 7). White-wool opens with
+    chapter 11 and closes once chapter 17 is done (`until: "b4-potbells"`,
+    set with chapter 17). The blankets answer needs `b4_company_council`.
+36. **The chapter rewards for chapters 11 to 13** (build step 6) follow
+    decided question 29: tier 45 numbers for the scarf and shield, tier 50
+    for the staff, each with something the six warm shop items lack. The
+    Door-reader's Scarf (warm, level 48: Insight and Performance +3,
+    Intelligence and Wisdom saves +1, 5% dealt, Performance story), the
+    Sheddon Column Shield (level 49, fighter or cleric, Str 13: +5 AC, 15%
+    taken, +2 to every saving throw, so it is never under the sold Gatewarden
+    Shield, Athletics +3, Hold the Rear:
+    Weakened 2 rounds) and the Long Tally Staff (level 50, wizard, cleric or
+    bard: +5 spell attack and DC, 10% dealt, History +2, Count the Winters:
+    Vulnerable 1 round). The Part One lints (names, roller grammar, companion
+    gating, flags read) now run over all of Book Four's written chapters.
+37. **Where chapters 14 to 17 are** (build step 7). All four depart from
+    Orme and return there. Greve is a day up the valley from Orme; Thrum three
+    days east down the long valley; Dunnet a day down the valley road, the
+    road the Company took (chapter 13), with Wem a mile below it at the foot
+    of Dunnet's shelf. The Company's camp, with `b4_company_sails`, is further
+    down that road, in the empty land.
+38. **Chapter 14's people** (build step 7). Madder, a mother up the valley,
+    has come to give her son Comfrey's death; Burdock opens the first page of
+    names with `b4_names_written`. The goat in Madder's line is a dog and
+    ewes, since goats are Brannagh's. Maren's talk has a version for
+    `b3_seal_taken`, `b3_maren_gives` and neither.
+39. **Chapter 15's people** (build step 7). Rue's brother is Furze, ten, who
+    writes the door. Heath gave her grief at Greve in the spring. The line
+    Heath kept under the scrubbing is "Leave the lamp". Nessa's answer is a
+    decision of its own (`b4_rue_asked_nessa`, Nessa only) whose `flagsIf`
+    sets `b4_rue_kept` with `b3_nessa_gives` and `b4_rue_gave` otherwise, so
+    later chapters read only the two Rue flags. Wren went back for Nessa
+    ("the kid her mentor rescued").
+40. **Chapter 16's vote** (build step 7). `easierWith` and `harderWith` now
+    take `anyFlag` as well as `flag` (src/engine.js, a two-line change), so
+    the vote is 2 easier with `b4_tally_truth` or `b4_tally_reasons` and 2
+    harder with `b4_tally_wait` or `b4_names_kept`; both can apply. The share
+    is two answers with one flag: `share-council` needs
+    `b4_embassy_council`, `share-own` needs it absent and costs Orin 1. With
+    `b4_sloe_comes` she waits for the party at the Hall (19), rather than
+    leaving at once. The camp's 3rd job lines name each branch's level 56
+    skill as practised in the yard before dawn, by the companion of decided
+    question 26, with a narrated line when they are away.
+41. **Chapter 17's teacher** (build step 7). The opening picks one: Hesk
+    (`b3_stair_sealed`), then the Company (`b4_company_sails`), then Lantry's
+    pots (`b4_rang_lantry`), then Sloe's reading of the tally. Wem's elder
+    remembers Vetch's house, who came up at Cinder Fold in chapter 7. The
+    fight is the white only; with `b4_company_sails` the Company's guards are
+    at the bell-rope in the lines, and the factor stays chapter 4's decent
+    man. Unnamed speakers: "Wem's elder", "Wem's door-bearer", "Dunnet's
+    door-bearer".
+42. **Orme's jobs** (build step 7). Burdock's Mistake (from `b4-orme`, until
+    `b4-reckoning`): forty or fourteen, three hundred and six years ago. The
+    Southern Hand (from `b4-greve`) closes after chapter 18
+    (`until: "b4-hush"`, set with chapter 18, decided question 46). Piers Ashdown of Briarwatch
+    crossed in the hungry year; his family is Lovage the chandler's.
+43. **The chapter rewards for chapters 14 to 17** (build step 7), tier 50
+    numbers, each with something the sold tier 50 piece of its kind lacks:
+    the Letting-house Censer (level 51: Medicine, Religion and Insight +3,
+    Wisdom saves +2, Constitution +1, 5% dealt, Every Name Said: Fortified 1
+    round, Medicine story), the Thrum Lane Cloak (warm, light, level 52: base
+    AC 17, 5% dealt, 5% taken, Stealth and Insight +2, Wisdom saves +1,
+    Insight story), the Reckoner's Slate (level 53, wizard: tier 50's +5
+    spell attack and +5 spell DC, 10% dealt, Arcana and History +2, The Sum
+    Comes Out: Vulnerable 1 round) and the Pot-bell Mace (level 54, fighter
+    or cleric, Str 13, as the late-gear test's class rule asks: 1d10, +3/+6,
+    10% dealt, Forty Strokes: Weakened until the next turn). None uses a
+    tier 55 number.
+44. **Chapters 18 to 20, as written** (build step 8). The Hush is four days
+    north of Orme past the last cairn. Burdock lends the party "the vote", the small
+    brass hand-bell from his desk that came over the old road from the south
+    two hundred years ago and that nobody in Orme calls a bell (so decided
+    question 30 holds; chapter 16 says so too). It is the bell
+    `b4_hush_rang` rings; it rings the white off the hollow for one night
+    and onto the cairn road, the road north from Orme (the road from
+    Sheddon stays the Orme road). The walker who gives water is "The walker", and
+    the hand-bell's night names her Water. Maren names Fenmere's baker, Tam Orrey, Book Two's own
+    (the name lint allows him as himself).
+    The sixteen from the deep appear only with `b3_turned_left`; Sedge's
+    mother has a talk only with `b4_orin_ordered` or `b4_hero_ordered`. Rue
+    reads the Hush's growth by the Book Three ending. In hush-camp Orin keeps
+    Sedge's mother (with `b4_orin_ordered`), Davin or Mags, Maren Anwen,
+    Nessa Wren, Rue Heath. Chapter 19 has the column climb the old north
+    road above Lantry, marked at every turn with small things like the
+    marked way under the stair ("whoever marked the one marked the other");
+    Sloe left with twenty ringers, people she taught to pull a rope in time.
+    The descent took one day in chapter 11, so the column's climb is two.
+    White-wool and Burdock's Mistake are read in chapter 19. In chapter 20
+    the north door was opened once from inside since the first snow (a swept
+    arc in the first snow's crust, and tarred southern hemp in the hinge);
+    nobody is named. The rope on the empty hook is tied with a round turn,
+    two half-hitches and a small hard stopper: the knot as Orin worked it
+    before the stair, not as he ties it now. Orin's lines need
+    `b3_orin_gives` or `b3_orin_keeps` (he was below the stair); otherwise,
+    and without Orin, the hero sees a bell-rope knot of Cinder Fold's rope
+    families. The hero takes the cut rope (chapter 21's reward).
+45. **A camp after a straight-on chapter** (build step 8). src/engine.js
+    applyOutcome: when a `continues` chapter's decision leads into a camp
+    scene, `goingOn` is kept, and leaving the camp goes on into the next
+    chapter's opening instead of the town (column-camp, then chapter 20).
+    Book Three's straight-on chapters have no camp, so nothing there changes.
+46. **The chapter rewards for chapters 18 to 20** (build step 8), tier 55
+    numbers: the Hush-wool Mantle (warm, medium, level 55: base AC 19, Dex
+    cap 2, 10% taken, Stealth +2, Constitution and Dexterity saves +1, the
+    Stealth story ability: it trades the sold Fleece-lined Scale's Wisdom
+    save for a Dexterity save and Stealth), the Column Longbow (level
+    56, ranger or rogue, Dex 13: 1d8, +3/+7, 10% dealt, Pinning Shot: Slowed
+    2 rounds; the sold Long Watch Bow has no skill and is ranger only) and
+    the North-door Greataxe (level 57, fighter, Str 15: 2d6, +3/+7, 5%
+    dealt, Hold the Door: Weakened until the next turn; above the Glacier
+    Maul's +6, under the Riftcleaver's 10% dealt). The Southern Hand closes
+    once chapter 18 is done (`until: "b4-hush"`).
+47. **Chapters 21 to 23, as written** (build step 9, the first three of its
+    four chapters). Chapter 21 (b4-knot) is taken from Highpass's board and
+    played there; chapter 22 (b4-invoice) leaves from Highpass with nextTown
+    briarwatch; chapter 23 (b4-quietnight) leaves from Briarwatch with
+    nextTown highpass. Enemy themes: gloam, soldier (the men from the yard,
+    with cudgels), gloam. The gate book's entries, Sorrel's fire and who comes
+    down are as in "Revisions for Part Three". Approvals: accusing in the open
+    Maren +1, keeping quiet Maren -1; the vote to share Nessa +1, refuge Maren
+    +1; quiet nights Nessa +1, Aster's rest Maren +1. New unnamed speaker: "A
+    man from the yard". Burdock reads in chapter 22 with `b4_tally_carried`
+    or `b4_tally_last`; otherwise Rue reads her book (with `b4_book_burned`,
+    Sister Ilse's copy of the old one, made at Ashford in chapter 2), and the line Burdock wrote about the south (`b4_tally_*`) is
+    read only when Burdock is there. With `b3_bell_aster`, chapter 23's
+    talk, clue and answers go to Tovin, and his answer is `b4_voice_rings` or
+    `b4_voice_quiet`. Burdock's Mistake (found, unsure) and The Third Verse
+    are read in chapters 22 and 23. Chapter 24, step 9's jobs and the
+    rewards for 21 to 24 are decided question 48.
+48. **Chapter 24, step 9's jobs and the rewards for 21 to 24** (build step
+    9). Chapter 24 (b4-gatehouse) is high summer, a month after the quiet
+    night, leaving from Highpass with nextTown ashford; enemy theme soldier
+    (the twelve rope-men with the cart). Sable says it is how Ailith learned
+    what the bell does: she brought her family's ledger page, the Parting
+    Bell's, in the autumn before she went up the north road, and he read it
+    to her; he did not tell her how it is rung forward. The cart comes for
+    Sable in his cell, or with `b3_sable_cast` for Highpass's bell, which the
+    rope-men hoist onto it. Aster answers Sable through the joined bells with
+    `b3_sable_cast` (from Briarwatch's bell, or from Vell's with
+    `b3_bell_aster`), by Tovin's letter otherwise, and at rest
+    (`b3_bell_aster` with `b3_promise_old`) Sable speaks of her instead.
+    Hesk talks from the next cell with `b3_promise_old`; Rue, with
+    `b4_rue_council` or `b4_rue_watch`, learned the founders' note-marks from
+    Sable (she always had the letters). Approvals: going with Ailith Nessa
+    -1 (rep trade), both notes taught Maren +1 (rep Wold), kept silent Orin
+    +1 (rep wardens). gatehouse-camp names each 2nd job's level 64 skill, by
+    the same companions as decided question 26, without the fight. The
+    twelve are the gate book's twelve rope families (signed down in the
+    autumn as "Thirteen, and a load", with Ailith); she does not come.
+    Iona's Other Invoice: the bill is set against her nine hundred years
+    (needs chapter 22's vote), held to midwinter, paid by Iona herself, or
+    paid in the watch's wood by the door-bearers; Burdock writes it into the
+    book of winters with `b4_tally_carried` or `b4_tally_last`, Rue into hers
+    otherwise. The Wold Family is Betony of Lantry's (new name), in the tents
+    with `b4_crossed`, otherwise Betony and her son, door-bearers who stayed
+    after the quiet night; it is open to chapter 26 (`until: "b4-hospice"`,
+    set in build step 10, once chapter 26 was written). Rewards, on the tier 60 curve (no accessory or focus is sold at
+    60, so each is measured against tier 55's and 65's): the Founders'
+    Rope-knot (level 58: Athletics and Acrobatics +3, Strength and Dexterity
+    saves +1, 10% taken, Stopper Knot: Fortified 1 round, Athletics story),
+    the Council Ledger-case (59: Investigation, History and Insight +3,
+    Intelligence saves +1, 10% dealt, Investigation story), the Quiet-night
+    Lantern (60: Perception and Survival +3, Wisdom saves +1, 10% dealt, 5%
+    taken, Perception story) and the Gatehouse Grammar (61, wizard: +6 spell
+    attack, +6 spell DC, one DC over the Lamplit Staff, 10% dealt, Arcana and
+    History +2, Unravel: Vulnerable 1 round). Each has a skill bonus no sold
+    tier 55 accessory has; none has everything a tier 65 piece of its slot
+    has (the Bellwarden Seal's AC and saves, the Lens's Arcana, the Quiver's
+    15%, the Chorus Bell's Performance); none is warm, and none reaches the
+    Long Hall Muffler's 20% dealt or the Orme Hearthstone's 15% taken.
+49. **Chapters 25 to 27, as written** (build step 10). Each chapter `needs`
+    its companion and has three answers for them (`requires.companion`) and a
+    fourth for when they are away (`requires.absent`), which sets the
+    default flag (`b4_orin_soldier`, `b4_maren_silent`, `b4_nessa_signal`;
+    this overrides "none is set" in the chapters above),
+    as chapter 7's answer with Nessa away sets `b4_key_left`, so the
+    chapter's flag is always set and the defaults above hold. Chapter 25 (b4-ford, Ashford, late
+    summer, enemy theme gloam) crosses about four hundred of the Wold's
+    people: the families who came down in the spring with `b4_crossed`, the
+    first families from the Hall with `b4_hall_camp`, from Orme otherwise,
+    and the walkers with `b4_walkers_led` or `b4_walkers_marked` (on their
+    way to Anwen's hospice; with `b4_hush_rang` they stayed in the Hush).
+    The town meeting's no: they may cross, not stop. Sorrel brings forty of
+    the council's watch and the commission; with Orin away she offers it to
+    the hero, who gives it back (the watch is hers). The clue is the
+    building rolls' line through the river (the stake's stone above the old
+    ford); the prepared way crosses above it, on ground never given.
+    Varn comes with `b3_orin_tried` or `b3_varn_freed`; Davin, seventeen,
+    with `b4_davin_comes`. Approvals: captain Maren +1 (rep wardens),
+    soldier Orin +1 (wilds), Davin his sergeant Maren -1 (wardens).
+    Chapter 26 (b4-hospice, Merrowgate, autumn, trade): the harbour council
+    hears Sloe on the harbour steps. Cass Ord's offer to Ailith is the
+    Hall's foundries: rung forward, every bell is louder for good, and the
+    Hall would cast and sell louder bells town by town; the crisis is the
+    Hall's men coming to take Sloe to Cinder Fold, so that the one who
+    wants the other note is not in the casting hall at midwinter. Without
+    walkers, the long room's white-touched are the harbour's own. Approvals:
+    vouched Maren +1 (wold), doubts Nessa -1 (wardens), silent Orin +1
+    (wilds); Anwen's answer moves the Wold. Chapter 27 (b4-signal, Cinder
+    Fold, a week before midwinter, soldier, `together: true`): the signal
+    has been kept by Wren (or the committee with `b3_wren_cast`) with
+    `b4_key_left`, by Hew with `b4_key_hew`, by nobody with
+    `b4_key_carried`. The rope families carried the Parting Bell down the
+    founders' hatch three nights before (the seal cut with
+    `b3_stair_sealed`); with `mother_silenced` the rope is in the signal
+    house's store-room under the hero's lock. Lighting the signal brings the
+    deep workings up to see the hatch. Approvals: with Rue Nessa +1 (wold),
+    stops her Maren +1 (wardens), keeps the signal Orin +1 (wilds); Rue
+    going alone moves the Wold. The Lower Town is Bistort of Greve's (new
+    name), Walkers' Names is Annis Corby's for Merrick Corby (new names);
+    Anwen Holt returns from Books One and Two. Keepsakes: the Captain's
+    Commission (62, Orin: Intimidation and Athletics +3, Strength,
+    Constitution and Wisdom saves +1, 10% taken, Captain's Word: Weakened 1
+    round, Intimidation story), the Hospice Physic-bag (63, Maren: Medicine
+    and Insight +3, Wisdom saves +2, Constitution +1, 10% taken, Medicine
+    story; not everything the Hearthward Rosary has, which keeps Religion)
+    and the Signal-fire Longbow (64, Nessa, Dex 13: 1d8, +3/+8, 10% dealt, a
+    point of damage over the Column Longbow, Signal Shot: Vulnerable 1 round). Stay
+    lines: Maren for b4-hospice after 25; everyone for b4-signal after 26
+    and for b4-ropes after 27 (together). In chapters 28 to 30 and the
+    epilogue, a line that reads `b4_orin_soldier`, `b4_maren_silent` or
+    `b4_nessa_signal` describes what nobody chose: a line that has the
+    companion make that choice needs `party: "<companion>"`, with a separate
+    version for when they are away.
+50. **Chapters 28 to 30, as written** (build step 11), all at Cinder Fold
+    on midwinter day and night. Chapter 28 (b4-ropes, enemy theme soldier):
+    the Parting Bell is under the lid at the foot of the founders' stair,
+    where chapter 27 left it, and Ailith's families hold the hall above it.
+    The council's forty stand on the step, under Orin (`b4_orin_captain`,
+    with Davin on the rear door for `b4_orin_davin`) or Sorrel's sergeant;
+    with Orin away the captain is described, not named. Ailith's son is
+    Wystan Strake (new name), on the first bell. The ninth rope follows
+    The Ninth Rope (Garth Mott on it, on a spare, in the galleries, or
+    Perrin Rowe). The clue is the tenth mould's five words: the mould in
+    the casting hall (`job:mould-kept`, `job:mould-bought`), carted back
+    by Cass Ord "since Cinder Fold does not sell" (`job:mould-sold`), or
+    otherwise the founders' ledger's last page in the vault. Sloe's talk at
+    the north door needs `b4_maren_vouched`. Approvals: the council's
+    judgement Maren +1 (wardens), the committee Orin +1 (wilds), the ropes
+    Nessa +1 (wold). Chapter 29 (b4-lid, gloam): Ailith struck the half
+    note herself, to hear it (a guess with `b4_sable_silent`, which also
+    makes the Two Winters 10% harder). Sloe comes in by the north door
+    (`b4_maren_vouched`, or `b4_told_sloe`, which wins over
+    `b4_maren_doubts`), up through the lid by the marked way
+    (`b4_maren_doubts` alone), or at the great doors (`b4_maren_silent`).
+    Aster answers through the joined bells unless she is at rest (Book
+    Three's old way with `b3_bell_aster`, or `b4_voice_rests`), when Tovin
+    speaks from Briarwatch. Burdock's talk needs him south (not
+    `b4_tally_left`). Approvals: Sloe holds it Maren +1 (wold), the council
+    Orin +1 (wardens), you Nessa +1 (wilds). Chapter 30 (b4-parting,
+    gloam, levelFloor 70, nextTown briarwatch): with `mother_silenced` the
+    hero carries the rope down from the signal house and allows the note;
+    with `mother_recalled` Brannagh asks for it. The answers are share
+    (Maren +1, wold), south (Orin +1, wardens) and Sloe's note (Nessa +1,
+    wold); Rue rings the note unless `b4_nessa_stops_rue`, and then Sloe
+    does. The scene `b4-parting-end` is the bound voices, the Telling and
+    the epilogue; Linus Pardew asks who keeps the story, and its framing
+    is Dera's line by `fourth_telling` (one default line for a save without
+    it), Dera's line for `b4_note_rung`, and the Hall by the ending, under
+    the trial opening's 400 characters. The epilogue reads The Wold
+    Family, Walkers' Names and the Telling. Rewards, on the tier 65 curve:
+    the Rope-family Maul (65, fighter, Str 15: 2d6, +3/+8, 10%
+    dealt, Shatter: Vulnerable 1 round, a point over the Riftcleaver and
+    under the tier 80 Ridgebreaker), the Settling-iron Plate (66, fighter
+    or cleric, Str 13: base AC 23, 15% taken, Strength, Constitution and
+    Wisdom saves +1, Brace: Fortified 1 round) and the Midwinter Tuning
+    Fork (67, wizard, cleric or bard: +6/+6, 10% dealt, Performance and
+    Religion +2, First Note: Empowered 1 round). Stay lines: everyone for
+    b4-lid after 28 and for b4-parting after 29.

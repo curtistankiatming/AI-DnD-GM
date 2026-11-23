@@ -518,8 +518,10 @@ function checkPlan(state, choice, forced = null) {
   if(under){dc+=under;reasons.push(`More than ${XP.UNDER_FREE} levels under this adventure raises DC by ${under}`);}
   if(check.lead && !state.story.clues.includes(check.lead)){dc+=2;reasons.push('No established lead raises DC by 2');}
   if(quest && state.story.flags[`approach:${quest}`]){dc-=1;reasons.push('Successful approach lowers DC by 1');}
-  if(check.easierWith?.flag && state.story.flags[check.easierWith.flag]){dc-=2;reasons.push(check.easierWith.reason||'An earlier choice lowers DC by 2');}
-  if(check.harderWith?.flag && state.story.flags[check.harderWith.flag]){dc+=2;reasons.push(check.harderWith.reason||'An earlier choice raises DC by 2');}
+  // easierWith / harderWith: { flag } or { anyFlag: [...] }, and the reason shown.
+  const earlier=(w)=>Boolean(w&&((w.flag&&state.story.flags[w.flag])||(Array.isArray(w.anyFlag)&&w.anyFlag.some((f)=>state.story.flags[f]))));
+  if(earlier(check.easierWith)){dc-=2;reasons.push(check.easierWith.reason||'An earlier choice lowers DC by 2');}
+  if(earlier(check.harderWith)){dc+=2;reasons.push(check.harderWith.reason||'An earlier choice raises DC by 2');}
   if(quest==='beacon'){const n=['marsh_council','keystone_shared','district_consent','archive_open'].filter(f=>state.story.flags[f]).length;dc-=Math.min(3,n);if(n)reasons.push(`Independent allies lower DC by ${Math.min(3,n)}`);}
   if(state.story.flags.siteConsecrated && ['religion','arcana'].includes(skillId) && /shrine|vault/.test(currentNode(state).id)){dc-=2;reasons.push('Holy water consecration lowers ritual DC by 2');}
   const effectiveAdvantage = advantage && !disadvantage;
@@ -643,10 +645,16 @@ function applyOutcome(state, written = {}, rng, events) {
   // chapters goes on into the next chapter instead (src/world.js goOn).
   // If no next chapter can be played any more (access lapsed), it is the town after all.
   const home = outcome.toTown && state.world?.townId ? `town-${state.world.townId}` : outcome.nextNode;
-  let next = outcome.toTown && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) || home : home;
+  // A camp scene after a straight-on chapter (Book Four's column-camp) plays
+  // first; leaving it for the town goes on into the next chapter instead.
+  const leavingCamp = Boolean(state.world?.goingOn && currentNode(state)?.scene && STORY_NODES[home]?.townId);
+  let next = (outcome.toTown || leavingCamp) && state.world?.goingOn ? W.goOn(state, state.world.goingOn, events) || home : home;
   // A straight-on chapter ("continues") goes from its decision to the next
   // chapter's opening, not to a town, when that chapter is there to play.
-  if (outcome.goOn && state.world.completed[outcome.goOn]) next = W.goOn(state, outcome.goOn, events) || next;
+  if (outcome.goOn && state.world.completed[outcome.goOn]) {
+    if (STORY_NODES[next]?.scene) state.world.goingOn = outcome.goOn;
+    else next = W.goOn(state, outcome.goOn, events) || next;
+  }
   // The last safe ledge: rest, then go back down to the interrupted chapter.
   if (outcome.backDown) { W.backDown(state, rng, events, extensionApi()); next = null; }
   // Back up the stair after repeated defeats: to town, the chapter kept in progress.

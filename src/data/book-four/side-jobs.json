@@ -1,5 +1,5 @@
 {
-  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy).",
+  "_note": "Book Four side jobs (docs/book-four/DESIGN.md, \"Side jobs\"), merged into side-jobs.json's table by src/expansion.js. Built like side-jobs.json. Mostly gold (120 to 180), and at most 130 XP (src/world.js, BOOK_THREE_JOB_XP), never past jobRoom. A job opens once its \"from\" chapter is done and closes once its \"until\" chapter is: Rue's Doors is on Highpass's board during chapters 2 and 3, after Rue has come down the north road; The Third Verse is on Briarwatch's during chapters 4 to 6, after Linus has sung his song; Bett's Berth is on Merrowgate's during chapters 4 to 7; The Ninth Rope is on Cinder Fold's during chapters 7 to 9 (until: b4-embassy). The Painted Door is on Lantry's board during chapters 12 and 13 (from: b4-lantry, until: b4-orme), once chapter 11 has opened Lantry; White-wool opens there at the same time and stays open until chapter 17 is done (until: b4-potbells). Burdock's Mistake is on Orme's board during chapters 14 to 16 (from: b4-orme, until: b4-reckoning), and The Southern Hand during chapters 15 to 18 (from: b4-greve, until: b4-hush). Iona's Other Invoice is on Highpass's board during chapters 22 to 24 (from: b4-knot, until: b4-gatehouse); its offset answer needs chapter 22's vote (requires flagsAny b4_vote_*). The Wold Family is on Briarwatch's from chapter 24 to 26 (from: b4-quietnight, until: b4-hospice). The Lower Town is on Ashford's board during chapters 25 and 26 (from: b4-gatehouse, until: b4-hospice), and Walkers' Names on Merrowgate's during chapter 26 (from: b4-ford, until: b4-hospice). A job's until must name a written chapter.",
   "rue-doors": {
     "id": "rue-doors",
     "name": "Rue's Doors",
@@ -330,6 +330,591 @@
               { "narrate": "He goes back down to the galleries. That night, and every shift after it, he rings the miners' gallery bell against the nine, in time, and the whole lid can hear him." }
             ],
             "setFlags": { "job:ninth-rope-stair": true }
+          }
+        ]
+      }
+    }
+  },
+  "painted-door": {
+    "id": "painted-door",
+    "name": "The Painted Door",
+    "town": "lantry",
+    "level": 51,
+    "from": "b4-lantry",
+    "until": "b4-orme",
+    "gold": 170,
+    "giver": "Teasel, the door-reader",
+    "brief": "One door in Lantry has been painted over, white, from top to step. Nobody knows who lived there.",
+    "start": "door",
+    "nodes": {
+      "door": {
+        "title": "The Painted Door",
+        "lines": [
+          { "narrate": "Halfway down Lantry's street there is one door with nothing on it. It has been painted over, white, from the lintel to the step, carefully, with a good brush, so that not a letter shows through." },
+          { "narrate": "The house behind it is empty and swept. The hearth is cold. Every morning Teasel stops in front of it on her round, and reads it the way she reads every door, aloud: 'A painted door.' Then she goes on." },
+          { "say": "Teasel", "text": "A door with nothing on it is a door nobody lives behind. But somebody painted it. You don't paint a door you don't live behind. It's been bothering me since the spring. I know it has, because I wrote on my own door that it was." },
+          { "say": "Teasel", "text": "I can't scrape it. I'm the door-reader. If I scrape a door, nobody will ever trust a door again. You're not from here." },
+          { "oneOf": [
+            { "say": "maren", "text": "Somebody painted that very carefully. That's not somebody hiding something. That's somebody asking for something.", "when": { "party": "maren" } },
+            { "narrate": "The paint is very even. Whoever did it took their time." }
+          ] }
+        ],
+        "choices": [
+          {
+            "id": "scrape",
+            "label": "Scrape a corner of the paint away and read what is under it",
+            "check": { "skill": "investigation", "alt": ["perception", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You work|@ works} the paint off the bottom corner with a knife, a flake at a time, so as not to take the chalk with it, and under it the old writing comes up grey and clear. A woman's name, and a girl's, and the girl's age, and under that, in the same hand, the last thing written before the paint." },
+                { "narrate": "'My girl went into the white at the giving, the spring the well froze. I have given her at the well. Paint the door, so that I am not read her every morning. Do not tell me.'" },
+                { "narrate": "{You put|@ puts} the knife away. Next door, on the step of her husband's family's house, a woman is chalking the day's weather on her own door. She nods to {them}, the way everyone in Lantry nods to the southerners now, and goes in." },
+                { "say": "Teasel", "text": "I'll read it 'a painted door, painted by the one who lived here, by her wish'. And nothing else. Ever. I'll write that on my own door, so I don't forget I promised." }
+              ],
+              "setFlags": { "job:painted-door-read": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You work|@ works} at the paint with a knife, but it comes away with the chalk under it, in flakes, white and grey together, and when {you stop|@ stops} there is a bare corner of wood and nothing on it at all." },
+                { "say": "Teasel", "text": "Well. Now it's a painted door with a scraped corner. I'll read it that way. 'Scraped by the southerners, and nothing found.' It's true." }
+              ],
+              "setFlags": { "job:painted-door-scraped": true }
+            }
+          },
+          {
+            "id": "leave",
+            "label": "Tell Teasel to leave it painted, and to read it as painted on purpose",
+            "lines": [
+              { "narrate": "You tell Teasel that whoever painted it knew what they were doing, and meant it, and that a door painted that carefully is a door that says something: leave me be." },
+              { "narrate": "Teasel thinks about it for a long time. Then she takes her chalk and writes on the paint, very small, in the bottom corner, where it will not spoil it: 'Painted on purpose. Leave it.' In the morning she reads it that way, and goes on." },
+              { "say": "maren", "text": "That's the kindest thing I've seen anyone do with a secret. Not knowing it, on purpose.", "when": { "party": "maren" } }
+            ],
+            "setFlags": { "job:painted-door-left": true }
+          },
+          {
+            "id": "chalk",
+            "label": "Chalk one line on the paint: 'Somebody lived here'",
+            "lines": [
+              { "narrate": "You take Teasel's chalk and write one line on the white paint, in the middle of the door, in the squarest hand you have: 'Somebody lived here.'" },
+              { "narrate": "In the morning Teasel reads it, aloud, on her round, and the street hears it. A woman on the next step stops chalking her own door and looks at the painted one for a moment, as if it reminded her of something, and then goes in." },
+              { "say": "nessa", "text": "That's not nothing. It's not much. It's not nothing.", "when": { "party": "nessa" } }
+            ],
+            "setFlags": { "job:painted-door-chalked": true }
+          }
+        ]
+      }
+    }
+  },
+  "white-wool": {
+    "id": "white-wool",
+    "name": "White-wool",
+    "town": "lantry",
+    "level": 51,
+    "from": "b4-lantry",
+    "until": "b4-potbells",
+    "gold": 180,
+    "giver": "Lantry's weavers, at the loom-house",
+    "brief": "Lantry's weavers need the summer's fleeces brought down from the high pasture before the white closes it for the winter.",
+    "start": "loom",
+    "nodes": {
+      "loom": {
+        "title": "The Loom-house",
+        "lines": [
+          { "narrate": "Lantry's loom-house is the warmest room in the town, and the loudest: six looms going at once, and the weavers talking over them, and white-wool on every one, thick and grey-white, the wool the Wold wears against the white." },
+          { "narrate": "The summer's fleeces are still up at the high pasture, in the shepherds' hut above the town, bundled and tied. The shepherd who went up for them a fortnight ago came back down without them, and without remembering what he went up for. It was on his arm. The white had been over his arm." },
+          { "say": "The weavers' eldest", "text": "Without those fleeces we weave nothing till spring. And everyone who goes north of here goes in our wool, or doesn't go. Somebody has to fetch them down before the white sits on that pasture for good." },
+          { "say": "orin", "text": "How heavy's a bale? Never mind. I'll find out.", "when": { "party": "orin" } },
+          { "say": "nessa", "text": "I'll go first up the path. Somebody tie me on.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "carry",
+            "label": "Go up to the shepherds' hut and carry the fleeces down, roped",
+            "check": { "skill": "athletics", "alt": ["survival", "perception"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up the pasture path roped to whoever is behind, into the white, and {find|finds} the shepherds' hut by the wall that runs up to it, hand over hand along the stones. The fleeces are where the shepherd left them, every bale, tied with his knots." },
+                { "narrate": "{You bring|@ brings} them down in four trips before dark, a bale on every back, and on the last trip the white comes down onto the pasture behind {them} and sits there, and does not get up again." },
+                { "say": "The weavers' eldest", "text": "All of them. Every bale. We'll chalk your names on the loom-house beam, where we put the good years." }
+              ],
+              "setFlags": { "job:white-wool-down": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} up the pasture path roped, and {find|finds} the hut, and {bring|brings} down two trips of fleeces before the white comes down onto the pasture so thick that {you cannot|@ cannot} see the wall. Half the bales are still up there. They will be there in the spring." },
+                { "say": "The weavers' eldest", "text": "Half's not nothing. Half's a winter's coats for half the street. We'll make it do." }
+              ],
+              "setFlags": { "job:white-wool-half": true }
+            }
+          },
+          {
+            "id": "give",
+            "label": "Go up behind Lantry's givers, and give at the pasture gate",
+            "lines": [
+              { "narrate": "You go up with three of Lantry's givers, who know the way, and at the pasture gate, where the white starts, they stop and give, one small thing each, so that the white will let them past. You give too: the taste of the first apple you ever picked. Then the white lies down on either side of the path, and lets you all through." },
+              { "narrate": "The fleeces come down in one trip, carried by everybody, and nobody forgets why they went up." },
+              { "say": "The weavers' eldest", "text": "You gave for wool. That's a Lantry thing to do. I'll put it on the beam." }
+            ],
+            "setFlags": { "job:white-wool-given": true }
+          },
+          {
+            "id": "blankets",
+            "label": "Give the weavers the council's relief blankets to unpick for wool",
+            "requires": { "flagsAny": ["b4_company_council"] },
+            "lines": [
+              { "narrate": "You go down to the council's carts at the well and talk to the convoy's master, and come back up to the loom-house with a cartload of the free wards' blankets, grey, with the bell stitched in the corner." },
+              { "narrate": "The weavers unpick them on the spot, every blanket to its yarn, and spin it again with what wool they have, and by night the first white-wool on the looms has grey from the south in it, and the bell's thread running through the edge." },
+              { "say": "The weavers' eldest", "text": "It isn't our wool. It's warm, though. We'll call it south-wool. It'll be on the doors by morning what that means." }
+            ],
+            "setFlags": { "job:white-wool-blankets": true }
+          }
+        ]
+      }
+    }
+  },
+  "burdock-mistake": {
+    "id": "burdock-mistake",
+    "name": "Burdock's Mistake",
+    "town": "orme",
+    "level": 53,
+    "from": "b4-orme",
+    "until": "b4-reckoning",
+    "gold": 150,
+    "giver": "Burdock of the Long Hall",
+    "brief": "Burdock has found an error in the tally from three hundred years ago, and cannot decide whether a correction is a lie.",
+    "start": "desk",
+    "nodes": {
+      "desk": {
+        "title": "Burdock's Mistake",
+        "lines": [
+          { "narrate": "Burdock has not written anything all morning. He is sitting at his desk with an old book open in front of him, three hundred years old, and a lamp pulled close, and both pairs of spectacles on." },
+          { "say": "Burdock", "text": "The winter of the long white. Three hundred and six years ago. The tally says: 'Orme. Lost: forty.' I have read it every year of my life. Everybody has. It is the worst winter in the tally. Children learn it." },
+          { "say": "Burdock", "text": "Then this morning I read the Hall's own porch door, which is older than this book, because a clerk dropped a slate against it. And the porch door says: 'Lost: fourteen.'" },
+          { "say": "Burdock", "text": "Somebody copied it wrong. Three hundred years ago. And everyone since has believed forty. I believed forty. If I write fourteen now, then for three hundred years the tally was false, and everybody who read it believed something untrue. If I do not, I am writing forty knowing that it is false." },
+          { "say": "Burdock", "text": "I have never once in forty years not known what to write. I do not like it." }
+        ],
+        "choices": [
+          {
+            "id": "check",
+            "label": "Find out which number is true before anything is written",
+            "check": { "skill": "history", "alt": ["investigation", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} through every book that mentions that winter, and the porch door, and the doors of the three oldest houses in Orme, which still carry their own winters cut under the chalk. Three of them say fourteen. One house lost four that winter on its own, and its door says so, with the names rubbed out." },
+                { "narrate": "Then {you find|@ finds} it: a clerk's slate, kept in the back of the old book as a page-mark, with the winter's count on it in a hurried hand. 'Lost: 14.' The one and the four are close together. Whoever copied it read the one as the first stroke of a four, and the four as a nought." },
+                { "say": "Burdock", "text": "Fourteen. Then I write fourteen, and I write under it why, and whose slate, and that it was forty for three hundred and six years. Both. And then everybody who reads it will know that the tally can be wrong. That is a terrible thing to know. It is also true." }
+              ],
+              "setFlags": { "job:burdock-mistake-found": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} through every book that mentions that winter, but they all copied the same line, forty, and the porch door is the only thing that says fourteen, and nobody can say which is older now that the door has been re-cut twice." },
+                { "say": "Burdock", "text": "Then I write both, and that nobody knows. 'Lost: forty, or fourteen.' I have never written 'or' in the tally. It looks very strange." }
+              ],
+              "setFlags": { "job:burdock-mistake-unsure": true }
+            }
+          },
+          {
+            "id": "beside",
+            "label": "Tell him to leave forty, and write fourteen beside it, dated today",
+            "lines": [
+              { "narrate": "You tell him not to strike anything. The tally is what Orme believed, and Orme believed forty for three hundred years, and that is true too. Write fourteen beside it, in today's ink, with today's date, and where it came from." },
+              { "narrate": "Burdock writes it in the margin, very small, in the square hand: 'The porch door says fourteen. Read this day, by Burdock, with the southerners.' Then he reads the whole line aloud, both numbers, and sits back." },
+              { "say": "Burdock", "text": "Two numbers. And the day I found out. That is a tally of a tally. I think the Reckoner will like it. I think she will be very cross." }
+            ],
+            "setFlags": { "job:burdock-mistake-beside": true }
+          },
+          {
+            "id": "leave",
+            "label": "Tell him to leave the line as it was written",
+            "lines": [
+              { "narrate": "You tell him that it was written forty and believed forty, and that the people who were lost that winter are not any more or less lost for a number in a book, and that a tally that changes its old lines is a tally nobody will trust again." },
+              { "say": "Burdock", "text": "Yes. Yes. That is what I would have said, if I had been able to say anything. Forty." },
+              { "narrate": "He closes the old book, carefully, and puts it back on its stack. Then, when he thinks nobody is looking, he goes to the porch and stands in front of the door for a long time, reading 'fourteen' over and over without writing it down." }
+            ],
+            "setFlags": { "job:burdock-mistake-left": true }
+          }
+        ]
+      }
+    }
+  },
+  "southern-hand": {
+    "id": "southern-hand",
+    "name": "The Southern Hand",
+    "town": "orme",
+    "level": 54,
+    "from": "b4-greve",
+    "until": "b4-hush",
+    "gold": 170,
+    "giver": "Rue, at the oldest wall",
+    "brief": "A line on Orme's oldest wall is in free-wards script: a southerner who crossed two hundred years ago and stayed. Find his family, who do not know.",
+    "start": "wall",
+    "nodes": {
+      "wall": {
+        "title": "The Southern Hand",
+        "lines": [
+          { "narrate": "Low down on the Long Hall's oldest wall, under two hundred years of other lines, there is one that nobody in Orme can read. The clerks dust round it. Rue found it this morning, on her knees, with a lamp." },
+          { "say": "Rue", "text": "That is your writing. Not yours: the south's. The letters are joined. Nobody here joins their letters. Read it to me." },
+          { "narrate": "It is cut small and careful, in the free wards' hand, the way a child is taught to write in a ward school: 'Piers Ashdown, of Briarwatch, came over the old road in the hungry year, and was taken in at Orme, and given a door, and stayed. I have written this in my own hand, because nobody here could.'" },
+          { "say": "Rue", "text": "Two hundred years. He had children. They had children. Somebody in Orme is his, and does not know it, and has a door." },
+          { "say": "Rue", "text": "Nobody came from the south to stay. Burdock says so every morning. He has been wrong for two hundred years, in a hand he could not read." }
+        ],
+        "choices": [
+          {
+            "id": "find",
+            "label": "Find the door that still carries his name, and tell the family who he was",
+            "check": { "skill": "investigation", "alt": ["insight", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You go|@ goes} along Orme's doors with Rue, all afternoon, reading the oldest line on each one, the line people copy every winter because it was there when they came. On the chandler's door, at the very bottom, under the chalk, there is a word nobody in Orme has been able to say for two hundred years, copied over and over in a Wold hand that does not join its letters: 'Ashdown'." },
+                { "narrate": "The chandler is called Lovage. She is sixty, and has copied the word every winter of her life, and her mother did, and her mother's mother. She listens to the line from the wall with her hands in her apron, and then asks {you|@} to say it again, and then once more." },
+                { "say": "Lovage", "text": "Briarwatch. Over the old road. And they took him in. We've been writing his name on the door for two hundred years and nobody knew it was a name. I'll write what it means under it now. I'll write it big." }
+              ],
+              "setFlags": { "job:southern-hand-found": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} along Orme's doors with Rue all afternoon, reading the oldest lines, but two hundred years of winters have been chalked over every one of them, and the old words have worn into each other, and at dusk {you have|@ has} found nothing that says Ashdown." },
+                { "say": "Rue", "text": "Somebody is his. We will not know who. I will write the line from the wall in my book, in your letters, and I will read it to the doors." }
+              ],
+              "setFlags": { "job:southern-hand-lost": true }
+            }
+          },
+          {
+            "id": "tally",
+            "label": "Read the line to Burdock, so that it goes into the tally in the Wold's hand",
+            "lines": [
+              { "narrate": "You read the line aloud to Burdock at his desk, slowly, the whole of it. He writes it into the newest book as you say it, in the square hand, and then reads it back, and stops at 'came over the old road'." },
+              { "say": "Burdock", "text": "Then somebody came from the south and stayed. Two hundred years ago. It is in the tally now. I have said otherwise every morning for forty years, and believed it every time." },
+              { "narrate": "He reads it again. Then he writes, under it, in smaller letters: 'Found by Rue of Thrum, read by the southerners. Nobody here could.'" }
+            ],
+            "setFlags": { "job:southern-hand-tally": true }
+          },
+          {
+            "id": "answer",
+            "label": "Cut an answer under it, in the same southern hand",
+            "lines": [
+              { "narrate": "You borrow a clerk's chisel and kneel at the oldest wall, and under Piers Ashdown's line, in the same joined letters, as small and careful as his, you cut one line of your own: 'Read by a southerner from Briarwatch, two hundred years on. You were not the only one. We came.'" },
+              { "narrate": "Rue holds the lamp the whole time and does not say anything. When it is done she copies both lines into her book, in your letters, which she cannot read, so that she will have the shape of them." },
+              { "say": "Rue", "text": "Nobody here can read it. That is all right. He was not writing to us either." }
+            ],
+            "setFlags": { "job:southern-hand-answered": true }
+          }
+        ]
+      }
+    }
+  },
+  "other-invoice": {
+    "id": "other-invoice",
+    "name": "Iona's Other Invoice",
+    "town": "highpass",
+    "level": 61,
+    "from": "b4-knot",
+    "until": "b4-gatehouse",
+    "gold": 150,
+    "giver": "Iona, in her office under the gatehouse",
+    "brief": "Iona has billed the Wold's envoys for the council's costs this spring, to the copper, and the bill has been written into the Wold's own tally as a debt. She would like it settled.",
+    "start": "office",
+    "nodes": {
+      "office": {
+        "title": "Iona's Other Invoice",
+        "lines": [
+          { "narrate": "Iona's office under the gatehouse has a new nail by the door, and on the nail a bill, three pages long, in her clerk's hand: to the Wold's envoys, for the council's costs this spring. Board, firewood, lamp oil, the guardroom floor, the mending of six door-boards, and one window in the inn yard. To the copper." },
+          { "say": "Iona", "text": "It's a bill. I send everybody a bill. I sent the council one for the bridge, once. They paid it in the end." },
+          { "oneOf": [
+            { "narrate": "The trouble is that Burdock has seen it. He copied it into the book of winters the same evening, line for line, in his best hand, under last winter: 'Owed by the Wold to the south.' It is the first line in nine hundred years that says the Wold owes the south anything, and the door-bearers have been coming into the office one at a time all week to look at the bill.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+            { "narrate": "The trouble is that Rue has seen it. She copied it into her own book the same evening, line for line, under last winter: 'Owed by the Wold to the south.' She reads it to the door-bearers every night, the way the Wold reads its doors, and they have been coming into the office one at a time all week to look at the bill." }
+          ] },
+          { "say": "Iona", "text": "Up there a line in the tally is owed by everybody, for ever, until it's crossed through. I didn't mean for ever. I meant by the end of the quarter. I'd like it settled, and settled so that nobody up there thinks I meant what they think I meant." },
+          { "say": "nessa", "text": "You billed them for the floor they slept on.", "when": { "party": "nessa" } },
+          { "say": "Iona", "text": "I bill everybody for the floor they sleep on. I billed you once.", "when": { "party": "nessa" } }
+        ],
+        "choices": [
+          {
+            "id": "offset",
+            "label": "Set the bill against her other invoice, line by line",
+            "check": { "skill": "investigation", "alt": ["history", "persuasion"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} down with the bill and with Iona's other invoice, the nine hundred years, and {go|goes} through both, line against line, until {you find|@ finds} where they meet: this spring's costs on the one, and on the other the spring of the first year the free wards rang the white north." },
+                { "narrate": "Set against each other, the bill comes to nothing, and less than nothing. The difference is owed to the Wold." },
+                { "say": "Iona", "text": "Set against. I've done that a thousand times, between towns. I've never once done it between a bill and a country. It comes out. I hate that it comes out." },
+                { "oneOf": [
+                  { "say": "Burdock", "text": "Then I cross it through, and write under it: 'Set against nine hundred years. Owed to the Wold: the rest.' That is a line I can read aloud.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+                  { "say": "Rue", "text": "Then I cross it through, and write under it: 'Set against nine hundred years.' I will read that one aloud too." }
+                ] }
+              ],
+              "setFlags": { "job:other-invoice-offset": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You go|@ goes} through both of Iona's bills, line against line, but they are in two different ledgers, and Iona will not set an account against another from a different book, not for anybody." },
+                { "say": "Iona", "text": "It isn't done. I'll hold it, though. Unpaid, until midwinter. After midwinter we'll all know what we owe." }
+              ],
+              "setFlags": { "job:other-invoice-held": true }
+            },
+            "requires": { "flagsAny": ["b4_vote_share", "b4_rota_towns", "b4_vote_refuge"] }
+          },
+          {
+            "id": "paid",
+            "label": "Ask Iona to write 'paid' on it, and pay it herself",
+            "lines": [
+              { "narrate": "You ask Iona to pay it. Not the council. Her." },
+              { "say": "Iona", "text": "I've never once written paid on a bill that wasn't." },
+              { "narrate": "She takes her own purse out of the desk drawer, and counts the bill out of it to the copper, and puts the coins in the council's box, and writes 'Paid' across the first page, and her name under it." },
+              { "say": "Iona", "text": "There. Tell them it was paid by a quartermaster from Ashford, out of her own pocket, and that she'd do it again, and that she'd like it noted she grumbled." },
+              { "oneOf": [
+                { "say": "Burdock", "text": "Paid, by Iona of Ashford. Grumbling. I will write all of it. It is a line I did not expect to write this year.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+                { "narrate": "Rue crosses the line through in her book, and writes under it: 'Paid, by Iona of Ashford. Grumbling.'" }
+              ] }
+            ],
+            "setFlags": { "job:other-invoice-paid": true }
+          },
+          {
+            "id": "worked",
+            "label": "Ask the door-bearers how the Wold pays what it owes",
+            "lines": [
+              { "narrate": "You take the bill out to the door-bearers in the inn yard, and ask them how the Wold pays what it owes." },
+              { "say": "Dunnet's door-bearer", "text": "With our hands. Show us the work." },
+              { "narrate": "Sorrel shows them the watch's woodpile, which is a month short for the winter. By the end of the week it is cut and stacked along the inside of the gatehouse wall, up to the eaves, and the watch has stopped arguing with the Wold about anything." },
+              { "say": "Iona", "text": "Paid in wood. I've been paid in worse." },
+              { "narrate": "She writes 'Paid in wood' across the bill and hangs it back on its nail." },
+              { "oneOf": [
+                { "say": "Burdock", "text": "Paid in wood, by the Wold's own hands. I will cross it through. The door-bearers will want that one read aloud.", "when": { "anyFlag": ["b4_tally_carried", "b4_tally_last"] } },
+                { "narrate": "Rue crosses the line through in her book, and writes under it: 'Paid in wood, by the Wold's own hands.'" }
+              ] }
+            ],
+            "setFlags": { "job:other-invoice-worked": true }
+          }
+        ]
+      }
+    }
+  },
+  "wold-family": {
+    "id": "wold-family",
+    "name": "The Wold Family",
+    "town": "briarwatch",
+    "level": 63,
+    "from": "b4-quietnight",
+    "until": "b4-hospice",
+    "gold": 160,
+    "giver": "Betony of Lantry, at Aveline's barn",
+    "brief": "A family from the Wold wants to write on Briarwatch's doors, the way the Wold writes on its own. Reeve Aveline has a list for everything in the village, and no rule for this.",
+    "start": "barn",
+    "nodes": {
+      "barn": {
+        "title": "The Wold Family",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "In the far fields by the Briarwood road the Wold's tents are still up after the hay. Betony of Lantry and her family have been sleeping in Aveline's barn since the rain, and they have chalked their names on its door, small, in the corner, and under the names a line.", "when": { "flag": "b4_crossed" } },
+            { "narrate": "Two of the Wold's door-bearers stayed in Briarwatch after the quiet night to help with the harvest: Betony of Lantry, and her grown son, with his mother's door-board on his back. They have been sleeping in Aveline's barn since the rain, and they have chalked their names on its door, small, in the corner, and under the names a line." }
+          ] },
+          { "oneOf": [
+            { "narrate": "The line says: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.'", "when": { "flag": "method:b4-quietnight", "is": "peace" } },
+            { "narrate": "The line says: 'Briarwatch let the white into its lanes for half a night. Owed to Briarwatch: one night.'" }
+          ] },
+          { "say": "Betony", "text": "In Lantry we write on the doors what's owed, and who to, so nobody has to remember it. We'd like to write it on every door that took the white that night. Every house on the Briarwood edge. They're owed. It ought to be where they can see it." },
+          { "say": "Aveline", "text": "Half the edge says it's a kindness, and the other half says it's chalk on their doors and who said anybody could. I've a list for everything in this village. I haven't a rule for this. I'd like one by the end of the week, and I'd like it not to be mine." },
+          { "say": "maren", "text": "In Lantry the doors are how they remember. They're asking to remember Briarwatch.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "rule",
+            "label": "Sit down with Aveline and Betony and the edge houses, and make a rule",
+            "check": { "skill": "persuasion", "alt": ["insight", "history"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} with Aveline and Betony at the table in the hall in the evening, with the edge houses round the walls, and {take|takes} it door by door: what the line says, and what it would cost, and who would have to look at it every morning." },
+                { "narrate": "By the end of the evening there is a rule, the first in Aveline's book that is not about Briarwatch: a family from the Wold may write on a Briarwatch door in chalk, if the house says yes, and the house may rub it off whenever it likes." },
+                { "narrate": "Eleven doors on the Briarwood edge say yes. In the morning Betony goes along the lane with her chalk." },
+                { "say": "Aveline", "text": "Eleven. I'd have said four. Write it in the book." }
+              ],
+              "setFlags": { "job:wold-family-rule": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} with Aveline and Betony at the table in the hall, with the edge houses round the walls, but every house wants to talk at once, and by midnight the only rule anybody will agree to is 'ask first', and most of the edge says no when it is asked." },
+                { "say": "Betony", "text": "Two doors. Two's a start. In Lantry it took a hundred years to get the doors we've got." }
+              ],
+              "setFlags": { "job:wold-family-asked": true }
+            }
+          },
+          {
+            "id": "forge",
+            "label": "Ask Dera for the forge door",
+            "lines": [
+              { "narrate": "You go across the square to Dera, who listens with her hammer in her hand, and then puts it down." },
+              { "say": "Dera", "text": "My door's been written on by every boy in Briarwatch since my mother's time. One more line won't hurt it." },
+              { "oneOf": [
+                { "narrate": "Betony writes it on the forge door, in the middle, where everybody coming into the square has to see it: 'Briarwatch let the white into its lanes for one night. Owed to Briarwatch: one night.' By evening somebody has written under it, in a Briarwatch hand: 'Noted.'", "when": { "flag": "method:b4-quietnight", "is": "peace" } },
+                { "narrate": "Betony writes it on the forge door, in the middle, where everybody coming into the square has to see it: 'Briarwatch let the white into its lanes for half a night. Owed to Briarwatch: one night.' By evening somebody has written under it, in a Briarwatch hand: 'Noted.'" }
+              ] }
+            ],
+            "setFlags": { "job:wold-family-forge": true }
+          },
+          {
+            "id": "list",
+            "label": "Ask Aveline to write the line in her list instead",
+            "lines": [
+              { "narrate": "You ask Aveline whether the line could go in her list, the list of every house on the Briarwood edge, with Betony's name beside it." },
+              { "say": "Aveline", "text": "My list isn't a door." },
+              { "say": "Betony", "text": "It's a book with everybody's name in it, that you read every night. That's a door. Write it at the top." },
+              { "narrate": "Aveline writes it at the top of the list, under the date of the quiet night, in her own hand, and Betony has her read it back twice to be sure it says what it says." }
+            ],
+            "setFlags": { "job:wold-family-list": true }
+          }
+        ]
+      }
+    }
+  },
+  "lower-town": {
+    "id": "lower-town",
+    "name": "The Lower Town",
+    "town": "ashford",
+    "level": 64,
+    "from": "b4-gatehouse",
+    "until": "b4-hospice",
+    "gold": 150,
+    "giver": "Bistort of Greve, in the stubble below the old wall",
+    "brief": "A family from the Wold would like to stay at Ashford and farm the ground below the old wall. Ashford's town meeting has never been asked anything like it, and is not expected to say yes.",
+    "start": "stubble",
+    "nodes": {
+      "stubble": {
+        "title": "The Lower Town",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "When the column crossed the ford, one family stayed behind on the north bank, in a tent in the stubble below the old wall: Bistort of Greve, her two sons, and her husband's mother, who walks with a stick.", "when": { "flag": "method:b4-ford" } },
+            { "narrate": "In the column's camp in the stubble below the old wall, one family has not packed: Bistort of Greve, her two sons, and her husband's mother, who walks with a stick." }
+          ] },
+          { "oneOf": [
+            { "narrate": "They have been walking the ground below the old wall every day: the last plots by the river where the lower town was built again, and the houses were not, because the families who had them stayed up in the upper town after the winter.", "when": { "flag": "b3_ashford_defended", "anyFlag": ["b3_promise_old"] } },
+            { "narrate": "They have been walking the lower town every day: its empty streets, grey and gone to grass, and its fields, which nobody has worked since the winter before last.", "when": { "flag": "b3_ashford_defended" } },
+            { "narrate": "They have been walking the water-meadows below the fulling mill every day, which Ashford has never farmed, because they flood." }
+          ] },
+          { "oneOf": [
+            { "say": "Bistort of Greve", "text": "In Greve we had a strip under the shelf where the white lay four nights in five. We grew oats on it. Good oats. This ground has had the white on it once in three hundred years. It is the best ground I have ever stood on, and nobody is using it.", "when": { "anyFlag": ["b3_ashford_defended"] } },
+            { "say": "Bistort of Greve", "text": "In Greve we had a strip under the shelf where the white lay four nights in five. We grew oats on it. These meadows flood one spring in three. That is nothing. Nobody is using them." }
+          ] },
+          { "say": "Bistort of Greve", "text": "We would like to stay, and farm it, and write it on a door that it is ours to farm. Not ours. Ours to farm. In the Wold that is two different lines." },
+          { "say": "Hollis Brede", "text": "The meeting will say no. The meeting says no to strangers, and to the council, and to anybody from Highpass, and to most things it hasn't thought of first. I'd like it to have to think about this. I'd like that very much, and I'd not like to be the one who asks." }
+        ],
+        "choices": [
+          {
+            "id": "meeting",
+            "label": "Put Bistort's case to Ashford's town meeting",
+            "check": { "skill": "persuasion", "alt": ["history", "insight"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You stand|@ stands} up at the town meeting in the market hall in the evening, with Bistort beside {them}, and {tell|tells} it the one thing nobody in Ashford has said aloud in three hundred years: that this ground was given once, by Ashford, to keep the wall, and that somebody else has been living under what Ashford gave ever since." },
+                { "narrate": "The meeting argues until the lamps are low. Then it votes, by hands, and by a few, yes: one year, for a rent of a tenth of the crop, to be looked at again at the next harvest." },
+                { "narrate": "In the morning somebody paints a second line on the board on the bridge, under the town's no, in smaller letters: 'Let to Bistort of Greve, one year.'" },
+                { "say": "Hollis Brede", "text": "One year. We'll argue about it every month of it. That's how Ashford says yes." }
+              ],
+              "setFlags": { "job:lower-town-let": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You stand|@ stands} up at the town meeting with Bistort beside {them}, but the meeting has heard the council's people before, and the hall is against it before {you have|@ has} finished, and it votes no, by a long way, and goes home." },
+                { "say": "Bistort of Greve", "text": "It is a no. In the Wold we would write down that we were asked. Will they write that?" },
+                { "say": "Hollis Brede", "text": "I'll write it. In the minutes. 'Asked.' It's not nothing, in this town." }
+              ],
+              "setFlags": { "job:lower-town-asked": true }
+            }
+          },
+          {
+            "id": "brede",
+            "label": "Ask Hollis Brede to let them her own ground",
+            "lines": [
+              { "narrate": "You ask Hollis Brede for her own ground, not the town's: the strip below the wall that has been her family's since before the wall was built, which no meeting can vote on." },
+              { "say": "Hollis Brede", "text": "That's not Ashford saying yes. That's me." },
+              { "narrate": "You tell her that is why you asked her." },
+              { "oneOf": [
+                { "say": "Hollis Brede", "text": "Hm. One year. She can have the strip, and the shed on it. If the meeting asks, I'll tell it what the council told us about our children: somebody had to decide, and it was me.", "when": { "flag": "b3_ashford_children" } },
+                { "say": "Hollis Brede", "text": "Hm. One year. She can have the strip, and the shed on it, and the meeting can say what it likes about it." }
+              ] },
+              { "narrate": "Bistort writes it on the shed door that evening, in chalk, small: 'Bistort of Greve, to farm. Hollis Brede's.'" }
+            ],
+            "setFlags": { "job:lower-town-brede": true }
+          },
+          {
+            "id": "south",
+            "label": "Tell Bistort to go south with the others, to a town that has voted to take her",
+            "lines": [
+              { "narrate": "You tell Bistort that Ashford will not have her, whatever it is asked, and that the towns down the valley have said they will, and that she should go where she is wanted." },
+              { "say": "Bistort of Greve", "text": "Yes. That is sense. I will write down this ground anyway, on the cart. Somebody should know it was here." },
+              { "narrate": "She writes it on the tail-board of the family's cart, and they go south down the valley road after the column, with the old woman riding." }
+            ],
+            "setFlags": { "job:lower-town-south": true }
+          }
+        ]
+      }
+    }
+  },
+  "walkers-names": {
+    "id": "walkers-names",
+    "name": "Walkers' Names",
+    "town": "merrowgate",
+    "level": 65,
+    "from": "b4-ford",
+    "until": "b4-hospice",
+    "gold": 160,
+    "giver": "Annis Corby, at the harbour hospice door",
+    "brief": "A widow from the harbour comes to the hospice every day to sit with a man in the long room who does not know his own name. She is sure he is her husband, who walked into the white at Fenmere. He is not.",
+    "start": "bed",
+    "nodes": {
+      "bed": {
+        "title": "Walkers' Names",
+        "lines": [
+          { "oneOf": [
+            { "narrate": "At the end of the walkers' row in the hospice's long room, a man sits up in his bed and looks at the door, as all of them do. Beside him on a stool, every day from noon until the evening reading, sits Annis Corby, a net-mender's widow from the harbour, holding his hand.", "when": { "anyFlag": ["b4_walkers_led", "b4_walkers_marked"] } },
+            { "narrate": "At the end of the long room a man sits up in his bed and looks at the door. The fishermen brought him in off the outer quay in the spring, with nothing left in him, not even a name. Beside him on a stool, every day from noon until the evening reading, sits Annis Corby, a net-mender's widow from the harbour, holding his hand." }
+          ] },
+          { "say": "Annis Corby", "text": "Merrick took a cart of nets up to Fenmere the winter its lower bank went under, and walked out into the white after a child who'd wandered, and didn't come back. They said what goes into it doesn't come back. They were wrong. Look at him. He's come back." },
+          { "say": "Anwen", "text": "He's not. He's forty years younger than Merrick would be, and his hands have never mended a net. She knows. She knows, and she comes every day, and he holds on to her hand like it's the only thing in the room. I don't know what to do. I don't often say that." },
+          { "say": "maren", "text": "She's reading him Merrick's name. Every day. And he's started saying it back.", "when": { "party": "maren" } }
+        ],
+        "choices": [
+          {
+            "id": "sit",
+            "label": "Sit with them both, and let her find out for herself",
+            "check": { "skill": "insight", "alt": ["medicine", "persuasion"] },
+            "success": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} on the other side of the bed through the afternoon, and {ask|asks} her about Merrick, all of it, the herring and the nets and the way he whistled, and {let|lets} her tell the man in the bed while {you listen|@ listens}." },
+                { "narrate": "By the evening reading she has stopped. She looks at the man's hands for a long time. Then she says, quietly, that Merrick had a scar across the back of the left one, from a gutting knife, and this man has none." },
+                { "say": "Annis Corby", "text": "I knew. I knew the first day. I'll keep coming. Somebody should sit with him. I'll read him Merrick's name with the others, and his own when he finds it." },
+                { "narrate": "She does. Anwen puts a stool by the bed for her, with her name chalked on it." }
+              ],
+              "setFlags": { "job:walkers-names-told": true }
+            },
+            "failure": {
+              "lines": [
+                { "narrate": "{You sit|@ sits} with them through the afternoon, but every time {you ask|@ asks} about Merrick she answers to the man in the bed instead, and by the evening reading she is surer than she was at noon, and {you leave|@ leaves} her holding his hand." },
+                { "say": "Anwen", "text": "Leave her. It's not hurting him. It may be hurting her. I'll watch." }
+              ],
+              "setFlags": { "job:walkers-names-sure": true }
+            }
+          },
+          {
+            "id": "given",
+            "label": "Let her give him Merrick's name, since he has none",
+            "lines": [
+              { "narrate": "You tell Anwen that he has no name, and that she has one to give him, and that he has started saying it back." },
+              { "say": "Anwen", "text": "That's a gift. It's not a lie. It's very close to one. All right. Let it be a gift." },
+              { "narrate": "On the slate at the foot of his bed Anwen writes 'Merrick', and under it, small, so that anybody who reads it will know, 'given by Annis Corby'. The man in the bed reads it, slowly, and says it, and looks at Annis, and holds her hand." }
+            ],
+            "setFlags": { "job:walkers-names-given": true }
+          },
+          {
+            "id": "plain",
+            "label": "Tell her plainly he is not her husband",
+            "lines": [
+              { "narrate": "You tell her plainly. He is not Merrick. He is too young, and his hands are wrong, and what went into the white at Fenmere has not come back." },
+              { "say": "Annis Corby", "text": "I know. I know he's not. You didn't have to say it out loud." },
+              { "narrate": "She lets go of his hand, and goes home. The man in the bed looks at the door for the rest of the evening, the way he did before she came." },
+              { "say": "maren", "text": "That was true. I'm not sure it was the right true thing.", "when": { "party": "maren" } }
+            ],
+            "setFlags": { "job:walkers-names-plain": true }
           }
         ]
       }

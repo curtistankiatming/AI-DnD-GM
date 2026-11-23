@@ -77,6 +77,13 @@
     const typing = document.activeElement?.id === 'wishInput', caret = typing ? document.activeElement.selectionStart : null;
     const title = el('h3', '', "What's next?"); title.id = 'whatsNextTitle';
     const list = el('div', 'whats-next-list');
+    // Book Four's first screen: where Book Three left this save (src/recap.js).
+    if (w.bookRecap) {
+      const card = el('div', 'whats-next-recap'); card.id = 'bookRecap';
+      card.append(el('h4', '', w.bookRecap.title));
+      for (const line of w.bookRecap.lines) card.append(el('p', '', line));
+      list.append(card);
+    }
     if (w.activeQuest) list.append(action(w.pendingBattle ? 'Resume the interrupted fight' : 'Resume your expedition', 'btn btn-primary btn-small', { type: 'resume' }));
     if (!w.bellComplete) list.append(el('p', '', 'Follow the story choices above to finish the bell investigation. More roads open after that.'));
     // After the last written chapter this save can play: say so every time, not only once in the story.

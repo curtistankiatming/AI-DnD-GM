@@ -79,7 +79,7 @@ function paths(job) {
 }
 test('every way through every side job ends in town, paid once, with or without companions', () => {
   for (const job of OPEN_JOBS) for (const party of [['orin', 'maren', 'nessa'], []]) for (const path of paths(job)) {
-    const flags = { harbour_keepers: true };
+    const flags = { harbour_keepers: true, b4_company_council: true, b4_vote_share: true }; // every choice's requires: the harbour bell's keepers (Book One), the council's convoy (White-wool), chapter 22's vote (the Other Invoice)
     let s = ready(job, { party, flags });
     const before = { xp: s.player.xp, gold: s.player.gold };
     s = act(s, { type: 'side-job', jobId: job.id }).state;
@@ -131,9 +131,10 @@ test('a choice that costs gold needs it, and a job left half done picks up where
 });
 
 test('the story mentions a side job only if it was done', () => {
+  // Penn the job's, not Maud Penney of Book Three's deep (b4-hush).
   const lines = (id) => QUESTS[id].opening.concat(QUESTS[id].after).filter((l) => l.when?.flag?.startsWith('job:'));
   assert.ok(lines('chairs').length + lines('southroad').length >= 2);
   for (const q of Book.CHAPTERS) for (const key of ['opening', 'approach', 'crisis', 'after']) for (const l of Array.isArray(q[key]) ? q[key] : []) {
-    if (/Tib|Ada Rusk|Penn|Farrow|Mag Tolly|Davy|Ottilie|Gilliam|Willem/.test(l.text || l.narrate || '')) assert.ok(l.when?.flag?.startsWith('job:'), `${q.id}.${key}: ${l.text || l.narrate}`);
+    if (/Tib|Ada Rusk|Penn\b|Farrow|Mag Tolly|Davy|Ottilie|Gilliam|Willem/.test(l.text || l.narrate || '')) assert.ok(l.when?.flag?.startsWith('job:'), `${q.id}.${key}: ${l.text || l.narrate}`);
   }
 });

@@ -72,7 +72,11 @@ test('every late requirement is one a hero of that class can meet, and every pie
     assert.ok(TIERS.includes(r.level) || chapterReward(item), `${item.id}: level ${r.level} is a tier, or two below its Book Four chapter`);
     for (const c of r.classes || []) assert.ok(CLASSES[c], `${item.id}: ${c}`);
     for (const [id, n] of Object.entries(r.abilities || {})) assert.ok(ABILITIES[id] && n >= 10 && n <= 15, `${item.id}: ${id} ${n}`);
-    assert.ok(Object.keys(CLASSES).some((c) => Gear.unmet(hero(c, r.level).player, item) === null), `${item.id}: some class can wear it`);
+    // Book Four's companion keepsakes (requires.members) are for that companion, and nobody else.
+    if (r.members) {
+      for (const m of r.members) assert.equal(Gear.unmet({ ...COMPANIONS[m], level: r.level }, item), null, `${item.id}: ${m} can wear it`);
+      assert.ok(Object.keys(CLASSES).every((c) => Gear.unmet(hero(c, 100).player, item) !== null), `${item.id}: no hero can wear it`);
+    } else assert.ok(Object.keys(CLASSES).some((c) => Gear.unmet(hero(c, r.level).player, item) === null), `${item.id}: some class can wear it`);
     assert.equal(item.rarity, 'Legendary', item.id);
     assert.ok(item.value >= Gear.minValue(item), `${item.id}: price`);
     if (item.skill) assert.ok(Power.EFFECTS[item.skill.effect] && ['enemy', 'self'].includes(item.skill.target) && item.skill.text, item.id);
@@ -81,7 +85,7 @@ test('every late requirement is one a hero of that class can meet, and every pie
   }
   // Every weapon and focus past 40 belongs to one class or a clear family of
   // classes; armour goes by weight and accessories stay shared (22 November 2026).
-  for (const item of LATE.filter((i) => i.slot === 'mainHand')) assert.ok(item.requires.classes?.length >= 1 && item.requires.classes.length <= 3, `${item.id}: class family`);
+  for (const item of LATE.filter((i) => i.slot === 'mainHand')) assert.ok(item.requires.members?.length === 1 || (item.requires.classes?.length >= 1 && item.requires.classes.length <= 3), `${item.id}: class family`);
   // Sparse: about eight pieces a tier, not one of each type at every level.
   // Book Four's one-per-chapter rewards are counted apart from the sold tiers.
   const sold = LATE.filter((i) => !chapterReward(i));
@@ -146,7 +150,11 @@ test('late gear climbs in small steps from level 40 and stays inside its caps at
 const avg = (d) => { const m = /^(\d+)d(\d+)$/.exec(d); return m ? m[1] * (+m[2] + 1) / 2 : 1; };
 function atLeast(a, b) {
   if (a.slot !== b.slot || a.category !== b.category || lv(a) > lv(b)) return false;
-  const ca = a.requires?.classes, cb = b.requires?.classes;
+  const ma = a.requires?.members, mb = b.requires?.members, ca = a.requires?.classes;
+  // A keepsake only its companion may wear is never available to anybody else;
+  // one item that is is checked against it by its wearers' gear classes.
+  const cb = mb ? mb.map((m) => COMPANIONS[m].gearClass) : b.requires?.classes;
+  if (ma && (!mb || !mb.every((m) => ma.includes(m)))) return false;
   if (ca && (!cb || !cb.every((c) => ca.includes(c)))) return false;
   for (const [k, v] of Object.entries(a.requires?.abilities || {})) if ((b.requires?.abilities?.[k] || 0) < v) return false;
   if (a.weapon || b.weapon) {
@@ -170,6 +178,10 @@ test('no late item is matched or beaten by one already available at its level to
   const found = [];
   for (const b of LATE) for (const a of pool) if (a.id !== b.id && atLeast(a, b)) found.push(`${b.id} (level ${lv(b)}) is no better than ${a.id} (level ${lv(a)})`);
   assert.deepEqual(found, []);
+  // A companion's keepsake is held to sold gear of that companion's gear class.
+  const keepsakes = LATE.filter((i) => i.requires?.members);
+  assert.ok(keepsakes.length >= 3);
+  for (const k of keepsakes) assert.ok(atLeast({ ...k, requires: { ...k.requires, members: undefined, classes: [COMPANIONS[k.requires.members[0]].gearClass] } }, k), `${k.id}: compared with sold gear`);
 });
 
 test('every set is sound: real pieces in different slots, one class list, bonuses that grow to the full set', () => {

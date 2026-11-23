@@ -4890,6 +4890,760 @@
     }
   },
   {
+    "id": "door-readers-scarf",
+    "name": "Door-reader's Scarf",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 820,
+    "warm": true,
+    "description": "Teasel's own white-wool scarf, long enough to go round twice, chalked along its length with your names in the Lantry children's hand.",
+    "purpose": "Equip in the accessory slot: +3 Insight and Performance, +1 Intelligence and Wisdom saving throws.",
+    "skillBonuses": {
+      "insight": 3,
+      "performance": 3
+    },
+    "saveBonuses": {
+      "int": 1,
+      "wis": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 48
+    },
+    "story": {
+      "skill": "performance"
+    },
+    "exclusive": {
+      "quest": "b4-lantry"
+    }
+  },
+  {
+    "id": "sheddon-column-shield",
+    "name": "Sheddon Column Shield",
+    "category": "shield",
+    "slot": "offHand",
+    "rarity": "Legendary",
+    "value": 830,
+    "description": "A Sheddon farm gate, cut down and faced with iron, that was carried at the column's rear all the way to Orme.",
+    "purpose": "Equip in your off hand for +5 Armor Class. Cannot be used with a two-handed weapon. +3 Athletics, +2 to every saving throw.",
+    "acBonus": 5,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 2,
+      "dex": 2,
+      "con": 2,
+      "int": 2,
+      "wis": 2,
+      "cha": 2
+    },
+    "skillBonuses": {
+      "athletics": 3
+    },
+    "requires": {
+      "level": 49,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "skill": {
+      "name": "Hold the Rear",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Shove an enemy back off the column with the gate: it deals 25% less damage for two rounds."
+    },
+    "exclusive": {
+      "quest": "b4-sheddon"
+    }
+  },
+  {
+    "id": "long-tally-staff",
+    "name": "Long Tally Staff",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 840,
+    "description": "A tally-keeper's measuring staff from the Long Hall, notched for nine hundred years of winters, the notches deepening as they go, all but the last.",
+    "purpose": "Equip: +5 spell attack bonus and +5 spell save DC. +2 History.",
+    "spellAttackBonus": 5,
+    "spellDcBonus": 5,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "history": 2
+    },
+    "requires": {
+      "level": 50,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "skill": {
+      "name": "Count the Winters",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Mark an enemy on the tally: it is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-orme"
+    }
+  },
+  {
+    "id": "letting-house-censer",
+    "name": "Letting-house Censer",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 850,
+    "description": "The old censer from Yarrow's shelf, the first she lit for the grieving, blackened inside with thirty years of smoke. She has a newer one for giving nights.",
+    "purpose": "Equip in the accessory slot: +3 Medicine, Religion and Insight, +2 Wisdom and +1 Constitution saving throws.",
+    "stats": {
+      "dealt": 0.05
+    },
+    "skillBonuses": {
+      "medicine": 3,
+      "religion": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "con": 1
+    },
+    "skill": {
+      "name": "Every Name Said",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Swing the censer and say a name: become Fortified for one round and take 25% less damage."
+    },
+    "requires": {
+      "level": 51
+    },
+    "story": {
+      "skill": "medicine"
+    },
+    "exclusive": {
+      "quest": "b4-greve"
+    }
+  },
+  {
+    "id": "thrum-lane-cloak",
+    "name": "Thrum Lane Cloak",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 860,
+    "warm": true,
+    "description": "Heath's white-wool cloak, darned at the hem, which she gives to the stranger who brought her daughter home.",
+    "purpose": "Base AC 17, full Dexterity bonus. +2 Stealth and Insight, +1 Wisdom saving throws.",
+    "armor": {
+      "base": 17,
+      "dexCap": null
+    },
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "stealth": 2,
+      "insight": 2
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 52
+    },
+    "story": {
+      "skill": "insight"
+    },
+    "exclusive": {
+      "quest": "b4-thrum"
+    }
+  },
+  {
+    "id": "reckoners-slate",
+    "name": "Reckoner's Slate",
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 870,
+    "description": "The slate Sloe did her first sum on, in a frame of black wood worn pale where her thumbs held it. She has the sum by heart.",
+    "purpose": "Equip: +5 spell attack bonus and +5 spell save DC. +2 Arcana and History.",
+    "spellAttackBonus": 5,
+    "spellDcBonus": 5,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "arcana": 2,
+      "history": 2
+    },
+    "requires": {
+      "level": 53,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "The Sum Comes Out",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Show an enemy the sum: it is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-reckoning"
+    }
+  },
+  {
+    "id": "pot-bell-mace",
+    "name": "Pot-bell Mace",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 880,
+    "description": "Dunnet's clapper on an ash haft, cast from the village's pots and nails; if the bell was broken, a piece of the bell itself, with a pan-handle still in it.",
+    "purpose": "Strength, 1d10 bludgeoning, +3 to hit, +6 damage.",
+    "weapon": {
+      "damage": "1d10",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": []
+    },
+    "attackBonus": 3,
+    "damageBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Forty Strokes",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Ring an enemy like a bell: it deals 25% less damage until your next turn."
+    },
+    "requires": {
+      "level": 54,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-potbells"
+    }
+  },
+  {
+    "id": "hush-wool-mantle",
+    "name": "Hush-wool Mantle",
+    "category": "armor",
+    "slot": "armor",
+    "rarity": "Legendary",
+    "value": 890,
+    "warm": true,
+    "description": "A long mantle of grey-white wool, close-woven and quilted over horn scales, made by a walker in the Hush who has no name, and given without a word.",
+    "purpose": "Base AC 19, up to +2 from Dexterity. +2 Stealth, +1 Constitution and Dexterity saving throws. Stealth story ability.",
+    "armor": {
+      "base": 19,
+      "dexCap": 2
+    },
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "stealth": 2
+    },
+    "saveBonuses": {
+      "con": 1,
+      "dex": 1
+    },
+    "requires": {
+      "level": 55
+    },
+    "story": {
+      "skill": "stealth"
+    },
+    "exclusive": {
+      "quest": "b4-hush"
+    }
+  },
+  {
+    "id": "column-longbow",
+    "name": "Column Longbow",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 900,
+    "description": "The bow of the Wold's rearguard on the switchbacks, horn and ash, with the marks of the north face's turns cut along the back of it.",
+    "purpose": "Dexterity, 1d8 piercing, +3 to hit, +7 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Pinning Shot",
+      "effect": "slowed",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Pin an enemy to the turn for two rounds: 2 less armour."
+    },
+    "requires": {
+      "level": 56,
+      "classes": [
+        "ranger",
+        "rogue"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-column"
+    }
+  },
+  {
+    "id": "north-door-greataxe",
+    "name": "North-door Greataxe",
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 910,
+    "description": "The axe that has hung on the inside of the Hall's north door since the parting, for whoever has to clear the step of ice.",
+    "purpose": "Strength, 2d6 slashing, +3 to hit, +7 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "slashing",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 7,
+    "stats": {
+      "dealt": 0.05
+    },
+    "skill": {
+      "name": "Hold the Door",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Stand in the door: an enemy deals 25% less damage until your next turn."
+    },
+    "requires": {
+      "level": 57,
+      "classes": [
+        "fighter"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "quest": "b4-northdoor"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 920,
+    "id": "founders-rope-knot",
+    "name": "Founders' Rope-knot",
+    "description": "The end of the rope that was left on the empty hook in the Hall, cut short, still tied in the rope families' knot: a round turn, two half-hitches and a small hard stopper. Nobody can tell you its name.",
+    "purpose": "Equip in the accessory slot: +3 Athletics and Acrobatics, +1 Strength and Dexterity saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "athletics": 3,
+      "acrobatics": 3
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1
+    },
+    "skill": {
+      "name": "Stopper Knot",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Pull the stopper down tight: become Fortified for one round and take 25% less damage."
+    },
+    "requires": {
+      "level": 58
+    },
+    "story": {
+      "skill": "athletics"
+    },
+    "exclusive": {
+      "quest": "b4-knot"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 930,
+    "id": "council-ledger-case",
+    "name": "Council Ledger-case",
+    "description": "The flat leather case Iona's invoice came into the council in, nine hundred years itemised, with her clerk's mark on the clasp. She has a newer one for bills.",
+    "purpose": "Equip in the accessory slot: +3 Investigation, History and Insight, +1 Intelligence saving throws.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "investigation": 3,
+      "history": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "int": 1
+    },
+    "requires": {
+      "level": 59
+    },
+    "story": {
+      "skill": "investigation"
+    },
+    "exclusive": {
+      "quest": "b4-invoice"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 940,
+    "id": "quiet-night-lantern",
+    "name": "Quiet-night Lantern",
+    "description": "The horn lantern Pim carries along the watch line on Briarwatch's quiet nights, with a shutter he can close with one thumb. He has made himself another.",
+    "purpose": "Equip in the accessory slot: +3 Perception and Survival, +1 Wisdom saving throws.",
+    "stats": {
+      "dealt": 0.1,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "perception": 3,
+      "survival": 3
+    },
+    "saveBonuses": {
+      "wis": 1
+    },
+    "requires": {
+      "level": 60
+    },
+    "story": {
+      "skill": "perception"
+    },
+    "exclusive": {
+      "quest": "b4-quietnight"
+    }
+  },
+  {
+    "category": "focus",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 950,
+    "id": "gatehouse-grammar",
+    "name": "Gatehouse Grammar",
+    "description": "Sable's grammar of the founders' marks, copied out in his small hand over two winters under Highpass's gatehouse, with every note's mark in the margin and two of them left blank.",
+    "purpose": "Equip: +6 spell attack bonus and +6 spell save DC. +2 Arcana and History.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "arcana": 2,
+      "history": 2
+    },
+    "requires": {
+      "level": 61,
+      "classes": [
+        "wizard"
+      ]
+    },
+    "skill": {
+      "name": "Unravel",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Read an enemy as Sable reads a page, mark by mark: it is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "exclusive": {
+      "quest": "b4-gatehouse"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 960,
+    "id": "captains-commission",
+    "name": "Captain's Commission",
+    "description": "Sorrel's paper, with the council's seal on it, that made somebody captain of the council's watch from the ford at Ashford to midwinter. It has been folded once and read many times, whoever kept it.",
+    "purpose": "Orin only. Equip in the accessory slot: +3 Intimidation and Athletics, +1 Strength, Constitution and Wisdom saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "intimidation": 3,
+      "athletics": 3
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1,
+      "wis": 1
+    },
+    "skill": {
+      "name": "Captain's Word",
+      "effect": "weakened",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Give an enemy the order to stand down, the way the column was given its word at the ford: it is Weakened until your next turn and deals 25% less damage."
+    },
+    "requires": {
+      "level": 62,
+      "members": [
+        "orin"
+      ]
+    },
+    "story": {
+      "skill": "intimidation"
+    },
+    "exclusive": {
+      "quest": "b4-ford"
+    }
+  },
+  {
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 970,
+    "id": "hospice-physic-bag",
+    "name": "Hospice Physic-bag",
+    "description": "Anwen Holt's old bag from the Sallows, worn through at the corners and mended with sailcloth, with a pack of cards in the side pocket that she says she has never once cheated with.",
+    "purpose": "Maren only. Equip in the accessory slot: +3 Medicine and Insight, +2 Wisdom saving throws, +1 Constitution saving throws.",
+    "stats": {
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "medicine": 3,
+      "insight": 3
+    },
+    "saveBonuses": {
+      "wis": 2,
+      "con": 1
+    },
+    "requires": {
+      "level": 63,
+      "members": [
+        "maren"
+      ]
+    },
+    "story": {
+      "skill": "medicine"
+    },
+    "exclusive": {
+      "quest": "b4-hospice"
+    }
+  },
+  {
+    "category": "weapon",
+    "slot": "mainHand",
+    "rarity": "Legendary",
+    "value": 980,
+    "id": "signal-fire-longbow",
+    "name": "Signal-fire Longbow",
+    "description": "Wren's bow, which has hung on a peg in the lamp-room of Cinder Fold's forge-signal for twenty years, strung every autumn and never shot. The grip is wrapped in the same cord as the signal key.",
+    "purpose": "Nessa only. Dexterity, 1d8 piercing, +3 to hit, +8 damage. Two-handed ranged weapon.",
+    "weapon": {
+      "damage": "1d8",
+      "damageType": "piercing",
+      "ability": "dex",
+      "properties": [
+        "ranged",
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Signal Shot",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Loose a shot that lights its mark like the signal over the town: the enemy is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "requires": {
+      "level": 64,
+      "members": [
+        "nessa"
+      ],
+      "abilities": {
+        "dex": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-signal"
+    }
+  },
+  {
+    "rarity": "Legendary",
+    "value": 990,
+    "id": "rope-family-maul",
+    "name": "Rope-family Maul",
+    "category": "weapon",
+    "slot": "mainHand",
+    "description": "The maul the rope families drive the casting hall's wedges with, iron-headed and ash-hafted, passed from champion to champion since the founders hung the nine. Its haft is wrapped in old bell-rope.",
+    "purpose": "Strength, 2d6 bludgeoning, +3 to hit, +8 damage. Two-handed.",
+    "weapon": {
+      "damage": "2d6",
+      "damageType": "bludgeoning",
+      "ability": "str",
+      "properties": [
+        "twoHanded"
+      ]
+    },
+    "attackBonus": 3,
+    "damageBonus": 8,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skill": {
+      "name": "Shatter",
+      "effect": "vulnerable",
+      "target": "enemy",
+      "rounds": 1,
+      "text": "Drive the maul in like a wedge: the enemy is Vulnerable until your next turn and takes 25% more damage."
+    },
+    "requires": {
+      "level": 65,
+      "classes": [
+        "fighter"
+      ],
+      "abilities": {
+        "str": 15
+      }
+    },
+    "exclusive": {
+      "quest": "b4-ropes"
+    }
+  },
+  {
+    "rarity": "Legendary",
+    "value": 1000,
+    "id": "settling-iron-plate",
+    "name": "Settling-iron Plate",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Plate cut by Cinder Fold's smiths from the iron of the lid, where it cracked and settled on midwinter night. It is warm to the touch, always, like the lid.",
+    "purpose": "Base AC 23, no Dexterity bonus. +1 Strength, Constitution and Wisdom saving throws. Heavy: −2 Stealth.",
+    "armor": {
+      "base": 23,
+      "dexCap": 0
+    },
+    "skillBonuses": {
+      "stealth": -2
+    },
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "con": 1,
+      "wis": 1
+    },
+    "skill": {
+      "name": "Brace",
+      "effect": "fortified",
+      "target": "self",
+      "rounds": 1,
+      "text": "Settle like the lid: you are Fortified until your next turn and take 25% less damage."
+    },
+    "requires": {
+      "level": 66,
+      "classes": [
+        "fighter",
+        "cleric"
+      ],
+      "abilities": {
+        "str": 13
+      }
+    },
+    "exclusive": {
+      "quest": "b4-lid"
+    }
+  },
+  {
+    "rarity": "Legendary",
+    "value": 1010,
+    "id": "midwinter-tuning-fork",
+    "name": "Midwinter Tuning Fork",
+    "category": "focus",
+    "slot": "mainHand",
+    "description": "The steel fork the ringers tuned the nine with on midwinter night, a southerner and a northerner passing it from rope to rope. Struck, it gives the nine's note, and nothing else.",
+    "purpose": "Equip: +6 spell attack bonus and +6 spell save DC. +2 Performance and Religion.",
+    "spellAttackBonus": 6,
+    "spellDcBonus": 6,
+    "stats": {
+      "dealt": 0.1
+    },
+    "skillBonuses": {
+      "performance": 2,
+      "religion": 2
+    },
+    "skill": {
+      "name": "First Note",
+      "effect": "empowered",
+      "target": "self",
+      "rounds": 1,
+      "text": "Strike the fork and give the first note: you are Empowered until your next turn and deal 25% more damage."
+    },
+    "requires": {
+      "level": 67,
+      "classes": [
+        "wizard",
+        "cleric",
+        "bard"
+      ]
+    },
+    "exclusive": {
+      "quest": "b4-parting"
+    }
+  },
+  {
     "id": "frostforged-plate",
     "name": "Frostforged Plate",
     "category": "armor",

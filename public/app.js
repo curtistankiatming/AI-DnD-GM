@@ -785,6 +785,12 @@ function renderEquipment() {
     if (set.next) card.appendChild(createElement("p", "item-set-bonus", `Next, at ${set.next.pieces} pieces: ${set.next.text}.`));
     dom.equipmentSlots.appendChild(card);
   }
+  // What the hero's worn gear adds up to, with the caps on damage dealt and taken.
+  if (view.player?.gearTotals) {
+    const card = createElement("div", "equipment-slot equipment-totals");
+    card.append(createElement("span", "", "Totals"), createElement("p", "", view.player.gearTotals.text));
+    dom.equipmentSlots.appendChild(card);
+  }
 }
 
 function useStoryItem(item) {

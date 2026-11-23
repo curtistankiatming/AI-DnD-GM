@@ -5,6 +5,7 @@ const Away=require('./away');
 const P=require('./progression');
 const Director=require('./director');
 const Book=require('./book');
+const Recap=require('./recap');
 const XP=require('./xp');
 const G=require('./equipment');
 const Gear=require('./gear');
@@ -546,7 +547,7 @@ function view(state){
     jobsDone:Object.keys(w.jobs).filter(id=>SIDE_JOBS[id]).map(id=>({id,name:SIDE_JOBS[id].name})),
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
-    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title,...(Book.aiStory(state)?{closed:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
+    bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),bookRecap:Recap.recap(state),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title,...(Book.aiStory(state)?{closed:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
     canRecruit:!empty&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,canPractice:Boolean(t&&!empty),
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,

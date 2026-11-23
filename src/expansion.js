@@ -196,10 +196,12 @@ function outcomeForRoller(outcome,actor){
   if(!outcome)return outcome;
   const out={...outcome};
   if(Array.isArray(outcome.dialogue)){
-    out.dialogue=outcome.dialogue.filter(l=>!l.when||rollerFits(l.when,actor)).map(l=>{
-      const {roller,notRoller,...rest}=l.when||{};const line={...l,...(l.narration!==undefined?{narration:forRoller(l.narration,actor)}:{}),...(l.text!==undefined?{text:forRoller(l.text,actor)}:{})};
+    // Lines inside a oneOf are told for the roller too (step 9).
+    const tell=lines=>lines.filter(l=>!l.when||rollerFits(l.when,actor)).map(l=>{
+      const {roller,notRoller,...rest}=l.when||{};const line={...l,...(l.narration!==undefined?{narration:forRoller(l.narration,actor)}:{}),...(l.text!==undefined?{text:forRoller(l.text,actor)}:{}),...(Array.isArray(l.oneOf)?{oneOf:tell(l.oneOf)}:{})};
       if(l.when){if(Object.keys(rest).length)line.when=rest;else delete line.when;}
       return line;});
+    out.dialogue=tell(outcome.dialogue);
     if(outcome.text!==undefined)out.text=dialogueText(out.dialogue);
   }else if(typeof outcome.text==='string')out.text=forRoller(outcome.text,actor);
   return out;

@@ -148,7 +148,8 @@ function playerSheetView(state) {
     attack,
     resources: state.player.resources,
     conditions: state.player.conditions,
-    sets: wornSetsView(state.player)
+    sets: wornSetsView(state.player),
+    gearTotals: G.gearTotals(state.player)
   };
 }
 
@@ -163,6 +164,7 @@ function partyView(state) {
       level:member.level,
       equipment:member.equipment,
       sets:wornSetsView(member),
+      gearTotals:G.gearTotals(member),
       personalStyle:member.personalStyle||null,
       temporaryHp:actor?.temporaryHp??member.temporaryHp??0,
       summary: member.summary,

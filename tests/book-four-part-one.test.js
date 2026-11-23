@@ -122,7 +122,7 @@ const EXPECT = {
 };
 
 test('chapters 1 to 10 are written in Book Four\'s own file, in story order, each paying exactly one level and 20 x level + 40 gold', () => {
-  assert.deepEqual(FX.WRITTEN, IDS);
+  assert.deepEqual(FX.WRITTEN.slice(0, IDS.length), IDS);
   assert.deepEqual(IDS.map((id) => { const q = QUESTS[id]; return [q.id, q.book, q.part, q.level, q.unlock, q.town, q.nextTown]; }), [
     ['b4-walker', 4, 1, 40, 'b3-firstbell', 'highpass', 'ashford'],
     ['b4-records', 4, 1, 41, 'b4-walker', 'ashford', 'briarwatch'],
@@ -162,7 +162,7 @@ test('chapters 1 to 10 are written in Book Four\'s own file, in story order, eac
 });
 
 test('each chapter has one camp scene: an empty cast, nodes chained by next, and the camp beat last', () => {
-  assert.deepEqual(entries(RAWS).map(([k, v]) => [k, v.after]), [['walker-camp', 'b4-walker'], ['records-camp', 'b4-records'], ['ballad-camp', 'b4-ballad'],
+  assert.deepEqual(entries(RAWS).filter(([, v]) => IDS.includes(v.after)).map(([k, v]) => [k, v.after]), [['walker-camp', 'b4-walker'], ['records-camp', 'b4-records'], ['ballad-camp', 'b4-ballad'],
     ['company-camp', 'b4-company'], ['davin-camp', 'b4-davin'], ['book-camp', 'b4-book'], ['key-camp', 'b4-key'],
     ['letters-camp', 'b4-letters'], ['embassy-camp', 'b4-embassy'], ['b4-partone-end', 'b4-peaks']]);
   for (const id of IDS) {
@@ -339,7 +339,7 @@ test('every Book Four flag set is read: each chapter\'s answers change the lines
   // Nothing else sets a flag any other way (a companion's answer, a scene choice): only Mags's answer for Davin, and Maren carrying the letters.
   const lineSets = [];
   for (const [owner, c] of CONTENT) for (const l of everyLine(c)) if (l.setFlag !== undefined) lineSets.push([owner, l.say, l.setFlag]);
-  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-letters', undefined, 'b4_letters_maren']]);
+  assert.deepEqual(lineSets, [['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_comes'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-davin', 'Mags Peller', 'b4_davin_home'], ['b4-letters', undefined, 'b4_letters_maren'], ['b4-parting-end', undefined, 'b4_done']]);
   const read = new Set(CONTENT.flatMap(([, c]) => [...readsIn(c)]));
   for (const flag of set) assert.ok(read.has(flag), `${flag} is read`);
 });
@@ -348,8 +348,10 @@ test('every flag a Book Four line reads is set earlier in Books One to Four, or 
   const KNOWN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller']);
   const ENGINE = /^(method|prepared|approach|partial|away|walked):/;
   // Before chapter upTo: the chapters and scenes before it, and the jobs open before it.
-  const setBefore = (upTo) => new Set([...IDS.slice(0, upTo).flatMap((id) => [...flagsSetIn({ q: RAWQ[id], s: RAWS[sceneOf(id)?.id] })]),
-    ...entries(RAWJ).filter(([, j]) => IDS.indexOf(j.from) < upTo).flatMap(([, j]) => [...flagsSetIn({ j })])]);
+  // Every written chapter in story order (Part Two's too: this file reads the whole of Book Four's data).
+  const ORDER = FX.WRITTEN, sceneRaw = (id) => entries(RAWS).find(([, s]) => s.after === id)?.[1];
+  const setBefore = (upTo) => new Set([...ORDER.slice(0, upTo).flatMap((id) => [...flagsSetIn({ q: RAWQ[id], s: sceneRaw(id) })]),
+    ...entries(RAWJ).filter(([, j]) => ORDER.indexOf(j.from) < upTo).flatMap(([, j]) => [...flagsSetIn({ j })])]);
   const check = (owner, content, upTo) => {
     const before = setBefore(upTo);
     for (const l of everyLine(content)) for (const key of Object.keys(l.when)) assert.ok(KNOWN.has(key), `${owner}: ${key}`);
@@ -358,10 +360,10 @@ test('every flag a Book Four line reads is set earlier in Books One to Four, or 
       assert.ok(EARLIER.has(flag) || before.has(flag), `${owner}: ${flag} is read before it can be set`);
     }
   };
-  IDS.forEach((id, i) => check(id, RAWQ[id], i));
-  for (const [id, s] of entries(RAWS)) check(id, s, IDS.indexOf(s.after) + 1);
+  ORDER.forEach((id, i) => check(id, RAWQ[id], i));
+  for (const [id, s] of entries(RAWS)) check(id, s, ORDER.indexOf(s.after) + 1);
   // A job may read what any chapter before its window closes decided, with a line for while it is undecided.
-  for (const [id, j] of entries(RAWJ)) check(id, j, j.until ? IDS.indexOf(j.until) : IDS.length);
+  for (const [id, j] of entries(RAWJ)) check(id, j, j.until ? ORDER.indexOf(j.until) : ORDER.length);
 });
 
 test('chapter 1 reads Book Three: the session follows its ending, Sorrel greets by the Second Oath, Hesk talks only from his cell', () => {
@@ -646,21 +648,22 @@ test('no new person in Book Four takes a name the earlier books or the story bib
   const text = JSON.stringify([RAWQ, RAWS, RAWJ]);
   // Taken first names (design, "Test plan"), with every first name of Book Three's #79 Saltwick list.
   for (const name of ['Tamsin', 'Brask', 'Hesper', 'Pell', 'Pellow', 'Tam', 'Ansel', 'Garrow', 'Edda', 'Hob', 'Bryony', 'Brack', 'Tansy', 'Kester', 'Ostler', 'Hugh', 'Owen', 'Robin', 'Nan', 'Mae', 'Joan', 'Alfie', 'Mallory', 'Abner', 'Hilde', 'Rosa', 'Dunstan', 'Cobb'])
-    assert.doesNotMatch(text, new RegExp(`\\b${name}\\b`), name);
+    assert.doesNotMatch(text.replace(/Tam Orrey, the baker from Fenmere/g, ''), new RegExp(`\\b${name}\\b`), name);
+  // Tam Orrey is Book Two's Fenmere baker himself (chapter 18, Maren), not a new person with his name.
   // Every speaker is a companion, someone returning from Books One to Three, or one of the design's new people.
   const RETURNING = new Set(['Sorrel', 'Sable', 'Hesk', 'Brannagh', 'Sister Ilse', 'Hollis Brede', 'Dera', 'Tovin', 'Pim', 'Aveline', 'Reeve Aveline', 'Aster Vey',
     'Cass Ord', 'Coll Haddow', 'Bett', 'Elske', 'Mags Peller', 'Davin', 'Varn', 'Odell Varn', 'Peg Halloran', 'Iona', 'Wren', 'Ottilie Brand', 'Hew', 'Rafe Coppin', 'Tilda Coppin',
-    'Fennick', 'Corvane']);
-  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott']);
-  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat']);
+    'Fennick', 'Corvane', 'Anwen']);
+  const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony', 'Bistort of Greve', 'Annis Corby', 'Wystan Strake']);
+  const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard', "The Hall's sergeant"]);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
   for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
   const older = JSON.stringify(OLDER);
-  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
+  for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony', 'Bistort', 'Annis', 'Wystan']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
   // Chapter 7's family from Wem and the Ninth Rope's ringers are nobody's in Books One to Three, or the story bible's.
   const bible = fs.readFileSync(path.join(__dirname, '../docs/STORY-BIBLE.md'), 'utf8');
-  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
+  for (const name of ['Vetch', 'Clary', 'Burnet', 'Garth', 'Mott', 'Perrin', 'Rowe', 'Madder', 'Comfrey', 'Furze', 'Lovage', 'Piers', 'Ashdown', 'Betony', 'Bistort', 'Annis', 'Corby', 'Merrick', 'Wystan']) { assert.doesNotMatch(older, new RegExp(`\\b${name}\\b`), name); assert.doesNotMatch(bible, new RegExp(`\\b${name}\\b`), name); }
   // A name one letter from a returning one is not new (the Book Three review: Tobin and Tovin).
   assert.doesNotMatch(text, /\bTobin\b/);
 });
@@ -801,9 +804,10 @@ test('a companion down on chapter 4, 5 or 6 stays for their own chapter and says
   assert.equal(s.story.nodeId, 'away-orin-leave');
   assert.match(opening(s), /walk with the carters on the Highpass road/); assert.doesNotMatch(opening(s), /relief carts/);
   const raw = file('away');
-  assert.equal(raw.orin.leave.lines[1].oneOf[1].text, "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it.");
-  assert.equal(raw.orin.leave.lines[1].oneOf[1].when, undefined, 'Book Two\'s line is the ungated default');
-  for (const who of ['orin', 'maren', 'nessa']) for (const kind of ['leave', 'back']) for (const l of everyLine(raw[who][kind])) if (/Highpass road|up north|nine hundred years/.test(l.text || l.narrate)) assert.equal(l.when.flag, 'b3_done', `${who} ${kind}`);
+  const group = raw.orin.leave.lines[1].oneOf, last = group[group.length - 1];
+  assert.equal(last.text, "I'm going to walk with the relief carts for a while. Somebody has to load them. I'm good at it.");
+  assert.equal(last.when, undefined, 'Book Two\'s line is the ungated default');
+  for (const who of ['orin', 'maren', 'nessa']) for (const kind of ['leave', 'back']) for (const l of everyLine(raw[who][kind])) if (/Highpass road|up north|nine hundred years/.test(l.text || l.narrate)) assert.ok(['b3_done', 'b4_parttwo_done'].includes(l.when.flag), `${who} ${kind}`);
 });
 
 test('the chapter\'s own companion is in one place when they roll the peaceful way', () => {
@@ -967,7 +971,7 @@ test('each Book Four chapter in Part One gives its own Legendary reward, worn fr
   const GEAR = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/data/gear.json'), 'utf8'));
   const Gear = require('../src/gear');
   const { ITEMS } = require('../src/content'), { TOWNS } = require('../src/expansion');
-  const rewards = GEAR.filter((i) => QUESTS[i.exclusive?.quest]?.book === 4);
+  const rewards = GEAR.filter((i) => QUESTS[i.exclusive?.quest]?.book === 4 && QUESTS[i.exclusive.quest].part === 1);
   assert.deepEqual(rewards.map((i) => i.exclusive.quest), IDS, 'one for each chapter, in order');
   assert.deepEqual(rewards.map((i) => i.name), ["Walker's Tally-cord", "Founders' Account Case", 'The True Verse', 'North Company Cutlass', 'Lamp-store Hook', "Rue's Spare Book", 'Brass Key-cord', 'Floor-letter Satchel', 'Embassy Seal', 'Parting-hall Plate']);
   const sold = new Set(Object.values(TOWNS).flatMap((t) => [...t.stock, ...Object.values(t.stockByLevel || {}).flat()]));
