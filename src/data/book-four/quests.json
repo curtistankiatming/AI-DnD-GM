@@ -4882,6 +4882,8 @@
       }
     ],
     "ledgeTitle": "The high turns under the overhang",
+    "ledgeLabel": "Rest, then go on up",
+    "ledgeBackLabel": "Go back down to Orme",
     "ledge": [
       { "narrate": "You wake on the high turns under the overhang, roped to the column still, with the white lying in the gorge of switchbacks below and the north face going up into the cloud above you." },
       { "narrate": "Somebody has chalked the next mark on the rock beside your hand while you slept: a button." }

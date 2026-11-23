@@ -345,7 +345,7 @@ function trialAvailability(state) {
   const p = P.ensure(state.player), b = P.branchOf(state.player), kind = P.nextTrial(state.player);
   if (!b) return 'Choose your 2nd job branch first.';
   if (!kind) {
-    if (p.thirdJob && p.fourthJob) return `You are already a ${b.fourth}.`;
+    if (p.thirdJob && p.fourthJob) return `You are already ${article(b.fourth)}.`;
     const next = p.thirdJob ? 'fourth' : 'third';
     return `Reach level ${TRIALS[next].level} to face the ${b[next]} trial.`;
   }
@@ -364,6 +364,8 @@ const TRIAL_PLACES = {
   third: { region: 'The Proving Ground beyond the old border road', ground: 'the Proving Ground', judges: 'elders', judge: 'examiner' },
   fourth: { region: 'The Hall of Legends above the Highpass peaks', ground: 'the Hall of Legends', judges: 'legends of old', judge: 'legend' }
 };
+// 'a' or 'an' before a job or judge name (an Aegis Paragon, an examiner).
+const article = (word) => `${/^[aeiou]/i.test(String(word)) ? 'an' : 'a'} ${word}`;
 function writtenTrial(state, kind = P.nextTrial(state.player) || 'third') {
   const b = P.branchOf(state.player), [route, peace, obj] = TRIAL_SKILLS[state.player.classId] || TRIAL_SKILLS.fighter;
   const hero = state.player.name, from = kind === 'fourth' ? b.third : b.name, to = b[kind], at = TRIAL_PLACES[kind];
@@ -371,9 +373,9 @@ function writtenTrial(state, kind = P.nextTrial(state.player) || 'third') {
   return {
     name: `The ${to} Trial`, region: at.region, faction: 'wardens',
     brief: `The ${at.judges} of the ${b.name} path have named ${hero} a candidate. Pass their trial to rise from ${from} to ${to}.`,
-    threat: `The trial ends with a ${at.judge} who fights the way a ${to} must: ${b.style.toLowerCase()}`,
-    opening: `${framing(state, kind)}Banners of every ${from} who came before line the road to ${at.ground}. A ${at.judge} waits at the gate.`,
-    clue: `The ${at.judges} care less about winning than about how a ${to} wins.`,
+    threat: `The trial ends with ${article(at.judge)} who fights the way ${article(to)} must: ${b.style.toLowerCase()}`,
+    opening: `${framing(state, kind)}Banners of every ${from} who came before line the road to ${at.ground}. ${article(at.judge).replace(/^a/, 'A')} waits at the gate.`,
+    clue: `The ${at.judges} care less about winning than about how ${article(to)} wins.`,
     investigate: { label: `Hear the ${at.judges} out`, skill: 'insight', alt: ['history', 'persuasion'], success: 'They tell you what the last candidate got wrong.', failure: 'They say little, but you learn the order of the trials.' },
     route: { label: `Walk the road to ${at.ground}`, skill: route, alt: ['athletics', 'survival'], tools: [], success: 'You reach the final circle with strength to spare.', failure: 'The road takes its toll, but you reach the final circle.' },
     crisis: `The final ${at.judge} steps into the circle. ${b.style} Show that you are ready.`,
@@ -420,7 +422,7 @@ function commissionTrial(state, draft, events) {
   const q = finalize({ ...out.quest, createdDay: state.world.day, createdLevel: out.quest.level }, d.count + 1);
   d.count += 1;
   d.quests[q.id] = install(q);
-  const text = `${framing(state, kind)}Your ${to} trial is on the expedition board: ${q.name}. ${q.brief} Pass it to become a ${to}. Reward: ${q.xp} XP and ${q.gold} gold.${written && draft ? ' The written trial was used because the AI draft could not be used.' : ''}`;
+  const text = `${framing(state, kind)}Your ${to} trial is on the expedition board: ${q.name}. ${q.brief}${String(q.brief).includes(to) ? '' : ` Pass it to become ${article(to)}.`} Reward: ${q.xp} XP and ${q.gold} gold.${written && draft ? ' The written trial was used because the AI draft could not be used.' : ''}`;
   events.push({ type: 'quest', tone: 'good', text });
   return { ok: true, kind: 'director', questId: q.id, trial: kind, written, outcomeText: text };
 }
@@ -526,7 +528,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
 function trialBrief(state) {
   const b = P.branchOf(state.player), kind = P.nextTrial(state.player) || 'third', from = kind === 'fourth' ? b.third : b.name;
   const f = framing(state, kind).trim();
-  return `This adventure is ${state.player.name}'s ${kind === 'fourth' ? 'legendary 4th job trial' : '3rd job trial'}: the test that turns a ${from} into a ${b[kind]}. ${b.style} Make the opening, crisis and objective test exactly that, ending with an examiner, rival or ordeal worthy of the title. Name the adventure after the trial.${f ? ` The written story ended with these words, which the game puts at the start of your opening; let the trial follow from them: ${f}` : ''}`;
+  return `This adventure is ${state.player.name}'s ${kind === 'fourth' ? 'legendary 4th job trial' : '3rd job trial'}: the test that turns ${article(from)} into ${article(b[kind])}. ${b.style} Make the opening, crisis and objective test exactly that, ending with an examiner, rival or ordeal worthy of the title. Name the adventure after the trial.${f ? ` The written story ended with these words, which the game puts at the start of your opening; let the trial follow from them: ${f}` : ''}`;
 }
 function trialView(state) {
   const b = P.branchOf(state.player), kind = P.nextTrial(state.player);

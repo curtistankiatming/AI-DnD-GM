@@ -95,7 +95,7 @@
     const t = w.director?.trial;
     if (t && !t.questId && w.bellComplete) {
       const row = el('div', 'whats-next-quest'), text = el('div'); row.id = 'whatsNextTrial';
-      text.append(el('strong', '', `${t.label}: become a ${t.title}`), el('span', 'muted', ` · Level ${t.level} · ${t.tier}`), el('p', 'muted', t.canRequest ? `Pass it to take your ${t.job} job. With the AI game master on, the trial is written for your story; otherwise the written trial is used.` : t.reason));
+      text.append(el('strong', '', `${t.label}: become ${/^[aeiou]/i.test(t.title) ? 'an' : 'a'} ${t.title}`), el('span', 'muted', ` · Level ${t.level} · ${t.tier}`), el('p', 'muted', t.canRequest ? `Pass it to take your ${t.job} job. With the AI game master on, the trial is written for your story; otherwise the written trial is used.` : t.reason));
       const b = el('button', 'btn btn-primary btn-small', 'Begin your trial'); b.type = 'button'; b.disabled = busy || !t.canRequest; b.dataset.disabled = String(!t.canRequest);
       b.addEventListener('click', () => { if (!busy && t.canRequest) void window.BriarwatchChat?.trial(); });
       row.append(text, b); list.append(row);
@@ -105,7 +105,8 @@
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', q.name), el('span', 'muted', ` · Level ${q.level}${q.generated ? ' · written for you' : ''}`), el('p', 'muted', q.brief));
-      if (q.straightOn && !q.inProgress) text.append(el('p', 'whats-next-under', 'Straight on down the stair: no town, shop or side job until the end of the book. The party rests between chapters, but buy potions and gear before you set out.'));
+      if (q.straightOn && !q.inProgress) text.append(el('p', 'whats-next-under', q.straightOnNote || 'Straight on: no town, shop or side job until the end of the book. The party rests between chapters, but buy potions and gear before you set out.'));
+      if (q.white && !q.inProgress) text.append(el('p', 'whats-next-under', q.white));
       // An AI-written adventure's difficulty is picked before setting out, here as on Prepare.
       if (q.trial) text.append(el('p', 'muted', `Difficulty: ${q.trialTier} (fixed for a trial)`));
       else if (q.tiers?.length) {

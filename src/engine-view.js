@@ -51,7 +51,7 @@ function storyChoicesView(state) {
       id: choice.id,
       // A peaceful resolution tried without its lead is worded for what the hero actually has.
       // Below the stair there is no town to be carried to: a defeat wakes the party on the last safe ledge.
-      ...(node.id === "defeat" && choice.id === "recover" && W.atLedge(state) ? { label: "Wake on the last safe ledge", description: "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back down to the interrupted fight." } : {
+      ...(node.id === "defeat" && choice.id === "recover" && W.atLedge(state) ? { label: "Wake on the last safe ledge", description: "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back to the interrupted fight." } : {
       label: choice.labelNoLead && choice.check?.lead && !state.story.clues.includes(choice.check.lead) ? choice.labelNoLead : choice.label,
       description: choice.description }),
       locked: !requirement.met,
