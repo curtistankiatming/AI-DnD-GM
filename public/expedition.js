@@ -20,10 +20,35 @@ function compareDescription(c){return `${c.name}: replaces ${c.replaces}. AC ${c
 function chooseEquipmentOwner(item){
   openTargetDialog({title:`Equip ${item.name}`,description:`Choose an owner. ${item.purpose} Unassigned copies: ${item.available}.`,targets:(item.comparisons||[]).map(c=>({id:c.actorId,name:c.name,detail:compareDescription(c),disabled:Boolean(c.blocked)||item.available<1})),onChoose:actorId=>sendAction({type:'equip',itemId:item.id,actorId})});
 }
+// A long shop (more than 24 cards: Book Three's late towns and Book Four) is sorted into groups: gear someone
+// in the party can use, newest first; then supplies, gear ten or more levels below the hero, and gear nobody in
+// the party can use yet, each folded with its count. A short shop stays one list, as it always was.
+function v4ShopGroups(stock){
+  const fits=item=>!item.requires||!item.comparisons.length||item.comparisons.some(x=>!x.unmet);
+  const floor=(view?.player?.level||1)-10,old=item=>(item.level||1)<=floor;
+  const gearAll=stock.filter(i=>i.comparisons.length);
+  const gear=gearAll.filter(i=>fits(i)&&!old(i)).sort((a,b)=>(b.level||1)-(a.level||1)),supplies=stock.filter(i=>!i.comparisons.length);
+  const older=gearAll.filter(i=>fits(i)&&old(i)),later=gearAll.filter(i=>!fits(i));
+  if(stock.length<=24||!gearAll.length||!supplies.length)return null;
+  return [['gear',`Gear for your party · ${gear.length}`,gear,true],['supplies',`Supplies & potions · ${supplies.length}`,supplies,false],
+    ['older',`Older gear, level ${floor} and below · ${older.length}`,older,false],['later',`Not for your party yet · ${later.length}`,later,false]].filter(g=>g[2].length);
+}
 function v4Shop(root,stock,market){
+  const groups=v4ShopGroups(stock);
   const box=createElement('div','v4-shop');
+  if(groups){box.classList.add('is-grouped');
+    for(const [id,title,items,always] of groups){
+      const key=`shop-${id}`,group=createElement(always?'section':'details','v4-shop-group');group.dataset.shopGroup=id;
+      if(always)group.append(createElement('h4','',title));
+      else{group.open=expandedV4Sections.has(key);group.append(createElement('summary','',title));group.addEventListener('toggle',()=>{if(group.open)expandedV4Sections.add(key);else expandedV4Sections.delete(key);});}
+      v4ShopCards(group,items,market);box.appendChild(group);
+    }
+  }else v4ShopCards(box,stock,market);
+  root.appendChild(box);
+}
+function v4ShopCards(box,stock,market){
   for(const item of stock){
-    const c=v4Card(item.name,purposeWithoutSkill(item));const skill=itemSkillLine(item);if(skill)c.appendChild(skill);const setLine=typeof itemSetLine==='function'?itemSetLine(item):null;if(setLine)c.appendChild(setLine);const req=requirementLine(item);if(req)c.appendChild(req);const price=createElement('div','tag-row');price.append(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));if(item.rarity&&item.rarity!=='Common')price.append(rarityTag(item.rarity));c.appendChild(price);
+    const c=v4Card(item.name,purposeWithoutSkill(item));const skill=itemSkillLine(item);if(skill)c.appendChild(skill);const warm=typeof itemWarmLine==='function'?itemWarmLine(item):null;if(warm)c.appendChild(warm);const setLine=typeof itemSetLine==='function'?itemSetLine(item):null;if(setLine)c.appendChild(setLine);const req=requirementLine(item);if(req)c.appendChild(req);const price=createElement('div','tag-row');price.append(createElement('span','tag',`${item.price} gold · ${item.stock} in stock`));if(item.rarity&&item.rarity!=='Common')price.append(rarityTag(item.rarity));c.appendChild(price);
     // Who in the party meets the item's requirements, before you pay for it (src/gear.js).
     if(item.requires&&item.comparisons.length){const fit=item.comparisons.filter(x=>!x.unmet).map(x=>x.name);c.appendChild(createElement('p',fit.length?'muted':'prep-warning',!fit.length?'No one in your party can use this yet.':fit.length===item.comparisons.length?'Everyone in your party can use this.':`Can be used by ${fit.length>1?fit.slice(0,-1).join(', ')+' and '+fit.at(-1):fit[0]}.`));}
     if(item.comparisons.length){const details=createElement('details','comparison');details.appendChild(createElement('summary','','Compare with party equipment'));for(const cmp of item.comparisons)details.appendChild(createElement('p','',compareDescription(cmp)));c.appendChild(details);}
@@ -31,7 +56,6 @@ function v4Shop(root,stock,market){
     if(!item.comparisons.length)controls.append(v4Button('Buy 2',{type:'buy',market,itemId:item.id,quantity:2},item.stock<2||view.player.gold<item.price*2));
     c.appendChild(controls);box.appendChild(c);
   }
-  root.appendChild(box);
 }
 function renderExpansion(){
   const w=view.world,p=view.progression,hero=view.player,combat=Boolean(view.combat?.active);
@@ -63,7 +87,7 @@ function renderExpansion(){
     const expeditions=v4Section(root,'expedition','Expedition board & preparation');
     if(w.activeQuest)expeditions.append(v4Button(w.pendingBattle?'Resume interrupted encounter':'Resume expedition',{type:'resume'}));
     if(!w.bellComplete)expeditions.appendChild(createElement('p','','Finish the bell investigation using the story choices. Report the outcome in Briarwatch to unlock the regional roads.'));
-    for(const q of w.quests){const c=v4Card(`${q.name} · Level ${q.level}${q.trial?` · ${q.trialLabel}`:q.generated?' · AI-directed':''}`,q.brief);if(q.straightOn&&!q.inProgress)c.appendChild(createElement('p','muted','Straight on down the stair: no town, shop or side job until the end of the book. The party rests between chapters, but buy potions and gear before you set out.'));c.appendChild(createElement('p','',q.generated?`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold, plus XP for its battle by how hard it is. Settling it peacefully pays the same as winning the fight.`:`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold. Peaceful and combat resolutions grant equal objective XP.`));
+    for(const q of w.quests){const c=v4Card(`${q.name} · Level ${q.level}${q.trial?` · ${q.trialLabel}`:q.generated?' · AI-directed':''}`,q.brief);if(q.white&&!q.inProgress)c.appendChild(createElement('p','muted',q.white));if(q.straightOn&&!q.inProgress)c.appendChild(createElement('p','muted',q.straightOnNote || 'Straight on: no town, shop or side job until the end of the book. The party rests between chapters, but buy potions and gear before you set out.'));c.appendChild(createElement('p','',q.generated?`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold, plus XP for its battle by how hard it is. Settling it peacefully pays the same as winning the fight.`:`Reward: ${q.reward.xp} XP and ${q.reward.gold} gold. Peaceful and combat resolutions grant equal objective XP.`));
       if(q.trial)c.appendChild(createElement('p','muted',`Difficulty: ${q.trialTier}. A ${q.trialLabel.toLowerCase()} is always ${q.trialTier}.`));else if(q.tiers){const row=createElement('div','v4-controls adventure-tier');row.setAttribute('role','group');row.setAttribute('aria-label','Difficulty');row.appendChild(createElement('span','muted',q.canChangeTier?'Difficulty:':`Difficulty: ${q.tierName} (fixed once you set out)`));
         if(q.canChangeTier)for(const t of q.tiers){const b=v4Button(t.name,{type:'adventure-tier',questId:q.id,tier:t.id},t.id===q.tier,t.description);b.setAttribute('aria-pressed',String(t.id===q.tier));if(t.id===q.tier)b.classList.add('is-selected');row.appendChild(b);}
         c.appendChild(row);const chosen=q.tiers.find(t=>t.id===q.tier);if(chosen&&q.canChangeTier)c.appendChild(createElement('p','muted',chosen.description));}
@@ -81,7 +105,7 @@ function renderExpansion(){
         c.appendChild(v4Button(j.started?'Continue the job':'Take the job',{type:'side-job',jobId:j.id},!j.canStart,j.canStart?'':`Taken in ${j.townName}.`));if(!j.canStart)c.appendChild(createElement('p','muted',`Travel to ${j.townName} to take it.`));expeditions.appendChild(c);}}
     const d=w.director;
     if(d&&w.bellComplete&&!d.sideQuests)expeditions.appendChild(createElement('p','books-finished',w.paidBook?paidBookNote(w.paidBook):'The written story is complete. From here the AI storyteller writes your adventures from the choices you made. Without the Claude AI game master, your written campaign ends here, and your hero, party and choices stay saved.'));
-    if(d?.trial&&!d.trial.questId){const t=d.trial,c=v4Card(`${t.label} — become a ${t.title}`,t.canRequest?`You have reached level ${t.level} as a ${t.from}. ${t.style} Pass this trial to take your ${t.job} job. With the Claude AI game master on, the trial is written for your story; otherwise a written trial is used. The trial is always ${t.tier} and pays half a level of XP.`:t.reason);
+    if(d?.trial&&!d.trial.questId){const t=d.trial,c=v4Card(`${t.label} — become ${/^[aeiou]/i.test(t.title)?'an':'a'} ${t.title}`,t.canRequest?`You have reached level ${t.level} as ${/^[aeiou]/i.test(t.from)?'an':'a'} ${t.from}. ${t.style} Pass this trial to take your ${t.job} job. With the Claude AI game master on, the trial is written for your story; otherwise a written trial is used. The trial is always ${t.tier} and pays half a level of XP.`:t.reason);
       if(t.framing)c.appendChild(createElement('p','',t.framing));c.dataset.trial=t.kind;const b=createElement('button','btn btn-primary btn-small','Begin your trial');b.type='button';b.id='trialBtn';b.disabled=busy||!t.canRequest;
       b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.trial();});c.appendChild(b);expeditions.appendChild(c);}
     if(d&&w.bellComplete){const side=Boolean(d.sideQuests),ask=side?'Ask the GM for a side quest':'Ask the GM for a new adventure';const c=v4Card(ask,d.canCommission?side?'While the written story is still running, Claude writes a small side quest tied to your current chapter. It can help you catch up to the chapter\'s level, never past it. Optional: type a wish in the message box first. Needs the Claude API provider.':'Claude writes the next expedition from your choices so far. The game sets its level, difficulty and rewards. Optional: type a wish in the message box first, such as “something in the marshes” or “a rival from my past”. Needs the Claude API provider.':d.reason);

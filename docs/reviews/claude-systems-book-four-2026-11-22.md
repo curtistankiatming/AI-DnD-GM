@@ -27,7 +27,7 @@ natural play.
 | Hosted signed saves | `src/hosted.js` `seal`, `verify` | Sound. Book Four adds no field outside the sealed state. A full save at level 71 is about 280 KB (the request limit is 3 MB), and it seals, goes through JSON and verifies. |
 | Lapsed hosted account | `Book.locked`, `Book.chapter` | **Bug (fixed):** a save part-way through Book Four, or past every book, whose paid pass lapsed was told it was "part-way through Book Three". The note now names the book the save is held in, and says "has gone on past" for a save that finished the books. The behaviour is unchanged: the save waits, and the AI writes only small side stories. |
 | AI storyteller handoff after Book Four | `Book.finished`, `Book.facts`, `Director` prompt | Sound. After chapter 30 the AI gets "beyond the books", the last 15 chapters with their decisions, the Telling's legend and each companion's standing. |
-| Straight-on chapters and the safety valve | `continues` on `b4-column`, `b4-ropes`, `b4-lid`; `W.goOn`, `backDown`, `climbUp` | Works: a defeat in chapters 20, 29 or 30 wakes on the ledge before it; after 3 defeats the ledge offers the way out, and departing again goes back to the same fight. **Wording bug (fixed):** every Book Four ledge said "Rest, then go back down" and "Climb back up to town", the words for Book Three's stair. Chapter 20 goes up the north face, and 29 and 30 are on the casting floor in Cinder Fold. Quests may now set `ledgeLabel`, `climbLabel` and `climbText`, and the three Book Four ledges do. |
+| Straight-on chapters and the safety valve | `continues` on `b4-column`, `b4-ropes`, `b4-lid`; `W.goOn`, `backDown`, `climbUp` | Works: a defeat in chapters 20, 29 or 30 wakes on the ledge before it; after 3 defeats the ledge offers the way out, and departing again goes back to the same fight. **Wording bug (fixed):** every Book Four ledge said "Rest, then go back down" and "Climb back up to town", the words for Book Three's stair. Chapter 20 goes up the north face, and 29 and 30 are on the casting floor in Cinder Fold. Quests may now set `ledgeLabel`, `climbText` (with `ledgeBackLabel` from the UX review, #95), and the three Book Four ledges do. |
 | Saves loading | `normalizeIncomingState` | Sound. A full end-of-Book-Four save loads and builds its view. |
 
 ## Fixes on this branch
@@ -35,7 +35,7 @@ natural play.
 1. `src/book.js`: `heldBook` is the latest closed book the save has begun;
    `locked` and the locked chapter's note use it.
 2. `src/expansion.js`, `src/engine.js`, `src/data/book-four/quests.json`:
-   `climbLabel` and `climbText` for a ledge's way out; the ledge objective
+   `climbText` (with `ledgeBackLabel` from the UX review, #95) for a ledge's way out; the ledge objective
    follows `ledgeLabel`. Book Three's stair is unchanged.
 3. `tests/book-four-systems.test.js`: four tests for the above.
 

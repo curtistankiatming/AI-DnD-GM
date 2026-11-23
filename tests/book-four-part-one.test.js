@@ -758,8 +758,12 @@ test('chapter 7 reads the key\'s Book Three keeper; with Nessa away the key stay
   assert.match(told(choose(strong(departed('b4-key')), 'investigate')), /Burnet of Wem\. I gave the dog/);
   assert.ok(!talkIds('b4-key').includes('coppins'));
   assert.match(talk('b4-key', 'coppins', { flags: { 'job:mould-sold': true } }), /at the coast with their mother/);
-  // The camp: Biscuit was carried, and stays with Hew.
-  assert.match(opening(decide('b4-key', 'hew')), /carried him across the lid[^]*with the key round his neck[^]*He'll go up the stair with you every night/);
+  // The camp: Biscuit was carried; Hew minds him in Cinder Fold, and he stops at
+  // Highpass when the party goes north (Part Two and Three find him there).
+  const hewCamp = opening(decide('b4-key', 'hew'));
+  assert.match(hewCamp, /carried him across the lid[^]*with the key round his neck[^]*Take him up the stair with you while we're here/);
+  assert.match(hewCamp, /He'll stop at Highpass, by the guardroom brazier/);
+  assert.doesNotMatch(hewCamp, /he stays here/);
   assert.match(opening(decide('b4-key', 'carried')), /since there's nobody up it/);
   assert.match(opening(decide('b4-key', 'left')), /Count the steps for me/);
   const away = opening(decide('b4-key', 'wren', { party: ['orin', 'maren'] }));

@@ -722,8 +722,10 @@ function purposeWithoutRequirement(item) {
 // An item's skill ("Skill, Bank the Fire: … Bonus action, once per fight.") as its own line with a chip,
 // so it doesn't hide in the middle of the item's text. Returns null when the item has no skill.
 const ITEM_SKILL = /\s*Skill, ([^:]+): (.*?)\s*Bonus action, once per fight\./;
+// Book Four's warm Wold gear (src/gear.js WARM_TEXT): its own chip, so it can be found in a long shop list.
+const ITEM_WARM = /\s*Warm: in the Wold's white, the wearer is not Slowed at the start of a deciding fight\.?/;
 function purposeWithoutSkill(item) {
-  return String(purposeWithoutRequirement(item) || "").replace(ITEM_SKILL, " ").replace(item.set?.text || "\u0000", " ").replace(/\s+/g, " ").trim();
+  return String(purposeWithoutRequirement(item) || "").replace(ITEM_SKILL, " ").replace(ITEM_WARM, " ").replace(item.set?.text || "\u0000", " ").replace(/\s+/g, " ").trim();
 }
 // An equipment set piece's set, as its own line: "Set · Thornstep, 1 of 3 worn" and each bonus.
 function itemSetLine(item) {
@@ -742,6 +744,12 @@ function itemSkillLine(item) {
   if (!m) return null;
   const line = createElement("p", "item-skill");
   line.append(createElement("span", "item-skill-chip", `Skill · ${m[1]}`), ` ${m[2]} `, createElement("span", "item-skill-use", "Bonus action, once per fight"));
+  return line;
+}
+function itemWarmLine(item) {
+  if (!ITEM_WARM.test(String(item.purpose || ""))) return null;
+  const line = createElement("p", "item-skill item-warm");
+  line.append(createElement("span", "item-skill-chip item-warm-chip", "Warm"), " Not Slowed by the Wold's white at the start of a deciding fight.");
   return line;
 }
 // "Requires: Level 8 · Strength 13", marked when the hero can't wear it yet.
@@ -832,6 +840,8 @@ function renderInventory() {
     purpose.append(createElement("span", "", "Purpose"), createElement("p", "", purposeWithoutSkill(item)));
     const skill = itemSkillLine(item);
     if (skill) purpose.append(skill);
+    const warm = itemWarmLine(item);
+    if (warm) purpose.append(warm);
     const set = itemSetLine(item);
     if (set) purpose.append(set);
     const requires = requirementLine(item);

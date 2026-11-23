@@ -51,10 +51,10 @@ test('a lapsed save past every book is told it has gone on past them, and still 
 
 test('Book Four\'s ledges say where the party goes: up to the north door, back to the lid or the bell, and out into the town', () => {
   const ledge = (id) => E.buildView(Object.assign(at(id), { story: { ...at(id).story, nodeId: `q-${id}-ledge` } })).scene;
-  for (const [id, down, climb] of [['b4-column', /go on up to the north door/, /Orme/], ['b4-ropes', /back to the lid/, /Cinder Fold/], ['b4-lid', /back to the bell/, /Cinder Fold/]]) {
-    assert.ok(QUESTS[id].climbLabel && QUESTS[id].climbText && QUESTS[id].ledgeLabel, id);
+  for (const [id, down, climb] of [['b4-column', /go on up/, /Orme/], ['b4-ropes', /back to the lid/, /Cinder Fold/], ['b4-lid', /back to the bell/, /Cinder Fold/]]) {
+    assert.ok(QUESTS[id].ledgeBackLabel && QUESTS[id].climbText && QUESTS[id].ledgeLabel, id);
     assert.doesNotMatch(QUESTS[id].ledgeLabel, /go back down/, id);
-    assert.match(QUESTS[id].ledgeLabel, down); assert.match(QUESTS[id].climbLabel, climb);
+    assert.match(QUESTS[id].ledgeLabel, down); assert.match(QUESTS[id].ledgeBackLabel, climb);
   }
   assert.ok(ledge('b4-lid').objective.startsWith('Rest, then go back to the bell'));
 });

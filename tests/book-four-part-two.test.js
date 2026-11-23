@@ -719,3 +719,15 @@ test('chapter 20: the door was opened from the south, the crossing is decided, a
   s.player.xp = P.XP_NEXT[52]; s.player.level = 53;
   assert.equal(choose(s, 'camp').player.level, 60);
 });
+
+// Story review (docs/reviews/claude-book-four-story-2026-11-22.md): Part Two
+// runs through the Wold's winter into early spring (chapter 21), and Part
+// Three ends at Cinder Fold the next midwinter. Sloe's deadline in chapter 16
+// must be that next midwinter, or it passes unmentioned between chapters 16
+// and 21.
+test('chapter 16: Sloe sets her deadline at the next midwinter, not this one', () => {
+  const ch = JSON.stringify(RAWQ['b4-reckoning']);
+  const bare = ch.match(/[^.!?"]*\bmidwinter\b[^.!?"]*/g).filter((s) => !/next midwinter|Not this midwinter/.test(s));
+  assert.deepEqual(bare, [], 'every midwinter in chapter 16 names the next one');
+  assert.match(ch, /Not this midwinter\. The road south is shut until the thaw/);
+});

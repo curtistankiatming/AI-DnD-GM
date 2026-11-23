@@ -290,9 +290,9 @@ function installQuest(q){
       // A safety valve (systems review, 22 November 2026): after three defeats
       // in the same chapter the party may climb back up to town to level, shop
       // or change gear. The chapter stays in progress and resumes from the board.
-      // "climbLabel" and "climbText" word it for a ledge that is not on a stair
-      // (Book Four's mountain column and casting floor).
-      choice('climb',q.climbLabel||'Climb back up to town',{once:false,requires:{failuresAtLeast:3},description:q.climbText||'The long climb back to the last town. The chapter waits where you left it; depart again to go back down to the same encounter.',result:{climbUp:true}})]};
+      // "ledgeBackLabel" and "climbText" word it for a ledge that is not on a
+      // stair (Book Four's mountain column and casting floor).
+      choice('climb',q.ledgeBackLabel||'Climb back up to town',{once:false,requires:{failuresAtLeast:3},description:q.climbText||'The long way back to the last town. The chapter waits where you left it; depart again to go back to the same encounter.',result:{climbUp:true}})]};
   const level=L;
   const type=q.enemyTheme;
   const f=XP.foeStats(challenge);
