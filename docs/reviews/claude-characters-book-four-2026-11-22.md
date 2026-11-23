@@ -18,17 +18,14 @@ Tests: `tests/book-four-characters.test.js` (new, 4 tests), and the chapter 7
 camp test in `tests/book-four-part-one.test.js` is updated. Full suite: 1,174
 pass, 0 fail, 1 skipped. `npm run check` is clean.
 
-## Ready once PR #93 merges
+## Added after PR #93 merged
 
-`b3_maren_one_name` (Ysolde's name in the tin lid) fits chapter 14, the House
-of Letting Go, in Maren's talk. Book Four's own test only allows flags that an
-earlier book sets, so the line is left out until #93 is in:
+`b3_maren_one_name` (Ysolde's name in the tin lid) now has a line in chapter
+14, the House of Letting Go, in Maren's talk:
 
 > There's still one name inside the lid of my button tin. Ysolde Carr, Sixth
 > District. Nothing beside it. Yarrow would take it off me in a breath, and I'd
 > sleep tonight. I'm keeping it. It isn't an ending. It's a name.
-
-Gate: `when: { flag: "b3_maren_one_name" }`, before the "Anwen used to say" line.
 
 ## Checked and consistent
 

@@ -35,6 +35,10 @@ test('Book Two and Three camp choices are remembered in Book Four', () => {
   assert.match(live(brede, { b3_brede_written: true, b3_ashford_defended: true }), /You spelled us right/);
   assert.doesNotMatch(live(brede, { b3_ashford_defended: true }), /spelled/);
 
+  const greve = B4Q['b4-greve'].talks.find((t) => t.id === 'maren').lines;
+  assert.match(live(greve, { b3_maren_one_name: true }), /Ysolde Carr, Sixth District/);
+  assert.doesNotMatch(live(greve, {}), /Ysolde/);
+
   const pim = B4Q['b4-quietnight'].opening;
   assert.match(live(pim, { b3_pim_rang: true }), /Pim rings it a full breath late/);
   assert.doesNotMatch(live(pim, {}), /full breath late/);

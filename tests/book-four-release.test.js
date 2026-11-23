@@ -101,3 +101,14 @@ test('the recap card, the Journal\'s columns and long tally lines fit a 360px ph
   const js = fs.readFileSync(path.join(__dirname, '../public/whats-next.js'), 'utf8');
   assert.match(js, /if \(w\.bookRecap\)[^]*'whats-next-recap'[^]*w\.bookRecap\.lines/);
 });
+
+test('town shop cards carry the item\'s level, which a long shop on the Town tab sorts and folds by (UI review)', () => {
+  const s = start({});
+  const shop = E.buildView(s).world.shop;
+  assert.ok(shop.length > 24, `Highpass at level 40 has a long shop (${shop.length})`);
+  for (const item of shop) assert.equal(item.level, ITEMS[item.id].requires?.level || 1, item.id);
+  assert.ok(shop.some((i) => i.level >= 35), 'late gear is in stock');
+  const js = fs.readFileSync(path.join(__dirname, '../public/expedition.js'), 'utf8');
+  assert.match(js, /function v4ShopGroups\(stock\)/);
+  assert.match(js, /stock\.length<=24/, 'a short shop stays one list');
+});

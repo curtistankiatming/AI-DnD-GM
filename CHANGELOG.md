@@ -10,14 +10,27 @@ the pull requests that made them.
   Parts Two and Three already said. Chapter 7's camp had him staying with Hew.
 - The carter's wife in chapter 6 is now Lettice. "Ada" was already Ada Rusk
   from Book One.
-- Four earlier camp choices come back in Book Four: the cards with Anwen
+- Five earlier camp choices come back in Book Four: the cards with Anwen
   (Merrowgate hospice), Bett's basket (Bett's Berth), Hollis Brede's name
-  (Ashford, chapter 25) and Pim's late quarter bell (Briarwatch, chapter 23).
+  (Ashford, chapter 25), Pim's late quarter bell (Briarwatch, chapter 23) and
+  the one name in Maren's tin (Greve, chapter 14).
 - The AI game master now hears how each companion's Book Four arc went: Nessa's
   key and her choice about Rue, Orin at Sheddon and Sorrel's commission, and
   Maren at Merrowgate. Nessa's old key facts are dropped once Book Four settles
   the key.
 - Report: docs/reviews/claude-characters-book-four-2026-11-22.md.
+
+## More choices now carry forward (22 November 2026)
+
+- Nine side jobs that recorded how they ended but never said so again are now
+  remembered in the Book Two or Book Three epilogue: Pim's night bell, the
+  Ashford road well, the coach driver's wages, Davy's boat, Pim's apprenticeship
+  and the night roster, the Highpass winter beds, Saltwick's lamp oil and the
+  Carr brothers.
+- Four camp choices that only moved approval now return later: Nessa's goat
+  letter from Highpass, waiting for or pressing Orin about Saltwick, Maren's one
+  name in the tin, and Nessa's letter to Ysolde.
+- Report: docs/reviews/claude-choices-batch3-2026-11-22.md.
 
 ## Choices that used to change nothing (22 November 2026)
 

@@ -997,7 +997,8 @@ mother's door.
 
 **Opening.** Sloe has called the tally towns to Orme. She has read the Parting
 Bell's line (from the north face, from Rue, and with `b4_parting_rung` she
-heard it answer). Her sum: share the winter with us, or at midwinter I ring
+heard it answer). Her sum: share the winter with us, or at the next midwinter (the
+road south is shut until the thaw, so this one cannot be the deadline) I ring
 the Parting Bell backward and every bell in the bell-country goes quiet for
 one winter. Whoever rings it forgets everything. She will.
 
