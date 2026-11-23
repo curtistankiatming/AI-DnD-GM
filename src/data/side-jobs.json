@@ -2077,7 +2077,10 @@
                   "text": "From them, that's a wedding."
                 }
               ],
-              "next": "night"
+              "next": "night",
+              "setFlags": {
+                "job:beds-together": true
+              }
             },
             "failure": {
               "lines": [
@@ -2139,7 +2142,10 @@
                   "text": "Everyone's on the list. Everyone's somewhere. That's all a census is, really. Everyone somewhere."
                 }
               ],
-              "next": "night"
+              "next": "night",
+              "setFlags": {
+                "job:beds-shared": true
+              }
             },
             "failure": {
               "lines": [
@@ -2385,7 +2391,10 @@
                 {
                   "narrate": "Joss brings the cart up the road at dusk with his jaw set, and talks to his mules the whole way, and when you come into Saltwick with the barrels the lamplighters come down the ladders to shake his hand, and he goes red to the ears. You walk him home at dawn. His wife does not say anything at all. She holds on to him for a long time."
                 }
-              ]
+              ],
+              "setFlags": {
+                "job:oil-joss": true
+              }
             },
             "failure": {
               "lines": [
@@ -2792,6 +2801,9 @@
               ],
               "approval": {
                 "nessa": 1
+              },
+              "setFlags": {
+                "job:brothers-runners": true
               }
             },
             "failure": {
@@ -2807,7 +2819,10 @@
                   "say": "Ysolde",
                   "text": "He's thin enough. Tell him to stop. He won't. Thank you."
                 }
-              ]
+              ],
+              "setFlags": {
+                "job:brothers-volunteers": true
+              }
             }
           },
           {
