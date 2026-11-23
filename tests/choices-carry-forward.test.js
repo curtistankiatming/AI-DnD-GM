@@ -64,3 +64,103 @@ test('Book Three\'s letter night and epilogue tell a sent no its own way', () =>
   assert.match(lines(home, { nessa_keeper: 'declined', b3_wren_cast: true }), /does not go back over the pass to keep the forge-signal/);
   assert.doesNotMatch(lines(home, { nessa_keeper: 'later', b3_wren_cast: true }), /does not go back over the pass/);
 });
+
+// Curtis, 22 November 2026, after the first report: "Fix those." Hollin's Reach,
+// the flavour-only camp choices and Maren's and Orin's endings.
+const RAWQ = require('../src/data/quests.json'), RAW2 = require('../src/data/scenes.json');
+const { STORY_NODES } = require('../src/content');
+const live = (raw, flags, drop = []) => { const s = withNessa(flags); s.party = s.party.filter((m) => !drop.includes(m.id)); return X.dialogueText(X.liveLines(s, raw.map(X.storyLine))); };
+
+test('Hollin\'s Reach is remembered at the Second Oath, and telling Elske makes persuading her easier', () => {
+  const opening = RAWQ.oath.opening;
+  assert.match(live(opening, { hollin_told: true }), /told me the bell there had stopped/);
+  assert.match(live(opening, { hollin_kept: true }), /You let it be mine/);
+  assert.doesNotMatch(live(opening, {}), /Hollin's Reach and told me|You let it be mine/);
+  const resolve = STORY_NODES['q-oath-crisis'].choices.find((c) => c.id === 'resolve');
+  assert.equal(resolve.check.easierWith.flag, 'hollin_told');
+  assert.match(live(RAWQ.oath.peaceful.success, { hollin_kept: true }), /never told her what the council house/);
+});
+
+test('what the hero did by the fire on the south road is remembered at the Mother Bell', () => {
+  const after = RAWQ.motherbell.after;
+  assert.match(live(after, { 'b2:orin_hal': 'said', south_hal_council: true }), /She came on time/);
+  assert.match(live(after, { 'b2:orin_hal': 'left', south_hal_guild: true }), /the night you left them to it/);
+  assert.doesNotMatch(live(after, { 'b2:orin_hal': 'said', south_hal_council: true, mother_recalled: true }), /She came on time/);
+});
+
+test('camp choices that used to change nothing are told again later', () => {
+  const forge = RAW2['oath-epilogue'].nodes.forge.lines;
+  assert.match(live(forge, { 'b2:cards': 'called' }), /friend with no manners/);
+  assert.match(live(forge, { 'b2:cards': 'lost' }), /button folded into it/);
+  assert.doesNotMatch(live(forge, { 'b2:cards': 'lost' }, ['maren']), /button/);
+  const home = RAWS.firstbell.nodes.home.lines;
+  assert.match(live(home, { b3_brede_written: true }), /You wrote that page yourself/);
+  assert.match(live(home, { b3_bett: 'stay' }), /about the whaling ships/);
+  assert.match(live(home, { b3_bett: 'take' }), /There is never a note/);
+  assert.doesNotMatch(live(home, { b3_bett: 'pay' }), /mackerel/);
+  assert.match(live(home, { b3_pim_rang: true }), /late is still ringing/);
+  assert.match(live(home, { b3_vault_word: 'register' }), /same word on every page/);
+  assert.match(live(home, { b3_vault_word: 'quiet' }), /a woman calling a child in/);
+  const sets = (raw, id) => Object.values(raw).flatMap((sc) => Object.values(sc.nodes || {}).flatMap((n) => n.choices || [])).filter((c) => c.setFlags && id in c.setFlags).length;
+  for (const [raw, id, n] of [[RAW2, 'b2:orin_hal', 2], [RAW2, 'b2:cards', 2], [RAW2, 'b3_vault_word', 3], [RAWS, 'b3_bett', 3], [RAWS, 'b3_brede_written', 1], [RAWS, 'b3_pim_rang', 1]]) assert.equal(sets(raw, id), n, id);
+});
+
+test('the AI game master hears how Maren\'s and Orin\'s stories went', () => {
+  const s = (flags) => { const st = withNessa(flags); return st; };
+  const party = (flags) => { const st = s(flags); X.standing(st, 'orin'); return { orin: X.standing(st, 'orin').join(' '), maren: X.standing(st, 'maren').join(' ') }; };
+  assert.match(party({ 'keeper-list-done': true }).maren, /Sallows long room/);
+  assert.match(party({ second_oath: 'town' }).maren, /one empty space/);
+  assert.doesNotMatch(party({ 'keeper-list-done': true, b3_done: true }).maren, /Sallows long room/);
+  assert.match(party({ b3_done: true }).maren, /keeps no list/);
+  assert.match(party({ b3_seal_taken: true, b3_done: true }).maren, /free wards' seal/);
+  assert.match(party({ b3_orin_tried: true, b3_mags_forgives: true }).orin, /Mags Peller forgave him/);
+  assert.doesNotMatch(party({ b3_orin_tried: true, b3_mags_forgives: true }).orin, /given the same/);
+  assert.match(party({ south_hal_council: true, second_oath: 'none' }).orin, /Hal held the iron doors/);
+  const p = JSON.parse(Director.prompt(s({ b3_orin_gives: true })));
+  assert.match(p.party.find((m) => m.name.startsWith('Orin')).standing.join(' '), /gave up the Saltwick night/);
+  assert.match(JSON.parse(Director.prompt(s({ hollin_told: true }))).hero.standing.join(' '), /Hollin's Reach/);
+});
+
+// Curtis, 22 November 2026: "Approve both, proceed to the next." Side jobs whose
+// endings were never told again, and camp choices that only moved approval.
+const SJ = require('../src/data/side-jobs.json');
+const jobFlags = () => { const out = new Set(); const walk = (o) => { if (Array.isArray(o)) o.forEach(walk); else if (o && typeof o === 'object') { for (const k of Object.keys(o.setFlags || {})) out.add(k); Object.values(o).forEach(walk); } }; walk(SJ); return out; };
+
+test('side-job endings are told again in the Book Two and Book Three epilogues', () => {
+  const forge = RAW2['oath-epilogue'].nodes.forge.lines;
+  for (const [flag, text] of [['job:nightbell-rota', /twenty-two names long/], ['job:nightbell-saturday', /On Saturdays Pim and Tovin/], ['job:nightbell-rung', /every hour ticked/], ['job:nightbell-told', /does not say who for/],
+    ['job:well-shared', /tally slate/], ['job:well-ordered', /the way Aveline said/], ['job:well-dug', /check the rope/], ['job:well-paid', /brass plate/],
+    ['job:coach-iona', /council's coach driver/], ['job:coach-listed', /paid it in full/], ['job:boat-named', /LENORA/]]) {
+    assert.match(live(forge, { [flag]: true }), text, flag);
+  }
+  assert.match(live(forge, { 'job:coach-box': true }), /forty-six gold counted out/);
+  assert.match(live(forge, { 'job:coach-box': true }, ['orin']), /count unknown/);
+  assert.doesNotMatch(live(forge, {}), /tally slate|LENORA|Willem|night rota/);
+  const home = RAWS.firstbell.nodes.home.lines;
+  for (const [flag, text] of [['job:apprentice-forge', /walked him there/], ['job:apprentice-stayed', /jar of nails/], ['job:roster-lots', /drawn by lot/], ['job:roster-supper', /hot supper/],
+    ['job:beds-together', /winter sums together/], ['job:beds-shared', /Fennick's roster/], ['job:oil-joss', /Joss Brennick drives the oil/], ['job:brothers-runners', /Hugh and Wil Carr/], ['job:brothers-volunteers', /own ration/]]) {
+    assert.match(live(home, { [flag]: true }), text, flag);
+  }
+  const set = jobFlags();
+  const read = JSON.stringify([forge, home]).match(/job:[a-z-]+/g);
+  for (const f of read) assert.ok(set.has(f) || /^job:(minersvote|library)/.test(f), `${f} is never set by a side job`);
+});
+
+test('camp choices that only moved approval are now remembered', () => {
+  const choice = (raw, scene, node, id) => raw[scene].nodes[node].choices.find((c) => c.id === id);
+  assert.deepEqual(choice(RAW2, 'chairs-camp', 'wall', 'send').setFlags, { 'b2:nessa_first_letter': true });
+  assert.match(live(RAW2['oath-epilogue'].nodes.letters.lines, { 'b2:nessa_first_letter': true }), /with the goat in it/);
+  assert.doesNotMatch(live(RAW2['oath-epilogue'].nodes.letters.lines, {}), /with the goat in it/);
+  assert.equal(choice(RAW2, 'letter-camp', 'forge', 'wait').setFlags.b3_orin_asked, 'wait');
+  assert.equal(choice(RAW2, 'letter-camp', 'forge', 'ask').setFlags.b3_orin_asked, 'ask');
+  const orin = RAW2['saltwick-camp'].nodes.orin.lines;
+  assert.match(live(orin, { b3_orin_asked: 'wait' }), /you waited/);
+  assert.match(live(orin, { b3_orin_asked: 'ask' }), /You were right to ask/);
+  assert.deepEqual(choice(RAW2, 'witness-camp', 'road', 'list').setFlags, { b3_maren_one_name: true });
+  assert.deepEqual(choice(RAW2, 'home-camp', 'hours', 'write').setFlags, { b3_nessa_wrote_ysolde: true });
+  const RQ2 = require('../src/data/book-three-part-two/quests.json');
+  const talk = (q, id) => RQ2[q].talks.find((t) => t.id === id).lines;
+  assert.match(live(talk('b3-seal', 'maren'), { b3_maren_one_name: true }), /inside the lid of the tin/);
+  assert.match(live(talk('b3-company', 'ysolde'), { b3_nessa_wrote_ysolde: true }), /Nessa's letter in her apron pocket/);
+  assert.doesNotMatch(live(talk('b3-company', 'ysolde'), { b3_nessa_wrote_ysolde: true }, ['nessa']), /Nessa's letter/);
+});
