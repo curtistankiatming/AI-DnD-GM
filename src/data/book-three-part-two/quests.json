@@ -2782,6 +2782,13 @@
           },
           {
             "say": "maren",
+            "text": "Her name is still inside the lid of the tin. Only the name. I haven't written anything beside it. I'm trying very hard not to.",
+            "when": {
+              "flag": "b3_maren_one_name"
+            }
+          },
+          {
+            "say": "maren",
             "text": "She believed it. That's the whole trouble. I can hear a lie. I can't hear a mistake somebody has made with their whole heart. And the council wants me to stand at every pit in the free wards and be the reason it's allowed."
           },
           {
@@ -4159,6 +4166,13 @@
                 "narrate": "Ysolde Carr works in the nurseries under the casting yard, where it is warmest, with the children whose parents went on the wall. She comes up to the vault when she hears you are there."
               }
             ]
+          },
+          {
+            "narrate": "She has Nessa's letter in her apron pocket, the one about the boy from Cask and Brannagh's goat. She says she has read it more times than is sensible.",
+            "when": {
+              "flag": "b3_nessa_wrote_ysolde",
+              "party": "nessa"
+            }
           },
           {
             "say": "Ysolde Carr",
