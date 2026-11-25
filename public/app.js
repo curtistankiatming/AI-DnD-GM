@@ -353,8 +353,26 @@ function renderSetup() {
   renderSetupSummary();
 }
 
+// A hosted visitor without an account keeps no saves on the server, so the browser keeps the
+// current game (sealed by the server, so it cannot be edited) and the title page offers it back.
+const BROWSER_GAME = "briarwatch-browser-game";
+let browserKeeps = false;
+function keepInBrowser() {
+  if (!browserKeeps || !state) return;
+  try { localStorage.setItem(BROWSER_GAME, JSON.stringify(state)); } catch { /* full or blocked storage: the game stays on screen */ }
+}
+function browserGame() {
+  if (!browserKeeps) return null;
+  try { const kept = JSON.parse(localStorage.getItem(BROWSER_GAME) || "null"); return kept?.player ? kept : null; } catch { return null; }
+}
+function resumeBrowserGame() {
+  const kept = browserGame();
+  if (!kept) return;
+  void sessionUI.replace(async () => (await api("/api/session/resume", { method: "POST", body: JSON.stringify({ state: kept }) })).payload, { label: "continuing" });
+}
+
 function ingestPayload(payload, { appendEvents = true } = {}) {
-  if (payload.state) state = payload.state;
+  if (payload.state) { state = payload.state; keepInBrowser(); }
   if (payload.view) view = payload.view;
   if (payload.result?.ok === false) {
     showActionFeedback(payload.result.error || "That request was not applied.");
@@ -997,13 +1015,15 @@ function renderSaveChoices({ activeSlot, dirty, saves, continueSave }) {
   $("#returnToGameBtn").classList.toggle("is-hidden", !state);
   dom.saveQuickBtn.dataset.disabled = String(!state);
   dom.saveBtn.dataset.disabled = String(!state);
-  $("#continueBtn").dataset.disabled = String(!continueSave);
-  $("#continueBtn").disabled = busy || !continueSave;
+  const kept = !continueSave && !state ? browserGame() : null, canContinue = Boolean(continueSave || kept);
+  $("#continueBtn").dataset.disabled = String(!canContinue);
+  $("#continueBtn").disabled = busy || !canContinue;
   // A first-time player has nothing to continue: show a welcome instead of a dead button.
-  $("#continueBtn").classList.toggle("is-hidden", !continueSave);
+  $("#continueBtn").classList.toggle("is-hidden", !canContinue);
   $("#homeSaves").classList.toggle("is-hidden", !saves.length);
-  $("#resumeTitle").textContent = saves.length ? "Welcome back" : "Welcome to Briarwatch";
-  $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}` : "Continue";
+  $("#resumeTitle").textContent = saves.length || kept ? "Welcome back" : "Welcome to Briarwatch";
+  $("#continueBtn").textContent = continueSave ? `Continue: ${continueSave.playerName} · Level ${continueSave.level}`
+    : kept ? `Continue: ${kept.player.name} · Level ${kept.player.level}` : "Continue";
   $("#homeSaveStatus").textContent = continueSave ? `Continue opens your latest save, “${continueSave.slot}”.`
     : saves.length ? "Your saves could not be opened automatically. Pick one below, or start a new adventure."
     : "A story game where you choose what your hero does and the dice decide how it goes.";
@@ -1066,7 +1086,7 @@ function wireEvents() {
     renderSetup();
   });
   $("#returnToGameBtn").addEventListener("click", () => { if (state && !busy) dom.setupOverlay.classList.add("is-hidden"); });
-  $("#continueBtn").addEventListener("click", () => { const save = sessionUI.status().continueSave; if (save) void loadGame(save.slot); });
+  $("#continueBtn").addEventListener("click", () => { const save = sessionUI.status().continueSave; if (save) void loadGame(save.slot); else resumeBrowserGame(); });
   $("#homeRefreshSavesBtn").addEventListener("click", refreshSaves);
   dom.saveQuickBtn.addEventListener("click", () => sessionUI.quickSave());
   dom.inspirationBtn.addEventListener("click", () => sendAction({ type: "prepare-inspiration" }));
@@ -1116,6 +1136,7 @@ async function initialize() {
     const { payload } = await api("/api/setup");
     catalog = payload.catalog;
     narratorInfo = payload.narrator;
+    browserKeeps = Boolean(payload.hosted && !payload.hosted.serverSaves);
     setup.classId = catalog.classes[0].id;
     setup.backgroundId = catalog.backgrounds.find((entry) => entry.id === "outlander")?.id || catalog.backgrounds[0].id;
     setup.difficulty = "standard";

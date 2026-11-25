@@ -12,7 +12,7 @@ function setup(){
     dom:new Proxy({},{get:(_t,k)=>node(k)}),document:{body:{classList:{toggle(){}}},listeners:{},addEventListener(t,cb){this.listeners[t]=cb;}},
     window:{BriarwatchSession:UI},$:node,$$:()=>[],setup:{},setBusy(){},pointBuySpent:()=>27,renderSetup(){},renderSetupSummary(){},toast(){},renderGame(){},
     sessionUI:{changed(){},status:()=>({}),quickSave:async()=>{},replace:async loader=>{const p=await loader();ctx.state=p.state;return true;}},
-    api:async()=>({response:{ok:true},payload:{state:{player:{name:'New'}},view:{}}}),startCampaign(){},refreshSaves(){},showSetupForm(){},closeTargetDialog(){},clear:n=>n.children=[],createElement:(tag,cls,text)=>({tag,cls,text}),showActionFeedback:m=>ctx.feedback=m};
+    api:async()=>({response:{ok:true},payload:{state:{player:{name:'New'}},view:{}}}),startCampaign(){},refreshSaves(){},keepInBrowser(){},showSetupForm(){},closeTargetDialog(){},clear:n=>n.children=[],createElement:(tag,cls,text)=>({tag,cls,text}),showActionFeedback:m=>ctx.feedback=m};
   vm.createContext(ctx);return {ctx,node};
 }
 test('new setup preserves active state until replacement succeeds',()=>{const {ctx,node}=setup();const before=ctx.state;vm.runInContext(fn('wireEvents')+'\nwireEvents();',ctx);node('newGameBtn').listeners.click();assert.equal(ctx.state,before);});

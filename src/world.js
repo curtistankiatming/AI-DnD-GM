@@ -148,6 +148,12 @@ function awardChapterBattleXp(state,id,events,api,scale=1,peaceful=false){
 }
 // What a written chapter has already paid for its fight (0 for an AI adventure).
 const battlePaid=(state,q)=>!q?.generated&&typeof state.story.flags[`battleXp:${q?.id}`]==='number'?state.story.flags[`battleXp:${q.id}`]:0;
+// Nessa joins from the guild bench. New games ask in the nessa-offer scene instead (her second and
+// last chance after the rescue in mist-hollow); this button only serves saves from before that scene.
+function nessaArrives(state,events,api){
+  api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
+  return emit(events,'A young scout is sitting on the roadwardens’ bench with her pack already on and one boot up on the table. Nessa Reed. Nessa: Guild says you’re short a pair of eyes. I’ve been a day behind you all week, and you stop to talk to everyone, so somebody ought to be— the trees. Somebody ought to watch the trees. Orin: We manage. Nessa: You manage slowly. Maren: She can come. Nessa: I wasn’t asking. She brings her own gear, and she is every bit as road-worn as the rest of you.','party','good');
+}
 function completeQuest(state,id,events,api){
   if(completed(state,id))return false;
   const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
@@ -526,9 +532,8 @@ function handle(state,action,rng,events,api){
     return emit(events,`${store?'Stored':'Retrieved'} one ${item.name}. Charges are preserved; town storage is shared across discovered settlements.`,'item');
   }
   if(action.type==='recruit'){
-    if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3)return fail(events,'No recruit is currently available.');
-    api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
-    return emit(events,'Nessa Reed joins through the roadwardens’ guild. She brings her equipment and shares the party’s level; no recruitment fee is required.','party','good');
+    if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3||state.story.flags['nessa:offer'])return fail(events,'No recruit is currently available.');
+    return nessaArrives(state,events,api);
   }
   if(action.type==='personal'){
     const a=state.party.find(m=>m.id===action.companionId),def=PERSONAL[action.companionId];if(!a||!def)return fail(events,'That companion is not present.');
@@ -600,7 +605,7 @@ function view(state){
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
     bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),bookRecap:Recap.recap(state),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title,...(Book.aiStory(state)?{closed:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
-    canRecruit:!empty&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa,canPractice:Boolean(t&&!empty),
+    canRecruit:!empty&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa&&!state.story.flags['nessa:offer'],canPractice:Boolean(t&&!empty),
     personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'

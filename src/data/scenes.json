@@ -663,6 +663,7 @@
             { "narrate": "When the council at Mother Bell opened Pell Haverick's coach, Iona's ledger has a line in red for the left-hand box: opened, count unknown. She has written to ask what you took out, politely, twice.", "when": { "flag": "job:coach-box", "absent": "orin" } }
           ] },
           { "narrate": "In Merrowgate harbour there is a small blue smack with LENORA on the bow in yellow, slightly downhill. The pilots' boys take her out on fine days so she does not forget the water.", "when": { "flag": "job:boat-named" } },
+          {"oneOf": [{"narrate": "Wren writes from Cinder Fold at midwinter. The beacon is lit. At the bottom, smaller: Reed came by in the autumn and lit it for me. Bit fast. Didn't stay. Didn't mention you.", "when": {"absent": "nessa", "flag": "nessa:offer", "is": "declined"}}, {"narrate": "Wren writes from Cinder Fold at midwinter. The beacon is lit; she lit it herself, and the stairs nearly had her. She still has no keeper. At the bottom she asks if you ever ran into a scout called Reed.", "when": {"absent": "nessa"}}]},
           { "narrate": "Orin has the quartermaster's invoice in his pack. Sometimes, when he thinks nobody is looking, he reads it.", "when": { "party": "orin" } }
         ],
         "choices": [
