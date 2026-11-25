@@ -4832,7 +4832,7 @@
       },
       {"oneOf": [{"say": "Wren", "text": "Reed's on the coast road, last I heard. Lights other people's beacons for pay. She asked after you once. Then she stopped.", "when": {"absent": "nessa", "flag": "nessa:offer", "is": "declined"}}, {"say": "Wren", "text": "If you see a scout called Reed on the roads, tell her the forge has a post going. She won't come if I ask. She might if it's gossip.", "when": {"absent": "nessa"}}]},
       {
-        "narrate": "You take out the map she pressed on you under the signal arm, every safe line through the pass, and put it on her table. Wren unfolds it, runs one finger down the north gully, and folds it up again.",
+        "narrate": "You take out the map Wren pressed on you under the signal arm, every safe line through the pass, and put it on her table. She unfolds it, runs one finger down the north gully, and folds it up again.",
         "when": {
           "flag": "wren_map_hero",
           "absent": "nessa"

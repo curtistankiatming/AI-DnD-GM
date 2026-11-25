@@ -115,7 +115,72 @@ separate reviewer read the new scene and the Wren chapters, and decided:
 
 Any of these can be reversed.
 
-## Not fixed, worth deciding
+## Follow-up the same night (Curtis: "take all recommendations and do 2 more runs")
+
+PR #111 was merged. Every suggestion below ("Not fixed, worth deciding") is now
+built, and two more fresh runs were played on the new version through the
+browser, with no AI:
+
+| Run | Hero | Difficulty | How far |
+| --- | --- | --- | --- |
+| Run 3, laptop | Ilse, Wizard | Story | Fresh start, missed the mist and took Nessa on at the bench, Book One, the trial and Book Two (level 19). |
+| Run 4, phone | Wynn, Bard | Standard | Fresh start, missed the mist and turned Nessa down, Book One, the trial and Book Two to "The Vote" (level 15). |
+
+Neither run pressed Quick save once: each session picked up from the new
+autosave through Continue, which worked every time.
+
+### The suggestions, built
+
+1. **Autosave.** The web version now keeps one rolling autosave after every
+   new game, move and AI turn. Continue opens it when it is newer than the save
+   you used last ("Picked up where you left off"). Starting a new hero asks
+   before replacing it, as the downloadable edition does. Named saves are
+   untouched. Hosted visitors without an account keep using the browser copy.
+2. **Level-up choices.** A "Waiting for you · Choose now" block sits in the
+   Adventure side panel on a laptop, and at the top of "What's next?" in town on
+   any screen.
+3. **Phone typing box.** In a fight, or with the AI off, the box folds to one
+   "Type your own action" button. It opens with one tap.
+4. **Chapter headings.** The middle of each chapter is now headed by its own
+   route, objective and name ("Cross under the causeway and reach the
+   drivers", "Release the wagon drivers", "After the Toll of Empty Wagons").
+   Clues read "A lead on the Chair Problem". The trial no longer says
+   "Objective reward: 0 gold."
+5. **Wounded warnings.** One line names everyone who is hurt, and the town list
+   says a party-wide warning once instead of once per expedition.
+6. **Overkill.** "Shortsword dealt 36 piercing damage to the raider, more than
+   the 32 health they had left."
+
+### Found in runs 3 and 4, fixed
+
+- **Whose map is it?** At Cinder Fold without Nessa, Wren's new line about her
+  ("She asked after you once") was followed by "You take out the map she
+  pressed on you", which then read as Nessa's map. It now says "the map Wren
+  pressed on you".
+- **"After A Light above the Storm".** Headings and clue names now lowercase a
+  leading "A" or "The" ("After a Light above the Storm").
+- **A rest button in the middle of the bench scene.** "Take short rest" was
+  offered beside "Take her on". Removed.
+
+### Ratings for runs 3 and 4
+
+| | Rating | In one line |
+| --- | --- | --- |
+| Story difficulty, Wizard | 2/5 | Five defeats, three of them at the very first bell fight, because the script swings a Wizard's staff and never casts. Easy after that. |
+| Standard, Bard, attack only | 5/5 | Eighteen defeats: seven at "The Night Hollin's Reach Burned", four at the Borrowed Magistrate, three in Fenmere's Gloam Tide. A Bard who never sings or heals is the weakest player there is, and this party was one short. |
+| Nessa's second chance | 9/10 | Both answers read well. Turning her down is felt later: Wren's line at the signal tower lands. |
+| Fun overall | 8/10 | |
+
+### Worth deciding
+
+- **Turning Nessa down makes Book Two much harder.** Run 4's party was three,
+  not four, and lost eighteen fights. Most of that is the script (it never uses
+  a Bard's songs or heals), but a real player who refuses her has no way to
+  fill the fourth place. That may be exactly the cost Curtis wants ("choices
+  impact story"). If not, a hired sellsword in Book Two for parties of three
+  would soften it without bringing Nessa back.
+
+## Not fixed, worth deciding (all built in the follow-up above)
 
 - **No autosave in the normal web version.** Progress only reaches disk when
   you press Quick save. A desktop browser warns before closing; phones often

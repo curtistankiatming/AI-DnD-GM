@@ -246,7 +246,7 @@ function installQuest(q){
   const challenge=XP.challenge(q),{accuracy:A,power:L}=challenge;
   const prefix=`q-${q.id}`;
   const evidence=`${q.id}-evidence`;
-  clue(evidence,q.clueName||`A lead on ${q.name.replace(/^The /,'the ')}`,q.clue);
+  clue(evidence,q.clueName||`A lead on ${q.name.replace(/^(The|An?) /,m=>m.toLowerCase())}`,q.clue);
   const preparation=`prepared:${q.id}`;
   const approach=`approach:${q.id}`;
   // The best-suited party member rolls each check (21 November 2026), so the
@@ -286,7 +286,7 @@ function installQuest(q){
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
-  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:q.titles?.after||`After ${q.name.replace(/^The /,'the ')}`,location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:q.titles?.after||`After ${q.name.replace(/^(The|An?) /,m=>m.toLowerCase())}`,location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
   // A straight-on chapter ("continues": true, Book Three's stair) goes from
   // its decision to the next chapter's opening (src/world.js goOn), and its
   // end is the safe ledge a defeat in the next chapter wakes on: "ledge" is

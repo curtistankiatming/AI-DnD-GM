@@ -95,3 +95,19 @@ test('the web server keeps a rolling autosave after every move', { timeout: 3000
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(await fs.readFile(path.join(saveDir, 'autosave.json'), 'utf8'), before);
 });
+
+// Runs 3 and 4 (laptop Wizard on Story, phone Bard on Standard).
+test('a chapter whose name starts with "A" reads naturally in its headings', () => {
+  assert.equal(STORY_NODES['q-signal-after'].title, 'After a Light above the Storm');
+  assert.equal(CLUES['signal-evidence'].name, 'A lead on a Light above the Storm');
+});
+
+test('at Cinder Fold without Nessa, the map is plainly Wren\'s, not the absent scout\'s', () => {
+  const opening = require('../src/data/quests.json').cinderfold.opening;
+  const map = opening.find((l) => /map/.test(l.narrate || ''));
+  assert.match(map.narrate, /^You take out the map Wren pressed on you/);
+});
+
+test('the scout on the bench is a conversation, with no rest button in the middle of it', () => {
+  assert.equal(require('../src/data/story-nodes.json')['nessa-offer'].safeRest, false);
+});

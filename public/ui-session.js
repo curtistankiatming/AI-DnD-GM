@@ -148,7 +148,7 @@
         // Save-and-continue may have updated this same target; never adopt the stale preflight copy.
         payload = await request('/api/session/load?slot=' + encodeURIComponent(slot));
         if (!payload?.state || !payload?.view) throw new Error('This save could not be loaded.');
-        adopt(payload, {slot, loaded: true}); env.notify(`Loaded “${slot}”.`, 'good'); return true;
+        adopt(payload, {slot, loaded: true}); env.notify(/^(sandbox-)?autosave$/i.test(slot) ? 'Picked up where you left off.' : `Loaded “${slot}”.`, 'good'); return true;
       }),
       delete: slot => run(async () => {
         const found = (await list()).find(s => s.slot === slot);
