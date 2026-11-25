@@ -44,7 +44,16 @@ const TEXT = Object.freeze({ name: 80, short: 120, label: 120, brief: 400, long:
 
 const clean = (value, limit) => typeof value === 'string' ? value.replace(/\s+/g, ' ').trim().slice(0, limit) : '';
 const skill = value => SKILL_IDS.includes(value) ? value : null;
-const alts = (list, main) => [...new Set((Array.isArray(list) ? list : []).filter(x => skill(x) && x !== main))].slice(0, 3);
+// Other skills arrive as free text, so "Sleight of Hand" or "sleightofhand" still count.
+const SKILL_BY_KEY = new Map(SKILL_IDS.map(id => [id.toLowerCase(), id]));
+const altSkill = value => typeof value === 'string' ? SKILL_BY_KEY.get(value.replace(/[\s_-]+/g, '').toLowerCase()) || null : null;
+// Claude sends the other skills as one comma-separated string (see ALT); saved
+// adventures and written fallbacks keep them as a list. Both are read here.
+const alts = (list, main) => [...new Set((Array.isArray(list) ? list : typeof list === 'string' ? list.split(/[,;]+/) : []).map(altSkill).filter(x => x && x !== main))].slice(0, 3);
+// Arrays of skill enums made the whole draft schema too large for Claude's
+// structured output ("compiled grammar is too large"), so the other skills are
+// one plain string. Invalid names are dropped by alts().
+const ALT = (desc = 'Up to three other skills that also fit, as skill ids separated by commas, or empty.') => ({ type: 'string', description: desc + ' Skill ids: ' + Object.keys(SKILLS).join(', ') + '.' });
 
 function hash(text) {
   let h = 0x811c9dc5;
@@ -57,7 +66,7 @@ const check = desc => ({
   properties: {
     label: { type: 'string', description: 'Button text for the player, an imperative phrase.' },
     skill: { type: 'string', enum: SKILL_IDS },
-    alt: { type: 'array', items: { type: 'string', enum: SKILL_IDS }, description: 'Up to three other skills that also fit.' },
+    alt: ALT(),
     success: { type: 'string' },
     failure: { type: 'string', description: 'Failure must still move the story forward.' }
   },
@@ -89,7 +98,7 @@ const SCHEMA = Object.freeze({
       properties: {
         name: { type: 'string' }, label: { type: 'string', description: 'Imperative phrase, e.g. "Seal the flooded vault".' },
         description: { type: 'string' }, skill: { type: 'string', enum: SKILL_IDS },
-        alt: { type: 'array', items: { type: 'string', enum: SKILL_IDS } },
+        alt: ALT(),
         failText: { type: 'string', description: 'Consequence if the deadline passes; the fight continues.' },
         successText: { type: 'string' }
       },
