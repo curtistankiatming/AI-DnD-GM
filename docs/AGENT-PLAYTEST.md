@@ -31,6 +31,17 @@ node scripts/play.js auto 30                          # let the scripted test pl
 
 Every screen prints the exact command for each option, so copy from it.
 
+The `town` screen also prints the **bounty board** (`do '{"type":"bounty"}'`, a
+repeatable fight that pays XP and gold, the way to catch up when a chapter needs
+a higher level) and, from level 40 and 70, the **job trial** waiting to be asked
+for (`do '{"type":"job-trial"}'`, which posts the written trial on the board).
+A locked chapter says what level it needs and how far you are from the next one,
+and a chapter in the Wold's cold says who in the party has no warm gear.
+
+Books Three and Four are hidden until they are released. To play them in a
+review, set `BRIARWATCH_PREVIEW_BOOKS=1` before each command, and say so in your
+report.
+
 ### Reviewing a specific scene without playing up to it
 
 ```

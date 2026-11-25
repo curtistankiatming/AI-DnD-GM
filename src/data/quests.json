@@ -3113,7 +3113,20 @@
           "narrate": "It does not go back off the lower village. That is gone."
         }
       ],
-      "failure": "The song starts strong and falters at the missing line. The ward rings, but thinly, and the shapes keep coming. You will have to hold them back while Ilka finds the words."
+      "failure": [
+        {
+          "narrate": "The song starts strong, with the girl's verse written on Ilka's arm, but the water is at the churchyard wall and three hundred frightened people cannot keep one beat. They lose each other in the third verse, and the ward rings, but thinly, and the shapes keep coming. You will have to hold them back while Ilka gathers the singers again.",
+          "when": {
+            "clue": "fenmere-evidence"
+          }
+        },
+        {
+          "narrate": "The song starts strong and falters at the missing line. The ward rings, but thinly, and the shapes keep coming. You will have to hold them back while Ilka finds the words.",
+          "when": {
+            "notClue": "fenmere-evidence"
+          }
+        }
+      ]
     },
     "objective": {
       "name": "Ring Fenmere's ward through all four verses",
@@ -11169,7 +11182,7 @@
             }
           },
           {
-            "narrate": "\"I knew Corvane, a little, forty years ago, before the Single Voice was anything but a drawing on my table. He came to Merrowgate to buy my design. He was the only one of them who asked me what it was for.\"",
+            "narrate": "\"I knew Corvane, a little, eleven years ago, the winter after the fire, when the Single Voice was nothing but a drawing on my table. He came to Merrowgate to buy my design. He was the only one of them who asked me what it was for.\"",
             "when": {
               "noneFlag": [
                 "elske_seat"
@@ -11178,7 +11191,7 @@
           },
           {
             "say": "Elske Marrow",
-            "text": "I knew Corvane, a little, forty years ago, before the Single Voice was anything but a drawing on my table. He came to Merrowgate to buy my design. He was the only one of them who asked me what it was for.",
+            "text": "I knew Corvane, a little, eleven years ago, the winter after the fire, when the Single Voice was nothing but a drawing on my table. He came to Merrowgate to buy my design. He was the only one of them who asked me what it was for.",
             "when": {
               "flag": "elske_seat"
             }
@@ -13527,6 +13540,12 @@
             "narrate": "Corvane opens his ledger at the back, where he copied out the whole rite over the winter, a page a night, and tears the pages out one at a time, and puts them in Sorrel's fire himself, and watches them go."
           },
           {
+            "narrate": "Then you take the oilcloth bundle from the bottom of your pack, the copy you carried over the pass, and put it in after his. It burns slower than his pages did. The oilcloth goes last.",
+            "when": {
+              "flag": "b3_rite_carried"
+            }
+          },
+          {
             "say": "Corvane",
             "text": "Sable has it by heart. He always will. And everyone in Merrowgate who has stood on the Hall steps at noon this week has heard it read. You know that. I know you know it."
           },
@@ -13558,9 +13577,18 @@
             }
           },
           {
+            "narrate": "The law will stand on the copy you carried over the pass in oilcloth: the old keepers' rite, in Sable's eleven pages. You take it out of the bottom of your pack and give it to Sorrel, and she finds the line that Corvane's version leaves out, and writes it into the law word for word: every yes asked again, every year.",
+            "when": {
+              "flag": "b3_rite_carried"
+            }
+          },
+          {
             "narrate": "The law will have to be written from the notes in the back of Corvane's ledger, because the council holds no copy of its own. Merrowgate holds the only one on paper, and reads it from its steps.",
             "when": {
-              "notFlag": "b3_rite_council"
+              "noneFlag": [
+                "b3_rite_council",
+                "b3_rite_carried"
+              ]
             }
           },
           {

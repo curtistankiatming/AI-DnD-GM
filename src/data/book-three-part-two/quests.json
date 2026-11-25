@@ -6411,7 +6411,21 @@
         "description": "This decision is permanent. The nine carry it alone again, and the next generation will pay more.",
         "text": [
           {
-            "narrate": "You tell him no. Not his way, and not the old way either. Nobody gives anything tonight, and nobody is cast. You will go up and close the way down behind you, and nobody will come down here again."
+            "narrate": "You tell him no. Not his way, and not the old way either. Nobody gives anything more tonight, and nobody is cast. You will go up and close the way down behind you, and nobody will come down here again."
+          },
+          {
+            "narrate": "What has been laid on the floor stays there. Orin's badge is among the buttons where he set it, and he does not go back for it, and does not seem to know why he would.",
+            "when": {
+              "flag": "b3_orin_gives",
+              "party": "orin"
+            }
+          },
+          {
+            "narrate": "Nessa's letter stays on the floor where she put it down. She does not pick it up. A thing given here is given.",
+            "when": {
+              "flag": "b3_nessa_gives",
+              "party": "nessa"
+            }
           },
           {
             "narrate": "The nine will carry it alone, as they have. They are tired, and the lid is moving. The next generation will pay more than this one would have."

@@ -7977,7 +7977,7 @@
       "alt": ["performance"],
       "success": [
         { "narrate": "{You kneel|@ kneels} by the Parting Bell's frame and {read|reads} the marks round its lip, in the founders' letters, by lamplight: what it does, and when, and with what." },
-        { "narrate": "It does nothing by itself. It turns the Mother Bell's note, that is all. Rung backward with it at midwinter, every ward in the south goes quiet for a winter, and the white stays where it is. Rung forward, every ward is louder for good, and all of it goes north. Left alone, the Mother Bell rings its note as it always has, and the Parting Bell is only a small black bell." },
+        { "narrate": "It does nothing by itself. It turns the Mother Bell's note, that is all. Rung backward with it at midwinter, every ward in the south goes quiet for a winter, and the white is not sent north: it stays in the south, where it rises, and the Wold has a clear winter. Rung forward, every ward is louder for good, and all of it goes north. Left alone, the Mother Bell rings its note as it always has, and the Parting Bell is only a small black bell." },
         { "narrate": "Under the marks for forward, very small, somebody long ago has scratched a line through them. Not this way." }
       ],
       "failure": [
