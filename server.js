@@ -280,8 +280,21 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && (pathname === "/api/setup" || pathname === "/api/session/new")) {
     sendJson(res, 200, {
       catalog: setupCatalog(),
-      narrator: await narratorInfo()
+      narrator: await narratorInfo(),
+      // A hosted visitor without an account cannot keep saves here; the browser keeps the current game.
+      ...(hosted.enabled ? { hosted: { serverSaves: Boolean(saveDir(req)) } } : {})
     });
+    return;
+  }
+  // Picks up the game a hosted visitor's browser kept. Only a state this server sealed is accepted.
+  if (req.method === "POST" && pathname === "/api/session/resume") {
+    if (!hosted.enabled) { sendJson(res, 404, { error: "API route not found." }); return; }
+    const body = await readJsonBody(req);
+    if (!body.state || typeof body.state !== "object") { sendJson(res, 400, { error: "No game was sent." }); return; }
+    if (!trusted(req, res, body.state)) return;
+    const state = normalizeIncomingState(withAccess(req, body.state));
+    const view = buildView(state);
+    sendJson(res, 200, { state, view, narration: savedNarration(state, view), events: [] });
     return;
   }
 

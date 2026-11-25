@@ -118,8 +118,10 @@ test('the signal tower gives Nessa a word with her mentor, and works without her
   assert.match(withNessa, /Nessa: I’ll bring it back to you\./);
   const solo = ready('signal');
   const alone = told(solo);
-  assert.doesNotMatch(E.buildView(solo).scene.opening, /Nessa|Wren:/, 'The scene text sent to the AI game master has only the lines that were told.');
-  assert.doesNotMatch(alone, /Nessa:|Wren:/);
+  // Without Nessa, Wren asks after her scout (browser playtest, 25 November 2026: her absence is part of the story).
+  assert.doesNotMatch(E.buildView(solo).scene.opening, /Nessa:|Bring it back better/, 'The scene text sent to the AI game master has only the lines that were told.');
+  assert.doesNotMatch(alone, /Nessa:|Bring it back better/);
+  assert.match(alone, /Wren: I tied that scarf up for a scout of mine\. Reed\./);
   assert.match(alone, /the keeper, Wren, presses a folded map on you/);
   assert.ok(lines.length > 4);
 });
