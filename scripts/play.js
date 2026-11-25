@@ -113,11 +113,21 @@ function printTown(view) {
   }
   if (w.town && w.activeQuest) line(`${w.pendingBattle ? "Resume the interrupted fight" : `Resume your expedition (${w.activeQuest})`}  -> do '{"type":"resume"}'`);
   line("-- Expedition board --");
-  for (const q of w.quests) line(`  ${q.id}: ${q.name}, level ${q.level}, from ${q.townName}${q.canDepart ? `  -> do '{"type":"depart","questId":"${q.id}"}'` : " (not available here yet)"}\n     ${q.brief}`);
+  const hero = view.player || {};
+  for (const q of w.quests) {
+    const need = q.minLevel ?? q.level;
+    const why = q.canDepart ? "" : (hero.level || 1) < need ? ` (not yet: needs level ${need}, you are level ${hero.level}${hero.nextLevelXp ? `, ${Math.max(0, hero.nextLevelXp - (hero.xp || 0))} XP to the next level` : ""})` : ` (not available here yet: departs from ${q.townName})`;
+    line(`  ${q.id}: ${q.name}, level ${q.level}, from ${q.townName}${q.canDepart ? `  -> do '{"type":"depart","questId":"${q.id}"}'` : why}\n     ${q.brief}`);
+    if (q.needs && !q.canDepart) line(`     ${q.needs}`);
+    if (q.white) line(`     ${q.white}`);
+  }
+  const t = w.director?.trial;
+  if (t && !t.questId) line(`-- Job trial: ${t.label}, become ${t.title} (level ${t.level}) --\n  ${t.canRequest ? `Ready  -> do '{"type":"job-trial"}'  (then depart on the trial it posts)` : `Not yet: ${t.reason}`}`);
+  if (w.bounty?.available) line(`-- Bounty board (repeatable) --\n  ${w.bounty.name}, out in ${w.bounty.place}: ${w.bounty.reward.xp} XP, ${w.bounty.reward.gold} gold (losing costs ${w.bounty.loss} gold)  -> do '{"type":"bounty"}'`);
   const d = w.director;
   const written = w.quests.filter((q) => !q.generated);
   if (d && w.bellComplete && !d.sideQuests && !written.length) {
-    line("  The written story is complete: both books are finished.");
+    line("  The written story is complete: every written book is finished.");
     line("  From here the AI storyteller writes new adventures from your choices (in the browser game: \"Ask the GM for a new adventure\", with the Claude AI game master on).");
     line("  The terminal has no AI. To test the handoff with the bundled sample adventure (a fixture, not real AI writing): node scripts/play.js commission-sample");
   } else if (w.book?.waiting && !written.length) line(`  To be continued: the next chapters of ${w.book.title} are still being written.`);

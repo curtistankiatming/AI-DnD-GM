@@ -1600,7 +1600,8 @@
           ] },
           { "oneOf": [
             { "narrate": "At Greve the names are kept, said aloud every spring in the room that holds them. Maren goes north to say them once, and comes back.", "when": { "party": "maren", "flag": "b4_names_kept" } },
-            { "narrate": "The names from Greve are written in the tally, and Maren has a copy.", "when": { "party": "maren", "anyFlag": ["b4_names_written", "b4_names_given"] } }
+            { "narrate": "The names from Greve are written in the tally, and Maren has a copy.", "when": { "party": "maren", "flag": "b4_names_written" } },
+            { "narrate": "At Greve the grieving gave at the next giving, as they always have, and went home calm. Madder sends Maren a loaf at midwinter, and no names with it. Maren keeps the loaf's cloth.", "when": { "party": "maren", "flag": "b4_names_given" } }
           ] },
           { "oneOf": [
             { "narrate": "In the hospice, at the foot of a bed, a slate says 'Merrick', and under it, small, 'given by Annis Corby'.", "when": { "flag": "job:walkers-names-given" } },
@@ -1634,6 +1635,7 @@
           { "oneOf": [
             { "narrate": "Hesk goes back to the floor of given things, to sit with his ring, and nobody in the free wards calls him a hero to his face again.", "when": { "flag": "b3_promise_hesk" } },
             { "narrate": "Hesk writes to you once, from his cell, to ask how it was rung. You write back.", "when": { "flag": "b3_promise_old" } },
+            { "narrate": "Hesk winters at Highpass, in no cell, because the council cannot agree what to hold him for. He came back the long way, through the Wold, with Sloe's ringers. He says it is the only way he will ever go north again, and that he has not decided whether he will.", "when": { "flag": "b3_stair_sealed" } },
             { "narrate": "Nobody hears from Hesk. The stair is sealed, and he is below it." }
           ] },
           { "oneOf": [
