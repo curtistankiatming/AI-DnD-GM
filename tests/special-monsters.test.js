@@ -140,7 +140,7 @@ test('the monster\'s XP never carries the hero two levels past the story', () =>
   assert.ok(s.player.inventory.some((e) => e.itemId === 'snapjaw-scute'), 'the item still drops');
 });
 
-test('a chapter\'s own fight pays its share when won, and the chapter the rest: the total is unchanged', () => {
+test('a chapter\'s own fight pays its share when won, on top of the chapter\'s XP; the peaceful way pays the same', () => {
   const q = QUESTS.marsh, { base } = XP.chapterBattle(q);
   assert.equal(base, XP.share(q.level, XP.CHAPTER_BATTLE_SHARE));
   let s = choose(choose(at('marsh'), 'advance'), 'direct');
@@ -148,8 +148,8 @@ test('a chapter\'s own fight pays its share when won, and the chapter the rest: 
   s = win(choose(s, 'confront'));
   assert.equal(s.player.xp - start, base, 'paid as soon as the fight is won');
   s = choose(s, STORY_NODES['q-marsh-after'].choices[0].id);
-  assert.equal(s.player.xp - start, q.xp, 'the chapter pays the rest');
-  assert.equal(s.world.completed.marsh.xp, q.xp);
+  assert.equal(s.player.xp - start, q.xp + base, 'the chapter still pays all of its own XP');
+  assert.equal(s.world.completed.marsh.xp, q.xp + base);
   // The peaceful way pays the same in all.
   let p = choose(choose(at('marsh'), 'advance'), 'direct');
   for (const k of ['str', 'dex', 'int', 'wis', 'cha']) p.player.abilities[k] = 30;
@@ -158,7 +158,8 @@ test('a chapter\'s own fight pays its share when won, and the chapter the rest: 
   p = choose(p, 'resolve');
   assert.equal(p.story.nodeId, 'q-marsh-after');
   p = choose(p, STORY_NODES['q-marsh-after'].choices[0].id);
-  assert.equal(p.player.xp - before, q.xp);
+  assert.equal(p.player.xp - before, q.xp + base, 'talking pays the fight\'s share too');
+  assert.equal(p.world.completed.marsh.xp, q.xp + base);
 });
 
 test('a fight an earlier choice made tougher pays that much more', () => {
@@ -168,11 +169,14 @@ test('a fight an earlier choice made tougher pays that much more', () => {
   assert.equal(extra, Math.round(base * 0.3 / 10) * 10);
   assert.ok(extra > 0);
   assert.equal(XP.chapterBattle(q, 0.85).extra, 0, 'an easier fight still pays the full share');
-  assert.deepEqual(XP.chapterBattle(QUESTS.trial), { base: 0, extra: 0 }, 'the level 10 trial pays nothing, as before');
+  assert.deepEqual(XP.chapterBattle(QUESTS.trial), { base: 0, extra: 0, onTop: false }, 'the level 10 trial pays nothing, as before');
   const s = hero(q.level); s.world.activeQuest = q.id; s.story.flags.b3_vault_closed = true;
   const xp = s.player.xp;
   assert.equal(W.awardChapterBattleXp(s, q.id, [], { awardXp: E.awardXp }, 1.3), base + extra);
   assert.equal(s.player.xp - xp, base + extra);
   assert.equal(W.awardChapterBattleXp(s, q.id, [], { awardXp: E.awardXp }, 1.3), 0, 'once');
-  assert.equal(W.battlePaid(s, q), base, 'the chapter\'s end takes off only the base share');
+  assert.equal(W.battlePaid(s, q), base);
+  assert.equal(XP.chapterBattle(q).onTop, false, 'Book Three pays exactly a level a chapter: the share comes out of it');
+  assert.equal(XP.chapterBattle(QUESTS.marsh).onTop, true);
+  assert.equal(XP.chapterBattle(QUESTS.oath).onTop, true, 'Book Two too');
 });

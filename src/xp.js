@@ -20,17 +20,22 @@ const chapterXp = level => share(level, CHAPTER_SHARE);
 // choices that lead to battles give exp appropriately"). It used to pay
 // nothing until the chapter's end, and the same however hard an earlier choice
 // had made it. Now winning it pays CHAPTER_BATTLE_SHARE of the chapter's level
-// (a "hard" battle) at once, out of the chapter's own XP, so a chapter still
-// pays the same in all and levelling is unchanged. A fight an earlier choice
-// made tougher ("flagScale" above 1) pays that much more on top; one made
-// easier still pays the full share. Resolving the crisis without a fight pays
-// the same total at the chapter's end, so talking stays as good as fighting.
+// (a "hard" battle) at once. In Books One and Two, whose chapters pay about
+// 70% of a level, it is ON TOP of the chapter's own XP (Curtis chose "add the
+// fight xp", 25 November 2026), so the story levels a little faster; there,
+// resolving the crisis without a fight pays the same share at the chapter's
+// end, so talking stays as good as fighting. Books Three and Four's chapters
+// pay exactly one level each (more would compound past the trials at 40 and
+// 70), so there the share comes out of the chapter's XP ("onTop" false) and
+// the total is unchanged. A fight an earlier choice made tougher ("flagScale"
+// above 1) pays that much more on top in every book; one made easier still
+// pays the full share.
 const CHAPTER_BATTLE_SHARE = 0.1;
 function chapterBattle(q, scale = 1) {
   const xp = Math.max(0, Number(q?.xp) || 0);
-  if (!xp || q?.generated || q?.trial) return { base: 0, extra: 0 };
+  if (!xp || q?.generated || q?.trial) return { base: 0, extra: 0, onTop: false };
   const base = Math.min(xp, share(q.level, CHAPTER_BATTLE_SHARE));
-  return { base, extra: Math.round(base * (Math.max(1, Number(scale) || 1) - 1) / 10) * 10 };
+  return { base, extra: Math.round(base * (Math.max(1, Number(scale) || 1) - 1) / 10) * 10, onTop: xp < P.levelBand(Math.max(1, Math.floor(Number(q.level) || 1))) };
 }
 
 // Falling behind: a hero more than UNDER_FREE levels under an adventure's

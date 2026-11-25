@@ -136,13 +136,14 @@ function awardBattleXp(state,id,events,api,peaceful=false){
   return xp;
 }
 // A written chapter's fight pays its share as soon as it is won (src/xp.js
-// chapterBattle); the chapter's end pays the rest. The flag keeps the share
-// already paid, so the end knows what is left. Paid once per chapter.
-function awardChapterBattleXp(state,id,events,api,scale=1){
+// chapterBattle): on top of the chapter's own XP in Books One and Two (where
+// resolving the crisis peacefully pays the same share at the chapter's end),
+// out of it in Books Three and Four. The flag keeps the share paid. Paid once.
+function awardChapterBattleXp(state,id,events,api,scale=1,peaceful=false){
   const q=Director.quest(state,id);if(!QUESTS[id]||q?.generated||state.story.flags[`battleXp:${id}`])return 0;
   const {base,extra}=XP.chapterBattle(q,scale);if(!base)return 0;
   state.story.flags[`battleXp:${id}`]=base;
-  api.awardXp(state,base+extra,events,extra?'Won the fight, made harder by an earlier choice':'Won the fight');
+  api.awardXp(state,base+extra,events,peaceful?'Overcame the threat without a fight':extra?'Won the fight, made harder by an earlier choice':'Won the fight');
   return base+extra;
 }
 // What a written chapter has already paid for its fight (0 for an AI adventure).
@@ -172,9 +173,12 @@ function completeQuest(state,id,events,api){
   const destination=q?.nextTown||q?.town||'briarwatch';state.world.townId=destination;
   refreshStock(state);
   if(state.story.flags[`method:${id}`]==='peace')awardBattleXp(state,id,events,api,true);
-  const early=battlePaid(state,q),gain=q?.generated?Book.capXp(state,xp):Math.max(0,xp-early);state.world.completed[id].xp=gain+early;
-  if(q?.generated&&gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
-  if(gain)api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved${early?' (the rest of the chapter\'s XP)':''}`);
+  // A written chapter resolved without its fight still earns the fight's share (src/xp.js chapterBattle).
+  const onTop=QUESTS[id]&&!q?.generated&&XP.chapterBattle(q).onTop;
+  if(onTop&&state.story.flags[`method:${id}`]==='peace')awardChapterBattleXp(state,id,events,api,1,true);
+  const early=battlePaid(state,q),gain=q?.generated?Book.capXp(state,xp):onTop?xp:Math.max(0,xp-early);state.world.completed[id].xp=gain+early;
+  if(gain<xp)emit(events,'Quest XP is capped: you are at the level this chapter of the story is written for. Finishing the chapter raises the limit.','reward');
+  if(gain)api.awardXp(state,gain,events,`${q?.name||'The Bell Beneath Briarwatch'} resolved${early&&!onTop?' (the rest of the chapter\'s XP)':''}`);
   levelFloor(state,q,events,api);
   // A chapter's own reward item, or a templated one from an AI adventure (src/gear.js).
   Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);

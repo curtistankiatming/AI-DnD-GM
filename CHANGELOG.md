@@ -7,12 +7,16 @@ the pull requests that made them.
 ## Battle XP and special monsters (25 November 2026)
 
 - A written chapter's own fight now pays XP the moment it is won: a tenth of
-  the chapter's level (a "hard" battle), taken out of the chapter's XP, so a
-  chapter still pays the same in all and the level 10 grind is unchanged.
-  Before, the fight paid nothing until the chapter's last decision.
+  the chapter's level (a "hard" battle). Before, it paid nothing of its own.
+- In Books One and Two (chapters pay about 70% of a level) this is on top of
+  the chapter's XP, as Curtis chose: about 1,900 more XP over Book One, so the
+  grind to the level 10 trial is about 4 bounties instead of 7, and about 5,400
+  more over Book Two (roughly one level). Talking your way out pays the same
+  share at the chapter's end, so peace and fighting stay equal.
+- In Books Three and Four (each chapter pays exactly one level, so more would
+  overshoot the trials at 40 and 70) the share comes out of the chapter's XP.
 - A fight that an earlier choice made tougher (six chapters in Books Three and
   Four) pays that much more on top. One made easier still pays the full share.
-  Talking your way out still pays the same total as fighting.
 - Eight special monsters, two in each book, each an optional hunt on one
   chapter's opening scene: Old Snapjaw (Fenmere marsh, 3), Greyback (Glasswind,
   7), Old Tollclaw (Merrowgate harbour, 13), Old Clinker (Cinder Fold, 16),

@@ -198,9 +198,9 @@ skips all of it ends Book Two at about level 17; a careful one at 19, reaching
 20 and the 2nd job with a bounty or two after the Second Oath. A chapter can be
 started up to 10 levels under its level; more than 5 under, it gets harder.
 A written chapter's own fight pays a tenth of
-its level as soon as it is won, out of the chapter's XP, so the total is the
-same; a fight an earlier choice made tougher pays more on top, and the
-peaceful way pays the same total (25 November 2026). Special monsters (below)
+its level as soon as it is won, on top of the chapter's XP in Books One and
+Two (the peaceful way pays the same share) and out of it in Books Three and
+Four; a fight an earlier choice made tougher pays more (25 November 2026). Special monsters (below)
 pay more. (Before: 105% per chapter, so the
 story reached level 20 at the end of Book Two without side content.)
 
