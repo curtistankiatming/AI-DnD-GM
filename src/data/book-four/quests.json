@@ -8094,7 +8094,7 @@
           { "narrate": "You leave the Parting Bell where it is, on the floor, and say it in front of everybody: the Wold comes south. All of it that will come. The free wards will take them in." },
           { "oneOf": [
             { "narrate": "You go up the lid to the Mother Bell's rope with the rope from the signal house on your shoulder, and hang it, yourself. You allow the note, as it has always been rung.", "when": { "flag": "mother_silenced" } },
-            { "narrate": "The Mother Bell rings its midwinter note, as it has every midwinter since the great note, and everything it pushes goes north, to a country that will be empty by the spring." }
+            { "narrate": "The Mother Bell rings its midwinter note, as it has every midwinter since the great note, and everything it pushes goes north, to a country that will be all but empty by the spring." }
           ] },
           { "oneOf": [
             { "say": "Iona", "text": "I've costed it. I costed it at ten thousand, the autumn before last, and the council voted it in the spring with its eyes open. It's three thousand. It holds. Just. Don't anybody have a child for a year.", "when": { "flag": "b4_vote_refuge", "anyFlag": ["b4_embassy_refuge"] } },

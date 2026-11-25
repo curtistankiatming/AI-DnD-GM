@@ -89,6 +89,11 @@ const sources = (a) => [...worn(a), ...setBonuses(a).map((b) => b.bonus)];
 // wearing one is not Slowed by the white at the start of a deciding fight in a
 // chapter with "white": true (src/combat.js). The first warm item worn, or null.
 const warmItem = (a) => worn(a).find((i) => i.warm) || null;
+// Whether the party can reach a town that sells warm wool yet (Book Four's
+// Lantry and Orme). Before the first Wold chapter has opened Lantry, the first
+// cold warning says where the wool is, and that it is not on the road yet.
+const WARM_TOWNS = ['lantry', 'orme'];
+const warmReachable = (state) => WARM_TOWNS.some((id) => (state?.world?.unlockedTowns || []).includes(id));
 const WARM_TEXT = 'Warm: in the Wold\'s white, the wearer is not Slowed at the start of a deciding fight';
 
 // Special stats summed over what an actor wears (src/equipment.js derive).
@@ -312,4 +317,4 @@ function purpose(item, state) {
   return [item.purpose, ...extra.map((t) => t.endsWith('.') ? t : `${t}.`), req ? `Requires: ${req}.` : '', ready].filter(Boolean).join(' ');
 }
 
-module.exports = {warmItem, WARM_TEXT, setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};
+module.exports = {warmItem, warmReachable, WARM_TEXT, setCard, SETS, setCounts, setBonuses, setText, bonusText, sources, specId, purpose, source, minValue, RARITY_FLOOR, award, bountyReward, forge, register, forgeReward, TEMPLATES, RARITIES, gearClass, requirementText, unmet, stats, skills, storyReady, storyItem, spendStory, refreshStory, describe, upgradeCost};

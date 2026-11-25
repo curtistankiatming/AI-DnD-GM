@@ -1199,8 +1199,28 @@
               }
             },
             {
-              "say": "Dera",
-              "text": "You kept all of it. Nobody gave, so nobody's any lighter. Whatever you go to be next, you go to it carrying all of it, and the nine's weight besides. That's what you carry.",
+              "oneOf": [
+                {
+                  "say": "Dera",
+                  "text": "You kept yours. Orin's badge is still down there; he set it down before you said no, and he's not asked for it back. Whatever you go to be next, you go to it carrying everything you didn't give, and the nine's weight besides. That's what you carry.",
+                  "when": {
+                    "flag": "b3_orin_gives",
+                    "party": "orin"
+                  }
+                },
+                {
+                  "say": "Dera",
+                  "text": "You kept yours. Nessa's letter is still down there; she put it down before you said no, and she's not said a word about it since. Whatever you go to be next, you go to it carrying everything you didn't give, and the nine's weight besides. That's what you carry.",
+                  "when": {
+                    "flag": "b3_nessa_gives",
+                    "party": "nessa"
+                  }
+                },
+                {
+                  "say": "Dera",
+                  "text": "You kept yours, and nobody's any lighter for it. Whatever you go to be next, you go to it carrying all of it, and the nine's weight besides. That's what you carry."
+                }
+              ],
               "when": {
                 "flag": "b3_stair_sealed"
               }
@@ -1233,7 +1253,7 @@
                 }
               },
               {
-                "narrate": "Nobody gives anything here tonight. You leave the floor as you found it, and turn your back on it.",
+                "narrate": "Nobody else gives anything here tonight. You leave the floor as it lies, with whatever is on it, and turn your back on it.",
                 "when": {
                   "flag": "b3_stair_sealed"
                 }

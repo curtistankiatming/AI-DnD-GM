@@ -1080,7 +1080,7 @@ test('the epilogue: each door comes home its own way, b3_done is set, and the he
 
 test('after b3_done the 3rd job trial opens with the epilogue\'s framing, read from the save, offline', () => {
   const end = (decision, gift) => { let s = decide('b3-firstbell', decision); s = through(s, gift ? { 'scene-firstbell-gift': gift } : {}); s.player.progression.specialization = 'guardian'; return s; };
-  for (const [decision, gift, line] of [['old', 'firstnight', /You gave the first night/], ['old', 'bell', /You gave the bell/], ['old', 'name', /You gave a name/], ['hesk', null, /You gave nothing down there/], ['seal', null, /You kept all of it/]]) {
+  for (const [decision, gift, line] of [['old', 'firstnight', /You gave the first night/], ['old', 'bell', /You gave the bell/], ['old', 'name', /You gave a name/], ['hesk', null, /You gave nothing down there/], ['seal', null, /You kept yours/]]) {
     const s = end(decision, gift);
     assert.equal(P.nextTrial(s.player), 'third');
     const first = D.writtenTrial(s).opening;

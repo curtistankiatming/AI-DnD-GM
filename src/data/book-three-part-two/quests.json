@@ -6406,7 +6406,7 @@
       },
       {
         "id": "seal",
-        "label": "Seal the stair: nobody gives, nobody is cast, and nobody comes down here again",
+        "label": "Seal the stair: nobody else gives, nobody is cast, and nobody comes down here again",
         "flag": "b3_stair_sealed",
         "description": "This decision is permanent. The nine carry it alone again, and the next generation will pay more.",
         "text": [

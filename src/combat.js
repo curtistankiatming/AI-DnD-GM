@@ -249,7 +249,7 @@ function whiteCold(state,encounter,allies,events){
   const names=cold.map(a=>a.id==='player'?'you':a.name);
   const list=names.length>1?`${names.slice(0,-1).join(', ')} and ${names.at(-1)}`:names[0]||'';
   const text=!cold.length?'The white comes down cold, but everyone is wrapped in warm Wold wool: nobody is slowed.'
-    :`The white comes down cold. ${list[0].toUpperCase()}${list.slice(1)} ${cold.length===1&&names[0]!=='you'?'is':'are'} Slowed for the first round (2 less armour): no warm gear. Warm Wold-made wool, sold in Lantry and Orme, keeps the cold off.`;
+    :`The white comes down cold. ${list[0].toUpperCase()}${list.slice(1)} ${cold.length===1&&names[0]!=='you'?'is':'are'} Slowed for the first round (2 less armour): no warm gear. ${Gear.warmReachable(state)?'Warm Wold-made wool, sold in Lantry and Orme, keeps the cold off.':'Warm Wold-made wool keeps the cold off: Lantry sells it, once you get there.'}`;
   pushLog(state,'The white',text,'combat');
   events.push({type:'combat',tone:cold.length?'warning':'good',text});
   state.combat.white={cold:cold.map(a=>a.id),text};
