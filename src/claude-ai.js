@@ -12,9 +12,14 @@ function loadSdk() {
   catch { throw new Error('The Claude provider needs its SDK. Run "npm install" beside package.json, then restart the game.'); }
 }
 
+// GAME_ANTHROPIC_API_KEY is a second name for the same key, for hosts that keep
+// ANTHROPIC_* variables for their own use (cloud coding sandboxes strip them).
 function apiKey(env = process.env) {
-  const key = typeof env.ANTHROPIC_API_KEY === 'string' ? env.ANTHROPIC_API_KEY.trim() : '';
-  return key || null;
+  for (const name of ['ANTHROPIC_API_KEY', 'GAME_ANTHROPIC_API_KEY']) {
+    const key = typeof env[name] === 'string' ? env[name].trim() : '';
+    if (key) return key;
+  }
+  return null;
 }
 
 // The key lives only in the environment and a git-ignored .env file, never in

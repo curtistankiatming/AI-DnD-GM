@@ -29,7 +29,7 @@ test('Claude settings default to Opus 5.5 at low effort and need no local model'
   for(const raw of [{provider:'openai'},{provider:'claude',claudeModel:'gpt-5'},{provider:'claude',effort:'max'},{provider:'claude',apiKey:'sk-ant-secret'}])assert.throws(()=>Profiles.normalize(raw));
 });
 test('the API key only comes from the environment',()=>{
-  assert.equal(apiKey({}),null);assert.equal(apiKey({ANTHROPIC_API_KEY:'  '}),null);assert.equal(apiKey({ANTHROPIC_API_KEY:'k'}),'k');
+  assert.equal(apiKey({}),null);assert.equal(apiKey({ANTHROPIC_API_KEY:'  '}),null);assert.equal(apiKey({ANTHROPIC_API_KEY:'k'}),'k');assert.equal(apiKey({GAME_ANTHROPIC_API_KEY:' g '}),'g');assert.equal(apiKey({ANTHROPIC_API_KEY:'k',GAME_ANTHROPIC_API_KEY:'g'}),'k');
   assert.equal(createClaudeProvider({env:{}}).configured(),false);
 });
 test('a missing key fails clearly before any request',async t=>{

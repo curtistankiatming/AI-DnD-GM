@@ -52,6 +52,8 @@ You can change all of this later under **Settings → AI settings**. The model
 (Claude Opus 5.5 by default; Sonnet 5.5 and Haiku 5.5 are faster and cheaper),
 the thinking effort and the wait limit sit under **Advanced settings**. Copying
 `.env.example` to `.env` and filling in `ANTHROPIC_API_KEY` still works too.
+If your host keeps `ANTHROPIC_*` variables for itself (for example a Claude Code
+cloud environment), set the key as `GAME_ANTHROPIC_API_KEY` instead.
 
 ## What the game has
 
