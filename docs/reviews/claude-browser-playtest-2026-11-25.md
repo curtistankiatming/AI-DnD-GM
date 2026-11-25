@@ -88,6 +88,14 @@ Options: (a) if the player misses the rescue, Nessa turns up in a short scene
 when the party first returns to Briarwatch, so she always joins before her
 chapters (recommended); (b) keep the optional town button as it is now.
 
+This branch does (a), as recommended, pending Curtis's answer: reporting the
+first chapter to Aveline brings Nessa in with the same short scene if she is
+not already in the party. The town button stays for any case it misses.
+Players who rescued her are unchanged. One leftover either way: Nessa's
+Book Two walk-out letter says "I've been the one hanging upside down in a snare
+while people talked about the best way to cut me down", which only fits players
+who rescued her. It needs a second wording for the guild meeting.
+
 ## Not fixed, worth deciding
 
 - **No autosave in the normal web version.** Progress only reaches disk when

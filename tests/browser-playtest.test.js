@@ -1,7 +1,7 @@
 'use strict';
 // Browser playtest, 25 November 2026 (docs/reviews/claude-browser-playtest-2026-11-25.md):
 // a fight won by force reads as a sentence, a third failed death save does not
-// say the hero died, Nessa met through the guild gets a scene, and a hosted
+// say the hero died, Nessa joins in a scene even when her rescue was missed, and a hosted
 // visitor's browser really keeps the current game.
 const test = require('node:test'), assert = require('node:assert/strict');
 const fs = require('node:fs/promises'), os = require('node:os'), path = require('node:path'), net = require('node:net');
@@ -53,6 +53,29 @@ test('Nessa met through the guild arrives in a short scene, not a shop line', ()
   const told = r.events.map((e) => e.text || '').join(' ');
   assert.match(told, /Nessa: The guild says you’re short a pair of eyes\./);
   assert.doesNotMatch(told, /recruitment fee/);
+});
+
+test('a hero who missed the rescue in the mist meets Nessa on the first return to Briarwatch', () => {
+  const s = hero('rogue', 2); s.story.nodeId = 'ending';
+  assert.ok(!s.party.some((m) => m.id === 'nessa'));
+  const choice = E.buildView(s).scene.choices.find((c) => c.id === 'report-bell');
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: choice.id }, low);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.ok(r.state.party.some((m) => m.id === 'nessa'), 'Nessa joins when the first chapter is reported.');
+  assert.match(r.events.map((e) => e.text || '').join(' '), /Nessa: The guild says you’re short a pair of eyes\./);
+  assert.equal(E.buildView(r.state).world.canRecruit, false);
+});
+
+test('a hero who rescued Nessa does not meet her twice', () => {
+  let s = hero('rogue', 2); s.story.nodeId = 'mist-hollow';
+  s = E.resolveAction(s, { type: 'story-choice', choiceId: 'hold-wolves' }, low).state;
+  assert.ok(s.party.some((m) => m.id === 'nessa'), 'rescued in the mist');
+  if (s.combat?.active) s.combat = null;
+  s.story.nodeId = 'ending';
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'report-bell' }, low);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.equal(r.state.party.filter((m) => m.id === 'nessa').length, 1);
+  assert.doesNotMatch(r.events.map((e) => e.text || '').join(' '), /short a pair of eyes/);
 });
 
 // --- The hosted server over HTTP ---

@@ -148,6 +148,12 @@ function awardChapterBattleXp(state,id,events,api,scale=1,peaceful=false){
 }
 // What a written chapter has already paid for its fight (0 for an AI adventure).
 const battlePaid=(state,q)=>!q?.generated&&typeof state.story.flags[`battleXp:${q?.id}`]==='number'?state.story.flags[`battleXp:${q.id}`]:0;
+// Nessa joins the party in a short scene: from the guild bench in town, or on the first return
+// to Briarwatch for a hero who never followed the bell-note into the mist (the rescue in mist-hollow).
+function nessaArrives(state,events,api){
+  api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
+  return emit(events,'A young scout is sitting on the roadwardens’ bench with her pack already on and one boot up on the table. Nessa Reed. Nessa: The guild says you’re short a pair of eyes. I’ve been a day behind you on the road for a week, and you stop to talk to everyone. Somebody ought to be watching the trees while you do it. Orin: We manage. Nessa: You manage slowly. Maren: She can come. Nessa: I wasn’t asking. She brings her own gear, and she is every bit as road-worn as the rest of you.','party','good');
+}
 function completeQuest(state,id,events,api){
   if(completed(state,id))return false;
   const q=Director.quest(state,id);if(id!=='bell'&&!q)return false;
@@ -184,6 +190,8 @@ function completeQuest(state,id,events,api){
   Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);
   Book.finished(state);
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The pay is lower for how costly it was; the XP is not. ':''}The shops have new stock.`,'reward','good');
+  // Missed her rescue in the Briarwood: Nessa still joins before the roads open (her mentor's chapter needs her).
+  if(id==='bell'&&!state.party.some(m=>m.id==='nessa')&&!state.world.away?.nessa)nessaArrives(state,events,api);
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
   // A written chapter settles each companion's approval for it (src/away.js).
@@ -527,9 +535,7 @@ function handle(state,action,rng,events,api){
   }
   if(action.type==='recruit'){
     if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3)return fail(events,'No recruit is currently available.');
-    api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
-    // A hero who never followed the bell-note into the mist meets her here instead (the rescue in mist-hollow is the other way in).
-    return emit(events,'A young scout is sitting on the roadwardens’ bench with her pack already on and one boot up on the table. Nessa Reed. Nessa: The guild says you’re short a pair of eyes. I’ve been a day behind you on the road for a week, and you stop to talk to everyone. Somebody ought to be watching the trees while you do it. Orin: We manage. Nessa: You manage slowly. Maren: She can come. Nessa: I wasn’t asking. She brings her own gear, and she is every bit as road-worn as the rest of you.','party','good');
+    return nessaArrives(state,events,api);
   }
   if(action.type==='personal'){
     const a=state.party.find(m=>m.id===action.companionId),def=PERSONAL[action.companionId];if(!a||!def)return fail(events,'That companion is not present.');
