@@ -195,6 +195,7 @@ function source(item) {
   const x = item.exclusive;
   if (x?.town) return `Only sold in ${placeName(x.town)}`;
   if (x?.quest) { const q = require('./expansion').QUESTS?.[x.quest]; return `Reward for finishing ${q?.name || x.quest}`; }
+  if (x?.event?.startsWith('special:')) { const m = require('./special').MONSTERS[x.event.slice(8)]; return m ? `Dropped by ${m.name}, a special monster` : ''; }
   if (x?.event?.startsWith('bounty:')) { const [town, level] = x.event.slice(7).split(':'); return `Reward for the first bounty claimed in ${placeName(town)}${level ? ` at level ${level} or above` : ''}`; }
   return '';
 }

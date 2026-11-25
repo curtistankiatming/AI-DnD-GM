@@ -24,7 +24,9 @@ const TIERS = [45, 50, 55, 60, 65, 70, 80, 90, 95, 100];
 // tiers; the rest of the late gear is at a tier. Read from the file: the
 // chapters may not be merged with Book Four held back.
 const B4 = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '../src/data/book-four/quests.json'), 'utf8'));
-const chapterReward = (item) => Boolean(B4[item.exclusive?.quest]) && item.requires.level === B4[item.exclusive.quest].level - 2;
+// A Book Four chapter's reward, or the drop of a special monster in one (src/special.js): two levels under the chapter.
+const SPECIAL_CHAPTER = (item) => require('../src/special').MONSTERS[String(item.exclusive?.event || '').replace(/^special:/, '')]?.chapter;
+const chapterReward = (item) => { const q = B4[item.exclusive?.quest || SPECIAL_CHAPTER(item)]; return Boolean(q) && item.requires.level === q.level - 2; };
 // An upgrade for each kind of kit at least every 20 levels.
 const WINDOWS = [[41, 60], [61, 80], [81, 100]];
 const lv = (i) => i.requires?.level || 0;
@@ -329,7 +331,7 @@ test('level bounties past the books give their item once, at or above its level'
   const api = { awardXp: E.awardXp, enterNode: E.enterNode, actors: G.actors };
   const claim = (s, town) => { s.world.townId = town; s.story.nodeId = `town-${town}`; s.world.bounty = { nodeId: `town-${town}`, townId: town, level: s.player.level }; Bounty.finish(s, 'victory', [], api); };
   const count = (s, id) => s.player.inventory.filter((e) => e.itemId === id).reduce((n, e) => n + e.quantity, 0);
-  const rewards = LATE.filter((i) => i.exclusive?.event);
+  const rewards = LATE.filter((i) => i.exclusive?.event?.startsWith('bounty:'));
   assert.equal(rewards.length, 6);
   for (const item of rewards) {
     const [, town, level] = item.exclusive.event.split(':');

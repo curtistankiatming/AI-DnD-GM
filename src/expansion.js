@@ -371,6 +371,8 @@ function installJob(job){
   }
 }
 for(const job of Object.values(SIDE_JOBS))installJob(job);
+// Special monsters' hunts, on their chapters' opening scenes (src/special.js).
+require('./special').install({QUESTS,STORY_NODES,ENCOUNTERS,ENEMIES,choice});
 // Any written story node or choice outcome may use "lines" (the same format as
 // scenes) instead of plain text. They compile to structured dialogue plus the
 // same text, so offline narration, saves and the AI narrator are unchanged.

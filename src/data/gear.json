@@ -8168,5 +8168,204 @@
     "exclusive": {
       "event": "bounty:briarwatch:100"
     }
+  },
+  {
+    "id": "snapjaw-scute",
+    "name": "Snapjaw Scute",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 90,
+    "description": "A plate of Old Snapjaw's shell, the size of a hand, drilled and hung on a cord the way Fenmere's gatherers hang a lucky eel-bone.",
+    "purpose": "Equip in the accessory slot: +1 Constitution saving throws, 5% less damage taken.",
+    "saveBonuses": {
+      "con": 1
+    },
+    "stats": {
+      "taken": -0.05
+    },
+    "exclusive": {
+      "event": "special:snapjaw"
+    }
+  },
+  {
+    "id": "wyvern-scale-brooch",
+    "name": "Wyvern-scale Brooch",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Rare",
+    "value": 160,
+    "description": "A grey scale off Greyback's throat, set in a pin by somebody on the Glasswind ledge who had nothing else to do while the keepers argued.",
+    "purpose": "Equip in the accessory slot: +1 AC, +1 Dexterity saving throws, 5% more damage dealt.",
+    "acBonus": 1,
+    "saveBonuses": {
+      "dex": 1
+    },
+    "stats": {
+      "dealt": 0.05
+    },
+    "requires": {
+      "level": 5
+    },
+    "exclusive": {
+      "event": "special:greyback"
+    }
+  },
+  {
+    "id": "tollclaw-gauntlet",
+    "name": "Tollclaw Gauntlet",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 300,
+    "description": "Old Tollclaw's smallest claw, hollowed out and fitted with a glove. It still has a guild lamp-mark scratched on the inside where it held one.",
+    "purpose": "Equip in the accessory slot: +1 to hit, +1 damage, +2 Athletics.",
+    "attackBonus": 1,
+    "damageBonus": 1,
+    "skillBonuses": {
+      "athletics": 2
+    },
+    "requires": {
+      "level": 11
+    },
+    "exclusive": {
+      "event": "special:tollclaw"
+    }
+  },
+  {
+    "id": "clinker-heartstone",
+    "name": "Clinker's Heartstone",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Epic",
+    "value": 370,
+    "description": "The stone from the middle of Old Clinker, still warm, still glowing in the cracks like a coal nobody has banked.",
+    "purpose": "Equip in the accessory slot: 10% more damage dealt, +1 Constitution saving throws. Skill: set an enemy Burning.",
+    "stats": {
+      "dealt": 0.1
+    },
+    "saveBonuses": {
+      "con": 1
+    },
+    "skill": {
+      "name": "Clinker's Heat",
+      "effect": "burning",
+      "target": "enemy",
+      "rounds": 2,
+      "text": "Set an enemy Burning for two rounds."
+    },
+    "requires": {
+      "level": 14
+    },
+    "exclusive": {
+      "event": "special:clinker"
+    }
+  },
+  {
+    "id": "tallow-collar-bell",
+    "name": "Tallow's Collar-bell",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 620,
+    "description": "A small brass bell on a lamp-dog's rope collar. It rings on its own at the foot of lamp-poles, once, as if somebody has stopped there.",
+    "purpose": "Equip in the accessory slot: 15% more damage dealt, 5% less damage taken, +2 Perception.",
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.05
+    },
+    "skillBonuses": {
+      "perception": 2
+    },
+    "requires": {
+      "level": 21
+    },
+    "exclusive": {
+      "event": "special:tallow"
+    }
+  },
+  {
+    "id": "candle-eater-lantern",
+    "name": "Candle-Eater's Lantern",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 700,
+    "description": "An old black lantern with fourteen wicks. The company lit them on the ledge in the deep, and you have never seen any of them go out.",
+    "purpose": "Equip in the accessory slot: 5% more damage dealt, 10% less damage taken, +3 Perception, +1 Constitution and Wisdom saving throws.",
+    "stats": {
+      "dealt": 0.05,
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "perception": 3
+    },
+    "saveBonuses": {
+      "con": 1,
+      "wis": 1
+    },
+    "requires": {
+      "level": 35
+    },
+    "exclusive": {
+      "event": "special:candle-eater"
+    }
+  },
+  {
+    "id": "whitecoat-mantle",
+    "name": "Whitecoat Mantle",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 800,
+    "description": "Old Whitecoat's coat, cured the Wold way by Rue on the far side of the Hall. Brown fur, grey at the collar, and the white never settles on it.",
+    "purpose": "Equip in the accessory slot: +1 AC, 15% less damage taken, +1 to all saving throws (+2 Constitution), +3 Athletics. Warm.",
+    "warm": true,
+    "acBonus": 1,
+    "stats": {
+      "taken": -0.15
+    },
+    "saveBonuses": {
+      "str": 1,
+      "dex": 1,
+      "con": 2,
+      "int": 1,
+      "wis": 1,
+      "cha": 1
+    },
+    "skillBonuses": {
+      "athletics": 3
+    },
+    "requires": {
+      "level": 47
+    },
+    "exclusive": {
+      "event": "special:whitecoat"
+    }
+  },
+  {
+    "id": "snowcat-pelt",
+    "name": "Snowcat Pelt",
+    "category": "accessory",
+    "slot": "accessory",
+    "rarity": "Legendary",
+    "value": 920,
+    "description": "The saddle ghost's grey-white pelt, light as a blanket, warm as one. Brannagh had it cured overnight, and gave it to you in the morning without a word about it.",
+    "purpose": "Equip in the accessory slot: 15% more damage dealt, 10% less damage taken, +3 Stealth and Acrobatics. Warm.",
+    "warm": true,
+    "stats": {
+      "dealt": 0.15,
+      "taken": -0.1
+    },
+    "skillBonuses": {
+      "stealth": 3,
+      "acrobatics": 3
+    },
+    "requires": {
+      "level": 58
+    },
+    "exclusive": {
+      "event": "special:snowcat"
+    }
   }
 ]

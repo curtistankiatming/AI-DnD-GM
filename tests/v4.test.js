@@ -129,6 +129,8 @@ test('unknown expedition threats and hidden options are not exposed by the view'
 });
 test('resolution XP is equal for peaceful and combat routes and rewards cannot be duplicated',()=>{
  let a=ready(),b=deepClone(a);for(const [s,method]of [[a,'peace'],[b,'objective']]){s.story.nodeId='q-road-after';s.world.activeQuest='road';s.story.flags['method:road']=method;}
+ // The fight's own share is paid when it is won (src/world.js awardChapterBattleXp); the peaceful way pays it at the end.
+ require('../src/world').awardChapterBattleXp(b,'road',[],{awardXp:E.awardXp});
  a=act(a,{type:'story-choice',choiceId:QUESTS.road.decisions[0].id});b=act(b,{type:'story-choice',choiceId:QUESTS.road.decisions[0].id});assert.equal(a.player.xp,b.player.xp);const xp=a.player.xp,g=a.player.gold;
  a.story.nodeId='q-road-after';const again=E.resolveAction(a,{type:'story-choice',choiceId:QUESTS.road.decisions[1].id});assert.equal(again.state.player.xp,xp);assert.equal(again.state.player.gold,g);
 });

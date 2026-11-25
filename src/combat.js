@@ -11,6 +11,7 @@ const XP = require("./xp");
 const Power = require("./power");
 const Gear = require("./gear");
 const Bounty = require("./bounty");
+const Special = require("./special");
 const { nowIso, normalizeId, titleCase, addItem, hasItem, consumeItemUse, playerAttackProfile, pushLog, recordHistory, findCompanion, successProbability, awardXp, invalidResult } = require("./engine-core");
 const Engine = require("./engine");
 const Expansion = require("./expansion");
@@ -158,9 +159,9 @@ function startCombat(state, encounterId, rng, events) {
   const encounter = written.introLines ? { ...written, intro: Expansion.dialogueText(Expansion.liveLines(state, written.introLines)) } : written;
   if(!encounter.practice && state.story.flags[`won:${encounter.id}`]){enterNode(state,encounter.victoryNode,events);return true;}
   state.world.combatOrigin=state.story.nodeId;
-  if(!encounter.questId&&!encounter.practice&&!encounter.bounty)state.world.activeQuest="bell";
+  if(!encounter.questId&&!encounter.chapter&&!encounter.practice&&!encounter.bounty)state.world.activeQuest="bell";
   const allies = [combatActorFromPlayer(state.player), ...state.party.map(combatActorFromCompanion)];
-  const scale = encounterScale(state, encounter) * flagScale(state, encounter) * (encounter.questId || encounter.bounty ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
+  const scale = encounterScale(state, encounter) * flagScale(state, encounter) * (encounter.questId || encounter.chapter || encounter.bounty ? 1+Math.max(0,state.party.length-2)*0.22 : 1);
   const enemies = encounter.enemies.map((enemyId, index) => combatActorFromEnemy(enemyId, index, scale, encounter));
   if (encounter.bounty) Bounty.shape(state, enemies, scale);
   const actors = [...allies, ...enemies];
@@ -194,18 +195,20 @@ function startCombat(state, encounterId, rng, events) {
   }
   // More than 5 levels under the adventure: enemies hit harder and more often,
   // and the fight's objective is harder, as story checks are (src/xp.js).
-  const under=encounter.questId?XP.underSteps(state.player.level,Director.quest(state,encounter.questId)?.level):0;
+  // A special monster's hunt (src/special.js) takes its chapter's level.
+  const qid=encounter.questId||encounter.chapter;
+  const under=qid?XP.underSteps(state.player.level,Director.quest(state,qid)?.level):0;
   if(under){
     // The objective is a check: it takes the unweighted steps (src/xp.js underChecks).
-    const checks=XP.underChecks(state.player.level,Director.quest(state,encounter.questId)?.level);
+    const checks=XP.underChecks(state.player.level,Director.quest(state,qid)?.level);
     if(state.combat.objective)state.combat.objective.dc+=checks;
     for(const e of enemies){if(e.attack)e.attack.bonus=Number(e.attack.bonus||0)+under;addCondition(e,{id:'outclassing',name:`Outclasses you: +${under} to hit, +${Math.round(under*XP.UNDER_DAMAGE*100)}% damage`,dealt:under*XP.UNDER_DAMAGE});}
-    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,encounter.questId).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
+    events.push({type:'combat',tone:'warning',text:`You are ${XP.underBy(state.player.level,Director.quest(state,qid).level)} levels under this adventure: its enemies get +${under} to hit and ${Math.round(under*XP.UNDER_DAMAGE*100)}% more damage${state.combat.objective?`, and the objective's DC is ${checks} higher`:''}.`});
   }
   grittyLate(state,encounter,enemies,events);
   whiteCold(state,encounter,allies,events);
   if(encounter.practice){for(const e of enemies){e.maxHp=25+P.powerLevel(state.player.level)*11;e.hp=e.maxHp;e.attack.bonus=2+Math.floor(P.accuracyLevel(state.player.level)/3);}}
-  if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.practice && !encounter.bounty) {
+  if (state.story.flags.orinStartsGuarding && !encounter.questId && !encounter.chapter && !encounter.practice && !encounter.bounty) {
     const orin = actors.find((actor) => actor.refId === "orin");
     if (orin) addCondition(orin, { id: "dodging", name: "Guarding Stance", expiresRound: 1 });
   }
@@ -229,7 +232,8 @@ function startCombat(state, encounterId, rng, events) {
 // worn gear turns less of their damage (src/power.js). Only on Gritty.
 function grittyLate(state,encounter,enemies,events){
   if(state.difficulty!=='gritty'||encounter.practice)return;
-  const level=encounter.questId?Number(Director.quest(state,encounter.questId)?.level)||state.player.level:state.player.level;
+  const qid=encounter.questId||encounter.chapter;
+  const level=qid?Number(Director.quest(state,qid)?.level)||state.player.level:state.player.level;
   if(!XP.lateLevels(level))return;
   const g=XP.grittyLate(level);
   for(const e of enemies){e.maxHp=Math.max(1,Math.round(e.maxHp*g.hp));e.hp=e.maxHp;e.hardened=true;}
@@ -241,7 +245,8 @@ function grittyLate(state,encounter,enemies,events){
 // no warm item ("warm": true, src/gear.js) Slowed for one round, and the fight
 // says so at the top, with the reason. Bells do not count: only warm gear.
 function whiteCold(state,encounter,allies,events){
-  const q=encounter.questId&&!encounter.practice&&!encounter.bounty?Director.quest(state,encounter.questId):null;
+  const qid=encounter.questId||encounter.chapter;
+  const q=qid&&!encounter.practice&&!encounter.bounty?Director.quest(state,qid):null;
   if(!q?.white)return [];
   const source=a=>a.id==='player'?state.player:state.party.find(m=>m.id===a.refId);
   const cold=allies.filter(a=>a.hp>0&&!Gear.warmItem(source(a)));
@@ -1208,6 +1213,8 @@ function finishCombat(state,result,rng,events){
     Bounty.finish(state,result,events,{awardXp,enterNode,actors:G.actors});
     return;
   }
+  // A special monster settles on its own and never ends the chapter (src/special.js).
+  if(Special.finish(state,encounter,result,events,{...extensionApi(),actors:G.actors}))return;
   if(result==='defeat'||result==='retreat'){
     state.world.failedEncounter=encounter.id;
     state.story.lastOutcome={kind:'combatDefeat',title:name,text:result==='retreat'?`The party withdraws from ${name}.`:W.atLedge(state)?`The party is overcome in ${name}; the others can carry them back to the last safe ledge.`:`The party is overcome in ${name}; rescuers can bring them home.`};
@@ -1222,7 +1229,7 @@ function finishCombat(state,result,rng,events){
     if(result==='setback'){(state.world.progress[qid]||={}).setback=true;state.world.setbacks++;}
     const text=c.objective.failed?`${c.objective.failText} The remaining opposition has now been resolved.`:result==='objective'?c.objective.successText:result==='setback'?c.objective.failText:`The opposition is defeated. The party secures ${c.objective.name.toLowerCase()} before returning to the witnesses.`;
     events.push({type:'objective',tone:result==='setback'?'warning':'good',text});
-    if(!state.story.flags[`won:${encounter.id}`])W.awardBattleXp(state,qid,events,{awardXp});
+    if(!state.story.flags[`won:${encounter.id}`]){W.awardBattleXp(state,qid,events,{awardXp});W.awardChapterBattleXp(state,qid,events,{awardXp},flagScale(state,encounter));}
     state.story.lastOutcome={kind:'combatVictory',title:name,text};
   }else{
     if(!state.story.flags[`won:${encounter.id}`]){awardXp(state,encounter.xp,events,`Victory in ${name}`);for(const loot of encounter.loot||[])addItem(state,loot.itemId,loot.quantity,events);}
@@ -1357,8 +1364,9 @@ function combatActionView(state) {
   }
   if(state.combat.objective&&['saboteur','lorekeeper'].includes(P.ensure(state.player).specialization))actions.push({id:'spec-objective',name:'Advancement: Unravel objective',cost:'action',targetKind:'none',targets:[],description:'Two objective progress without rolling; one Advancement use, once per fight.',disabled:actor.actionUsed||Boolean(state.combat.specObjectiveUsed)||actorResourceCurrent(actor,'advancement')<1,disabledReason:state.combat.specObjectiveUsed?'Already used this fight.':undefined});
   // Below the stair (Book Three) there is no town: a retreat falls back to the last safe ledge (src/world.js recover).
-  const ledge=!ENCOUNTERS[state.combat.encounterId].practice&&!ENCOUNTERS[state.combat.encounterId].bounty&&W.atLedge(state);
-  actions.push({id:'retreat',name:ledge?'Fall back to the ledge':'Retreat to town',cost:'free',targetKind:'none',targets:[],description:ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':ledge?'Withdraw to the last safe ledge, rest there, then go back to this fight. Costs 25% of current gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
+  const special=Boolean(ENCOUNTERS[state.combat.encounterId].special);
+  const ledge=!ENCOUNTERS[state.combat.encounterId].practice&&!ENCOUNTERS[state.combat.encounterId].bounty&&!special&&W.atLedge(state);
+  actions.push({id:'retreat',name:special?'Fall back':ledge?'Fall back to the ledge':'Retreat to town',cost:'free',targetKind:'none',targets:[],description:special?'Break off the hunt and fall back to the chapter. Costs nothing but health; you can hunt it again.':ENCOUNTERS[state.combat.encounterId].practice?'End practice and restore the full pre-practice state.':ENCOUNTERS[state.combat.encounterId].bounty?'Give up the bounty and go home. Costs a tenth of your gold; XP and equipment are kept.':ledge?'Withdraw to the last safe ledge, rest there, then go back to this fight. Costs 25% of current gold; XP and equipment are kept.':'Withdraw and return to safety. Rescue costs 25% of current gold; XP and equipment are preserved. Retry after preparation.'});
   actions.push({ id: "end-turn", name: "End Turn", cost: "free", targetKind: "none", description: "Resolve all companion and enemy turns until your next initiative." });
 
   for(const action of actions){

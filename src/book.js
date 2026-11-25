@@ -17,6 +17,7 @@
 // the server says how far a session may read (grant), never the save.
 const { QUESTS, TOWNS } = require('./expansion');
 const P = require('./progression');
+const XP = require('./xp');
 
 const FINISHED = 'books:finished';
 // The paid book a free hosted save set aside when it began an AI story of its
@@ -306,7 +307,10 @@ function jobRoom(state) {
   let paid = 0, room = xp + xpRoom(state);
   for (const q of chapters(state)) {
     if (done(state, q.id)) continue;
-    paid += Math.max(0, Number(q.xp) || 0);
+    // Its fight's share (src/world.js awardChapterBattleXp): still to come on top
+    // of the chapter's XP in Books One and Two, already part of it in Three and Four.
+    const b = XP.chapterBattle(q), early = Number(state.story?.flags?.[`battleXp:${q.id}`]), was = Number.isFinite(early) ? early : 0;
+    paid += Math.max(0, Number(q.xp) || 0) + (b.onTop ? (was ? 0 : b.base) : -was);
     room = Math.min(room, (P.XP_NEXT[(Number(q.level) || 1) + 1] || Infinity) - 1 - paid);
   }
   return Math.max(0, room - xp);
