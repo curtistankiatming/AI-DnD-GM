@@ -102,3 +102,46 @@ punishing players who don't shop. Options:
 Recommended: 1, with 2 as the smaller step if Curtis only wants Gritty to
 bite. The playtest policy should also learn the `job:` skills, so later
 playtests measure real play.
+
+## Follow-up, 23 November 2026: Gritty-only pressure past 40
+
+Curtis chose extra enemy pressure on Gritty only. Late gear, Story and
+Standard are unchanged.
+
+**What didn't work.** Plain stronger enemies on Gritty past 40 (more health
++2 to 3% a level, more damage +1 to 2% a level, more to-hit) barely touched a
+geared party (95% to 87 to 91% health left). Non-shoppers hit a wall: a
+hundred or more lost fights per campaign, and most never reached the 4th job.
+
+**What was built: hardened enemies** (`src/xp.js` `grittyLate`,
+`grittyArmour`; `src/combat.js`; `src/power.js`). On Gritty, in any fight
+above level 40 (a chapter's or adventure's level, or the hero's for a
+bounty):
+- enemies have +0.5% health per level past 40 (+15% at 70);
+- they get +1 to hit for each point of the target's armour above 18, at
+  most +8;
+- worn gear's damage cut counts a quarter against them;
+- a careful approach still lowers the objective DC, but no longer catches
+  them off guard.
+
+The fight says so at the top: "Gritty: these enemies are hardened."
+
+**Playtest** (every branch, Gritty, from the level 40 saves, job skills in
+use; same seeds before and after):
+
+| | Before | After |
+|---|---|---|
+| Geared, by force: median rounds | 3 | 4 |
+| party HP left after a win | 95% | 82% |
+| hero knock-downs per campaign | 0 | 0.4 |
+| chapter defeats (18 campaigns) | 0 | 0 |
+| No shopping: median rounds | 6 | 6 |
+| party HP left after a win | 64% | 62% |
+| chapter defeats (18 campaigns), most in one | 11, 4 | 21, 6 |
+| trial at 70, attempts / lost | 19 / 1 | 24 / 6 |
+| Geared, objective route: median rounds, HP left | | 4, 81% |
+
+All 54 campaigns reached the 4th job. Non-shoppers stay inside the design's
+"at most 3 defeats a part". Geared fights are still shorter than the design's
+4 to 7 rounds because the party's damage is high. This change adds danger,
+not length.

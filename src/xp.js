@@ -99,6 +99,21 @@ const ENEMY_TIER_DAMAGE = 3, ENEMY_TRIM_DAMAGE = 3;
 // first tried, overshot level 40's band with shop gear). Levels 1 to 40 are unchanged.
 const LATE_LEVEL = 40, LATE_HP = 0.006, LATE_DAMAGE = 0.3, LATE_ATTACK_EVERY = 15;
 const lateLevels = level => Math.max(0, Math.min(P.MAX_LEVEL, Math.floor(Number(level) || 1)) - LATE_LEVEL);
+// Gritty past level 40 (Curtis, 23 November 2026). With level gear a party
+// went through Book Four on Gritty in about 3 rounds a fight with 95% of its
+// health, and stronger enemies alone hit the players who don't shop far harder
+// than those who do (docs/reviews/claude-playtest-book-four-2026-11-22.md). So
+// Gritty's extra pressure past LATE_LEVEL is aimed at gear: enemies have
+// GRITTY_LATE_HP more health per level past 40, get +1 to hit per
+// GRITTY_ARMOUR_STEP points of the target's armour above GRITTY_ARMOUR_FROM
+// (at most GRITTY_ARMOUR_MAX),
+// worn gear's damage cut counts only GRITTY_GEAR_TAKEN_SHARE against them, and
+// a careful approach no longer catches them off guard (src/combat.js). Gear
+// still helps; it no longer makes a party untouchable. Story, Standard and
+// levels 1 to 40 are unchanged.
+const GRITTY_LATE_HP = 0.005, GRITTY_ARMOUR_FROM = 18, GRITTY_ARMOUR_STEP = 1, GRITTY_GEAR_TAKEN_SHARE = 0.25, GRITTY_ARMOUR_MAX = 8;
+const grittyArmour = ac => Math.min(GRITTY_ARMOUR_MAX, Math.max(0, Math.floor((Number(ac) - GRITTY_ARMOUR_FROM) / GRITTY_ARMOUR_STEP)));
+const grittyLate = level => ({ hp: 1 + GRITTY_LATE_HP * lateLevels(level) });
 const foeTier = p => Math.max(0, Math.floor((p + 1) / 6));
 // Enemy health is trimmed as the party's stat damage arrives, so fights by
 // force last about 4 to 7 rounds (playtest 21 November 2026): none up to
@@ -151,4 +166,4 @@ function battleXp(level, enemyDefs, tierId, battleLevel = level) {
 }
 const missionXp = level => share(level, MISSION_SHARE);
 
-module.exports = { CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, UNDER_LATE_MAX, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, LATE_LEVEL, LATE_HP, LATE_DAMAGE, LATE_ATTACK_EVERY, lateLevels, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
+module.exports = { GRITTY_LATE_HP, GRITTY_ARMOUR_FROM, GRITTY_ARMOUR_STEP, GRITTY_GEAR_TAKEN_SHARE, GRITTY_ARMOUR_MAX, grittyArmour, grittyLate, CHAPTER_SHARE, chapterXp, UNDER_FREE, UNDER_MAX, UNDER_DAMAGE, UNDER_LATE_LEVEL, UNDER_LATE_WEIGHT, UNDER_LATE_MAX, HP_TRIM, hpTrim, ENEMY_TIER_DAMAGE, ENEMY_TRIM_DAMAGE, LATE_LEVEL, LATE_HP, LATE_DAMAGE, LATE_ATTACK_EVERY, lateLevels, underBy, underSteps, underChecks, VIGOR_LEVEL, VIGOR_MAX, vigor, BATTLE_SHARE, MISSION_SHARE, QUEST_SHARE, TRIAL_SHARE, TIERS, tier, band, share, challenge, foeStats, averageDamage, threat, reference, rate, battleXp, missionXp };
