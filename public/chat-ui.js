@@ -184,7 +184,10 @@
   localBox.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved. Go to Adventure and type what you want to do.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   panel.append(ai);showProvider();
-  const load=()=>api('/api/ai/settings').then(({payload})=>{const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
+  const load=()=>api('/api/ai/settings').then(({payload})=>{
+    // A hosted game's owner sets the AI up on the server: players only read the note in the key panel.
+    if(payload.hosted){for(const n of ai.children)if(n.tagName!=='SUMMARY'&&n!==claudeBox)n.hidden=true;for(const n of claudeBox.children)n.hidden=n!==keyPanel;claudeBox.hidden=false;return;}
+    const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
     base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;
     if(c.provider==='local'){budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;}
     tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;showProvider();}).catch(e=>{info.textContent=e.message;});

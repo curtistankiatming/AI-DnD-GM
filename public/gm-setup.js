@@ -16,7 +16,9 @@
     on: Boolean(info?.config?.enabled),
     provider: info?.config?.provider || 'claude',
     claude: Boolean(info?.config?.enabled && info.config.provider === 'claude'),
-    keySaved: Boolean(info?.claudeKeyConfigured)
+    keySaved: Boolean(info?.claudeKeyConfigured),
+    // On a hosted game the site runs the AI game master: players never paste a key or change it.
+    hosted: info?.hosted || null
   });
   const post = (route, body) => api(route, { method: 'POST', body: JSON.stringify(body) });
   function announce(saved = false) {
@@ -73,6 +75,7 @@
     const s = status(), focused = document.activeElement?.id, typed = p.mount.querySelector('input')?.value || '';
     p.mount.replaceChildren();
     if (!s.known) { p.mount.append(el('p', 'muted', 'Checking the AI game master setup.')); return; }
+    if (s.hosted) { p.mount.append(el('p', '', hostedNote(s))); return; }
     if (s.keySaved && !p.replacing) {
       const row = el('div', 'gm-key-row');
       row.append(btn('Test connection', 'btn btn-secondary btn-small', () => run(testConnection)), btn('Use a different key', 'text-button', () => { p.replacing = true; drawAll(); }));
@@ -93,14 +96,22 @@
     if (focused === p.id) document.getElementById(p.id)?.focus();
   }
 
+  function hostedNote(s) {
+    const a = s.hosted.allowance || {};
+    if (!s.on) return 'This site runs the game master for you, and the AI game master is off at the moment. The written story and every listed choice work as usual.';
+    if (!a.limit) return 'This site runs the game master for you; no key is needed. The AI game master comes with an account. Without one, the written story and every listed choice are free to play.';
+    return `This site runs the game master for you; no key is needed. AI turns left today: ${a.left} of ${a.limit}.`;
+  }
+
   // First screen: step 3, "Choose your game master".
   const section = document.getElementById('gmChoice'), body = document.getElementById('gmChoiceBody');
   let want = null, choiceKey = null;
   function drawChoice() {
     if (!section || !body || offline) return;
     const s = status();
-    section.hidden = !s.known;
-    if (!s.known) return;
+    // A hosted game has nothing to choose here: the site decides, and the Settings note says so.
+    section.hidden = !s.known || Boolean(s.hosted);
+    if (!s.known || s.hosted) return;
     if (want === null) want = s.claude ? 'claude' : recall() === 'classic' ? 'classic' : 'claude';
     if (s.claude) want = want === 'classic' && working ? want : 'claude';
     if (!choiceKey) {
