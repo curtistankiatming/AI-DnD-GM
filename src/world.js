@@ -316,8 +316,22 @@ function backDown(state,rng,events,api){
   api.enterNode(state,w.progress?.[id]?.node&&STORY_NODES[w.progress[id].node]?w.progress[id].node:`q-${id}-start`,events);
   return {ok:true};
 }
+// A trial is supervised: the level 10 Echo Court trial and every job trial
+// (3rd job at 40, the legendary trial at 70) cost no gold when the party falls.
+// (Codex playtest, 25 November 2026: the Ruinmaker Trial charged 9,200 gold.)
+function inTrial(state){const id=state.world?.activeQuest;return id==='trial'||Boolean(id&&Director.quest(state,id)?.trial);}
+// What the defeat screen says: the bell's own words only when the bell is the
+// fight that was lost, otherwise the expedition's name, and rescue first.
+function defeatScene(state){
+  const id=state.world?.activeQuest,q=id?Director.quest(state,id):null,ledge=Boolean(ledgeOf(state));
+  if(id==='bell')return {objective:'Accept rescue, recover in town, then go back to the bell. Nothing but some gold is lost.'};
+  const back=ledge?'Wake on the last safe ledge, rest there, then go back to the interrupted fight.':'Accept rescue, recover in town, then go back to the interrupted fight.';
+  if(inTrial(state))return {title:'The trial is halted',location:q?.region||null,objective:`${back} A trial costs no gold.`,opening:`The party falls in ${q?.name||'the trial'}. The judges call a halt before anyone is past help. The trial is not over; it waits for you to come back to it.`};
+  if(q)return {title:'The party falls',location:q.region||null,objective:`${back} Nothing but some gold is lost.`,opening:`The party falls short in ${q.name}. What brought you there has not gone away, and it is still yours to finish.`};
+  return {title:'The party falls',location:null,objective:`${back} Nothing but some gold is lost.`,opening:'The party falls. Nothing is lost that cannot be won back.'};
+}
 function recover(state,events,api){
-  const trial=state.world.activeQuest==='trial';
+  const trial=inTrial(state);
   const cost=trial?0:Math.floor(state.player.gold*0.25);
   state.player.gold-=cost;state.world.day+=1;state.world.setbacks+=1;
   for(const a of G.actors(state)){a.hp=Math.max(1,Math.ceil(a.maxHp*0.4));a.temporaryHp=0;a.deathSaves={successes:0,failures:0,stable:false};a.conditions=[];}
@@ -594,4 +608,4 @@ function view(state){
 }
 // Whether a retreat or defeat now wakes the party on a ledge, not in a town.
 const atLedge=state=>Boolean(ledgeOf(state));
-module.exports={atLedge,below,goOn,backDown,restore,init,town,townOpen,townStock,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,awardChapterBattleXp,battlePaid,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};
+module.exports={atLedge,inTrial,defeatScene,below,goOn,backDown,restore,init,town,townOpen,townStock,emptied,activeMerchant,handle,view,completeQuest,completeJob,jobOpen,jobXp,awardBattleXp,awardChapterBattleXp,battlePaid,reputation,recover,longRest,price,unlocked,TOWN_ACTIONS};

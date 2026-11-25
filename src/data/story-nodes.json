@@ -2099,7 +2099,7 @@
     "title": "The Bell Keeps Tolling",
     "location": "A Memory of the Last Stand",
     "safeRest": false,
-    "objective": "Reload a save or begin a new campaign.",
+    "objective": "Accept rescue, recover in town, then go back to the bell. Nothing but some gold is lost.",
     "opening": "The party falls before the ward can be restored. Briarwatch's bell continues beneath the earth, each toll carrying Sable's command farther through the roots.",
     "defeat": true,
     "choices": []

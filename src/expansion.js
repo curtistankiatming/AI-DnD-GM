@@ -407,7 +407,7 @@ STORY_NODES.ending.opening='The immediate threat beneath Briarwatch has ended. T
 STORY_NODES.ending.choices=[choice('report-bell','Report to the town and prepare for the next adventure',{result:{text:'Aveline pays the agreed contract and introduces you to the road wardens. The party keeps its experience, equipment and relationships.',completeQuest:'bell',nextNode:'town-briarwatch'}})];
 STORY_NODES['briarwatch-square'].townId='briarwatch';
 STORY_NODES['tovin-infirmary'].townId='briarwatch';
-STORY_NODES.defeat.choices=[choice('recover','Accept rescue and return to a safe town',{once:false,description:'Lose up to a quarter of your gold, never equipment or XP. The interrupted encounter can be retried. The supervised trial has no gold penalty.',result:{text:'The survivors and local wardens retrieve the party. The setback remains in the journal; the road is not over.',recover:true}})];
+STORY_NODES.defeat.choices=[choice('recover','Accept rescue and return to a safe town',{once:false,description:'Lose up to a quarter of your gold, never equipment or XP. The interrupted encounter can be retried. A trial costs no gold.',result:{text:'The survivors and local wardens retrieve the party. The setback remains in the journal; the road is not over.',recover:true}})];
 // Old ambiguous descriptions and effects: route-specific truth only.
 const v=C.STORY_NODES['bell-vault'];
 const expose=v.choices.find(c=>c.id==='expose-sable');
