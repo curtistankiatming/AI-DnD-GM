@@ -153,6 +153,19 @@ test('after the written story, bounties stop at level 20', () => {
   assert.equal(E.buildView(s).world.bounty.reward.xp, 0);
 });
 
+// Codex's Wizard grind review (docs/reviews/codex-difficulty-grind-2026-11-25.md):
+// a hero who finishes the last book they can play below level 20 earns the
+// catch-up rate on the way to the 2nd job, as one between 20 and 40 does.
+test('after the written story, a hero under level 20 gets the catch-up rate toward the 2nd job', () => {
+  const s = hero(17); s.world.completed.bell = { xp: 0, gold: 0 };
+  for (const q of Object.values(QUESTS)) if ((q.book || 1) <= 2) s.world.completed[q.id] = { xp: 0, gold: 0 };
+  s.world.townId = 'briarwatch'; s.story.nodeId = 'town-briarwatch'; W.init(s);
+  const b = E.buildView(s).world.bounty, L = s.player.level, f = XP.foeStats(XP.challenge({ level: L }));
+  const base = XP.battleXp(L, [f.main, f.retainer, f.retainer], 'normal', L).xp;
+  assert.equal(b.catchUp, true);
+  assert.equal(b.reward.xp, Math.round(base * Bounty.CATCH_UP / 10) * 10);
+});
+
 test('a bounty lost mid-expedition survives a save round trip and leaves the expedition alone', () => {
   let s = ready('marsh', 3); s.player.gold = 100;
   s.world.activeQuest = 'marsh'; s.world.progress.marsh = { node: 'q-marsh-approach' }; s.world.pendingBattle = 'quest:marsh';
