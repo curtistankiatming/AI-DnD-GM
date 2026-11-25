@@ -51,6 +51,10 @@ const DEFS = [
   // being written, even when every part has some chapters (Part Two is
   // written a few chapters at a time), so the hero waits after the last one.
   { n: 3, title: 'The Names in the Bronze', paid: true, parts: 2, out: 0, finale: 'b3-firstbell', partTitles: ['The Bronze', 'The Stair'] },
+  // Books Three and Four come out together, every part at once (Curtis, 25
+  // November 2026): a save that starts an AI story after the last book out never
+  // goes into a later one, so Book Three alone would cost those saves Book Four.
+  // tests/book-release-together.test.js holds this.
   // Book Four (docs/book-four/DESIGN.md): levels 40 to 70, three parts of ten
   // chapters, ending at the 4th job trial. Paid on the hosted game, like Book
   // Three; FREE_BOOKS stays 2.
