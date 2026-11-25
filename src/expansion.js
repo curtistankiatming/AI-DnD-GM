@@ -258,6 +258,12 @@ function installQuest(q){
   const investigate={skill:q.investigate.skill,alternateSkills:q.investigate.alt,dc:11+D,tools:q.investigate.tools,...own(q.investigate)};
   const routeCheck={skill:q.route.skill,alternateSkills:q.route.alt,dc:12+D,tools:q.route.tools,...own(q.route)};
   STORY_NODES[`${prefix}-start`]={id:`${prefix}-start`,act:`Expedition • Level ${q.level}`,title:q.name,location:q.region,objective:q.brief,...toldOpening(q.opening),safeRest:true,questId:q.id,phase:'start',choices:[
+    // What the party carried from the last chapter ("carried", Codex playtest
+    // 25 November 2026: the middle of Book Four repeated the same steps in
+    // every town). One entry per earlier decision, each with its own words:
+    // it gives the chapter's lead, tells the approach and opens on the
+    // deciding moment. No check, and no approach advantage.
+    ...(q.carried||[]).map(c=>choice(`carry-${c.id}`,c.label,{description:c.description||'What you carried from the last place takes you straight to the deciding moment, with the lead in hand. No check, and no approach advantage.',...(c.requires?{requires:c.requires}:{}),result:{lines:[...c.lines,...(Array.isArray(q.approach)?q.approach:[])],clues:[evidence],setFlags:{[preparation]:true,[`carried:${q.id}`]:c.id,...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-crisis`}})),
     choice('investigate',q.investigate.label,{check:investigate,description:'Establish what is happening before committing. Failure still reveals a useful lead.',success:{...told(q.investigate.success),clues:[evidence],setFlags:{[preparation]:true}},failure:{...told(q.investigate.failure),clues:[evidence],setFlags:{[`partial:${q.id}`]:true}}}),
     // Optional conversations before setting out ("talks"): lines only, no
     // rolls or rewards; they may change approval or set a flag later lines read.

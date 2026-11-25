@@ -27,6 +27,11 @@
   told to the AI and the Journal through `src/data/standing.json` (facts with a
   `when`, read by `standing` in `src/expansion.js`). Add an entry there when a
   written choice should follow the hero past the books.
+- A chapter may open on what the party carried from the chapter before
+  (`carried` in a quest: one entry per earlier decision, gated by its flag).
+  It gives the chapter's lead, tells the approach lines and goes straight to
+  the deciding moment, with no check and no approach advantage. Book Four's
+  middle (The Captain's Order to The Reckoner's Sum) uses it.
 - Claude-authored content (improvised actions in `src/improvise.js`, generated
   adventures in `src/director.js`) supplies story and choices only. Every number
   (DCs, enemy stats, XP, gold, reputation) comes from engine formulas, and saved

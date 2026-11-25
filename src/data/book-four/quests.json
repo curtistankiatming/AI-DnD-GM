@@ -2950,6 +2950,70 @@
       { "narrate": "Sheddon's eldest are at the head of the road, three old women and a man with a stick, arguing about who goes first. When they see you coming down the Lantry road they stop arguing, and look at you.", "when": { "absent": "orin" } },
       { "narrate": "Davin is behind Orin, as he has been all the way from the Hall, with his pack in Mags's knot.", "when": { "flag": "b4_davin_comes", "party": "orin" } }
     ],
+    "carried": [
+      {
+        "id": "rang",
+        "label": "Tell Sheddon's eldest whose pots sent the white down the valley, and take the front",
+        "requires": {
+          "flagsAll": [
+            "b4_rang_lantry"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You tell the eldest at the head of the road what Lantry did with its pots, and which way the white went after. Nobody shouts. The man with the stick nods slowly, the way people nod at a debt they have heard of and not yet been asked to pay."
+          },
+          {
+            "say": "Rue",
+            "text": "Then it is yours to walk them out of it. That is how the Wold would write it."
+          },
+          {
+            "narrate": "The eldest stop arguing about who goes first. You do, they say. By the time the sun is on the road, the column is roped."
+          }
+        ]
+      },
+      {
+        "id": "gave",
+        "label": "Show Sheddon how Lantry's ring stood at the well, and rope the column the same way",
+        "requires": {
+          "flagsAll": [
+            "b4_gave_lantry"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You show the eldest how Lantry stood at the well: close, a hand on the shoulder in front, nobody looking round at the street. Sheddon knows the giving. It has never walked it."
+          },
+          {
+            "narrate": "One of the old women says it back to you twice, and then goes down the road saying it house by house. By first light every child is roped between two grown people, and every grown hand is on a shoulder."
+          },
+          {
+            "say": "Rue",
+            "text": "They will not untie. Lantry did not untie, and they have heard it from somebody who stood there."
+          }
+        ]
+      },
+      {
+        "id": "waited",
+        "label": "Tell Sheddon's eldest about Lantry's smith, and ask that nobody gives for you on this road",
+        "requires": {
+          "flagsAll": [
+            "b4_waited_lantry"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You tell the eldest about the smith at Lantry, who is called smith now because his name went in the night for your share. The man with the stick hears all of it, leaning on the stick."
+          },
+          {
+            "narrate": "Then he says that you will walk at the front, where Sheddon can see you, and that nobody on the Orme road gives anything for a guest today. He says it is fair. The old women agree that it is fair."
+          },
+          {
+            "narrate": "The column is roped by first light, and you are at the front of it."
+          }
+        ]
+      }
+    ],
     "talks": [
       {
         "id": "eldest",
@@ -3242,6 +3306,89 @@
       { "narrate": "By the lamp nearest her table a man sits on a bench with his back to the wall, in a southern coat gone grey with the road, with a lamp on the floor between his boots: the lamp they sent him down Vell's stair with. It is Hesk.", "when": { "flag": "b3_stair_sealed" } },
       { "narrate": "Pinned to the wall above Sloe's table, at the end of the newest line of the tally, there is a sheet of paper in a southern hand, pebble-marked at one corner. It is your letter, from the floor of given things. You do not remember writing a word of it. Sloe has read it. It is the first letter from the south in nine hundred years of tally.", "when": { "flag": "b4_letters_answered" } }
     ],
+    "carried": [
+      {
+        "id": "orin-order",
+        "label": "Stand with Orin at Burdock's desk while he has his order written",
+        "requires": {
+          "flagsAll": [
+            "b4_orin_ordered"
+          ],
+          "companion": "orin"
+        },
+        "lines": [
+          {
+            "narrate": "Orin goes straight to Burdock's desk before the Hall fills, and stands there until Burdock looks up."
+          },
+          {
+            "say": "orin",
+            "text": "I gave an order on the Orme road. Sedge's mother, at the edge farm. Write that I gave it. Not that the column went on."
+          },
+          {
+            "narrate": "Burdock writes it, and Orin's name under it, and blots it. At the far end of the Hall Sloe has put her slate down to listen. A southerner who asks to be written for what he did is not a thing the Long Tally has had before."
+          }
+        ]
+      },
+      {
+        "id": "orin-order-away",
+        "label": "Ask Burdock to write Orin's order on the Orme road",
+        "requires": {
+          "flagsAll": [
+            "b4_orin_ordered"
+          ],
+          "absent": "orin"
+        },
+        "lines": [
+          {
+            "narrate": "Orin is not with you to say it, so you say it for him, at Burdock's desk, before the Hall fills: on the Orme road Orin gave the order, and Sedge's mother is at the edge farm, under the white. He asked for it to be written that he said it.",
+            "when": {
+              "absent": "orin"
+            }
+          },
+          {
+            "narrate": "Burdock writes it, and Orin's name under it, and blots it. At the far end of the Hall Sloe has put her slate down to listen. A southerner who asks to be written for what he did is not a thing the Long Tally has had before, even through somebody else.",
+            "when": {
+              "absent": "orin"
+            }
+          }
+        ]
+      },
+      {
+        "id": "hero-order",
+        "label": "Ask Burdock to write the order on the Orme road as yours",
+        "requires": {
+          "flagsAll": [
+            "b4_hero_ordered"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "You go to Burdock's desk before the Hall fills and tell him: on the Orme road you ordered the column on, and Sedge's mother is at the edge farm, under the white."
+          },
+          {
+            "narrate": "Burdock writes it, with your name under it, and blots it. At the far end of the Hall Sloe has put her slate down to listen. A southerner who asks to be written for what they did is not a thing the Long Tally has had before."
+          }
+        ]
+      },
+      {
+        "id": "went-back",
+        "label": "Walk Sedge and his mother to the Long Hall, and keep their place at Burdock's desk",
+        "requires": {
+          "flagsAny": [
+            "b4_orin_went_back",
+            "b4_hero_went_back"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Sedge's mother has spent the day asking everyone at the gate, politely, where she is. You walk her and Sedge to the Long Hall before dusk, and keep a place for them at the front of Burdock's line."
+          },
+          {
+            "narrate": "Burdock reads the gate's line before he writes her in, without being asked: who went back for her, and what the white took for it. At the far end of the Hall Sloe hears him, and puts her slate down."
+          }
+        ]
+      }
+    ],
     "talks": [
       {
         "id": "burdock",
@@ -3494,6 +3641,71 @@
       { "say": "Yarrow", "text": "Rue sent word you were coming. Come in, all of you. Wipe your feet. There's soup. It's the giving tomorrow night and I've forty in, so you'll have to sit where you can." },
       { "narrate": "Maren stops on the step and reads the rubbed-out lines on the doors, one after another, all the way down the street.", "when": { "party": "maren" } }
     ],
+    "carried": [
+      {
+        "id": "truth",
+        "label": "Tell Yarrow what Burdock wrote about the bells, and sit with the grieving",
+        "requires": {
+          "flagsAll": [
+            "b4_tally_truth"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Burdock's line has come up the valley ahead of you on the carter's slate, the way tally lines do. Yarrow has read it: the bells, and the Mother Bell, and where the white goes."
+          },
+          {
+            "say": "Yarrow",
+            "text": "So it's sent. Thirty years, and I always thought it just came. You'd best sit with them, then, since it's yours that's sending it."
+          },
+          {
+            "narrate": "She puts you on the end bench by Madder, where you can see the whole room, and brings you soup, and does not say anything else about it."
+          }
+        ]
+      },
+      {
+        "id": "reasons",
+        "label": "Tell Yarrow both of Burdock's columns, and sit with the grieving",
+        "requires": {
+          "flagsAll": [
+            "b4_tally_reasons"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Burdock's two columns have come up the valley ahead of you on the carter's slate: what the bells do, and why. Yarrow has read both, across the page, the way he does."
+          },
+          {
+            "say": "Yarrow",
+            "text": "The bells, and the children in the lanes down south. Burdock always did write both sides of a thing. Sit, then. Half my benches have lost children. They'll want the second column."
+          },
+          {
+            "narrate": "She puts you on the end bench by Madder, where you can see the whole room."
+          }
+        ]
+      },
+      {
+        "id": "wait",
+        "label": "Tell Yarrow the south has not answered yet, and sit with the grieving anyway",
+        "requires": {
+          "flagsAll": [
+            "b4_tally_wait"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "The carter's slate has brought Burdock's line up the valley: 'The south: not yet.' Yarrow has it on the shelf over the fire, under Sloe's smaller line."
+          },
+          {
+            "say": "Yarrow",
+            "text": "Not yet. Well. Grief doesn't wait for the south either. Sit, and eat, and don't promise anybody anything."
+          },
+          {
+            "narrate": "She puts you on the end bench by Madder. You promise nobody anything."
+          }
+        ]
+      }
+    ],
     "talks": [
       {
         "id": "yarrow",
@@ -3733,6 +3945,75 @@
         { "narrate": "Rue does not say anything. She has her book open in both hands at the first page, the new one, with today first.", "when": { "flag": "b4_book_rewritten" } },
         { "narrate": "Rue does not say anything. She has her book open in both hands at the oldest page, where her mother's name is, in the first hand she ever wrote." }
       ] }
+    ],
+    "carried": [
+      {
+        "id": "kept",
+        "label": "At Heath's table, tell Rue what Greve did with its names",
+        "requires": {
+          "flagsAll": [
+            "b4_names_kept"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Heath cuts the bread. While she has her back to the table you tell Rue what Greve did: it keeps its names now, and the griefs come home with them."
+          },
+          {
+            "say": "Rue",
+            "text": "Then she could have kept me. She did not know she could. Nobody told her."
+          },
+          {
+            "say": "Heath",
+            "text": "Kept what, love?"
+          },
+          {
+            "narrate": "Rue says: the bread. It is good bread. She eats it, and watches the scrubbed place on the door through the open doorway until dusk."
+          }
+        ]
+      },
+      {
+        "id": "written",
+        "label": "At Heath's table, tell Rue that Greve sends its names to the tally now",
+        "requires": {
+          "flagsAll": [
+            "b4_names_written"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Heath cuts the bread. While she has her back to the table you tell Rue about Madder's basket of slates, and Burdock's new book, and the first page of names."
+          },
+          {
+            "say": "Rue",
+            "text": "Then the next time somebody's daughter goes south, somebody will have her name. Not this time. The next."
+          },
+          {
+            "narrate": "She writes it in her book anyway, small: 'Greve sends names now.' Then she eats the bread, and says it is good bread."
+          }
+        ]
+      },
+      {
+        "id": "given",
+        "label": "Sit at Heath's table with Rue, and say nothing about Greve",
+        "requires": {
+          "flagsAll": [
+            "b4_names_given"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Heath cuts the bread. You do not tell her that you have come from the house where she gave her daughter away, and Rue does not either. It is Greve's custom, and you left it as it was."
+          },
+          {
+            "say": "Rue",
+            "text": "Thank you. She would not understand, and she would be kind about it, and I could not bear that today."
+          },
+          {
+            "narrate": "Heath asks the guide to stay for supper. Rue says yes."
+          }
+        ]
+      }
     ],
     "talks": [
       {
@@ -3977,6 +4258,102 @@
       ] },
       { "say": "Sloe", "text": "Rung forward, the founders' way, it rings the white north, all of it, every bell at once. Rung backward, it is the other note. Every bell answers it, and goes quiet. For one winter, every bell in the bell-country is a pot. And the white lies where it falls." },
       { "say": "Sloe", "text": "Whoever rings it forgets everything. Everything, not a season. I have done that sum too. I will ring it. Not this midwinter. The road south is shut until the thaw, and a sum must be heard before it can be answered. The next one, unless the south shares the winter with us. That is my sum. It is right." }
+    ],
+    "carried": [
+      {
+        "id": "rue-gave",
+        "label": "Take Rue's count of the door-boards straight to the vote",
+        "requires": {
+          "flagsAll": [
+            "b4_rue_gave"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Rue has come down from Thrum quieter, and very quick. She goes along the row of door-boards with her book in the morning and is back before noon."
+          },
+          {
+            "say": "Rue",
+            "text": "Thrum will lie face up. My mother's door. Nobody at that table has a daughter in the south to wait for. Greve is with her. The rest I have written down, which way and why, and who will listen."
+          },
+          {
+            "narrate": "She gives you the page. It is the best count anyone in the Hall has, and she does not look at Thrum's door-board once while she gives it."
+          }
+        ]
+      },
+      {
+        "id": "rue-kept",
+        "label": "Take Rue's count of the door-boards straight to the vote",
+        "requires": {
+          "flagsAll": [
+            "b4_rue_kept"
+          ]
+        },
+        "lines": [
+          {
+            "narrate": "Rue goes along the row of door-boards with her book in the morning and is back before noon, with chalk still on her fingers from her mother's door."
+          },
+          {
+            "say": "Rue",
+            "text": "Thrum will lie face up. Heath asked the stranger at her table which way, and the stranger told her the truth. That is what I would like to be to her. The one who tells her the truth."
+          },
+          {
+            "narrate": "She gives you the page: every town, which way, and who will listen. It is the best count anyone in the Hall has."
+          }
+        ]
+      },
+      {
+        "id": "rue-nessa",
+        "label": "Take Rue's and Nessa's count of the door-boards straight to the vote",
+        "requires": {
+          "flagsAll": [
+            "b4_rue_asked_nessa"
+          ]
+        },
+        "lines": [
+          {
+            "oneOf": [
+              {
+                "narrate": "Rue and Nessa go along the row of door-boards together in the morning, Rue asking and Nessa listening for what the bearers do not say.",
+                "when": {
+                  "party": "nessa"
+                }
+              },
+              {
+                "narrate": "Rue goes along the row of door-boards on her own in the morning, listening for what the bearers do not say.",
+                "when": {
+                  "absent": "nessa"
+                }
+              }
+            ]
+          },
+          {
+            "say": "nessa",
+            "text": "Dunnet's lying face up because Wem is. Wem's lying face up because nobody's asked them anything else. That's three doors you can turn just by asking.",
+            "when": {
+              "party": "nessa"
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "say": "Rue",
+                "text": "I have written it all down. Which way, and why, and who will listen.",
+                "when": {
+                  "party": "nessa"
+                }
+              },
+              {
+                "say": "Rue",
+                "text": "I have written down which way each door will lie, and why, and who will listen."
+              }
+            ]
+          },
+          {
+            "narrate": "She gives you the page. It is the best count anyone in the Hall has."
+          }
+        ]
+      }
     ],
     "talks": [
       {
