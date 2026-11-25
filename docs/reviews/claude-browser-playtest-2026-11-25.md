@@ -132,8 +132,8 @@ autosave through Continue, which worked every time.
 ### The suggestions, built
 
 1. **Autosave.** The web version now keeps one rolling autosave after every
-   new game, move and AI turn. Continue opens it when it is newer than the save
-   you used last ("Picked up where you left off"). Starting a new hero asks
+   new game, move and AI turn. Continue opens it once you have played on, and
+   the save you loaded if you haven't ("Picked up where you left off"). Starting a new hero asks
    before replacing it, as the downloadable edition does. Named saves are
    untouched. Hosted visitors without an account keep using the browser copy.
 2. **Level-up choices.** A "Waiting for you · Choose now" block sits in the
