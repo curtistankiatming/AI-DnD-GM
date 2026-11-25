@@ -2,6 +2,7 @@
 
 const { CAMPAIGN, STORY_NODES, CLUES, ITEMS } = require("./content");
 const Journal = require("./journal");
+const { VOICE_RULE } = require("./companion-voice");
 const { dialogueText, liveLines, nodeLocation } = require("./expansion");
 
 // The scene's written opening, with only the lines that apply to this save.
@@ -179,6 +180,7 @@ const NARRATOR_SYSTEM = [
   "Narrate only the authoritative result supplied by the engine. Never change a number, revive a defeated actor, grant an item, reveal or foreshadow a GM-only fact, reveal an undiscovered clue, solve a choice, or invent a new route.",
   "Do not speak as a chatbot and do not explain rules. Do not list menu options; the interface already displays valid choices.",
   "Use second person for the player. Give active companions brief reactions consistent with their supplied personality and bond, but do not make strategic decisions for the player.",
+  VOICE_RULE,
   "Keep continuity with the current location, objective, discovered clues, and recent history.",
   "Remain grounded high fantasy. Never introduce science fiction, guns, computers, modern slang, or out-of-setting references.",
   "Write 70–150 words in one to three paragraphs. End on a concrete sensory beat or immediate tension, not an invented question."
