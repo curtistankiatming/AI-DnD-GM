@@ -11,6 +11,7 @@
 //   node scripts/play.js do '{"type":"depart","questId":"road"}'
 //   node scripts/play.js auto 20             (let the scripted player take 20 turns)
 //   node scripts/play.js town                (town services, expeditions, level rewards)
+//   node scripts/play.js shop                (what the town shop and any traveling merchant sell, with the buy command)
 //   node scripts/play.js read <node-id>      (every line and outcome of one scene, no dice)
 //   node scripts/play.js scenes              (list every story scene)
 //   node scripts/play.js jump <node-id> --level 4 --with nessa   (review fixture, not real play)
@@ -97,7 +98,7 @@ function printScene(state, view, after, midFight = false) {
   }
   const w = view.world;
   if (s.canShortRest) line(`\nYou can take a short rest here: node scripts/play.js do '{"type":"short-rest"}'`);
-  if (w?.town) line(`\nYou are in ${w.town.name}. Run "node scripts/play.js town" for rest, shops, level rewards and the expedition board.`);
+  if (w?.town) line(`\nYou are in ${w.town.name}. Run "node scripts/play.js town" for rest, level rewards and the expedition board, and "node scripts/play.js shop" for gear and supplies.`);
   else if (w?.canReturn) line(`\nYou can return to town to recover fully, then resume from the expedition board: node scripts/play.js do '{"type":"return-town"}'`);
   if (view.progression?.pending?.length) line(`\nA level reward is waiting. Run "node scripts/play.js town" to see it.`);
   if (s.ending) line("\nThis is an ending.");
@@ -106,7 +107,7 @@ function printScene(state, view, after, midFight = false) {
 function printCombat(view) {
   const c = view.combat;
   line(`-- Combat: ${c.name || ""} · round ${c.round} --`);
-  if (c.objective) line(`Objective: ${c.objective.name} (${c.objective.progress ?? 0}/${c.objective.target}${c.objective.failed ? ", failed" : ""})`);
+  if (c.objective) line(`Objective: ${c.objective.name} (${c.objective.progress ?? 0}/${c.objective.target}${c.objective.failed ? ", deadline missed" : ""})`);
   for (const a of c.actors) line(`  ${a.team === "enemy" ? "Enemy" : "Party"}: ${a.name} id=${a.id} HP ${a.hp}/${a.maxHp} AC ${a.ac}${a.conditions?.length ? ` (${a.conditions.map((x) => x.name || x.id).join(", ")})` : ""}`);
   if (!c.awaitingPlayer) { line("Waiting for other turns."); return; }
   line(`Your turn. Action ${c.economy?.actionUsed ? "used" : "ready"}, bonus action ${c.economy?.bonusUsed ? "used" : "ready"}.`);
@@ -120,6 +121,7 @@ function printTown(view) {
   else {
     line(`== ${w.town.name} · day ${w.day}`);
     for (const s of w.services) line(`  service ${s.id}: ${s.name}, ${s.cost} gold${s.disabled ? " (unavailable)" : ""}  -> do '{"type":"town-service","serviceId":"${s.id}"}'`);
+    if (w.shop?.length || w.merchant) line(`Shop: ${w.shop?.length ? `${w.shop.length} items for sale` : "no town shop"}${w.merchant ? `, and ${w.merchant.name} the traveling merchant is here` : ""}  -> node scripts/play.js shop`);
     line(`Travel: ${w.towns.map((t) => t.id + (t.current ? " (here)" : "")).join(", ")}  -> do '{"type":"travel-town","townId":"<id>"}'`);
   }
   if (w.town && w.activeQuest) line(`${w.pendingBattle ? "Resume the interrupted fight" : `Resume your expedition (${w.activeQuest})`}  -> do '{"type":"resume"}'`);
@@ -156,6 +158,37 @@ function printTown(view) {
     for (const o of r.options || []) line(`  ${o.id}: ${o.name || ""} ${o.description || ""}  -> do '{"type":"choose-reward","level":${r.level},"optionId":"${o.id}"}'`);
   }
   for (const o of view.progression.specializationOptions || []) line(`2nd job option ${o.id}: ${o.name}  -> do '{"type":"specialize","specializationId":"${o.id}"}'`);
+}
+
+// How a piece of gear would change each party member who can use it.
+function gearChange(c) {
+  const parts = [];
+  if (c.acAfter !== c.acBefore) parts.push(`AC ${c.acBefore}->${c.acAfter}`);
+  if (c.attackAfter !== c.attackBefore) parts.push(`attack ${c.attackBefore}->${c.attackAfter}`);
+  if (c.damageAfter !== c.damageBefore) parts.push(`damage ${c.damageBefore}->${c.damageAfter}`);
+  if (c.spellAttackAfter !== c.spellAttackBefore) parts.push(`spell attack +${c.spellAttackBefore}->+${c.spellAttackAfter}`);
+  if (c.spellDcAfter !== c.spellDcBefore) parts.push(`spell DC +${c.spellDcBefore}->+${c.spellDcAfter}`);
+  return `${c.name} (replaces ${c.replaces}): ${parts.length ? parts.join(", ") : "no change to AC or attacks"}`;
+}
+function printStock(items, market, gold) {
+  for (const i of items) {
+    line(`  ${i.id}: ${i.name}, ${i.rarity}, ${i.price} gold, ${i.stock} in stock${i.requires ? `, needs ${i.requires}` : ""}${i.stock > 0 && i.price <= gold ? `  -> do '{"type":"buy","itemId":"${i.id}","market":"${market}"}'` : i.stock > 0 ? " (not enough gold)" : " (sold out)"}`);
+    if (i.purpose) line(`     ${i.purpose}`);
+    const fits = (i.comparisons || []).filter((c) => c && !c.blocked);
+    if (fits.length) line(`     Would change: ${fits.map(gearChange).join("; ")}`);
+    else if ((i.comparisons || []).length) line("     Nobody in the party can use it yet.");
+  }
+}
+function printShop(view) {
+  const w = view.world, gold = view.player?.gold || 0;
+  if (!w.town && !w.merchant) { line("There is no shop here. Shops are in towns; return to one first."); return; }
+  if (w.town) {
+    line(`== ${w.town.name} shop · you have ${gold} gold`);
+    if (w.shop?.length) printStock(w.shop, "town", gold); else line("  This town has no shop open.");
+  }
+  if (w.merchant) { line(`== ${w.merchant.name}, traveling merchant`); printStock(w.merchant.stock, "merchant", gold); }
+  line(`To buy more than one: add "quantity":N to the buy action. To equip what you bought: do '{"type":"equip","itemId":"<id>","actorId":"player"}' (or a companion's id).`);
+  if (w.town && w.sellable?.length) line(`Selling: do '{"type":"sell","itemId":"<id>","market":"town"}'. Sellable: ${w.sellable.map((e) => `${e.itemId} (${e.sellPrice} gold)`).join(", ")}`);
 }
 
 function act(file, action) {
@@ -240,6 +273,8 @@ if (command === "new") {
   file.policy = memory; save(file); line(""); printScene(file.state, E.buildView(file.state), null, wasFighting);
 } else if (command === "town") {
   const file = load(); printTown(E.buildView(file.state));
+} else if (command === "shop") {
+  const file = load(); printShop(E.buildView(file.state));
 } else if (command === "commission-sample") {
   // A review fixture: commissions the bundled sample adventure through the
   // normal game action, as if the AI storyteller had written it.
@@ -274,5 +309,5 @@ if (command === "new") {
   line(`Review fixture: a level ${state.player.level} ${classId} placed at ${nodeId}. This is not natural play.\n`);
   printScene(state, E.buildView(state));
 } else {
-  fail(`Unknown command "${command}". Commands: new, look, choose, fight, do, auto, town, read, scenes, jump, commission-sample.`);
+  fail(`Unknown command "${command}". Commands: new, look, choose, fight, do, auto, town, shop, read, scenes, jump, commission-sample.`);
 }
