@@ -528,7 +528,8 @@ function handle(state,action,rng,events,api){
   if(action.type==='recruit'){
     if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3)return fail(events,'No recruit is currently available.');
     api.recruitCompanion(state,'nessa',events);const n=state.party.find(m=>m.id==='nessa');G.initCompanion(state,n);P.levelCompanion(n,state.player.level);
-    return emit(events,'Nessa Reed joins through the roadwardens’ guild. She brings her equipment and shares the party’s level; no recruitment fee is required.','party','good');
+    // A hero who never followed the bell-note into the mist meets her here instead (the rescue in mist-hollow is the other way in).
+    return emit(events,'A young scout is sitting on the roadwardens’ bench with her pack already on and one boot up on the table. Nessa Reed. Nessa: The guild says you’re short a pair of eyes. I’ve been a day behind you on the road for a week, and you stop to talk to everyone. Somebody ought to be watching the trees while you do it. Orin: We manage. Nessa: You manage slowly. Maren: She can come. Nessa: I wasn’t asking. She brings her own gear, and she is every bit as road-worn as the rest of you.','party','good');
   }
   if(action.type==='personal'){
     const a=state.party.find(m=>m.id===action.companionId),def=PERSONAL[action.companionId];if(!a||!def)return fail(events,'That companion is not present.');

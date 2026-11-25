@@ -111,8 +111,11 @@ function renderExpansion(){
     if(d&&w.bellComplete){const side=Boolean(d.sideQuests),ask=side?'Ask the GM for a side quest':'Ask the GM for a new adventure';const c=v4Card(ask,d.canCommission?side?'While the written story is still running, Claude writes a small side quest tied to your current chapter. It can help you catch up to the chapter\'s level, never past it. Optional: type a wish in the message box first. Needs the Claude API provider.':'Claude writes the next expedition from your choices so far. The game sets its level, difficulty and rewards. Optional: type a wish in the message box first, such as “something in the marshes” or “a rival from my past”. Needs the Claude API provider.':d.reason);
       c.dataset.director='true';
       if(d.arc)c.appendChild(createElement('p','muted',`Story so far: ${d.arc}`));
-      const b=createElement('button','btn btn-primary btn-small',ask);b.type='button';b.id='directorBtn';b.dataset.disabled=String(!d.canCommission);b.disabled=busy||!d.canCommission;
-      b.addEventListener('click',()=>{if(!busy)void window.BriarwatchChat?.adventure();});c.appendChild(b);
+      // With the AI game master off, the button would only answer with an error: offer to turn it on instead.
+      const gm=window.BriarwatchGM?.status?.(),aiOff=Boolean(gm?.known&&!gm.on&&!gm.hosted&&d.canCommission);
+      if(aiOff)c.appendChild(createElement('p','muted','The AI game master is off, so the written story and the bounty board are your adventures for now.'));
+      const b=createElement('button','btn btn-primary btn-small',aiOff?'Turn on the AI game master':ask);b.type='button';b.id='directorBtn';b.dataset.disabled=String(!d.canCommission);b.disabled=busy||!d.canCommission;
+      b.addEventListener('click',()=>{if(busy)return;if(aiOff)window.BriarwatchGM.openSetup();else void window.BriarwatchChat?.adventure();});c.appendChild(b);
       for(const q of d.open)if(!q.started)c.appendChild(v4Button(`Dismiss “${q.name}”`,{type:'director-dismiss',questId:q.id}));
       expeditions.appendChild(c);}
     const towns=createElement('div','v4-controls');for(const t of w.towns)towns.appendChild(v4Button(`Travel: ${t.name}`,{type:'travel-town',townId:t.id},t.current));expeditions.appendChild(towns);
