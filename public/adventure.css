@@ -431,7 +431,9 @@ button.fighter-card:hover:not(:disabled) { background:var(--panel-strong); box-s
 #workspace-journal:not([data-filter=all]) .journal-empties,.journal-empties:empty { display:none; }
 .journal-empties { margin:0 0 14px; font-size:.88rem; }
 .sheets-ui .journal-record > strong { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:4px 10px; }
-.journal-status { flex:none; padding:1px 9px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font:600 .74rem/1.5 var(--font-body); letter-spacing:.02em; text-transform:capitalize; white-space:nowrap; }
+.journal-status { flex:none; padding:1px 9px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font:600 .74rem/1.5 var(--font-body); letter-spacing:.02em; white-space:nowrap; }
+/* Sentence case: "Part 2 of 4 next", not "Part 2 Of 4 Next". */
+.journal-status::first-letter { text-transform:uppercase; }
 .journal-status[data-status=verified],.journal-status[data-status=kept],.journal-status[data-status=completed],.journal-status[data-status=friendly] { color:var(--good); border-color:color-mix(in srgb,var(--good) 45%,transparent); }
 .journal-status[data-status=active],.journal-status[data-status=open] { color:var(--accent-strong); border-color:color-mix(in srgb,var(--accent) 50%,transparent); }
 .journal-status[data-status=broken],.journal-status[data-status=failed],.journal-status[data-status=hostile] { color:var(--bad); border-color:color-mix(in srgb,var(--bad) 45%,transparent); }
