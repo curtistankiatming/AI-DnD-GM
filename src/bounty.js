@@ -75,7 +75,7 @@ function shape(state, enemies, scale = 1) {
 function reward(state) {
   const level = state.player.level, f = XP.foeStats(XP.challenge({ level }));
   const { rating, xp: base } = XP.battleXp(level, [f.main, f.retainer, f.retainer], 'normal', level);
-  const cap = Book.levelCap(state), behind = cap !== null ? level < cap : level < bountyLevel(state) && level > AFTER_BOOKS_LEVEL;
+  const cap = Book.levelCap(state), behind = cap !== null ? level < cap : level < bountyLevel(state);
   return { rating, xp: behind ? Math.round(base * CATCH_UP / 10) * 10 : base, gold: gold(level), behind };
 }
 

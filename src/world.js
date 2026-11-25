@@ -254,13 +254,16 @@ function straightNote(q){
   const until=bookEnds?'the end of the book':TOWNS[last.nextTown||last.town]?.name||'the next town';
   return `Straight on: ${run} on with no town, shop or side job until ${until}. The party rests between chapters, but buy potions and gear before you set out.`;
 }
+// The XP a hero still needs to reach a level (a chapter or trial's minimum),
+// so a locked card can say how far off it is, not only the next level.
+const xpToLevel=(state,level)=>Math.max(0,(P.XP_NEXT[level-1]||0)-(Number(state.player.xp)||0));
 // A chapter in the Wold's white (docs/book-four/DESIGN.md): its deciding fight
 // starts with everyone who wears no warm gear Slowed (src/combat.js whiteCold).
 // The card says so before setting out, and who is not wrapped up.
 function whiteNote(state){
   const cold=[...(Gear.warmItem(state.player)?[]:['you']),...state.party.filter(m=>!Gear.warmItem(m)).map(m=>m.name)];
   const list=cold.length>1?`${cold.slice(0,-1).join(', ')} and ${cold.at(-1)}`:cold[0];
-  return cold.length?`The white: in this chapter's deciding fight, anyone without warm gear is Slowed for the first round (2 less armour). Not wrapped up: ${list}. Warm Wold-made wool is sold in Lantry and Orme.`
+  return cold.length?`The white: in this chapter's deciding fight, anyone without warm gear is Slowed for the first round (2 less armour). Not wrapped up: ${list}. ${Gear.warmReachable(state)?'Warm Wold-made wool is sold in Lantry and Orme.':'Warm Wold-made wool is sold in Lantry and Orme, and neither is on your road yet: you can buy it once this chapter reaches Lantry.'}`
     :'The white: everyone in the party wears warm gear, so the cold will not slow anyone.';
 }
 const ledgeOf=state=>{const q=QUESTS[state.world.activeQuest];const prev=continued(q);return prev&&completed(state,prev.id)&&!completed(state,q.id)&&STORY_NODES[`q-${prev.id}-ledge`]?`q-${prev.id}-ledge`:null;};
@@ -543,7 +546,7 @@ function view(state){
     const opts=owners.map(a=>({actorId:a.id,owner:a.name}));if(G.available(state,item.id))opts.push({actorId:null,owner:'Shared inventory'});
     return opts.map(o=>({itemId:item.id,name:item.name,newName:up.name,masterwork:Boolean(up.masterwork),...o,cost:Gear.upgradeCost(item),purpose:up.purpose}));
   });
-  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),...(q.continues&&!continued(q)?{straightOn:true,straightOnNote:straightNote(q)}:{}),...(q.white&&!completed(state,q.id)?{white:whiteNote(state)}:{}),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),underChecks:XP.underChecks(state.player.level,q.level),minLevel:minLevel(q),...(jobNeeded(state,q)?{needs:jobNeeded(state,q)}:{}),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
+  const questCards=ready.map(q=>({id:q.id,generated:Boolean(q.generated),...(q.continues&&!continued(q)?{straightOn:true,straightOnNote:straightNote(q)}:{}),...(q.white&&!completed(state,q.id)?{white:whiteNote(state)}:{}),name:q.name,level:q.level,...(q.generated?{tier:XP.tier(q.tier).id,tierName:XP.tier(q.tier).name,tiers:q.trial?[]:Object.values(XP.TIERS).map(t=>({id:t.id,name:t.name,description:t.description})),canChangeTier:!q.trial&&!(w.activeQuest===q.id||w.progress[q.id]?.node),...(q.trial?{trial:q.trial,trialLabel:Director.TRIALS[q.trial].label,trialTier:XP.tier(Director.TRIALS[q.trial].tier).name}:{})}:{}),town:q.town,townName:TOWNS[q.town].name,brief:q.brief,reward:{xp:q.xp,gold:q.gold},underBy:XP.underBy(state.player.level,q.level),underSteps:XP.underSteps(state.player.level,q.level),underChecks:XP.underChecks(state.player.level,q.level),minLevel:minLevel(q),...(state.player.level<minLevel(q)?{xpToGo:xpToLevel(state,minLevel(q))}:{}),...(jobNeeded(state,q)?{needs:jobNeeded(state,q)}:{}),available:unlocked(state,q)&&!state.combat?.active,knownThreat:w.rumors[q.id]?q.threat:null,briefed:Boolean(w.rumors[q.id]),inProgress:w.activeQuest===q.id,returning:Boolean(w.progress[q.id]?.node),canDepart:Boolean(t&&t.id===q.town&&unlocked(state,q)&&(!w.activeQuest||w.activeQuest===q.id))}));
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];

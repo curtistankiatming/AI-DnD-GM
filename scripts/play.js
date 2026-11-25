@@ -49,8 +49,18 @@ function save(file) { fs.mkdirSync(path.dirname(savePath), { recursive: true });
 const line = (text = "") => console.log(text);
 const wrap = (text, indent = "") => String(text || "").split("\n").forEach((t) => line(indent + t));
 
-function printDialogue(dialogue) {
-  for (const l of dialogue) wrap((l.narration ? `  ${l.narration}` : `  ${l.speaker.toUpperCase()}: ${l.text}`) + (l.when ? `  [only if ${JSON.stringify(l.when)}]` : ""));
+// A "oneOf" group (alternatives, the first that applies is told) prints each
+// alternative under it, with its own condition, so "read" shows every version.
+function printDialogue(dialogue, indent = "  ") {
+  const cond = (l) => (l.when ? `  [only if ${JSON.stringify(l.when)}]` : "");
+  for (const l of dialogue) {
+    if (Array.isArray(l.oneOf)) {
+      line(`${indent}One of (the first that applies)${cond(l)}:`);
+      printDialogue(l.oneOf, `${indent}    `);
+      continue;
+    }
+    wrap((l.narration ? `${indent}${l.narration}` : `${indent}${String(l.speaker || "").toUpperCase()}: ${l.text}`) + cond(l));
+  }
 }
 
 // midFight: a fight already under way does not retell how it started.
@@ -116,7 +126,7 @@ function printTown(view) {
   const hero = view.player || {};
   for (const q of w.quests) {
     const need = q.minLevel ?? q.level;
-    const why = q.canDepart ? "" : (hero.level || 1) < need ? ` (not yet: needs level ${need}, you are level ${hero.level}${hero.nextLevelXp ? `, ${Math.max(0, hero.nextLevelXp - (hero.xp || 0))} XP to the next level` : ""})` : ` (not available here yet: departs from ${q.townName})`;
+    const why = q.canDepart ? "" : (hero.level || 1) < need ? ` (not yet: needs level ${need}, you are level ${hero.level}${q.xpToGo ? `, ${q.xpToGo} XP to level ${need}${w.bounty?.available && w.bounty.reward?.xp ? `, about ${Math.ceil(q.xpToGo / w.bounty.reward.xp)} bounties at ${w.bounty.reward.xp} XP each` : ""}` : hero.nextLevelXp ? `, ${Math.max(0, hero.nextLevelXp - (hero.xp || 0))} XP to the next level` : ""})` : ` (not available here yet: departs from ${q.townName})`;
     line(`  ${q.id}: ${q.name}, level ${q.level}, from ${q.townName}${q.canDepart ? `  -> do '{"type":"depart","questId":"${q.id}"}'` : why}\n     ${q.brief}`);
     if (q.needs && !q.canDepart) line(`     ${q.needs}`);
     if (q.white) line(`     ${q.white}`);
