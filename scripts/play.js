@@ -96,8 +96,9 @@ function printScene(state, view, after, midFight = false) {
     });
   }
   const w = view.world;
+  if (s.canShortRest) line(`\nYou can take a short rest here: node scripts/play.js do '{"type":"short-rest"}'`);
   if (w?.town) line(`\nYou are in ${w.town.name}. Run "node scripts/play.js town" for rest, shops, level rewards and the expedition board.`);
-  else if (w?.canReturn) line(`\nYou can return to town: node scripts/play.js do '{"type":"return-town"}'`);
+  else if (w?.canReturn) line(`\nYou can return to town to recover fully, then resume from the expedition board: node scripts/play.js do '{"type":"return-town"}'`);
   if (view.progression?.pending?.length) line(`\nA level reward is waiting. Run "node scripts/play.js town" to see it.`);
   if (s.ending) line("\nThis is an ending.");
 }

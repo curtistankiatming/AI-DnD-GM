@@ -51,7 +51,7 @@ function storyChoicesView(state) {
       id: choice.id,
       // A peaceful resolution tried without its lead is worded for what the hero actually has.
       // Below the stair there is no town to be carried to: a defeat wakes the party on the last safe ledge.
-      ...(node.id === "defeat" && choice.id === "recover" && W.atLedge(state) ? { label: "Wake on the last safe ledge", description: "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back to the interrupted fight." } : {
+      ...(node.id === "defeat" && choice.id === "recover" && (W.atLedge(state) || W.inTrial(state)) ? { label: W.atLedge(state) ? "Wake on the last safe ledge" : "Accept rescue and return to a safe town", description: W.inTrial(state) ? `No gold, equipment or XP is lost in a trial. ${W.atLedge(state) ? "Rest on the ledge" : "Recover in town"}, then go back to the trial.` : "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back to the interrupted fight." } : {
       label: choice.labelNoLead && choice.check?.lead && !state.story.clues.includes(choice.check.lead) ? choice.labelNoLead : choice.label,
       description: choice.description }),
       locked: !requirement.met,
@@ -203,6 +203,8 @@ function endingSummary(state) {
 
 function buildView(state) {
   const node = currentNode(state);
+  // The shared defeat screen is worded for the fight that was lost (src/world.js defeatScene).
+  const lost = node.id === "defeat" ? W.defeatScene(state) : {};
   return {
     schemaVersion: SCHEMA_VERSION,
     campaign: {
@@ -215,11 +217,11 @@ function buildView(state) {
     scene: {
       id: node.id,
       act: node.act,
-      title: node.title,
-      location: nodeLocation(state, node),
-      objective: node.objective,
+      title: lost.title || node.title,
+      location: lost.location || nodeLocation(state, node),
+      objective: lost.objective || node.objective,
       // Only the written lines that apply to this save (see liveLines).
-      opening: node.dialogue ? dialogueText(liveLines(state, node.dialogue)) : node.opening,
+      opening: lost.opening || (node.dialogue ? dialogueText(liveLines(state, node.dialogue)) : node.opening),
       safeRest: node.safeRest,
       ending: Boolean(node.ending),
       defeat: Boolean(node.defeat),
