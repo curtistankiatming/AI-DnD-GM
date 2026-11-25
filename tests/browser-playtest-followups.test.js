@@ -54,11 +54,20 @@ test('a blow bigger than the health left says both numbers', () => {
   assert.match(told, /dealt \d+ \w+ damage to [^,]+, more than the 1 health they had left\./);
 });
 
-test('Continue opens the autosave when it is newer than the save used last', () => {
-  const saves = [{ slot: 'autosave', savedAt: '2026-11-25T12:00:00Z' }, { slot: 'pell-1', savedAt: '2026-11-25T10:00:00Z' }];
-  assert.equal(Session.continueSave(saves, 'pell-1').slot, 'autosave');
-  assert.equal(Session.continueSave([{ ...saves[0], savedAt: '2026-11-25T09:00:00Z' }, saves[1]], 'pell-1').slot, 'pell-1');
-  assert.equal(Session.continueSave([saves[1]], 'pell-1').slot, 'pell-1');
+test('Continue follows what was played last: the autosave after a move, a loaded save before one', () => {
+  const store = new Map(), calls = [];
+  const env = { state: () => game, draft: () => '', clearDraft() {}, slot() {}, unique: () => 'x', storage: () => ({ getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, v) }),
+    busy: () => false, setBusy() {}, api: async () => ({ response: { ok: true }, payload: { saves: [] } }), ask: async () => 'cancel', notify() {}, activate() {}, changed: (s) => calls.push(s) };
+  let game = { player: { name: 'Pell' } };
+  const ui = Session.create(env);
+  const saves = [{ slot: 'autosave', savedAt: '2026-11-25T12:00:00Z' }, { slot: 'pell-a', savedAt: '2026-11-25T10:00:00Z' }];
+  store.set('dnd-ai-gm-v4-last-slot', 'pell-a');
+  assert.equal(Session.continueSave(saves, store.get('dnd-ai-gm-v4-last-slot')).slot, 'pell-a', 'loaded, no move yet');
+  ui.played('autosave');
+  assert.equal(Session.continueSave(saves, store.get('dnd-ai-gm-v4-last-slot')).slot, 'autosave', 'after a move');
+  game = { player: { name: 'Pell' }, publicTest: { mode: 'sandbox' } }; store.set('dnd-ai-gm-v4-last-slot', 'pell-a');
+  ui.played('autosave');
+  assert.equal(store.get('dnd-ai-gm-v4-last-slot'), 'pell-a', 'a sandbox game has no autosave on the server');
 });
 
 async function freePort() {

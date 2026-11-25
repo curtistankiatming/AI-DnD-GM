@@ -22,6 +22,7 @@ import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import urlopen
 from playwright.sync_api import sync_playwright, expect
+from browser_begin import begin
 from workspace_browser import go, mode, journal as show_journal, model_settings, offline_tools, scenario, instructions, exercise_workspace
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -39,7 +40,7 @@ def exercise(page, output: Path, offline: bool) -> None:
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Browser Test Hero')
-    page.locator('#startCampaignBtn').click()
+    begin(page, 'Browser Test Hero')
     expect(page.locator('#gameLayout')).to_be_visible()
     instructions(page, 'Prefer diplomacy and concise descriptions.')
     expect(page.locator('#campaignInstructions')).to_have_text('Prefer diplomacy and concise descriptions.')

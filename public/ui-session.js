@@ -35,10 +35,7 @@
   }
   function continueSave(saves, previous) {
     const available = saves.filter(s => !s.corrupted);
-    const chosen = available.find(s => s.slot === previous) || available.find(s => !s.slot.startsWith('sandbox-')) || available[0] || null;
-    // The rolling autosave wins when it is newer than the save last used: that is where play stopped.
-    const auto = available.find(s => /^autosave$/i.test(s.slot));
-    return auto && chosen && String(auto.savedAt) > String(chosen.savedAt) ? auto : chosen;
+    return available.find(s => s.slot === previous) || available.find(s => !s.slot.startsWith('sandbox-')) || available[0] || null;
   }
   function emptyChoices(view) {
     if (view.combat?.active) return 'Use the combat controls for your action and target.';
@@ -78,7 +75,8 @@
       catch (e) { env.notify(e.message, 'bad'); return false; }
       finally { working = false; env.setBusy(false); changed(); }
     }
-    function adopt(payload, {slot = null, loaded = false} = {}) {
+    function adopt(payload, options = {}) {
+      const {slot = null, loaded = false} = options;
       env.activate(payload);
       const rolling = /^(sandbox-)?autosave$/i.test(slot || '');
       sourceSlot = slot;
@@ -88,7 +86,14 @@
       env.slot(activeSlot || suggestedSlot(current(), env.unique()));
       env.clearDraft();
       if (slot) preferences.set(slot);
+      else if (options.rollingSlot) preferences.set(options.rollingSlot);
       changed();
+    }
+    // A move was played and the server (or this browser) wrote the rolling autosave:
+    // Continue now means that autosave, not the save that was loaded before the move.
+    function played(rollingSlot) {
+      if (!rollingSlot || !current() || current().publicTest?.mode === 'sandbox') return;
+      preferences.set(rollingSlot); changed();
     }
     async function write(rawSlot) {
       if (!current()) return false;
@@ -125,7 +130,7 @@
       return choice === 'discard';
     }
     return {
-      dirty, hasDraft, changed, list,
+      dirty, hasDraft, changed, list, played,
       status: () => ({activeSlot, dirty: dirty(), working, saves: [...saves], continueSave: continueSave(saves, preferences.get())}),
       save: raw => run(() => write(raw === undefined ? env.slot() : raw)),
       quickSave: () => run(() => write(activeSlot || env.slot())),
