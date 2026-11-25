@@ -14,7 +14,9 @@
   const n=v.progression?.pending?.length||0;if(n)r.push(`${n} development choice${n===1?'':'s'} awaiting selection.`);
   if(v.progression?.specializationOptions?.length)r.push('Your 2nd job branch is ready to choose.');
   if(v.progression?.renown?.pending)r.push(`Renown rank ${v.progression.renown.rank}: ${v.progression.renown.pending} boon${v.progression.renown.pending===1?'':'s'} to choose.`);
-  for(const p of v.world?.preparation||[])for(const warning of p.warnings||[])r.push(`${v.world.quests?.find(q=>q.id===p.questId)?.name||'Known expedition'}: ${warning}`);
+  // Health and potion warnings are the same for every expedition: say them once, without a chapter name.
+  const prep=v.world?.preparation||[],shared=w=>prep.length>1&&prep.every(p=>(p.warnings||[]).includes(w)),said=new Set();
+  for(const p of prep)for(const warning of p.warnings||[]){const line=shared(warning)?warning:`${v.world.quests?.find(q=>q.id===p.questId)?.name||'Known expedition'}: ${warning}`;if(!said.has(line)){said.add(line);r.push(line);}}
   return r;
  }
  function actionGroup(id,job){const k=id.startsWith('job:')?(job?.skills||[]).find(x=>x.id===id.slice(4)):null;if(job?.branch&&k?.fourth)return 'job4';if(job?.branch&&k?.third)return 'job3';if(job?.branch&&(id.startsWith('spec:')||(k&&k.source!=='1st job')))return 'job2';if(['weapon-attack','defend'].includes(id))return 'attacks';if(id.startsWith('item:')||id.startsWith('gear:'))return 'items';if(id.startsWith('order:')||id.startsWith('combo:'))return 'party';if(['objective','spec-objective'].includes(id))return 'objectives';if(['end-turn','retreat','death-save'].includes(id))return 'turn';return 'abilities';}

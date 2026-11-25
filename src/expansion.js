@@ -246,7 +246,7 @@ function installQuest(q){
   const challenge=XP.challenge(q),{accuracy:A,power:L}=challenge;
   const prefix=`q-${q.id}`;
   const evidence=`${q.id}-evidence`;
-  clue(evidence,`${q.name}: established lead`,q.clue);
+  clue(evidence,q.clueName||`A lead on ${q.name.replace(/^The /,'the ')}`,q.clue);
   const preparation=`prepared:${q.id}`;
   const approach=`approach:${q.id}`;
   // The best-suited party member rolls each check (21 November 2026), so the
@@ -270,7 +270,7 @@ function installQuest(q){
     ...(q.talks||[]).map(t=>choice(`talk-${t.id}`,t.label,{description:t.description||'A conversation. It costs nothing and changes nothing but what people think and know.',...(t.requires?{requires:t.requires}:{}),result:{lines:t.lines,...(t.approval?{approval:t.approval}:{}),...(t.setFlags?{setFlags:t.setFlags}:{})}})),
     choice('advance',q.route.label,{nextNode:`${prefix}-approach`,description:'Proceed toward the crisis. Preparation remains optional.'})
   ]};
-  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${q.level}`,title:'The approach',location:q.region,objective:q.route.label,...toldOpening(q.approach||'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.'),safeRest:false,questId:q.id,phase:'approach',choices:[
+  STORY_NODES[`${prefix}-approach`]={id:`${prefix}-approach`,act:`Expedition • Level ${q.level}`,title:q.titles?.approach||q.route.label,location:q.region,objective:q.route.label,...toldOpening(q.approach||'The route ahead offers a careful approach or a direct crossing. Choose how to handle the obstacle; supplies and trained skills can change the risk.'),safeRest:false,questId:q.id,phase:'approach',choices:[
     choice('careful',q.route.label,{check:routeCheck,description:q.route.safe?'A social approach. Failure costs no health, but you arrive without the approach advantage.':`${q.route.tools?.length?'The listed equipment can grant advantage. ':''}A failed approach causes injury (and poison only where described), but does not block the story.`,success:{...told(q.route.success),setFlags:{[approach]:true},nextNode:`${prefix}-crisis`},failure:{...told(q.route.failure),partyDamage:q.id==='trial'||q.route.safe?'0':`${1+Math.floor(L/5)}d4`,poison:q.route.safe?undefined:q.route.poison,nextNode:`${prefix}-crisis`}}),
     // "direct" may give a chapter its own words for the no-roll approach.
     choice('direct',q.direct?.label||'Take the obvious route and keep the party together',{description:'No check. Arrive openly without an approach advantage.',result:{text:q.direct?.text||'The party arrives together by the direct route. You have surrendered surprise, not the opportunity to decide what happens next.',nextNode:`${prefix}-crisis`}})
@@ -278,7 +278,7 @@ function installQuest(q){
   // A peaceful way may be easier after an earlier choice ("easierWith": a
   // story flag and the reason shown): the DC drops by 2 while it is set.
   // "harderWith" is the same, and raises the DC by 2.
-  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:'The deciding moment',location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
+  STORY_NODES[`${prefix}-crisis`]={id:`${prefix}-crisis`,act:`Expedition • Level ${q.level}`,title:q.titles?.crisis||q.objective.name,location:q.region,objective:q.objective.name,...toldOpening(q.crisis),safeRest:false,questId:q.id,phase:'crisis',choices:[
     choice('resolve',q.peaceful.label,{...(q.peaceful.labelNoLead?{labelNoLead:q.peaceful.labelNoLead}:{}),check:{skill:q.peaceful.skill,alternateSkills:q.peaceful.alt,dc:14+D,lead:evidence,...own(q.peaceful),...(q.peaceful.easierWith?{easierWith:q.peaceful.easierWith}:{}),...(q.peaceful.harderWith?{harderWith:q.peaceful.harderWith}:{})},description:'Try a complete noncombat resolution. Established preparation lowers the DC; without any lead it is harder; failure starts the objective encounter.',success:{...told(q.peaceful.success),setFlags:{[`method:${q.id}`]:'peace'},nextNode:`${prefix}-after`},failure:{...told(q.peaceful.failure),combat:`quest:${q.id}`}}),
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
@@ -286,7 +286,7 @@ function installQuest(q){
     choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
-  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:'What you leave behind',location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
+  STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:q.titles?.after||`After ${q.name.replace(/^The /,'the ')}`,location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
   // A straight-on chapter ("continues": true, Book Three's stair) goes from
   // its decision to the next chapter's opening (src/world.js goOn), and its
   // end is the safe ledge a defeat in the next chapter wakes on: "ledge" is

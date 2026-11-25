@@ -35,7 +35,10 @@
   }
   function continueSave(saves, previous) {
     const available = saves.filter(s => !s.corrupted);
-    return available.find(s => s.slot === previous) || available.find(s => !s.slot.startsWith('sandbox-')) || available[0] || null;
+    const chosen = available.find(s => s.slot === previous) || available.find(s => !s.slot.startsWith('sandbox-')) || available[0] || null;
+    // The rolling autosave wins when it is newer than the save last used: that is where play stopped.
+    const auto = available.find(s => /^autosave$/i.test(s.slot));
+    return auto && chosen && String(auto.savedAt) > String(chosen.savedAt) ? auto : chosen;
   }
   function emptyChoices(view) {
     if (view.combat?.active) return 'Use the combat controls for your action and target.';

@@ -207,6 +207,23 @@ function appendNarrationLog(state, narration) {
   if (state.logs.length > 180) state.logs = state.logs.slice(-180);
 }
 
+// A rolling autosave after every new game, move and chat turn (browser playtest, 25 November 2026:
+// a closed tab lost five chapters). It is written after the reply, so a hosted state is already
+// sealed. A hosted visitor without an account has no folder here; their browser keeps the game.
+const AUTOSAVE = "autosave";
+async function autosave(req, state) {
+  const dir = saveDir(req);
+  if (!dir || !state?.player || state.publicTest?.mode === "sandbox") return;
+  const temporary = savePath(AUTOSAVE, dir) + `.${require("crypto").randomUUID()}.tmp`;
+  try {
+    await fsPromises.mkdir(dir, { recursive: true });
+    await fsPromises.writeFile(temporary, JSON.stringify({ slot: AUTOSAVE, savedAt: new Date().toISOString(), state }), "utf8");
+    await fsPromises.rename(temporary, savePath(AUTOSAVE, dir));
+  } catch (error) {
+    console.warn(`Autosave failed: ${error.message}`);
+  } finally { await fsPromises.unlink(temporary).catch(() => {}); }
+}
+
 async function sessionPayload(state, action, events = [], result = null, ai = localAI) {
   let view = buildView(state);
   const narration = await narrate(state, view, action, events, result, ai);
@@ -272,7 +289,8 @@ async function handleApi(req, res, url) {
     const body=await readJsonBody(req);
     if(!trusted(req,res,body.state)) return;
     try {const payload=await chatCoordinator.run(withAccess(req,body.state),body.request,aiFor(req));
-      sendJson(res,payload.result?.ok===false?422:200,payload);}
+      sendJson(res,payload.result?.ok===false?422:200,payload);
+      if(payload.result?.ok!==false)await autosave(req,payload.state);}
     catch(error){sendJson(res,400,{error:error.message});}
     return;
   }
@@ -301,7 +319,9 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && pathname === "/api/session/new") {
     const body = await readJsonBody(req);
     const state = withAccess(req, createNewGame(body.setup || body));
-    sendJson(res, 200, await sessionPayload(state, { type: "opening" }, [], null, aiFor(req)));
+    const payload = await sessionPayload(state, { type: "opening" }, [], null, aiFor(req));
+    sendJson(res, 200, payload);
+    await autosave(req, payload.state);
     return;
   }
 
@@ -315,6 +335,7 @@ async function handleApi(req, res, url) {
     const payload = await sessionPayload(resolved.state, action, resolved.events, resolved.result, aiFor(req));
     payload.result = resolved.result;
     sendJson(res, resolved.result?.ok === false ? 422 : 200, payload);
+    if (resolved.result?.ok !== false) await autosave(req, payload.state);
     return;
   }
 

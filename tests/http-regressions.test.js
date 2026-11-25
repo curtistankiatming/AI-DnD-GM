@@ -52,6 +52,8 @@ test('local HTTP validation preserves healthy requests and rejects invalid write
   const created = await post('/api/session/new', { classId: 'fighter' }, { Origin: base });
   assert.equal(created.status, 200);
   const { state } = await created.json();
+  // A new game writes the rolling autosave (just after its reply); nothing else may appear in the folder.
+  const written = async () => (await fs.readdir(saveDir)).filter(f => !f.startsWith('autosave.json'));
 
   for (const slot of ['CON', 'aux', 'LPT9']) {
     const saved = await post('/api/session/save', { slot, state });
@@ -59,19 +61,19 @@ test('local HTTP validation preserves healthy requests and rejects invalid write
     assert.equal((await fetch(`${base}/api/session/load?slot=${slot}`)).status, 400);
     assert.equal((await fetch(`${base}/api/session/delete?slot=${slot}`, { method: 'DELETE' })).status, 400);
   }
-  assert.deepEqual(await fs.readdir(saveDir), []);
+  assert.deepEqual(await written(), []);
   for (const body of [null, [], 'not a JSON object', 7]) {
     assert.equal((await post('/api/session/new', body)).status, 400);
   }
   assert.equal((await post('/api/session/new', {}, { 'Content-Type': 'text/plain' })).status, 415);
   assert.equal((await post('/api/session/save', { slot: 'not-written', state }, { Origin: 'http://other.invalid' })).status, 403);
   assert.equal((await post('/api/session/save', { slot: 'not-written', state }, { 'Sec-Fetch-Site': 'cross-site' })).status, 403);
-  assert.deepEqual(await fs.readdir(saveDir), []);
+  assert.deepEqual(await written(), []);
 
   assert.equal((await post('/api/session/save', { slot: 'portable-save', state })).status, 200);
   assert.equal((await fetch(`${base}/api/session/load?slot=portable-save`)).status, 200);
   assert.equal((await fetch(`${base}/api/session/delete?slot=portable-save`, { method: 'DELETE', headers: { Origin: base } })).status, 200);
-  assert.deepEqual(await fs.readdir(saveDir), []);
+  assert.deepEqual(await written(), []);
   assert.equal((await fetch(`${base}/%ZZ`)).status, 400);
   assert.equal((await fetch(`${base}/api/health`)).status, 200);
 });

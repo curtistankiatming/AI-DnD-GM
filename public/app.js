@@ -407,7 +407,7 @@ async function startCampaign() {
     }})});
     if (!response.ok) throw new Error(payload.error || "Campaign creation failed.");
     return payload;
-  }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline ? "autosave" : null});
+  }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline || !browserKeeps ? "autosave" : null});
   if (ok) toast("Your adventure begins.", "good");
 }
 

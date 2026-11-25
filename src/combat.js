@@ -409,7 +409,9 @@ function applyCombatDamage(state, target, rawAmount, damageType, events, source 
   const previous = target.hp;
   target.hp = Math.max(0, target.hp - amount);
   const applied = previous - target.hp;
-  events.push({ type: "damage", tone: target.team === "enemy" ? "good" : "bad", text: `${source} dealt ${applied} ${damageType} damage to ${target.name}.` });
+  // A blow bigger than the health left says both numbers, so a Sneak Attack bonus never looks larger than the hit.
+  const overkill = previous > 0 && target.hp === 0 && amount > applied;
+  events.push({ type: "damage", tone: target.team === "enemy" ? "good" : "bad", text: overkill ? `${source} dealt ${amount} ${damageType} damage to ${target.name}, more than the ${applied} health they had left.` : `${source} dealt ${applied} ${damageType} damage to ${target.name}.` });
   if (applied > 0 && hasCondition(target, "sleeping")) removeCondition(target, "sleeping");
   if (previous > 0 && target.hp === 0) {
     target.deathSaves = { successes: 0, failures: 0, stable: false };
