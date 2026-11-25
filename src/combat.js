@@ -1227,7 +1227,7 @@ function finishCombat(state,result,rng,events){
     const qid=encounter.questId;
     state.story.flags[`method:${qid}`]=result==='objective'?'objective':'force';
     if(result==='setback'){(state.world.progress[qid]||={}).setback=true;state.world.setbacks++;}
-    const text=c.objective.failed?`${c.objective.failText} The remaining opposition has now been resolved.`:result==='objective'?c.objective.successText:result==='setback'?c.objective.failText:`The opposition is defeated. The party secures ${c.objective.name.toLowerCase()} before returning to the witnesses.`;
+    const text=c.objective.failed&&result==='objective'?`${c.objective.name}: done, after the deadline. What the missed deadline cost still stands.`:c.objective.failed?`${c.objective.failText} The remaining opposition has now been resolved.`:result==='objective'?c.objective.successText:result==='setback'?c.objective.failText:`The opposition is defeated. The party secures ${c.objective.name.toLowerCase()} before returning to the witnesses.`;
     events.push({type:'objective',tone:result==='setback'?'warning':'good',text});
     if(!state.story.flags[`won:${encounter.id}`]){W.awardBattleXp(state,qid,events,{awardXp});W.awardChapterBattleXp(state,qid,events,{awardXp},flagScale(state,encounter));}
     state.story.lastOutcome={kind:'combatVictory',title:name,text};

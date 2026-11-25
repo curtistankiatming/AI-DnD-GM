@@ -125,8 +125,12 @@ function finish(state, result, events, api) {
   }
   const r = reward(state), xp = Math.max(0, Math.min(r.xp, room(state)));
   state.player.gold += r.gold;
-  if (xp) api.awardXp(state, xp, events, `Bounty claimed (${r.rating} battle)`);
-  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed: ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${bountyLevel(state)}; AI adventures or the next book go further.`) : ''}` });
+  // One line for the pay: the XP award's own line is folded into it, and only
+  // what the XP sets off (a level up, a renown rank) is told after it.
+  const xpEvents = [];
+  if (xp) api.awardXp(state, xp, xpEvents, 'Bounty');
+  events.push({ type: 'reward', tone: 'good', text: `Bounty claimed (${r.rating} battle): ${r.gold} gold${xp ? ` and ${xp} XP` : ''}.${xp < r.xp ? (Number.isFinite(Book.xpRoom(state)) ? ' XP is capped: you are at the level this chapter of the story is written for.' : ` XP is capped: bounties take a hero to level ${bountyLevel(state)}; AI adventures or the next book go further.`) : ''}` });
+  events.push(...xpEvents.filter((e) => e.type !== 'xp'));
   // The first bounty claimed in a town gives that town's bounty item (src/gear.js).
   const townId = b.nodeId.replace(/^town-/, '');
   Gear.award(state, `bounty:${townId}`, events);
