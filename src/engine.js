@@ -364,7 +364,10 @@ function enterNode(state, nodeId, events = [], lead = null) {
   // own lines, or its opening as narration.
   // A node may have a short "revisit" line for coming back to it.
   const spoken = Array.isArray(lead) ? lead : [];
-  const opening = !firstVisit && node.revisit ? node.revisit : node.opening;
+  // The shared defeat screen tells the fight that was lost, not the bell's
+  // (src/world.js defeatScene; Codex playtest, 25 November 2026).
+  const lostOpening = node.id === "defeat" && state.world ? W.defeatScene(state).opening : null;
+  const opening = lostOpening || (!firstVisit && node.revisit ? node.revisit : node.opening);
   // Told here, so a line's setFlag is set (playLines).
   const own = !firstVisit && node.revisit ? [{ narration: node.revisit }] : playLines(state, node.dialogue) || [{ narration: opening }];
   const dialogue = node.dialogue || spoken.length ? [...spoken, ...own] : null;

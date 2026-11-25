@@ -4266,6 +4266,9 @@
         "requires": {
           "flagsAll": [
             "b4_rue_gave"
+          ],
+          "flagsNone": [
+            "b4_rue_asked_nessa"
           ]
         },
         "lines": [
@@ -4287,6 +4290,9 @@
         "requires": {
           "flagsAll": [
             "b4_rue_kept"
+          ],
+          "flagsNone": [
+            "b4_rue_asked_nessa"
           ]
         },
         "lines": [
@@ -8494,8 +8500,14 @@
         "text": [
           { "narrate": "You say it: backward. Sloe's note. Once." },
           { "oneOf": [
+            { "narrate": "Rue comes across the lid to the Parting Bell with Nessa beside her, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again. Then she turns to you, because it is your hand on the bell. Sloe looks at you a long time, and does not say no a third time. You give Rue the rope.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue", "anyFlag": ["b4_holder_you"] } },
+            { "narrate": "Rue comes across the lid to the Parting Bell with Nessa beside her, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again. Brannagh looks at Sloe, and then at the council, and gets up off her stool and puts the rope in Rue's hands herself.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue", "anyFlag": ["b4_holder_council"] } },
             { "narrate": "Rue comes across the lid to the Parting Bell with Nessa beside her, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again, and Sloe looks at her a long time and gives it to her.", "when": { "party": "nessa", "flag": "b4_nessa_with_rue" } },
+            { "narrate": "Rue comes across the lid to the Parting Bell, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again. Then she turns to you, because it is your hand on the bell. Sloe looks at you a long time, and does not say no a third time. You give Rue the rope.", "when": { "flag": "b4_holder_you", "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "narrate": "Rue comes across the lid to the Parting Bell, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again. Brannagh looks at Sloe, and then at the council, and gets up off her stool and puts the rope in Rue's hands herself.", "when": { "flag": "b4_holder_council", "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
             { "narrate": "Rue comes across the lid to the Parting Bell, and asks for the rope in front of everybody, and Sloe says no, and Rue asks again, and Sloe looks at her a long time and gives it to her.", "when": { "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },
+            { "narrate": "Sloe comes to you and holds out her hand for the Parting Bell's rope. Nobody else asks for it. You give it to her. Rue holds her book.", "when": { "flag": "b4_holder_you" } },
+            { "narrate": "Sloe goes to Brannagh's stool and holds out her hand for the Parting Bell's rope. Nobody else asks for it. Brannagh gives it to her, for the council. Rue holds her book.", "when": { "flag": "b4_holder_council" } },
             { "narrate": "Sloe takes the Parting Bell's rope herself. Nobody asks for it. Rue holds her book." }
           ] },
           { "oneOf": [
