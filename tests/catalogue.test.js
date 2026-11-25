@@ -25,7 +25,9 @@ test('exclusive items are sold only where they say, and rewards are never sold',
     if (item.exclusive?.town) assert.deepEqual(sellers, [item.exclusive.town], item.id);
     if (item.exclusive?.quest || item.exclusive?.event || item.exclusive?.pending) assert.deepEqual(sellers, [], item.id);
     if (item.exclusive?.quest) assert.ok(QUESTS[item.exclusive.quest], `${item.id}: ${item.exclusive.quest}`);
-    if (item.exclusive?.event) assert.ok(TOWNS[item.exclusive.event.split(':')[1]], item.id);
+    // A special monster's drop (src/special.js) names its monster; a bounty's names its town.
+    if (item.exclusive?.event?.startsWith('special:')) assert.equal(require('../src/special').MONSTERS[item.exclusive.event.slice(8)]?.drop, item.id, item.id);
+    else if (item.exclusive?.event) assert.ok(TOWNS[item.exclusive.event.split(':')[1]], item.id);
     if (!item.exclusive) assert.ok(sellers.length >= 1, `${item.id} is sold somewhere`);
   }
   assert.match(Gear.purpose(ITEMS['glasswind-bow']), /Only sold in Highpass Watch\./);

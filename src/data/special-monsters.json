@@ -1,0 +1,517 @@
+{
+  "_note": "Special monsters (Curtis, 25 November 2026: 'some encounters can be special monsters with increased difficulty, substantial exp provision and also unique equipments'). Each is an optional hunt offered on the opening scene of one written chapter, while that chapter is in progress. It is much harder than the chapter's own fight (src/special.js builds it on the Heroic tier with extra health), pays a large share of the chapter's level in XP once (never more than side jobs may give, Book.capJobXp), and drops one unique accessory (gear.json, exclusive.event 'special:<id>'). Losing or running costs nothing but health: the party falls back to the chapter's opening and may try again. 'lines' are told when the hunt starts, 'won' after the win, 'lost' after a defeat. Companion lines are skipped when they are not in the party. 'approval' is given once, on the win. 'setFlag' is set on the win, for later lines that want to remember it.",
+  "snapjaw": {
+    "id": "snapjaw",
+    "chapter": "marsh",
+    "power": 2,
+    "name": "Old Snapjaw",
+    "retainerName": "Snapjaw's Brood",
+    "attackName": "Shearing Jaws",
+    "damageType": "piercing",
+    "resistances": [],
+    "label": "Go after whatever is smashing the lower bank's eel weirs",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Old Sefa takes you down to the lower bank's weirs herself. Every one is broken: not cut, broken, the stakes snapped like kindling and the wicker chewed through. The gatherers have spent a month blaming the upper bank for it. The upper bank has spent a month blaming the gatherers' dogs."
+      },
+      {
+        "say": "Sefa",
+        "text": "It's not dogs. My grandmother called it Snapjaw. It lived in the sump where the sluice-house is now, and it ate what fell in, and nobody minded. Then the ash came down the water. Now it eats what it likes."
+      },
+      {
+        "say": "nessa",
+        "text": "How big is a snapjaw?"
+      },
+      {
+        "narrate": "Sefa holds her arms out as wide as they will go, and then, after a moment, takes a step to one side."
+      },
+      {
+        "narrate": "Out in the reeds something with a shell like an upturned boat lifts its head out of the yellow water and looks at the bank. Smaller shells come up round it."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Old Snapjaw goes down into the sump and does not come up. After a while the water over it settles and goes still, and the yellow scum on it drifts out towards the spillway."
+      },
+      {
+        "say": "Sefa",
+        "text": "Well. There's my grandmother's story finished, then."
+      },
+      {
+        "narrate": "On the upper bank, a man with a pitchfork he was pretending was for hay puts it down, and after a moment comes over to help mend the first weir."
+      },
+      {
+        "say": "maren",
+        "text": "Neither side is going to apologise for the dogs, are they."
+      },
+      {
+        "say": "orin",
+        "text": "No. They're mending the weir together. That's the apology."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You get back up the bank with the reeds thrashing behind you, and the thing goes back under. It is still down there, and so are its young."
+      },
+      {
+        "say": "Sefa",
+        "text": "It's been there longer than me. It'll keep till you're ready."
+      }
+    ],
+    "approval": {
+      "nessa": 1
+    },
+    "setFlag": "special_snapjaw",
+    "drop": "snapjaw-scute"
+  },
+  "greyback": {
+    "id": "greyback",
+    "chapter": "summit",
+    "power": 6,
+    "name": "Greyback, the Glasswind Wyvern",
+    "retainerName": "Wyvern Fledgling",
+    "attackName": "Barbed Tail",
+    "damageType": "piercing",
+    "resistances": [],
+    "label": "Find out who is stealing all three camps' suppers",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Every night since the three camps came up to the ledge, somebody's supper has gone. Lieutenant Garrow says it is Tolliver's porters. Factor Tolliver has written to Garrow's commanding officer about it. Mother Orla says nothing and has started sleeping on her bread."
+      },
+      {
+        "say": "Bek",
+        "text": "It's not any of them. I sit on the stone all night. I watch. It comes down off the crag above the cracked bridge. It's got wings."
+      },
+      {
+        "say": "orin",
+        "text": "Did you tell them?"
+      },
+      {
+        "say": "Bek",
+        "text": "They didn't ask me. They asked me who was going to get the stone."
+      },
+      {
+        "narrate": "Above the cracked footbridge, the crag is white with droppings. Something grey and long-necked unfolds itself on the top of it, the size of a cart, and the two smaller ones beside it start to scream."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Greyback comes down off the crag the last time without meaning to, and lies across the path with one wing over the drop. In its nest you find Tolliver's cheese, Garrow's ration tins and half of a loaf with Mother Orla's teeth-marks in it."
+      },
+      {
+        "narrate": "You carry it all back down. The three camps look at their suppers, and at each other, for a long time."
+      },
+      {
+        "say": "Bek",
+        "text": "Can I have some of the cheese now?"
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You fall back down the path to the camps with the wind of Greyback's wings behind you. It does not follow. It goes back to its crag and screams once, so that all three camps look up."
+      },
+      {
+        "say": "Bek",
+        "text": "It does that. It'll be there tomorrow."
+      }
+    ],
+    "approval": {
+      "orin": 1
+    },
+    "setFlag": "special_greyback",
+    "drop": "wyvern-scale-brooch"
+  },
+  "tollclaw": {
+    "id": "tollclaw",
+    "chapter": "harbour",
+    "power": 7,
+    "name": "Old Tollclaw",
+    "retainerName": "Harbour Crab",
+    "attackName": "Crushing Claw",
+    "damageType": "bludgeoning",
+    "resistances": [
+      "piercing"
+    ],
+    "label": "Ask about the 'claw levy' on the fishermen's tickets",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Every fisherman's landing ticket on the north quay has a line printed on it under the oil duty: 'Claw levy, protection of the harbour, two pence.' The guilds have collected it for sixty years. Nobody on the quay has ever seen what it protects them from."
+      },
+      {
+        "say": "maren",
+        "text": "Two pence from every boat for sixty years. What does it buy?"
+      },
+      {
+        "say": "Old fisherman",
+        "text": "Peace of mind, they say. There was a crab, my grandfather's time. Big as a cart. The guilds said they'd see to it, and they put the levy on, and it went away. That's the story."
+      },
+      {
+        "say": "Old fisherman",
+        "text": "Only the nets under the auction pier come up cut this month. And something's been taking the pier's lamps down into the water. Lamps and all."
+      },
+      {
+        "narrate": "Under the auction pier the tide is out, and in the green dark between the piles something the size of a cart is turning a guild lamp over in one claw, slowly, as if reading what is stamped on it."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Old Tollclaw goes over on its back in the shallows, and its claws close one last time on nothing. Round it on the mud lie forty years of guild lamps, every one stamped with the guild mark."
+      },
+      {
+        "say": "orin",
+        "text": "It wasn't gone. They stopped looking."
+      },
+      {
+        "say": "nessa",
+        "text": "Sixty years of two pence. Somebody owes the quay a lot of money."
+      },
+      {
+        "narrate": "By evening every fisherman on the north quay has heard about it, and by morning someone has crossed the claw levy off the landing tickets in chalk, all along the quay, ticket by ticket."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You come up out of the green dark under the pier with the tide starting to turn behind you, and the great claw lets you go. It drags a lamp back down between the piles with it."
+      },
+      {
+        "say": "Old fisherman",
+        "text": "Sixty years it's waited. It'll wait for the next low tide."
+      }
+    ],
+    "approval": {
+      "maren": 1
+    },
+    "setFlag": "special_tollclaw",
+    "drop": "tollclaw-gauntlet"
+  },
+  "clinker": {
+    "id": "clinker",
+    "chapter": "cinderfold",
+    "power": 9,
+    "name": "Old Clinker",
+    "retainerName": "Slag Grub",
+    "attackName": "Cinder Bite",
+    "damageType": "fire",
+    "resistances": [
+      "fire"
+    ],
+    "label": "Ask the miners what is coming up out of the slag heaps",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "The slag heaps on the lowest step of Cinder Fold have been warm for nine hundred years, from the forge beneath them. The miners' children used to dig in them for the glassy bits. Now nobody lets the children near them."
+      },
+      {
+        "say": "Wren",
+        "text": "Clinker. Every miner's grandmother has seen it once. A worm that lives in the warm slag and eats the cinders. Long as a gallery. Nobody minded it while it stayed down."
+      },
+      {
+        "say": "Wren",
+        "text": "Forge is going cold. Slag's going cold. It's coming up looking for the warm, and the warmest thing in Cinder Fold now is the houses."
+      },
+      {
+        "say": "nessa",
+        "text": "So it's not evil. It's cold."
+      },
+      {
+        "say": "Wren",
+        "text": "It ate the Sallis family's coal shed with the coal in it. Cold or not."
+      },
+      {
+        "narrate": "Below the lowest step the slag heap shifts, and splits, and something long and black and glowing in the cracks heaves itself out of it, with smaller glowing things spilling out round it like sparks out of a fire."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Old Clinker goes dark in the slag, a crack at a time, the way a fire goes out. When it is cold you can see what it was: a worm of cinders as long as a gallery, and in the middle of it, where its heart would be, a stone still glowing like a coal."
+      },
+      {
+        "say": "Wren",
+        "text": "Every grandmother's seen it once. Now every grandmother's going to say she saw the end of it."
+      },
+      {
+        "say": "nessa",
+        "text": "It was only cold."
+      },
+      {
+        "say": "Wren",
+        "text": "I know, Reed. So are we. That's why we're getting the forge lit."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You get back up the steps with the heat at your backs. Old Clinker sinks back into the slag, which shifts and settles over it, still warm."
+      },
+      {
+        "say": "Wren",
+        "text": "It'll stay down while the heap's warm. Go and get ready."
+      }
+    ],
+    "approval": {
+      "nessa": 1
+    },
+    "setFlag": "special_clinker",
+    "drop": "clinker-heartstone"
+  },
+  "tallow": {
+    "id": "tallow",
+    "chapter": "b3-saltwick",
+    "power": 12,
+    "name": "Tallow, the Mist-Hound",
+    "retainerName": "Mist Shadow",
+    "attackName": "Cold Jaws",
+    "damageType": "cold",
+    "resistances": [
+      "cold"
+    ],
+    "label": "Ask Mags what walks the lamp round under the mist",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Every night, after the lamps are lit, something walks Saltwick's lamp round under the mist: the same lanes, in the same order, stopping at the foot of every pole. The lamplighters on the planks above go quiet when it passes."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "That's Tallow. He was the lamp-dog. Every lamplighter had one, for rats on the oil-store and for company. He went down in the mist the first night it came, after a rat, and he didn't come up."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "The mist's had eight years at him. He's bigger now. He still does the round. Last week he took Corrie Ash off the bottom rung of a ladder."
+      },
+      {
+        "say": "maren",
+        "text": "Does he know you?"
+      },
+      {
+        "say": "Mags Peller",
+        "text": "No. He stops under my pole the longest. But no."
+      },
+      {
+        "narrate": "Down in Cooper's Lane, under the mist, something the size of a pony stops at the foot of a lamp-pole and lifts its head. Pale shapes rise up out of the white round it, the way steam rises off water."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Tallow lies down at the foot of the salt-hall pole, the last on the round, as a dog lies down at the end of a walk. The mist round him goes thin, and then goes, and for a moment there is only an old grey lamp-dog in the lane, with a rope collar and a small brass bell on it."
+      },
+      {
+        "narrate": "Mags comes down the ladder. She does not say anything. She unbuckles the collar and holds it, and the bell rings once."
+      },
+      {
+        "say": "orin",
+        "text": "I'm sorry."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "Don't be. He's finished his round. Keep the bell. He'd have liked somebody to be carrying it who goes out at night."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You go up the nearest ladder with the cold at your heels, and the lamplighters pull it up after you. Below, Tallow finishes his round, pole by pole, and goes down into the white."
+      },
+      {
+        "say": "Mags Peller",
+        "text": "He'll be round again tomorrow night. He always is."
+      }
+    ],
+    "approval": {
+      "orin": 1
+    },
+    "setFlag": "special_tallow",
+    "drop": "tallow-collar-bell"
+  },
+  "candle-eater": {
+    "id": "candle-eater",
+    "chapter": "b3-deep",
+    "power": 14,
+    "name": "The Candle-Eater",
+    "retainerName": "Pale Follower",
+    "attackName": "Smothering Touch",
+    "damageType": "necrotic",
+    "resistances": [
+      "necrotic"
+    ],
+    "label": "Ask the ones who turned back what put their lamps out",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Round their candle-end, the ones who turned back keep their backs to the dark. They had lamps when they came down. They have one candle now, and they do not let it out of their hands."
+      },
+      {
+        "say": "Fennick",
+        "text": "Ask them. I have. I wrote down what they said and then I stopped writing."
+      },
+      {
+        "narrate": "A woman with the company's badge on her coat tells it without looking up. Something follows lights in the deep. It is long and pale and it does not hurry. It comes to a lamp and puts its hand over it, and the lamp goes out, and then it puts its hand over the one holding it."
+      },
+      {
+        "say": "maren",
+        "text": "How many of you came down?"
+      },
+      {
+        "say": "Company woman",
+        "text": "Fifty-two. It's had fourteen. It's had them a lamp at a time."
+      },
+      {
+        "narrate": "Out past the edge of the ledge, where the marked way turns, a light that is not yours goes out. Then another, nearer. Something long and pale stands up out of the dark, with others behind it that move as it moves."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "The Candle-Eater goes down on the marked way without a sound, and the dark it brought goes back into the deep, slowly, as cold goes out of a room. Where it lay there is a lantern, old and black, with fourteen wicks in it, none of them lit."
+      },
+      {
+        "narrate": "One of the company holds her candle to the first wick, and it takes. Then the second. By the time the fourteenth is burning, everybody round the candle-end is crying, and nobody says why."
+      },
+      {
+        "say": "Fennick",
+        "text": "Fourteen. I'll write them down. I've got their names. I asked."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You fall back to the ledge and the candle-end with the dark close behind you. It stops at the edge of the candle-light, and waits there, and then is not there."
+      },
+      {
+        "say": "Company woman",
+        "text": "It doesn't like the candle. It doesn't need to. It's patient."
+      }
+    ],
+    "approval": {
+      "maren": 1
+    },
+    "setFlag": "special_candle_eater",
+    "drop": "candle-eater-lantern"
+  },
+  "whitecoat": {
+    "id": "whitecoat",
+    "chapter": "b4-peaks",
+    "power": 16,
+    "name": "Old Whitecoat",
+    "retainerName": "Drift of the White",
+    "attackName": "Mauling Swipe",
+    "damageType": "slashing",
+    "resistances": [
+      "cold"
+    ],
+    "label": "Ask Rue about the bear asleep in the south porch",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "In the south porch of the Hall of Legends there is a heap of old snow against the wall that breathes."
+      },
+      {
+        "say": "Rue",
+        "text": "It was asleep when I came down in the spring. I walked past it on my toes. In the Wold we call them whitecoats. The white gets into them in the winter, the old ones, and they don't wake up hungry. They wake up something else."
+      },
+      {
+        "say": "Rue",
+        "text": "The storm's going to wake it. It'll wake up with the white in it, and we'll be crossing in the open middle with three hundred paces to go."
+      },
+      {
+        "say": "orin",
+        "text": "Then it wakes up now. While we choose where we stand."
+      },
+      {
+        "narrate": "Somebody's boot scrapes the porch step. The heap of snow lifts its head. It is taller sitting up than Orin is standing, and the white comes up off its coat in drifts, and the drifts do not fall."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "Old Whitecoat goes down across the porch step with a sound like a roof coming in. The white goes out of its coat as it lies there, and under the white the fur is only brown, and grey at the muzzle, and very old."
+      },
+      {
+        "say": "Rue",
+        "text": "In the Wold, when you take one, you wear the coat. It's not a boast. It means the cold that was in it is on your side now."
+      },
+      {
+        "narrate": "At the south door Linus Pardew has stopped writing, and is standing with his pencil in the air, and has the decency to look as if he has seen something he should not put in a song."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You get back through the south door with the white roaring after you. Old Whitecoat does not follow. It lies down again across the porch, and the snow begins to cover it."
+      },
+      {
+        "say": "Rue",
+        "text": "It'll sleep again till the storm comes. That's not long."
+      }
+    ],
+    "approval": {
+      "orin": 1
+    },
+    "setFlag": "special_whitecoat",
+    "drop": "whitecoat-mantle"
+  },
+  "snowcat": {
+    "id": "snowcat",
+    "chapter": "b4-knot",
+    "power": 16,
+    "name": "The Saddle Ghost",
+    "retainerName": "White on the Wind",
+    "attackName": "Raking Claws",
+    "damageType": "slashing",
+    "resistances": [
+      "cold"
+    ],
+    "label": "Ask Brannagh why she is sleeping in the goat pen",
+    "description": "Optional and dangerous: a special monster, far harder than this chapter's fight. A win pays big XP and a one-of-a-kind item. A loss only costs health: you fall back here and can try again.",
+    "lines": [
+      {
+        "narrate": "Every goat in the lower watch's pens has gone since the white came down the road, one a night. The watch says the Wold's dogs. The Wold has no dogs with it. The watch says that is suspicious in itself."
+      },
+      {
+        "narrate": "Brannagh of Fenmere's goat is the last one in the pens. Brannagh has started sleeping in the pen with it, in her good coat, with a pitchfork."
+      },
+      {
+        "say": "Brannagh",
+        "text": "I'm seventy. I've buried a village. I am not burying a goat."
+      },
+      {
+        "say": "Rue",
+        "text": "It's not dogs. It came down after us, over the saddle. The Wold calls it the saddle ghost. A white cat, long as a sledge. It follows the white for what the white leaves."
+      },
+      {
+        "say": "nessa",
+        "text": "It's been following us since the Hall?"
+      },
+      {
+        "say": "Rue",
+        "text": "Since the north door. I didn't say. There was enough to be frightened of."
+      },
+      {
+        "narrate": "At dusk the white stands up along the pen wall, and on top of the wall, where nothing was a moment ago, a long pale shape crouches, looking at the goat. The wind round it has shapes in it."
+      }
+    ],
+    "won": [
+      {
+        "narrate": "The saddle ghost comes off the pen wall the last time and does not get up. Lying in the mud of the lower watch it is only a great grey-white cat, thin under the fur, with the snow already melting off it."
+      },
+      {
+        "say": "Brannagh",
+        "text": "Good. Now somebody tell the watch it was not dogs."
+      },
+      {
+        "narrate": "Then she goes back into the pen, and sits down beside the goat, and stays there for a while with her hand on its neck, and nobody goes in to fetch her."
+      }
+    ],
+    "lost": [
+      {
+        "narrate": "You fall back into the watch-house with the wind clawing at the door. In the morning the goat is still there, and so is Brannagh, and on the wall above them there are prints in the snow."
+      },
+      {
+        "say": "Brannagh",
+        "text": "It came back and looked at me. I looked back. Get some rest. It'll come again."
+      }
+    ],
+    "approval": {
+      "maren": 1
+    },
+    "setFlag": "special_snowcat",
+    "drop": "snowcat-pelt"
+  }
+}

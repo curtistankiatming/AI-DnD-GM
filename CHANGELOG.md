@@ -4,6 +4,25 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Battle XP and special monsters (25 November 2026)
+
+- A written chapter's own fight now pays XP the moment it is won: a tenth of
+  the chapter's level (a "hard" battle), taken out of the chapter's XP, so a
+  chapter still pays the same in all and the level 10 grind is unchanged.
+  Before, the fight paid nothing until the chapter's last decision.
+- A fight that an earlier choice made tougher (six chapters in Books Three and
+  Four) pays that much more on top. One made easier still pays the full share.
+  Talking your way out still pays the same total as fighting.
+- Eight special monsters, two in each book, each an optional hunt on one
+  chapter's opening scene: Old Snapjaw (Fenmere marsh, 3), Greyback (Glasswind,
+  7), Old Tollclaw (Merrowgate harbour, 13), Old Clinker (Cinder Fold, 16),
+  Tallow the mist-hound (Saltwick, 23), the Candle-Eater (the deep, 37), Old
+  Whitecoat (the Hall of Legends, 49) and the saddle ghost (Highpass, 60). Each
+  is far harder than the chapter's own fight, pays 30% of the chapter's level
+  in XP once (about three bounties), and drops its own accessory, shared by
+  every class. Book Four's two are warm. Losing costs only health: the party
+  falls back to the chapter's opening and may hunt again.
+
 ## Book Four characters (22 November 2026)
 
 - Biscuit now stops at Highpass when the party goes north from Cinder Fold, as

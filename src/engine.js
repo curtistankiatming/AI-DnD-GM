@@ -969,7 +969,7 @@ function resolveAction(rawState, rawAction, rng = Math.random) {
   return {state,view:buildView(state),events,result};
 }
 
-function extensionApi(){return {addItem,awardXp,enterNode,startCombat,recruitCompanion};}
+function extensionApi(){return {addItem,awardXp,enterNode,startCombat,recruitCompanion,applyApproval};}
 
 function setupCatalog() {
   return {

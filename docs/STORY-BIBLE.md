@@ -197,7 +197,11 @@ while behind the chapter) and AI side quests make up the rest. A player who
 skips all of it ends Book Two at about level 17; a careful one at 19, reaching
 20 and the 2nd job with a bounty or two after the Second Oath. A chapter can be
 started up to 10 levels under its level; more than 5 under, it gets harder.
-Written chapters' battles pay no extra XP. (Before: 105% per chapter, so the
+A written chapter's own fight pays a tenth of
+its level as soon as it is won, out of the chapter's XP, so the total is the
+same; a fight an earlier choice made tougher pays more on top, and the
+peaceful way pays the same total (25 November 2026). Special monsters (below)
+pay more. (Before: 105% per chapter, so the
 story reached level 20 at the end of Book Two without side content.)
 
 ### Book Three: The Names in the Bronze (levels 20 to 40, being written)
@@ -269,3 +273,18 @@ text when the hero rolls:
 Keep plain "you" where it is the whole party, or someone speaking to the hero.
 A check that is the hero's own (the trial, the Second Oath, and the oath the
 bell-warden asks for at the end of Book One) has `"hero": true` and is always rolled by the hero.
+
+## Special monsters
+
+Built 25 November 2026 (Curtis: "some encounters can be special monsters with
+increased difficulty, substantial exp provision and also unique equipments").
+Each is an optional hunt on one written chapter's opening scene
+(`src/data/special-monsters.json`, `src/special.js`): two per book, at Fenmere
+marsh, Glasswind, Merrowgate harbour, Cinder Fold, Saltwick, the deep, the Hall
+of Legends and Highpass after the Wold comes down. A monster is something the
+place already has a story about (a grandmother's tale, a guild levy nobody
+questions, a lamp-dog the mist took), so the hunt tells you about the people as
+well as the beast. Its lines are `lines` (the hunt), `won` and `lost`;
+companion lines are skipped when they are absent. Winning sets a flag
+(`special_<id>`) later lines may read, gives one companion's approval and drops
+the monster's own accessory. The main story never assumes a monster was hunted.

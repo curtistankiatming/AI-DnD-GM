@@ -306,7 +306,9 @@ function jobRoom(state) {
   let paid = 0, room = xp + xpRoom(state);
   for (const q of chapters(state)) {
     if (done(state, q.id)) continue;
-    paid += Math.max(0, Number(q.xp) || 0);
+    // A chapter whose fight is won has paid that part already (src/world.js awardChapterBattleXp).
+    const early = Number(state.story?.flags?.[`battleXp:${q.id}`]);
+    paid += Math.max(0, (Number(q.xp) || 0) - (Number.isFinite(early) ? early : 0));
     room = Math.min(room, (P.XP_NEXT[(Number(q.level) || 1) + 1] || Infinity) - 1 - paid);
   }
   return Math.max(0, room - xp);
