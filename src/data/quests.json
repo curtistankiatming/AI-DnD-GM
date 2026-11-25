@@ -891,7 +891,7 @@
     "region": "Highpass signal tower",
     "threat": "Charged ward machinery and exposed climbing. A Storm Grounder opens a protected approach; a climbing kit aids the ascent.",
     "faction": "wilds",
-    "brief": "The tower above Highpass repeats a distress signal in Nessa’s old code. Restore its beacon before the mountain caravans enter the storm blind.",
+    "brief": "The tower above Highpass repeats a distress signal in a scout’s old code. Restore its beacon before the mountain caravans enter the storm blind.",
     "opening": [
       {
         "narrate": "Highpass Watch sits across the top of the pass like a cork in a bottle, and every refugee from the high villages has come up against it this year. Its captain has found room for all of them. She has not found room for anything else."
@@ -1063,6 +1063,7 @@
           "party": "nessa"
         }
       },
+      {"oneOf": [{"say": "Wren", "text": "Girl came through the fort a fortnight back. On her own. Said she'd asked some Briarwatch folk if she could walk with them, and they'd said no. Said it like the weather. Reed always says the big ones like the weather.", "when": {"absent": "nessa", "flag": "nessa:offer", "is": "declined"}}, {"say": "Wren", "text": "I tied that scarf up for a scout of mine. Reed. She'd have read the code from the road. You're not her.", "when": {"absent": "nessa"}}]},
       {
         "narrate": "Before the medics take her down, the keeper, Wren, presses a folded map on you: every safe line through the pass, redrawn after each storm for twenty years. “Give it to someone who’ll keep it honest.”",
         "when": {
@@ -4829,6 +4830,7 @@
           "absent": "nessa"
         }
       },
+      {"oneOf": [{"say": "Wren", "text": "Reed's on the coast road, last I heard. Lights other people's beacons for pay. She asked after you once. Then she stopped.", "when": {"absent": "nessa", "flag": "nessa:offer", "is": "declined"}}, {"say": "Wren", "text": "If you see a scout called Reed on the roads, tell her the forge has a post going. She won't come if I ask. She might if it's gossip.", "when": {"absent": "nessa"}}]},
       {
         "narrate": "You take out the map she pressed on you under the signal arm, every safe line through the pass, and put it on her table. Wren unfolds it, runs one finger down the north gully, and folds it up again.",
         "when": {

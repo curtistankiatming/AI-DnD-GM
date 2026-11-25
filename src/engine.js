@@ -343,6 +343,11 @@ function enterNode(state, nodeId, events = [], lead = null) {
     const away = Away.pending(state, events);
     if (away && STORY_NODES[away]) return enterNode(state, away, events, lead);
   }
+  // Curtis, 25 November 2026: Nessa gets two chances to join. The first is her rescue in the mist;
+  // a party that walked past it meets her once more when it reports the first chapter, and a
+  // refusal there is final. (Older saves past that point keep the guild bench in town.)
+  if (nodeId === "town-briarwatch" && state.story.nodeId === "ending" && state.world?.completed?.bell && !state.story.flags["nessa:offer"]
+    && !findCompanion(state, "nessa") && !state.world.away?.nessa && STORY_NODES["nessa-offer"]) return enterNode(state, "nessa-offer", events, lead);
   // A side job left half done picks up where it was.
   if (node.sideJob && state.world) state.world.jobProgress[node.sideJob] = nodeId;
   // A conversation scene needs its whole cast; otherwise go where it would end.

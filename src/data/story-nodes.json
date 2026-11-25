@@ -2103,5 +2103,117 @@
     "opening": "The party falls before the ward can be restored. Briarwatch's bell continues beneath the earth, each toll carrying Sable's command farther through the roots.",
     "defeat": true,
     "choices": []
+  },
+  "nessa-offer": {
+    "id": "nessa-offer",
+    "act": "Chapter I • Consequences",
+    "title": "A Scout on the Bench",
+    "location": "The roadwardens' bench",
+    "safeRest": true,
+    "objective": "A scout wants to travel with the party. Decide whether she comes.",
+    "lines": [
+      {
+        "narrate": "A young scout is sitting on the roadwardens' bench with her pack already on and one boot up on the table. She has a bandaged hand, a bow older than she is, and the look of someone who has definitely not been waiting for you."
+      },
+      {
+        "say": "Nessa",
+        "text": "Nessa Reed. Guild says you're short a pair of eyes. I've been a day behind you all week, and you stop to talk to everyone, so somebody ought to be— the trees. Somebody ought to watch the trees."
+      },
+      {
+        "say": "orin",
+        "text": "We manage."
+      },
+      {
+        "say": "Nessa",
+        "text": "You manage slowly."
+      },
+      {
+        "say": "maren",
+        "text": "And who sent you, Nessa Reed?"
+      },
+      {
+        "say": "Nessa",
+        "text": "Nobody sends me. I followed Sable into the Briarwood three nights running before you— look. I want to see where this goes. With you. Not behind you."
+      }
+    ],
+    "choices": [
+      {
+        "id": "nessa-take",
+        "label": "Take her on",
+        "description": "Nessa travels with the party from now on.",
+        "keywords": [
+          "take her",
+          "yes",
+          "join",
+          "nessa joins"
+        ],
+        "once": true,
+        "autoSuccess": true,
+        "result": {
+          "lines": [
+            {
+              "say": "maren",
+              "text": "She can come."
+            },
+            {
+              "say": "Nessa",
+              "text": "I wasn't asking."
+            },
+            {
+              "say": "maren",
+              "text": "Has anyone looked at that hand?"
+            },
+            {
+              "say": "Nessa",
+              "text": "It's fine."
+            },
+            {
+              "narrate": "She swings her feet off the table and is out of the door before Orin has finished deciding whether to object. She brings her own gear, and she is every bit as road-worn as the rest of you."
+            }
+          ],
+          "recruit": "nessa",
+          "setFlags": {
+            "nessa:offer": "joined"
+          },
+          "nextNode": "town-briarwatch"
+        }
+      },
+      {
+        "id": "nessa-decline",
+        "label": "Tell her the party is full",
+        "description": "She will not ask again.",
+        "keywords": [
+          "no",
+          "decline",
+          "party is full",
+          "turn her down"
+        ],
+        "once": true,
+        "autoSuccess": true,
+        "result": {
+          "lines": [
+            {
+              "say": "Nessa",
+              "text": "Fine. Your road."
+            },
+            {
+              "narrate": "She doesn't argue. She takes her boot off the table, settles her pack, and walks out into the rain toward the north road on her own. Maren watches the door for a while after it closes."
+            },
+            {
+              "say": "maren",
+              "text": "She'll be all right."
+            },
+            {
+              "say": "orin",
+              "text": "That's what worries me."
+            }
+          ],
+          "setFlags": {
+            "nessa:offer": "declined"
+          },
+          "nextNode": "town-briarwatch"
+        }
+      }
+    ]
   }
 }

@@ -1,7 +1,7 @@
 'use strict';
 // Browser playtest, 25 November 2026 (docs/reviews/claude-browser-playtest-2026-11-25.md):
 // a fight won by force reads as a sentence, a third failed death save does not
-// say the hero died, Nessa joins in a scene even when her rescue was missed, and a hosted
+// say the hero died, Nessa gets two chances to join (Curtis), and a hosted
 // visitor's browser really keeps the current game.
 const test = require('node:test'), assert = require('node:assert/strict');
 const fs = require('node:fs/promises'), os = require('node:os'), path = require('node:path'), net = require('node:net');
@@ -43,7 +43,7 @@ test('a third failed death save loses the fight without saying the hero died', (
   assert.doesNotMatch(told, /dies|chapter is lost/);
 });
 
-test('Nessa met through the guild arrives in a short scene, not a shop line', () => {
+test('an older save that never saw the offer can still meet Nessa through the guild, in a short scene', () => {
   const s = hero('rogue', 3); s.world.completed.bell = { xp: 0, gold: 0 };
   s.world.unlockedTowns = ['briarwatch']; s.world.townId = 'briarwatch'; s.story.nodeId = 'town-briarwatch'; W.init(s);
   assert.equal(E.buildView(s).world.canRecruit, true);
@@ -51,19 +51,40 @@ test('Nessa met through the guild arrives in a short scene, not a shop line', ()
   assert.equal(r.result.ok, true, r.result.error);
   assert.ok(r.state.party.some((m) => m.id === 'nessa'));
   const told = r.events.map((e) => e.text || '').join(' ');
-  assert.match(told, /Nessa: The guild says you’re short a pair of eyes\./);
+  assert.match(told, /Nessa: Guild says you’re short a pair of eyes\./);
   assert.doesNotMatch(told, /recruitment fee/);
 });
 
-test('a hero who missed the rescue in the mist meets Nessa on the first return to Briarwatch', () => {
+function reportedWithoutNessa() {
   const s = hero('rogue', 2); s.story.nodeId = 'ending';
   assert.ok(!s.party.some((m) => m.id === 'nessa'));
-  const choice = E.buildView(s).scene.choices.find((c) => c.id === 'report-bell');
-  const r = E.resolveAction(s, { type: 'story-choice', choiceId: choice.id }, low);
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'report-bell' }, low);
   assert.equal(r.result.ok, true, r.result.error);
-  assert.ok(r.state.party.some((m) => m.id === 'nessa'), 'Nessa joins when the first chapter is reported.');
-  assert.match(r.events.map((e) => e.text || '').join(' '), /Nessa: The guild says you’re short a pair of eyes\./);
-  assert.equal(E.buildView(r.state).world.canRecruit, false);
+  return r.state;
+}
+
+test('a hero who walked past the rescue gets a second and last chance to take Nessa on', () => {
+  const s = reportedWithoutNessa();
+  assert.equal(s.story.nodeId, 'nessa-offer');
+  assert.deepEqual(E.buildView(s).scene.choices.map((c) => c.id), ['nessa-take', 'nessa-decline']);
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'nessa-take' }, low);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.ok(r.state.party.some((m) => m.id === 'nessa'));
+  assert.equal(r.state.story.flags['nessa:offer'], 'joined');
+  assert.equal(r.state.story.nodeId, 'town-briarwatch');
+});
+
+test('turning Nessa down a second time is final', () => {
+  let s = reportedWithoutNessa();
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'nessa-decline' }, low);
+  assert.equal(r.result.ok, true, r.result.error);
+  s = r.state;
+  assert.ok(!s.party.some((m) => m.id === 'nessa'));
+  assert.equal(s.story.flags['nessa:offer'], 'declined');
+  assert.equal(s.story.nodeId, 'town-briarwatch');
+  E.awardXp(s, P.XP_NEXT[4], [], 'test fixture');
+  assert.equal(E.buildView(s).world.canRecruit, false, 'no town button either');
+  assert.equal(E.resolveAction(s, { type: 'recruit', companionId: 'nessa' }, low).result.ok, false);
 });
 
 test('a hero who rescued Nessa does not meet her twice', () => {
@@ -75,7 +96,30 @@ test('a hero who rescued Nessa does not meet her twice', () => {
   const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'report-bell' }, low);
   assert.equal(r.result.ok, true, r.result.error);
   assert.equal(r.state.party.filter((m) => m.id === 'nessa').length, 1);
-  assert.doesNotMatch(r.events.map((e) => e.text || '').join(' '), /short a pair of eyes/);
+  assert.equal(r.state.story.nodeId, 'town-briarwatch', 'no second offer');
+});
+
+test('the story remembers a Nessa who was turned away, or never met', () => {
+  const X = require('../src/expansion');
+  const raw = (file) => require(`../src/data/${file}.json`);
+  const told = (state, lines) => X.liveLines(state, lines.map(X.storyLine)).map((l) => l.narration || `${l.speaker}: ${l.text}`).join(' ');
+  const base = () => hero('rogue', 6);
+  const declined = base(); declined.story.flags['nessa:offer'] = 'declined';
+  const never = base();
+  const signal = raw('quests').signal.after;
+  assert.match(told(declined, signal), /Wren: Girl came through the fort a fortnight back/);
+  assert.match(told(never, signal), /Wren: I tied that scarf up for a scout of mine\. Reed\./);
+  const cinder = raw('quests').cinderfold.opening;
+  assert.match(told(declined, cinder), /Reed's on the coast road/);
+  assert.match(told(never, cinder), /tell her the forge has a post going/);
+  const forge = Object.values(raw('scenes')).flatMap((sc) => Object.values(sc.nodes || {})).find((n) => JSON.stringify(n).includes("Orin has the quartermaster's invoice")).lines;
+  assert.match(told(declined, forge), /Reed came by in the autumn and lit it for me/);
+  assert.match(told(never, forge), /asks if you ever ran into a scout called Reed/);
+  // With Nessa in the party none of it is told.
+  let withHer = base(); withHer.story.nodeId = 'mist-hollow';
+  withHer = E.resolveAction(withHer, { type: 'story-choice', choiceId: 'hold-wolves' }, low).state;
+  assert.ok(withHer.party.some((m) => m.id === 'nessa'));
+  assert.doesNotMatch(told(withHer, [...signal, ...cinder, ...forge]), /scout called Reed|Girl came through|I tied that scarf|coast road/);
 });
 
 // --- The hosted server over HTTP ---

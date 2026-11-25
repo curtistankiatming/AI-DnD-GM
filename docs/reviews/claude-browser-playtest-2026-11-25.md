@@ -74,27 +74,46 @@ Screenshots are in the project files under `browser-playtest/`.
 
 Tests for all of these are in `tests/browser-playtest.test.js`.
 
-## Question for Curtis: Nessa's arrival
+## Nessa's arrival (Curtis decided: two chances, then she's gone)
 
 At "Three Ways into the Briarwood" only one route of four (follow the bell
-note into the mist) leads to Nessa's rescue, which is one of the best scenes in
-Book One. On the other three she can only be added from a town button from
-level 3, which is easy to miss. My laptop run missed it until level 6, so
-Nessa was absent for "A Light above the Storm", the chapter about her own
-mentor Wren. Her lines are quietly dropped when she is away, so nothing
-breaks, but her story loses its start.
+note into the mist) leads to Nessa's rescue. On the other three she could only
+be added from a town button from level 3, which is easy to miss: my laptop run
+missed it until level 6, so Nessa was absent for "A Light above the Storm", the
+chapter about her own mentor Wren.
 
-Options: (a) if the player misses the rescue, Nessa turns up in a short scene
-when the party first returns to Briarwatch, so she always joins before her
-chapters (recommended); (b) keep the optional town button as it is now.
+Curtis's answer: choices must impact the story; give her two chances, and if
+the player passes on both she never joins. Built that way:
 
-This branch does (a), as recommended, pending Curtis's answer: reporting the
-first chapter to Aveline brings Nessa in with the same short scene if she is
-not already in the party. The town button stays for any case it misses.
-Players who rescued her are unchanged. One leftover either way: Nessa's
-Book Two walk-out letter says "I've been the one hanging upside down in a snare
-while people talked about the best way to cut me down", which only fits players
-who rescued her. It needs a second wording for the guild meeting.
+- **Chance one** is the rescue in the mist, unchanged.
+- **Chance two** is a new scene, "A Scout on the Bench", when the party reports
+  the first chapter to Aveline without her: "Take her on" or "Tell her the
+  party is full". Turning her down is final, and the town button is gone for
+  that save. (Saves already past that point keep the old town button.)
+- **The story remembers.** Wherever she would have been, someone notices she
+  isn't: Wren at the signal tower ("I tied that scarf up for a scout of mine.
+  Reed."), Wren again at Cinder Fold, and a letter from Wren in the Book Two
+  epilogue. If you turned Nessa down, the lines say so ("Said she'd asked some
+  Briarwatch folk if she could walk with them, and they'd said no"). The chapter
+  brief "in Nessa's old code" now says "in a scout's old code".
+- Nessa's Book Two walk-out letter no longer mentions the snare for players who
+  met her on the bench; it mentions the bench instead.
+
+### Calls made by a reviewer while Curtis slept
+
+Curtis asked for an independent reviewer to answer questions overnight. A
+separate reviewer read the new scene and the Wren chapters, and decided:
+
+1. Nessa's lines in the new scene were too tidy for her (the bible gives her
+   half-finished sentences). Rewritten to its suggested lines, and Maren now
+   asks about her bandaged hand.
+2. Her absence should be acknowledged in three places (signal tower, Cinder
+   Fold, the Book Two epilogue letter), with a sharper version when she was
+   turned down. Done as it proposed.
+3. Orin's last line in the refusal was cut to "That's what worries me."; the
+   longer version explained the joke.
+
+Any of these can be reversed.
 
 ## Not fixed, worth deciding
 
