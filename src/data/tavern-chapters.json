@@ -3,7 +3,7 @@
   "chapters": {
     "aftermath": [
       {
-        "narrate": "{hire} counts the crates off the last wagon twice, because nobody has asked them to, and then sits on the tailboard."
+        "narrate": "{hire} counts the crates off the last wagon twice, because nobody has asked {hireThem} to, and then sits on the tailboard."
       },
       {
         "say": "hire",
@@ -29,7 +29,7 @@
     ],
     "fenmere": [
       {
-        "narrate": "{hire} has been helping the man look for his daughter's name in the church register, though he has already remembered it. He says it again. {hire} nods, as if hearing it for the first time."
+        "narrate": "{hire} has been helping the man look for his daughter's name in the church register, though the man has already remembered it, and says it again. {hire} nods, as if hearing it for the first time."
       },
       {
         "say": "hire",
@@ -78,7 +78,7 @@
     ],
     "hollin": [
       {
-        "narrate": "{hire} is sitting on the council-house step with their hands between their knees. For once they have not said anything about what any of it is costing."
+        "narrate": "{hire} is sitting on the council-house step with {hireTheir} hands between {hireTheir} knees, and for once has not said anything about what any of it is costing."
       },
       {
         "say": "hire",
@@ -93,7 +93,7 @@
     ],
     "vote": [
       {
-        "narrate": "{hire} did not vote. They are not from Briarwatch, and they say so, twice, to anyone who asks. They stood in the snow at the back with their hands in their pockets until it was counted."
+        "narrate": "{hire} did not vote, not being from Briarwatch, and said so, twice, to anyone who asked, then stood in the snow at the back with {hireTheir} hands in {hireTheir} pockets until it was counted."
       },
       {
         "say": "hire",
@@ -210,7 +210,7 @@
     ],
     "b3-price": [
       {
-        "narrate": "{hire} stands for a long time in front of the price-board outside the Lantern Hall, reading it, with their lips moving."
+        "narrate": "{hire} stands for a long time in front of the price-board outside the Lantern Hall, reading it, with {hireTheir} lips moving."
       },
       {
         "say": "hire",
@@ -277,7 +277,7 @@
     ],
     "b3-deep": [
       {
-        "narrate": "{hire} sits with their back to the rock beside the clerk's ledger and counts the people on the ledge, silently, then counts again."
+        "narrate": "{hire} sits with {hireTheir} back to the rock beside the clerk's ledger and counts the people on the ledge, silently, then counts again."
       },
       {
         "say": "hire",
@@ -588,7 +588,7 @@
     ],
     "b4-parting": [
       {
-        "narrate": "{hire} is standing at the back, where the hired help stands, with their fee in their boot. When everyone looks at you, they look at you too."
+        "narrate": "{hire} is standing at the back, where the hired help stands, with {hireTheir} fee in {hireTheir} boot. When everyone looks at you, so does {hire}."
       },
       {
         "say": "hire",

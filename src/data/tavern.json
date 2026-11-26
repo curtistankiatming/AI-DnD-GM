@@ -177,18 +177,20 @@
         "say": "orin",
         "text": "Any of them is more than we've got.",
         "when": {
-          "tavernSeen": false
+          "tavernSeen": false,
+          "notFlag": "tavern:met"
         }
       },
       {
         "say": "maren",
         "text": "They'd be hired, not sworn. They'll fight for us. Whether they'll stay for us is another thing.",
         "when": {
-          "tavernSeen": false
+          "tavernSeen": false,
+          "notFlag": "tavern:met"
         }
       }
     ],
-    "hireDescription": "{role}. {summary} Fee: {fee} gold for each of your levels, paid now. The others will move on.",
+    "hireDescription": "{kindWord} · {role}. {summary} Fee: {total} gold now ({fee} for each of your levels). The others will move on.",
     "hiredAfter": [
       {
         "narrate": "The others finish their drinks and wish you a safe road. By the next time you are through, they will have moved on."
