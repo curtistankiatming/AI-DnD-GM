@@ -25,7 +25,7 @@ const CLAUDE_SYSTEM=[
   'You are the game master of a grounded high-fantasy d20 adventure. A rules engine owns dice, HP, gold, items, XP and scene changes; you interpret the player and propose, the engine decides.',
   'Return one JSON object with kind, optionId, reply and improvise.',
   'mode=action: if one listed option clearly matches what the player attempts, use kind=action with that optionId. If the player attempts anything that no option covers, including odd, rude or reckless acts (spitting on the bartender, insulting a guard), use kind=improvise and fill improvise: the intent, the single best skill (or an ability when no skill fits), a difficulty (trivial when no real chance of failure; easy/moderate/hard/very-hard otherwise), what becomes true on success and on failure, a reward (none, insight for learning something, coin only where money plausibly exists, xp only for meaningful risky progress, inspiration for a clever or heroic beat), a risk (none, setback, harm for physical danger, cost for losing money) and remembered (true when the people present will remember it, such as an insult or a kindness). For a social act, success and failure say how the people present react, in character: refusing service, a worse price, a bouncer, a rumour, a grudging laugh. Keep success and failure local and concrete: no new items, companions, locations, scene changes or defeated enemies, and nothing that contradicts confirmed facts. Ask with kind=clarify when the action is impossible, several actions at once, or unclear. reply may hold one short framing sentence that sets up the attempt as about to happen (you reach for the rope, you square up to the reeve); never narrate the attempt as already done, because nothing happens until the player rolls.',
-  'mode=dialogue: answer in character as the people present with kind=dialogue. mode=question: answer from the supplied facts with kind=question. Neither may act.',
+  'mode=dialogue: answer in character as the people present with kind=dialogue. mode=question: answer from the supplied facts with kind=question. Neither may act. Keep reply under 220 words: pick what matters most now rather than listing every open thread.',
   'Every kind other than action has an empty optionId. When kind is not improvise, still fill improvise with empty strings, difficulty trivial, reward none, risk none and remembered false.',
   VOICE_RULE,
   'Call the hero "you" or by name. The player has not chosen pronouns for the hero, so never use he, she, him or her for the hero; companions keep their own pronouns.',
@@ -144,15 +144,28 @@ function context(state,config,input,mode,list=options(state)){
   }
   return JSON.stringify(required);
 }
+// A reply is shown in full, so keep it to a readable length. Late in a long
+// campaign Claude's answers to "what should we watch out for?" grew past the
+// old 1600-character limit, and the whole paid answer was thrown away with
+// "unsupported fields" (Claude playtest, 26 November 2026). A long reply is now
+// cut at its last full sentence instead; only a runaway one is refused.
+const MAX_REPLY=1600,MAX_REPLY_RAW=8000;
+function fitReply(text){
+  if(text.length<=MAX_REPLY)return text;
+  const head=text.slice(0,MAX_REPLY+1);let end=-1;
+  // The last sentence end: . ! or ? (and a closing quote), then a space.
+  for(const m of head.matchAll(/[.!?]["”’]?(?=\s)/g))end=m.index+m[0].length;
+  return end>MAX_REPLY/2?head.slice(0,end):head.slice(0,MAX_REPLY).replace(/\s+\S*$/,'')+'…';
+}
 function decode(text){
   const cleaned=String(text).trim().replace(/^```json\s*/i,'').replace(/\s*```$/,'');
   let x;try{x=JSON.parse(cleaned);}catch{throw new Error('The model did not produce a valid action proposal. Nothing was applied.');}
   const keys=x&&!Array.isArray(x)&&typeof x==='object'?Object.keys(x).sort().join(','):'';
-  if(!['kind,optionId,reply','improvise,kind,optionId,reply'].includes(keys)||!['action','improvise','dialogue','question','clarify'].includes(x.kind)||typeof x.optionId!=='string'||x.optionId.length>120||typeof x.reply!=='string'||x.reply.length>1600)throw new Error('The model proposal has unsupported fields or values. Nothing was applied.');
+  if(!['kind,optionId,reply','improvise,kind,optionId,reply'].includes(keys)||!['action','improvise','dialogue','question','clarify'].includes(x.kind)||typeof x.optionId!=='string'||x.optionId.length>120||typeof x.reply!=='string'||x.reply.length>MAX_REPLY_RAW)throw new Error('The model proposal has unsupported fields or values. Nothing was applied.');
   if(x.kind!=='action'&&x.optionId!=='')throw new Error('Non-action replies cannot also select an action. Nothing was applied.');
   if(x.kind==='improvise'&&(!x.improvise||typeof x.improvise!=='object'))throw new Error('The improvised action was incomplete. Nothing was applied.');
   if(x.kind!=='improvise')delete x.improvise;
-  x.reply=plainProse(x.reply);
+  x.reply=fitReply(plainProse(x.reply));
   return x;
 }
 function improvisePreview(preview,framing=''){
