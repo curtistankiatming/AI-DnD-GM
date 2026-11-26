@@ -101,5 +101,8 @@ turning Nessa down, as Curtis wants.
   board until level 40, because the test player only takes written chapters. While it
   waits, asking for another adventure is refused. A real player would see it on the
   board, so this is a note, not a bug.
+- **Job trials at levels 40 and 70 still use the placeholder approach scene.** They
+  are written from a template, not by Claude, and the template has no approach text
+  (`writtenTrial` in `src/director.js`).
 - **AI "risk" can be out of scale.** Buying Esme a drink showed "You risk up to 30
   gold".
