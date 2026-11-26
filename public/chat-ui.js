@@ -143,7 +143,7 @@
   window.BriarwatchChat={send,render,adventure,trial};
 
   const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
-  if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}
+  if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect Claude, OpenAI or a local model.'));panel.append(ai);return;}
   ai.append(createElement('p','muted','With the AI game master on, you can type anything you want to try and the AI (Claude or OpenAI) narrates the story. The game still rolls the dice and keeps track of items, gold and experience.'));
   let target=ai;
   function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);target.append(box);return input;}
