@@ -177,14 +177,16 @@
         "say": "orin",
         "text": "Any of them is more than we've got.",
         "when": {
-          "tavernSeen": false
+          "tavernSeen": false,
+          "notFlag": "tavern:met"
         }
       },
       {
         "say": "maren",
         "text": "They'd be hired, not sworn. They'll fight for us. Whether they'll stay for us is another thing.",
         "when": {
-          "tavernSeen": false
+          "tavernSeen": false,
+          "notFlag": "tavern:met"
         }
       }
     ],

@@ -52,7 +52,7 @@ function install({ QUESTS, STORY_NODES, TOWNS, choice }) {
       lines: [...n.lines, opener, ...intros, ...rest], safeRest: true, sideStory: true, tavern: night,
       choices: [
         ...Roster.IDS.map((id) => { const r = Roster.RECRUITS[id];
-          return choice(`hire-${id}`, `Hire ${r.name}`, { description: hireDescription(null, id), requires: { tavernOffer: id, hireFee: id }, result: { lines: [...r.hired, ...t.hiredAfter], hire: id, toTown: true, nextNode: home } }); }),
+          return choice(`hire-${id}`, `Hire ${r.name}`, { description: hireDescription(null, id), requires: { tavernOffer: id, hireFee: id }, result: { lines: [...r.hired, ...t.hiredAfter], hire: id, setFlags: { 'tavern:met': true }, toTown: true, nextNode: home } }); }),
         choice('leave', t.leave.label, { once: false, description: t.leave.description, result: { lines: t.leave.lines, setFlags: { 'tavern:met': true }, toTown: true, nextNode: home } })
       ]
     };

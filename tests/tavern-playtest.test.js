@@ -67,3 +67,20 @@ test('a hire\'s written lines use their own pronouns, never "they" for a she or 
   const chapters = JSON.stringify(require('../src/data/tavern-chapters.json'));
   for (const m of chapters.match(/"narrate":"[^"]*\{hire\}[^"]*"/g)) assert.doesNotMatch(m.replace(/\{(their|them)\}/g, ""), /\b(they|their|them|themselves)\b/i, m);
 });
+
+test('Orin and Maren talk over hiring only on the first tavern night, not every night after', () => {
+  const s = nightOfTheOath(['dov', 'agna']);
+  const first = E.buildView(s).scene.opening;
+  assert.match(first, /Any of them is more than we've got/);
+  const r = E.resolveAction(s, { type: 'story-choice', choiceId: 'leave' }, () => 0.5);
+  assert.equal(r.result.ok, true, r.result.error);
+  assert.equal(r.state.story.flags['tavern:met'], true);
+  // A later night: the same exchange is not told again.
+  const later = JSON.parse(JSON.stringify(r.state));
+  later.world.tavern = { night: 'harbour', town: 'highpass', offer: ['agna'], seen: false };
+  later.story.nodeId = 'tavern-harbour';
+  assert.doesNotMatch(E.buildView(later).scene.opening, /Any of them is more than we've got|hired, not sworn/);
+  // Hiring on the first night counts as having met the tavern too.
+  const h = E.resolveAction(nightOfTheOath(['dov', 'agna']), { type: 'story-choice', choiceId: 'hire-dov' }, () => 0.5);
+  assert.equal(h.state.story.flags['tavern:met'], true);
+});
