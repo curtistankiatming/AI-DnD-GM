@@ -20,7 +20,7 @@ Set these where the server runs (environment or the git-ignored `.env` beside
 | `HOSTED_ORIGIN` | behind HTTPS | The address players use, such as `https://play.example.com`. Without it, a server behind an HTTPS proxy refuses every browser request as coming from another site. |
 | `HOSTED_TRUST_PROXY=1` | behind a proxy | Count visitors by the proxy's `X-Forwarded-For` address. Only set it when a proxy you control always sets that header. |
 | `HOSTED_SECURE_COOKIE=0` | testing only | Lets the pass cookie work over plain `http://`. Leave it unset in real use. |
-| `ANTHROPIC_API_KEY` | for AI | Your Claude key. Players can never see or replace it in hosted mode. |
+| `ANTHROPIC_API_KEY` | for AI | Your Claude key. Players can never see or replace it in hosted mode. A hosted game runs only on Claude: if the AI settings file picks OpenAI, AI turns are refused (and nothing is counted against allowances). |
 
 Set up the AI game master (model, effort, narration) once on the server, in
 `.local-ai.json`, for example by running the game locally with the same folder

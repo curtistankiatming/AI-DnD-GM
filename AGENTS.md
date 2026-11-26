@@ -8,6 +8,9 @@
 - Direction (Nov 2026): Claude API is the primary AI provider; the goal is an
   open-ended AI GM. Offline/browser play must keep working without AI. The only
   runtime dependency is `@anthropic-ai/sdk`, loaded lazily by `src/claude-ai.js`.
+  The OpenAI API is a second cloud provider (`src/openai-ai.js`, built-in fetch,
+  player's own `OPENAI_API_KEY`); `Profiles.isCloud` gives both the full game
+  master. Hosted mode refuses OpenAI (`Hosted.provider`).
 - The written story comes first (`src/book.js`, `docs/AI-STORYTELLER.md`).
   While a written chapter is unfinished, the director writes only small side
   quests, chat steers detours back to the book, and AI-given XP (improvised,

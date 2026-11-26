@@ -129,12 +129,13 @@
       body.append(group, local, mount, after);
       choiceKey = keyPanel(mount, 'gmChoiceKeyInput');
     }
-    const usingLocal = s.on && s.provider === 'local';
+    // Another provider chosen in Settings (a local model or OpenAI) keeps this step out of the way.
+    const usingLocal = s.on && s.provider !== 'claude';
     for (const b of body.querySelectorAll('.gm-card')) {
       const selected = !usingLocal && b.dataset.gm === want;
       b.setAttribute('aria-checked', String(selected)); b.classList.toggle('is-selected', selected); b.disabled = working;
     }
-    document.getElementById('gmLocalNote').textContent = usingLocal ? 'You are using a local model server as the game master. You can change that in Settings.' : '';
+    document.getElementById('gmLocalNote').textContent = usingLocal ? (s.provider === 'openai' ? 'You are using OpenAI as the game master. You can change that in Settings.' : 'You are using a local model server as the game master. You can change that in Settings.') : '';
     choiceKey.mount.hidden = usingLocal || want !== 'claude';
     document.getElementById('gmChoiceNote').textContent = usingLocal ? ''
       : want === 'claude' && !s.claude ? 'Until a key is saved and tested, the game uses the listed choices. You can also do this later in Settings.'

@@ -4,6 +4,17 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Play with OpenAI (26 November 2026)
+
+- The AI game master can now run on the OpenAI API with your own OpenAI key, as
+  a third choice beside Claude and a local model (Settings, then AI settings).
+  It gets the full game master: free-form actions, side quests, new adventures
+  and job trials, still bounded by the rules engine.
+- The key is saved on your computer in the git-ignored `.env` as
+  `OPENAI_API_KEY`, never in a save and never sent back to the browser.
+- A hosted game stays on Claude.
+- Tested with stand-in replies only; no live OpenAI call has been made yet.
+
 ## The tavern roster (26 November 2026)
 
 - Curtis: "create a massive 100 character roster for the tavern. Selection

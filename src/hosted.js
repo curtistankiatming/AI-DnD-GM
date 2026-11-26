@@ -183,14 +183,20 @@ function createUsage(h, now = Date.now) {
 
 // The AI service as one account sees it: the same calls, bounded by its
 // allowance, its own in-flight slot and the hosted output ceilings.
+// A hosted game plays on its owner's Claude key; the OpenAI provider is for
+// players who run the game themselves with their own key.
+const HOSTED_OPENAI = 'This hosted game runs its AI game master on Claude. The OpenAI provider is for the open-source game on your own computer.';
+async function hostedReady(ai) { return (await ai.config()).provider !== 'openai'; }
+
 function provider(ai, acct, usage, h) {
   return {
     config: () => ai.config(),
     status: () => ai.status(acct.id),
     screen,
     // Narration is optional: it quietly stops when the allowance is spent.
-    async narrationEnabled() { return usage.check(acct) === null && ai.narrationEnabled(); },
+    async narrationEnabled() { return usage.check(acct) === null && await hostedReady(ai) && ai.narrationEnabled(); },
     async complete(request) {
+      if (!await hostedReady(ai)) throw new Error(HOSTED_OPENAI);
       const blocked = usage.check(acct);
       if (blocked) throw new Error(blocked);
       usage.take(acct);
@@ -200,4 +206,4 @@ function provider(ai, acct, usage, h) {
   };
 }
 
-module.exports = { PASS_COOKIE, PLANS, settings, canonical, seal, verify, sealOf, TAMPERED, issuePass, readPass, account, passCookie, bookAccess, saveFolder, screen, OFF_TOPIC, createUsage, provider, clientIp };
+module.exports = { HOSTED_OPENAI, PASS_COOKIE, PLANS, settings, canonical, seal, verify, sealOf, TAMPERED, issuePass, readPass, account, passCookie, bookAccess, saveFolder, screen, OFF_TOPIC, createUsage, provider, clientIp };

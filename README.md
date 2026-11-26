@@ -121,6 +121,20 @@ older-save conversion.
 Rules and written content decide mechanics. AI narration may still get details
 wrong, but it never grants items or replaces the confirmed mechanics feed.
 
+## OpenAI instead of Claude
+
+The game can also run on the OpenAI API with your own OpenAI key. Under
+**Settings → AI settings**, choose *OpenAI*, type the model ID (`gpt-6.2-sol`
+by default; **List my OpenAI models** reads the models your key can use), paste
+your key from [platform.openai.com](https://platform.openai.com) and press
+**Save AI settings** with the AI game master turned on. The game saves the key
+on this computer in the same private, git-ignored `.env` file as `OPENAI_API_KEY`
+(never in a save, never sent back to the browser) and checks it with one tiny
+request. OpenAI gets the same full game master as Claude: free-form actions,
+side quests, new adventures and job trials, all still bounded by the rules
+engine. OpenAI bills your OpenAI account for each reply. `GAME_OPENAI_API_KEY`
+works as a second name for the key. A hosted game (`HOSTED=1`) stays on Claude.
+
 ## Local model instead of Claude
 
 Under **Settings → AI settings**, choose *A model running on this computer* and

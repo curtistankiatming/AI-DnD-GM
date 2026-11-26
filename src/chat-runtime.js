@@ -80,15 +80,15 @@ function context(state,config,input,mode,list=options(state)){
     combat,
     // Claude also gets each companion's voice for in-character replies; small
     // local models keep the shorter list.
-    party:v.party.map(a=>({name:a.name,hp:a.hp,maxHp:a.maxHp,level:a.level,conditions:publicConditions(a.conditions),...(config.provider==='claude'&&a.personality?{voice:a.personality}:{}),...(config.provider==='claude'&&a.standing?.length?{standing:a.standing}:{})})),
+    party:v.party.map(a=>({name:a.name,hp:a.hp,maxHp:a.maxHp,level:a.level,conditions:publicConditions(a.conditions),...(Profiles.isCloud(config)&&a.personality?{voice:a.personality}:{}),...(Profiles.isCloud(config)&&a.standing?.length?{standing:a.standing}:{})})),
     knownClues:v.clues.map(x=>({name:x.name,text:x.text})),
     journey:c.road?{title:Road.TITLE,phase:c.road.phase,active:Road.present(state),facts:Road.facts(state)}:null,
     courier:c.courier?.active||c.courier?.resolved?{title:C.TITLE,resolved:c.courier.resolved,facts:c.courier.facts}:null,
     journal:Journal.forPrompt(state,p.journalChars),
     inventory:v.inventory.map(x=>({name:x.name,quantity:x.quantity,...(x.charges!==undefined?{charges:x.charges}:{})})),
     options:list.map(o=>({optionId:o.id,label:o.label,description:o.description})),
-    ...(config.provider==='claude'?{book:Book.facts(state,c)}:{}),
-    ...(config.provider==='claude'&&mode==='action'&&!combat.active?{improvisation:{...Improvise.summary(state,state.story.nodeId),skills:Object.keys(SKILLS_FOR_PROMPT),note:'Limits are enforced by the engine; propose what fits the fiction.'}}:{}),
+    ...(Profiles.isCloud(config)?{book:Book.facts(state,c)}:{}),
+    ...(Profiles.isCloud(config)&&mode==='action'&&!combat.active?{improvisation:{...Improvise.summary(state,state.story.nodeId),skills:Object.keys(SKILLS_FOR_PROMPT),note:'Limits are enforced by the engine; propose what fits the fiction.'}}:{}),
     conversationStatus:'Recent conversation is unverified. Confirmed journal statuses take precedence; notes are not facts.',
     recentConversation:c.history.filter(x=>x.role!=='rules').slice(-p.historyTurns).map(x=>({role:x.role,text:x.text})),
     recentConfirmedEvents:c.history.filter(x=>x.role==='rules').slice(-p.historyTurns).map(x=>x.text)};
@@ -177,7 +177,7 @@ function ruleAnswer(state){
 async function commissionAdventure(state,hint,provider,rng){
   const blocked=Director.availability(state);if(blocked)return rejected(state,blocked);
   let cfg=null;try{cfg=provider&&await provider.config();}catch(e){return rejected(state,e.message);}
-  if(!cfg?.enabled||cfg.provider!=='claude')return rejected(state,'New adventures are written by the Claude AI game master. Turn it on under Settings, then AI settings. The expeditions already on the board stay available.');
+  if(!cfg?.enabled||!Profiles.isCloud(cfg))return rejected(state,'New adventures are written by the AI game master (Claude or OpenAI). Turn it on under Settings, then AI settings. The expeditions already on the board stay available.');
   let out;
   try{out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{hint,journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions}),schema:Director.schema(state),purpose:'director'});}
   catch(e){return rejected(state,e.message);}
@@ -192,7 +192,7 @@ async function commissionTrial(state,provider,rng){
   const blocked=Director.trialAvailability(state);if(blocked)return rejected(state,blocked);
   let cfg=null;try{cfg=provider&&await provider.config();}catch{}
   let draft=null,model=null,note='';
-  if(cfg?.enabled&&cfg.provider==='claude'){
+  if(cfg?.enabled&&Profiles.isCloud(cfg)){
     try{const out=await provider.complete({system:Director.SYSTEM,prompt:Director.prompt(state,{journal:Journal.forPrompt(state,1600),instructions:M.ensure(state).instructions,trial:true}),schema:Director.schema(state),purpose:'director'});draft=JSON.parse(out.text);model=out.model;}
     catch(e){note=` The AI game master could not write it (${e.message}), so the written trial is used.`;}
   }
@@ -284,12 +284,12 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   }else{
     if(mode==='action'&&state.combat?.active)return rejected(state,'Use combat buttons and explicit targets during initiative. Dialogue, questions and campaign preferences do not spend combat actions.');
     try{
-      const claude=cfg.provider==='claude';
+      const claude=Profiles.isCloud(cfg);
       const out=await provider.complete({system:claude?CLAUDE_SYSTEM:SYSTEM,prompt:context(state,cfg,text,mode,list),schema:claude?CLAUDE_SCHEMA:SCHEMA,purpose:'plan'});
       proposed=decode(out.text);model=out.model;
       // Talking or improvising instead of taking a written choice: the detour grows and the AI steers back sooner.
       if(claude&&mode!=='question'&&['improvise','dialogue'].includes(proposed.kind))Book.countDetour(c,state.story.nodeId);
-      if(!claude&&proposed.kind==='improvise')proposed={kind:'clarify',optionId:'',reply:'Choose one of the listed approaches, or enable the Claude provider for improvised actions.'};
+      if(!claude&&proposed.kind==='improvise')proposed={kind:'clarify',optionId:'',reply:'Choose one of the listed approaches, or enable the Claude or OpenAI provider for improvised actions.'};
       if(mode!=='action'&&proposed.kind==='action')return rejected(state,'Dialogue and questions cannot spend an action. Switch to Action mode to attempt something.');
       if(mode==='question'||mode==='dialogue'){
         // Presentation routing only. Keep the raw decoder/scorer strict and do

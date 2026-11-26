@@ -27,6 +27,7 @@ const { sanitizeSaveName, validSaveName } = require("./src/save-slots");
 const VERSION = require("./package.json").version;
 const {createLocalAI}=require('./src/local-ai');
 const {saveKey}=require('./src/claude-ai');
+const OpenAIKey=require('./src/openai-ai');
 const {createCoordinator}=require('./src/chat-coordinator');
 const Hosted=require('./src/hosted');
 // Hosted mode (docs/HOSTED.md) is off unless HOSTED=1; it refuses to start half-configured.
@@ -190,7 +191,7 @@ async function listSaves(dir = SAVE_DIR) {
 async function narratorInfo() {
   if (!(await localAI.narrationEnabled())) return { enabled: false, model: null };
   const c = await localAI.config();
-  return { enabled: true, model: c.provider === "claude" ? c.claudeModel : c.model };
+  return { enabled: true, model: c.provider === "claude" ? c.claudeModel : c.provider === "openai" ? c.openaiModel : c.model };
 }
 
 async function narratorLabel() {
@@ -256,7 +257,7 @@ async function handleApi(req, res, url) {
         // Players see what the AI is and how much of today's allowance is left; they cannot change it.
         if(pathname==='/api/ai/settings'&&req.method==='GET') {
           const c=await localAI.config();
-          sendJson(res,200,{config:{enabled:c.enabled,provider:c.provider,narration:c.narration,claudeModel:c.claudeModel,effort:c.effort},...localAI.manifest(),...localAI.status(req.account.id),hosted:{plan:req.account.plan,allowance:usage.report(req.account)}}); return;
+          sendJson(res,200,{config:{enabled:c.enabled,provider:c.provider,narration:c.narration,claudeModel:c.claudeModel,openaiModel:c.openaiModel,effort:c.effort},...localAI.manifest(),...localAI.status(req.account.id),hosted:{plan:req.account.plan,allowance:usage.report(req.account)}}); return;
         }
         if(pathname==='/api/ai/cancel'&&req.method==='POST') {sendJson(res,200,{cancelled:localAI.cancel(req.account.id)}); return;}
         sendJson(res,403,{error:OWNER_ONLY}); return;
@@ -274,6 +275,7 @@ async function handleApi(req, res, url) {
         // The key is written to the git-ignored key file and is never sent back.
         if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)) {sendJson(res,403,{error:'A key can only be saved from the computer that runs the game.'});return;}
         const body=await readJsonBody(req);
+        if(body.provider==='openai'){process.env.OPENAI_API_KEY=await OpenAIKey.saveKey(ENV_FILE,body.key);sendJson(res,200,{openaiKeyConfigured:true});return;}
         process.env.ANTHROPIC_API_KEY=await saveKey(ENV_FILE,body.key);
         sendJson(res,200,{claudeKeyConfigured:true}); return;
       }

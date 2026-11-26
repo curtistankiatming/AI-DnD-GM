@@ -29,16 +29,22 @@ function validKey(key) {
 }
 
 async function saveKey(file, raw) {
-  const fs = require('node:fs/promises');
   const key = typeof raw === 'string' ? raw.trim() : '';
   if (!validKey(key)) throw new Error('That does not look like a Claude API key. A key starts with sk-ant- and has no spaces. Copy the whole key and try again.');
+  return writeKey(file, 'ANTHROPIC_API_KEY', key);
+}
+
+// Writes one NAME=key line to the git-ignored .env file, replacing that name's old line.
+async function writeKey(file, name, key) {
+  const fs = require('node:fs/promises');
   let existing = '';
   try { existing = await fs.readFile(file, 'utf8'); } catch (e) { if (e.code !== 'ENOENT') throw new Error('The key file could not be read. Nothing was changed.'); }
-  const kept = existing.split(/\r?\n/).filter(line => !/^\s*(export\s+)?ANTHROPIC_API_KEY\s*=/.test(line));
+  const line = new RegExp(`^\\s*(export\\s+)?${name}\\s*=`);
+  const kept = existing.split(/\r?\n/).filter(text => !line.test(text));
   while (kept.length && !kept.at(-1).trim()) kept.pop();
   const temp = file + '.tmp';
   try {
-    await fs.writeFile(temp, [...kept, 'ANTHROPIC_API_KEY=' + key].join('\n') + '\n', { mode: 0o600 });
+    await fs.writeFile(temp, [...kept, name + '=' + key].join('\n') + '\n', { mode: 0o600 });
     await fs.rename(temp, file);
   } catch { throw new Error('The key file could not be written. Nothing was changed.'); }
   finally { await fs.unlink(temp).catch(() => {}); }
@@ -104,4 +110,4 @@ function describeError(error, SDK, signal) {
   return String(error?.message || 'Claude request failed. Nothing was applied.');
 }
 
-module.exports = { createClaudeProvider, apiKey, validKey, saveKey, STRUCTURED_FALLBACK_BETA, GAME_ONLY };
+module.exports = { createClaudeProvider, apiKey, validKey, saveKey, writeKey, STRUCTURED_FALLBACK_BETA, GAME_ONLY };

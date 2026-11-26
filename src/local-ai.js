@@ -2,20 +2,24 @@
 // Server-side only. Never included in the browser download.
 // One AI service for every caller (chat proposals, chat replies and narration).
 // It owns the saved settings, a single in-flight request and cancellation, and
-// dispatches to either a loopback OpenAI-compatible server or the Claude API.
+// dispatches to a loopback OpenAI-compatible server, the Claude API or the OpenAI API.
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const Profiles = require('./model-profiles');
 const { localResponse } = require('./local-http');
 const { createClaudeProvider } = require('./claude-ai');
+const { createOpenAIProvider } = require('./openai-ai');
 const MAX_REPLY_CHARS = 131072;
 
 // owner/concurrency: the open-source game has one player and runs one request
 // at a time. A hosted game (src/hosted.js) gives each account its own slot and
 // allows up to `concurrency` accounts at once, so one player never blocks the rest.
 const SOLO = 'local';
-function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'), fetchImpl = localResponse, claude = null, concurrency = 1 } = {}) {
+function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'), fetchImpl = localResponse, claude = null, openai = null, concurrency = 1 } = {}) {
   const claudeProvider = claude || createClaudeProvider();
+  const openaiProvider = openai || createOpenAIProvider();
+  // The cloud provider a setting points to, or null for a local model.
+  const cloud = c => c.provider === 'claude' ? claudeProvider : c.provider === 'openai' ? openaiProvider : null;
   const active = new Map();
 
   async function config() {
@@ -80,6 +84,10 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
   async function models(raw) {
     const c = Profiles.normalize(raw || await config());
     if (c.provider === 'claude') return [...Profiles.CLAUDE_MODELS];
+    if (c.provider === 'openai') {
+      if (!openaiProvider.configured()) return [...Profiles.OPENAI_MODELS];
+      return exclusive(10000, signal => openaiProvider.models(signal));
+    }
     const out = await exclusive(10000, signal => localJson(c, '/models', null, signal));
     if (!Array.isArray(out.data)) throw new Error('Local model list was not in the expected format.');
     return out.data.filter(x => typeof x?.id === 'string').slice(0, 100).map(x => x.id.slice(0, 240));
@@ -107,8 +115,8 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
     const c = { ...saved, replyTokens: lower(saved.replyTokens, request.maxReplyTokens), contextChars: lower(saved.contextChars, request.maxContextChars) };
     const { system, prompt } = request;
     if (typeof system !== 'string' || typeof prompt !== 'string' || system.length + prompt.length > c.contextChars) throw new Error('The turn exceeds the selected context budget. No facts were silently truncated; choose a larger budget or shorten the instructions.');
-    return exclusive(c.timeoutMs, signal => c.provider === 'claude'
-      ? claudeProvider.complete(c, request, signal)
+    return exclusive(c.timeoutMs, signal => cloud(c)
+      ? cloud(c).complete(c, request, signal)
       : completeLocal(c, request, signal), typeof request.owner === 'string' && request.owner ? request.owner : SOLO);
   }
 
@@ -116,19 +124,19 @@ function createLocalAI({ configPath = path.join(__dirname, '../.local-ai.json'),
   async function test(raw) {
     const c = Profiles.normalize({ ...(raw || await config()), enabled: true });
     const request = { system: 'You are a connection check for a tabletop game. Answer with one short word.', prompt: 'Reply with the word READY.', schema: null, purpose: 'test' };
-    const out = await exclusive(Math.min(c.timeoutMs, 45000), signal => c.provider === 'claude'
-      ? claudeProvider.complete({ ...c, effort: 'low', replyTokens: 1024 }, request, signal)
+    const out = await exclusive(Math.min(c.timeoutMs, 45000), signal => cloud(c)
+      ? cloud(c).complete({ ...c, effort: 'low', replyTokens: 1024 }, request, signal)
       : completeLocal(c, request, signal));
     return { ok: true, model: out.model, elapsedMs: out.elapsedMs };
   }
 
   // Narration is optional presentation; it runs only when the player enabled it.
   async function narrationEnabled() {
-    try { const c = await config(); return c.enabled && c.narration && (c.provider !== 'claude' || claudeProvider.configured()); }
+    try { const c = await config(); return c.enabled && c.narration && (!cloud(c) || cloud(c).configured()); }
     catch { return false; }
   }
 
-  function status(owner = null) { return { busy: owner === null ? active.size > 0 : active.has(owner), claudeKeyConfigured: claudeProvider.configured() }; }
+  function status(owner = null) { return { busy: owner === null ? active.size > 0 : active.has(owner), claudeKeyConfigured: claudeProvider.configured(), openaiKeyConfigured: openaiProvider.configured() }; }
 
   return { config, save, models, complete, test, cancel, narrationEnabled, status, manifest: Profiles.manifest };
 }

@@ -114,7 +114,7 @@ test('local models cannot improvise; they are asked to pick a listed approach',a
   const ai=createLocalAI({configPath:path.join(dir,'ai.json'),fetchImpl:async()=>({ok:true,text:async()=>JSON.stringify({choices:[{finish_reason:'stop',message:{content:reply}}]})})});
   await ai.save({enabled:true,provider:'local',model:'m'});
   const out=await Chat.resolveChat(fresh(),{mode:'action',text:'I climb the tower'},ai,high);
-  assert.equal(out.state.chat.pending,null);assert.match(out.narration.text,/Claude provider/);
+  assert.equal(out.state.chat.pending,null);assert.match(out.narration.text,/Claude or OpenAI provider/);
 });
 
 test('a new game already has its improvisation record, so a save and reload is unchanged',()=>{
