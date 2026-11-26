@@ -231,10 +231,11 @@ const lineFlags = (set) => typeof set === 'string' ? { [set]: true } : set && ty
 function named(state, line) {
   const hire = require('./roster').hireIn(state);
   if (!hire) return line;
-  // {their} and {them} follow the hire's own pronouns (she/her, he/him, they/them).
+  // {hireTheir} and {hireThem} follow the hire's own pronouns (she/her, he/him,
+  // they/them); {their} and {them} are kept for check rollers.
   const key = String(hire.pronouns || 'they').split('/')[0];
-  const P = { she: { their: 'her', them: 'her' }, he: { their: 'his', them: 'him' } }[key] || { their: 'their', them: 'them' };
-  const name = require('./roster').first(hire), put = (s) => typeof s === 'string' ? s.replace(/\{hire\}/g, name).replace(/\{(their|them)\}/g, (m, k) => P[k]) : s;
+  const P = { she: { Their: 'her', Them: 'her' }, he: { Their: 'his', Them: 'him' } }[key] || { Their: 'their', Them: 'them' };
+  const name = require('./roster').first(hire), put = (s) => typeof s === 'string' ? s.replace(/\{hire\}/g, name).replace(/\{hire(Their|Them)\}/g, (m, k) => P[k]) : s;
   const out = { ...line };
   if (out.speakerId === 'hire') { out.speaker = name; out.speakerId = hire.id; }
   for (const k of ['text', 'narration']) if (out[k] !== undefined) out[k] = put(out[k]);

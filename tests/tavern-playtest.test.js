@@ -52,7 +52,7 @@ test('the AI is told to leave an idle companion out rather than have them say no
 
 test('a hire\'s written lines use their own pronouns, never "they" for a she or a he', () => {
   const { storyLine, liveLines } = require('../src/expansion');
-  const line = [{ narrate: '{hire} sits with {their} back to the rock; nobody asked {them} to.', when: { hire: true } }].map(storyLine);
+  const line = [{ narrate: '{hire} sits with {hireTheir} back to the rock; nobody asked {hireThem} to.', when: { hire: true } }].map(storyLine);
   const told = {};
   for (const id of ['dov', 'agna', Roster.IDS.find((x) => Roster.RECRUITS[x].pronouns === 'they/them')]) {
     const s = nightOfTheOath([id]);
@@ -65,7 +65,7 @@ test('a hire\'s written lines use their own pronouns, never "they" for a she or 
   assert.match(told['they/them'], /with their back to the rock; nobody asked them to/);
   // No line about the hire takes "they" for granted.
   const chapters = JSON.stringify(require('../src/data/tavern-chapters.json'));
-  for (const m of chapters.match(/"narrate":"[^"]*\{hire\}[^"]*"/g)) assert.doesNotMatch(m.replace(/\{(their|them)\}/g, ""), /\b(they|their|them|themselves)\b/i, m);
+  for (const m of chapters.match(/"narrate":"[^"]*\{hire\}[^"]*"/g)) assert.doesNotMatch(m.replace(/\{hire(Their|Them)\}/g, ""), /\b(they|their|them|themselves)\b/i, m);
 });
 
 test('Orin and Maren talk over hiring only on the first tavern night, not every night after', () => {
