@@ -373,6 +373,8 @@ function resumeBrowserGame() {
 
 function ingestPayload(payload, { appendEvents = true } = {}) {
   if (payload.state) { state = payload.state; keepInBrowser(); }
+  // A played move refreshed the rolling autosave (server.js, src/public-preview.js).
+  if (appendEvents && payload.state && payload.result?.ok !== false && !browserKeeps) sessionUI.played("autosave");
   if (payload.view) view = payload.view;
   if (payload.result?.ok === false) {
     showActionFeedback(payload.result.error || "That request was not applied.");
@@ -407,7 +409,7 @@ async function startCampaign() {
     }})});
     if (!response.ok) throw new Error(payload.error || "Campaign creation failed.");
     return payload;
-  }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline ? "autosave" : null});
+  }, {label: "starting a new campaign", rollingSlot: window.BriarwatchOffline || !browserKeeps ? "autosave" : null});
   if (ok) toast("Your adventure begins.", "good");
 }
 

@@ -2109,7 +2109,7 @@
     "act": "Chapter I • Consequences",
     "title": "A Scout on the Bench",
     "location": "The roadwardens' bench",
-    "safeRest": true,
+    "safeRest": false,
     "objective": "A scout wants to travel with the party. Decide whether she comes.",
     "lines": [
       {

@@ -1,6 +1,7 @@
 """Batch 2 navigation helpers and real-interface acceptance. No model inference."""
 import json
 from playwright.sync_api import expect
+from browser_begin import begin
 
 
 def go(page, section):
@@ -63,7 +64,7 @@ def exercise_workspace(page, output, offline):
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Workspace Hero')
-    page.locator('#startCampaignBtn').click()
+    begin(page, 'Workspace Hero')
     expect(page.locator('#workspace-adventure')).to_be_visible()
     expect(page.locator('#nav-adventure')).to_have_attribute('aria-selected', 'true')
     assert page.locator('#workspaceNav [role=tab]').count() == 5

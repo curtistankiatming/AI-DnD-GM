@@ -194,7 +194,7 @@ function completeQuest(state,id,events,api){
   Book.finished(state);
   // A turn in the story opens a tavern night (src/tavern.js).
   Tavern.open(state,q||{id},destination,!booksWere&&Boolean(state.story.flags[Book.FINISHED]));
-  emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The pay is lower for how costly it was; the XP is not. ':''}The shops have new stock.`,'reward','good');
+  emit(events,`${gold?`Objective reward: ${gold} gold. `:''}${gold&&quality==='costly'?'The pay is lower for how costly it was; the XP is not. ':''}The shops have new stock.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
   // A written chapter settles each companion's approval for it (src/away.js).
@@ -596,7 +596,9 @@ function view(state){
   const prep=questCards.map(q=>{
     const original=Director.quest(state,q.id);const tools=original.route.tools||[];
     const warnings=[];
-    for(const a of G.actors(state))if(a.hp<a.maxHp*0.65)warnings.push(`${a.name} is below 65% health.`);
+    // One line for everyone hurt, not one per person (browser playtest, 25 November 2026).
+    const hurt=G.actors(state).filter(a=>a.hp<a.maxHp*0.65).map(a=>a.name);
+    if(hurt.length)warnings.push(`${hurt.length>1?hurt.slice(0,-1).join(', ')+' and '+hurt.at(-1)+' are':hurt[0]+' is'} below 65% health.`);
     if(!state.player.inventory.some(e=>['healing-potion','greater-healing'].includes(e.itemId)))warnings.push('No healing potions are carried; companions and class abilities may provide alternatives.');
     if(q.knownThreat&&tools.length&&!tools.some(id=>state.player.inventory.some(e=>e.itemId===id)))warnings.push('You do not have the tools mentioned in the briefing. Other routes remain available.');
     if(q.knownThreat&&original.route.poison&&!state.player.inventory.some(e=>e.itemId==='antitoxin'))warnings.push('Poison was reported. You have no Antitoxin; treatment remains available in town.');

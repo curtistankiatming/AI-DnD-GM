@@ -84,6 +84,15 @@
       for (const line of w.bookRecap.lines) card.append(el('p', '', line));
       list.append(card);
     }
+    // Level-up choices waiting: easy to miss on a phone, where the side panel is hidden.
+    const waiting = window.BriarwatchAdventure?.waitingChoices?.() || 0;
+    if (waiting) {
+      const row = el('div', 'whats-next-quest whats-next-waiting'), text = el('div'); row.id = 'whatsNextWaiting';
+      text.append(el('strong', '', waiting === 1 ? 'A new ability or talent is waiting' : `${waiting} choices for your hero are waiting`), el('p', 'muted', 'Your hero has levelled up. Pick before you set out, so the new power is ready for the next fight.'));
+      const b = el('button', 'btn btn-primary btn-small', 'Choose now'); b.type = 'button'; b.dataset.readOnly = 'true';
+      b.addEventListener('click', () => window.BriarwatchAdventure?.chooseNow());
+      row.append(text, b); list.append(row);
+    }
     if (w.activeQuest) list.append(action(w.pendingBattle ? 'Resume the interrupted fight' : 'Resume your expedition', 'btn btn-primary btn-small', { type: 'resume' }));
     if (!w.bellComplete) list.append(el('p', '', 'Follow the story choices above to finish the bell investigation. More roads open after that.'));
     // After the last written chapter this save can play: say so every time, not only once in the story.

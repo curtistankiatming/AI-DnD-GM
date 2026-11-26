@@ -75,7 +75,8 @@
       catch (e) { env.notify(e.message, 'bad'); return false; }
       finally { working = false; env.setBusy(false); changed(); }
     }
-    function adopt(payload, {slot = null, loaded = false} = {}) {
+    function adopt(payload, options = {}) {
+      const {slot = null, loaded = false} = options;
       env.activate(payload);
       const rolling = /^(sandbox-)?autosave$/i.test(slot || '');
       sourceSlot = slot;
@@ -85,7 +86,14 @@
       env.slot(activeSlot || suggestedSlot(current(), env.unique()));
       env.clearDraft();
       if (slot) preferences.set(slot);
+      else if (options.rollingSlot) preferences.set(options.rollingSlot);
       changed();
+    }
+    // A move was played and the server (or this browser) wrote the rolling autosave:
+    // Continue now means that autosave, not the save that was loaded before the move.
+    function played(rollingSlot) {
+      if (!rollingSlot || !current() || current().publicTest?.mode === 'sandbox') return;
+      preferences.set(rollingSlot); changed();
     }
     async function write(rawSlot) {
       if (!current()) return false;
@@ -122,7 +130,7 @@
       return choice === 'discard';
     }
     return {
-      dirty, hasDraft, changed, list,
+      dirty, hasDraft, changed, list, played,
       status: () => ({activeSlot, dirty: dirty(), working, saves: [...saves], continueSave: continueSave(saves, preferences.get())}),
       save: raw => run(() => write(raw === undefined ? env.slot() : raw)),
       quickSave: () => run(() => write(activeSlot || env.slot())),
@@ -145,7 +153,7 @@
         // Save-and-continue may have updated this same target; never adopt the stale preflight copy.
         payload = await request('/api/session/load?slot=' + encodeURIComponent(slot));
         if (!payload?.state || !payload?.view) throw new Error('This save could not be loaded.');
-        adopt(payload, {slot, loaded: true}); env.notify(`Loaded “${slot}”.`, 'good'); return true;
+        adopt(payload, {slot, loaded: true}); env.notify(/^(sandbox-)?autosave$/i.test(slot) ? 'Picked up where you left off.' : `Loaded “${slot}”.`, 'good'); return true;
       }),
       delete: slot => run(async () => {
         const found = (await list()).find(s => s.slot === slot);

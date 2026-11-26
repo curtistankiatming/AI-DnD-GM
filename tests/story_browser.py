@@ -4,6 +4,7 @@ Real browser interaction on a fresh campaign. No model is called.
 """
 import re
 from playwright.sync_api import expect
+from browser_begin import begin
 
 
 # Waits are written as functions: the single-file build's security policy blocks a string condition
@@ -32,7 +33,7 @@ def exercise_story(page, output):
     expect(page.locator('#startCampaignBtn')).to_be_enabled()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Story Hero')
-    page.locator('#startCampaignBtn').click()
+    begin(page, 'Story Hero')
     expect(page.locator('#workspace-adventure')).to_be_visible()
     # Wide screen: the party panel sits beside the story and replaces the header strip.
     expect(page.locator('#adventureSide')).to_be_visible()
