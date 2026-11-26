@@ -144,17 +144,25 @@
 
   const ai=createElement('details','chat-ai-settings');ai.id='localAISettings';ai.append(createElement('summary','','AI settings'));
   if(offline){ai.append(createElement('p','muted','This downloadable browser edition makes no model requests. Instructions, saves, exact approaches and the courier scenario work offline. Use the Node server edition to connect the Claude API or a local model.'));panel.append(ai);return;}
-  ai.append(createElement('p','muted','With the AI game master on, you can type anything you want to try and Claude narrates the story. The game still rolls the dice and keeps track of items, gold and experience.'));
+  ai.append(createElement('p','muted','With the AI game master on, you can type anything you want to try and the AI (Claude or OpenAI) narrates the story. The game still rolls the dice and keeps track of items, gold and experience.'));
   let target=ai;
   function field(name,id,type='text'){const box=createElement('label','chat-field',name);const input=createElement('input');input.id=id;input.type=type;box.append(input);target.append(box);return input;}
   function select(name,id,entries){const box=createElement('label','chat-field',name),s=createElement('select');s.id=id;for(const [value,title]of entries){const o=createElement('option','',title);o.value=value;s.append(o);}box.append(s);target.append(box);return s;}
   const enabled=field('Turn on the AI game master','localAIEnabled','checkbox');
-  const provider=select('AI service','aiProvider',[['claude','Claude (recommended)'],['local','A model running on this computer']]);
+  const provider=select('AI service','aiProvider',[['claude','Claude (recommended)'],['openai','OpenAI (your own OpenAI API key)'],['local','A model running on this computer']]);
   const narration=field('Let the AI narrate story scenes','aiNarration','checkbox');
   const claudeBox=createElement('div','chat-provider');claudeBox.id='claudeSettings';ai.append(claudeBox);target=claudeBox;
   const claudeModel=select('Claude model','claudeModel',[['claude-opus-5-5','Claude Opus 5.5 · best storytelling'],['claude-sonnet-5-5','Claude Sonnet 5.5 · faster, cheaper'],['claude-haiku-5-5','Claude Haiku 5.5 · fastest, cheapest']]);
   const effort=select('Thinking effort','claudeEffort',[['low','Low · quickest replies'],['medium','Medium'],['high','High · slowest, most careful']]);
   const keyPanel=createElement('div','gm-key');keyPanel.id='claudeKeyPanel';claudeBox.append(keyPanel);
+  // OpenAI: the player's own key, saved by the game server beside the Claude key and never sent back.
+  const openaiBox=createElement('div','chat-provider');openaiBox.id='openaiSettings';ai.append(openaiBox);target=openaiBox;
+  const openaiModel=field('OpenAI model ID','openaiModel');openaiModel.value='gpt-6.2-sol';const odl=createElement('datalist');odl.id='openaiModels';openaiModel.setAttribute('list',odl.id);openaiBox.append(odl);
+  for(const id of ['gpt-6.2-astra','gpt-6.2-sol','gpt-6-luna']){const o=createElement('option');o.value=id;odl.append(o);}
+  const openaiKeyState=createElement('p','muted');openaiKeyState.id='openaiKeyState';openaiBox.append(openaiKeyState);
+  const openaiKeyRow=createElement('div','gm-key-row');const openaiKeyLabel=createElement('label','gm-key-field','Paste your OpenAI API key');const openaiKey=createElement('input');
+  openaiKey.id='openaiKeyInput';openaiKey.type='password';openaiKey.autocomplete='off';openaiKey.spellcheck=false;openaiKey.placeholder='sk-…';openaiKey.maxLength=420;openaiKeyLabel.append(openaiKey);openaiKeyRow.append(openaiKeyLabel);openaiBox.append(openaiKeyRow);
+  openaiBox.append(createElement('p','muted','Get a key at platform.openai.com, under API keys. The key stays on this computer in a private file and is never put in a save. OpenAI charges your account for each reply.'));
   const localBox=createElement('div','chat-provider');localBox.id='localModelSettings';ai.append(localBox);target=localBox;
   const base=field('Local API address','localAIBase');base.value='http://127.0.0.1:1234/v1';
   const model=field('Exact model ID','localAIModel');const dl=createElement('datalist');dl.id='installedLocalModels';model.setAttribute('list',dl.id);localBox.append(dl);
@@ -172,22 +180,29 @@
   // always needs tuning, so the section opens by itself for that provider.
   const adv=createElement('details','ai-advanced');adv.id='aiAdvanced';adv.append(createElement('summary','','Advanced settings'));
   const advClaude=createElement('div','chat-provider'),advLocal=createElement('div','chat-provider');
-  advClaude.append(claudeModel.closest('label'),effort.closest('label'));
+  advClaude.append(claudeModel.closest('label'));
   advLocal.append(profile.closest('label'),format.closest('label'),roles.closest('label'),budget.closest('label'),tokens.closest('label'),uncapped.closest('label'),localBox.querySelector('p.muted'));
-  adv.append(advClaude,advLocal,timeout.closest('label'));ai.append(adv);
+  adv.append(advClaude,effort.closest('label'),advLocal,timeout.closest('label'));ai.append(adv);
   const info=createElement('p','muted');info.id='aiSettingsStatus';ai.append(info);
-  const showProvider=()=>{const local=provider.value==='local';claudeBox.hidden=local;localBox.hidden=!local;advClaude.hidden=local;advLocal.hidden=!local;if(local)adv.open=true;};
+  const showProvider=()=>{const v=provider.value,local=v==='local';claudeBox.hidden=v!=='claude';openaiBox.hidden=v!=='openai';localBox.hidden=!local;advClaude.hidden=v!=='claude';effort.closest('label').hidden=local;advLocal.hidden=!local;if(local)adv.open=true;};
   provider.addEventListener('change',showProvider);
   profile.addEventListener('change',()=>{const p={compact:[8000,160],balanced:[14000,240],expanded:[22000,320]}[profile.value];budget.value=p[0];tokens.value=p[1];});
-  const value=()=>{const common={enabled:enabled.checked,provider:provider.value,narration:narration.checked,claudeModel:claudeModel.value,effort:effort.value,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,timeoutMs:Number(timeout.value)*1000};
+  const value=()=>{const common={enabled:enabled.checked,provider:provider.value,narration:narration.checked,claudeModel:claudeModel.value,openaiModel:openaiModel.value.trim(),effort:effort.value,baseUrl:base.value.trim(),model:model.value.trim(),profile:profile.value,format:format.value,roles:roles.value,timeoutMs:Number(timeout.value)*1000};
     return provider.value==='local'?{...common,contextChars:Number(budget.value),replyTokens:uncapped.checked?-1:Number(tokens.value)}:common;};
   localBox.append(button('List installed models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),enabled:false}})});clear(dl);for(const id of payload.models){const o=createElement('option');o.value=id;dl.append(o);}info.textContent=`Found ${payload.models.length} model identifiers. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
-  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});info.textContent='Settings saved. Go to Adventure and type what you want to do.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+  openaiBox.append(button('List my OpenAI models',async()=>{if(busy)return;setBusy(true);try{const {payload}=await api('/api/ai/models',{method:'POST',body:JSON.stringify({config:{...value(),provider:'openai',enabled:false}})});clear(odl);for(const id of payload.models){const o=createElement('option');o.value=id;odl.append(o);}info.textContent=`Found ${payload.models.length} OpenAI models. Select one in the model field.`;}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
+  // Saving with OpenAI chosen also saves a pasted key first, then checks the connection.
+  ai.append(button('Save AI settings',async()=>{if(busy)return;setBusy(true);try{
+    if(provider.value==='openai'&&openaiKey.value.trim()){await api('/api/ai/key',{method:'POST',body:JSON.stringify({provider:'openai',key:openaiKey.value.trim()})});openaiKey.value='';openaiKeyState.textContent='An OpenAI key is saved on this computer.';}
+    await api('/api/ai/settings',{method:'POST',body:JSON.stringify({config:value()})});
+    if(provider.value==='openai'&&enabled.checked){info.textContent='Settings saved. Asking OpenAI to answer…';const {payload}=await api('/api/ai/test',{method:'POST',body:JSON.stringify({config:value()})});info.textContent=`Connected. OpenAI is your game master (${payload.model}). Go to Adventure and type what you want to do.`;}
+    else info.textContent='Settings saved. Go to Adventure and type what you want to do.';}catch(e){info.textContent=e.message;}finally{setBusy(false);}}));
   panel.append(ai);showProvider();
   const load=()=>api('/api/ai/settings').then(({payload})=>{
     // A hosted game's owner sets the AI up on the server: players only read the note in the key panel.
     if(payload.hosted){for(const n of ai.children)if(n.tagName!=='SUMMARY'&&n!==claudeBox)n.hidden=true;for(const n of claudeBox.children)n.hidden=n!==keyPanel;claudeBox.hidden=false;return;}
-    const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;effort.value=c.effort;
+    const c=payload.config;enabled.checked=c.enabled;provider.value=c.provider;narration.checked=c.narration;claudeModel.value=c.claudeModel;openaiModel.value=c.openaiModel||'gpt-6.2-sol';effort.value=c.effort;
+    openaiKeyState.textContent=payload.openaiKeyConfigured?'An OpenAI key is saved on this computer. Paste a new one only to replace it.':'No OpenAI key is saved yet.';
     base.value=c.baseUrl;model.value=c.model;profile.value=c.profile;format.value=c.format;roles.value=c.roles;
     if(c.provider==='local'){budget.value=c.contextChars;uncapped.checked=c.replyTokens===-1;tokens.value=uncapped.checked?{compact:160,balanced:240,expanded:320}[c.profile]:c.replyTokens;}
     tokens.disabled=uncapped.checked;tokens.dataset.disabled=String(uncapped.checked);timeout.value=c.timeoutMs/1000;showProvider();}).catch(e=>{info.textContent=e.message;});

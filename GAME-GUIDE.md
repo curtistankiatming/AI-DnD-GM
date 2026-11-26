@@ -231,7 +231,7 @@ unverified reminder; `/forget-note note-1` removes it. The panel has equivalent
 controls. Twelve note slots allow up to 400 characters each; notes grant no rewards
 and are excluded from regular model prompts.
 
-AI is optional and off by default. Two providers are available under
+AI is optional and off by default. Three providers are available under
 **Settings → AI settings**:
 
 - **Claude API (recommended).** When you create a hero, choose **Claude AI game
@@ -245,6 +245,14 @@ AI is optional and off by default. Two providers are available under
   chat turn is one API request and is billed to your Anthropic account.
   `run-local.bat` installs the Claude library on first run; from a terminal, run
   `npm install` once.
+- **OpenAI API.** Choose **OpenAI** under AI service, type a model ID
+  (`gpt-6.2-sol` by default, or press **List my OpenAI models**), paste your key
+  from platform.openai.com, tick **Turn on the AI game master** and press **Save
+  AI settings**. The key goes to the same git-ignored `.env` as
+  `OPENAI_API_KEY`, never to a save, and the game checks it with one tiny
+  request. OpenAI plays the full game master, just like Claude, and each chat
+  turn is billed to your OpenAI account. Thinking effort and wait limit are
+  under **Advanced settings**. Nothing extra needs installing.
 - **Local model server.** Start Bionic or another compatible local server, choose
   **Local model server**, then list and explicitly select the installed
 model ID. The usual address is `http://127.0.0.1:1234/v1`. Compact/Balanced/Expanded

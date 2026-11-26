@@ -51,7 +51,7 @@ test('HTTP: paste a key, test the connection, and the key never comes back',asyn
   await new Promise(r=>model.listen(0,'127.0.0.1',r));
   const probe=http.createServer();await new Promise(r=>probe.listen(0,'127.0.0.1',r));const port=probe.address().port;await new Promise(r=>probe.close(r));
   const base=`http://127.0.0.1:${port}`;
-  const child=spawn(process.execPath,['server.js'],{cwd:root,env:{...process.env,HOST:'127.0.0.1',PORT:String(port),SAVE_DIR:path.join(dir,'saves'),AI_CONFIG_PATH:path.join(dir,'settings.json'),ENV_FILE_PATH:envFile,ANTHROPIC_API_KEY:'',ANTHROPIC_BASE_URL:`http://127.0.0.1:${model.address().port}`,AI_NARRATOR:'off',LOCAL_AI_TOKEN:''},stdio:['ignore','pipe','pipe']});
+  const child=spawn(process.execPath,['server.js'],{cwd:root,env:{...process.env,HOST:'127.0.0.1',PORT:String(port),SAVE_DIR:path.join(dir,'saves'),AI_CONFIG_PATH:path.join(dir,'settings.json'),ENV_FILE_PATH:envFile,ANTHROPIC_API_KEY:'',GAME_ANTHROPIC_API_KEY:'',ANTHROPIC_BASE_URL:`http://127.0.0.1:${model.address().port}`,AI_NARRATOR:'off',LOCAL_AI_TOKEN:''},stdio:['ignore','pipe','pipe']});
   let output='';child.stdout.on('data',d=>output+=d);child.stderr.on('data',d=>output+=d);
   t.after(async()=>{if(child.exitCode===null){child.kill();await new Promise(r=>{child.once('exit',r);setTimeout(()=>{if(child.exitCode===null)child.kill('SIGKILL');},1000).unref();});}await new Promise(r=>model.close(r));});
   let ready=false;for(let i=0;i<100;i++){try{if((await fetch(base+'/api/health')).ok){ready=true;break;}}catch{}await new Promise(r=>setTimeout(r,40));}assert.ok(ready,output);
