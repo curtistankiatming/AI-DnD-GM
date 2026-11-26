@@ -286,13 +286,14 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
     // master on, that is a story action, not a failed purchase: let Claude read it.
     if(!(quick.result?.ok===false&&NO_ITEM.test(quick.result.error||'')&&await aiOn(provider)))return fromResolved(quick);
   }
-  let cfg=null;try{cfg=provider&&await provider.config();}catch(e){return rejected(state,e.message);}
+  let cfg=null,cfgError=null;try{cfg=provider&&await provider.config();}catch(e){cfgError=e;}
   // The journal's quick answers are for play without a cloud AI. With Claude or
   // OpenAI on, the AI answers from the same journal records, so "what happened
   // to the people we saved?" gets an answer instead of a scene list. Asking for
   // the journal, a recap or your notes still reads them straight out.
   const cloudOn=Boolean(cfg?.enabled&&Profiles.isCloud(cfg));
   if(mode==='question'&&(!cloudOn||/journal|recap|my notes|player notes/i.test(text))){const answer=Journal.answer(state,text);if(answer)return payload(state,answer);}
+  if(cfgError)return rejected(state,cfgError.message);
   const exact=list.find(o=>o.label.toLowerCase()===text.toLowerCase()||o.id===text);
   let proposed,model=null,responseType=null;
   const inferred=mode==='action'?Road.infer(text,state,roadApi):null;
