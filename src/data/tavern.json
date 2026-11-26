@@ -1,135 +1,206 @@
 {
-  "_note": "Tavern nights (Curtis, 26 November 2026: 'have a tavern that players can visit during special occurrences during the story that they are able to recruit players should they have missing party members'). A night opens when the party finishes one of the chapters below (or a job trial, or the last written chapter), and closes when the party next sets out on an expedition. The tavern only opens its door to a party with an empty place (fewer than three companions, someone away for a chapter still counting). Declining Nessa keeps its cost: there is no tavern night before the Oath of the Road at level 10, the hires come with a fee, a little less fight than a story companion, no personal quest, and they never replace Nessa in the story. Hiring one sends the other away for good. src/tavern.js builds the nodes; lines use the scene format.",
-  "fees": { "dov": 6, "agna": 4 },
+  "_note": "Tavern nights (Curtis, 26 November 2026). A night opens when the party finishes one of the chapters below (or a job trial, or the last written chapter), and closes when the party next sets out on an expedition. The tavern only opens its door to a party with an empty place (fewer than three companions, someone away for a chapter still counting). Each night offers 2 or 3 people picked at random from the roster (src/data/tavern-roster.json); whoever is offered and not hired moves on for good once the party has been in and set out again. Declining Nessa keeps its cost: there is no night before the Oath of the Road at level 10, a hire costs a fee by level, fights a little below a story companion, has no personal quest, and never takes Nessa's place. src/tavern.js builds the nodes; lines use the scene format, and 'offered'/'tavernSeen' in a line's when follow tonight's offer.",
   "nights": {
     "trial": {
       "town": "highpass",
       "title": "The Night of the Oath",
       "lines": [
-        { "narrate": "Highpass does what it always does with an oath: it drinks to it. The inn's taproom is packed to the rafters with roadwardens, and every one of them wants to shake the hand that swore it. Someone has pinned a notice by the door in a careful, upright hand: THE COMPANY OF THE OATH IS ONE SHORT. ENQUIRE WITHIN." },
-        { "say": "orin", "text": "I didn't write that." },
-        { "say": "maren", "text": "I did. It was true, and the guild lent me a pen." }
+        {
+          "narrate": "Highpass does what it always does with an oath: it drinks to it. The inn's taproom is packed to the rafters with roadwardens, and every one of them wants to shake the hand that swore it. Someone has pinned a notice by the door in a careful, upright hand: THE COMPANY OF THE OATH IS ONE SHORT. ENQUIRE WITHIN."
+        },
+        {
+          "say": "orin",
+          "text": "I didn't write that."
+        },
+        {
+          "say": "maren",
+          "text": "I did. It was true, and the guild lent me a pen."
+        }
       ]
     },
     "harbour": {
       "town": "merrowgate",
       "title": "After the Harbour Bell",
       "lines": [
-        { "narrate": "The harbour bell rang true tonight, and Merrowgate's dockside taproom has decided that this is everyone's business. Fishermen are buying drinks for sailors they were punching last week. Maren's notice is pinned by the door again, a little damper than the last one." },
-        { "say": "orin", "text": "Still one short." },
-        { "say": "maren", "text": "Still true." }
+        {
+          "narrate": "The harbour bell rang true tonight, and Merrowgate's dockside taproom has decided that this is everyone's business. Fishermen are buying drinks for sailors they were punching last week. Maren's notice is pinned by the door again, a little damper than the last one."
+        },
+        {
+          "say": "orin",
+          "text": "Still one short."
+        },
+        {
+          "say": "maren",
+          "text": "Still true."
+        }
       ]
     },
     "oath": {
       "town": "cinderfold",
       "title": "The Second Oath, Toasted",
       "lines": [
-        { "narrate": "Word of your Second Oath has gone round Cinder Fold before you have finished washing. In the inn's taproom the forge-hands have pushed two tables together for you, and the notice has followed you up the mountain." },
-        { "say": "maren", "text": "I didn't post that one." },
-        { "say": "orin", "text": "I did." },
-        { "say": "maren", "text": "Orin." },
-        { "say": "orin", "text": "It's a big oath. It wants more than three people holding it." }
+        {
+          "narrate": "Word of your Second Oath has gone round Cinder Fold before you have finished washing. In the inn's taproom the forge-hands have pushed two tables together for you, and the notice has followed you up the mountain."
+        },
+        {
+          "say": "maren",
+          "text": "I didn't post that one."
+        },
+        {
+          "say": "orin",
+          "text": "I did."
+        },
+        {
+          "say": "maren",
+          "text": "Orin."
+        },
+        {
+          "say": "orin",
+          "text": "It's a big oath. It wants more than three people holding it."
+        }
       ]
     },
     "b3-home": {
       "town": "briarwatch",
       "title": "Help Wanted",
       "lines": [
-        { "narrate": "You came home to Briarwatch for help, and Briarwatch has given what it could: bread, beds, a cart, and the inn's taproom for as long as you need it. The notice by the door is in a child's hand this time, copied out large: HELP WANTED. BRAVE PREFERRED." },
-        { "say": "orin", "text": "Brave preferred." },
-        { "say": "maren", "text": "My version was less honest." }
+        {
+          "narrate": "You came home to Briarwatch for help, and Briarwatch has given what it could: bread, beds, a cart, and the inn's taproom for as long as you need it. The notice by the door is in a child's hand this time, copied out large: HELP WANTED. BRAVE PREFERRED."
+        },
+        {
+          "say": "orin",
+          "text": "Brave preferred."
+        },
+        {
+          "say": "maren",
+          "text": "My version was less honest."
+        }
       ]
     },
     "b3-winter": {
       "town": "briarwatch",
       "title": "Before the Road Down",
       "lines": [
-        { "narrate": "The winter watch is over and Briarwatch has come in out of the snow. The taproom smells of wet wool and mulled cider. Tomorrow the road goes down to Vell and does not come back up until it is done. Tonight the notice by the door is still asking." },
-        { "say": "orin", "text": "Last night anyone can join us. After this it's the stair." }
+        {
+          "narrate": "The winter watch is over and Briarwatch has come in out of the snow. The taproom smells of wet wool and mulled cider. Tomorrow the road goes down to Vell and does not come back up until it is done. Tonight the notice by the door is still asking."
+        },
+        {
+          "say": "orin",
+          "text": "Last night anyone can join us. After this it's the stair."
+        }
       ]
     },
     "b4-ballad": {
       "town": "briarwatch",
       "title": "The Chorus",
       "lines": [
-        { "narrate": "Somebody in the taproom is singing the song about you again, the version with the extra verse, and the whole room comes in on the chorus. The notice by the door has been up so long that someone has added a line underneath in pencil: ASK FOR THE ONE IN THE SONG." },
-        { "say": "maren", "text": "That's you." },
-        { "say": "orin", "text": "The song gets my hammer wrong." }
+        {
+          "narrate": "Somebody in the taproom is singing the song about you again, the version with the extra verse, and the whole room comes in on the chorus. The notice by the door has been up so long that someone has added a line underneath in pencil: ASK FOR THE ONE IN THE SONG."
+        },
+        {
+          "say": "maren",
+          "text": "That's you."
+        },
+        {
+          "say": "orin",
+          "text": "The song gets my hammer wrong."
+        }
       ]
     },
     "b4-quietnight": {
       "town": "briarwatch",
       "title": "A Quiet Taproom",
       "lines": [
-        { "narrate": "It is a quiet night in Briarwatch, the first in a long while, and the taproom is half empty and glad of it. The fire is low. The notice is still by the door, curling at the corners." },
-        { "say": "orin", "text": "Nobody's going to answer that now." },
-        { "say": "maren", "text": "Somebody always does." }
+        {
+          "narrate": "It is a quiet night in Briarwatch, the first in a long while, and the taproom is half empty and glad of it. The fire is low. The notice is still by the door, curling at the corners."
+        },
+        {
+          "say": "orin",
+          "text": "Nobody's going to answer that now."
+        },
+        {
+          "say": "maren",
+          "text": "Somebody always does."
+        }
       ]
     },
     "books": {
       "title": "The First Night of Your Own Story",
       "lines": [
-        { "narrate": "The written road is behind you. What comes next is yours to make, and the inn's taproom is as good a place to start as any: warm, loud, and full of people who would like to be in a story. The notice is pinned by the door." }
+        {
+          "narrate": "The written road is behind you. What comes next is yours to make, and the inn's taproom is as good a place to start as any: warm, loud, and full of people who would like to be in a story. The notice is pinned by the door."
+        }
       ]
     },
     "job": {
       "title": "The Trial, Retold",
       "lines": [
-        { "narrate": "Word of the trial travels faster than you do. By the time you reach the inn the taproom has heard three versions of it, and two of them have dragons. The notice is by the door, where it always is." }
+        {
+          "narrate": "Word of the trial travels faster than you do. By the time you reach the inn the taproom has heard three versions of it, and two of them have dragons. The notice is by the door, where it always is."
+        }
       ]
     }
   },
   "tavern": {
     "lines": [
-      { "narrate": "By the second round, two people have answered the notice.", "when": { "notFlag": "tavern:met" } },
-      { "narrate": "The first is a broad, grey man at the corner table with his bad leg up on a stool and a bow across his knees, oiled and unstrung. He does not get up. He raises his tankard an inch, which seems to be the most he does for anyone.", "when": { "notFlag": "tavern:met" } },
-      { "say": "Dov", "text": "Dov Calloway. Caravan guard, thirty-one years. Retired twice. Neither time took.", "when": { "notFlag": "tavern:met" } },
-      { "say": "Dov", "text": "I'll be honest with you, because nobody else in here will. I'm not here for the cause. I'm here for the wage. My granddaughter wants to be apprenticed to a glassblower in Ashford, and glassblowers, it turns out, cost more than bowmen.", "when": { "notFlag": "tavern:met" } },
-      { "say": "maren", "text": "And the leg?", "when": { "notFlag": "tavern:met" } },
-      { "say": "Dov", "text": "The knee's been against this from the start. It gets a say. It doesn't get a vote.", "when": { "notFlag": "tavern:met" } },
-      { "narrate": "The second is the inn's door. More exactly, she is the woman who has been standing beside it all night, so large and so still that you had taken her for part of the frame. She has a half-finished sock on four needles, and she did not drop a stitch when she put a drunk drover out into the yard twenty minutes ago.", "when": { "notFlag": "tavern:met" } },
-      { "say": "Agna", "text": "Agna Brannock. I guarded wagons till the wagons stopped. Now I guard doors for my supper.", "when": { "notFlag": "tavern:met" } },
-      { "say": "Agna", "text": "Sorry. Would you hold this?", "when": { "notFlag": "tavern:met" } },
-      { "narrate": "She hands you the knitting, crosses the room, lifts a man who was about to throw a chair by the back of his belt, carries him outside, and comes back. She takes the knitting back and counts her stitches.", "when": { "notFlag": "tavern:met" } },
-      { "say": "Agna", "text": "I've put out everyone in this town who needed it. I'd like to see whether the world is any bigger than one door.", "when": { "notFlag": "tavern:met" } },
-      { "narrate": "Dov Calloway is in the corner with his leg up on a stool, as if he had never left it, and Agna Brannock is beside the door with her knitting, as if she had never left it either.", "when": { "flag": "tavern:met" } },
-      { "say": "Dov", "text": "Still short, then. So am I. The glassblower put his price up.", "when": { "flag": "tavern:met" } },
-      { "say": "Agna", "text": "Different door. Same sock. I heard you'd be through.", "when": { "flag": "tavern:met" } },
-      { "say": "orin", "text": "We turned one away on a bench in Briarwatch.", "when": { "flag": "nessa:offer", "is": "declined", "notFlag": "tavern:met" } },
-      { "say": "maren", "text": "We did. That doesn't mean we have to keep doing it.", "when": { "flag": "nessa:offer", "is": "declined", "notFlag": "tavern:met" } },
-      { "say": "orin", "text": "The old one shoots. The big one holds a door. Either is more than we've got." },
-      { "say": "maren", "text": "They'd be hired, not sworn. They'll fight for us. Whether they'll stay for us is another thing." }
-    ],
-    "hires": {
-      "dov": {
-        "label": "Hire Dov Calloway",
-        "description": "A bowman with a bad knee, here for the wage. His fee is 6 gold for each of your levels, paid now. Agna will not wait for another night.",
-        "lines": [
-          { "say": "Dov", "text": "Done." },
-          { "narrate": "He finishes his drink first. Then he stands, which takes a while and some language, and strings the bow in one smooth pull that has clearly never taken a while in its life." },
-          { "say": "orin", "text": "You'll keep up?" },
-          { "say": "Dov", "text": "I'll keep up. I'll complain, and I'll keep up." },
-          { "narrate": "At the door, Agna Brannock nods to you as if a sum has come out right, wishes you a safe road, and goes back to her sock. When you pass that way again she will have found another door." }
-        ]
+      {
+        "narrate": "By the second round, a few people have answered the notice.",
+        "when": {
+          "tavernSeen": false
+        }
       },
-      "agna": {
-        "label": "Hire Agna Brannock",
-        "description": "A doorwarden with a shield and a sock on the needles, here to see the world. Her fee is 4 gold for each of your levels, paid now. Dov will not wait for another night.",
-        "lines": [
-          { "say": "Agna", "text": "Oh. Thank you." },
-          { "narrate": "She finishes the row first. Then she takes the inn's spare shield down from over the bar, where it has been hanging as decoration, and the innkeeper does not argue with her." },
-          { "say": "Agna", "text": "I'll send him the money for it." },
-          { "say": "maren", "text": "You'll need a pack." },
-          { "say": "Agna", "text": "I have a pack. It's mostly wool." },
-          { "narrate": "In the corner Dov Calloway raises his tankard one inch toward you, then goes back to the glassblower's arithmetic. By the next time you are through, he will have taken another caravan." }
-        ]
+      {
+        "say": "orin",
+        "text": "We turned one away on a bench in Briarwatch.",
+        "when": {
+          "flag": "nessa:offer",
+          "is": "declined",
+          "notFlag": "tavern:met"
+        }
+      },
+      {
+        "say": "maren",
+        "text": "We did. That doesn't mean we have to keep doing it.",
+        "when": {
+          "flag": "nessa:offer",
+          "is": "declined",
+          "notFlag": "tavern:met"
+        }
+      },
+      {
+        "narrate": "The same faces are still here, waiting to see what you decide.",
+        "when": {
+          "tavernSeen": true
+        }
+      },
+      {
+        "say": "orin",
+        "text": "Any of them is more than we've got.",
+        "when": {
+          "tavernSeen": false
+        }
+      },
+      {
+        "say": "maren",
+        "text": "They'd be hired, not sworn. They'll fight for us. Whether they'll stay for us is another thing.",
+        "when": {
+          "tavernSeen": false
+        }
       }
-    },
+    ],
+    "hireDescription": "{role}. {summary} Fee: {fee} gold for each of your levels, paid now. The others will move on.",
+    "hiredAfter": [
+      {
+        "narrate": "The others finish their drinks and wish you a safe road. By the next time you are through, they will have moved on."
+      }
+    ],
     "leave": {
       "label": "Not tonight",
-      "description": "Keep the party as it is. The tavern stays open until you next set out; after that it opens again only at another turn in the story.",
+      "description": "Keep the party as it is. They will wait tonight, until you next set out; after that they move on, and the tavern opens again only at another turn in the story, with other faces.",
       "lines": [
-        { "narrate": "You finish your drink and leave the notice where it is." }
+        {
+          "narrate": "You finish your drink and leave the notice where it is."
+        }
       ]
     }
   }

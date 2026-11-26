@@ -1,0 +1,2657 @@
+{
+ "_note": "The tavern roster (Curtis, 26 November 2026: 'create a massive 100 character roster for the tavern. Selection features 2-3 a time', 'Random selections'). Each tavern night offers 2 or 3 of these at random (src/tavern.js); anyone offered and not hired moves on for good once the party sets out. kind picks the fighting template in src/roster.js (archer, shield, mender, blade); from is the lowest hero level they turn up at (10 by default); fee is gold per hero level. intro lines play when they are offered, hired lines when they are hired; line is what they say when you talk to them. Speakers in intro and hired lines are first names, not companion ids, so they show whether or not the recruit is in the party.",
+ "recruits": [
+  {
+   "id": "dov",
+   "name": "Dov Calloway",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Marksman",
+   "fee": 6,
+   "summary": "A retired caravan bowman with a bad knee and an honest price, hired at a tavern for the wage.",
+   "personality": "Slow to stand, quick to shoot. Says plainly that he is here for the money and then earns it. Talks about his knee as if it were a colleague with opinions, keeps count of every arrow he has ever loosed, and sends half his wage home to a granddaughter who wants to blow glass in Ashford.",
+   "intro": [
+    {
+     "narrate": "A broad, grey man at the corner table has his bad leg up on a stool and a bow across his knees, oiled and unstrung. He raises his tankard an inch, which seems to be the most he does for anyone."
+    },
+    {
+     "say": "Dov",
+     "text": "Dov Calloway. Caravan guard, thirty-one years. Retired twice. Neither time took. I'm not here for the cause, I'm here for the wage: my granddaughter wants to be apprenticed to a glassblower, and glassblowers cost more than bowmen."
+    },
+    {
+     "say": "Dov",
+     "text": "The knee's against it. It gets a say. It doesn't get a vote."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "He finishes his drink first. Then he stands, which takes a while and some language, and strings the bow in one smooth pull that has never taken a while in its life."
+    },
+    {
+     "say": "Dov",
+     "text": "I'll keep up. I'll complain, and I'll keep up."
+    }
+   ],
+   "line": "Point and pay. I'll do the rest."
+  },
+  {
+   "id": "agna",
+   "name": "Agna Brannock",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Doorwarden",
+   "fee": 4,
+   "summary": "A caravan guard turned tavern doorwarden, hired to see whether the world is bigger than one door.",
+   "personality": "Large, quiet and courteous. Apologises to people while she carries them out, knits between fights and never drops a stitch, and asks before she helps. Has never been further than the caravans went and is quietly delighted by everything past that.",
+   "intro": [
+    {
+     "narrate": "Beside the door stands a woman so large and so still you had taken her for part of the frame, with a half-finished sock on four needles. She hands you the knitting, carries a man who was about to throw a chair out into the yard by his belt, comes back, and takes the knitting again."
+    },
+    {
+     "say": "Agna",
+     "text": "Sorry. Agna Brannock. I guarded wagons till the wagons stopped; now I guard doors for my supper. I'd like to see whether the world is any bigger than one door."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "She finishes the row first, then takes the inn's spare shield down from over the bar. The innkeeper does not argue with her."
+    },
+    {
+     "say": "Agna",
+     "text": "I'll send him the money for it. My pack is mostly wool. Is that all right?"
+    }
+   ],
+   "line": "I'll stand in front. It's what I'm for."
+  },
+  {
+   "id": "ysolt-gorse",
+   "name": "Ysolt Gorse",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Poacher",
+   "fee": 4,
+   "summary": "A lord's former poacher who is very sorry about the deer and not at all sorry about the lord.",
+   "personality": "Cheerful, quiet-footed, absolutely shameless about rabbits. Calls every bird by its proper name and every nobleman by a rude one. Leaves a coin wherever she takes something, a habit she cannot explain.",
+   "intro": [
+    {
+     "narrate": "A small woman by the fire is plucking a pheasant into a bucket as if that were a normal thing to do in a taproom, and the innkeeper has clearly decided not to ask where it came from."
+    },
+    {
+     "say": "Ysolt",
+     "text": "Ysolt Gorse. I used to feed three villages off one lord's woods. He found out. I'd like to be somewhere he isn't, doing something he'd hate."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ysolt",
+     "text": "Lovely. Can the pheasant come? It's nearly plucked. It'd be a waste."
+    }
+   ],
+   "line": "Tracks don't lie. People do. I prefer tracks."
+  },
+  {
+   "id": "odo-tarrant",
+   "name": "Odo Tarrant",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Ex-Bailiff",
+   "fee": 5,
+   "summary": "A former bailiff who resigned the day he was ordered to evict his own aunt.",
+   "personality": "Square, solemn and fair to a fault. Reads every notice he passes, all the way to the bottom. Writes down debts owed to him and never collects them. Says 'in the matter of' before anything important.",
+   "intro": [
+    {
+     "narrate": "A heavy man in a faded bailiff's coat is reading the notice by the door with his finger under each word. He has reached the bottom and gone back to the top."
+    },
+    {
+     "say": "Odo",
+     "text": "Odo Tarrant. In the matter of employment: I have a shield, a clean record, and an aunt who still won't speak to me for refusing to throw her out. I'd like work where nobody asks me to do that."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Odo",
+     "text": "In the matter of the fee, I'll write you a receipt. Somebody ought to do things properly."
+    }
+   ],
+   "line": "In the matter of the next door, I'll go first."
+  },
+  {
+   "id": "pip-merrow",
+   "name": "Pip Merrow",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Pickpocket",
+   "fee": 3,
+   "summary": "A reformed pickpocket, mostly, who returns what he lifts within the hour, mostly.",
+   "personality": "Quick, bright and twitchy, with a grin he uses like a shield. Hands things back before anyone notices they're gone. Trying very hard to be good and narrating the effort out loud.",
+   "intro": [
+    {
+     "narrate": "A thin young man bumps into you on the way past, apologises, and then, after a visible struggle with himself, hands you back your own coin purse."
+    },
+    {
+     "say": "Pip",
+     "text": "Pip Merrow. That's how honest I'm being now. You don't get that from many people. I'd like a job where my hands are useful and nobody's pocket is involved."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Pip",
+     "text": "You won't regret it. Here, you dropped this. You didn't drop it. I'm working on it."
+    }
+   ],
+   "line": "I'll get round the back. Through a door, I mean. Probably a door."
+  },
+  {
+   "id": "elspeth-keane",
+   "name": "Elspeth Keane",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Midwife",
+   "fee": 5,
+   "summary": "A country midwife who has delivered half a valley and frightens all of it.",
+   "personality": "Brisk, warm and utterly unshockable. Has seen everything twice and been unimpressed both times. Calls grown soldiers 'pet' and they let her. Carries boiled linen everywhere on principle.",
+   "intro": [
+    {
+     "narrate": "A stout woman with her sleeves rolled up is stitching a drover's split eyebrow at the end of the bar while he cries, quietly, into his ale. She does not look up."
+    },
+    {
+     "say": "Elspeth",
+     "text": "Elspeth Keane. Hold still, pet. Thirty years bringing people into the world; I thought I'd try keeping a few of them in it for a change."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Elspeth",
+     "text": "Right. Nobody bleeds on my good linen. Bleed on the other linen."
+    }
+   ],
+   "line": "Sit down. Whatever it is, sit down first."
+  },
+  {
+   "id": "bryn-halloway",
+   "name": "Bryn Halloway",
+   "pronouns": "they/them",
+   "kind": "archer",
+   "role": "Tower Lookout",
+   "fee": 5,
+   "summary": "A signal-tower lookout whose tower was closed, and who has not stopped looking.",
+   "personality": "Long-sighted in every sense: notices smoke two valleys over and forgets their own supper. Speaks in short reports. Counts birds when nervous. Was alone in a tower for six years and finds a room of people a lot.",
+   "intro": [
+    {
+     "narrate": "Someone at the window table is watching the road through a brass glass, although it is dark and the road is empty."
+    },
+    {
+     "say": "Bryn",
+     "text": "Bryn Halloway. Six years on a tower until they shut it. Rider coming from the west, by the way, about an hour out. I'd like to be useful at a distance."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "An hour later a rider does come in from the west."
+    },
+    {
+     "say": "Bryn",
+     "text": "Told you. Do I get a room or a roof? I'm fine with a roof."
+    }
+   ],
+   "line": "Movement on the ridge. Two. No, three. One of them's a goat."
+  },
+  {
+   "id": "mungo-pengelly",
+   "name": "Mungo Pengelly",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Smith's Striker",
+   "fee": 4,
+   "summary": "A blacksmith's striker who swung the big hammer for twenty years and would like to swing it at something that deserves it.",
+   "personality": "Enormous, gentle, slightly deaf from the anvil, so says everything a bit too loudly. Fixes buckles nobody asked him to. Gets sentimental about well-made hinges.",
+   "intro": [
+    {
+     "narrate": "A huge man with burn-freckled forearms is mending the inn's broken door hinge with a fork, because nobody asked him not to."
+    },
+    {
+     "say": "Mungo",
+     "text": "GARRICK DUNN. Sorry. Anvil. Twenty years striking for old Pell's forge, and he's retired, and I've a hammer and nothing to hit. I'd rather hit the right things."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Mungo",
+     "text": "GOOD. Sorry. Good. I'll bring the fork. It's a good fork now."
+    }
+   ],
+   "line": "THAT HINGE IS SQUEAKING. Sorry. That hinge is squeaking."
+  },
+  {
+   "id": "sela-voss",
+   "name": "Sela Voss",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Courier",
+   "fee": 5,
+   "summary": "A courier who has never lost a letter and once lost a horse, a coat and a husband in the same week.",
+   "personality": "Fast, wry and impatient with anything slow, including herself. Knows every shortcut and three-quarters of the gossip. Laughs at her own disasters before anyone else can.",
+   "intro": [
+    {
+     "narrate": "A lean woman in a mud-caked courier's coat is eating standing up, one boot already pointed at the door."
+    },
+    {
+     "say": "Sela",
+     "text": "Sela Voss. Courier, nine years, never lost a letter. Lost everything else, mind, all in one week, but never a letter. I'd like a road with people on it for a change."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Sela",
+     "text": "Done. Which way are we going? Never mind. I'll know a shorter way."
+    }
+   ],
+   "line": "There's a quicker way round. There's always a quicker way round."
+  },
+  {
+   "id": "cuthbert-colt",
+   "name": "Cuthbert Colt",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Horse Doctor",
+   "fee": 3,
+   "summary": "A horse doctor who insists people are just horses that complain more.",
+   "personality": "Dry, kind and blunt. Treats every injury as if the patient might kick. Talks to animals in full sentences and to people in grunts. Has a better bedside manner with mules than with anyone.",
+   "intro": [
+    {
+     "narrate": "An old man in a straw-flecked coat is checking the teeth of the innkeeper's dog. The dog is allowing it with great dignity."
+    },
+    {
+     "say": "Cuthbert",
+     "text": "Cuthbert Colt. Horses, mostly. People are the same as horses, only they talk back and they won't eat a bran mash. I can set a leg. Yours or anyone's."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Cuthbert",
+     "text": "Good. Don't make that face. Horses make that face. I'll treat you like one and you'll be fine."
+    }
+   ],
+   "line": "Easy now. Easy. That goes for you as well."
+  },
+  {
+   "id": "jessa-flint",
+   "name": "Jessa Flint",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Hunter",
+   "fee": 5,
+   "summary": "A mountain hunter who came down for salt and stayed for the arguments.",
+   "personality": "Blunt, funny and fiercely competitive. Turns everything into a contest and keeps score aloud. Has opinions about every bow in the room. Secretly homesick for snow.",
+   "intro": [
+    {
+     "narrate": "A woman in furs has challenged half the taproom to hit a cork on the far wall with a dart and is winning, loudly."
+    },
+    {
+     "say": "Jessa",
+     "text": "Jessa Flint. Fourteen to nothing. Came down the mountain for salt and found out you lot argue about everything. I love it. I want in."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Jessa",
+     "text": "Good. Fifteen to nothing. I'm counting you as nothing until you hit the cork."
+    }
+   ],
+   "line": "I'll take the one on the left. You won't. I'm faster."
+  },
+  {
+   "id": "peregrine-reede",
+   "name": "Peregrine Reede",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Disgraced Knight",
+   "fee": 6,
+   "summary": "A knight stripped of his spurs for refusing an order, still polishing the armour they let him keep.",
+   "personality": "Formal, earnest and slightly out of date. Bows to innkeepers. Talks about honour without irony and blushes when people laugh. Would die for a stranger and nearly has, twice.",
+   "intro": [
+    {
+     "narrate": "A man in old, beautifully kept armour is sitting very upright at a table by himself. There are pale marks on his heels where spurs used to be."
+    },
+    {
+     "say": "Peregrine",
+     "text": "Sir Peregrine Reede. Formerly sir. They took the spurs when I wouldn't burn a granary with people in it. I kept the armour. I'd hoped someone might still have a use for it."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "He stands and bows, properly, from the waist. Somebody at the bar snorts. He blushes and does not stop bowing."
+    },
+    {
+     "say": "Peregrine",
+     "text": "I am at your service. That isn't a figure of speech."
+    }
+   ],
+   "line": "Stand behind me, if you'd be so kind."
+  },
+  {
+   "id": "tamar-inchley",
+   "name": "Tamar Inchley",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Acrobat",
+   "fee": 4,
+   "summary": "A fair-ground acrobat whose troupe broke up over a goat.",
+   "personality": "Bouncy, dramatic, impossible to keep on the ground. Climbs things for no reason. Narrates her own falls. Still furious about the goat.",
+   "intro": [
+    {
+     "narrate": "Someone is sitting on the roof beam above the bar, swinging her legs. Nobody saw her get up there."
+    },
+    {
+     "say": "Tamar",
+     "text": "Tamar Inchley! Inchley's Flying Wonders, until the goat. Don't ask about the goat. I can get up anything and down most things. Hire me before I find out what the chandelier holds."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "She drops from the beam, turns once in the air, and lands on the bench beside you without spilling a drop of anyone's ale."
+    },
+    {
+     "say": "Tamar",
+     "text": "Nobody claps any more. It's fine. It's fine."
+    }
+   ],
+   "line": "I could get up there. I'm going to get up there."
+  },
+  {
+   "id": "benedek-sorn",
+   "name": "Benedek Sorn",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Lapsed Novice",
+   "fee": 4,
+   "summary": "A shrine novice who left over a theological argument he is still having, mostly with himself.",
+   "personality": "Bookish, anxious and kind. Quotes scripture and then argues with it. Prays out loud when frightened, apologetically. Has very cold hands and very steady ones.",
+   "intro": [
+    {
+     "narrate": "A young man in a frayed grey habit is arguing with a book. The book is winning."
+    },
+    {
+     "say": "Benedek",
+     "text": "Benedek Sorn. I was a novice at the shrine until I asked one question too many. I can still heal. The gods didn't seem to mind the question. The prior did."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Benedek",
+     "text": "Thank you. Really. I'll pray for us. Quietly. Unless it's an emergency."
+    }
+   ],
+   "line": "There's a verse about this. There's also a verse saying the opposite."
+  },
+  {
+   "id": "fenella-lisle",
+   "name": "Fenella Lisle",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Fletcher",
+   "fee": 4,
+   "summary": "A fletcher who got tired of making arrows for other people to miss with.",
+   "personality": "Fussy, exact and dryly scathing about bad shooting. Inspects everyone's arrows uninvited. Sings while she works and stops the moment anyone listens.",
+   "intro": [
+    {
+     "narrate": "A woman with feathers stuck to her sleeves is re-fletching a guardsman's arrows at the bar, and telling him, at length, everything he has done wrong to them."
+    },
+    {
+     "say": "Fenella",
+     "text": "Fenella Lisle. Fletcher. Twelve years making arrows for people who can't shoot. I'd like to see one go where it's meant to, for once. Preferably mine."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Fenella",
+     "text": "Good. Let me see your arrows. Oh. Oh, no. Sit down."
+    }
+   ],
+   "line": "That arrow's warped. So's that one. Who taught you?"
+  },
+  {
+   "id": "thane-oakes",
+   "name": "Thane Oakes",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Ferryman",
+   "fee": 3,
+   "summary": "A ferryman whose ferry sank and who would like a job on dry land, please.",
+   "personality": "Patient, wry and enormously strong in the shoulders. Never hurries. Talks about the river as an old enemy he respects. Can't swim, which nobody believes.",
+   "intro": [
+    {
+     "narrate": "A broad man with rope-scarred hands is drying out by the fire. He has clearly been drying out for some time and is still damp."
+    },
+    {
+     "say": "Thane",
+     "text": "Thane Oakes. Ferryman. Was. River had the ferry last month. I'd like work where the ground stays put, and I can hold a shield as well as I held a pole."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Thane",
+     "text": "Dry land. Grand. I'll carry whatever wants carrying."
+    }
+   ],
+   "line": "Slow is quick, if you don't have to do it twice."
+  },
+  {
+   "id": "isolde-greaves",
+   "name": "Isolde Greaves",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Duellist",
+   "fee": 7,
+   "summary": "A city duellist who has never lost a bout and is bored to tears by it.",
+   "personality": "Elegant, sardonic and secretly lonely. Corrects everyone's footwork. Finds real danger thrilling and hides it badly. Writes poems about her opponents and burns them.",
+   "intro": [
+    {
+     "narrate": "A woman in a good coat is sitting alone with a glass of wine and a rapier laid across the table like cutlery. Three drovers have decided not to sit near her."
+    },
+    {
+     "say": "Isolde",
+     "text": "Isolde Greaves. Forty bouts. Forty wins. Do you know how dull that is? I'd like to fight something that doesn't follow the rules. I'm told you know where to find such things."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Isolde",
+     "text": "Splendid. Don't hold your sword like that in front of me again. I'll teach you. You'll hate it."
+    }
+   ],
+   "line": "Your footwork is a crime. We'll discuss it later."
+  },
+  {
+   "id": "bede-brow",
+   "name": "Bede Brow",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Apothecary",
+   "fee": 5,
+   "summary": "A small-town apothecary whose rival opened across the street and won.",
+   "personality": "Precise, put-upon and quietly brilliant. Labels everything. Sniffs every drink before drinking it. Holds grudges against competitors and herbs that don't do what the book says.",
+   "intro": [
+    {
+     "narrate": "A small man is labelling the inn's condiments in tiny, neat writing. The innkeeper is watching, uncertain whether to be grateful."
+    },
+    {
+     "say": "Bede",
+     "text": "Bede Brow. Apothecary. My rival opened across the street with brighter jars. Brighter jars! I can stop a wound bleeding in the time it takes him to find his. I'd like to prove it somewhere."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Bede",
+     "text": "Excellent. I'll need a satchel. A labelled satchel."
+    }
+   ],
+   "line": "Don't drink that. I've labelled it 'do not drink'."
+  },
+  {
+   "id": "astley-hallam",
+   "name": "Astley Hallam",
+   "pronouns": "they/them",
+   "kind": "archer",
+   "role": "Rat-catcher",
+   "fee": 3,
+   "summary": "A city rat-catcher who decided rats were beneath them and has been working upward.",
+   "personality": "Grim, deadpan and unexpectedly tender with animals. Describes everything in terms of vermin. Keeps a tame ferret called Alderman.",
+   "intro": [
+    {
+     "narrate": "A thin figure in a long coat sits with a sling and a little bow, and something long and furry is curled asleep in their collar."
+    },
+    {
+     "say": "Astley",
+     "text": "Astley Hallam. Rats, mostly. Then bigger rats. Then a wolf, once, which is a sort of rat. This is Alderman. He bites the deserving."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Astley",
+     "text": "Alderman approves. He doesn't approve of much."
+    }
+   ],
+   "line": "Big rat. Very big rat. Shoot it."
+  },
+  {
+   "id": "marta-quell",
+   "name": "Marta Quell",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Brewer",
+   "fee": 4,
+   "summary": "A brewer who rolled her own barrels for thirty years and fights the way she rolls them.",
+   "personality": "Loud, warm and immovable. Judges every ale she meets. Uses a barrel lid as a shield and isn't joking. Mothers everyone and resents being thanked.",
+   "intro": [
+    {
+     "narrate": "A red-faced woman at the bar is explaining to the innkeeper, kindly and at length, what is wrong with his ale. He is taking notes."
+    },
+    {
+     "say": "Marta",
+     "text": "Marta Quell. Brewer. Daughters have the brewery now and they don't want me in it. I can roll a barrel up a hill and I can stand in a doorway. Same skill, really."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "She takes a barrel lid off the stack by the cellar door and weighs it in her hand like a shield. It is a shield, now."
+    },
+    {
+     "say": "Marta",
+     "text": "Right. Has everyone eaten? Nobody's eaten. Sit."
+    }
+   ],
+   "line": "I've had worse ale than this, and I've had worse days than this."
+  },
+  {
+   "id": "quill-adair",
+   "name": "Quill Adair",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Forger",
+   "fee": 5,
+   "summary": "A forger of permits and passes who wants, just once, to be in a real document.",
+   "personality": "Charming, nervous and a perfectionist about handwriting. Notices every seal and signature. Lies beautifully on paper and terribly out loud.",
+   "intro": [
+    {
+     "narrate": "A neat young man is writing something at a corner table with an extraordinary set of pens. He covers the page with his elbow as you come near."
+    },
+    {
+     "say": "Quill",
+     "text": "Quill Adair. Letters. Permits. Things with seals on. I'm the best hand between here and the sea and I'm sick of being nobody. Your song's got verses. I'd like to be in one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Quill",
+     "text": "Wonderful. Don't look at that page. It's a permit for a goat. It's a long story."
+    }
+   ],
+   "line": "That seal's a fake. Not a good one, either."
+  },
+  {
+   "id": "hywel-lowan",
+   "name": "Hywel Lowan",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Field Surgeon",
+   "fee": 6,
+   "summary": "An army field surgeon who served under three banners and patched up all of them.",
+   "personality": "Weary, gallows-funny and unfailingly gentle with patients. Drinks too much tea. Refuses to ask anyone which side they were on.",
+   "intro": [
+    {
+     "narrate": "A tired man with steady hands is setting out instruments on a clean cloth, cleaning each one, then putting it away again. It looks like a habit he can't stop."
+    },
+    {
+     "say": "Hywel",
+     "text": "Hywel Lowan. Surgeon. Three armies, three banners. I sewed up all of them; it's the same red underneath. I'd like to patch people who are trying to stop a war for once, not start one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Hywel",
+     "text": "Right. I'll need tea. A lot of tea. Don't ask how much."
+    }
+   ],
+   "line": "Hold still. This will hurt, then it won't."
+  },
+  {
+   "id": "ellis-thorpe",
+   "name": "Ellis Thorpe",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Militia Captain",
+   "fee": 5,
+   "summary": "A village militia captain whose village is safe now, and boring.",
+   "personality": "Organised, bossy and good at it. Drills people who didn't ask to be drilled. Keeps a list of everyone she's ever trained, with notes. Misses being needed.",
+   "intro": [
+    {
+     "narrate": "A woman with a captain's sash is reorganising the tables so that the room has clear lines of retreat. The innkeeper has stopped trying to put them back."
+    },
+    {
+     "say": "Ellis",
+     "text": "Ellis Thorpe. I trained the militia at Holm End until there was nothing left to defend it from. Good news. Dull news. I'd like a fight that matters."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ellis",
+     "text": "Good. Formation in the morning. Don't groan, I heard that."
+    }
+   ],
+   "line": "Two up, two back. Nobody wanders off."
+  },
+  {
+   "id": "dafydd-gilly",
+   "name": "Dafydd Gilly",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Shepherd",
+   "fee": 3,
+   "summary": "A hill shepherd who has fought off wolves with a crook for forty years and thinks that should count for something.",
+   "personality": "Slow-spoken, stubborn and dryly funny. Counts heads constantly, including the party's. Distrusts towns, stairs and anyone who wears a hat indoors.",
+   "intro": [
+    {
+     "narrate": "An old man in a sheepskin is counting the people in the taproom under his breath, and starting again each time someone comes in."
+    },
+    {
+     "say": "Dafydd",
+     "text": "Dafydd Gilly. Forty years of sheep and wolves. Sold the flock. Now I count you lot instead. You're one short. I'm one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Dafydd",
+     "text": "Five. That's better. Five's a good number for a flock."
+    }
+   ],
+   "line": "Four, five. All here. Don't wander."
+  },
+  {
+   "id": "nell-underhay",
+   "name": "Nell Underhay",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Herb-wife",
+   "fee": 3,
+   "summary": "A village herb-wife whose cures work about as often as her stories do.",
+   "personality": "Twinkling, gossipy and sharper than she lets on. Tells a long story with every remedy. Remembers everyone's ailments, and their grandmothers'.",
+   "intro": [
+    {
+     "narrate": "A little old woman with a basket of drying herbs has three drovers listening to a story about her cousin's foot with complete horror."
+    },
+    {
+     "say": "Nell",
+     "text": "Nell Underhay. Herbs and stories, pet, and I'm better at both than they say. I'm seventy-one and I've buried two husbands and no patients. Well. One patient. He was very rude."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Nell",
+     "text": "Lovely. Now, about your colour. You're a bit yellow. Sit down and I'll tell you about my cousin."
+    }
+   ],
+   "line": "That reminds me of my cousin's foot."
+  },
+  {
+   "id": "piran-quarrie",
+   "name": "Piran Quarrie",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Bird-scarer",
+   "fee": 3,
+   "summary": "A boy who scared crows off a lord's fields with a sling, and grew up to be very good with it.",
+   "personality": "Young, eager, freckled and endlessly hopeful. Asks a hundred questions. Imitates bird calls badly. Desperate to be taken seriously and quite good once he is.",
+   "intro": [
+    {
+     "narrate": "A gangly young man at the end of the bar keeps half-standing, then sitting down again, as if he is working up to something."
+    },
+    {
+     "say": "Piran",
+     "text": "Piran Quarrie! Sorry. I can hit a crow at sixty paces with a sling and a bow's the same, sort of. I've read about you. Not read, heard. I can't read yet. Can I come?"
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "He makes a noise that he probably thinks is a lark. It is not a lark."
+    },
+    {
+     "say": "Piran",
+     "text": "I won't let you down. Can I carry something? Can I carry everything?"
+    }
+   ],
+   "line": "Is that a hawk? It's a hawk. Is it? Is it a hawk?"
+  },
+  {
+   "id": "una-stavely",
+   "name": "Una Stavely",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Wrestler",
+   "fee": 5,
+   "summary": "A fair-ground wrestling champion who retired undefeated and immediately got bored.",
+   "personality": "Jolly, competitive and enormously strong. Hugs too hard. Arm-wrestles anyone who looks at her. Cries at weddings and once at a nice bridge.",
+   "intro": [
+    {
+     "narrate": "A broad woman has just beaten the fourth man in a row at arm-wrestling. He is shaking the feeling back into his hand, grinning."
+    },
+    {
+     "say": "Una",
+     "text": "Una Stavely! Champion of three fairs and a wedding. Retired undefeated. Turns out undefeated is dull. Want to try? No? Then hire me."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "She hugs you. You feel something in your back go back into place."
+    },
+    {
+     "say": "Una",
+     "text": "Sorry. Happy. It happens."
+    }
+   ],
+   "line": "Let me through. I'll move it. Whatever it is, I'll move it."
+  },
+  {
+   "id": "merrit-cobbold",
+   "name": "Merrit Cobbold",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Gambler",
+   "fee": 5,
+   "summary": "A card-sharp who cheats only against cheats and keeps a little book of who's who.",
+   "personality": "Smooth, amused and honest in a crooked way. Calculates odds out loud. Never bets on anything he cares about. Has a soft spot for losers.",
+   "intro": [
+    {
+     "narrate": "A man in a waistcoat is losing a game of cards on purpose to a nervous young farmhand, who does not know it and is very happy."
+    },
+    {
+     "say": "Merrit",
+     "text": "Merrit Cobbold. Cards, dice and other people's bad decisions. I only cheat cheats, and I'm out of cheats in this town. Odds say you're a good bet. I hate it when I'm right."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Merrit",
+     "text": "Done. Don't play cards with me. Seriously. Don't."
+    }
+   ],
+   "line": "I make it three to one against. I've been wrong. Rarely."
+  },
+  {
+   "id": "greer-mallow",
+   "name": "Greer Mallow",
+   "pronouns": "they/them",
+   "kind": "mender",
+   "role": "Bonesetter",
+   "fee": 4,
+   "summary": "A bonesetter from the quarries who can hear a break before you feel it.",
+   "personality": "Calm, literal and oddly cheerful about pain. Clicks their own knuckles constantly. Hums while setting bones. Has no sense of personal space and no interest in getting one.",
+   "intro": [
+    {
+     "narrate": "Someone is gently pressing their thumbs along a quarryman's shoulder. There is a loud click. The quarryman sighs as if a weight has gone."
+    },
+    {
+     "say": "Greer",
+     "text": "Greer Mallow. Bones. Quarries break a lot of them. I hear them. You've a stiff left knee, by the way. I'll have that later."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Greer",
+     "text": "Lovely. Hold still. No, the knee. There."
+    }
+   ],
+   "line": "Something's out of place. Stand still and I'll put it back."
+  },
+  {
+   "id": "kenna-vosper",
+   "name": "Kenna Vosper",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Ranger of the Wold",
+   "fee": 7,
+   "from": 40,
+   "summary": "A veteran wold-ranger who walked the north road before you were born and has views on how you walk it.",
+   "personality": "Weathered, laconic and quietly amused by youth. Remembers every path she ever took. Gives advice once and then lets you learn. Older than she looks and stronger than she should be.",
+   "intro": [
+    {
+     "narrate": "An old woman in a grey wold-cloak has the table nearest the door and has not taken her eyes off it all night. Her bow is older than the inn."
+    },
+    {
+     "say": "Kenna",
+     "text": "Kenna Vosper. I walked the north road before the white came down it. You walk it like children. Good children. You'll want someone who knows the way."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Kenna",
+     "text": "Good. I'll say a thing once. After that, you learn it the way I did."
+    }
+   ],
+   "line": "The road bends left a mile on. You'll want to be off it before then."
+  },
+  {
+   "id": "tobin-ory",
+   "name": "Tobin Ory",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Bridge-warden",
+   "fee": 4,
+   "summary": "A bridge-warden who held one bridge for twenty years and would like to hold something that moves.",
+   "personality": "Stolid, kind and very literal about holding things. Plants his feet before every conversation. Tells the same story about the flood in 'twenty-nine and gets it slightly different each time.",
+   "intro": [
+    {
+     "narrate": "A thickset man is standing with his back to the fire and his feet planted wide, as if the taproom might try to cross him."
+    },
+    {
+     "say": "Tobin",
+     "text": "Tobin Ory. Warden at Kell Bridge twenty years. Nobody crossed it I didn't let cross. They've built a new bridge now with no warden. I'd like to stand somewhere that wants standing in."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Tobin",
+     "text": "Right. Nobody gets past me. That's the job. That's always been the job."
+    }
+   ],
+   "line": "Nobody gets past. I'll see to it."
+  },
+  {
+   "id": "zillah-hatchett",
+   "name": "Zillah Hatchett",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Woodcutter",
+   "fee": 3,
+   "summary": "A woodcutter with a hatchet in each hand and a running feud with every tree in the Briarwood.",
+   "personality": "Cheerful, foul-mouthed and absolutely fearless. Talks to trees, mostly to insult them. Whistles when she works and when she fights, which is the same thing.",
+   "intro": [
+    {
+     "narrate": "A sawdust-covered woman has two hatchets on the table in front of her and is eating her stew with a knife off one of them."
+    },
+    {
+     "say": "Zillah",
+     "text": "Zillah Hatchett. Woodcutter. That's my real name, and the hatchets came after, don't ask which way round. Trees don't fight back much. I'd like something that does."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Zillah",
+     "text": "Lovely! I'll whistle. You'll get used to the whistling."
+    }
+   ],
+   "line": "Timber! Sorry. Habit."
+  },
+  {
+   "id": "rosamund-pyle",
+   "name": "Rosamund Pyle",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Nun on Leave",
+   "fee": 4,
+   "summary": "A nun from a silent order who is on leave and talking as much as she possibly can.",
+   "personality": "Radiant, nonstop chatterbox making up for nine years of silence. Prays in full sentences. Kind beyond reason. Occasionally stops mid-word, remembering, then carries on.",
+   "intro": [
+    {
+     "narrate": "A woman in a plain habit has been talking to the innkeeper for an hour without apparently drawing breath, and he looks very happy."
+    },
+    {
+     "say": "Rosamund",
+     "text": "Rosamund Pyle, of the Silent House. On leave! A year's leave! Nine years without a word, and I have so many. I can heal, you know. The Mother lets me. I'd love to come. Would you like to hear about the bread?"
+    }
+   ],
+   "hired": [
+    {
+     "say": "Rosamund",
+     "text": "Oh, wonderful! Thank you. That's a lot of words. I've got more."
+    }
+   ],
+   "line": "I'm so sorry, was I talking? I was talking. Isn't it lovely?"
+  },
+  {
+   "id": "cade-whitlock",
+   "name": "Cade Whitlock",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Deserter",
+   "fee": 4,
+   "summary": "A Commandery archer who deserted rather than shoot into a crowd, and has been running ever since.",
+   "personality": "Watchful, haunted and quietly decent. Sits facing doors. Flinches at bugles. Makes a joke out of everything to keep from thinking, and is better company than he believes.",
+   "intro": [
+    {
+     "narrate": "A young man in a coat with the regimental badges cut off is sitting with his back to the wall and his eyes on the door, and laughs a fraction too loudly at the next table's joke."
+    },
+    {
+     "say": "Cade",
+     "text": "Cade Whitlock. Was a Commandery bowman. They told me to shoot into a crowd. I shot at the sky and kept running. Still running. I'd like to run toward something."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Cade",
+     "text": "Thank you. If anyone asks, I'm Cade Smith. It's a very common name."
+    }
+   ],
+   "line": "Eyes on the door. Always eyes on the door."
+  },
+  {
+   "id": "gwil-noake",
+   "name": "Gwil Noake",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Cook",
+   "fee": 3,
+   "summary": "A caravan cook who defended his kitchen wagon from bandits with a skillet and wants a bigger skillet.",
+   "personality": "Round, cheerful and ferociously protective of anyone he has fed. Measures danger in meals missed. Tastes everything, including things he shouldn't.",
+   "intro": [
+    {
+     "narrate": "A round man in a stained apron has taken over the inn's kitchen for the evening. The innkeeper is eating his own stew and weeping a little."
+    },
+    {
+     "say": "Gwil",
+     "text": "Gwil Noake. Caravan cook. Bandits took the wagon in the spring; I hit three of them with a skillet and they still took it. I'd like a bigger skillet and someone to feed."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "He fetches a skillet the size of a cartwheel from under the kitchen table. It has a strap. It is, plainly, a shield."
+    },
+    {
+     "say": "Gwil",
+     "text": "Have you eaten? You haven't eaten. Nobody fights on an empty stomach."
+    }
+   ],
+   "line": "Nobody's eaten since noon. That's how fights go wrong."
+  },
+  {
+   "id": "vesper-kain",
+   "name": "Vesper Kain",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Ex-Cutpurse",
+   "fee": 5,
+   "summary": "A guild cutpurse who got out of the guild with all her fingers, which is rare.",
+   "personality": "Sharp, sardonic, efficient. Never sits with her back to anyone. Rolls coins over her knuckles when thinking. Pretends not to care and keeps a list of every kindness done to her.",
+   "intro": [
+    {
+     "narrate": "A woman in a dark hood is rolling a coin over her knuckles, back and forth, without looking at it."
+    },
+    {
+     "say": "Vesper",
+     "text": "Vesper Kain. I was in the Lantern guild, the one in Merrowgate. Nobody leaves the Lantern guild. I left. I'd like to be paid for doing something I'm not ashamed of."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Vesper",
+     "text": "Fine. I'll watch your back. Somebody should, and I know what people do with backs."
+    }
+   ],
+   "line": "Somebody's following us. No, it's a cat. Keep moving."
+  },
+  {
+   "id": "lowri-froome",
+   "name": "Lowri Froome",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Schoolmistress",
+   "fee": 3,
+   "summary": "A village schoolmistress with a medicine chest and no patience whatsoever.",
+   "personality": "Severe, precise and secretly proud of everyone. Corrects grammar mid-battle. Has a look that stops children and, it turns out, most other things.",
+   "intro": [
+    {
+     "narrate": "A thin woman with grey hair pinned very tight is correcting the spelling on the notice by the door with a pencil."
+    },
+    {
+     "say": "Lowri",
+     "text": "Lowri Froome. I taught Ashby's children for twenty-two years and nursed them through every pox going. The school's closed. I'm not. 'Enquire' has an E, by the way."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Lowri",
+     "text": "Very good. Sit up straight. That applies to all of you."
+    }
+   ],
+   "line": "Fewer, not less. And keep your guard up."
+  },
+  {
+   "id": "ambrose-jessop",
+   "name": "Ambrose Jessop",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Retired Bowyer",
+   "fee": 6,
+   "from": 20,
+   "summary": "A master bowyer who made the bows for the last Commandery tournament and retired to shoot them himself.",
+   "personality": "Courtly, vain about his work, and generous with it. Names every bow he has made. Describes shots like music. Weeps at good woodgrain.",
+   "intro": [
+    {
+     "narrate": "An elegant old man has a bow on the table and is talking to it, softly, about the weather."
+    },
+    {
+     "say": "Ambrose",
+     "text": "Ambrose Jessop. I made the bows for the last three tournaments. This is Margery. She's never been shot in anger. I think, at my age, she deserves to be."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ambrose",
+     "text": "Margery is delighted. So am I, but she's more important."
+    }
+   ],
+   "line": "Listen to that string. Like a cello. Now, watch."
+  },
+  {
+   "id": "henna-larke",
+   "name": "Henna Larke",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Watchwoman",
+   "fee": 4,
+   "summary": "A town watchwoman who arrested the mayor's son and was thanked with a transfer to night duty, forever.",
+   "personality": "Tired, upright and immovably honest. Writes everyone up in her head. Yawns at odd hours. Will always, always say who did it.",
+   "intro": [
+    {
+     "narrate": "A woman in a watch tabard is drinking very strong tea and yawning at nine in the evening, which for her is breakfast."
+    },
+    {
+     "say": "Henna",
+     "text": "Henna Larke. Watch. I arrested the mayor's boy for a stabbing. They gave me nights for life. I'd like a job where telling the truth isn't a punishment."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Henna",
+     "text": "Right. Good. I'll be awake at strange times. You'll be glad of it."
+    }
+   ],
+   "line": "That's a lie, that is. I've heard a thousand. That's one."
+  },
+  {
+   "id": "crispin-dorne",
+   "name": "Crispin Dorne",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Fencing Master's Son",
+   "fee": 4,
+   "summary": "The son of a famous fencing master, running from a very long shadow.",
+   "personality": "Earnest, insecure and much better than he thinks. Hears his father's voice correcting him. Apologises for winning. Grows bolder every time someone believes in him.",
+   "intro": [
+    {
+     "narrate": "A young man with a beautiful sword and a borrowed coat is staring into his cup as if it has failed an exam."
+    },
+    {
+     "say": "Crispin",
+     "text": "Crispin Dorne. Yes, that Dorne. My father thinks I'm a disappointment. I think he's probably right. I'm very good with this, though. Everyone says. Except him."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Crispin",
+     "text": "Really? You're not just being polite? Thank you. I'll try not to be a disappointment."
+    }
+   ],
+   "line": "Father would say I'm dropping my shoulder. Father isn't here."
+  },
+  {
+   "id": "mother-hale",
+   "name": "Mother Hale",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Hedge-priestess",
+   "fee": 5,
+   "from": 20,
+   "summary": "A hedge-priestess of the old roadside shrines, older than most of them.",
+   "personality": "Ancient, mischievous and utterly calm. Calls everyone 'chick'. Blesses things nobody asked her to bless. Has outlived three priests who tried to close her shrine.",
+   "intro": [
+    {
+     "narrate": "A tiny old woman in a patched shawl has the best seat by the fire, and nobody seems sure when she arrived."
+    },
+    {
+     "say": "Mother Hale",
+     "text": "Mother Hale, chick. I kept the little shrine on the Ashford road till the road moved. I've mended more roadwardens than you've met. Your left hand's shaking. That'll be fixed."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Mother Hale",
+     "text": "Good, chick. Help me up. Slowly. I'm old, not slow."
+    }
+   ],
+   "line": "Bless you, chick. And that door. And that rock."
+  },
+  {
+   "id": "yestin-sallow",
+   "name": "Yestin Sallow",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Mapmaker",
+   "fee": 4,
+   "summary": "A surveyor whose maps are perfect, if you ignore the drawings of monsters in the margins.",
+   "personality": "Fussy, distractible and delighted by everything. Sketches constantly. Measures distances in paces under his breath. Draws monsters in margins and is sometimes right.",
+   "intro": [
+    {
+     "narrate": "A man with ink on his nose is drawing a map of the taproom, including the positions of everyone in it, and a sea serpent behind the bar."
+    },
+    {
+     "say": "Yestin",
+     "text": "Yestin Sallow. Surveyor. My maps are perfect. The monsters are decorative. Mostly. I'd like to draw places nobody's drawn and I'm a decent shot, for a man with ink on his face."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Yestin",
+     "text": "Wonderful. Hold still, I'm drawing you. You're a sort of griffin. In a good way."
+    }
+   ],
+   "line": "Four hundred paces to the ridge. Possibly a wyvern. Possibly a goat."
+  },
+  {
+   "id": "freda-skerritt",
+   "name": "Freda Skerritt",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Miller",
+   "fee": 3,
+   "summary": "A miller whose millstone she can lift, which she does, for money, at fairs.",
+   "personality": "Floury, practical and endlessly unflappable. Measures everything in sacks. Hums the mill song. Thinks every problem can be solved by sitting on it.",
+   "intro": [
+    {
+     "narrate": "A broad woman white with flour to the elbows is explaining to a farmer what she thinks of his grain, and he is nodding."
+    },
+    {
+     "say": "Freda",
+     "text": "Freda Skerritt. Miller. Brother's got the mill now, the wet rag. I can lift the top stone, which he can't. I'd like something heavier to do."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Freda",
+     "text": "Grand. If it needs lifting, I'll lift it. If it needs sitting on, I'll sit on it."
+    }
+   ],
+   "line": "That weighs about four sacks. I'll manage."
+  },
+  {
+   "id": "hamnet-wilde",
+   "name": "Hamnet Wilde",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Actor",
+   "fee": 4,
+   "summary": "A travelling player who has died on stage four hundred times and would like to see what it's like to win.",
+   "personality": "Theatrical, generous and braver than he admits. Turns every moment into a scene. Can do any voice. Gets stage fright only when nobody's watching.",
+   "intro": [
+    {
+     "narrate": "A man with an extravagant moustache is performing a death scene on a table for a delighted audience of carters. It goes on for some time."
+    },
+    {
+     "say": "Hamnet",
+     "text": "Hamnet Wilde, of the Wilde Players! Four hundred deaths, each more moving than the last. The company's broken up. I've a sword, a dagger, and the timing of a professional. Cast me."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Hamnet",
+     "text": "Thank you. Thank you all. No applause. Oh, go on then."
+    }
+   ],
+   "line": "This is the part in the play where we win. Usually."
+  },
+  {
+   "id": "leda-crisp",
+   "name": "Leda Crisp",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Plague Nurse",
+   "fee": 5,
+   "summary": "A plague nurse from the Saltwick fever who is afraid of nothing any more except mice.",
+   "personality": "Matter-of-fact, wry and enormously competent. Washes her hands constantly. Talks about death like weather. Screams at mice.",
+   "intro": [
+    {
+     "narrate": "A woman in a grey apron is scrubbing her hands at the washbasin for a very long time. She stops to look at you, then keeps scrubbing."
+    },
+    {
+     "say": "Leda",
+     "text": "Leda Crisp. I nursed the Saltwick fever wards through the bad winter. Not much frightens me now. Mice. Mice frighten me. Anything else, I can handle."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Leda",
+     "text": "Good. Wash your hands. All of you. I'll wait."
+    }
+   ],
+   "line": "Wash your hands. Then we'll talk."
+  },
+  {
+   "id": "teilo-ellery",
+   "name": "Teilo Ellery",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Lamplighter",
+   "fee": 3,
+   "summary": "A town lamplighter who can shoot a candle out at forty paces, which is the opposite of his job.",
+   "personality": "Gentle, dreamy and a little melancholy. Loves light in every form. Knows every star's name. Feels responsible for any darkness he sees.",
+   "intro": [
+    {
+     "narrate": "A man with a long lamplighter's pole leaning beside him is watching the candles on each table burn down, as if counting them."
+    },
+    {
+     "say": "Teilo",
+     "text": "Teilo Ellery. Lamplighter, Highpass, nine years. They've put in oil lamps that light themselves. I can still put a candle out with an arrow at forty paces. It's not as useful as it sounds."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Teilo",
+     "text": "Thank you. There's a lot of dark out there. I'd like to help with it."
+    }
+   ],
+   "line": "It's getting dark. I'll keep an eye on the lights."
+  },
+  {
+   "id": "godric-swale",
+   "name": "Godric Swale",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Gravedigger",
+   "fee": 3,
+   "summary": "A gravedigger who has buried everyone in his village who ever doubted him.",
+   "personality": "Dour, deadpan and surprisingly sweet. Measures people for graves without meaning to. Tells the worst jokes in the region with total sincerity.",
+   "intro": [
+    {
+     "narrate": "A tall, thin man in black is looking at each person who comes in, then glancing at the floor, then back, as if working something out."
+    },
+    {
+     "say": "Godric",
+     "text": "Godric Swale. Gravedigger. Sorry. Habit. I measure people. You're about six foot, give or take. That's a joke. Gravediggers have to have jokes. I'd like to dig fewer graves."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Godric",
+     "text": "Good. I'll do my best to keep you all out of my line of work."
+    }
+   ],
+   "line": "I've dug worse ground than this. Not much worse."
+  },
+  {
+   "id": "saffi-rendle",
+   "name": "Saffi Rendle",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Knife-thrower",
+   "fee": 5,
+   "summary": "A carnival knife-thrower whose partner retired from the wheel with all his parts, which she considers a personal triumph.",
+   "personality": "Brash, warm and dazzlingly accurate. Keeps score of near misses. Juggles when bored. Insists she has never once hit the target she wasn't aiming at.",
+   "intro": [
+    {
+     "narrate": "A woman in a spangled jacket is throwing knives at the dartboard with her back to it. All of them hit the middle. The innkeeper has stopped flinching."
+    },
+    {
+     "say": "Saffi",
+     "text": "Saffi Rendle! Twelve years on the wheel, and my partner retired with every finger. Every one! The carnival's folded. I'd like a target that deserves it."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Saffi",
+     "text": "Marvellous. Stand very still for a moment. Joking. Mostly."
+    }
+   ],
+   "line": "I never miss. I sometimes surprise myself where I hit."
+  },
+  {
+   "id": "iolo-tey",
+   "name": "Iolo Tey",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Beekeeper",
+   "fee": 3,
+   "summary": "A beekeeper whose honey salves are famous and whose bees are infamous.",
+   "personality": "Serene, slow-moving and never stung. Talks to bees and, increasingly, to people the same way. Carries a smoker everywhere. Believes most problems are just bees you haven't calmed yet.",
+   "intro": [
+    {
+     "narrate": "A calm man in a veiled hat is sitting very still while a single bee walks across the back of his hand. The rest of the table has moved away."
+    },
+    {
+     "say": "Iolo",
+     "text": "Iolo Tey. Bees. My honey salve closes a cut by morning. I'd like to see what else it closes. She's only visiting. Aren't you, love?"
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "The bee lifts off his hand and leaves by the window, as if it has heard enough."
+    },
+    {
+     "say": "Iolo",
+     "text": "She approves. Mind, she approves of most things in the end."
+    }
+   ],
+   "line": "Slow movements. Everything calms down if you move slowly."
+  },
+  {
+   "id": "quenby-moorcroft",
+   "name": "Quenby Moorcroft",
+   "pronouns": "they/them",
+   "kind": "archer",
+   "role": "Falconer",
+   "fee": 5,
+   "summary": "A falconer to a lord who lost the lord and kept the falcon.",
+   "personality": "Proud, prickly and devoted to their bird. Explains everything in terms of what a falcon would do. Rarely smiles; when they do, it's at the falcon.",
+   "intro": [
+    {
+     "narrate": "A hooded falcon is sitting on the back of a chair, and the person beside it is feeding it bits of their own supper."
+    },
+    {
+     "say": "Quenby",
+     "text": "Quenby Moorcroft. Falconer to Lord Aske, who died owing me eight months. This is Vow. She was meant to go back to his son. She didn't like his son. Neither did I."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Quenby",
+     "text": "Vow will come. Don't touch her. Don't look at her too long, either."
+    }
+   ],
+   "line": "Vow's seen something on the ridge. Trust the bird."
+  },
+  {
+   "id": "bellamy-strode",
+   "name": "Bellamy Strode",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Pit Foreman",
+   "fee": 4,
+   "summary": "A mine foreman who carried eleven men out of a collapse and has had a bad back ever since.",
+   "personality": "Gruff, loyal and quietly heroic. Listens to rock. Refuses to go first through a doorway unless it's dangerous, then insists. Hates the dark and goes into it anyway.",
+   "intro": [
+    {
+     "narrate": "A man with a miner's stoop and coal dust in every line of his face is sitting very straight in a chair, the only way his back allows."
+    },
+    {
+     "say": "Bellamy",
+     "text": "Bellamy Strode. Foreman, Copper Hollow. The roof came in. I brought eleven out. The back didn't come with me. I can still hold a door. I can hold a door better than anyone."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Bellamy",
+     "text": "Right. Anything underground, I go first. Don't argue with me."
+    }
+   ],
+   "line": "I don't like that ceiling. Move."
+  },
+  {
+   "id": "tansy-wicke",
+   "name": "Tansy Wicke",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Chimney Sweep",
+   "fee": 3,
+   "summary": "A grown-up chimney sweep who can climb anything with a hole at the top.",
+   "personality": "Sooty, cheeky and fearless in tight places. Sings bawdy songs. Claims to have been up every chimney in Highpass and down most of them twice.",
+   "intro": [
+    {
+     "narrate": "A small woman black with soot to the eyebrows comes down the taproom chimney, apologises to everyone, and asks for a drink."
+    },
+    {
+     "say": "Tansy",
+     "text": "Tansy Wicke. Sweep. Wrong chimney, sorry. I can get up anything with a hole at the top and down anything with a hole at the bottom. I'd like something to get into that isn't a flue."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Tansy",
+     "text": "Lovely. I'll wash. Probably. At some point."
+    }
+   ],
+   "line": "If there's a gap, I'll get through it."
+  },
+  {
+   "id": "wilmot-crake",
+   "name": "Wilmot Crake",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Barber-surgeon",
+   "fee": 4,
+   "summary": "A barber-surgeon who will cut your hair, pull your tooth and stitch your arm, in an order he chooses.",
+   "personality": "Chatty, cheerful, very proud of his razors. Gossips while stitching. Offers everyone a trim, including in combat. Surprisingly good under pressure.",
+   "intro": [
+    {
+     "narrate": "A man with a striped apron is giving a drover a shave at the bar while telling him a long, filthy story. The drover is laughing too hard to keep still, which is alarming."
+    },
+    {
+     "say": "Wilmot",
+     "text": "Wilmot Crake. Barber-surgeon. Hair, teeth, wounds, in whatever order they come. I'd like a bit of variety, and you lot look like you'll need a trim and a stitch."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Wilmot",
+     "text": "Excellent. Before we go, you'd really benefit from a trim."
+    }
+   ],
+   "line": "Hold still. I could do your hair while I'm here."
+  },
+  {
+   "id": "esme-loame",
+   "name": "Esme Loame",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Duck Hunter",
+   "fee": 3,
+   "summary": "A fen duck-hunter who can hear a bittern a mile off and a lie half a mile off.",
+   "personality": "Soft-spoken, patient and devastatingly dry. Can wait still for hours. Hates noise. Delivers terrible news in the same voice as good news.",
+   "intro": [
+    {
+     "narrate": "A woman in a waxed cloak has been sitting in the corner so quietly that the innkeeper charged someone else for her ale."
+    },
+    {
+     "say": "Esme",
+     "text": "Esme Loame. Fenmere. Ducks, mostly. I'm good at waiting and good at the bit after waiting. I'd like work that isn't ducks."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Esme",
+     "text": "Thank you. You're all very loud. I'll get used to it."
+    }
+   ],
+   "line": "Quiet. Something's listening."
+  },
+  {
+   "id": "ruben-blackwood",
+   "name": "Ruben Blackwood",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Tournament Squire",
+   "fee": 4,
+   "summary": "A tournament squire who held the shield for six champions and has never held it for himself.",
+   "personality": "Eager, earnest and endlessly helpful. Polishes everyone's armour unasked. Knows the rules of every kind of combat. Painfully hopes to become a knight one day.",
+   "intro": [
+    {
+     "narrate": "A young man in a squire's tabard is polishing a stranger's helmet at the next table. The stranger did not ask and does not seem to mind."
+    },
+    {
+     "say": "Ruben",
+     "text": "Ruben Blackwood. Squire. Six champions, I held the shield for every one. My last champion retired to keep pigs. I'd like to hold the shield for someone who needs holding for."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ruben",
+     "text": "Thank you! I'll polish everything. You'll be able to see your faces in it."
+    }
+   ],
+   "line": "Your buckle's loose. Let me. No, let me."
+  },
+  {
+   "id": "mirelle-sand",
+   "name": "Mirelle Sand",
+   "pronouns": "she/her",
+   "kind": "blade",
+   "role": "Smuggler",
+   "fee": 6,
+   "summary": "A Saltwick smuggler who has never been caught and would like you to keep it that way.",
+   "personality": "Easy, amused and endlessly evasive. Never answers a question directly. Knows every cove. Has a code of honour no one else understands.",
+   "intro": [
+    {
+     "narrate": "A woman with salt-bleached hair is drinking something that the innkeeper definitely does not stock, from a bottle that definitely isn't his."
+    },
+    {
+     "say": "Mirelle",
+     "text": "Mirelle Sand. What do I do? Oh, this and that. Mostly that. I've never been caught, which isn't the same as never doing anything. I'd like some honest work. For a change. A short change."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Mirelle",
+     "text": "Lovely. Don't ask what's in my pack. It's honest. Mostly."
+    }
+   ],
+   "line": "I know a way round. Don't ask how I know."
+  },
+  {
+   "id": "anwick-frye",
+   "name": "Anwick Frye",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Old Soldier",
+   "fee": 4,
+   "summary": "An old pikeman who became the company's healer because nobody else would.",
+   "personality": "Gruff, warm and full of terrible advice about everything except wounds. Smokes a pipe he never lights. Calls everyone 'lad', regardless.",
+   "intro": [
+    {
+     "narrate": "An old soldier with an unlit pipe is wrapping a bandage round his own knuckles, very neatly, for no reason anyone can see."
+    },
+    {
+     "say": "Anwick",
+     "text": "Anwick Frye. Forty years in the pike line. Somebody had to patch the lads up and the surgeon was always drunk, so I learned. I'd like to patch a few more before I go."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Anwick",
+     "text": "Good lad. You're all lads. Don't argue."
+    }
+   ],
+   "line": "That'll heal. Most things heal, lad. Give it time."
+  },
+  {
+   "id": "saoirse-dell",
+   "name": "Saoirse Dell",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Hill Rider",
+   "fee": 5,
+   "summary": "A hill-pony rider who shoots from the saddle and is horribly lost without a pony.",
+   "personality": "Fierce, laughing and restless. Can't sit still. Pines for her pony, who is with her sister. Sings riding songs at all hours.",
+   "intro": [
+    {
+     "narrate": "A young woman with wind-burned cheeks is sitting backwards on a chair as if it were a saddle, rocking it gently."
+    },
+    {
+     "say": "Saoirse",
+     "text": "Saoirse Dell! I can shoot from a running pony. I haven't got a running pony. My sister has him. I can still shoot. Better, standing still. Don't tell her."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Saoirse",
+     "text": "Yes! I'll write to Bracken. He's the pony. He'll be jealous."
+    }
+   ],
+   "line": "If I had Bracken we'd be there by now."
+  },
+  {
+   "id": "humbert-kittle",
+   "name": "Humbert Kittle",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Retired Executioner",
+   "fee": 5,
+   "summary": "A retired executioner who would very much like to keep people alive for a change.",
+   "personality": "Courteous, mild and very sad. Apologises a great deal. Knits for orphans. Is enormously good at standing between danger and anyone small.",
+   "intro": [
+    {
+     "narrate": "A huge, gentle man is sitting alone with a cup of milk. People have left a wide space around him, and he does not seem surprised."
+    },
+    {
+     "say": "Humbert",
+     "text": "Humbert Kittle. I was the headsman at Merrowgate for nineteen years. Nobody wants to sit with me. I understand. I'd like to spend the rest of my life keeping people's heads on."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Humbert",
+     "text": "Thank you. Thank you. That's the first time in nineteen years anyone's asked me to stay."
+    }
+   ],
+   "line": "Get behind me. Please. I'd rather."
+  },
+  {
+   "id": "nim-lintwhistle",
+   "name": "Nim Lintwhistle",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Tinker",
+   "fee": 3,
+   "summary": "A tinker who carries his whole shop on his back and can pick any lock he once sold.",
+   "personality": "Garrulous, inventive and endlessly cheerful. Rattles when he walks. Fixes things that aren't broken. Gives everything a name.",
+   "intro": [
+    {
+     "narrate": "A small man covered in pots and pans and little brass tools is fixing the innkeeper's clock, which was working fine."
+    },
+    {
+     "say": "Nim",
+     "text": "Nim Lintwhistle! Tinker. Pots, pans, locks. I sold half the locks in this country, so I can open half the locks in this country. I'd like to see what's behind them."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Nim",
+     "text": "Splendid! I'll fix your boots. They're not broken? I'll fix them anyway."
+    }
+   ],
+   "line": "I sold this lock. Lovely lock. One moment."
+  },
+  {
+   "id": "beatrix-orchard",
+   "name": "Beatrix Orchard",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Shrine Gardener",
+   "fee": 4,
+   "summary": "A shrine gardener who grows every healing herb in the region and is on speaking terms with most of them.",
+   "personality": "Earthy, patient and gently bossy. Has dirt under her nails always. Notices plants everywhere and greets them. Firmly believes in rest, soup and sun.",
+   "intro": [
+    {
+     "narrate": "A woman with dirt under her nails has a pot of seedlings on the table and is turning it slowly to the firelight."
+    },
+    {
+     "say": "Beatrix",
+     "text": "Beatrix Orchard. I kept the herb garden at the Highpass shrine for sixteen years. They paved it. Paved it! Every herb in it is in my head now. I'd like to use them."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Beatrix",
+     "text": "Good. The seedlings come too. They're no trouble."
+    }
+   ],
+   "line": "There's woundwort by that wall. Fetch me some."
+  },
+  {
+   "id": "lorne-eckford",
+   "name": "Lorne Eckford",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Hunter's Widower",
+   "fee": 4,
+   "summary": "A widower who took up his late wife's bow and found he was better with it than she ever let him think.",
+   "personality": "Quiet, wry and tender. Talks to his late wife now and then, without embarrassment. Laughs at himself easily. Grieving and getting on with it.",
+   "intro": [
+    {
+     "narrate": "A middle-aged man is restringing a bow that is a little too short for him. He talks to it as he works, quietly."
+    },
+    {
+     "say": "Lorne",
+     "text": "Lorne Eckford. This was Della's. She always said I couldn't shoot. I've been practising. She was wrong, love, you were wrong. I'd like to get out of the house."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Lorne",
+     "text": "Thank you. She'd have liked you. She'd have said you're too young."
+    }
+   ],
+   "line": "Della would have taken that shot. So will I."
+  },
+  {
+   "id": "gunnhild-ore",
+   "name": "Gunnhild Ore",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Northern Sellsword",
+   "fee": 6,
+   "from": 40,
+   "summary": "A northern sellsword who fought on the wold before the white, and kept her shield when she lost her company.",
+   "personality": "Tall, grim and unexpectedly funny. Tells long, sad northern stories with terrible punchlines. Eats enormously. Mourns her company out loud once a night and then lets it go.",
+   "intro": [
+    {
+     "narrate": "A tall northern woman with a scarred round shield is eating her third bowl of stew. Nobody has dared ask her to share the table."
+    },
+    {
+     "say": "Gunnhild",
+     "text": "Gunnhild Ore. The Ninth Company, until the white took the Ninth Company. I am what is left. I am a lot. I will hold the line for you, and eat your food."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Gunnhild",
+     "text": "Good. I will tell you the story of the Ninth one night. It is very sad. It ends with a goat."
+    }
+   ],
+   "line": "In the north we say: shield up, mouth shut. I never managed the second part."
+  },
+  {
+   "id": "ozzie-whitby",
+   "name": "Ozzie Whitby",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Rat-fighter",
+   "fee": 3,
+   "summary": "A cellar rat-fighter turned bare-knuckle boxer turned short-sword man, always fighting up a weight class.",
+   "personality": "Scrappy, cocky and endlessly optimistic. Shadow-boxes when nervous. Bets on himself every time. Loses with grace and wins with none.",
+   "intro": [
+    {
+     "narrate": "A wiry young man with a broken nose is shadow-boxing in the corner, hitting the air hard enough to make it nervous."
+    },
+    {
+     "say": "Ozzie",
+     "text": "Ozzie Whitby! Rats, then dogs, then men, then men with swords, so now I've got a sword. Always fight up a size. You lot look like a big size."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ozzie",
+     "text": "Yes! Who are we fighting? Is it big? Tell me it's big."
+    }
+   ],
+   "line": "Bigger than me. Good. That's how I like 'em."
+  },
+  {
+   "id": "hedda-plume",
+   "name": "Hedda Plume",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Laundress",
+   "fee": 3,
+   "summary": "A laundress who learned more about wounds from what came off the linen than any surgeon from books.",
+   "personality": "Brisk, red-armed and plain-spoken. Can tell how a man was hurt from his shirt. Scolds people for bleeding on good cloth. Soft as butter underneath.",
+   "intro": [
+    {
+     "narrate": "A woman with red, strong forearms is holding a stranger's shirt up to the light and telling him exactly how he got the stain on it."
+    },
+    {
+     "say": "Hedda",
+     "text": "Hedda Plume. Laundress. Twenty years of soldiers' shirts. You learn what a sword does to a man by what you scrub out after. I can mend the man, not just the shirt."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Hedda",
+     "text": "Good. Try not to bleed on your sleeves. Blood's murder on linen."
+    }
+   ],
+   "line": "That'll stain. So will that. Hold still."
+  },
+  {
+   "id": "corwin-farleigh",
+   "name": "Corwin Farleigh",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Bandit (Former)",
+   "fee": 4,
+   "summary": "A road bandit who got tired of robbing people poorer than him and would like to make amends, at a profit.",
+   "personality": "Rakish, guilty, likeable. Keeps a list of everyone he robbed and how much. Sends money to them anonymously. Very good at ambushes and slightly ashamed of it.",
+   "intro": [
+    {
+     "narrate": "A rakish man with a feather in his hat is counting coins into little separate bags, writing a name on each one."
+    },
+    {
+     "say": "Corwin",
+     "text": "Corwin Farleigh. I was on the Ashford road for a while, the wrong side of it. I'm paying them back, one bag at a time. I'd like a wage to pay them faster."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Corwin",
+     "text": "Splendid. I know every good ambush on these roads. I'm on your side now. I promise."
+    }
+   ],
+   "line": "Good spot for an ambush, that. I'd know."
+  },
+  {
+   "id": "winifred-oake",
+   "name": "Winifred Oake",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Dairy Farmer",
+   "fee": 3,
+   "summary": "A dairy farmer who once fought off a bull with a milking stool, and has carried the stool ever since.",
+   "personality": "Weather-beaten, sensible and unflappable. Gets up at four regardless. Measures time in milkings. Treats monsters as she treats bad-tempered cattle: firmly.",
+   "intro": [
+    {
+     "narrate": "A sturdy woman has her boots off by the fire and a three-legged milking stool beside her, iron-shod and much dented."
+    },
+    {
+     "say": "Winifred",
+     "text": "Winifred Oake. Dairy. The bull got out in the spring and I sat him down with this. My son runs the farm now. I've got the stool. I'd like to use it."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Winifred",
+     "text": "Right. We're up at four. Don't look at me like that."
+    }
+   ],
+   "line": "Steady. Steady. Same as a bull. Look it in the eye."
+  },
+  {
+   "id": "jasper-quinn",
+   "name": "Jasper Quinn",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Bodyguard (Disgraced)",
+   "fee": 6,
+   "from": 20,
+   "summary": "A merchant prince's bodyguard who was sacked for protecting the prince's maid instead.",
+   "personality": "Polished, quiet and fiercely principled. Dresses better than his means. Scans rooms out of habit. Has no regrets and will tell you so, at length, with a straight face.",
+   "intro": [
+    {
+     "narrate": "A man in a good but worn coat is sitting with his back to the wall, and his eyes go to each person who comes in, check them, and move on."
+    },
+    {
+     "say": "Jasper",
+     "text": "Jasper Quinn. I guarded Merchant Tollan for six years. When the house burned I carried his maid out first. He'd have done the same, if he'd been a better man. He wasn't. I'm free."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Jasper",
+     "text": "Good. I'll take the door. I always take the door."
+    }
+   ],
+   "line": "Three exits. Two guards. One problem. Leave the problem to me."
+  },
+  {
+   "id": "ione-starke",
+   "name": "Ione Starke",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Asylum Keeper",
+   "fee": 5,
+   "summary": "A keeper at the Highpass asylum who knows more about fear than any soldier.",
+   "personality": "Calm, careful, quietly fierce. Speaks very gently. Notices when people are frightened and makes room for it. Never raises her voice and doesn't need to.",
+   "intro": [
+    {
+     "narrate": "A woman in a plain dark dress is talking very softly to a frightened young drover who has had too much to drink. By the time she finishes, he is asleep."
+    },
+    {
+     "say": "Ione",
+     "text": "Ione Starke. I kept the night ward at the Highpass asylum. They closed it. I know a great deal about fear. I'd like to put it to use where people are brave."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ione",
+     "text": "Thank you. If anyone's frightened, come to me. Nobody needs to be brave alone."
+    }
+   ],
+   "line": "Breathe. Slowly. That's it. You're all right."
+  },
+  {
+   "id": "nye-treloar",
+   "name": "Nye Treloar",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Toll-keeper",
+   "fee": 3,
+   "summary": "A toll-keeper who learned to shoot by aiming at the people who wouldn't pay.",
+   "personality": "Officious, fussy and deeply fair. Charges everyone exactly the right amount for everything. Keeps change in his pockets. Can't let anyone pass without asking where they're going.",
+   "intro": [
+    {
+     "narrate": "A small man with a leather change-bag has made everyone at his table pay the right amount for the ale, to the penny, and given out change."
+    },
+    {
+     "say": "Nye",
+     "text": "Nye Treloar. Toll-keeper, Ford Road. They've abolished the toll. Abolished it! I can shoot. I had to learn. Nobody wanted to pay. I'd like a job where things are fair."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Nye",
+     "text": "Very good. I'll keep the accounts. Somebody must."
+    }
+   ],
+   "line": "Halt. Where are you going? Sorry. Habit."
+  },
+  {
+   "id": "rhiannon-gale",
+   "name": "Rhiannon Gale",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Shieldmaiden of the Fold",
+   "fee": 6,
+   "from": 20,
+   "summary": "A Cinder Fold ward-shield who stood at the forge gate for ten years and would like to see what's outside it.",
+   "personality": "Proud, warm and very sure of herself. Talks about the Fold constantly. Laughs at danger, then deals with it. Mother of four, who all write to her.",
+   "intro": [
+    {
+     "narrate": "A woman with a forge-scorched shield and four letters open in front of her is reading them aloud, one by one, to anyone who'll listen."
+    },
+    {
+     "say": "Rhiannon",
+     "text": "Rhiannon Gale. Ten years at the Fold gate. My four are grown and writing me letters telling me to go and have an adventure. So. Here I am. Having one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Rhiannon",
+     "text": "Grand. I'll write and tell them. They'll be insufferable."
+    }
+   ],
+   "line": "At the Fold, we'd say: hold the gate and pass the bread."
+  },
+  {
+   "id": "jago-linden",
+   "name": "Jago Linden",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Clerk with a Knife",
+   "fee": 4,
+   "summary": "A tax clerk who took up knife-fighting after his third robbery and found he had a gift.",
+   "personality": "Precise, nervous, utterly lethal. Apologises before every strike. Keeps receipts for everything. Seems surprised every time he wins.",
+   "intro": [
+    {
+     "narrate": "A thin man in spectacles is sitting very upright with a ledger in front of him and two long knives neatly beside it, crossed, like a knife and fork."
+    },
+    {
+     "say": "Jago",
+     "text": "Jago Linden. Tax clerk. I was robbed three times on the way home. The fourth time, I wasn't. Neither were the next nine. I'm told I have a gift. I'd like to use it."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Jago",
+     "text": "Thank you. I'll keep a receipt. Of everything. Sorry."
+    }
+   ],
+   "line": "I do apologise. This will be quick."
+  },
+  {
+   "id": "griselda-mudge",
+   "name": "Griselda Mudge",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Wet-nurse turned Healer",
+   "fee": 3,
+   "summary": "A foundling-home matron who raised sixty orphans and stitched every one of them.",
+   "personality": "Big-hearted, loud, and impossible to argue with. Calls everyone 'duck'. Feeds people instead of asking how they are. Tougher than any soldier she's ever met.",
+   "intro": [
+    {
+     "narrate": "A large woman is wiping the face of a grown carter with a wet cloth as if he were five. He is letting her."
+    },
+    {
+     "say": "Griselda",
+     "text": "Griselda Mudge, duck. Matron at the foundling house for twenty years. Sixty little ones and I stitched every knee. They're grown. I'm not done."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Griselda",
+     "text": "Lovely. Now let me look at you, duck. You've not been eating."
+    }
+   ],
+   "line": "Come here, duck. Let's see it."
+  },
+  {
+   "id": "clem-nettlefold",
+   "name": "Clem Nettlefold",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Mushroom Forager",
+   "fee": 3,
+   "summary": "A forest forager who knows which mushrooms will kill you and keeps a list of people he's thought of feeding them to.",
+   "personality": "Mild, mossy and darkly funny. Smells of earth. Carries a basket everywhere, including into fights. Knows the woods by smell and the people by their shoes.",
+   "intro": [
+    {
+     "narrate": "A mild man with a basket of mushrooms on the table is sorting them into two piles: 'lovely' and 'certainly not'."
+    },
+    {
+     "say": "Clem",
+     "text": "Clem Nettlefold. I forage the Briarwood. I've a bow for the things in it that aren't mushrooms. I'd like to see what grows further out. Don't eat that one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Clem",
+     "text": "Lovely. I'll cook. Only from the left pile. Always the left pile."
+    }
+   ],
+   "line": "Lovely. Certainly not. Lovely. Don't touch that."
+  },
+  {
+   "id": "olwen-brisk",
+   "name": "Olwen Brisk",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Market Constable",
+   "fee": 4,
+   "summary": "A market constable who has broken up every kind of fight a market can have, including one between two geese.",
+   "personality": "Loud, jolly and absolutely immovable. Tells long stories about market fights. Settles arguments by standing in the middle of them. Fond of pies.",
+   "intro": [
+    {
+     "narrate": "A woman in a constable's coat is standing between two drunks who were about to fight. They have both decided to sit down instead."
+    },
+    {
+     "say": "Olwen",
+     "text": "Olwen Brisk! Market constable, Ashford Crossing. Fourteen years. I've stopped every fight there is, including the geese. Especially the geese. I'd like a bigger market."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Olwen",
+     "text": "Champion! Is there a pie? There's always a pie somewhere."
+    }
+   ],
+   "line": "Now then! Now then! What's all this?"
+  },
+  {
+   "id": "silvan-roe",
+   "name": "Silvan Roe",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Dancing Master",
+   "fee": 5,
+   "summary": "A dancing master who has taught every noble brat in the region to waltz and to fence, which he says are the same thing.",
+   "personality": "Graceful, waspish and terribly vain about his posture. Counts beats under his breath. Insults people's feet. Moves like water in a fight.",
+   "intro": [
+    {
+     "narrate": "A slim man with perfect posture is teaching a farmhand to step in time, and the farmhand, astonishingly, is getting the hang of it."
+    },
+    {
+     "say": "Silvan",
+     "text": "Silvan Roe. Dancing master. One-two-three, one-two-three. A duel is a waltz where one partner is trying to kill you. I'm very good at both."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Silvan",
+     "text": "Delightful. You walk like a cart. We'll work on it."
+    }
+   ],
+   "line": "One-two-three. One-two-three. And through."
+  },
+  {
+   "id": "marigold-fenn",
+   "name": "Marigold Fenn",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Hospice Sister",
+   "fee": 4,
+   "from": 40,
+   "summary": "A hospice sister from Merrowgate who has sat with more dying than anyone alive, and wants to help the living for a while.",
+   "personality": "Gentle, unshakeable and quietly funny. Holds hands without asking. Sings old lullabies. Has no fear of death and great affection for life.",
+   "intro": [
+    {
+     "narrate": "A woman in a hospice grey is sitting by the fire holding the hand of an old drover who is telling her about his wife. She is listening as if it's the most important story she has ever heard."
+    },
+    {
+     "say": "Marigold",
+     "text": "Marigold Fenn. I've sat with the dying at Merrowgate for twenty years. I'm not afraid of it. I'd like to spend a while helping people who aren't going anywhere yet."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Marigold",
+     "text": "Thank you. Let's keep you all with us. That's the job."
+    }
+   ],
+   "line": "It's all right. I'm here. Breathe with me."
+  },
+  {
+   "id": "gareth-lowry",
+   "name": "Gareth Lowry",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Bell-ringer",
+   "fee": 3,
+   "summary": "A bell-ringer who has rung the hours for thirty years and is very deaf and very accurate.",
+   "personality": "Loud, cheerful and slightly deaf. Counts everything in strokes. Has a strong opinion about every bell in the region. Hits what he aims at because he cannot hear people telling him he won't.",
+   "intro": [
+    {
+     "narrate": "An old man is explaining very loudly to a young woman why the Briarwatch bell is a fine bell, actually, and the trouble wasn't its fault."
+    },
+    {
+     "say": "Gareth",
+     "text": "GARETH LOWRY. Bell-ringer. Thirty years. Can't hear a thing. Can hit a crow at a hundred yards. I think. I'm told. I'd like to be useful while I can still climb a ladder."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Gareth",
+     "text": "WHAT? Oh. GOOD."
+    }
+   ],
+   "line": "WHAT? Oh. Yes. I'll shoot it."
+  },
+  {
+   "id": "morwenna-stour",
+   "name": "Morwenna Stour",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Shipwright",
+   "fee": 4,
+   "summary": "A Merrowgate shipwright who builds boats strong enough to stop a sea, and herself strong enough to stop most other things.",
+   "personality": "Practical, salty and full of sea-proverbs that don't quite apply. Judges everything by whether it would float. Swears creatively in four harbour dialects.",
+   "intro": [
+    {
+     "narrate": "A sturdy woman with tar on her hands is explaining to the innkeeper that his ceiling beams are oak, good oak, and wasted on a ceiling."
+    },
+    {
+     "say": "Morwenna",
+     "text": "Morwenna Stour. Shipwright, Merrowgate. Thirty hulls, never lost one. The yard's closed. I've a shield made out of a hatch cover and I'd like something to keep the sea off."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Morwenna",
+     "text": "Good. Tight hull, dry hold. That's the whole secret."
+    }
+   ],
+   "line": "Would that float? No? Then don't trust it."
+  },
+  {
+   "id": "kai-reave",
+   "name": "Kai Reave",
+   "pronouns": "they/them",
+   "kind": "blade",
+   "role": "Ex-Assassin (Allegedly)",
+   "fee": 7,
+   "from": 20,
+   "summary": "A soft-spoken stranger who insists they were only ever a very good locksmith.",
+   "personality": "Polite, mysterious and terribly well-informed. Never quite answers questions. Knows how everyone in the room would die. Collects buttons.",
+   "intro": [
+    {
+     "narrate": "A quiet person at a corner table is sewing a button onto their coat. The button is clearly not from their coat."
+    },
+    {
+     "say": "Kai",
+     "text": "Kai Reave. I was a locksmith. Very good one. People say otherwise; people say a lot of things. I'd like an honest job. I have a few skills that would help."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Kai",
+     "text": "Thank you. I won't make anyone nervous. Not on purpose."
+    }
+   ],
+   "line": "I'll go first. Quietly. You'll hardly know I'm gone."
+  },
+  {
+   "id": "dilys-fern",
+   "name": "Dilys Fern",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Fen Witch",
+   "fee": 4,
+   "summary": "A Fenmere wise-woman who is not a witch, whatever the village says, and does not turn people into toads, much as she'd like to.",
+   "personality": "Tart, warm and sharp-tongued. Mutters at people she dislikes. Mixes cures with ingredients she won't name. Very fond of frogs.",
+   "intro": [
+    {
+     "narrate": "A sharp-faced woman in a fen-green shawl has a small frog sitting on her shoulder, and the innkeeper is pretending not to see it."
+    },
+    {
+     "say": "Dilys",
+     "text": "Dilys Fern. Fenmere. I'm not a witch. I'm a wise woman. The difference is, I'm wise. This is Gerald. Gerald stays."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Dilys",
+     "text": "Lovely. Nobody touches Gerald. Gerald's sensitive."
+    }
+   ],
+   "line": "Don't make me mutter at you. You won't like it."
+  },
+  {
+   "id": "halden-brackwater",
+   "name": "Halden Brackwater",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Mountain Guide",
+   "fee": 5,
+   "from": 20,
+   "summary": "A Highpass mountain guide who has led sixty parties over the pass and lost none, which he credits to cowardice.",
+   "personality": "Cautious, wry and rock-steady. Turns back at the first sign of bad weather and is always right. Makes everyone eat before a climb. Unshakeable, once he's decided something's worth it.",
+   "intro": [
+    {
+     "narrate": "A rangy man is checking a coil of rope by the fire, inch by inch, as if he expects it to lie to him."
+    },
+    {
+     "say": "Halden",
+     "text": "Halden Brackwater. Mountain guide. Sixty crossings of the pass, nobody lost. I'm a coward, you see. I turn back. I'd like to go somewhere I wouldn't turn back from."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Halden",
+     "text": "Right. We eat first. Then we climb. Always in that order."
+    }
+   ],
+   "line": "Weather's turning. We'll want to be off this ridge."
+  },
+  {
+   "id": "ottoline-tallis",
+   "name": "Ottoline Tallis",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Innkeeper's Mother",
+   "fee": 3,
+   "summary": "This very inn's previous owner, who handed it to her son and has been unbearably bored ever since.",
+   "personality": "Fierce, nosy and very funny. Knows everyone's business in town. Rearranges things. Used to stop brawls with a ladle and hasn't lost the knack.",
+   "intro": [
+    {
+     "narrate": "An old woman behind the bar is telling the innkeeper what he's doing wrong. He is clearly her son. The ladle on her belt is clearly not just for soup."
+    },
+    {
+     "say": "Ottoline",
+     "text": "Ottoline Tallis. I ran this inn thirty years. My boy has it now. He doesn't need me. He's made that clear. I'm told you're short. I've stopped more brawls in this room than you've had dinners."
+    }
+   ],
+   "hired": [
+    {
+     "narrate": "Her son, behind the bar, looks relieved and then guilty about it."
+    },
+    {
+     "say": "Ottoline",
+     "text": "Don't look so pleased, Tom. I'll write."
+    }
+   ],
+   "line": "I've seen worse in this taproom on a market day."
+  },
+  {
+   "id": "fenwick-dray",
+   "name": "Fenwick Dray",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Sewer Warden",
+   "fee": 3,
+   "summary": "A Merrowgate sewer-warden who has fought things in the dark nobody else will admit exist.",
+   "personality": "Gloomy, matter-of-fact and very good in confined spaces. Smells faintly of drains. Gets philosophical about rats. Has seen worse than anything you will show him.",
+   "intro": [
+    {
+     "narrate": "A man sitting alone with a short blade and a lantern has a smell about him that has cleared the next two tables. He doesn't seem to mind."
+    },
+    {
+     "say": "Fenwick",
+     "text": "Fenwick Dray. Sewers, Merrowgate. I've seen things down there with teeth on the wrong side. Nobody believes me. I'd like a job above ground, if it's all the same."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Fenwick",
+     "text": "Thank you. I'll wash. It won't help, but I'll do it."
+    }
+   ],
+   "line": "Seen worse. Smelt worse. Get on."
+  },
+  {
+   "id": "caris-penhallow",
+   "name": "Caris Penhallow",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Shrine Musician",
+   "fee": 4,
+   "summary": "A shrine harpist whose hymns, it turns out, close wounds if sung right.",
+   "personality": "Dreamy, warm and dreadfully shy until she sings. Hums constantly. Blushes at compliments. Fierce in defence of anyone she has sung for.",
+   "intro": [
+    {
+     "narrate": "A young woman with a small harp is playing very softly in the corner, and a man with a bandaged arm beside her is flexing his fingers in wonder."
+    },
+    {
+     "say": "Caris",
+     "text": "Caris Penhallow. I played at the Ashford shrine. The hymns help. They mend things. I don't know why. I'd like to find out. Sorry. I'm not good at talking."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Caris",
+     "text": "Oh. Thank you. I'll sing. That's what I'm good at."
+    }
+   ],
+   "line": "I'll sing. It helps. I don't know why."
+  },
+  {
+   "id": "ruadh-vellis",
+   "name": "Ruadh Vellis",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Bounty Tracker",
+   "fee": 6,
+   "summary": "A bounty tracker who has brought back forty fugitives and let four go, and won't say which four.",
+   "personality": "Lean, patient and morally complicated. Smokes thin cigars. Reads people like tracks. Lets the guilty go sometimes, if the law was wrong.",
+   "intro": [
+    {
+     "narrate": "A lean man with a bounty-hunter's satchel is reading the wanted posters on the wall and quietly crossing out two of them with a pencil."
+    },
+    {
+     "say": "Ruadh",
+     "text": "Ruadh Vellis. Tracker. Forty brought back. Four I let go, because the law was worse than they were. I'd like to work for someone who knows the difference."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ruadh",
+     "text": "Good. I'll find whatever you're looking for. I'm usually right about whether it should be found."
+    }
+   ],
+   "line": "They came through here. An hour ago. Limping."
+  },
+  {
+   "id": "agathe-moor",
+   "name": "Agathe Moor",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Nun-Warrior",
+   "fee": 5,
+   "from": 20,
+   "summary": "A sister of a fighting order that was disbanded for being too effective.",
+   "personality": "Severe, devout, deadpan. Prays before fights and during them. Disapproves of swearing, gambling and cowardice, in that order. Has a terrifying sense of humour that comes out rarely.",
+   "intro": [
+    {
+     "narrate": "A woman in a battered order's tabard is reading a prayer book with a mace across her knees."
+    },
+    {
+     "say": "Agathe",
+     "text": "Sister Agathe Moor. The Order of the Long Watch, until the Bishop dissolved us for embarrassing his own guard. I have taken no new vows. I will take yours."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Agathe",
+     "text": "Good. We will pray before each battle. Do not swear in front of me."
+    }
+   ],
+   "line": "Steady. The Mother watches. So do I."
+  },
+  {
+   "id": "tibbs-maple",
+   "name": "Tibbs Maple",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Stable Boy",
+   "fee": 3,
+   "summary": "An inn's stable boy who taught himself to fight with a pitchfork and a short sword and would like to stop mucking out.",
+   "personality": "Young, earnest and terribly brave. Hero-worships everyone. Volunteers for everything. Still smells of hay.",
+   "intro": [
+    {
+     "narrate": "A young lad with straw in his hair is hovering at the edge of your table, holding a short sword he has obviously polished for an hour."
+    },
+    {
+     "say": "Tibbs",
+     "text": "Tibbs Maple. Stable boy, here. I've been practising. With the sword. On the hay. The hay's very dead. Please. I'll muck out your horses. Anything."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Tibbs",
+     "text": "Really? Really? I won't let you down. I'll fetch my things. It's one thing. It's this."
+    }
+   ],
+   "line": "I'll go! I'll go. Should I go?"
+  },
+  {
+   "id": "marla-quince",
+   "name": "Marla Quince",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Midwife's Apprentice",
+   "fee": 3,
+   "summary": "A midwife's apprentice who ran off to see the world and has delivered three babies on the road so far.",
+   "personality": "Young, bright, a bit overwhelmed and very capable. Laughs when nervous. Writes everything down. Faints at the sight of her own blood but not anyone else's.",
+   "intro": [
+    {
+     "narrate": "A young woman with ink-stained fingers is writing notes about a carter's broken toe while he tells her about it, very seriously."
+    },
+    {
+     "say": "Marla",
+     "text": "Marla Quince. Apprentice to the midwife at Holm End. I ran away to see things. I've delivered three babies on the road. Two in a cart. I'd like to see other things."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Marla",
+     "text": "Oh, good! I'll take notes. I take notes on everything."
+    }
+   ],
+   "line": "Hold still. I'm writing this down. Then I'll fix it."
+  },
+  {
+   "id": "cedric-lowstone",
+   "name": "Cedric Lowstone",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Retired Champion",
+   "fee": 7,
+   "from": 60,
+   "summary": "A tournament archery champion of thirty years ago, still better than anyone he meets.",
+   "personality": "Courtly, grand and slightly ridiculous. Tells long stories about past victories. Underneath, very kind and very sharp. Can still hit a ring at three hundred yards.",
+   "intro": [
+    {
+     "narrate": "A grand old man with a silver moustache has set up an archery target at the far end of the taproom and is showing three young guardsmen how it's done, from a chair."
+    },
+    {
+     "say": "Cedric",
+     "text": "Cedric Lowstone! Champion of the Long Field, four years running, a long time ago. Still have the eye. The knees have retired. I'd like one last campaign. Make it a good one."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Cedric",
+     "text": "Splendid. I'll need a chair, now and then. And an audience. Always an audience."
+    }
+   ],
+   "line": "Watch this, young ones. Watch."
+  },
+  {
+   "id": "ulla-hearthley",
+   "name": "Ulla Hearthley",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Retired Roadwarden",
+   "fee": 5,
+   "from": 40,
+   "summary": "A roadwarden who swore the Oath of the Road forty years before you did and wants to see if you meant it.",
+   "personality": "Tough, sardonic and secretly proud of the young. Tests everyone. Remembers the road before the bell went wrong. Has the Oath's words tattooed on her forearm, spelled wrong.",
+   "intro": [
+    {
+     "narrate": "An old woman in a faded roadwarden's coat is watching you the way a teacher watches a pupil she has heard a lot about."
+    },
+    {
+     "say": "Ulla",
+     "text": "Ulla Hearthley. Swore the Oath of the Road in a year you won't remember. I've heard about you. I'd like to see whether it's true. If it is, I'll walk with you. If it isn't, I'll tell you."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ulla",
+     "text": "Good. Don't let me down. I've waited a long time for someone to keep that oath properly."
+    }
+   ],
+   "line": "The Oath says 'the road is everyone's'. Let's prove it."
+  },
+  {
+   "id": "pascoe-thornley",
+   "name": "Pascoe Thornley",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Butcher",
+   "fee": 3,
+   "summary": "A village butcher with knives, opinions and a philosophy about cuts of meat that he applies to everything.",
+   "personality": "Jovial, blunt and unexpectedly philosophical. Sizes up enemies as joints. Sharpens knives while talking. Insists on making sausages from anything edible.",
+   "intro": [
+    {
+     "narrate": "A cheerful man with an enormous knife roll is sharpening a cleaver at the bar and telling the innkeeper what's wrong with his beef."
+    },
+    {
+     "say": "Pascoe",
+     "text": "Pascoe Thornley. Butcher. Thirty years. Every beast has its cuts. So does every problem. I'd like some problems."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Pascoe",
+     "text": "Good. I'll do the cooking. Sausages, mostly. You'll learn to love them."
+    }
+   ],
+   "line": "Shoulder, flank, neck. Pick your cut."
+  },
+  {
+   "id": "evaline-zennor",
+   "name": "Evaline Zennor",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Wold Healer",
+   "fee": 5,
+   "from": 40,
+   "summary": "A northern wold healer who walked south ahead of the white and brought her remedies with her.",
+   "personality": "Cool, careful and dry as winter. Treats cold injuries like no one else. Speaks rarely and exactly. Has a laugh like ice cracking, which she uses about once a week.",
+   "intro": [
+    {
+     "narrate": "A pale woman in northern furs is warming her hands at the fire, and the cold seems to come off her like a smell."
+    },
+    {
+     "say": "Evaline",
+     "text": "Evaline Zennor. From the wold. I came south ahead of the white. I know cold. I know what it does to hands and feet and hearts. You will need me further north."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Evaline",
+     "text": "Good. Keep your feet dry. Everything begins with feet."
+    }
+   ],
+   "line": "Warm your hands. Then your feet. Then we talk."
+  },
+  {
+   "id": "osgar-yelland",
+   "name": "Osgar Yelland",
+   "pronouns": "he/him",
+   "kind": "archer",
+   "role": "Poet",
+   "fee": 4,
+   "summary": "A failed poet and surprisingly successful archer who is writing an epic about you, very badly.",
+   "personality": "Romantic, melancholy and hopelessly earnest. Rhymes under pressure. Takes notes for his epic in the middle of battles. A deadly shot, which he finds unpoetic.",
+   "intro": [
+    {
+     "narrate": "A young man with ink on his cuffs and a beautiful bow is reading a long poem to a carter who has fallen asleep."
+    },
+    {
+     "say": "Osgar",
+     "text": "Osgar Yelland. Poet. I'm writing an epic about the bell. And about you. Mostly you. I can shoot. It's unpoetic, but true. May I come? For the epic?"
+    }
+   ],
+   "hired": [
+    {
+     "say": "Osgar",
+     "text": "Wonderful. I'll need to know what rhymes with your name."
+    }
+   ],
+   "line": "Oh, that's a line. Hold on, I'm writing it down."
+  },
+  {
+   "id": "winnie-crabbe",
+   "name": "Winnie Crabbe",
+   "pronouns": "she/her",
+   "kind": "shield",
+   "role": "Fishwife",
+   "fee": 3,
+   "summary": "A Saltwick fishwife who has carried baskets heavier than shields up harbour stairs for thirty years.",
+   "personality": "Loud, salty, kind and absolutely unfazed by anything. Shouts prices at no one. Calls everyone 'my lovely'. Fears nothing except being cheated.",
+   "intro": [
+    {
+     "narrate": "A small, square woman with forearms like hams is haggling with the innkeeper over the price of a fish she has brought in herself."
+    },
+    {
+     "say": "Winnie",
+     "text": "Winnie Crabbe, my lovely. Thirty years hauling baskets up the Saltwick stair. I can carry a shield up anything. I'd like to see something other than fish."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Winnie",
+     "text": "Lovely! You've got a fair price, my lovely. Don't tell anyone."
+    }
+   ],
+   "line": "Mind yourself, my lovely. Mind yourself."
+  },
+  {
+   "id": "ludo-farrant",
+   "name": "Ludo Farrant",
+   "pronouns": "he/him",
+   "kind": "blade",
+   "role": "Prize Fighter's Manager",
+   "fee": 4,
+   "summary": "A prize-fight manager whose fighter quit, so he's fighting himself, and talking himself up between punches.",
+   "personality": "Fast-talking, hopeful and secretly much tougher than his patter. Promotes himself constantly. Takes every hit and gets back up. Bets on himself and on you.",
+   "intro": [
+    {
+     "narrate": "A small, fast-talking man in a loud waistcoat is handing out cards that say LUDO FARRANT: UNDEFEATED (MOSTLY)."
+    },
+    {
+     "say": "Ludo",
+     "text": "Ludo Farrant! Undefeated, mostly. My fighter retired so I'm fighting for myself now. Short sword, quick feet, mouth like a mill race. Hire me, and I'll make you famous."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Ludo",
+     "text": "Wonderful! I'll get cards made. With your name on. And mine. Bigger."
+    }
+   ],
+   "line": "Ladies and gentlemen! And monsters! Here we go!"
+  },
+  {
+   "id": "thea-brightwater",
+   "name": "Thea Brightwater",
+   "pronouns": "she/her",
+   "kind": "mender",
+   "role": "Bath-house Keeper",
+   "fee": 4,
+   "summary": "A bath-house keeper whose hot springs cure aches, and whose hands cure worse.",
+   "personality": "Calm, warm and unhurried. Thinks every problem is improved by a hot bath. Smells of lavender and steam. Absolutely implacable about rest.",
+   "intro": [
+    {
+     "narrate": "A woman smelling faintly of lavender is massaging the knotted shoulders of a carter, who has gone completely silent with relief."
+    },
+    {
+     "say": "Thea",
+     "text": "Thea Brightwater. I keep the springs at Highpass. Hot water mends a great deal; hands mend the rest. I'd like to mend people who go out and do things, not people who only sit in my water."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Thea",
+     "text": "Lovely. Everyone rests tonight. That's not a suggestion."
+    }
+   ],
+   "line": "You're carrying that in your shoulders. Sit."
+  },
+  {
+   "id": "gideon-tull",
+   "name": "Gideon Tull",
+   "pronouns": "he/him",
+   "kind": "shield",
+   "role": "Stonemason",
+   "fee": 4,
+   "summary": "A stonemason who built the new Highpass wall and would like to see whether it holds, from the outside.",
+   "personality": "Patient, solid and slightly smug about masonry. Knocks on every wall he passes. Measures by eye and is always right. Hums while he works and while he fights.",
+   "intro": [
+    {
+     "narrate": "A dusty man is knocking on the walls of the taproom, listening, nodding to himself, then knocking again a foot along."
+    },
+    {
+     "say": "Gideon",
+     "text": "Gideon Tull. Mason. I built the new Highpass wall. Good wall. I'd like to see something try to get through it. Or through me. Same principle."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Gideon",
+     "text": "Grand. This wall's sound, by the way. That one isn't."
+    }
+   ],
+   "line": "Good wall, that. Wouldn't trust the one behind it."
+  },
+  {
+   "id": "petronel-wenlock",
+   "name": "Petronel Wenlock",
+   "pronouns": "she/her",
+   "kind": "archer",
+   "role": "Cartographer's Widow",
+   "fee": 4,
+   "from": 20,
+   "summary": "A surveyor's widow who finished her husband's last map herself and found she liked the edges of it best.",
+   "personality": "Precise, private and unexpectedly adventurous. Carries the unfinished map everywhere and adds to it. Shoots the way she draws: one careful line. Laughs rarely, and always at herself.",
+   "intro": [
+    {
+     "narrate": "A neat woman in mourning grey has a great folded map spread across two tables, and is inking in a river with very small, very careful strokes."
+    },
+    {
+     "say": "Petronel",
+     "text": "Petronel Wenlock. My husband surveyed the north road. He died with the map half done. I've done the other half. There's an edge left, and I'd like to see what's past it."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Petronel",
+     "text": "Thank you. I'll draw as we go. Tell me if I've got your face wrong in the margin."
+    }
+   ],
+   "line": "That isn't on the map. It will be."
+  },
+  {
+   "id": "bartholomew-skerry",
+   "name": "Bartholomew Skerry",
+   "pronouns": "he/him",
+   "kind": "mender",
+   "role": "Ship's Surgeon",
+   "fee": 5,
+   "from": 20,
+   "summary": "A ship's surgeon who has sawn and stitched in a pitching hold and finds dry land almost too easy.",
+   "personality": "Salty, unflappable and fond of rum. Operates with total calm and narrates sea-shanties under his breath. Has a wooden leg he refuses to discuss and frequently discusses.",
+   "intro": [
+    {
+     "narrate": "A man with a wooden leg propped on the rail is sharpening a short saw at the bar and humming something with far too many verses."
+    },
+    {
+     "say": "Bartholomew",
+     "text": "Bartholomew Skerry. Ship's surgeon, twenty years, three wrecks. I've stitched men in a hold that was rolling like a barrel. A floor that stays still? Luxury. Don't ask about the leg."
+    }
+   ],
+   "hired": [
+    {
+     "say": "Bartholomew",
+     "text": "Splendid. The leg? It was a shark. No, it wasn't. It was a door. I'll tell you properly one night."
+    }
+   ],
+   "line": "Hold still. I've done this on a sinking ship."
+  }
+ ]
+}

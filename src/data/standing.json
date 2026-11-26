@@ -401,22 +401,6 @@
       "text": "At Merrowgate, Maren did not speak for Sloe of Orme, or against her."
     },
     {
-      "who": "dov",
-      "when": {
-        "flag": "tavern:hired",
-        "is": "dov"
-      },
-      "text": "Dov Calloway was hired at a tavern for a wage, not sworn to the cause, and says so. Half his pay goes home to his granddaughter's glassblowing apprenticeship in Ashford."
-    },
-    {
-      "who": "agna",
-      "when": {
-        "flag": "tavern:hired",
-        "is": "agna"
-      },
-      "text": "Agna Brannock was hired at a tavern, where she kept the door. She joined to see whether the world is bigger than one door, and has not been further than the caravans went before."
-    },
-    {
       "who": "hero",
       "when": {
         "flag": "tavern:hired"

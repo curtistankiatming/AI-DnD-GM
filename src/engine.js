@@ -423,6 +423,7 @@ function requirementStatus(state, requires = {}) {
     return { met: false, reason: `Requires ${requires.gold} gold.` };
   }
   // A tavern hire's fee, by the hero's level (src/tavern.js).
+  if (requires.tavernOffer) { const here = Tavern.offerStatus(state, requires.tavernOffer); if (!here.met) return here; }
   if (requires.hireFee) { const fee = Tavern.feeStatus(state, requires.hireFee); if (!fee.met) return fee; }
   if (requires.absent && findCompanion(state, requires.absent)) {
     return { met: false, reason: `Only while ${COMPANIONS[requires.absent]?.name || "that companion"} is away.` };
@@ -590,6 +591,8 @@ function applyOutcome(state, written = {}, rng, events) {
   const outcome = dialogue ? { ...written, dialogue, text: written.text !== undefined ? dialogueText(dialogue) : undefined } : written;
   if (outcome.recover) { W.recover(state, events, extensionApi()); return; }
   const booksOpen = !state.story.flags[Book.FINISHED];
+  // Leaving a tavern night's scene: tonight's people have been met (src/tavern.js).
+  if (currentNode(state)?.tavern) Tavern.seen(state);
   if (outcome.completeQuest) W.completeQuest(state, outcome.completeQuest, events, extensionApi());
   if (outcome.reputation) W.reputation(state, outcome.reputation);
   // A written choice may cost (or give) gold; the purse never goes below zero.

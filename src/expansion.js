@@ -119,7 +119,9 @@ for(const q of Object.values(QUESTS))if(Number(q.xp)>0&&!q.sideJob&&(Number(q.bo
 // narrator run liveLines over the same lines again, and the line would vanish
 // from what they show.
 const speakerName=id=>{const c=C.COMPANIONS[id];return c?c.name.replace(/^Sister /,'').split(' ')[0]:String(id);};
-const storyLine=l=>l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
+// say: "hire" is whoever the party hired at a tavern (src/roster.js): told only
+// while there is one, under their name (liveLines).
+const storyLine=l=>l.say==='hire'?{speaker:'hire',speakerId:'hire',text:l.text,...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})}:l.oneOf?{oneOf:l.oneOf.map(storyLine),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})}:({...(l.narrate?{narration:l.narrate}:{speaker:speakerName(l.say),speakerId:C.COMPANIONS[l.say]?l.say:null,text:l.text}),...(l.when?{when:l.when}:{}),...(l.setFlag?{setFlag:l.setFlag}:{})});
 // The written text keeps every line, every alternative of a group included.
 const everyLine=lines=>lines.flatMap(l=>l.oneOf?everyLine(l.oneOf):[l]);
 function dialogueText(lines){return everyLine(lines).map(l=>l.narration||`${l.speaker}: ${l.text}`).join('\n');}
@@ -129,9 +131,17 @@ function dialogueText(lines){return everyLine(lines).map(l=>l.narration||`${l.sp
 // notClue, access, notAccess). The written text keeps every line; this picks the ones for this save.
 function lineApplies(state, line) {
   const inParty = (id) => state.party.some((member) => member.id === id);
-  if (line.speakerId && !inParty(line.speakerId)) return false;
+  const hire = require('./roster').hireIn(state);
+  if (line.speakerId === 'hire' ? !hire : line.speakerId && !inParty(line.speakerId)) return false;
   const w = line.when;
   if (!w) return true;
+  // hire / hireKind: whether the party has a tavern hire, and of which kind
+  // (archer, shield, mender, blade). Lines that name them use {hire}.
+  if (w.hire !== undefined && Boolean(hire) !== Boolean(w.hire)) return false;
+  if (w.hireKind && require('./roster').RECRUITS[hire?.id]?.kind !== w.hireKind) return false;
+  // offered / tavernSeen: who is at tonight's tavern, and whether the party has met them (src/tavern.js).
+  if (w.offered && !(state.world?.tavern?.offer || []).includes(w.offered)) return false;
+  if (w.tavernSeen !== undefined && Boolean(state.world?.tavern?.seen) !== Boolean(w.tavernSeen)) return false;
   const f = state.story.flags || {};
   if (w.flag !== undefined && !(w.is !== undefined ? f[w.flag] === w.is : Boolean(f[w.flag]))) return false;
   if (w.notFlag && f[w.notFlag]) return false;
@@ -217,6 +227,16 @@ const lineFlags = (set) => typeof set === 'string' ? { [set]: true } : set && ty
 // Lines are read in order, so a line's setFlag counts for the lines after it.
 // liveLines only looks (on a copy of the flags); playLines, used where the
 // lines are told, sets them on the save.
+// A hire's line under their own name, and {hire} in any line as their first name.
+function named(state, line) {
+  const hire = require('./roster').hireIn(state);
+  if (!hire) return line;
+  const name = require('./roster').first(hire), put = (s) => typeof s === 'string' ? s.replace(/\{hire\}/g, name) : s;
+  const out = { ...line };
+  if (out.speakerId === 'hire') { out.speaker = name; out.speakerId = hire.id; }
+  for (const k of ['text', 'narration']) if (out[k] !== undefined) out[k] = put(out[k]);
+  return out;
+}
 function liveLines(state, lines, play = false) {
   if (!Array.isArray(lines)) return lines;
   const flags = play ? (state.story.flags ||= {}) : { ...(state.story.flags || {}) };
@@ -225,7 +245,8 @@ function liveLines(state, lines, play = false) {
   for (const line of lines) {
     const picked = pickLine(seen, line);
     if (!picked) continue;
-    const { when, setFlag, ...told } = picked;
+    const { when, setFlag, ...raw } = picked;
+    const told = named(state, raw);
     for (const set of [line.oneOf && line.setFlag, setFlag]) if (set) Object.assign(flags, lineFlags(set));
     out.push(told);
   }
@@ -428,5 +449,5 @@ ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['
 // Where the hero and each companion stand after the written story's choices
 // (src/data/standing.json): told to the AI game master and shown in the Journal.
 const STANDING=require('./data/standing.json').entries;
-function standing(state,who){return STANDING.filter(e=>e.who===who&&lineApplies(state,{when:e.when})).map(e=>e.text);}
+function standing(state,who){return [...STANDING.filter(e=>e.who===who&&lineApplies(state,{when:e.when})).map(e=>e.text),...require('./tavern').standing(state,who)];}
 module.exports={trialFraming,townPage,townPages,standing,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};

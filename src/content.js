@@ -8,7 +8,8 @@ const POINT_BUY_COSTS = require("./data/point-buy-costs.json");
 const BACKGROUNDS = require("./data/backgrounds.json");
 const ITEMS = require("./data/items.json");
 const CLASSES = require("./data/classes.json");
-const COMPANIONS = require("./data/companions.json");
+// The story companions, then the tavern roster's hires (src/roster.js).
+const COMPANIONS = require("./roster").register(require("./data/companions.json"));
 const ENEMIES = require("./data/enemies.json");
 const ENCOUNTERS = require("./data/encounters.json");
 const CLUES = require("./data/clues.json");

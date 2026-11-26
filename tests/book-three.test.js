@@ -245,7 +245,7 @@ test('a camp scene whose companion is away is skipped, and lines for absent comp
 });
 
 // What every Book Three line may read, and where each flag it reads comes from.
-const KNOWN_WHEN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller']);
+const KNOWN_WHEN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller', 'hire', 'hireKind']);
 const SPECS = new Set(['none', ...Object.values(P.SPECIALIZATIONS).flat().map((b) => b.id)]);
 const ENGINE_PREFIX = /^(method|prepared|approach|partial|job|away|walked):/;
 // Each line array in a piece of content, with its owner and where it sits in the story.
