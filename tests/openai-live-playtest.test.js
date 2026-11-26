@@ -28,7 +28,7 @@ test('a typed action that matches a listed check shows its words and odds, never
   const out=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'action',text:'I look really closely at that rope'},ai,()=>0.5);
   const text=out.narration.text;
   assert.doesNotMatch(text,/[{}]|"actor"|Proposed single action/);
-  assert.match(text,/^You lean in close to the cut\.\nYou could: Inspect the severed bell rope\. About \d+% to succeed\.\nExamine the cut/);
+  assert.match(text,/^You lean in close to the cut\.\nYou could: Inspect the severed bell rope\. About \d+% to succeed, Sister Maren Vale rolls\.\nExamine the cut/);
   assert.match(text,/Confirm below or cancel\./);
   assert.equal(out.state.chat.pending.optionId,'choice:inspect-rope');
 });
@@ -36,7 +36,7 @@ test('a typed action that matches a listed check shows its words and odds, never
 test('without AI, typing a listed choice also gets the readable preview',async()=>{
   const out=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'action',text:'Inspect the severed bell rope'},null,()=>0.5);
   assert.doesNotMatch(out.narration.text,/[{}]/);
-  assert.match(out.narration.text,/^You could: Inspect the severed bell rope\. About \d+% to succeed\./);
+  assert.match(out.narration.text,/^You could: Inspect the severed bell rope\. About \d+% to succeed, \w[\w ]* rolls\./);
 });
 
 test('an improvised intent that ends in a full stop is not printed with two',async t=>{

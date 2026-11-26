@@ -38,11 +38,11 @@ function options(state){
   if(Road.present(state)||M.ensure(state).road?.phase==='complete'&&Road.home(state)){
     const road=Road.options(state,roadApi).map(o=>({id:'road:'+o.id,label:o.label,description:o.description,action:{type:'road',optionId:o.id}}));
     if(Road.present(state))return road;
-    return [...road,...view.scene.choices.filter(c=>!c.completed&&!c.locked).map(c=>({id:'choice:'+c.id,label:c.label,description:c.check?JSON.stringify(c.check):c.description||'',summary:c.description||'',chance:c.check?.probability,action:{type:'story-choice',choiceId:c.id}}))];
+    return [...road,...view.scene.choices.filter(c=>!c.completed&&!c.locked).map(c=>({id:'choice:'+c.id,label:c.label,description:c.check?JSON.stringify(c.check):c.description||'',summary:c.description||'',chance:c.check?.probability,roller:c.check?.actor,action:{type:'story-choice',choiceId:c.id}}))];
   }
   if(courier?.active)return C.options(state,{hasItem:E.hasItem,checkPlan:E.checkPlan}).map(o=>({id:'courier:'+o.id,label:o.label,description:o.description,action:{type:'courier',optionId:o.id}}));
   if(state.combat?.active)return []; // Starting point: no hidden combat-target inference.
-  return view.scene.choices.filter(c=>!c.completed&&!c.locked).map(c=>({id:'choice:'+c.id,label:c.label,description:c.check?JSON.stringify(c.check):c.description||'',summary:c.description||'',chance:c.check?.probability,action:{type:'story-choice',choiceId:c.id}}));
+  return view.scene.choices.filter(c=>!c.completed&&!c.locked).map(c=>({id:'choice:'+c.id,label:c.label,description:c.check?JSON.stringify(c.check):c.description||'',summary:c.description||'',chance:c.check?.probability,roller:c.check?.actor,action:{type:'story-choice',choiceId:c.id}}));
 }
 function publicConditions(conditions=[]) {
   return conditions.map(c=>({id:c.id,name:c.name||c.id,
@@ -171,7 +171,7 @@ function improvisePreview(preview,framing=''){
 function choicePreview(option,framing=''){
   const lines=[];
   if(framing)lines.push(framing.trim());
-  const odds=Number.isFinite(option.chance)?` About ${option.chance}% to succeed.`:'';
+  const odds=Number.isFinite(option.chance)?` About ${option.chance}% to succeed${option.roller?`, ${option.roller} rolls`:''}.`:'';
   lines.push(`You could: ${option.label.replace(/[.!?]+$/,'')}.${odds}`);
   const about=option.summary??option.description;
   if(about&&!/^\s*[{[]/.test(about))lines.push(about);
