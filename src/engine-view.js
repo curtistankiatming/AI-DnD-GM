@@ -10,6 +10,7 @@ const ChatMemory = require("./chat-memory");
 const Courier = require("./courier-scene");
 const Road = require("./road-story");
 const Journal = require("./journal");
+const { bellAftermath } = require("./director");
 const Away = require("./away");
 const { restHelps, titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
@@ -189,13 +190,7 @@ function partyView(state) {
 function endingSummary(state) {
   if (currentNode(state).id !== "ending") return null;
   const flags = state.story.flags;
-  const lines = [];
-  if (flags.spiritFreed) lines.push("Aster Vey was freed from Sable's binding and returned to the ward by choice.");
-  else if (flags.ritualWeakened) lines.push("The altered ritual was broken, though the ward-spirit's recovery will take time.");
-  else lines.push("The ritual was stopped by force before it could spread beyond Briarwatch.");
-  lines.push(flags.cultDefects ? "Warden Sable, abandoned by his own followers, was taken alive and sent in chains to Highpass to answer for the binding." : "Warden Sable was taken alive when he fell, and sent in chains to Highpass to answer for the binding.");
-  if (flags.lysaSpared) lines.push("Lysa survived to testify about the cult.");
-  if (flags.tovinFrightened) lines.push("Tovin gave vital information, but remembers the party's coercion.");
+  const lines = bellAftermath(flags);
   if (findCompanion(state, "nessa")) lines.push("Nessa returned to Briarwatch as a proven member of the party.");
   if (hasItem(state, "warden-ledger")) lines.push("The cipher ledger gives the village enough evidence to rebuild its leadership openly.");
   return lines;

@@ -33,7 +33,7 @@
     const card = el('div', 'whats-next-wish'); card.id = 'wishCard';
     const side = Boolean(d?.sideQuests);
     card.append(el('h4', '', side ? 'Ask for a side quest' : 'Ask for a new adventure'));
-    if (offline) { card.append(el('p', 'muted', 'New adventures written by the AI game master need the installed game with Claude turned on. This browser edition makes no AI requests.')); return card; }
+    if (offline) { card.append(el('p', 'muted', 'New adventures written by the AI game master need the installed game with the AI game master turned on. This browser edition makes no AI requests.')); return card; }
     if (!w.bellComplete) {
       card.dataset.locked = 'true';
       card.append(el('p', '', 'Locked for now. Once the bell investigation is finished, the AI game master can write new adventures just for you, built on the choices you have made.'));
@@ -51,7 +51,7 @@
       return card;
     }
     if (!d?.canCommission) { card.append(el('p', 'muted', d?.reason || 'A new adventure is not available right now.')); return card; }
-    card.append(el('p', '', side ? 'The written story comes first. Claude writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'Claude writes your next adventure from what has happened so far. The game sets its level and rewards.'));
+    card.append(el('p', '', side ? 'The written story comes first. The AI game master writes a small side quest tied to your current chapter; it can help you catch up to the chapter\'s level, never past it.' : 'The AI game master writes your next adventure from what has happened so far. The game sets its level and rewards.'));
     // A free hosted account: an adventure of its own sets the paid book aside until an upgrade (src/book.js).
     if (!side && w.paidBook && !w.paidBook.closed) card.append(el('p', 'whats-next-under', `${bookName(w.paidBook.n)}, ${w.paidBook.title}, stays waiting: if you upgrade later, this save goes back into it, and your own story carries on after it.`));
     const label = el('label', 'whats-next-field', 'Your wish (optional)'), input = el('input');
@@ -65,7 +65,7 @@
     return card;
   }
   function setupButton() {
-    const b = el('button', 'btn btn-secondary btn-small', 'Turn on Claude'); b.type = 'button'; b.dataset.readOnly = 'true';
+    const b = el('button', 'btn btn-secondary btn-small', 'Turn on the AI game master'); b.type = 'button'; b.dataset.readOnly = 'true';
     b.addEventListener('click', () => window.BriarwatchGM?.openSetup());
     return b;
   }
