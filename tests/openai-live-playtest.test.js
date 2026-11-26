@@ -113,3 +113,17 @@ test('the story director is given a fresh enemy theme and the last adventures to
   assert.deepEqual(again.variety.recent.map(r=>r.name),['The Stools','The Lamp']);
   assert.match(Director.SYSTEM,/variety\.suggestedTheme/);
 });
+
+test('journal questions stay free on a hosted game and still answer when the AI cannot',async t=>{
+  // Review: guests (no AI allowance) got an error for "What did we promise?" instead of the journal answer.
+  const {ai,calls}=await openaiService(t,['{}']);
+  const hosted={hosted:true,config:()=>ai.config(),complete:async()=>{throw new Error('The AI game master needs an account on this server.');}};
+  const out=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'What did we promise people along the way?'},hosted,()=>0.5);
+  assert.equal(out.result.ok,true);assert.equal(out.narration.source,'deterministic');
+  const failing={config:()=>ai.config(),complete:async()=>{throw new Error('Set OPENAI_API_KEY to use the OpenAI provider.');}};
+  const fallback=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'What did we promise people along the way?'},failing,()=>0.5);
+  assert.equal(fallback.result.ok,true,'a missing key falls back to the journal');
+  const other=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'Is the smith honest?'},failing,()=>0.5);
+  assert.equal(other.result.ok,false,'a question the journal cannot answer still reports the AI error');
+  assert.equal(calls.length,0);
+});

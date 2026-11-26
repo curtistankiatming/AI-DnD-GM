@@ -290,8 +290,9 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
   // The journal's quick answers are for play without a cloud AI. With Claude or
   // OpenAI on, the AI answers from the same journal records, so "what happened
   // to the people we saved?" gets an answer instead of a scene list. Asking for
-  // the journal, a recap or your notes still reads them straight out.
-  const cloudOn=Boolean(cfg?.enabled&&Profiles.isCloud(cfg));
+  // the journal, a recap or your notes still reads them straight out. A hosted
+  // game keeps the quick answers, so they stay free of the daily AI allowance.
+  const cloudOn=Boolean(cfg?.enabled&&Profiles.isCloud(cfg)&&!provider?.hosted);
   if(mode==='question'&&(!cloudOn||/journal|recap|my notes|player notes/i.test(text))){const answer=Journal.answer(state,text);if(answer)return payload(state,answer);}
   if(cfgError)return rejected(state,cfgError.message);
   const exact=list.find(o=>o.label.toLowerCase()===text.toLowerCase()||o.id===text);
@@ -320,7 +321,12 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
         responseType={requested:mode,returned,effective,adjusted:returned!==effective};
         proposed={...proposed,kind:effective};
       }
-    }catch(e){return rejected(state,e.message);}
+    }catch(e){
+      // The AI could not answer (no key saved, no connection): a question the
+      // journal can answer still gets that answer.
+      const answer=mode==='question'&&Journal.answer(state,text);
+      return answer?payload(state,answer):rejected(state,e.message);
+    }
   }
   if(proposed.kind==='improvise'){
     if(mode!=='action')return rejected(state,'Dialogue and questions cannot spend an action. Switch to Action mode to attempt something.');
