@@ -4,6 +4,26 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Tavern nights (26 November 2026)
+
+- Curtis: "have a tavern that players can visit during special occurrences
+  during the story that they are able to recruit players should they have
+  missing party members", and keep the cost of turning Nessa down.
+- A tavern night opens at turns in the story: the Oath of the Road (Highpass,
+  level 10), the Harbour Bell (Merrowgate), the Second Oath (Cinder Fold), Home
+  for Help and the Winter Watch (Briarwatch, Book Three), the Song About You and
+  the Quiet Night (Briarwatch, Book Four), after a 3rd or 4th job trial, and
+  when the written story ends. It stays open in that town until the party next
+  sets out, and only opens for a party with an empty place.
+- Two people are there, each with their own scene: Dov Calloway, a retired
+  caravan bowman with a bad knee who is honest that he is in it for the wage,
+  and Agna Brannock, a doorwarden who knits between fights and wants to see if
+  the world is bigger than one door. Hire one and the other is gone for good.
+- The cost of declining Nessa stays: no night before level 10, so Book One is
+  played three strong; a hire costs a fee (Dov 6 gold a level, Agna 4); hires
+  have no personal quest, do not walk out or come back, and never take Nessa's
+  place in the written story, which still notices she is not there.
+
 ## Battle XP and special monsters (25 November 2026)
 
 - A written chapter's own fight now pays XP the moment it is won: a tenth of

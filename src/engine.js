@@ -14,6 +14,7 @@ const XP = require("./xp");
 const Book = require("./book");
 const Away = require("./away");
 const Chronicle = require("./chronicle");
+const Tavern = require("./tavern");
 const { QUESTS, dialogueText, liveLines, playLines, lineApplies, nodeLocation, outcomeForRoller } = require("./expansion");
 Road.register(STORY_NODES);
 const Core = require("./engine-core");
@@ -421,6 +422,8 @@ function requirementStatus(state, requires = {}) {
   if (requires.gold && state.player.gold < Number(requires.gold)) {
     return { met: false, reason: `Requires ${requires.gold} gold.` };
   }
+  // A tavern hire's fee, by the hero's level (src/tavern.js).
+  if (requires.hireFee) { const fee = Tavern.feeStatus(state, requires.hireFee); if (!fee.met) return fee; }
   if (requires.absent && findCompanion(state, requires.absent)) {
     return { met: false, reason: `Only while ${COMPANIONS[requires.absent]?.name || "that companion"} is away.` };
   }
@@ -609,6 +612,7 @@ function applyOutcome(state, written = {}, rng, events) {
   if (outcome.items) for (const entry of outcome.items) addItem(state, entry.itemId, entry.quantity, events);
   if (outcome.approval) applyApproval(state, outcome.approval, events);
   if (outcome.recruit) recruitCompanion(state, outcome.recruit, events);
+  if (outcome.hire) Tavern.hire(state, outcome.hire, events, recruitCompanion);
   if (outcome.damage?.target === "player") {
     const damage = rollFormula(rng, outcome.damage.formula).total;
     applyDamageToEntity(state.player, damage, events, "a failed approach");

@@ -2,6 +2,7 @@
 const { ITEMS, COMPANIONS, STORY_NODES, CLASSES, ENCOUNTERS, ENEMIES }=require('./content');
 const { TOWNS, MERCHANTS, RECIPES, PERSONAL, QUESTS, SIDE_JOBS, townPage }=require('./expansion');
 const Away=require('./away');
+const Tavern=require('./tavern');
 const P=require('./progression');
 const Director=require('./director');
 const Book=require('./book');
@@ -10,7 +11,7 @@ const XP=require('./xp');
 const G=require('./equipment');
 const Gear=require('./gear');
 const { deepClone, abilityModifier, proficiencyBonus, rollD20, actorSkillBonus, rollFormula }=require('./rules');
-const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job','bounty']);
+const TOWN_ACTIONS=new Set(['choose-boon','buy','sell','upgrade','craft','store','retrieve','town-service','rumor','travel-town','depart','return-town','resume','bargain','merchant-favor','barter','personal','resolve-personal','recruit','practice','choose-reward','specialize','side-job','bounty','tavern']);
 function init(state){
   const w=state.world ||= {};
   w.day=Number.isInteger(w.day)&&w.day>0?w.day:1;
@@ -25,6 +26,7 @@ function init(state){
   w.setbacks=Number(w.setbacks||0);
   w.jobs=w.jobs&&typeof w.jobs==='object'?w.jobs:{};w.jobProgress=w.jobProgress&&typeof w.jobProgress==='object'?w.jobProgress:{};
   Away.ensure(state);
+  Tavern.ensure(state,TOWNS);
   for(const id of w.unlockedTowns)ensureStock(state,id);
   for(const member of state.party){G.initCompanion(state,member);P.levelCompanion(member,state.player.level);G.derive(member);}
   P.ensure(state.player);
@@ -188,7 +190,10 @@ function completeQuest(state,id,events,api){
   levelFloor(state,q,events,api);
   // A chapter's own reward item, or a templated one from an AI adventure (src/gear.js).
   Gear.award(state,`quest:${id}`,events);Gear.forgeReward(state,q,events);
+  const booksWere=Boolean(state.story.flags[Book.FINISHED]);
   Book.finished(state);
+  // A turn in the story opens a tavern night (src/tavern.js).
+  Tavern.open(state,q||{id},destination,!booksWere&&Boolean(state.story.flags[Book.FINISHED]));
   emit(events,`Objective reward: ${gold} gold. ${quality==='costly'?'The pay is lower for how costly it was; the XP is not. ':''}The shops have new stock.`,'reward','good');
   if(q&&id!=='trial'){api.addItem(state,'herb-bundle',2,events);if(q.level>=4)api.addItem(state,'ward-fragment',1,events);}
   rewardPersonal(state,id,events);
@@ -419,7 +424,8 @@ function handle(state,action,rng,events,api){
     api.enterNode(state,`town-${w.townId}`,events);
     return emit(events,'The party returns to a safe hub. Resolved checks cannot be rerolled and merchants do not replenish from travel.');
   }
-  if(action.type==='depart')return depart(state,action.questId,rng,events,api);
+  // Setting out on an expedition ends a tavern night (src/tavern.js).
+  if(action.type==='depart'){const r=depart(state,action.questId,rng,events,api);if(r?.ok!==false&&w.onExpedition)Tavern.close(state);return r;}
   if(action.type==='resume'){
     if(!town(state))return fail(events,'Resume an expedition from a town.');
     if(w.pendingBattle)return resumeBattle(state,rng,events,api);
@@ -531,8 +537,13 @@ function handle(state,action,rng,events,api){
     G.addTo(to,id,1,charges);
     return emit(events,`${store?'Stored':'Retrieved'} one ${item.name}. Charges are preserved; town storage is shared across discovered settlements.`,'item');
   }
+  if(action.type==='tavern'){
+    const r=Tavern.canVisit(state,t.id);if(!r.ok)return fail(events,r.error);
+    api.enterNode(state,r.node,events);
+    return arrive(state,events,'The tavern.');
+  }
   if(action.type==='recruit'){
-    if(state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3||state.story.flags['nessa:offer'])return fail(events,'No recruit is currently available.');
+    if(!Tavern.hasRoom(state)||state.party.some(m=>m.id==='nessa')||w.away?.nessa||state.player.level<3||state.story.flags['nessa:offer'])return fail(events,'No recruit is currently available.');
     return nessaArrives(state,events,api);
   }
   if(action.type==='personal'){
@@ -605,8 +616,8 @@ function view(state){
     away:Away.view(state),
     completed:Object.entries(w.completed).map(([id,v])=>({id,...v,name:Director.quest(state,id)?.name||v.name||'The Bell Beneath Briarwatch'})),
     bellComplete:completed(state,'bell'),campaignComplete:completed(state,'aftermath'),booksComplete:!Book.locked(state)&&!Book.writing(state)&&Book.chapters(state).every(q=>completed(state,q.id)),book:(()=>{const c=Book.chapter(state);return c&&c.id!=='bell'?{title:c.book,n:c.n,chapter:c.name,level:c.level,...(c.waiting?{waiting:true}:{}),...(c.locked?{locked:true,note:c.brief}:{})}:null;})(),bookRecap:Recap.recap(state),paidBook:(()=>{const b=Book.lockedBook(state);return b&&!Book.locked(state)?{n:b.n,title:b.title,...(Book.aiStory(state)?{closed:true}:{})}:null;})(),regionalCrisisResolved:completed(state,'beacon'),
-    canRecruit:!empty&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa&&!state.story.flags['nessa:offer'],canPractice:Boolean(t&&!empty),
-    personal:state.party.map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
+    canRecruit:!empty&&Tavern.hasRoom(state)&&state.player.level>=3&&!state.party.some(m=>m.id==='nessa')&&!w.away?.nessa&&!state.story.flags['nessa:offer'],canPractice:Boolean(t&&!empty),tavern:t&&!empty?Tavern.view(state,t.id,TOWNS):null,
+    personal:state.party.filter(a=>PERSONAL[a.id]).map(a=>{const def=PERSONAL[a.id],r=w.personal[a.id]||{};return {companionId:a.id,name:def.name,prompt:def.prompt,goal:def.goal,reward:def.reward,...r,goalMet:completed(state,def.quest),canResolve:Boolean(r.started&&!r.rewarded&&completed(state,def.quest))};}),
     setbacks:w.setbacks,
     recap:completed(state,'beacon')?(state.story.flags.ending_distributed?'The towns retain independent wards; the party keeps the roads between them open.':'A public charter limits the network’s authority and names its accountable keepers.'):'Your completed expeditions and community choices will determine the network’s future.'
   };

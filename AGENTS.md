@@ -27,6 +27,12 @@
   told to the AI and the Journal through `src/data/standing.json` (facts with a
   `when`, read by `standing` in `src/expansion.js`). Add an entry there when a
   written choice should follow the hero past the books.
+- Tavern nights (`src/tavern.js`, `src/data/tavern.json`): finishing a listed
+  chapter, a job trial or the books opens a night in that town until the party
+  next departs; a party with fewer than 3 companions (away ones count) may hire
+  Dov or Agna for a fee by level. Hires are companions marked `hired` with a
+  `loadout`; they have no personal quest or away scenes. Written lines that
+  speak for a hire use `say: "dov"`/`"agna"` (shown only while hired).
 - A chapter may open on what the party carried from the chapter before
   (`carried` in a quest: one entry per earlier decision, gated by its flag).
   It gives the chapter's lead, tells the approach lines and goes straight to

@@ -1,5 +1,5 @@
 "use strict";
-const { ITEMS } = require('./content');
+const { ITEMS, COMPANIONS } = require('./content');
 const { abilityModifier, proficiencyBonus, deepClone } = require('./rules');
 const P = require('./progression');
 const Gear = require('./gear');
@@ -102,7 +102,8 @@ function normalizeEquipment(state){
 }
 function initCompanion(state,member){
   if(member.equipment)return;
-  const loadout=member.id==='orin'?{mainHand:'war-mace',offHand:'steel-shield',armor:'chain-shirt',accessory:null}:member.id==='maren'?{mainHand:'ash-wand',offHand:'steel-shield',armor:'leather-armor',accessory:null}:{mainHand:'shortbow',offHand:null,armor:'studded-leather',accessory:null};
+  const own=COMPANIONS[member.id]?.loadout;
+  const loadout=own?{mainHand:null,offHand:null,armor:null,accessory:null,...own}:member.id==='orin'?{mainHand:'war-mace',offHand:'steel-shield',armor:'chain-shirt',accessory:null}:member.id==='maren'?{mainHand:'ash-wand',offHand:'steel-shield',armor:'leather-armor',accessory:null}:{mainHand:'shortbow',offHand:null,armor:'studded-leather',accessory:null};
   member.equipment=loadout;
   for(const id of Object.values(loadout).filter(Boolean))addTo(state.player.inventory,id,1);
   derive(member);
