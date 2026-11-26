@@ -4,6 +4,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import Request, urlopen
 from playwright.sync_api import expect
+from browser_begin import begin
 from workspace_browser import go, mode as choose_mode, instructions, scenario, model_settings
 
 
@@ -45,7 +46,7 @@ def exercise_safety(page, output, offline):
     expect(page.locator('#resumePanel')).to_be_visible()
     page.locator('#titleNewBtn').click()  # the title page comes first
     page.locator('#setupName').fill('Safety Hero A')
-    page.locator('#startCampaignBtn').click()
+    begin(page, 'Safety Hero A')
     expect(page.locator('#playerIdentity')).to_contain_text('Safety Hero A')
     save_as(page, 'ui-safety-a')
     submit(page, 'Keep the weather calm.', 'instructions')

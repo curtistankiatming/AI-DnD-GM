@@ -681,3 +681,13 @@ body.in-combat .adventure-composer #chatStatus:empty { display:none; }
 /* The Journal's Telling and completed adventures: earlier entries fold under one line (public/chat-ui.js). */
 .journal-earlier > summary { cursor:pointer; padding:8px 0; color:var(--accent); font-size:.88rem; font-weight:700; }
 .journal-earlier[open] > summary { border-bottom:1px solid var(--border-soft, var(--border)); }
+
+/* Phone: the message box folds to one button in a fight or with the AI off (public/adventure-ui.js). */
+.composer-unfold { display:none; }
+@media(max-width:760px){
+ .adventure-composer.is-folded { padding:6px 10px; }
+ .adventure-composer.is-folded > :not(.composer-unfold):not(#newReplyBtn) { display:none; }
+ .adventure-composer.is-folded > .composer-unfold { display:block; width:100%; min-height:40px; }
+}
+.side-waiting p { margin:0; font-size:.86rem; }
+.whats-next-waiting { border-color:var(--accent, currentColor); }

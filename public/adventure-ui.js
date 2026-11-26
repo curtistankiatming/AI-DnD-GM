@@ -94,10 +94,17 @@
  // Party, resources and purse beside the story on a wide screen.
  const side=el('aside','adventure-side');side.id='adventureSide';side.setAttribute('aria-label','Party at a glance');
  const sideParty=button('',()=>navigate('party'));sideParty.id='sideParty';sideParty.className='side-block side-party';
- const sideReady=el('div','side-block'),sidePurse=el('div','side-block');side.append(sideParty,sideReady,sidePurse);
+ const sideReady=el('div','side-block'),sidePurse=el('div','side-block');
+ // Level-up choices waiting to be made (browser playtest, 25 November 2026: four piled up unnoticed).
+ const sideWaiting=el('div','side-block side-waiting');sideWaiting.id='sideWaiting';sideWaiting.setAttribute('role','status');
+ side.append(sideParty,sideWaiting,sideReady,sidePurse);
+ const waitingChoices=()=>{const p=view?.progression;return p?(p.pending?.length||0)+(p.specializationOptions?.length?1:0)+(p.renown?.pending||0):0;};
+ const chooseNow=()=>{navigate('prepare');byId('progressionPanel')?.scrollIntoView({block:'start',behavior:'instant'});};
  const sideRow=(name,value)=>{const r=el('div','side-row');r.append(el('span','',name),el('small','',value));return r;};
  function renderSide(){
-  const p=view.player;
+  const p=view.player,n=waitingChoices();
+  sideWaiting.hidden=!n;
+  if(n){const go=button('Choose now',chooseNow);go.className='btn btn-primary btn-small';go.dataset.readOnly='true';sideWaiting.replaceChildren(el('span','side-h','Waiting for you'),el('p','',n===1?'A new ability or talent to choose.':`${n} choices for your hero to make.`),go);}
   sideParty.setAttribute('aria-label',U.partySummary(view)+'. Open the party screen.');
   sideParty.replaceChildren(el('span','side-h','Party'),...[p,...(view.party||[])].map((a,i)=>{
    const ratio=a.maxHp?Math.max(0,Math.min(1,a.hp/a.maxHp)):0,m=el('span','side-member'),bar=el('span','party-chip-bar'),fill=el('span');
@@ -132,7 +139,14 @@
  const settingsLink=button('Campaign instructions',()=>openInstructions(),false);settingsLink.id='editInstructionsBtn';
  const modeRow=el('div','composer-row');modeRow.append(modes,dom.actionForm);
  const meta=el('div','composer-meta');meta.append(byId('chatStatus'),settingsLink);
- composer.append(backing.parentElement,unread,modeRow,modeHelp,byId('actionFeedback'),meta);
+ // On a phone the box folds to one small button in a fight or with the AI off, when
+ // the choices on screen are what the player uses (browser playtest, 25 November 2026).
+ const unfold=button('Type your own action',()=>{opened=foldKey;syncFold();dom.actionInput.focus();});unfold.id='openComposerBtn';unfold.className='btn btn-secondary btn-small composer-unfold';
+ let opened='',foldKey='';
+ function syncFold(){const gm=window.BriarwatchGM?.status?.();foldKey=view?.combat?.active?'fight':gm?.known&&!gm.on?'no-ai':'';
+  composer.classList.toggle('is-folded',Boolean(foldKey)&&opened!==foldKey&&!dom.actionInput.value.trim());}
+ document.addEventListener('briarwatch:ai',()=>syncFold());
+ composer.append(backing.parentElement,unfold,unread,modeRow,modeHelp,byId('actionFeedback'),meta);
  // One-line box that grows with the text. Enter sends; Shift+Enter starts a new line.
  dom.actionInput.rows=1;
  const fitInput=()=>{dom.actionInput.style.height='auto';dom.actionInput.style.height=Math.min(160,dom.actionInput.scrollHeight+2)+'px';};
@@ -234,7 +248,7 @@
   byId('roadScenario').hidden=!view.chat?.road;
   byId('chatScenario').hidden=!view.chat?.courier;
   approaches.hidden=Boolean(view.combat?.active); // All combat controls remain in the separate active initiative panel.
-  selectMode(backing.value);filterJournal();measure();
+  selectMode(backing.value);syncFold();filterJournal();measure();
   if(lastFocused&&!lastFocused.isConnected&&document.activeElement===document.body&&!visibleModal()&&!document.querySelector('dialog[open]')){
    const replacement=lastFocused.id?byId(lastFocused.id):null;
    (replacement&&!replacement.disabled&&replacement.getClientRects().length?replacement:panes[active]).focus({preventScroll:true});
@@ -299,6 +313,6 @@
  document.addEventListener('focusin',e=>{lastFocused=e.target;});
  window.addEventListener('resize',measure);
  if(window.ResizeObserver){const resize=new ResizeObserver(measure);resize.observe(document.querySelector('.topbar'));resize.observe(nav);}
- window.BriarwatchAdventure={navigate,selectMode,openInstructions,sync,active:()=>active};
+ window.BriarwatchAdventure={navigate,selectMode,openInstructions,sync,active:()=>active,waitingChoices,chooseNow};
  navigate('adventure');selectMode('action');setReading();modalSync();sync();
 })();
