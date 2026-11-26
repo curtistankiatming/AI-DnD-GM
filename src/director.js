@@ -13,6 +13,7 @@
 const { SKILLS, ITEMS, STORY_NODES, ENCOUNTERS, ENEMIES, CLUES } = require('./content');
 const { QUESTS, TOWNS, installQuest, trialFraming, townPage, standing } = require('./expansion');
 const P = require('./progression');
+const { VOICE_RULE } = require('./companion-voice');
 const XP = require('./xp');
 const Book = require('./book');
 const Chronicle = require('./chronicle');
@@ -175,6 +176,7 @@ const SYSTEM = [
   'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
   'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.',
   'Companions (party) keep their own voice (party[].voice) in every line of dialogue you write for them, before and after the books end.',
+  VOICE_RULE,
   'Beyond the books, every adventure is one chapter of a story arc (storyArc in the request). The game sets which chapter and beat it is; follow storyArc.guidance for that beat, continue from storyArc.lastHook and the earlier chapters of the arc, and fill the storyArc field. Each chapter is still a complete adventure with its own crisis and decisions.'
 ].join('\n');
 
