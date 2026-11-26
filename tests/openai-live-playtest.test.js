@@ -29,7 +29,7 @@ test('a typed action that matches a listed check shows its words and odds, never
   const text=out.narration.text;
   assert.doesNotMatch(text,/[{}]|"actor"|Proposed single action/);
   assert.match(text,/^You lean in close to the cut\.\nYou could: Inspect the severed bell rope\. About \d+% to succeed\.\nExamine the cut/);
-  assert.match(text,/Confirm or cancel below\./);
+  assert.match(text,/Confirm below or cancel\./);
   assert.equal(out.state.chat.pending.optionId,'choice:inspect-rope');
 });
 

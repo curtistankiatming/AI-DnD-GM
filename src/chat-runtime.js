@@ -175,7 +175,7 @@ function choicePreview(option,framing=''){
   lines.push(`You could: ${option.label.replace(/[.!?]+$/,'')}.${odds}`);
   const about=option.summary??option.description;
   if(about&&!/^\s*[{[]/.test(about))lines.push(about);
-  lines.push('Nothing has happened yet, and anything else you mentioned is not done. Confirm or cancel below.');
+  lines.push('Nothing has happened yet, and anything else you mentioned is not done. Confirm below or cancel.');
   return lines.join('\n');
 }
 function payload(state,text,events=[],result={ok:true},source='deterministic',model=null){
