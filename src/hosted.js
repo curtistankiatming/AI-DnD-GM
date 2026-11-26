@@ -190,6 +190,8 @@ async function hostedReady(ai) { return (await ai.config()).provider !== 'openai
 
 function provider(ai, acct, usage, h) {
   return {
+    // Tells the chat to keep free journal answers off the daily AI allowance.
+    hosted: true,
     config: () => ai.config(),
     status: () => ai.status(acct.id),
     screen,

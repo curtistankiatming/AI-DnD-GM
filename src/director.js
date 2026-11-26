@@ -178,6 +178,8 @@ const SYSTEM = [
   'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
   'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
   'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.',
+  'Vary the adventures. Use variety.suggestedTheme as enemyTheme unless the request or the story clearly calls for another, and do not repeat the kind of foe or the quest-giver of variety.recent.',
+  'completedAdventures[].aftermath says how a finished adventure ended and who ended up where. It is canon: a villain it names as taken, jailed or dead does not come back as a quest-giver, patron or free ally.',
   'Companions (party) keep their own voice (party[].voice) in every line of dialogue you write for them, before and after the books end.',
   VOICE_RULE,
   'Beyond the books, every adventure is one chapter of a story arc (storyArc in the request). The game sets which chapter and beat it is; follow storyArc.guidance for that beat, continue from storyArc.lastHook and the earlier chapters of the arc, and fill the storyArc field. Each chapter is still a complete adventure with its own crisis and decisions.'
@@ -507,13 +509,42 @@ function prune(state) {
   }
 }
 
+// How the first written adventure ended, from the save's flags. The ending
+// scene shows the same lines (src/engine-view.js); the director needs them too,
+// or it can hand a quest to the villain the party just sent away in chains.
+function bellAftermath(flags = {}) {
+  const lines = [];
+  if (flags.spiritFreed) lines.push("Aster Vey was freed from Sable's binding and returned to the ward by choice.");
+  else if (flags.ritualWeakened) lines.push("The altered ritual was broken, though the ward-spirit's recovery will take time.");
+  else lines.push("The ritual was stopped by force before it could spread beyond Briarwatch.");
+  lines.push(flags.cultDefects ? "Warden Sable, abandoned by his own followers, was taken alive and sent in chains to Highpass to answer for the binding." : "Warden Sable was taken alive when he fell, and sent in chains to Highpass to answer for the binding.");
+  if (flags.lysaSpared) lines.push("Lysa survived to testify about the cult.");
+  if (flags.tovinFrightened) lines.push("Tovin gave vital information, but remembers the party's coercion.");
+  return lines;
+}
+
+// The last adventures the AI wrote, and an enemy theme they have not used, so
+// side quests do not all become the same animated-object puzzle (live OpenAI
+// playtest, 2026-11-26: six side quests in a row were "construct").
+function variety(state) {
+  const n = q => Number(String(q.id).split('-')[1]) || 0;
+  const recent = list(state).filter(q => !q.trial).sort((a, b) => n(b) - n(a)).slice(0, 3);
+  const used = new Set(recent.slice(0, 2).map(q => q.enemyTheme));
+  const fresh = THEMES.filter(t => !used.has(t));
+  return {
+    recent: recent.map(q => ({ name: q.name, foe: q.foeName, enemyTheme: q.enemyTheme, brief: q.brief })),
+    suggestedTheme: fresh[(state.director?.count || 0) % fresh.length]
+  };
+}
+
 // What Claude sees. Facts come from the game state, never from earlier prose.
 function prompt(state, { hint = '', journal = '', instructions = '', trial = false } = {}) {
   const w = state.world;
   const completed = Object.entries(w.completed || {}).map(([id, r]) => {
     const q = quest(state, id);
     const chosen = (q?.decisions || []).filter(x => state.story.flags[x.flag]).map(x => x.label);
-    return { name: q?.name || r.name || (id === 'bell' ? 'The Bell Beneath Briarwatch' : id), resolved: r.quality, decision: chosen[0] || null, day: r.day };
+    const aftermath = id === 'bell' ? bellAftermath(state.story.flags) : null;
+    return { name: q?.name || r.name || (id === 'bell' ? 'The Bell Beneath Briarwatch' : id), resolved: r.quality, decision: chosen[0] || null, day: r.day, ...(aftermath ? { aftermath: aftermath.join(' ') } : {}) };
   });
   return JSON.stringify({
     request: clean(hint, TEXT.hint) || 'Surprise us with what happens next.',
@@ -536,6 +567,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     // paid book on a free hosted account, or a side job.
     upcomingAuthoredAdventures: Book.chapters(state).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
+    ...(!trial ? { variety: variety(state) } : {}),
     journal
   });
 }
@@ -563,4 +595,4 @@ function view(state) {
   };
 }
 
-module.exports = { destination, SCHEMA, schema, SYSTEM, THEMES, FACTIONS, LATER_FACTIONS, factionKnown, shownReputation, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability };
+module.exports = { destination, SCHEMA, schema, SYSTEM, THEMES, FACTIONS, LATER_FACTIONS, factionKnown, shownReputation, TOOLS, OPEN_LIMIT, TRIALS, normalize, install, quest, list, open, bound, rewards, commission, commissionTrial, trialAvailability, writtenTrial, dismiss, setTier, prompt, view, availability, bellAftermath };

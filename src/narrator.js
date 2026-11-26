@@ -165,8 +165,18 @@ function savedNarration(state, view) {
   return { text: parts.join(' '), source: 'save-recap', model: null };
 }
 
+// The story card shows plain text, so Markdown emphasis would show as stray
+// asterisks. Some models add it anyway.
+function plainProse(text) {
+  return String(text || "")
+    .replace(/\*\*([^*\n]+)\*\*/g, "$1")
+    .replace(/__([^_\n]+)__/g, "$1")
+    .replace(/(^|[\s(“"])\*([^*\n]+)\*(?=[\s.,;:!?)”"]|$)/g, "$1$2")
+    .replace(/^#{1,6}\s+/gm, "");
+}
+
 function trimNarration(text) {
-  const cleaned = String(text || "")
+  const cleaned = plainProse(text)
     .replace(/^```(?:json|text)?/i, "")
     .replace(/```$/i, "")
     .replace(/^Narration:\s*/i, "")
@@ -182,6 +192,8 @@ const NARRATOR_SYSTEM = [
   "Use second person for the player. Give active companions brief reactions consistent with their supplied personality and bond, but do not make strategic decisions for the player.",
   VOICE_RULE,
   "Keep continuity with the current location, objective, discovered clues, and recent history.",
+  "The player has already read the scene description and the recent history. Narrate what just happened: open on the latest resolved outcome and do not retell earlier lines or events.",
+  "Write plain prose with no Markdown: no asterisks, headings or bullet points. Leave numbers such as bond, XP, gold and hit points to the game's own lines.",
   "Remain grounded high fantasy. Never introduce science fiction, guns, computers, modern slang, or out-of-setting references.",
   "Write 70–150 words in one to three paragraphs. End on a concrete sensory beat or immediate tension, not an invented question."
 ].join(" ");
@@ -213,5 +225,6 @@ module.exports = {
   buildNarratorPrompt,
   deterministicFallback,
   savedNarration,
-  NARRATOR_SYSTEM
+  NARRATOR_SYSTEM,
+  plainProse
 };
