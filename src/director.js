@@ -175,6 +175,7 @@ const SYSTEM = [
   'Respect the player\'s campaign preferences for tone and content. Keep each text field to a few sentences. Use plain English.',
   'The written story (the books) comes first. When book.running is true, write a SMALL side quest, not a new storyline: local stakes, one place, a few scenes, tied to the current chapter (book.chapter, book.chapterGoal) by a person, a clue or a favour. It may develop minor people and add flavour, but it must not resolve, spoil or replace the chapter, kill or remove a named character from the books, or open a new region. When book.running is false the books are finished and this is the hero\'s own story: continue it freely, building multi-adventure arcs from the arc and journal.',
   'The chronicle (when present) is the record of the hero\'s own story. Keep it consistent: bring back people from chronicle.cast by the same name, respect who is dead, missing or hostile, and pick up chronicle.openThreads before inventing new ones. Fill cast, places and threadsOpened for this adventure; list in threadsClosed only open threads it truly resolves, copied exactly.',
+  'Vary the adventures. Use variety.suggestedTheme as enemyTheme unless the request or the story clearly calls for another, and do not repeat the kind of foe or the quest-giver of variety.recent.',
   'completedAdventures[].aftermath says how a finished adventure ended and who ended up where. It is canon: a villain it names as taken, jailed or dead does not come back as a quest-giver, patron or free ally.',
   'Companions (party) keep their own voice (party[].voice) in every line of dialogue you write for them, before and after the books end.',
   VOICE_RULE,
@@ -518,6 +519,20 @@ function bellAftermath(flags = {}) {
   return lines;
 }
 
+// The last adventures the AI wrote, and an enemy theme they have not used, so
+// side quests do not all become the same animated-object puzzle (live OpenAI
+// playtest, 2026-11-26: six side quests in a row were "construct").
+function variety(state) {
+  const n = q => Number(String(q.id).split('-')[1]) || 0;
+  const recent = list(state).filter(q => !q.trial).sort((a, b) => n(b) - n(a)).slice(0, 3);
+  const used = new Set(recent.slice(0, 2).map(q => q.enemyTheme));
+  const fresh = THEMES.filter(t => !used.has(t));
+  return {
+    recent: recent.map(q => ({ name: q.name, foe: q.foeName, enemyTheme: q.enemyTheme, brief: q.brief })),
+    suggestedTheme: fresh[(state.director?.count || 0) % fresh.length]
+  };
+}
+
 // What Claude sees. Facts come from the game state, never from earlier prose.
 function prompt(state, { hint = '', journal = '', instructions = '', trial = false } = {}) {
   const w = state.world;
@@ -548,6 +563,7 @@ function prompt(state, { hint = '', journal = '', instructions = '', trial = fal
     // paid book on a free hosted account, or a side job.
     upcomingAuthoredAdventures: Book.chapters(state).filter(q => !w.completed?.[q.id]).slice(0, 3).map(q => q.name),
     arc: state.director?.arc || '',
+    ...(!trial ? { variety: variety(state) } : {}),
     journal
   });
 }

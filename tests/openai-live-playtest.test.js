@@ -87,3 +87,29 @@ test('the side quest and adventure cards do not say only Claude can write them',
     assert.doesNotMatch(src,/Needs the Claude API provider|'Turn on Claude'|Claude writes (a small|your next|the next)/,file);
   }
 });
+
+test('with a cloud AI on, story questions reach the AI instead of the journal shortcut',async t=>{
+  // Playtest: "What happened to the people we saved earlier?" got "Current: The Guardroom Brazier. Camp. Completed: …",
+  // and "What did we promise people along the way?" got "No confirmed record…", without asking the AI.
+  const {ai,calls}=await openaiService(t,[JSON.stringify({kind:'question',optionId:'',reply:'Tovin is mending, and the reeve still counts doors.'})]);
+  const out=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'What happened to the people we saved earlier?'},ai,()=>0.5);
+  assert.equal(calls.length,1);assert.equal(out.narration.text,'Tovin is mending, and the reeve still counts doors.');
+  const recap=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'Give me a recap of the journal'},ai,()=>0.5);
+  assert.equal(calls.length,1,'asking for the journal reads it without the AI');assert.ok(recap.narration.text);
+  const offline=await Chat.resolveChat(E.createNewGame({classId:'rogue'}),{mode:'question',text:'What did we promise people along the way?'},null,()=>0.5);
+  assert.match(offline.narration.text,/No confirmed record|promise/i,'without AI the journal still answers');
+});
+
+test('the story director is given a fresh enemy theme and the last adventures to vary from',()=>{
+  // Playtest: six OpenAI side quests in a row were "construct" foes (a signal tender, a sorting frame, a lamp, an oven, stools, a grate),
+  // most of them for the same quest-giver.
+  const s=E.createNewGame({classId:'ranger'});
+  s.director={version:1,count:2,arc:'',quests:{}};
+  const sent=JSON.parse(Director.prompt(s));
+  assert.ok(Director.THEMES.includes(sent.variety.suggestedTheme));assert.deepEqual(sent.variety.recent,[]);
+  s.director.quests={'ai-1-aaaaaaa':{id:'ai-1-aaaaaaa',name:'The Lamp',foeName:'A Lamp',enemyTheme:'construct',brief:'Tamsin asks.'},'ai-2-bbbbbbb':{id:'ai-2-bbbbbbb',name:'The Stools',foeName:'Archive Porter',enemyTheme:'construct',brief:'Tamsin asks again.'}};
+  const again=JSON.parse(Director.prompt(s));
+  assert.notEqual(again.variety.suggestedTheme,'construct');
+  assert.deepEqual(again.variety.recent.map(r=>r.name),['The Stools','The Lamp']);
+  assert.match(Director.SYSTEM,/variety\.suggestedTheme/);
+});
