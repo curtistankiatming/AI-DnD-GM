@@ -185,7 +185,7 @@ takes it first.
 
 ### Companions and equipment
 
-Orin and Maren start with the hero; Nessa can join through the original story or be recruited in town once eligible. Companions have independent initiative, growing HP/resources, equipment, and distinct Aggressive, Balanced, Protective and Support policies. One free order per round can direct focus, protection or objective help. Support sometimes assists instead of attacking: inspect the mechanics feed to see the actual action.
+Orin and Maren start with the hero; Nessa can join through the original story or be recruited in town once eligible. A party with an empty place can hire one of two people at a tavern night, which opens only at turns in the story (from the Oath of the Road at level 10) and lasts until the party next sets out; hires cost a fee and have no personal quest. Companions have independent initiative, growing HP/resources, equipment, and distinct Aggressive, Balanced, Protective and Support policies. One free order per round can direct focus, protection or objective help. Support sometimes assists instead of attacking: inspect the mechanics feed to see the actual action.
 
 Each companion has a personal request tied to a regional expedition. Resolve the follow-up conversation in town for a mechanical choice: Watchful defense or Decisive attack/casting support. At level 7, completed personal quests unlock a once-per-encounter party combination that consumes the hero's bonus action and a Technique use. Bonds also affect relevant exploration assistance.
 

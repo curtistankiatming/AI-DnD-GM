@@ -84,6 +84,10 @@ function renderExpansion(){
   if(w.town){
     const services=v4Section(root,'services','Lodging, shrine & guild','The town lodging is always free, so an empty purse never ends the adventure. Shops get new stock each time you finish an expedition.');
     const grid=createElement('div','v4-option-grid');for(const svc of w.services){const b=v4Button(`${svc.name} · ${svc.cost} gold`,{type:'town-service',serviceId:svc.id},svc.disabled||hero.gold<svc.cost);b.appendChild(createElement('p','',svc.description));grid.appendChild(b);}if(w.canPractice!==false)grid.append(v4Button('Practice encounter · free',{type:'practice'}));if(w.canRecruit)grid.append(v4Button('Recruit Nessa · free',{type:'recruit',companionId:'nessa'}));services.appendChild(grid);
+    // A tavern night (src/tavern.js): only at turns in the story, and only while the party has an empty place.
+    if(w.tavern){const tv=w.tavern,c=v4Card(`Tavern night · ${tv.title}`,`Your party has an empty place, and tonight two people at the inn in ${tv.townName} are looking for work. You may hire one of them. Hired hands fight for a fee, paid now. The tavern stays open until you next set out; after that it opens again only at another turn in the story.`);c.dataset.tavern=tv.night;
+      c.appendChild(createElement('p','muted',`Fees at your level: ${tv.hires.map(h=>`${h.name} ${h.fee} gold`).join(', ')}.`));
+      const go=v4Button('Go to the tavern',{type:'tavern'},!tv.here,tv.here?'':`Travel to ${tv.townName}.`);go.classList.replace('btn-secondary','btn-primary');c.appendChild(go);if(!tv.here)c.appendChild(createElement('p','muted',`The night is being held in ${tv.townName}.`));services.appendChild(c);}
     const expeditions=v4Section(root,'expedition','Expedition board & preparation');
     if(w.activeQuest)expeditions.append(v4Button(w.pendingBattle?'Resume interrupted encounter':'Resume expedition',{type:'resume'}));
     if(!w.bellComplete)expeditions.appendChild(createElement('p','','Finish the bell investigation using the story choices. Report the outcome in Briarwatch to unlock the regional roads.'));

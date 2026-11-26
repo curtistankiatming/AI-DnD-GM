@@ -77,7 +77,10 @@ const BRANCH_NEEDS = {
 const COMPANION_NEEDS = {
   orin: [ROLE.str1h, ROLE.heavy, ROLE.shield, ROLE.offence],
   maren: [ROLE.focus, ROLE.medium, faith, ROLE.defence],
-  nessa: [ROLE.bow, ROLE.light, wild]
+  nessa: [ROLE.bow, ROLE.light, wild],
+  // The tavern's hires (src/tavern.js) wear their gear class's kit.
+  dov: [ROLE.bow, ROLE.light, wild],
+  agna: [ROLE.str1h, ROLE.heavy, ROLE.shield, ROLE.offence]
 };
 
 const heroes = new Map();

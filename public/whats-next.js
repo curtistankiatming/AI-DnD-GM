@@ -111,6 +111,15 @@
     } else if (w.booksComplete && !w.activeQuest && !w.paidBook && view.progression?.job?.branch && !view.progression?.job?.thirdJob && (view.player?.level || 0) < 40 && (w.bounty?.afterBooks || 0) >= 40) {
       list.append(el('p', 'muted', `Your 3rd job trial opens at level 40. Bounties can take you there.`));
     }
+    // A tavern night (src/tavern.js): only at a turn in the story, until the party sets out again.
+    const tv = w.tavern;
+    if (tv) {
+      const row = el('div', 'whats-next-quest'), text = el('div');
+      row.dataset.tavern = tv.night;
+      text.append(el('strong', '', `Tavern night: ${tv.title}`), el('span', 'muted', ` · ${tv.townName}`), el('p', 'muted', `Your party has an empty place, and two people at the inn are looking for work: ${tv.hires.map(h => `${h.name} (fee ${h.fee} gold)`).join(' or ')}. Only until you next set out.`));
+      row.append(text, tv.here ? action('Go to the tavern', 'btn btn-secondary btn-small', { type: 'tavern' }) : el('span', 'muted whats-next-blocked', `Travel to ${tv.townName} first.`));
+      list.append(row);
+    }
     for (const q of (w.bellComplete ? w.quests : []).slice(0, 4)) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       text.append(el('strong', '', q.name), el('span', 'muted', ` · Level ${q.level}${q.generated ? ' · written for you' : ''}`), el('p', 'muted', q.brief));
