@@ -52,7 +52,7 @@ function install({ QUESTS, STORY_NODES, TOWNS, choice }) {
       lines: [...n.lines, opener, ...intros, ...rest], safeRest: true, sideStory: true, tavern: night,
       choices: [
         ...Roster.IDS.map((id) => { const r = Roster.RECRUITS[id];
-          return choice(`hire-${id}`, `Hire ${r.name}`, { description: fill(t.hireDescription, { role: r.role, summary: r.summary, fee: r.fee }), requires: { tavernOffer: id, hireFee: id }, result: { lines: [...r.hired, ...t.hiredAfter], hire: id, toTown: true, nextNode: home } }); }),
+          return choice(`hire-${id}`, `Hire ${r.name}`, { description: hireDescription(null, id), requires: { tavernOffer: id, hireFee: id }, result: { lines: [...r.hired, ...t.hiredAfter], hire: id, toTown: true, nextNode: home } }); }),
         choice('leave', t.leave.label, { once: false, description: t.leave.description, result: { lines: t.leave.lines, setFlags: { 'tavern:met': true }, toTown: true, nextNode: home } })
       ]
     };
@@ -158,4 +158,12 @@ function standing(state, who) {
   return r && state.party?.some((m) => m.id === who) ? [`${r.name} was hired at a tavern for a fee, not sworn to the cause: ${r.summary.charAt(0).toLowerCase()}${r.summary.slice(1)}`] : [];
 }
 
-module.exports = { CHAPTERS, MAX, NIGHTS, nodeId, fee, filled, hasRoom, offer, install, nightFor, pool, pick, open, close, ensure, view, canVisit, seen, offerStatus, feeStatus, hire, standing };
+// A hire card's words: the kind of fighter and the fee in gold at the hero's
+// level now (the whats-next row shows the same total), then the rate.
+function hireDescription(state, id) {
+  const r = Roster.RECRUITS[id];
+  const total = state ? fee(state, id) : r.fee;
+  return fill(DATA.tavern.hireDescription, { kindWord: Roster.KIND_WORD[r.kind] || r.kind, role: r.role, roleLower: r.role.toLowerCase(), summary: r.summary, fee: r.fee, total });
+}
+
+module.exports = { hireDescription, CHAPTERS, MAX, NIGHTS, nodeId, fee, filled, hasRoom, offer, install, nightFor, pool, pick, open, close, ensure, view, canVisit, seen, offerStatus, feeStatus, hire, standing };

@@ -11,6 +11,8 @@ const Courier = require("./courier-scene");
 const Road = require("./road-story");
 const Journal = require("./journal");
 const Away = require("./away");
+const Tavern = require("./tavern");
+const Roster = require("./roster");
 const { restHelps, titleCase, inventoryEntry, hasItem, playerAttackProfile, findCompanion, strengths, successProbability, SCHEMA_VERSION, TACTICS, XP_THRESHOLDS } = require("./engine-core");
 const Engine = require("./engine");
 const { dialogueText, liveLines, nodeLocation, standing } = require("./expansion");
@@ -54,6 +56,8 @@ function storyChoicesView(state) {
       ...(node.id === "defeat" && choice.id === "recover" && (W.atLedge(state) || W.inTrial(state)) ? { label: W.atLedge(state) ? "Wake on the last safe ledge" : "Accept rescue and return to a safe town", description: W.inTrial(state) ? `No gold, equipment or XP is lost in a trial. ${W.atLedge(state) ? "Rest on the ledge" : "Recover in town"}, then go back to the trial.` : "Lose up to a quarter of your gold, never equipment or XP. Rest on the ledge, then go back to the interrupted fight." } : {
       label: choice.labelNoLead && choice.check?.lead && !state.story.clues.includes(choice.check.lead) ? choice.labelNoLead : choice.label,
       description: choice.description }),
+      // A tavern hire card names the kind of fighter and the fee at the hero's level now.
+      ...(choice.requires?.hireFee ? { description: Tavern.hireDescription(state, choice.requires.hireFee) } : {}),
       locked: !requirement.met,
       lockedReason: choice.lockedText || requirement.reason,
       completed,
@@ -166,6 +170,8 @@ function partyView(state) {
       sets:wornSetsView(member),
       gearTotals:G.gearTotals(member),
       personalStyle:member.personalStyle||null,
+      // Tavern hires have no personal quest (src/tavern.js).
+      hired:Boolean(Roster.RECRUITS[member.id]),
       temporaryHp:actor?.temporaryHp??member.temporaryHp??0,
       summary: member.summary,
       personality: member.personality,
