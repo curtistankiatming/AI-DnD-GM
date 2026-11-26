@@ -208,13 +208,13 @@ function finished(state) {
 }
 const running = state => !finished(state);
 // Told once, when the last written chapter this save can play is finished.
-const ENDING = 'The written story is complete: you have finished both books, The Bell Beneath Briarwatch and The Council of Small Voices. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.';
+const ENDING = 'The written story is complete: you have finished both books, The Bell Beneath Briarwatch and The Council of Small Voices. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the AI game master to be on). Without it, your written campaign ends here, and your hero, party and choices stay saved.';
 function ending(state) {
   const open = books(state), next = lockedBook(state);
   const titles = open.map(b => b.title);
   const list = titles.length > 1 ? `${titles.slice(0, -1).join(', ')} and ${titles.at(-1)}` : titles[0];
   const count = ['', 'the first book', 'both books'][titles.length] || `all ${word(titles.length).toLowerCase()} books`;
-  const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
+  const base = titles.length === 2 && !next ? ENDING : `The written story is complete: you have finished ${count}, ${list}. From here the AI storyteller writes your adventures from the choices you made, one expedition at a time. Ask the game master for a new adventure on the expedition board (this needs the AI game master to be on). Without it, your written campaign ends here, and your hero, party and choices stay saved.`;
   const trial = next ? '' : trialLine(state);
   return next ? paidEnding(count, list, next) : trial ? `${base.replace('Without it, your written campaign ends here', 'Without it, the written books end here, apart from your job trial')}${trial}` : base;
 }
