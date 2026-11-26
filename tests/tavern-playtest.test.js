@@ -28,7 +28,7 @@ test('a hire card names the kind of fighter and the fee in gold at the hero\'s l
     const r = Roster.RECRUITS[id];
     const card = E.buildView(s).scene.choices.find((c) => c.id === `hire-${id}`);
     assert.ok(card, id);
-    assert.match(card.description, new RegExp(`^${Roster.KIND_WORD[r.kind]}, `));
+    assert.match(card.description, new RegExp(`^${Roster.KIND_WORD[r.kind]} · ${r.role}\\. `));
     assert.match(card.description, new RegExp(`Fee: ${r.fee * level} gold now \\(${r.fee} for each of your levels\\)`));
   }
 });

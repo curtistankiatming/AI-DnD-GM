@@ -29,7 +29,7 @@
     ],
     "fenmere": [
       {
-        "narrate": "{hire} has been helping the man look for his daughter's name in the church register, though he has already remembered it. He says it again. {hire} nods, as if hearing it for the first time."
+        "narrate": "{hire} has been helping the man look for his daughter's name in the church register, though the man has already remembered it, and says it again. {hire} nods, as if hearing it for the first time."
       },
       {
         "say": "hire",

@@ -190,7 +190,7 @@
         }
       }
     ],
-    "hireDescription": "{kindWord}, {roleLower}. {summary} Fee: {total} gold now ({fee} for each of your levels). The others will move on.",
+    "hireDescription": "{kindWord} · {role}. {summary} Fee: {total} gold now ({fee} for each of your levels). The others will move on.",
     "hiredAfter": [
       {
         "narrate": "The others finish their drinks and wish you a safe road. By the next time you are through, they will have moved on."
