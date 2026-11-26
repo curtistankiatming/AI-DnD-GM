@@ -116,7 +116,7 @@
     if (tv) {
       const row = el('div', 'whats-next-quest'), text = el('div');
       row.dataset.tavern = tv.night;
-      text.append(el('strong', '', `Tavern night: ${tv.title}`), el('span', 'muted', ` · ${tv.townName}`), el('p', 'muted', `Your party has an empty place, and two people at the inn are looking for work: ${tv.hires.map(h => `${h.name} (fee ${h.fee} gold)`).join(' or ')}. Only until you next set out.`));
+      text.append(el('strong', '', `Tavern night: ${tv.title}`), el('span', 'muted', ` · ${tv.townName}`), el('p', 'muted', `Your party has an empty place. Looking for work tonight: ${tv.hires.map(h => `${h.fullName}, ${h.role.toLowerCase()} (${h.kind.toLowerCase()}, fee ${h.fee} gold)`).join('; ')}. Only until you next set out.`));
       row.append(text, tv.here ? action('Go to the tavern', 'btn btn-secondary btn-small', { type: 'tavern' }) : el('span', 'muted whats-next-blocked', `Travel to ${tv.townName} first.`));
       list.append(row);
     }

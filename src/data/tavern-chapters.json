@@ -1,0 +1,599 @@
+{
+  "_note": "What a tavern hire (src/tavern.js) says in each written chapter after the one they could first be hired in, told in the chapter's aftermath just after its first line. Curtis, 26 November 2026: 'For the question yes, plan it and build it in.' A hire is one of 100 people, so these lines are written for anyone hired, not sworn: an outsider, paid, who did not know Briarwatch, and who keeps finding out what they signed on for. say 'hire' speaks as whoever it is; {hire} is their first name. A line with hireKind (archer, shield, mender, blade) is told only for that kind; in a oneOf the first that fits is told. Nothing here is told without a hire.",
+  "chapters": {
+    "aftermath": [
+      {
+        "narrate": "{hire} counts the crates off the last wagon twice, because nobody has asked them to, and then sits on the tailboard."
+      },
+      {
+        "say": "hire",
+        "text": "The notice said 'escort work'. It did not say the escort would be argued with by a bell. I'm not complaining. I'm writing it down for when I ask for more."
+      }
+    ],
+    "chairs": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I stood at the back with my shield through all five speeches, in case anybody needed hitting. Nobody did. I've never been so disappointed in a room.",
+            "when": {
+              "hireKind": "shield"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I've been paid to stand in worse rooms. Not many. Is it always chairs, with your lot? I'd like to know before the next one."
+          }
+        ]
+      }
+    ],
+    "fenmere": [
+      {
+        "narrate": "{hire} has been helping the man look for his daughter's name in the church register, though he has already remembered it. He says it again. {hire} nods, as if hearing it for the first time."
+      },
+      {
+        "say": "hire",
+        "text": "Somebody should be pleased every time he says it. It might as well be the one being paid."
+      }
+    ],
+    "southroad": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "Those weren't bandits on the bridge. Bandits run when you put an arrow in the post by their ear. These lot looked at the arrow and then at their cabbages.",
+            "when": {
+              "hireKind": "archer"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I've worked this road. I'd heard about bandits on the bridge for two years. Nobody said they were soldiers growing cabbages. You'd think somebody would have said."
+          }
+        ]
+      }
+    ],
+    "harbour": [
+      {
+        "say": "hire",
+        "text": "Wherever she's gone, she folded her coat first. People who mean to come back fold their coats. I'd put money on it, if you paid me enough to have any."
+      }
+    ],
+    "keeper": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've patched the porter, two of the sisters and the cat. The cat was the worst. I'll want that in my fee, if anybody's keeping count.",
+            "when": {
+              "hireKind": "mender"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "When the lamps went out I thought, well, that's me earned my money. Then they kept going out. I'll be honest, I stopped counting what I was owed somewhere round the fourth street."
+          }
+        ]
+      }
+    ],
+    "hollin": [
+      {
+        "narrate": "{hire} is sitting on the council-house step with their hands between their knees. For once they have not said anything about what any of it is costing."
+      },
+      {
+        "say": "hire",
+        "text": "My mother's town had a council. I'm going to write to her. I don't know what I'm going to say. Something."
+      }
+    ],
+    "cinderfold": [
+      {
+        "say": "hire",
+        "text": "I've been underground for money before. Never for a bell. I'll say this for it: it's the first job I've done where the people at the top were waiting with their hands out to the fire and not for the bill."
+      }
+    ],
+    "vote": [
+      {
+        "narrate": "{hire} did not vote. They are not from Briarwatch, and they say so, twice, to anyone who asks. They stood in the snow at the back with their hands in their pockets until it was counted."
+      },
+      {
+        "say": "hire",
+        "text": "I'd have put mine up for no. Not that anybody asked the hired help. I just wanted it known."
+      }
+    ],
+    "motherbell": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I was ready at the doors. I'd have held them. I'm a bit put out, if I'm honest, that somebody else got to.",
+            "when": {
+              "hireKind": "shield"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "When the note went through, I forgot what I was being paid for. Just for a moment. I didn't like it. I've remembered now. It's on the paper in my boot."
+          }
+        ]
+      }
+    ],
+    "oath": [
+      {
+        "say": "hire",
+        "text": "I was hired to fight, not to swear anything, and I haven't. But I listened. If that counts for anything with your lot, I listened to all of it."
+      }
+    ],
+    "b3-letter": [
+      {
+        "say": "hire",
+        "text": "First time I've been glad of a candle going out. Write that down somewhere. It won't happen again."
+      }
+    ],
+    "b3-rite": [
+      {
+        "say": "hire",
+        "text": "I can't read half of this ledger and I don't want to read the other half. Tell me where to stand and who to keep out, and I'll be useful."
+      }
+    ],
+    "b3-pass": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've been round them all. Frostbite on fingers, mostly, and one ankle. The ankle won't stop thanking me. The fingers can't, yet.",
+            "when": {
+              "hireKind": "mender"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "Six hundred of them, and they keep trying to pay me. I tell them I'm paid. They try anyway. One of them gave me a button. I don't know what to do with a button."
+          }
+        ]
+      }
+    ],
+    "b3-saltwick": [
+      {
+        "say": "hire",
+        "text": "I'm not good with heights. Nobody asked before I took the job, and I didn't say. I'm saying now. That's all. I'll be fine by the next roof."
+      }
+    ],
+    "b3-vell": [
+      {
+        "narrate": "{hire} watches the drill-guard drill, the way a person who has been a soldier, or nearly, watches soldiers."
+      },
+      {
+        "say": "hire",
+        "text": "I'd have signed on here. Five years ago, I would. Good boots, hot food, somebody telling you what to do. I'd like it noted I'm glad I didn't."
+      }
+    ],
+    "b3-witness": [
+      {
+        "say": "hire",
+        "text": "She asked me if I'd go up the wall. Not for the money. Just: would I. I said no, and she said, 'That's true,' and I've been thinking about it for three days."
+      }
+    ],
+    "b3-home": [
+      {
+        "say": "hire",
+        "text": "I've had a lot of nights in a lot of squares. I'd like to come back to this one when it isn't deciding anything, and see what it's like."
+      }
+    ],
+    "b3-vault": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I kept looking for something to stab. There wasn't anything. There were just people, in iron, talking. I'd rather have had something to stab.",
+            "when": {
+              "hireKind": "blade"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "They're talking about us. The bells. I don't know how I know. I'd like it if they said something nice about the one who's paid."
+          }
+        ]
+      }
+    ],
+    "b3-greatbell": [
+      {
+        "say": "hire",
+        "text": "Every one of those names chose. I didn't choose anything except a fee, at a table, over a drink. I'm standing here with them anyway. I don't know what that makes me."
+      }
+    ],
+    "b3-paid": [
+      {
+        "say": "hire",
+        "text": "He's not what I thought. I thought he'd be bigger. They never are, are they, the ones you've heard about in taverns."
+      }
+    ],
+    "b3-price": [
+      {
+        "narrate": "{hire} stands for a long time in front of the price-board outside the Lantern Hall, reading it, with their lips moving."
+      },
+      {
+        "say": "hire",
+        "text": "It's more than I'd make in nine years. A man's whole life, and it's on a board, in paint. I'd have charged more. I'd have charged everything."
+      }
+    ],
+    "b3-wren": [
+      {
+        "say": "hire",
+        "text": "She said yes because she was tired, and they were going to let her. I'd never have said yes to anything for being tired. I'd have said it for money. I don't know which of us is worse."
+      }
+    ],
+    "b3-order": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've had a bow on my knee since the planks. Nobody else goes off a roof tonight, not if I can help it.",
+            "when": {
+              "hireKind": "archer"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "A captain who left. I've had a few of those. I never put any of them on trial. I just got hired by somebody else. Maybe I should have."
+          }
+        ]
+      }
+    ],
+    "b3-ashford": [
+      {
+        "say": "hire",
+        "text": "My mother would have voted like this lot. No to everything, then sat on the wall and dared it. I miss her. I'll tell her about Ashford. She'll pretend she isn't proud."
+      }
+    ],
+    "b3-seal": [
+      {
+        "say": "hire",
+        "text": "Somebody offered me money to forget I saw the man at the steps. More than you pay. I said no. I'd like it remembered, at fee time."
+      }
+    ],
+    "b3-winter": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've dressed every frost-burn in the inn, and I've run out of goose fat, and I've started on butter. Nobody tell the cook.",
+            "when": {
+              "hireKind": "mender"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I was hired on a night like this one. Three of you and a gap at the table. I'm starting to think the gap was the job."
+          }
+        ]
+      }
+    ],
+    "b3-company": [
+      {
+        "say": "hire",
+        "text": "Three hundred people who said yes. I said yes too, at the tavern, for a fee. I keep thinking about it, going down. Theirs was bigger."
+      }
+    ],
+    "b3-deep": [
+      {
+        "narrate": "{hire} sits with their back to the rock beside the clerk's ledger and counts the people on the ledge, silently, then counts again."
+      },
+      {
+        "say": "hire",
+        "text": "Same number. Good. I'll do it again in an hour. It's what I'm for."
+      }
+    ],
+    "b3-promise": [
+      {
+        "say": "hire",
+        "text": "The floor. People left all this. Shoes. Letters. A doll. I've nothing to leave. I left all mine with a woman in a tavern to keep for me. I hope she's kept them."
+      }
+    ],
+    "b3-firstbell": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I'd have killed him. Quick, from behind, while he was talking. I'm glad it was you deciding. I'd like that remembered too.",
+            "when": {
+              "hireKind": "blade"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "When I took this job I thought it was a season's work. Escort. A few fights. Look at where we are. I'm going to need a word about my fee."
+          }
+        ]
+      }
+    ],
+    "b4-walker": [
+      {
+        "say": "hire",
+        "text": "She walked forty-one days on her own and wrote it all down. I've been forty-one days on the road with you and all I've written is what I'm owed."
+      }
+    ],
+    "b4-records": [
+      {
+        "say": "hire",
+        "text": "Two books that don't agree, and a lot of shouting about which. I've seen it over a bar tab. It ends the same way. Somebody pays."
+      }
+    ],
+    "b4-ballad": [
+      {
+        "narrate": "Linus Pardew's song has a verse about the hero's hired company. {hire} has listened to it three times."
+      },
+      {
+        "say": "hire",
+        "text": "He's got my name wrong and he's made me taller. I'm going to leave both. It's the first song I've been in."
+      }
+    ],
+    "b4-company": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've been asked to sign on with the North Company. Better wages. The quartermaster said, 'You're the one with the shield.' I said I was. I said I'm already somebody's.",
+            "when": {
+              "hireKind": "shield"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "The North Company's paying better than you. I asked. I'm telling you so you know I asked. I'm still here. Don't make me say why."
+          }
+        ]
+      }
+    ],
+    "b4-davin": [
+      {
+        "say": "hire",
+        "text": "Nobody's packed for me. Ever. I'd like somebody to look at my pack the way she's looking at his. Not yet. When I'm old."
+      }
+    ],
+    "b4-book": [
+      {
+        "say": "hire",
+        "text": "If I lost every day before the tavern, I'd still have this. I've been working out whether that's enough. I think it might be."
+      }
+    ],
+    "b4-key": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've sat with the little girl through the night. She asked me if I was a healer, and I said I was paid to be, and she said that was all right then.",
+            "when": {
+              "hireKind": "mender"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "They came down with who they were written on their arms. I've thought about what mine would say. Name, fee, owed. Not much of a story."
+          }
+        ]
+      }
+    ],
+    "b4-letters": [
+      {
+        "say": "hire",
+        "text": "Thousands of letters and not one to me. I checked. I know. I don't know why I checked."
+      }
+    ],
+    "b4-embassy": [
+      {
+        "say": "hire",
+        "text": "Everybody in that hall's going to look at you in a minute. Nobody's going to look at me. If it's north, I'm going too. I'd like that on the record before anybody decides I'm not."
+      }
+    ],
+    "b4-peaks": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've had the guide in sight since the second switchback. He knows. He keeps waving. I've stopped waving back.",
+            "when": {
+              "hireKind": "archer"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I've never been this high. I don't like it. But I can see further than I ever have, and I can't see a single tavern, and that's peaceful, in its way."
+          }
+        ]
+      }
+    ],
+    "b4-lantry": [
+      {
+        "say": "hire",
+        "text": "Everybody in the ring gave something. I gave a song my grandmother taught me. I don't know if I'll miss it. I don't remember how it went, so I suppose not."
+      }
+    ],
+    "b4-sheddon": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I've walked the length of the column twice with my shield up at the back. They keep looking at me like I'm the wall. I've never been anybody's wall before.",
+            "when": {
+              "hireKind": "shield"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I've walked with a lot of columns. Wagons, mostly, and paid. Never one where people carried their grandmothers. I'd like to be carried like that, one day."
+          }
+        ]
+      }
+    ],
+    "b4-orme": [
+      {
+        "say": "hire",
+        "text": "Nine hundred years, written down. Somebody kept every winter. Nobody writes the hired help in. I asked Burdock. He said he'd make an exception. I didn't know what to say."
+      }
+    ],
+    "b4-greve": [
+      {
+        "say": "hire",
+        "text": "I was going to give something. I had it ready. Then I thought, no. I'll carry it. That's what I'm paid for, isn't it. Carrying."
+      }
+    ],
+    "b4-thrum": [
+      {
+        "say": "hire",
+        "text": "She's been on that step all night and nobody's opened the door. I'd have knocked. I'm not going to. It isn't mine to knock on."
+      }
+    ],
+    "b4-reckoning": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "Every door-board in the hall came down and I wasn't even quick enough to catch one. I'm usually quick. I'll be quicker next time.",
+            "when": {
+              "hireKind": "blade"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "She did her sum. It came out to a winter. I did mine, coming down the stair, and it came out to my fee. I'd rather have done hers. I wouldn't want to."
+          }
+        ]
+      }
+    ],
+    "b4-potbells": [
+      {
+        "say": "hire",
+        "text": "Two villages, one mile, one bell made of saucepans. I'd have laughed at this a year ago. I've stopped laughing. I've started listening for the saucepans."
+      }
+    ],
+    "b4-hush": [
+      {
+        "say": "hire",
+        "text": "One of them held my hand all the way along the marks. She didn't know my name. I told her. She said it back. I think she'll keep it. I'd like that."
+      }
+    ],
+    "b4-column": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "Three ankles, a wrist, and a man who swears he's fine and isn't. Twelve sledges of books and nobody's hurt one of the books. Priorities.",
+            "when": {
+              "hireKind": "mender"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I've been on a rope all day with a man who sings. All day. I've been paid to bear worse. Not much worse."
+          }
+        ]
+      }
+    ],
+    "b4-northdoor": [
+      {
+        "say": "hire",
+        "text": "Three thousand people in one hall, and not one of them asked who's paying me. Up here, it's not the first thing anybody wants to know. I could get used to that."
+      }
+    ],
+    "b4-knot": [
+      {
+        "say": "hire",
+        "text": "I'm from the south. I'd like to tell your Wold people we're not all like that gate. I'm not sure yet that we aren't."
+      }
+    ],
+    "b4-invoice": [
+      {
+        "narrate": "{hire} has borrowed a copy of Iona's invoice from a clerk and is reading it, slowly, with real professional interest."
+      },
+      {
+        "say": "hire",
+        "text": "Nine hundred years, itemised. I'd like her to do mine. I've a feeling I've been undercharging."
+      }
+    ],
+    "b4-quietnight": [
+      {
+        "say": "hire",
+        "text": "First time I've stayed in Briarwatch more than a night since the tavern. It's quieter than I remember. I mean that kindly. I mean I'd like to stay."
+      }
+    ],
+    "b4-gatehouse": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I could have the cart's wheel off before anybody woke. I'm only saying I could. Ask me, and I'll go and sit on it.",
+            "when": {
+              "hireKind": "blade"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "He's a strange old man. I sat outside his cell last night and he talked to me through the door about bread, for an hour. I don't know why. I liked it."
+          }
+        ]
+      }
+    ],
+    "b4-ford": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "I had a bow on the north wall the whole crossing. Never needed it. Somebody left a lamp lit for them. I'd like to know who.",
+            "when": {
+              "hireKind": "archer"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "I was up to my chest in the river, holding a rope, and I thought: I did not take this job for this. Then I thought: yes, I did. I just didn't know it."
+          }
+        ]
+      }
+    ],
+    "b4-hospice": [
+      {
+        "say": "hire",
+        "text": "Merrowgate. I was born six streets from here. I'd like to say nobody here would hear her. But I wouldn't have, either, before. That's the trouble."
+      }
+    ],
+    "b4-signal": [
+      {
+        "say": "hire",
+        "text": "A thousand lamps, and nobody saying anything. I've never been anywhere so quiet that was this full."
+      }
+    ],
+    "b4-ropes": [
+      {
+        "oneOf": [
+          {
+            "say": "hire",
+            "text": "Their champions are good. I'd have been one of them, if they'd been the ones hiring that night. I keep thinking about it. I'm glad it was your notice I read.",
+            "when": {
+              "hireKind": "shield"
+            }
+          },
+          {
+            "say": "hire",
+            "text": "If anybody'd said, at the tavern, 'midwinter, a hall full of rope, a bell that ends the world,' I'd have asked for double. I'm not asking now. Write that down."
+          }
+        ]
+      }
+    ],
+    "b4-lid": [
+      {
+        "say": "hire",
+        "text": "I've been holding my breath for an hour. I'd like to stop now, if somebody would tell me it's allowed."
+      }
+    ],
+    "b4-parting": [
+      {
+        "narrate": "{hire} is standing at the back, where the hired help stands, with their fee in their boot. When everyone looks at you, they look at you too."
+      },
+      {
+        "say": "hire",
+        "text": "Whatever you decide. I'm still here. That wasn't in the fee."
+      }
+    ]
+  }
+}

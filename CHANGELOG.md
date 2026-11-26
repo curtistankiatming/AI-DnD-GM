@@ -4,6 +4,24 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## The tavern roster (26 November 2026)
+
+- Curtis: "create a massive 100 character roster for the tavern. Selection
+  features 2-3 a time", "Random selections", and yes to giving a hire lines in
+  the written chapters.
+- The tavern now draws on 100 people (`src/data/tavern-roster.json`): archers,
+  shields, healers and blades, each with their own name, voice, introduction
+  and what they say when hired. Dov and Agna are two of them. A few only turn
+  up later in the story (from level 20, 40 or 60).
+- Each night offers 2 or 3 of them at random, of different kinds where it can.
+  Anyone the party meets and does not hire moves on for good, when somebody
+  else is hired or when the party sets out. Nobody who moves on comes back.
+- Fees run from 3 to 7 gold for each of the hero's levels, by person.
+- A hire now speaks in the aftermath of every written chapter from the Road
+  You Keep to the Parting Bell (`src/data/tavern-chapters.json`): one line or
+  two, as an outsider who was paid to come and keeps finding out what they
+  signed on for, some written for their kind. Nothing is said without a hire.
+
 ## Tavern nights (26 November 2026)
 
 - Curtis: "have a tavern that players can visit during special occurrences

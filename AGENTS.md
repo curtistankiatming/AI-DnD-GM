@@ -30,9 +30,14 @@
 - Tavern nights (`src/tavern.js`, `src/data/tavern.json`): finishing a listed
   chapter, a job trial or the books opens a night in that town until the party
   next departs; a party with fewer than 3 companions (away ones count) may hire
-  Dov or Agna for a fee by level. Hires are companions marked `hired` with a
-  `loadout`; they have no personal quest or away scenes. Written lines that
-  speak for a hire use `say: "dov"`/`"agna"` (shown only while hired).
+  one of 2 or 3 people picked at random (`world.tavern.offer`) from the roster
+  of 100 (`src/roster.js`, `src/data/tavern-roster.json`; each built from one of
+  four kinds: archer, shield, mender, blade). Met and not hired, they move on
+  for good (`world.tavernGone`). Hires are companions marked `hired` with a
+  `loadout`; they have no personal quest or away scenes. A written line for
+  whoever was hired uses `say: "hire"` and `{hire}` for their first name, with
+  `when.hire`/`when.hireKind`; the chapter lines are in
+  `src/data/tavern-chapters.json` (told after the aftermath's first line).
 - A chapter may open on what the party carried from the chapter before
   (`carried` in a quest: one entry per earlier decision, gated by its flag).
   It gives the chapter's lead, tells the approach lines and goes straight to

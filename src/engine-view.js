@@ -41,7 +41,7 @@ function storyChoicesView(state) {
   if (state.combat?.active) return [];
   const node = currentNode(state);
   // A choice you could take with more gold stays in view, locked; other unmet ones are hidden.
-  return node.choices.filter(choice=>requirementStatus(state,choice.requires?{...choice.requires,gold:0}:choice.requires).met).map((choice) => {
+  return node.choices.filter(choice=>requirementStatus(state,choice.requires?{...choice.requires,gold:0,hireFee:0}:choice.requires).met).map((choice) => {
     const requirement = requirementStatus(state, choice.requires);
     const completed = choice.once && completedChoice(state, node.id, choice.id);
     const plan = choice.check ? checkPlan(state, choice) : null;

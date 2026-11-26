@@ -78,9 +78,13 @@ const COMPANION_NEEDS = {
   orin: [ROLE.str1h, ROLE.heavy, ROLE.shield, ROLE.offence],
   maren: [ROLE.focus, ROLE.medium, faith, ROLE.defence],
   nessa: [ROLE.bow, ROLE.light, wild],
-  // The tavern's hires (src/tavern.js) wear their gear class's kit.
-  dov: [ROLE.bow, ROLE.light, wild],
-  agna: [ROLE.str1h, ROLE.heavy, ROLE.shield, ROLE.offence]
+  // The tavern's 100 hires (src/roster.js) wear the kit of their kind.
+  ...Object.fromEntries(Object.values(COMPANIONS).filter((c) => c.hired).map((c) => [c.id, {
+    archer: [ROLE.bow, ROLE.light, wild],
+    shield: [ROLE.str1h, ROLE.heavy, ROLE.shield, ROLE.offence],
+    mender: [ROLE.focus, ROLE.medium, faith, ROLE.defence],
+    blade: [ROLE.finesse, ROLE.light, sneak]
+  }[c.kind]]))
 };
 
 const heroes = new Map();
