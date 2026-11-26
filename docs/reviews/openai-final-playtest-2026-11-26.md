@@ -33,7 +33,7 @@ Total: 50 OpenAI calls, about 289k input and 22k output tokens, about **$0.80**.
 
 | What the player saw | Fix |
 |---|---|
-| With OpenAI as the game master, the end of the written books said "Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master)." | Now "(this needs the AI game master to be on)". The hosted-only upgrade line still names Claude, since the hosted game uses only Claude. |
+| With OpenAI as the game master, the end of the written books said "Ask the game master for a new adventure on the expedition board (this needs the Claude AI game master)." | Now "(this needs the AI game master to be on)". The reviewer also found the offline edition saying "connect the Claude API or a local model"; it now names OpenAI too. The hosted-only upgrade line still names Claude, since the hosted game uses only Claude. |
 
 ## Seen but not changed
 

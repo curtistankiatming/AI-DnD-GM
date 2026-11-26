@@ -137,4 +137,7 @@ test('the end of the written books does not say only Claude can write what comes
   assert.match(text,/Ask the game master for a new adventure on the expedition board \(this needs the AI game master to be on\)\./);
   assert.doesNotMatch(text,/Claude/);
   assert.doesNotMatch(Book.ENDING||'',/Claude/);
+  // The offline edition's AI note named only Claude and local models (review).
+  const ui=require('node:fs').readFileSync(path.join(root,'public/chat-ui.js'),'utf8');
+  assert.match(ui,/Use the Node server edition to connect Claude, OpenAI or a local model\./);
 });
