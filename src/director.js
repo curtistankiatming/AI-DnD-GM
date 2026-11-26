@@ -86,6 +86,9 @@ const SCHEMA = Object.freeze({
     threat: { type: 'string', description: 'What a paid tavern briefing reveals, including which equipment helps.' },
     opening: { type: 'string', description: 'The scene as the party arrives.' },
     clue: { type: 'string', description: 'The established lead the party records on investigating.' },
+    // Tavern playtest, 26 Nov 2026: without this every AI adventure's approach scene
+    // showed the same placeholder ("The route ahead offers a careful approach...").
+    approach: { type: 'string', description: 'The way to the crisis as the party travels it, before the route check: one to three sentences of scene.' },
     investigate: check('How the party investigates first. Failure still yields the lead.'),
     route: {
       ...check('How the party approaches the crisis. Failure causes injury but continues.'),
@@ -148,7 +151,7 @@ const SCHEMA = Object.freeze({
       required: ['title', 'premise', 'nextHook']
     }
   },
-  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed', 'storyArc']
+  required: ['name', 'region', 'faction', 'brief', 'threat', 'opening', 'clue', 'approach', 'investigate', 'route', 'crisis', 'peaceful', 'objective', 'foeName', 'enemyTheme', 'after', 'decisions', 'destination', 'arc', 'cast', 'places', 'threadsOpened', 'threadsClosed', 'storyArc']
 });
 // The draft schema for this save: the faction enums list only factions this
 // save has met (factionKnown), so the AI is never offered the Wold before the
@@ -308,6 +311,7 @@ function bound(state, draft, forcedId = null) {
     faction: known.includes(draft.faction) ? draft.faction : 'wardens',
     brief: text(draft.brief, TEXT.brief, name), threat: text(draft.threat, TEXT.brief, 'Little is known.'),
     opening: text(draft.opening, TEXT.long, 'The road leads somewhere new.'), clue: text(draft.clue, TEXT.brief, 'A lead worth following.'),
+    ...(clean(draft.approach, TEXT.long) ? { approach: text(draft.approach, TEXT.long, '') } : {}),
     investigate, route, crisis: text(draft.crisis, TEXT.long, 'The moment of decision arrives.'), peaceful, objective,
     foeName: text(draft.foeName, TEXT.name, 'The Opposition'), enemyTheme: THEMES.includes(draft.enemyTheme) ? draft.enemyTheme : 'soldier',
     after: text(draft.after, TEXT.long, 'The dust settles.'),

@@ -164,3 +164,17 @@ test('/adventure refuses without Claude and on unreadable output',async t=>{
   const bad=await Chat.resolveChat(inTown(),{mode:'action',text:'/adventure'},ai,high);
   assert.equal(bad.result.ok,false);assert.deepEqual(bad.state.director.quests,{});
 });
+
+// Tavern playtest, 26 Nov 2026: every AI adventure's approach scene showed the same
+// placeholder because the draft had no approach text. Claude now writes it.
+test('an AI adventure\'s approach scene tells Claude\'s own approach text, and an older draft without one still plays',()=>{
+  assert.ok(D.SCHEMA.required.includes('approach'));
+  let s=commission(inTown(2)).state;const id=Object.keys(s.director.quests)[0];
+  s=act(s,{type:'depart',questId:id}).state;s=act(s,{type:'story-choice',choiceId:'advance'}).state;
+  assert.equal(s.story.nodeId,`q-${id}-approach`);
+  assert.match(E.buildView(s).scene.opening,/The boardwalks sag lower/);
+  const old=draft();delete old.approach;
+  let t=commission(inTown(2),old).state;const id2=Object.keys(t.director.quests)[0];
+  t=act(t,{type:'depart',questId:id2}).state;t=act(t,{type:'story-choice',choiceId:'advance'}).state;
+  assert.match(E.buildView(t).scene.opening,/The route ahead offers a careful approach/);
+});

@@ -5,6 +5,7 @@ module.exports = () => ({
   brief: 'Saltworkers report singing from the drowned evaporation pans. Shipments have stopped.',
   threat: 'The singing comes from a drowned shrine. A lantern helps in the flooded tunnels.',
   opening: 'Grey water laps at the boardwalks. Somewhere under it, many voices hold one note.',
+  approach: 'The boardwalks sag lower with every step toward the pumphouse, and the note under the water grows louder.',
   clue: 'The choir sings the names of workers lost in the great flood.',
   investigate: { label: 'Question the saltworkers', skill: 'insight', alt: ['history', 'persuasion'], success: 'They admit the flood was no accident: the Brinewright Guild opened the old sluice to drown a rival pan, and the night shift with it.', failure: 'They are frightened, but one name keeps returning: Brinewright.' },
   route: { label: 'Wade through the flooded tunnels', skill: 'athletics', alt: ['survival', 'not-a-skill'], tools: ['lantern', 'gold-crown'], poison: false, success: 'You reach the shrine unseen.', failure: 'The current batters the party.' },
