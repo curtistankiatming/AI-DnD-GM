@@ -171,14 +171,13 @@ autosave through Continue, which worked every time.
 | Nessa's second chance | 9/10 | Both answers read well. Turning her down is felt later: Wren's line at the signal tower lands. |
 | Fun overall | 8/10 | |
 
-### Worth deciding
+### Decided by Curtis (26 November 2026): keep the cost
 
 - **Turning Nessa down makes Book Two much harder.** Run 4's party was three,
   not four, and lost eighteen fights. Most of that is the script (it never uses
-  a Bard's songs or heals), but a real player who refuses her has no way to
-  fill the fourth place. That may be exactly the cost Curtis wants ("choices
-  impact story"). If not, a hired sellsword in Book Two for parties of three
-  would soften it without bringing Nessa back.
+  a Bard's songs or heals). Curtis: "Keep that cost of the choice." No
+  softening. A tavern for recruiting replacement members during special story
+  moments is being built separately.
 
 ## Not fixed, worth deciding (all built in the follow-up above)
 
