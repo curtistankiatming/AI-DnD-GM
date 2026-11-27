@@ -262,7 +262,7 @@ async function resolveChat(raw,request={},provider=null,rng=Math.random){
           herbGift:road.cacheClaimed?'collected':road.phase==='complete'&&road.trust>0?'offered-not-collected':'not-offered'}:{})};
       const prompt=JSON.stringify({preferences:M.ensure(state).instructions,action:option.label,result:canonical,events:resolved.events.map(e=>e.text),scene:E.currentNode(state).title,ownership,journal:Journal.forPrompt(state,1100)});
       const prose=await provider.complete({system:sys,prompt,purpose:'reply'});
-      return payload(state,prose.text,resolved.events,{...resolved.result,canonical},'ai-chat',prose.model);
+      return payload(state,plainProse(prose.text),resolved.events,{...resolved.result,canonical},'ai-chat',prose.model);
     }catch(error){return payload(state,`${canonical}\n\nAI narration unavailable: ${error.message} The rules result above is already committed; it will not be rolled again.`,resolved.events,{...resolved.result,canonical});}
   }
   if(request.cancel){c.pending=null;return payload(state,'Proposed action cancelled. No roll or resource change.');}

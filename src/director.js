@@ -181,6 +181,8 @@ const SYSTEM = [
   'Vary the adventures. Use variety.suggestedTheme as enemyTheme unless the request or the story clearly calls for another, and do not repeat the kind of foe or the quest-giver of variety.recent.',
   'completedAdventures[].aftermath says how a finished adventure ended and who ended up where. It is canon: a villain it names as taken, jailed or dead does not come back as a quest-giver, patron or free ally.',
   'Companions (party) keep their own voice (party[].voice) in every line of dialogue you write for them, before and after the books end.',
+  // Full OpenAI run, 27 November 2026: "after what he did", "brought him to Merrowgate".
+  'Call the hero by name or "you". The player has not chosen pronouns for the hero, so never use he, she, him, his or her for the hero; companions and other people keep their own pronouns.',
   VOICE_RULE,
   'Beyond the books, every adventure is one chapter of a story arc (storyArc in the request). The game sets which chapter and beat it is; follow storyArc.guidance for that beat, continue from storyArc.lastHook and the earlier chapters of the arc, and fill the storyArc field. Each chapter is still a complete adventure with its own crisis and decisions.'
 ].join('\n');
