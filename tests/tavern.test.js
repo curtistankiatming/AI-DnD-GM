@@ -72,7 +72,7 @@ test('finishing the Oath of the Road opens a night with tonight\'s people only',
   const s = afterTheOath();
   const t = E.buildView(s).world.tavern;
   assert.equal(t.night, 'trial');
-  assert.deepEqual(t.hires.map((h) => [h.id, h.fee]), [['dov', 60], ['agna', 40]]);
+  assert.deepEqual(t.hires.map((h) => [h.id, h.fee]), [['dov', 250], ['agna', 200]], 'rate x level x level / 2, at most half the purse');
   const r = goIn(s);
   assert.equal(r.state.story.nodeId, 'tavern-trial');
   const text = sceneText(r.state);
@@ -92,9 +92,9 @@ test('hiring Dov pays his fee, brings his kit at the party level, and the others
   const dov = r.state.party.find((m) => m.id === 'dov');
   assert.equal(dov.level, 10);
   assert.equal(dov.equipment.mainHand, 'shortbow');
-  assert.equal(r.state.player.gold, 440);
+  assert.equal(r.state.player.gold, 250);
   assert.equal(r.state.story.flags['tavern:hired'], 'dov');
-  assert.match(told(r), /Paid 60 gold: the fee\./);
+  assert.match(told(r), /Paid 250 gold: the fee\./);
   assert.deepEqual(r.state.world.tavernGone.sort(), ['agna', 'isolde-greaves']);
   const v = E.buildView(r.state);
   assert.equal(v.world.tavern, null);
@@ -117,7 +117,7 @@ test('a hire needs the fee in the purse', () => {
   assert.ok(dov, 'shown even when the purse is short');
   r = E.resolveAction(r.state, { type: 'story-choice', choiceId: 'hire-dov' }, rng);
   assert.equal(r.result.ok, false);
-  assert.match(r.result.error || told(r), /Requires 60 gold for the fee\./);
+  assert.match(r.result.error || told(r), /Requires 60 gold for the fee\./, 'never below rate x level');
   assert.equal(r.state.party.length, 2);
 });
 
@@ -226,4 +226,62 @@ test('a hire has something to say after every written chapter they can be along 
   }
   // A kind's own line comes first for that kind: Agna is a shield.
   assert.match(liveLines(withHire, STORY_NODES['q-chairs-after'].dialogue).map((l) => l.text || '').join(' '), /with my shield/);
+});
+
+// Curtis, 27 November 2026: the fee should be "proportionate to something".
+// A hero's gold grows with the square of their level, so the fee does too.
+test('a hire\'s fee grows with the square of the hero\'s level, never shuts out a hero who spent on gear, and is never free', () => {
+  const at = (level, gold) => ({ player: { level, gold } });
+  const dov = Roster.RECRUITS.dov.fee; // 6
+  assert.equal(Tavern.fee(at(10, 100000), 'dov'), dov * 100 / 2);
+  assert.equal(Tavern.fee(at(40, 100000), 'dov'), dov * 1600 / 2);
+  assert.equal(Tavern.fee(at(70, 100000), 'dov'), dov * 4900 / 2);
+  // A hero carrying little pays at most half of it...
+  assert.equal(Tavern.fee(at(60, 8000), 'dov'), 4000);
+  // ...but never less than the old fee, rate x level.
+  assert.equal(Tavern.fee(at(60, 100), 'dov'), dov * 60);
+  // Against a typical purse (scripted runs, 27 November: about 1,150 gold at
+  // level 10, 19,000 at 40, 55,000 at 70), every rate stays between about a
+  // tenth and a third of it.
+  for (const [level, purse] of [[10, 1150], [20, 6000], [40, 19000], [60, 40000], [70, 55000]]) for (const id of Roster.IDS) {
+    const share = Tavern.fee(at(level, purse), id) / purse;
+    assert.ok(share >= 0.1 && share <= 0.35, `${id} at level ${level}: ${Math.round(share * 100)}%`);
+  }
+});
+
+// Curtis, 27 November 2026: "In the book they should be included as a side
+// character." The endings of Books Two, Three and Four (their epilogues at
+// Dera's forge) say where the hire is now, for any of the 100, by kind, in
+// their own pronouns, and say nothing about a hire when there is none.
+test('a hire has a part in the ending of every book they can be along for, and nobody has it without one', () => {
+  const ends = { 'scene-oath-epilogue-forge': /Dera hands (\w+) the tongs/, 'scene-firstbell-home': /second hook up by the forge door/, 'scene-b4-parting-end-home': /takes the fee out of/ };
+  const text = (lines) => lines.map((l) => l.narration || `${l.speaker}: ${l.text}`).join('\n');
+  const without = afterTheOath();
+  for (const id of Object.keys(ends)) assert.doesNotMatch(text(liveLines(without, STORY_NODES[id].dialogue)), /\{hire|tongs|second hook|out of (his|her|their) boot/, `${id}: nothing about a hire without one`);
+  const byKind = {};
+  for (const id of Roster.IDS) {
+    const kind = Roster.RECRUITS[id].kind, pron = Roster.RECRUITS[id].pronouns;
+    if (byKind[`${kind}:${pron}`]) continue;
+    byKind[`${kind}:${pron}`] = id;
+    const s = afterTheOath({}, [id]);
+    s.player.gold = 100000;
+    const r = E.resolveAction(goIn(s).state, { type: 'story-choice', choiceId: `hire-${id}` }, rng);
+    assert.equal(r.result.ok, true, `${id}: ${r.result.error}`);
+    const name = Roster.first(Roster.RECRUITS[id]);
+    for (const [node, pattern] of Object.entries(ends)) {
+      const told = text(liveLines(r.state, STORY_NODES[node].dialogue));
+      assert.match(told, pattern, `${node}: ${id}`);
+      assert.ok(told.includes(`${name}: `), `${node}: ${name} speaks`);
+      assert.doesNotMatch(told, /\{hire/, `${node}: ${id} filled in`);
+      const own = { 'he/him': /\b(her|their|them)\b/, 'she/her': /\b(his|him|their|them)\b/, 'they/them': /\b(his|him)\b/ }[pron];
+      for (const line of told.split('\n').filter((l) => l.startsWith(name) || l.includes(` ${name} `) || l.includes(`${name}'s`))) if (!line.startsWith(`${name}: `)) assert.doesNotMatch(line.replace(/Dera|Brannagh|Pim|Tovin|Linus|she looked|Neither of them/g, ''), own, `${node}: ${id} (${pron}): ${line}`);
+    }
+    // Book Two: each kind spends the winter its own way.
+    const winter = { shield: /shouting 'Shield!'/, mender: /set half the sprains/, archer: /fletching/, blade: /loses on purpose/ }[kind];
+    assert.match(text(liveLines(r.state, STORY_NODES['scene-oath-epilogue-forge'].dialogue)), winter, `${id}: ${kind}`);
+    // Book Four: if the companions keep the story, the hire keeps a piece of it.
+    r.state.story.flags.fourth_telling = 'companions';
+    assert.match(text(liveLines(r.state, STORY_NODES['scene-b4-parting-end-home'].dialogue)), new RegExp(`${name} keeps one of the pieces`));
+  }
+  assert.equal(Object.keys(byKind).length >= 8, true, Object.keys(byKind).join(' '));
 });

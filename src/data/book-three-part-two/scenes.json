@@ -1935,6 +1935,16 @@
             }
           },
           {
+            "narrate": "{hire} was hired at a tavern for a season's work. Dera has put a second hook up by the forge door, next to yours, and {hire}'s cloak is on it.",
+            "when": {
+              "hire": true
+            }
+          },
+          {
+            "say": "hire",
+            "text": "Dera asked me what I forgot, down there. I've decided it was what you're paying me. I can't remember it at all."
+          },
+          {
             "narrate": "In Ashford the lower town is being rebuilt, where the ford is, under the ash trees, and Hollis Brede has had its name painted on the bridge-post herself. One word: Ashford.",
             "when": {
               "flag": "b3_ashford_defended",

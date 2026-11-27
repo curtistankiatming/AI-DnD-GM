@@ -16,7 +16,7 @@
 // (src/roster.js), mixing kinds where it can. Hire one and the others move on;
 // go in, leave them and set out, and they move on too. Nobody who has moved on
 // is offered again. Declining Nessa keeps its cost (Curtis: "Keep that cost of
-// the choice"): no night before the Oath of the Road, a fee per hero level, a
+// the choice"): no night before the Oath of the Road, a fee that grows with the hero's level, a
 // little less fight than a story companion, no personal quest, and a hire
 // never takes Nessa's place in the written story.
 const DATA = require('./data/tavern.json');
@@ -26,7 +26,21 @@ const Roster = require('./roster');
 const MAX = 3;
 const NIGHTS = Object.freeze(Object.fromEntries(Object.entries(DATA.nights).filter(([k, v]) => !k.startsWith('_') && v && Array.isArray(v.lines))));
 const nodeId = (night) => `tavern-${night}`;
-const fee = (state, id) => Math.max(0, Math.round((Roster.RECRUITS[id]?.fee || 0) * Math.max(1, Number(state?.player?.level) || 1)));
+// A hire's fee (Curtis, 27 November 2026: "it should be proportionate to
+// something"). A hero's gold grows with the square of their level (about 12 to
+// 16 x level x level earned by then, at every difficulty, since chapters,
+// bounties and battles all pay more as levels rise), so the fee does too:
+// rate x level x level / 2, where rate is the recruit's own 3 to 7. That is
+// about a tenth to a third of what a typical hero has earned at that level,
+// from level 10 to 70. A hero who has spent their gold on gear is never shut
+// out: the fee is at most half the gold they carry, though never below
+// rate x level (the old fee), so a hire is never free.
+const rate = (id) => Number(Roster.RECRUITS[id]?.fee) || 0;
+const fee = (state, id) => {
+  const level = Math.max(1, Number(state?.player?.level) || 1), r = rate(id);
+  const gold = Math.max(0, Number(state?.player?.gold) || 0);
+  return Math.max(0, Math.round(Math.max(r * level, Math.min(r * level * level / 2, gold / 2))));
+};
 // How many places the party has filled: who is here, and who is away for a chapter.
 const filled = (state) => (state.party || []).length + Object.keys(state.world?.away || {}).length;
 const hasRoom = (state) => filled(state) < MAX;

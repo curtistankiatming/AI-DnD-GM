@@ -4,7 +4,7 @@
 // party card does not promise a hire a personal quest, and the AI is told not to
 // fill passages with a companion staying silent.
 const test = require('node:test'), assert = require('node:assert/strict');
-const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Roster = require('../src/roster');
+const E = require('../src/engine'), P = require('../src/progression'), W = require('../src/world'), Roster = require('../src/roster'), Tavern = require('../src/tavern');
 const fs = require('node:fs'), path = require('node:path');
 
 function nightOfTheOath(offer) {
@@ -29,7 +29,7 @@ test('a hire card names the kind of fighter and the fee in gold at the hero\'s l
     const card = E.buildView(s).scene.choices.find((c) => c.id === `hire-${id}`);
     assert.ok(card, id);
     assert.match(card.description, new RegExp(`^${Roster.KIND_WORD[r.kind]} · ${r.role}\\. `));
-    assert.match(card.description, new RegExp(`Fee: ${r.fee * level} gold now \\(${r.fee} for each of your levels\\)`));
+    assert.match(card.description, new RegExp(`Fee: ${Tavern.fee(s, id)} gold, paid now\\.`));
   }
 });
 

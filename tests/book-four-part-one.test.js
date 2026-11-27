@@ -345,7 +345,7 @@ test('every Book Four flag set is read: each chapter\'s answers change the lines
 });
 
 test('every flag a Book Four line reads is set earlier in Books One to Four, or is the engine\'s own', () => {
-  const KNOWN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller']);
+  const KNOWN = new Set(['flag', 'is', 'notFlag', 'anyFlag', 'noneFlag', 'party', 'absent', 'class', 'spec', 'bondAtLeast', 'bondBelow', 'item', 'notItem', 'clue', 'notClue', 'access', 'notAccess', 'roller', 'notRoller', 'hire', 'hireKind']);
   const ENGINE = /^(method|prepared|approach|partial|away|walked):/;
   // Before chapter upTo: the chapters and scenes before it, and the jobs open before it.
   // Every written chapter in story order (Part Two's too: this file reads the whole of Book Four's data).
@@ -657,7 +657,8 @@ test('no new person in Book Four takes a name the earlier books or the story bib
   const NEW = new Set(['Rue', 'Linus Pardew', 'Ailith Strake', 'Vetch of Wem', 'Garth Mott', 'Teasel', 'Sedge', 'Burdock', 'Sloe', 'Yarrow', 'Madder', 'Heath', 'Furze', 'Campion', 'Lovage', 'Betony', 'Bistort of Greve', 'Annis Corby', 'Wystan Strake']);
   const UNNAMED = new Set(['The watch sergeant', "The rope-men's foreman", 'The innkeeper', "The Company's factor", 'The carter', 'A rope-man', 'A man in a good coat', "Sheddon's eldest", "The weavers' eldest", "Wem's door-bearer", "Dunnet's door-bearer", "Wem's elder", 'The walker', 'A man from the yard', "The Hall's sergeant"]);
   const speakers = new Set(CONTENT.flatMap(([, c]) => everyLine(c).map((l) => l.say)).filter(Boolean));
-  for (const who of speakers) assert.ok(COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
+  // 'hire' is whoever the party hired at a tavern (src/tavern.js), told under their own name.
+  for (const who of speakers) assert.ok(who === 'hire' || COMPANIONS[who] || RETURNING.has(who) || NEW.has(who) || UNNAMED.has(who), who);
   // The new names are not anyone's in Books One to Three.
   const older = JSON.stringify(OLDER);
   for (const name of ['Rue', 'Linus', 'Pardew', 'Ailith', 'Strake', 'Sloe', 'Burdock', 'Yarrow', 'Sedge', 'Heath', 'Teasel', 'Campion', 'Madder', 'Furze', 'Lovage', 'Betony', 'Bistort', 'Annis', 'Wystan']) assert.doesNotMatch(older, new RegExp(`"say": ?"${name}`), name);
