@@ -1615,6 +1615,9 @@
             { "narrate": "Nessa writes to Cinder Fold every week, to whoever is keeping the signal. Biscuit lies across the forge door with his grey muzzle on his paws, and will not move for anybody.", "when": { "party": "nessa" } },
             { "narrate": "Up at Cinder Fold the forge-signal was kept lit every night until the thaw, by whoever was on the committee's rota.", "when": { "absent": "nessa", "flag": "b4_nessa_signal" } }
           ] },
+          {"narrate": "{hire} keeps one of the pieces of your story. When Linus asks which piece, {hire} says that would be extra.", "when": {"hire": true, "flag": "fourth_telling", "is": "companions"}},
+          {"narrate": "In the spring {hire} takes the fee out of {hireTheir} boot, where it has been since the tavern, and buys the whole of the Briarwatch inn a round with it.", "when": {"hire": true}},
+          {"say": "hire", "text": "Don't thank me. It was never the money. Well. It was, at the start. Drink your drink."},
           { "oneOf": [
             { "narrate": "Rue does not know any of you. She has a new book, and Nessa wrote its first page, in capitals: 'YOU ARE RUE. YOU ARE OUR FRIEND. WE WILL TELL YOU THE REST.' She reads it every morning, and then asks Nessa for the rest.", "when": { "party": "nessa", "flag": "b4_note_rung", "anyFlag": ["b4_nessa_with_rue"] } },
             { "narrate": "Rue does not know any of you. She has a new book, and its first page says, in somebody else's hand, who she is. She reads it every morning, and then reads the old one, like a story about somebody she has heard of, and likes.", "when": { "flag": "b4_note_rung", "anyFlag": ["b4_nessa_with_rue", "b4_nessa_signal"] } },

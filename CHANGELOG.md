@@ -4,6 +4,25 @@ The game version is still **4.1.0-alpha.3**; each playtest release is tagged by
 its commit (`playtest-<commit>`). Entries are grouped by date, newest first, with
 the pull requests that made them.
 
+## Tavern fees and hires in the endings (27 November 2026)
+
+- Curtis: hiring "should be proportionate to something", and a hire should be
+  "included as a side character" in the books.
+- A hire's fee now grows with the square of the hero's level: each person's
+  rate (3 to 7) x level x level / 2. A hero's gold grows the same way (scripted
+  runs at all three difficulties earn about 12 to 16 x level x level by then),
+  so a hire costs about a tenth to a third of a typical purse from level 10 to
+  70. Examples: at level 10, 150 to 350 gold (was 30 to 70); at level 40,
+  2,400 to 5,600 (was 120 to 280); at level 70, 7,350 to 17,150.
+- A hero who has spent their gold on gear is not shut out: the fee is at most
+  half the gold they carry, but never below the old fee (rate x level).
+- The hire card now just says the fee in gold, paid now.
+- A hire has a part in the endings of Books Two, Three and Four, at Dera's
+  forge: how each kind spends the winter after the council, the hook Dera puts
+  up for them, and what they finally do with the fee. Written for any of the
+  100, in their own pronouns. Book One's ending (its aftermath) already had
+  them.
+
 ## Play with OpenAI (26 November 2026)
 
 - The AI game master can now run on the OpenAI API with your own OpenAI key, as
