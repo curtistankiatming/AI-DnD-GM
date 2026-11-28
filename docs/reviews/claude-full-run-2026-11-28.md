@@ -105,6 +105,8 @@ nothing beyond the story; none paid gold.
 Tests: `tests/claude-full-run-2.test.js`. `npm run check`, `npm test` (1,318 pass,
 1 skipped), `npm run playtest` and `npm run fuzz` pass.
 
+**Independent review:** no blocking issues; old saves pick up the new descriptions on load, and players never see them (only the AI does). Two wording suggestions were taken: the haggle rule is now its own sentence after the reward list, and the story bible no longer says Orin offers to carry something every time. It also noted that the tests check the prompt text, not Claude's behaviour; the live checks above are the behaviour check.
+
 ## Not fixed (notes)
 
 - Answers still give raw HP ("Orin is at 135 of 180") when asked how the party is
