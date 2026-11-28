@@ -5,7 +5,7 @@
     "role": "Guardian",
     "pronouns": "he/him",
     "summary": "A plain-spoken shield veteran who once fell back from a ford and left farmers behind, and means never to do it again.",
-    "personality": "Short sentences, dry. Says the uncomfortable thing plainly, then offers to carry something. Cannot bluff, takes logistics and knots very seriously, and always takes the door.",
+    "personality": "Short sentences, dry. Says the uncomfortable thing plainly. Cannot bluff, and takes logistics and knots very seriously. Now and then, not in most replies, offers to carry something or takes the door.",
     "abilities": {
       "str": 15,
       "dex": 10,
@@ -95,7 +95,7 @@
     "role": "Scout",
     "pronouns": "she/her",
     "summary": "A Briarwatch outrider with quick eyes, quicker arrows, and unfinished business below the wood.",
-    "personality": "Fast, interrupting, half-finished sentences. Acts first and apologises never, hates making anyone wait for help, writes letters she does not send, and talks to Biscuit the dog as one of the party.",
+    "personality": "Fast, interrupting, half-finished sentences. Acts first and apologises never, and hates making anyone wait for help. Now and then, not in most replies, mentions the letters she writes and does not send, or talks to her dog Biscuit (he) as one of the party.",
     "abilities": {
       "str": 9,
       "dex": 16,
