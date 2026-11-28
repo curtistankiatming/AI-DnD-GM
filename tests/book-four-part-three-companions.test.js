@@ -347,6 +347,29 @@ test('step 10\'s jobs: The Lower Town on Ashford\'s board in chapters 25 and 26,
   }
 });
 
+test('a keepsake whose companion is not with the company is not given; the hero gets what it would sell for', () => {
+  // No-AI full run (28 Nov), Nessa declined twice: finishing the Signal gave
+  // "Signal-fire Longbow (Legendary). Nessa only." to a party nobody in which could use it.
+  const value = Math.floor(ITEMS['signal-fire-longbow'].value * 0.3);
+  const without = E.createNewGame({ name: 'Ash', classId: 'ranger' });
+  without.party = without.party.filter((m) => m.id !== 'nessa');
+  const gold = without.player.gold, events = [];
+  assert.equal(Gear.award(without, 'quest:b4-signal', events), null);
+  assert.ok(!without.player.inventory.some((e) => e.itemId === 'signal-fire-longbow'));
+  assert.equal(without.player.gold, gold + value);
+  assert.match(events.map((e) => e.text).join('\n'), new RegExp(`Signal-fire Longbow was kept for Nessa, who is not with your company\\. You take its worth instead: ${value} gold\\.`));
+  assert.equal(Gear.award(without, 'quest:b4-signal', []), null, 'once');
+  assert.equal(without.player.gold, gold + value, 'paid once');
+  // Away on the roads still counts: she comes back to it.
+  const away = E.createNewGame({ name: 'Ash', classId: 'ranger' });
+  away.party = away.party.filter((m) => m.id !== 'nessa'); away.world.away = { nessa: { member: { id: 'nessa' } } };
+  assert.equal(Gear.award(away, 'quest:b4-signal', [])?.id, 'signal-fire-longbow');
+  // With her in the party it is given as before.
+  const withHer = E.createNewGame({ name: 'Ash', classId: 'ranger' });
+  if (!withHer.party.some((m) => m.id === 'nessa')) withHer.party.push({ ...withHer.party[0], id: 'nessa' });
+  assert.equal(Gear.award(withHer, 'quest:b4-signal', [])?.id, 'signal-fire-longbow');
+});
+
 test('chapters 25 to 27 give keepsakes only their companion can wear, on the tier 60 curve, given once when the chapter is done', () => {
   const GEAR = require('../src/data/gear.json');
   const rewards = GEAR.filter((i) => IDS.includes(i.exclusive?.quest));

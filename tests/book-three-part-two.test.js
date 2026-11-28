@@ -384,6 +384,21 @@ test('the wren-nessa scene: with Nessa the letter on the table, without her the 
   assert.match(told(decide('b3-wren', 'cast')), /ten bells round the lid/);
 });
 
+test('without Nessa, Wren brings the letter the night before she is cast, not after she has given her stick away', () => {
+  // No-AI full run (28 Nov): the chapter ends "She gives her stick to Hew... walks to the mould"
+  // and "In the morning there are ten bells", then the camp said "That night Wren comes down...
+  // slowly, on her stick".
+  const cast = opening(decide('b3-wren', 'cast', { party: ['orin', 'maren'] }));
+  assert.match(cast, /The night before she went to the mould, Wren came down to the forge wall/);
+  assert.doesNotMatch(cast, /That night Wren comes down/);
+  assert.match(cast, /For Reed, when you see her/); assert.match(cast, /I'll not be up here to know/);
+  for (const decision of ['refuse', 'wait']) {
+    const alone = opening(decide('b3-wren', decision, { party: ['orin', 'maren'] }));
+    assert.match(alone, /That night Wren comes down to the forge wall/, decision);
+    assert.doesNotMatch(alone, /night before she went to the mould/, decision);
+  }
+});
+
 // Chapter 13.
 test('the order: the trial is held wherever Saltwick\'s people are now', () => {
   const start = (flags) => opening(act(ready('b3-order', { flags }), { type: 'depart', questId: 'b3-order' }).state);
