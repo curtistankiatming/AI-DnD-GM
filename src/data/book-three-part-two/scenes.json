@@ -193,10 +193,21 @@
             "text": "She said it was a very good letter. She said they always were."
           },
           {
-            "narrate": "That night Wren comes down to the forge wall where you are sitting, slowly, on her stick, and sits beside you with a letter in her hand, folded small and sealed with candle wax.",
-            "when": {
-              "absent": "nessa"
-            }
+            "oneOf": [
+              {
+                "narrate": "The night before she went to the mould, Wren came down to the forge wall where you were sitting, slowly, on her stick, and sat beside you with a letter in her hand, folded small and sealed with candle wax.",
+                "when": {
+                  "absent": "nessa",
+                  "flag": "b3_wren_cast"
+                }
+              },
+              {
+                "narrate": "That night Wren comes down to the forge wall where you are sitting, slowly, on her stick, and sits beside you with a letter in her hand, folded small and sealed with candle wax.",
+                "when": {
+                  "absent": "nessa"
+                }
+              }
+            ]
           },
           {
             "say": "Wren",

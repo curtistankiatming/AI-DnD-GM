@@ -219,6 +219,16 @@ function award(state, key, events) {
   const item = REWARDS()[kind === 'quest' ? `quest:${id}` : key];
   if (!item) return null;
   given[key] = true;
+  // A keepsake for a companion who is not with the company (never joined,
+  // and not away on the roads to come back): nobody here could put it on, so
+  // the hero takes what it would sell for instead (src/world.js sellPrice).
+  const members = item.requires?.members || [];
+  if (members.length && !members.some((id) => state.party?.some((m) => m.id === id) || state.world?.away?.[id])) {
+    const worth = Math.max(1, Math.floor((item.value || 0) * 0.3));
+    state.player.gold += worth;
+    events.push({ type: 'loot', tone: 'neutral', text: `${item.name} was kept for ${orList(members.map(memberName))}, who is not with your company. You take its worth instead: ${worth} gold.` });
+    return null;
+  }
   require('./equipment').addTo(state.player.inventory, item.id, 1);
   events.push({ type: 'item', tone: 'good', text: `You receive ${item.name} (${item.rarity}). ${purpose(item)}` });
   return item;
