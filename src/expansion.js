@@ -308,7 +308,7 @@ function installQuest(q){
     // Extra written resolutions for this crisis ("crisisChoices"): lines, flags
     // and approval, then on to the chapter's ending, like a peaceful success.
     ...(q.crisisChoices||[]).map(c=>choice(c.id,c.label,{description:c.description||'',...(c.requires?{requires:c.requires}:{}),result:{lines:c.lines,setFlags:{[`method:${q.id}`]:'peace',...(c.setFlags||{})},...(c.approval?{approval:c.approval}:{}),nextNode:`${prefix}-after`}})),
-    choice('objective',`Protect the party while you ${q.objective.label.toLowerCase()}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
+    choice('objective',`Protect the party while you ${lowerFirst(q.objective.label)}`,{description:q.objective.description,result:{text:'Your companions take their positions. The objective, its difficulty and its consequences are visible during the encounter.',combat:`quest:${q.id}`}}),
     choice('confront','Confront the threat directly',{description:'Start the same encounter without committing to a method. You may attack, pursue the objective, or retreat.',combat:`quest:${q.id}`})
   ]};
   STORY_NODES[`${prefix}-after`]={id:`${prefix}-after`,act:'Consequences',title:q.titles?.after||`After ${q.name.replace(/^(The|An?) /,m=>m.toLowerCase())}`,location:q.region,objective:q.continues?'Choose what follows your intervention, then go on.':'Choose what follows your intervention, then return to town.',...toldOpening(q.after),safeRest:true,questId:q.id,phase:'after',choices:q.decisions.map(d=>choice(d.id,d.label,{description:d.description||'This decision is permanent. The objective reward is the same for every approach.',...(d.requires?{requires:d.requires}:{}),result:{...told(d.text),setFlags:{[d.flag]:true,...(d.setFlags||{})},completeQuest:q.id,reputation:d.rep,...(d.flagsIf?{flagsIf:d.flagsIf}:{}),...(d.gold?{gold:d.gold}:{}),...(d.approval?{approval:d.approval}:{}),...(q.continues?{goOn:q.id}:{}),nextNode:`town-${q.nextTown||q.town}`}}))};
@@ -454,4 +454,7 @@ ENCOUNTERS.practice={id:'practice',name:'The Echo Court — practice',enemies:['
 // (src/data/standing.json): told to the AI game master and shown in the Journal.
 const STANDING=require('./data/standing.json').entries;
 function standing(state,who){return [...STANDING.filter(e=>e.who===who&&lineApplies(state,{when:e.when})).map(e=>e.text),...require('./tavern').standing(state,who)];}
+// Only the first word is lowered, so names keep their capitals ("get Sella through
+// the gap", not "get sella"; full OpenAI run, 27 November 2026).
+function lowerFirst(text){const t=String(text||'');return /^[A-Z][a-z]/.test(t)?t[0].toLowerCase()+t.slice(1):t;}
 module.exports={trialFraming,townPage,townPages,standing,TOWNS,MERCHANTS,RECIPES,PERSONAL,QUESTS,SCENES,SIDE_JOBS,UPGRADE_BASES,installQuest,storyLine,dialogueText,liveLines,playLines,lineApplies,nodeLocation,outcomeForRoller,forRoller};
