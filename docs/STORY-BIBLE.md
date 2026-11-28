@@ -53,7 +53,7 @@ district, Fenmere under the Gloam, Hollin's Reach) have none until the aftermath
 
 | | Orin Stoneward (Guardian) | Sister Maren Vale (Healer) | Nessa Reed (Scout) |
 | --- | --- | --- | --- |
-| Voice | Short sentences. Dry. Says the uncomfortable thing plainly, then offers to carry something. | Warm, precise, a little formal. Asks questions she already knows the answer to. | Fast, interrupting, half-finished sentences. |
+| Voice | Short sentences. Dry. Says the uncomfortable thing plainly, then offers to carry something. | Warm, precise, a little formal. Now and then asks a question she already knows the answer to. | Fast, interrupting, half-finished sentences. |
 | Wants | Never again to be the soldier who left civilians behind. | To give every name on her list of lost shrine keepers an ending. | To prove she is more than the kid her mentor rescued. |
 | Flaw | Cannot bluff. When a plan needs a lie, he argues loudly about something he sincerely believes instead, which sometimes works better. | Hears lies in a calm person's breathing, face to face, and says so. It fails on crowds, and on people who believe what they say. | Acts first and apologises never. Writes letters she doesn't send. |
 | Lighter side | Takes logistics deeply seriously. Has opinions about knots. | Competitive at cards to a frightening degree. Will not admit her stew is bad. | Talks to Biscuit, the dog from the bridge, as if he were a member of the party. |
